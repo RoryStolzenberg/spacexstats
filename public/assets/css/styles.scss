@@ -1,0 +1,691 @@
+@import "core";
+@import "gridle/grid";
+
+/* ---------------- GLOBAL STYLES ----------------- */
+*, *:before, *:after {
+    box-sizing:border-box;
+}
+
+html {
+}
+
+html, body {
+    height:100%;
+    width:100%;
+    font-family:$notoSans;
+    background-color:$offwhite;
+}
+
+body {
+    overflow-x:hidden;
+    overflow-y:scroll;
+    position:relative;
+    left:0;
+    font-size:14px;
+}
+
+// Make sure the first element following the header wrapper is offset by 50px 
+// to allow room for the navigation menu
+.header-wrapper + * {
+    padding-top:50px;
+}
+
+.content-wrapper {
+    width:100%;
+    min-height:100vh;
+    height:100%;
+    z-index:100;
+
+    &.single-page {
+        height:100vh;
+
+        main {
+            min-height:initial;
+            min-height:auto;
+            height:calc(100% - 80px - 50px);
+        }
+    }
+
+    &.background {
+        background-size:cover;
+        background-position:center center;
+
+        main {
+            background-color:rgba($white, 0.75);
+        }
+    }
+}
+
+// CONTENT HOLDERS
+h1, main {
+    width:100%;
+    max-width:1400px;
+    margin:0 auto;
+    z-index:200;
+    position:relative;
+}
+
+main {
+    background-color:$white;
+    box-shadow:0 0 15px rgba($slateblack, 0.5);
+    color:$slateblack;
+    min-height:calc(100% - 80px);
+    display:block; // Make IE happy
+
+    nav {
+        height:30px; // Includes the 10px padding of the parent element
+        line-height:30px;
+    }
+}
+
+main > * {
+    padding:0 10px;
+}
+
+/* Sticky Bar Nav */
+nav.sticky-bar {
+    position:sticky;
+    top:0; // tell the element where to stick
+    width:100%;
+    font-size:14px;
+    @include transitionMed((background-color, color));
+
+  &.stuck {
+      background-color:$blue;
+      color:$white;
+      z-index:300;
+  }
+}
+
+.stuck ~ * {
+    top:30px;
+    position:relative;
+}
+
+.highlights {
+    height:40px;
+    width:100%;
+    position:relative;
+}
+
+.hero {
+    /* Calculated height: the viewport, subtracting the header (50px), the title (80px), the page nav (30px), highlights (40px), the summary (100px) */
+    height:calc(100vh - 300px);
+
+    &.hero-centered {
+        text-align:center;
+        font-family:$brandonGrotesque;
+        text-transform:uppercase;
+
+        &:before {
+            content:'';
+            display: inline-block;
+            height:100%;
+            vertical-align: middle;
+            margin-right:-0.25em;
+        }
+
+        >* {
+            display: inline-block;
+            vertical-align: middle;
+            top:-5%;
+            position:relative;
+        }
+
+        table {
+            border-collapse:collapse;
+            position:relative;
+
+            td {
+                width:250px;
+            }
+
+            .value {
+                font-size:180px;
+                font-weight:300;
+                line-height: 1;
+            }
+
+            .unit {
+                font-size:30px;
+                font-weight:300;
+            }
+        }
+    }
+
+    /* ------------- DISPLAY STATISTICS --------------- */
+    &.statistic {
+        height:calc(100% - 30px - 100px);
+
+        .description {
+            height:100px;
+        }
+    }
+}
+
+ul, ol {
+    list-style-type:none;
+}
+
+/* ------------------ HEADER ------------------ */
+.header-wrapper {
+    width:100%;
+    background-color:$blue;
+    height:200px;
+    position:absolute;
+    box-shadow:0 0 15px rgba($slateblack, 0.5);
+
+    header {
+        @include gridle_container();
+        max-width:1400px;
+        padding:0 5px;
+        width:100%;
+        margin:0 auto;
+        font-family:$notoSans;
+        color:$white;
+        z-index:100;
+        line-height:50px;
+        height:50px;
+
+        i {
+            @include hide-when-larger-than($small);
+            @include gridle(1);
+            line-height:50px;
+            cursor:pointer;
+        }
+
+        a {
+            display:block;
+        }
+    }
+}
+
+#logo {
+    @include gridle(6, small);
+    @include gridle(3, medium);
+    @include gridle(2, large);
+    @include gridle(1, xlarge);
+    font-weight:800;
+    font-size:20px;
+    font-family:$brandonGrotesque;
+}
+
+.flash-message {
+    position: fixed;
+    z-index: 500;
+    max-width: 1000px;
+    margin: 0px auto;
+    width: 100%;
+    left: 0px;
+    right: 0px;
+    padding: 8px 10px;
+    border-radius:0 0 $border-radius-small $border-radius-small;
+    box-shadow:0 0 15px rgba($slateblack, 0.5);
+    color:$white;
+
+    &.success {
+        background-color:rgba($green, 0.9);
+
+        &:before {
+
+        }
+    }
+
+    &.failure {
+        background-color:rgba($red, 0.9);
+
+        &:before {
+
+        }
+    }
+}
+
+/* ------------------ NAV ------------------ */
+header > nav {
+    @include gridle_state(small) {
+        @include hide-when-larger-than($small);
+        width:250px;
+        height:100%;
+        position:fixed;
+        top:0;
+        left:-250px;
+        background-color:$lightblack;
+        text-align:left;
+    }
+
+    @include gridle(9);
+    @include gridle(10, large);
+    @include gridle(11, xlarge);
+    height:100%;
+
+    ul {
+        @include gridle_container();
+        cursor:pointer;
+
+    }
+}
+
+li > ul.nav-second-tier {
+    display:none;
+}
+
+li:hover {
+    background-color:rgba($white,0.1);
+}
+
+li:hover > ul.nav-second-tier, li > ul.nav-second-tier:hover {
+    display:block;
+    background-color:$white;
+    color:$slateblack;
+    z-index:300;
+    position:relative;
+    box-shadow:10px 10px 15px rgba($lightblack, 0.2);
+}
+
+.wide {
+    width:200%;
+}
+
+body, nav {
+    @include transitionMed(left);
+}
+
+/* Mobile navigation */
+.nav-open {
+    left:250px;
+
+    nav {
+        left:0;
+    }
+}
+
+/* -------------- CONTENT HEADERS ----------------- */
+h1, h2, h3, h4, h5, h6 {
+    font-family:$brandonGrotesque;
+    font-weight:400;
+    padding:0 10px;
+    text-transform:uppercase;
+}
+
+h1 {
+    height:80px;
+    color:$white;
+    line-height:80px;
+    font-size:50px;
+    font-weight:lighter;
+    text-transform: none;
+}
+
+h2 {
+    font-size:24px;
+    margin:10px 0;
+    padding:5px 10px;
+    border-bottom:1px solid $bordergrey;
+    clear:both;
+}
+
+h3 {
+    font-size:18px;
+    color:$october;
+    margin:20px 0 10px 0;
+}
+
+/* -------------- CONTENT ----------------- */
+p {
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size:14px;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color:inherit;
+    text-decoration:inherit;
+}
+
+.hidden {
+    display:none;
+}
+
+.smallcaps {
+    @include smallCaps();
+}
+
+/* ----------------- HOME PAGE  ------------------- */
+#statistics-navigation {
+    position: fixed;
+    top:50%;
+
+    .statistic-link {
+        display: block;
+        width: 5px;
+        height: 5px;
+        padding: 10px;
+
+        &:before {
+            width: 6px;
+            height: 6px;
+            top:-3px;
+            left:-3px;
+            position:relative;
+            border-radius:50%;
+            content: "";
+            display: block;
+            background-color:$white;
+
+            &.active {
+                background-color:$white;
+            }
+        }
+    }
+}
+
+.previous-stat, .next-stat {
+    position:absolute;
+    width:40px;
+    height:40px;
+    right:0;
+    background-color:transparent;
+    border:none;
+    padding:0;
+    color:$white;
+}
+
+.previous-stat {
+    top:-60px;
+}
+
+.next-stat {
+    bottom:-45px;
+}
+
+.background {	@include filteredBackground("../images/backgrounds/bocachica.jpg"); }
+
+/* ------------ FUTURE/PAST MISSIONS  ------------- */
+.spotlight {
+    background-color:$blue;
+    border-radius:$border-radius-large;
+    color:$white;
+    margin:0 10px;
+    overflow:hidden;
+}
+
+/* ------------- FUTURE MISSION PAGE  -------------- */
+.display-date-time {
+    position:absolute;
+    right:0;
+    top:10px;
+    width:200px;
+
+
+    .launch {
+        display:inline-block;
+        text-align:right;
+        background-color:$gold;
+        color:$white;
+        height:40px;
+        line-height:40px;
+        width:100%;
+        padding:0 20px;
+        position:relative;
+        right:-10px;
+
+        &:after {
+            width: 0px;
+            height: 0px;
+            border-right:10px solid transparent;
+            border-top:10px solid darken($gold, 30%);
+            display: block;
+            top: 40px;
+            right:0;
+            position: absolute;
+            content: "";
+        }
+    }
+
+    .timezone {
+        @include smallCaps();
+        text-align:right;
+        padding:0 10px;
+
+        .timezone-current {
+            cursor:pointer;
+            line-height:2;
+        }
+
+        .timezone-current:after {
+            width: 0;
+            height: 0;
+            border-bottom: 6px solid transparent;
+            border-top: 6px solid transparent;
+            border-left: 8px solid $bordergrey;
+            display:inline-block;
+            content:"";
+            margin-left: 10px;
+            vertical-align: -5%; // Make it look perfect
+            @include transitionMed(transform);
+            transform:rotate(0deg);
+        }
+
+        .timezone-list {
+            border:1px solid $bordergrey;
+            padding:0 10px;
+            transform:scale(0.5);
+            opacity:0;
+            @include transitionMed(opacity);
+            @include transitionMed(transform);
+        }
+
+        &.active {
+            .timezone-current:after {
+                transform:rotate(90deg);
+            }
+
+            .timezone-list {
+                height:auto;
+                opacity:1;
+                transform:scale(1);
+            }
+        }
+
+        .timezone-option {
+            margin:5px 0;
+        }
+    }
+}
+
+section.details {
+    @include gridle_container();
+
+    #live-tweets {
+        @include gridle(4);
+    }
+
+    #mission-details {
+
+    }
+}
+
+/* ----------- MISSION CONTROL UPLOAD ------------- */
+.upload-type {
+    @include gridle_container();
+
+    li {
+        @include gridle(4);
+        font-size:$content-large;
+        cursor:pointer;
+    }
+}
+
+.dropzone {
+    border:3px dashed blue;
+    border-radius:$border-radius-large;
+    height:300px;
+}
+
+/* --------------- FORM DESIGN ----------------- */
+form {
+    ul li {
+        height:100px;
+        padding:0 10px;
+    }
+}
+
+label {
+    @include smallCaps();
+    margin:0 10px;
+}
+
+input, textarea, button {
+    width:calc(100% - 20px);
+    margin:0 10px;
+    padding:5px;
+    border:1px solid $bordergrey;
+    font-family:$notoSans;
+    font-size:14px;
+    box-shadow:0 0 0px rgba($october, 0.2);
+    @include transitionFast(border);
+    @include transitionFast(box-shadow);
+}
+
+input:focus, button:focus, textarea:focus {
+    border:1px solid $gold;
+    box-shadow:0 0 5px rgba($october, 0.2);
+}
+
+textarea {
+    min-height:50px;
+}
+
+.rich-select {
+    margin:0 10px;
+    position: relative;
+
+    >.default {
+        border:1px solid $bordergrey;
+        height:50px;
+        overflow:hidden;
+    }
+
+    ul {
+        display:block;
+        position:absolute;
+        background-color:$white;
+        box-shadow:10px 10px 15px rgba($lightblack, 0.2);
+        border:1px solid $bordergrey;
+        border-top:none;
+        width:100%;
+    }
+
+    li {
+        margin:5px 0;
+        padding:0;
+        height:50px;
+    }
+
+    img {
+        width:50px;
+        height:50px;
+        margin-right:10px;
+    }
+
+    .title {
+        font-weight:bold;
+        line-height: 50px;
+        vertical-align: top;
+    }
+}
+
+.tagger-container {
+    .wrapper {
+        border:1px solid $bordergrey;
+    }
+
+    .tags {
+        display:inline-block;
+    }
+
+    .tags div {
+        font-family:$segoeWP;
+        display: inline-block;
+        background-color:$october;
+        color:$white;
+        border-radius: 15px;
+        padding: 5px 10px;
+        margin:4px 3px;
+        line-height:1;
+
+        .remove {
+            padding-left:10px;
+            width:20px;
+            height:20px;
+        }
+
+        .remove:before {
+            content:"x";
+        }
+    }
+
+    input {
+        display:inline-block;
+        vertical-align: top;
+        border:none;
+        box-shadow:none;
+        margin:0;
+    }
+
+    .suggestion {
+        width:33%;
+        display:inline-block;
+    }
+}
+
+/* --------------- FAQS ----------------- */
+section.question-list {
+    -webkit-columns:3 200px;
+    -moz-columns:3 200px;
+    columns:3 200px;
+    text-align:center;
+}
+
+/* --------------- MISSION CARDS ----------------- */
+.mission-card {
+    box-shadow:0 0 15px rgba($slateblack, 0.5);
+    width:100%;
+    position:relative;
+    margin-top:30px;
+
+    .top {
+        padding:10px;
+        padding-left:120px;
+        height:80px;
+    }
+
+    .bottom {
+        padding:10px;
+        text-align:center;
+    }
+
+    .thumb {
+        background-size:cover;
+        background-position:center center;
+        border-radius:$border-radius-large;
+        width:100px;
+        height:100px;
+        position:absolute;
+        top:-20px;
+        left:10px;
+        display: inline-block;
+    }
+
+    .launch-count {
+        width:50px;
+        height:50px;
+        border-radius:50%; // Make it circular
+        background-color:$blue;
+        display:block;
+        color:$white;
+        line-height:50px;
+        text-align: center;
+        margin:0 auto;
+    }
+}

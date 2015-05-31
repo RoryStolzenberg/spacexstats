@@ -1,0 +1,39 @@
+// Import gridle :
+@import 'gridle/gridle';
+
+// setup the grid (required) :
+@include gridle_setup((
+	context : 12,
+	gutter-width : 20px
+));
+
+// register special columns :
+@include gridle_register_column("1on5", 1, 5);
+@include gridle_register_column("1on9", 1, 9);
+
+// clear each classes :
+@include gridle_register_clear_each(2, left);
+@include gridle_register_clear_each(12, both);
+
+// register states :
+//@include gridle_register_default_states();
+@include gridle_register_state(small, (
+	query : "(max-width: 640px)",
+	gutter-width : 0
+));
+@include gridle_register_state(medium, (
+	query : "(min-width: 641px) and (max-width: 1024px)",
+	gutter-width : 0
+));
+@include gridle_register_state(large, (
+	query : "(min-width: 1025px) and (max-width: 1440px)",
+	gutter-width : 0
+));
+@include gridle_register_state(xlarge, (
+	query : "(min-width: 1441px) and (max-width: 1920px)",
+	gutter-width : 0
+));
+@include gridle_register_state(xxlarge, (
+	query : "(min-width: 1921px)",
+	gutter-width : 0
+));

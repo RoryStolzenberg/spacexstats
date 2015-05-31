@@ -1,0 +1,146 @@
+/* --------------- COLOR SWATCHES ----------------- */
+$slateblack:	rgb(24,28,31);
+$lightblack:	#21272B;
+$blue:			#4050C0;
+$october:		#33495E;
+$grey: 			#888;
+$bordergrey: 	#CCC;
+$gold: 			#CCAC55;
+$offwhite: 		#F5F5F5;
+$white:			#FFF;
+
+$green:         #40C085;
+$red:           #C05B40;
+
+/* --------------- FONT VARIABLES ----------------- */
+$brandonGrotesque: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
+$notoSans: "Noto Sans", sans-serif;
+$segoeWP: "Segoe WP", sans-serif;
+
+$large:18px;
+$medium:14px;
+$small:12px;
+
+$content-large:18px;
+
+/* ------------------- DESIGN --------------------- */
+$border-radius-small:3px;
+$border-radius-large:8px;
+
+/* ------------------ GENERAL MIXINS ----------------- */
+@mixin transition($property) {
+    -webkit-transition:$property;
+    -moz-transition:$property;
+    -o-transition:$property;
+    transition:$property;
+}
+@mixin transitionFast($properties) {
+    $transitions: ();
+
+    @each $property in $properties {
+        $trans: unquote("#{$property} ease 0.2s");
+        $transitions: append($transitions, $trans, comma );
+    }
+
+    @include transition(#{$transitions});
+}
+
+@mixin transitionMed($properties) {
+    $transitions: ();
+
+    @each $property in $properties {
+        $trans: unquote("#{$property} ease 0.5s");
+        $transitions: append($transitions, $trans, comma );
+    }
+
+    @include transition(#{$transitions});
+}
+
+@mixin transitionSlow($properties) {
+    $transitions: ();
+
+    @each $property in $properties {
+        $trans: unquote("#{$property} ease 1s");
+        $transitions: append($transitions, $trans, comma );
+    }
+
+    @include transition(#{$transitions});
+}
+
+@mixin transform($transformation) {
+    -webkit-transform:$transformation;
+    -moz-transform:$transformation;
+    -ms-transform:$transformation;
+    -o-transform:$transformation;
+    transform:$transformation;
+}
+
+@mixin filteredBackground($backgroundImage) {
+    background-image: url($backgroundImage);
+    background-image: linear-gradient(rgba(#33495E, 0.5), rgba($slateblack, 0.5)), url($backgroundImage);
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#BF21272B', endColorstr='#BF21272B', gradientType='0')";
+}
+
+@mixin smallCaps() {
+    font-size:14px;
+    color:$grey;
+    text-transform: uppercase;
+    font-weight:600;
+    font-family:$segoeWP;
+}
+
+/* ----------------- HELPER CLASSES --------------- */
+@each $align in left, right, center {
+    .text-#{$align} {
+        text-align:$align;
+    }
+}
+
+/* ----------------- BREAK POINTS ----------------- */
+$small: "(max-width: 640px)";
+$medium: "(min-width: 641px) and (max-width: 1024px)";
+$large: "(min-width: 1025px) and (max-width: 1440px)";
+$xlarge: "(min-width: 1441px) and (max-width: 1920px)";
+$xxlarge: "(min-width: 1921px)";
+
+$breakpoints: ($small, $medium, $large, $xlarge, $xxlarge);
+$breakpointsReversed: ($xxlarge, $xlarge, $large, $medium, $small);
+
+/* -------------- VISIBILITY MIXINS --------------- */
+@mixin hide-only-for($breakpoint) {
+    @media #{$breakpoint} {
+        display:none !important;
+    }
+}
+
+@mixin show-only-for($breakpoint) {
+    @media #{$breakpoint} {
+        display:inherit;
+    }
+}
+
+@mixin hide-when-larger-than($selectedBreakpoint) {
+    $seen: false;
+    @each $breakpoint in $breakpoints {
+        @if $seen {
+            @include hide-only-for($breakpoint);
+        }
+
+        @if $selectedBreakpoint == $breakpoint {
+            $seen: true;
+        }
+    }
+}
+
+@mixin hide-when-smaller-than($selectedBreakpoint) {
+    $seen: false;
+    @each $breakpoint in $breakpointsReversed {
+        @if $seen {
+            @include hide-only-for($breakpoint);
+        }
+
+        @if $selectedBreakpoint == $breakpoint {
+            $seen: true;
+        }
+    }
+}

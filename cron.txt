@@ -1,0 +1,1 @@
+* * * * * php H:\spacexstatsv4\artisan scheduled:run 1>> /dev/null 2>&1
