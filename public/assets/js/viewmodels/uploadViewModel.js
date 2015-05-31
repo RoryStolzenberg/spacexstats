@@ -113,7 +113,7 @@ var UploadViewModel = function() {
             var explodedVals = valueOfTwitterUrlField.split('/');
             var id = explodedVals[explodedVals.length - 1];
 
-            $.ajax('/missioncontrol/blah/retrieveTweet/'.id, {
+            $.ajax('/missioncontrol/create/retrievetweet/' + id, {
                 dataType: 'json',
                 type: 'GET',
                 success: function(response) {

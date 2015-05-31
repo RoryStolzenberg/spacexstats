@@ -97,8 +97,8 @@ class UploadController extends BaseController {
 
     // AJAX GET
     public function retrieveTweet($id) {
-        $connection = Abraham\TwitterOAuth\TwitterOAuth(Credential::TwitterConsumerKey, Credential::TwitterConsumerSecret, Credential::TwitterAccessToken, Credential::TwitterAccessSecret);
-        return Response::json($connection->get('account/verify_credentials'));
+        $connection = new Abraham\TwitterOAuth\TwitterOAuth(Credential::TwitterConsumerKey, Credential::TwitterConsumerSecret, Credential::TwitterAccessToken, Credential::TwitterAccessSecret);
+        return Response::json($connection->get('statuses/show', array('id' => $id)));
     }
 }
  

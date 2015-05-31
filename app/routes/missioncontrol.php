@@ -1,4 +1,9 @@
 <?php
+Route::get('missioncontrol/create/retrievetweet/{id}', array(
+    'as' => 'missionControl.create.retrieveTweet',
+    'uses' => 'UploadController@retrieveTweet'
+));
+
 Route::group(array('before' => 'mustBeLoggedIn'), function() {
     Route::get('missioncontrol/buy', array('as' => 'missionControl.buy', function() {
         return View::make('missionControl.buy', array(
@@ -43,10 +48,7 @@ Route::get('missioncontrol/about', array('as' => 'missionControl.about', functio
 }));
 
 Route::group(array('before' => 'mustBe:Subscriber'), function() {
-    Route::get('missioncontrol/create/retrieveTweet/{$id}', array(
-        'as' => 'missionControl.create.retrieveTweet',
-        'uses' => 'UploadController@retrieveTweet'
-    ));
+
 
     Route::get('missioncontrol/create', array(
         'as' => 'missionControl.create',
