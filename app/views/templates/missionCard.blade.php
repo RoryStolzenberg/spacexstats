@@ -1,4 +1,4 @@
-<div class="mission-card {{ $size }}">
+<div class="card mission-card {{ $size }}">
 	<div class="top">
 		<div class="thumb" style="background-image:url(/media/1454e6bb28540a77.93511822.jpeg);"></div>
 		<p><span>{{ link_to_route('missions.get', $mission->name, array($mission->slug)) }}</span> for <span>{{ $mission->contractor }}</span></p>

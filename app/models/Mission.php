@@ -160,10 +160,4 @@ class Mission extends Eloquent {
 			$q->where('name',$site);
 		})->orderBy('launch_order_id','ASC');
 	}
-
-	// Reorder launches
-	public function reorder() {
-		$launchReorderer = new LaunchReorderer($this->launch_order_id, $this->scheduledLaunch);
-		return $launchReorderer->reorder();
-	}
 }

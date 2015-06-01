@@ -18,6 +18,7 @@
 		<div class="content-wrapper single-page background">
 				<h1>Welcome</h1>
 				<main>
+                    {{ Form::date() }}
 				</main>
 		</div>
         <ul id="statistics-navigation">
