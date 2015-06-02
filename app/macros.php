@@ -15,7 +15,7 @@ Form::macro('richSelect', function($nameOfProperty, $selectListOptions, $params)
 		</div>
 	<ul>';
 	foreach ($selectListOptions as $selectListOption) {
-		if ($option->{$params->identifier} == $defaultValue) {
+		if ($selectListOption->{$params->identifier} == $defaultValue) {
 			echo '<li data-value="'. $selectListOption->{$params->identifier}.'" class="default">';
 		} else {
 			echo '<li data-value="'. $selectListOption->{$params->identifier}.'">';
@@ -73,7 +73,7 @@ Form::macro('date', function($nameOfProperty = null, $defaultDateArray = array()
     }
 
     // Check for any options (attributes, ids, classes, data-binds...)
-    
+
 
     echo Form::selectRange('day', 1, 31, $defaultDay, $options['day']);
     echo Form::selectMonth('month', $defaultMonth, $options['month']);

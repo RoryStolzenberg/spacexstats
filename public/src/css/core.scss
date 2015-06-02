@@ -29,9 +29,6 @@ $border-radius-large:8px;
 
 /* ------------------ GENERAL MIXINS ----------------- */
 @mixin transition($property) {
-    -webkit-transition:$property;
-    -moz-transition:$property;
-    -o-transition:$property;
     transition:$property;
 }
 @mixin transitionFast($properties) {
@@ -68,10 +65,6 @@ $border-radius-large:8px;
 }
 
 @mixin transform($transformation) {
-    -webkit-transform:$transformation;
-    -moz-transform:$transformation;
-    -ms-transform:$transformation;
-    -o-transform:$transformation;
     transform:$transformation;
 }
 

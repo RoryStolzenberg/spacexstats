@@ -1,19 +1,18 @@
 /bootstrap/compiled.php
+/node_modules
 /vendor
-app/config/credentials.php
+/public/dev
 /public/media
-/public/assets/css/.sass-cache
+/.sass-cache
+app/config/credentials.php
+
 composer.phar
-composer.lock
 .env.*.php
 .env.phpgit remot
 .DS_Store
 Thumbs.db
 test.log
-mixture.json
-config.codekit
 *.sublime-project
 *.sublime-workspace
 /.idea
-/public/dev
-prepros.cfg
+

@@ -12,6 +12,7 @@
 			ko.applyBindings(new UploadViewModel());
 		});
 	</script>
+
 	<script type="text/html" id="uploaded-files-template">
 		<li data-bind="text: original_name, attr: { 'data-index': $index }, click: $root.changeVisibleTemplate"></li>
 	</script>
@@ -40,6 +41,7 @@
 			</form>
 		</div>
 	</script>
+
 	<script type="text/html" id="gif-file-template">
 		<div data-bind="attr: { 'data-index': $index }, visible: $root.visibleTemplate() == ko.unwrap($index)">
             <h2 data-bind="text: original_name"></h2>
@@ -64,6 +66,7 @@
             </form>
 		</div>
 	</script>
+
 	<script type="text/html" id="audio-file-template">
 		<div data-bind="attr: { 'data-index': $index }">
             <h2 data-bind="text: original_name"></h2>
@@ -88,10 +91,12 @@
             </form>
 		</div>
 	</script>
+
 	<script type="text/html" id="video-file-template">
 		<div data-bind="attr: { 'data-index': $index }">
 		</div>
 	</script>
+
 	<script type="text/html" id="document-file-template">
 		<div data-bind="attr: { 'data-index': $index }">
 		</div>
