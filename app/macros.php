@@ -33,12 +33,6 @@ Form::macro('tags', function($nameOfProperty = null) {
 	echo '<input type="text" class="tagger" id="'.$nameOfProperty.'" value="'.$defaultValue.'">';
 });
 
-// Form macro twitter edit
-Form::macro('twitterCard', function($tweet) {
-    echo '<div class="card twitter-card edit">';
-    echo '</div>';
-});
-
 // Form macro date
 Form::macro('date', function($nameOfProperty = null, $defaultDateArray = array(), $startYear = 1900, $options = array()) {
 
@@ -59,20 +53,15 @@ Form::macro('date', function($nameOfProperty = null, $defaultDateArray = array()
 
     // There is no usable date, pull in the defaults, if they are defined
     } else {
-        if (array_key_exists('year', $defaultDateArray)) {
-            $defaultYear = $defaultDateArray['year'];
-        }
-
-        if (array_key_exists('month', $defaultDateArray)) {
-            $defaultMonth = $defaultDateArray['month'];
-        }
-
-        if (array_key_exists('day', $defaultDateArray)) {
-            $defaultDay = $defaultDateArray['day'];
-        }
+        $defaultDay = (array_key_exists('day', $defaultDateArray)) ? $defaultDateArray['day'] : null;
+        $defaultMonth = (array_key_exists('month', $defaultDateArray)) ? $defaultDateArray['month'] : null;
+        $defaultYear = (array_key_exists('year', $defaultDateArray)) ? $defaultDateArray['year'] : null;
     }
 
     // Check for any options (attributes, ids, classes, data-binds...)
+    $options['day'] = (!array_key_exists('day', $options)) ? array() : $options['day'];
+    $options['month'] = (!array_key_exists('month', $options)) ? array() : $options['month'];
+    $options['year'] = (!array_key_exists('year', $options)) ? array() : $options['year'];
 
 
     echo Form::selectRange('day', 1, 31, $defaultDay, $options['day']);

@@ -1,1 +1,0 @@
-function hello(n){this.name=n}var somefunction=new hello("Hi");console.log(somefunction.name);

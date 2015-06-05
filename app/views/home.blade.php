@@ -4,12 +4,10 @@
 @section('bodyClass', 'home')
 
 @section('scripts')
-    {{ HTML::Script('/assets/js/jquery.fracs-0.15.0.js') }}
-    {{ HTML::Script('/assets/js/jquery.ba-throttle-debounce.min.js') }}
-    {{ HTML::script('/assets/js/viewmodels/HomePageViewModel.js') }}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            ko.applyBindings(new HomePageViewModel());
+    <script data-main="src/js/common" src="src/js/require.js"></script>
+    <script>
+        require(['common'], function() {
+            require(['pages/home']);
         });
     </script>
 @stop
@@ -18,7 +16,7 @@
 		<div class="content-wrapper single-page background">
 				<h1>Welcome</h1>
 				<main>
-                    {{ Form::date() }}
+                    <countdown></countdown>
 				</main>
 		</div>
         <ul id="statistics-navigation">

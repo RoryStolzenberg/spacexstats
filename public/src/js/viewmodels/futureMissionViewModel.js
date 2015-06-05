@@ -32,7 +32,7 @@ var FutureMissionViewModel = function(missionSlug, launchDateTime) {
 		publicViewers: ko.pureComputed(function() {
 			return ' (' + self.webcast.viewers() + ' viewers)';
 		})
-	}
+	};
 
 	self.days = ko.observable();
 	self.hours = ko.observable();
@@ -92,14 +92,14 @@ var FutureMissionViewModel = function(missionSlug, launchDateTime) {
 			self.requestIntervalFrequency('subsonic');
 			self.setTimers(1000 * 60 * 60);
 		}		
-	}
+	};
 
 	self.setTimers = function(frequency) {
 		clearInterval(requestDateTimeTimer);
 		clearInterval(requestWebcastStatusTimer);
 		requestDateTimeTimer = setInterval(self.requestLaunchDateTime, frequency);
 		requestWebcastStatusTimer = setInterval(self.requestWebcastStatus, frequency);
-	}
+	};
 
 	self.countdownProcessor = function() {
 		var launchUnixSeconds = self.launchUnixSeconds();
@@ -133,7 +133,7 @@ var FutureMissionViewModel = function(missionSlug, launchDateTime) {
 			// Update the frequency at which the AJAX request to check the launch time is called			
 			self.setFrequency();
 		}
-	}
+	};
 
 	self.zeroTimer = function() {
 		self.days(0);
@@ -144,7 +144,7 @@ var FutureMissionViewModel = function(missionSlug, launchDateTime) {
 		self.hoursText('Hours');
 		self.minutesText('Minutes');
 		self.secondsText('Seconds');
-	}
+	};
 
 	var requestDateTimeTimer;
 	var requestWebcastStatusTimer;

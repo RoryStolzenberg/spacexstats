@@ -13,7 +13,7 @@ gulp.task('browsersync', function() {
 
 // Scripts Task
 gulp.task('scripts', function() {
-    return gulp.src('public/src/js/*.js')
+    return gulp.src('public/src/js/**/*.js')
         .pipe(uglify())
         .pipe(gulp.dest('public/dest/js'));
 });
@@ -32,8 +32,7 @@ gulp.task('images', function() {
 
 // Watch task
 gulp.task('watch', function() {
-    gulp.watch('public/src/js/*.js', ['scripts']);
     gulp.watch('public/src/css/styles.scss', ['styles']);
 });
 
-gulp.task('default', ['scripts', 'styles', 'watch']);
+gulp.task('default', ['styles', 'watch']);

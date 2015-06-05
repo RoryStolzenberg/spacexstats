@@ -28,23 +28,12 @@
     <meta name="theme-color" content="#ccac55">
 
     <!-- CSS -->
-	{{ HTML::style('/assets/css/reset.styles.css') }}
-	{{ HTML::style('/assets/css/font-awesome.css') }}
-	{{ HTML::style('/assets/css/styles.css') }}
+	{{ HTML::style('/dest/css/font-awesome.css') }}
+	{{ HTML::style('/dest/css/styles.css') }}
 
     <!-- JS -->
-	{{ HTML::script('/assets/js/isAppleDevice.js') }}
-	{{ HTML::script('/assets/js/jquery-1.9.1.js') }}
-    {{ HTML::script('/assets/js/jquery-ui.min.js') }}
-	{{ HTML::script('/assets/js/knockout-3.2.0.debug.js') }}
-	{{ HTML::script('/assets/js/moment.js') }}
-	{{ HTML::script('/assets/js/moment-timezone-with-data.js') }}
-	{{ HTML::script('/assets/js/jstz-1.0.4.min.js') }}
-	{{ HTML::script('/assets/js/sticky.js') }}
-	{{ HTML::script('/assets/js/richSelect.js') }}
-	{{ HTML::script('/assets/js/suggest.js') }}
 	<script>
-		$(document).ready(function() {
+		/*$(document).ready(function() {
 			var mobileNavigation = $('.nav-mobile');
 			var contentToPush = $('body');
 
@@ -52,13 +41,12 @@
 				console.log('click');
 				contentToPush.toggleClass('nav-open');
 			});
-		});
+		});*/
 	</script>
+
 	<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
-
-	@yield('scripts')
-
 </head>
+
 <body class="@yield('bodyClass')">
 
 @if (Session::has('flashMessage'))
@@ -67,5 +55,7 @@
 
 @include('templates.header')
 @yield('content')
+
+@yield('scripts')
 </body>
 </html>
