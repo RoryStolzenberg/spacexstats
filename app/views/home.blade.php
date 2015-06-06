@@ -16,7 +16,6 @@
 		<div class="content-wrapper single-page background">
 				<h1>Welcome</h1>
 				<main>
-                    <countdown></countdown>
 				</main>
 		</div>
         <ul id="statistics-navigation">
@@ -45,18 +44,21 @@
                         </ul>
                     </nav>
                     @foreach ($statistic as $num => $substatistic)
-                        <div data-substat="{{ $num }}" class="hero hero-centered statistic">
-                            <table class="{{ $substatistic['display'] }}">
-                                @if ($substatistic['display'] === 'single')
-                                    <tr class="value">
-                                        <td>{{ $substatistic['result'] }}</td>
-                                    </tr>
-                                    <tr class="unit">
-                                        <td>{{ $substatistic['unit'] }}</td>
-                                    </tr>
-                                @endif
-                            </table>
-                        </div>
+                        @if ($substatistic['display'] === 'single')
+                            <div data-substat="{{ $num }}" class="hero hero-centered statistic">
+                                <table class="{{ $substatistic['display'] }}">
+                                        <tr class="value">
+                                            <td>{{ $substatistic['result'] }}</td>
+                                        </tr>
+                                        <tr class="unit">
+                                            <td>{{ $substatistic['unit'] }}</td>
+                                        </tr>
+                                </table>
+                            </div>
+                        @elseif ($substatistic['display'] === 'count')
+                            <countdown params="">
+                            </countdown>
+                        @endif
                     @endforeach
                     @foreach ($statistic as $num => $substatistic)
                         <p data-substat="{{ $num }}" class="description">

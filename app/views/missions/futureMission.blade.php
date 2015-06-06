@@ -64,7 +64,7 @@
 		</section>
 		<section class="hero hero-centered" id="countdown">
 		@if (!is_null($mission->launch_exact))
-			<table class="countdown" data-bind="countdown: launchDateTime">
+			<table class="countdown">
 				<tr>
 					<td class="value days" data-bind="text: days"></td>
 					<td class="value hours" data-bind="text: hours"></td>

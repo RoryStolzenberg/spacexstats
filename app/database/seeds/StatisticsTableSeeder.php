@@ -6,7 +6,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Next Launch',
             'name' => 'Next Launch',
             'description' => 'This is the next launch',
-            'display' => 'countdown'
+            'display' => 'count'
         ));
 
         Statistic::create(array(

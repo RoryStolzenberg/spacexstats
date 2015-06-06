@@ -57,6 +57,7 @@ define(['knockout', 'jquery', 'jquery.ui', 'jquery.fracs', 'jquery.throttle-debo
                 return $(this).data('substat') > 0;
             }).hide();
 
+            // Grab the statistic from the hash in the URL
             if (window.location.hash != "" && window.location.hash != "#") {
                 self.activeStatistic(window.location.hash.substring(1).split('_').join(' '));
                 // scroll to statistic in window.location.hash

@@ -12,5 +12,9 @@ class CoresTableSeeder extends Seeder {
         Core::create(array(
             'name' => 'F9-003'
         ));
+
+        Core::create(array(
+            'name' => 'F9-004'
+        ));
     }
 }

@@ -43,8 +43,8 @@ class MissionsController extends BaseController {
 	// missions/future
 	public function future() {
 		$futureLaunches = Mission::where('status','=','Upcoming')
+                                    ->orWhere('status','In Progress')
 									->orderBy('launch_order_id')
-									->orWhere('status','=','In Progress')
 									->with('vehicle')->get();
 		$nextLaunch = $futureLaunches->shift();
 

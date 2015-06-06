@@ -14,8 +14,14 @@ class UsesTableSeeder extends Seeder {
         ));
 
         Uses::create(array(
-            'mission_id' => 2,
-            'core_id' => 2,
+            'mission_id' => 3,
+            'core_id' => 3,
+            'firststage_engine' => 'Merlin 1C'
+        ));
+
+        Uses::create(array(
+            'mission_id' => 4,
+            'core_id' => 4,
             'firststage_engine' => 'Merlin 1C'
         ));
 

@@ -7,6 +7,8 @@ class Mission extends Eloquent {
 	protected $table = 'missions';
 	protected $primaryKey = 'mission_id';
 
+    protected $appends = ['launchDateTime'];
+
     protected $guarded = [];
 
 	protected $presenter = "MissionPresenter";
@@ -63,7 +65,7 @@ class Mission extends Eloquent {
 
 	// Attribute Accessors
 	public function getLaunchDateTimeAttribute() {
-		return ($this->launch_approximate === null) ? $this->launch_exact : $this->launch_approximate;
+		return ($this->attributes['launch_approximate'] == null) ? $this->attributes['launch_exact'] : $this->attributes['launch_approximate'];
 	}
 
 	public function getLaunchProbabilityAttribute() {

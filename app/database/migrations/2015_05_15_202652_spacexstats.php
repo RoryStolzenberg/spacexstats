@@ -158,6 +158,12 @@ class Spacexstats extends Migration {
 
         Schema::create('prelaunch_events', function(Blueprint $table) {
             $table->increments('prelaunch_event_id');
+            $table->integer('mission_id')->unsigned();
+            $table->enum('event', array('Wet Dress Rehearsal', 'Static Fire', 'Launch Change'));
+            $table->date('occurred_at');
+            $table->datetime('scheduled_launch_exact')->nullable();
+            $table->string('scheduled_launch_approx', Varchar::small)->nullable();
+            $table->string('summary', Varchar::small)->nullable();
         });
 
         Schema::create('profiles', function(Blueprint $table) {
@@ -270,6 +276,10 @@ class Spacexstats extends Migration {
         });
 
         Schema::table('payloads', function(Blueprint $table) {
+            $table->foreign('mission_id')->references('mission_id')->on('missions');
+        });
+
+        Schema::table('prelaunch_events', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
         });
 

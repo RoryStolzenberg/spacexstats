@@ -161,45 +161,38 @@ nav.sticky-bar {
 .hero {
     /* Calculated height: the viewport, subtracting the header (50px), the title (80px), the page nav (30px), highlights (40px), the summary (100px) */
     height:calc(100vh - 300px);
+    text-align:center;
+    font-family:$brandonGrotesque;
+    text-transform:uppercase;
 
-    &.hero-centered {
-        text-align:center;
-        font-family:$brandonGrotesque;
-        text-transform:uppercase;
+    &:before {
+        content:'';
+        display: inline-block;
+        height:100%;
+        vertical-align: middle;
+        margin-right:-0.25em;
+    }
 
-        &:before {
-            content:'';
-            display: inline-block;
-            height:100%;
-            vertical-align: middle;
-            margin-right:-0.25em;
+    >* {
+        display: inline-block;
+        vertical-align: middle;
+        top:-5%;
+        position:relative;
+    }
+
+    table {
+        border-collapse:collapse;
+        position:relative;
+
+        .value {
+            font-size:180px;
+            font-weight:300;
+            line-height: 1;
         }
 
-        >* {
-            display: inline-block;
-            vertical-align: middle;
-            top:-5%;
-            position:relative;
-        }
-
-        table {
-            border-collapse:collapse;
-            position:relative;
-
-            td {
-                width:250px;
-            }
-
-            .value {
-                font-size:180px;
-                font-weight:300;
-                line-height: 1;
-            }
-
-            .unit {
-                font-size:30px;
-                font-weight:300;
-            }
+        .unit {
+            font-size:30px;
+            font-weight:300;
         }
     }
 
@@ -463,7 +456,7 @@ a:link, a:visited, a:hover, a:active {
 .display-date-time {
     position:absolute;
     right:0;
-    top:10px;
+    top:0;
     width:200px;
 
 

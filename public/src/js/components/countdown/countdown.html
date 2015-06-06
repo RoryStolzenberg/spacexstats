@@ -1,3 +1,24 @@
-<div class="countdown-how does this work">
-    <span>This is not real</span>
-</div>
+<section class="hero hero-centered">
+        <table class="countdown" data-bind="if: isLaunchExact() == true">
+            <tr>
+                <td class="value days" data-bind="text: days"></td>
+                <td class="value hours" data-bind="text: hours"></td>
+                <td class="value minutes" data-bind="text: minutes"></td>
+                <td class="value seconds" data-bind="text: seconds"></td>
+            </tr>
+            <tr>
+                <td class="unit days" data-bind="text: daysText"></td>
+                <td class="unit hours" data-bind="text: hoursText"></td>
+                <td class="unit minutes" data-bind="text: minutesText"></td>
+                <td class="unit seconds" data-bind="text: secondsText"></td>
+            </tr>
+        </table>
+        <table class="single" data-bind="if: isLaunchExact() == false">
+            <tr>
+                <td class="value" data-bind="text: launchDateTime"></td>
+            </tr>
+            <tr>
+                <td class="unit">Expected Launch</td>
+            </tr>
+        </table>
+</section>
