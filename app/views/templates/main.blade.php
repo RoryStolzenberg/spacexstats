@@ -28,7 +28,6 @@
     <meta name="theme-color" content="#ccac55">
 
     <!-- CSS -->
-	{{ HTML::style('/dest/css/font-awesome.css') }}
 	{{ HTML::style('/dest/css/styles.css') }}
 
     <!-- JS -->

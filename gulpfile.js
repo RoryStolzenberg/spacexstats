@@ -1,11 +1,8 @@
-var gulp = require('gulp'),
-    uglify = require('gulp-uglify'),
-    sass = require('gulp-ruby-sass'),
-    imagemin = require('gulp-imagemin'),
-    autoprefixer = require('gulp-autoprefixer'),
-    browserSync = require('browser-sync');
+var gulp = require('gulp');
 
 gulp.task('browsersync', function() {
+    browserSync = require('browser-sync');
+
     browserSync.init({
         proxy: "spacexstats.dev"
     });
@@ -13,18 +10,26 @@ gulp.task('browsersync', function() {
 
 // Scripts Task
 gulp.task('scripts', function() {
-    return gulp.src('public/src/js/**/*.js')
+    var uglify = require('gulp-uglify');
+
+    gulp.src('public/src/js/**/*.js')
         .pipe(uglify())
         .pipe(gulp.dest('public/dest/js'));
 });
 
 gulp.task('styles', function() {
-    return sass('public/src/css/styles.scss', { style: 'compressed' })
+    var autoprefixer = require('gulp-autoprefixer');
+    var sass = require('gulp-sass');
+
+    gulp.src('public/src/css/styles.scss')
+        .pipe(sass())
         .pipe(autoprefixer())
         .pipe(gulp.dest('public/dest/css'));
 });
 
 gulp.task('images', function() {
+    var imagemin = require('gulp-imagemin');
+
     gulp.src('public/src/images/*')
         .pipe(imagemin())
         .pipe(gulp.dest('public/dest/images'));

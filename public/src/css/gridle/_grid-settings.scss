@@ -4,7 +4,8 @@
 // setup the grid (required) :
 @include gridle_setup((
 	context : 12,
-	gutter-width : 20px
+	gutter-width : 20px,
+    ie7-support: false
 ));
 
 // register special columns :

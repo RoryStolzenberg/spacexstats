@@ -6,7 +6,7 @@ class MissionControlController extends BaseController {
 	go to About Mission Control + subscribe link, if they are, go to Mission Control.
 	*/
 	public function home() {
-		if (Auth::guest() || Auth::user()->role_id < UserRole::Subscriber) {
+		if (Auth::guest() || Auth::user()->role_id < SpaceXStats\Enums\UserRole::Subscriber) {
 			return Redirect::route('missionControl.about');
 		} else {
 			return View::make('missionControl.home', array(

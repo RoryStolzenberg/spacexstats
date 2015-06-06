@@ -4,7 +4,6 @@
 @section('bodyClass', 'upload')
 
 @section('scripts')
-	{{ HTML::style('/assets/css/dropzone.css') }}
 	{{ HTML::script('/assets/js/dropzone.js') }}
 	{{ HTML::script('/assets/js/viewmodels/UploadViewModel.js') }}
 	<script type="text/javascript">
@@ -116,6 +115,7 @@
 				<!-- Upload -->
 				<section class="upload-upload" data-bind="visible: visibleSection() == 'upload'">
 					<div data-bind="visible: uploadSection() == 'dropzone'">
+                        <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
 						<form action="/missioncontrol/create/upload" method="post" id="uploadedFilesDropzone" class="dropzone" enctype="multipart/form-data">
 						</form>
 						<button id="upload">Upload</button>
