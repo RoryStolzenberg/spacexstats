@@ -1,8 +1,14 @@
 <?php
-class StatisticBuilder {
+class StatisticResultBuilder {
 	public static function nextLaunch() {
-        $var =  Mission::nextMissions(1)->first()->toArray();
-	    return $var;
+        $mission =  Mission::nextMissions(1)->first()->toArray();
+
+        if ($mission['launch_approximate'] == null) {
+            $dt = new DateTime($mission['launch_exact']);
+            $mission['launchDateTime'] = $dt->format(DateTime::ISO8601);
+        }
+
+	    return $mission;
 	}
 
 	public static function launchCount($parameter) {

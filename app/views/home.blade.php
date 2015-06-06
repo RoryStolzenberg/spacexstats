@@ -27,11 +27,7 @@
             <div class="content-wrapper single-page background" data-stat="{{ $name }}">
                 <h1>
                     @foreach ($statistic as $num => $substatistic)
-                        @if ($substatistic['type'] === $substatistic['name'])
-                            <span data-substat="{{ $num }}">{{ $substatistic['type'] }}</span>
-                        @else
-                            <span data-substat="{{ $num }}">{{ $substatistic['type'] . ' - ' . $substatistic['name']}}</span>
-                        @endif
+                            <span data-substat="{{ $num }}">{{ $substatistic['fullTitle'] }}</span>
                     @endforeach
                 </h1>
                 <main>
@@ -56,7 +52,7 @@
                                 </table>
                             </div>
                         @elseif ($substatistic['display'] === 'count')
-                            <countdown params="">
+                            <countdown params="launchDateTime: '{{ $substatistic['result']['launchDateTime'] }}', launchSpecificity: {{ $substatistic['result']['launch_specificity'] }}">
                             </countdown>
                         @endif
                     @endforeach

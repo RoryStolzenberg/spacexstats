@@ -1,5 +1,6 @@
 requirejs.config({
     baseUrl: 'src/js',
+    urlArgs: "bust=" +  (new Date()).getTime(),
     paths: {
         'text': 'lib/requirejs-text',
         jquery: 'lib/jquery-1.9.1',

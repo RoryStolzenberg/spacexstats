@@ -81,7 +81,7 @@ class Spacexstats extends Migration {
             $table->smallInteger('launch_order_id')->unsigned();
             $table->smallInteger('launch_specificity')->unsigned();
             $table->datetime('launch_exact')->nullable();
-            $table->string('launch_approximate', Varchar::small);
+            $table->string('launch_approximate', Varchar::small)->nullable();
             $table->string('name', Varchar::small);
             $table->string('slug', Varchar::small);
             $table->enum('type', array('Dragon (ISS)', 'Dragon (Freeflight)', 'Communications Satellite', 'Constellation Mission', 'Military', 'Scientific'));

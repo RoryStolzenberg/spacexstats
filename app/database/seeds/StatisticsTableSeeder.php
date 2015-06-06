@@ -5,7 +5,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 1,
             'type' => 'Next Launch',
             'name' => 'Next Launch',
-            'description' => 'This is the next launch',
+            'description' => '{{ nextLaunchSummary }}',
             'display' => 'count'
         ));
 

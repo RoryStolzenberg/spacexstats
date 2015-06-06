@@ -56,6 +56,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 2,
             'destination_id' => Destination::where('destination', 'Low Earth Orbit')->firstOrFail()->destination_id,
             'launch_site_id' => LaunchSite::where('name', 'SLC-40')->firstOrFail()->launch_site_id,
+            'summary' => 'Here is a summary of the next mission, courtesy me',
             'article' => "Here's an article",
             'status' => 'Upcoming'
         ));

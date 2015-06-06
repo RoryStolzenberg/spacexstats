@@ -184,6 +184,10 @@ nav.sticky-bar {
         border-collapse:collapse;
         position:relative;
 
+        td {
+            min-width:250px;
+        }
+
         .value {
             font-size:180px;
             font-weight:300;
@@ -456,7 +460,7 @@ a:link, a:visited, a:hover, a:active {
 .display-date-time {
     position:absolute;
     right:0;
-    top:0;
+    top:10px;
     width:200px;
 
 

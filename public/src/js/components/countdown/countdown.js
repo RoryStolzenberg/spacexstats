@@ -4,6 +4,8 @@ define(['knockout', 'text!components/countdown/countdown.html'], function(ko, ht
 
         self.launchDateTime = ko.observable(params.launchDateTime);
         self.isLaunchExact = ko.observable(params.launchSpecificity == 7 ||params.launchSpecificity == 6);
+        self.secondsAwayFromLaunch = ko.observable();
+
 
         self.init = (function() {
             if (self.isLaunchExact()) {
@@ -47,9 +49,6 @@ define(['knockout', 'text!components/countdown/countdown.html'], function(ko, ht
                         self.hoursText(self.hours() == 1 ? 'Hour' : 'Hours');
                         self.minutesText(self.minutes() == 1 ? 'Minute' : 'Minutes');
                         self.secondsText(self.seconds() == 1 ? 'Second' : 'Seconds');
-
-                        // Update the frequency at which the AJAX request to check the launch time is called
-                        self.setFrequency();
                     }
                 };
 
