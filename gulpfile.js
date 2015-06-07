@@ -1,7 +1,11 @@
+// Javascript Task Runner
+'use strict';
+
 var gulp = require('gulp');
 
+// Refresh browser on changes
 gulp.task('browsersync', function() {
-    browserSync = require('browser-sync');
+    var browserSync = require('browser-sync');
 
     browserSync.init({
         proxy: "spacexstats.dev"

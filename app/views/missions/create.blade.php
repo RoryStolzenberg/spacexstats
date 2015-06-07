@@ -4,12 +4,6 @@
 @section('bodyClass', 'create-mission')
 
 @section('scripts')
-    {{ HTML::script('/assets/js/viewmodels/CreateMissionViewModel.js') }}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            ko.applyBindings(new CreateMissionViewModel());
-        });
-    </script>
     <script type="text/html" id="spacecraft-template">
         {{ Form::label('spacecraft[type]', 'Type') }}
         {{ Form::select('spacecraft[type]', $spacecraft, array('data-bind' => 'value: type')) }}

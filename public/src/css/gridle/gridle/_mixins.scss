@@ -240,8 +240,8 @@
 	width:$width;
 	
 	// ie7 support :
-    /*
-	@if $ie7-support == true {
+
+	/*@if $ie7-support == true {
 		*width: expression((this.parentNode.clientWidth/#{$context}*#{($columns / $name-multiplicator)} - parseInt(this.currentStyle['paddingLeft']) - parseInt(this.currentStyle['paddingRight'])) + 'px');
 	}*/
 	

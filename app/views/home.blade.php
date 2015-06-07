@@ -7,7 +7,14 @@
     <script data-main="src/js/common" src="src/js/require.js"></script>
     <script>
         require(['common'], function() {
-            require(['pages/home']);
+            require(['jquery', 'knockout', 'viewmodels/HomePageViewModel'], function($, ko, HomePageViewModel) {
+
+                ko.components.register('countdown', { require: 'components/countdown/countdown' });
+
+                $(document).ready(function() {
+                    ko.applyBindings(new HomePageViewModel());
+                });
+            });
         });
     </script>
 @stop

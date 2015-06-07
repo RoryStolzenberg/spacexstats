@@ -4,13 +4,16 @@
 @section('bodyClass', 'upload')
 
 @section('scripts')
-	{{ HTML::script('/assets/js/dropzone.js') }}
-	{{ HTML::script('/assets/js/viewmodels/UploadViewModel.js') }}
-	<script type="text/javascript">
-		$(document).ready(function() {
-			ko.applyBindings(new UploadViewModel());
-		});
-	</script>
+    <script data-main="/src/js/common" src="/src/js/require.js"></script>
+    <script>
+        require(['common'], function() {
+            require(['jquery', 'knockout', 'viewmodels/UploadViewModel'], function($, ko, UploadViewModel) {
+                $(document).ready(function() {
+                    ko.applyBindings(new UploadViewModel());
+                });
+            });
+        });
+    </script>
 
 	<script type="text/html" id="uploaded-files-template">
 		<li data-bind="text: original_name, attr: { 'data-index': $index }, click: $root.changeVisibleTemplate"></li>
