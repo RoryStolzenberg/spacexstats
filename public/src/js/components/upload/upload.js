@@ -1,6 +1,17 @@
-define(['knockout', 'dropzone', 'text!components/upload/upload.html'], function(ko, Dropzone, htmlString) {
+define(['knockout', 'dropzone', 'jquery', 'text!components/upload/upload.html'], function(ko, Dropzone, $, htmlString) {
     function UploadViewModel(params) {
-        Dropzone.options.uploadedFilesDropzone = {
+        ko.bindingHandlers.dropzone = {
+            init: function(elem) {
+                $(elem).dropzone({ url: params.postLocation });
+            }
+        };
+
+        var self = this;
+
+        self.dropzoneId = ko.observable(params.dropzoneId);
+        self.postLocation = ko.observable(params.postLocation);
+
+        Dropzone.options.uploadFilesDropzone = {
             autoProcessQueue: false,
             maxFilesize: 1024, //MB
             addRemoveLinks: true,
@@ -8,15 +19,14 @@ define(['knockout', 'dropzone', 'text!components/upload/upload.html'], function(
             parallelUploads: 5,
             maxFiles: 5,
             init: function () {
-                var uploadedFilesDropzone = this;
-
+                var uploadFilesDropzone = this;
                 $('#upload').on('click', function () {
-                    uploadedFilesDropzone.processQueue();
+                    uploadFilesDropzone.processQueue();
                 });
             },
             successmultiple: function (files, message) {
-                var uploadedFilesDropzone = this;
                 var wereAnyFilesErrored = false;
+
                 $.each(files, function (index, file) {
                     if (!message.errors) {
                         file.previewElement.classList.add('dz-success');
@@ -44,13 +54,11 @@ define(['knockout', 'dropzone', 'text!components/upload/upload.html'], function(
                     });
                 } else {
                     $.each(message.objects, function (index, object) {
-                        //UploadViewModel.uploadedFiles.push(object);
+                        params.uploadedFiles.push(object);
                     });
                 }
             }
         };
-
-        var myDropzone = new Dropzone("#uploadedFilesDropzone", { url: "/missioncontrol/create/upload"});
     }
 
     return { viewModel: UploadViewModel, template: htmlString };

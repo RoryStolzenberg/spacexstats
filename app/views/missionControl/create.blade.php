@@ -7,14 +7,11 @@
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
     <script>
         require(['common'], function() {
-            require(['jquery', 'knockout', 'viewmodels/MissionControlUploadViewModel'], function($, ko, MissionControlUploadViewModel) {
+            require(['knockout', 'viewmodels/MissionControlUploadViewModel'], function(ko, MissionControlUploadViewModel) {
 
-                ko.components.register('upload', { require: 'components/upload/upload' });
+                ko.components.register('upload', {require: 'components/upload/upload'});
 
-                $(document).ready(function() {
-                    ko.applyBindings(new MissionControlUploadViewModel());
-                });
-
+                ko.applyBindings(new MissionControlUploadViewModel());
             });
         });
     </script>
@@ -123,7 +120,7 @@
 				<section class="upload-upload" data-bind="visible: visibleSection() == 'upload'">
 					<div data-bind="visible: uploadSection() == 'dropzone'">
                         <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
-					    <upload></upload>
+					    <upload params="dropzoneId: 'uploadFilesDropzone', postLocation: '/missioncontrol/create/upload', uploadedFiles: uploadedFiles"></upload>
                     </div>
 					<div data-bind="visible: uploadSection() == 'form'">
 							<ul class="files-list" data-bind="template: { name: 'uploaded-files-template', foreach: uploadedFiles }">

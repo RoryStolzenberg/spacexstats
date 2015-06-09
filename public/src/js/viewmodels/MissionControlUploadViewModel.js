@@ -2,7 +2,9 @@ define(['jquery', 'knockout'], function($, ko) {
     var MissionControlUploadViewModel = function () {
         var self = this;
 
-        /* Upload */
+        window.setInterval(function(){
+            console.log(self.uploadedFiles());
+        }, 1000);
 
         // Switch between "upload", "post", & "write"
         self.changeVisibleSection = function (newVisibleSection) {
@@ -15,6 +17,14 @@ define(['jquery', 'knockout'], function($, ko) {
 
         // Files ready to be submitted to the queue.
         self.uploadedFiles = ko.observableArray([]);
+
+        self.uploadedFiles.subscribe(function(newValue) {
+             if (self.uploadedFiles().length > 0) {
+                 self.uploadSection('form');
+             } else {
+                 self.uploadSection('dropzone');
+             }
+        });
 
         // Declare which template to use when a file is uploaded
         self.templateObjectType = function (uploadedFile) {
