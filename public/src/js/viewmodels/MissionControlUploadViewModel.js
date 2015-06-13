@@ -2,10 +2,6 @@ define(['jquery', 'knockout'], function($, ko) {
     var MissionControlUploadViewModel = function () {
         var self = this;
 
-        window.setInterval(function(){
-            console.log(self.uploadedFiles());
-        }, 1000);
-
         // Switch between "upload", "post", & "write"
         self.changeVisibleSection = function (newVisibleSection) {
             self.visibleSection(newVisibleSection);
@@ -54,27 +50,6 @@ define(['jquery', 'knockout'], function($, ko) {
 
         /* Post */
         self.postType = ko.observable();
-
-        self.retrieveTweet = function (data, event) {
-            // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-            var valueOfTwitterUrlField = event.currentTarget.value;
-
-            if (valueOfTwitterUrlField.indexOf('twitter.com') !== -1) {
-
-                var explodedVals = valueOfTwitterUrlField.split('/');
-                var id = explodedVals[explodedVals.length - 1];
-
-                $.ajax('/missioncontrol/create/retrievetweet/' + id, {
-                    dataType: 'json',
-                    type: 'GET',
-                    success: function (response) {
-                        console.log(response);
-                    }
-                });
-            }
-            // Allow default action
-            return true;
-        };
 
         // Submission of data to mission control
         self.submitToMissionControl = function (formData, contentTypeHeader) {

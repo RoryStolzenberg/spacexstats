@@ -98,7 +98,17 @@ class UploadController extends BaseController {
     // AJAX GET
     public function retrieveTweet($id) {
         $connection = new Abraham\TwitterOAuth\TwitterOAuth(Credential::TwitterConsumerKey, Credential::TwitterConsumerSecret, Credential::TwitterAccessToken, Credential::TwitterAccessSecret);
-        return Response::json($connection->get('statuses/show', array('id' => $id)));
+        $tweet = $connection->get('statuses/show', array('id' => $id));
+
+        // Store in session for addition to db later
+        Session::put('tweet', $tweet);
+        foreach($tweet->entities->media as $image) {
+
+            $filename = basename($image->media_url);
+            file_put_contents('media/twitter/'.$filename, file_get_contents($image->media_url . ':orig'));
+        }
+
+        return Response::json($tweet);
     }
 }
  

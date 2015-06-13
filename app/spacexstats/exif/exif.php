@@ -11,7 +11,7 @@ class Exif {
     {
         try {
             $this->exif = exif_read_data($file);
-        } catch (ErrorException $e) {
+        } catch (\ErrorException $e) {
             $this->exif = false;
         }
     }

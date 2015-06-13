@@ -10,6 +10,7 @@
             require(['knockout', 'viewmodels/MissionControlUploadViewModel'], function(ko, MissionControlUploadViewModel) {
 
                 ko.components.register('upload', {require: 'components/upload/upload'});
+                ko.components.register('tweet', { require: 'components/tweet/tweet' });
 
                 ko.applyBindings(new MissionControlUploadViewModel());
             });
@@ -140,17 +141,12 @@
                             <label><input type="radio" name="type" value="pressrelease" data-bind="checked: postType" />SpaceX press release</label>
                             <label><input type="radio" name="type" value="redditcomment" data-bind="checked: postType" />Reddit comment</label>
                             <label><input type="radio" name="type" value="nsfcomment" data-bind="checked: postType" />NSF comment</label>
-						</fieldset>
+						</fieldset
+
 						<fieldset class="post-type tweet" data-bind="visible: postType() == 'tweet'">
-							<label for="tweet-url">Tweet URL</label>
-							<input type="url" name="tweet-url" id="tweet-url" data-bind="event: { keyup: retrieveTweet }" />
-
-                            <label for="tweet-author">Tweet Author</label>
-                            <input type="text" name="tweet-author" id="tweet-author" />
-
-                            <label for="tweet">Tweet</label>
-                            <textarea name="tweet" id="tweet"></textarea>
+							<tweet params="action: 'create'"></tweet>
 						</fieldset>
+
 						<fieldset class="post-type article" data-bind="visible: postType() == 'article'">
 							<input type="url" name="article-url" id="article-url" />
 							<input type="date" name="article-date" id="article-date" />
@@ -158,25 +154,30 @@
 							<input type="author" name="article-author" id="article-author" />
 							<textarea></textarea>
 						</fieldset>
+
 						<fieldset class="post-type pressrelease" data-bind="visible: postType() == 'pressrelease'">
 							<input type="url" name="pressrelease-url" id="pressrelease-url">
 							<input type="date" name="article-date" id="article-date" />
 							<textarea></textarea>
 						</fieldset>
+
 						<fieldset class="post-type redditcomment" data-bind="visible: postType() == 'redditcomment'">
 							<input type="url" name="redditcomment-url" id="redditcomment-url">							
 						</fieldset>
+
 						<fieldset class="post-type nsfcomment" data-bind="visible: postType() == 'nsfcomment'">
 							<input type="url" name="nsfcomment-url" id="article-url" />
 							<input type="date" name="nsfcomment-date" id="article-date" />
 							<input type="author" name="nsfcomment-author" id="article-author" />
 							<textarea></textarea>							
 						</fieldset>
+
 						<fieldset class="post-type transcript">
-							
 						</fieldset>
+
 						<fieldset class="tags">
 						</fieldset>
+
 						<input type="submit" value="Submit" name="submit" id="post-submit" />
 					{{ Form::close() }}
 				</section>

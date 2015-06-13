@@ -126,6 +126,14 @@ class Spacexstats extends Migration {
             $table->string('camera_manufacturer', Varchar::compact)->nullable();
             $table->string('camera_model', Varchar::compact)->nullable();
 
+            /* Twitter related */
+            $table->string('tweet_id', Varchar::small)->nullable();
+            $table->datetime('tweet_created_at')->nullable();
+            $table->string('tweet_user_screen_name', Varchar::small)->nullable();
+            $table->string('tweet_user_name', Varchar::small)->nullable();
+            $table->string('tweet_text', Varchar::compact)->nullable();
+            $table->string('tweet_parent_id', Varchar::small)->nullable();
+
             // Can this be reconciled to integer values?
             $table->string('exposure', Varchar::small)->nullable();
             $table->string('aperture', Varchar::small)->nullable();
