@@ -1,5 +1,14 @@
 define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, $, htmlString) {
     function TweetViewModel(params) {
+        function Tweet(tweet) {
+            this.id = ko.observable(tweet.id);
+            this.text = ko.observable(tweet.text);
+            this.name = ko.observable(tweet.user.name);
+            this.screenName = ko.observable(tweet.user.screen_name);
+            this.createdAt = ko.observable(new Date(tweet.created_at));
+            this.images = ko.observableArray(tweet.media.entities);
+        }
+
         var self = this;
 
         self.twitterYears = ko.observableArray([]);

@@ -8,7 +8,7 @@ class FileChecker {
 		'image/jpeg', 'image/pjpeg', 'image/png', 
 		'image/gif',
 		'video/mp4', 'video/mpeg', 'video/ogg', 
-		'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/plain',
+		'application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/plain', 'text/rtf', 'application/rtf',
 		'audio/mp3', 'audio/mpeg', 'audio/ogg'
 	);
 
@@ -16,7 +16,7 @@ class FileChecker {
 		'jpg', 'jpeg', 'png', // Images
 		'gif', // gif
 		'mp4', 'ogv', // Video
-		'pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', //  Documents
+		'pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'rtf', //  Documents
 		'mp3', 'ogg' // Audio
 	);
 

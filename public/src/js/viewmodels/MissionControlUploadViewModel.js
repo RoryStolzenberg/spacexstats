@@ -2,6 +2,26 @@ define(['jquery', 'knockout'], function($, ko) {
     var MissionControlUploadViewModel = function () {
         var self = this;
 
+        function UploadedImage() {
+
+        }
+
+        function UploadedGif() {
+
+        }
+
+        function UploadedAudio() {
+
+        }
+
+        function UploadedVideo() {
+
+        }
+
+        function UploadedDocument() {
+
+        }
+
         // Switch between "upload", "post", & "write"
         self.changeVisibleSection = function (newVisibleSection) {
             self.visibleSection(newVisibleSection);
