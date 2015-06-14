@@ -28,11 +28,6 @@ Form::macro('richSelect', function($nameOfProperty, $selectListOptions, $params)
 	echo '</ul></div>';
 });
 
-Form::macro('tags', function($nameOfProperty = null) {
-	$defaultValue = Form::getValueAttribute($nameOfProperty);
-	echo '<input type="text" class="tagger" id="'.$nameOfProperty.'" value="'.$defaultValue.'">';
-});
-
 // Form macro date
 Form::macro('date', function($nameOfProperty = null, $defaultDateArray = array(), $startYear = 1900, $options = array()) {
 

@@ -16,6 +16,8 @@
             });
         });
     </script>
+
+    <!-- Knockout Templates -->
 	<script type="text/html" id="uploaded-files-template">
 		<li data-bind="text: original_name, attr: { 'data-index': $index }, click: $root.changeVisibleTemplate"></li>
 	</script>
@@ -37,7 +39,7 @@
 					</li>					
 					<li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
 					<li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
-					<li class="grid-6"><label>Tags{{ Form::tags() }}</label></li>
+					<li class="grid-6"><label>Tags<tags></tags></label></li>
 					<li class="grid-6"><label>Type{{ Form::select('type', array(1 => 'Mission Patch', 2 => 'Photo', 4 => 'Chart', 5 => 'Screenshot', 11 => 'Infographic')) }}</label></li>
 					<li class="grid-12"><label>Submit anonymously?<input type="checkbox" name="anonymous" /></label></li>
 				</ul>
@@ -63,7 +65,7 @@
                     </li>
                     <li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
                     <li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
-                    <li class="grid-6"><label>Tags{{ Form::tags() }}</label></li>
+                    <li class="grid-6"><label>Tags<tags></tags></label></li>
                     <li class="grid-12"><label>Submit anonymously?<input type="checkbox" name="anonymous" /></label></li>
                 </ul>
             </form>
@@ -88,7 +90,7 @@
                     </li>
                     <li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
                     <li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
-                    <li class="grid-6"><label>Tags{{ Form::tags() }}</label></li>
+                    <li class="grid-6"><label>Tags<tags></tags></label></li>
                     <li class="grid-12"><label>Submit anonymously?<input type="checkbox" name="anonymous" /></label></li>
                 </ul>
             </form>

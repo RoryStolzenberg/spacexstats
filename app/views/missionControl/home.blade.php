@@ -8,8 +8,7 @@
 
             var someViewModel = function() {
                 ko.components.register('tags', {require: 'components/tags/tags'});
-            }
-
+            };
 
             ko.applyBindings(someViewModel);
         });
