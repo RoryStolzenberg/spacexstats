@@ -1,14 +1,11 @@
 define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $, htmlString) {
     function TagViewModel(params) {
         ko.bindingHandlers.resize = {
-            update: function(element, valueAccessor, allBindings, viewModel, bindingContext) {
-                // Register dependencies
+            update: function(element) {
                 self.tags();
 
-                if (ko.unwrap(valueAccessor()) === true) {
-                    var elementWidth = $(element).parent().width() - $(element).siblings().outerWidth() - 1; // Why minus one? Who knows.
-                    $(element).css({ 'width': elementWidth });
-                }
+                var elementWidth = $(element).parent().width() - $(element).siblings().outerWidth() - 1; // Why minus one? Who knows.
+                $(element).css({ 'width' : elementWidth});
             }
         };
 
@@ -29,9 +26,10 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
             return true;
         };
 
-        self.testFunction = function() {
-            console.log('woohoo');
-        }
+        $(window).on('resize', function() {
+            var elementWidth = $('.tag-input').parent().width() - $('.tag-input').siblings().outerWidth() - 1; // Why minus one? Who knows.
+            $('.tag-input').css({ 'width' : elementWidth});
+        });
 
         self.removeTag = function(data) {
             self.tags.remove(data);
@@ -81,25 +79,16 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
                 // otherwise, just return false. No need to show duplicate tags.
                 if (self.tags().indexOf(tag) == -1) {
                     return search.test(tag);
-                } else {
-                    return false;
                 }
-
+                return false;
             }).slice(0,6);
 
-            // Clear any current elements
-            self.suggestions.removeAll();
-
-            $.each(allResults, function(index, suggestion) {
-                self.suggestions.push(suggestion);
-            });
+            self.suggestions(allResults);
         };
 
         self.init = (function() {
             var tagArray = params.tags.split(" ");
-            for (i = 0; i < tagArray.length; i++) {
-                self.tags.push(tagArray[i]);
-            }
+            self.tags(tagArray);
         })();
     }
 
