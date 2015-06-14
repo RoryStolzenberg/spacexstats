@@ -66,4 +66,8 @@
         <select name="date-input-year" data-bind="options: twitterYears"> </select>
     </div>
 </div>
+<ul class="tweet-images-list" data-bind="template: { name: 'tweet-images-template', foreach: tweet.images }">
+</ul>
+<div class="tweet-images-details"></div>
 <!-- /ko -->
+<script type="text/html" id="tweet-images-template"></script>

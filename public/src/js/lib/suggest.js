@@ -4,11 +4,11 @@
 			// Provide an accessor to the bound element
 			var self = $(this);
 
-			var containerElement, 
+			var containerElement,
 				wrapperElement,
 				submissionElement, // this
-				tagsElement, 
-				inputElement, 
+				tagsElement,
+				inputElement,
 				suggestionElement;
 
 			var currentTags = new Array();
@@ -35,17 +35,17 @@
 					self.attr('value', function(index, value) {
 						if (value.indexOf(tag) == -1) {
 							if (currentTags.length == 1) {
-								return tag;	
+								return tag;
 							} else {
 								return value + " " + tag;
-							}											
+							}
 						} else {
-							return value;						
-						}				
+							return value;
+						}
 					});
 					//console.log(currentTags);
-					containerElement.trigger('tag:added');	
-				}		
+					containerElement.trigger('tag:added');
+				}
 			}
 
 			var removeTagFromTagArray = function(tag) {
@@ -82,7 +82,7 @@
 
 			var getTags = function(searchTerm) {
 				var allResults = [];
-				var search = new RegExp(searchTerm, "i");				
+				var search = new RegExp(searchTerm, "i");
 				allResults = $.grep(availableTags, function(tag) {
 					// If the possible tag is not present in the currentTags array, allow it as an option
 					// otherwise, just return false. No need to show duplicate tags.
@@ -91,11 +91,11 @@
 					} else {
 						return false;
 					}
-					
+
 				});
 				return allResults.slice(0, opts.maxSuggestions);
 			}
-			
+
 			function actions() {
 				// Event handler for text being typed
 				inputElement.on('keypress', function(e) {
@@ -114,7 +114,7 @@
 							createNewTag(tag);
 						} else {
 							// error, tag exists!
-						}					
+						}
 					// if the backspace key was pressed while the input was empty
 					} else if (e.key == 'Backspace' && inputElement.val() == "") {
 						e.preventDefault();
@@ -166,11 +166,11 @@
 
 			// init
 			(function() {
-				
+
 				// Define the hidden submission element where tags are appended to as the element where this
 				// jQuery plugin function was attached to.
 				submissionElement = self;
-				submissionElement.css({ 
+				submissionElement.css({
 					'display':'none'
 				});
 
@@ -212,7 +212,7 @@
 					var defaultTags = self.val().split(" ");
 					$.each(defaultTags, function(index, defaultTag) {
 						createNewTag(defaultTag);
-					});					
+					});
 				}
 			}());
 

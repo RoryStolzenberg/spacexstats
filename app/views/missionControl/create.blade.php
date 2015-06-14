@@ -16,7 +16,6 @@
             });
         });
     </script>
-
 	<script type="text/html" id="uploaded-files-template">
 		<li data-bind="text: original_name, attr: { 'data-index': $index }, click: $root.changeVisibleTemplate"></li>
 	</script>
@@ -141,7 +140,7 @@
                             <label><input type="radio" name="type" value="pressrelease" data-bind="checked: postType" />SpaceX press release</label>
                             <label><input type="radio" name="type" value="redditcomment" data-bind="checked: postType" />Reddit comment</label>
                             <label><input type="radio" name="type" value="nsfcomment" data-bind="checked: postType" />NSF comment</label>
-						</fieldset
+						</fieldset>
 
 						<fieldset class="post-type tweet" data-bind="visible: postType() == 'tweet'">
 							<tweet params="action: 'create'"></tweet>

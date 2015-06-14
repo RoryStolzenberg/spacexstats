@@ -1,0 +1,20 @@
+<input type="text" class="tagger hidden" data-bind="value: tagsToBeSubmitted" />
+<div class="tagger-container" data-bind="event: { onresize: testFunction }">
+    <div class="wrapper" style="font-size:0;">
+        <div class="tags" data-bind="template: { name: 'tag-template', foreach: tags, as: 'tag' }" style="display:inline-block;font-size:12px;"></div>
+        <input type="text" class="tag-input" data-bind="resize: true, textInput: tagInput, event: { keypress: tagInputKeyPress, keyup: updateSuggestionList, focus: toggleSuggestionVisibility, blur: toggleSuggestionVisibility }" style="display:inline-block;" />
+    </div>
+    <div class="suggestions" data-bind="visible: suggestionVisibility, template: { name: 'suggestion-template', foreach: suggestions, as: 'suggestion' }"></div>
+</div>
+
+<script type="text/html" id="tag-template">
+    <div>
+        <!--ko text: tag-->
+        <!-- /ko-->
+        <span class="remove" data-bind="click: $parent.removeTag.bind($data)"></span>
+    </div>
+</script>
+
+<script type="text/html" id="suggestion-template">
+    <div class="suggestion" data-bind="text: suggestion, event: { mousedown: $parent.suggestionMousedown.bind($data) }"></div>
+</script>

@@ -1,5 +1,6 @@
 define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, $, htmlString) {
     function TweetViewModel(params) {
+
         function Tweet(tweet) {
             this.id = ko.observable(tweet.id);
             this.text = ko.observable(tweet.text);
@@ -29,13 +30,15 @@ define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, 
                     dataType: 'json',
                     type: 'GET',
                     success: function (response) {
-                        console.log(response);
+                        self.tweet(new Tweet(response));
                     }
                 });
             }
             // Allow default action
             return true;
         });
+
+        self.tweet = ko.observable();
 
         // Init
         self.init = (function() {

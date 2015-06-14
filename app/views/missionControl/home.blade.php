@@ -1,11 +1,19 @@
 @extends('templates.main')
 
 @section('scripts')
-{{ HTML::script('/assets/js/suggest.js') }}
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('input.tagger').suggest();		
-	});
+<script data-main="/src/js/common" src="/src/js/require.js"></script>
+<script>
+    require(['common'], function() {
+        require(['knockout'], function(ko) {
+
+            var someViewModel = function() {
+                ko.components.register('tags', {require: 'components/tags/tags'});
+            }
+
+
+            ko.applyBindings(someViewModel);
+        });
+    });
 </script>
 @stop
 
@@ -15,15 +23,8 @@
 	<main>
 		{{ Form::open() }}
 			{{ Form::label('tags', 'Tags') }}
-			{{ Form::tags('tags', array('elon-musk')) }}
+			<tags params="tags: 'elon-musk'"></tags>
 		{{ Form::close() }}
-        <?php
-            $ffprobe = FFMpeg\FFProbe::create([
-                    'ffmpeg.binaries' => Credential::FFMpeg,
-                    'ffprobe.binaries' => Credential::FFProbe
-            ]);
-            echo $ffprobe->format('media/video.flv')->get('duration');
-        ?>
 	</main>
 </div>
 @stop
