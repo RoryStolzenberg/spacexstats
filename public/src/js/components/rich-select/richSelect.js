@@ -7,7 +7,8 @@ define(['knockout', 'jquery', 'text!components/rich-select/richSelect.html'], fu
             this.name = ko.observable(richSelectOption.name);
             this.summary = ko.observable(richSelectOption.summary);
             this.image = ko.observable(richSelectOption.image);
-            this.selected = ko.observable();
+            this.isSelected = ko.observable();
+            this.isDefault = ko.observable();
         }
 
         self.richSelectOptions = ko.observableArray();

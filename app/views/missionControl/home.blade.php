@@ -4,13 +4,19 @@
 <script data-main="/src/js/common" src="/src/js/require.js"></script>
 <script>
     require(['common'], function() {
-        require(['knockout'], function(ko) {
+        require(['knockout', 'jquery'], function(ko, $) {
 
-            var someViewModel = function() {
-                ko.components.register('tags', {require: 'components/tags/tags'});
+            /*var someViewModel = function() {
+                ko.components.register('tags', {require: 'components/richSelect/richSelect'});
             };
 
-            ko.applyBindings(someViewModel);
+            ko.applyBindings(someViewModel);*/
+
+            $.ajax('missions/all', {
+                success: function(missions) {
+                    console.log(missions);
+                }
+            })
         });
     });
 </script>
@@ -20,10 +26,7 @@
 <div class="content-wrapper">
 	<h1>Mission Control</h1>
 	<main>
-		{{ Form::open() }}
-			{{ Form::label('tags', 'Tags') }}
-			<tags params="tags: 'elon-musk'"></tags>
-		{{ Form::close() }}
+		<richSelect></richSelect>
 	</main>
 </div>
 @stop

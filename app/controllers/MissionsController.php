@@ -123,5 +123,12 @@ class MissionsController extends BaseController {
 
         }
     }
+
+    // AJAX GET
+    // missions/all
+    public function all() {
+        $allMissions = Mission::with('featuredImage')->get();
+        return Response::json($allMissions);
+    }
 }
  

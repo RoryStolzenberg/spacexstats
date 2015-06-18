@@ -19,7 +19,10 @@
 
     <!-- Knockout Templates -->
 	<script type="text/html" id="uploaded-files-template">
-		<li data-bind="text: original_name, attr: { 'data-index': $index }, click: $root.changeVisibleTemplate"></li>
+		<li class="uploaded-file" data-bind="attr: { 'data-index': $index }, click: $root.changeVisibleTemplate">
+            <img />
+            <span data-bind="text: original_name"></span>
+        </li>
 	</script>
 	<script type="text/html" id="image-file-template">
 		<div data-bind="attr: { 'data-index': $index }, visible: $root.visibleTemplate() == ko.unwrap($index)">

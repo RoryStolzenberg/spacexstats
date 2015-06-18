@@ -46,6 +46,14 @@ class Mission extends Eloquent {
         return $this->belongsTo('MissionType');
     }
 
+    public function objects() {
+        return $this->belongsTo('Object');
+    }
+
+    public function featuredImage() {
+        return $this->belongsTo('Object', 'featured_image');
+    }
+
     // Validation
     // One day, add a complex custom validation rule to ensure launch_approximate is validated correctly
     public function isValid($input) {

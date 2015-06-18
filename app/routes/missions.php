@@ -9,6 +9,11 @@ Route::get('missions/past', array(
     'uses' => 'MissionsController@past'
 ));
 
+Route::get('missions/all', array(
+    'as' => 'missions.all',
+    'uses' => 'MissionsController@all'
+));
+
 Route::group(array('before' => 'mustBe:Administrator'), function() {
     Route::get('missions/create', array(
         'as' => 'missions.create',

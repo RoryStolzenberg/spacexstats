@@ -57,4 +57,15 @@ class Object extends Eloquent {
     public function scopeQueued($query) {
         return $query->where('status','queued')->orderBy('created_at', 'DESC');
     }
+
+    // Attribute accessors
+    public function getAttributeThumbSmall() {
+        // TODO: use if statements based on media type later
+        return 'media/small/' . $this->filename;
+    }
+
+    public function getAttributeThumbLarge() {
+        // TODO: use if statements based on media type later
+        return 'media/large/' . $this->filename;
+    }
 }
