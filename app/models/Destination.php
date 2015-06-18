@@ -2,7 +2,7 @@
 class Destination extends Eloquent {
     protected $table = 'destinations';
     protected $primaryKey = 'destination_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

@@ -3,7 +3,7 @@
 class LandingSite extends Eloquent {
     protected $table = 'landing_sites';
     protected $primaryKey = 'landing_site_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

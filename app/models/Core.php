@@ -3,7 +3,7 @@
 class Core extends Eloquent {
     protected $table = 'cores';
     protected $primaryKey = 'core_id';
-    protected $timestamps = true;
+    public $timestamps = true;
 
     protected $hidden = [];
     protected $appends = [];

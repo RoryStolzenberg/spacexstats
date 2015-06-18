@@ -4,7 +4,7 @@ class WebcastStatus extends Eloquent {
 
 	protected $table = 'webcast_statuses';
 	protected $primaryKey = 'webcast_status_id';
-    protected $timestamps = true;
+    public $timestamps = true;
 
     protected $hidden = [];
     protected $appends = [];

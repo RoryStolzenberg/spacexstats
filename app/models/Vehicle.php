@@ -3,7 +3,7 @@
 class Vehicle extends Eloquent {
 	protected $table = 'vehicles';
 	protected $primaryKey = 'vehicle_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

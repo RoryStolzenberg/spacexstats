@@ -4,7 +4,7 @@ class Object extends Eloquent {
 
 	protected $table = 'objects';
 	protected $primaryKey = 'object_id';
-    protected $timestamps = true;
+    public $timestamps = true;
 
 	protected $hidden = [];
     protected $appends = ['thumb_small', 'thumb_large'];

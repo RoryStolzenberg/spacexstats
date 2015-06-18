@@ -3,7 +3,7 @@ class PrelaunchEvent extends Eloquent {
 
 	protected $table = 'prelaunch_events';
 	protected $primaryKey = 'prelaunch_event_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

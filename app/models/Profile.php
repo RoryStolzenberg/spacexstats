@@ -4,7 +4,7 @@ class Profile extends Eloquent {
 
 	protected $table = 'profiles';
 	protected $primaryKey = 'user_id';
-    protected $timestamps = true;
+    public $timestamps = true;
 
     protected $hidden = [];
     protected $appends = [];

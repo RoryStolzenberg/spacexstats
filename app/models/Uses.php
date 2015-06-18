@@ -2,7 +2,7 @@
 class Uses extends Eloquent {
     protected $table = 'uses';
     protected $primaryKey = 'use_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

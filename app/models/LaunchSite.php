@@ -4,7 +4,7 @@ class LaunchSite extends Eloquent {
 
 	protected $table = 'launch_sites';
 	protected $primaryKey = 'launch_site_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

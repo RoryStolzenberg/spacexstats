@@ -4,7 +4,7 @@ class Statistic extends Eloquent {
 
 	protected $table = 'statistics';
 	protected $primaryKey = 'statistic_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = ['result', 'full_title'];

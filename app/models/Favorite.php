@@ -4,7 +4,7 @@ class Favorite extends Eloquent {
 
 	protected $table = 'favorites';
 	protected $primaryKey = 'favorite_id';
-    protected $timestamps = true;
+    public $timestamps = true;
 
     protected $hidden = [];
     protected $appends = [];

@@ -2,7 +2,7 @@
 class SpacecraftFlight extends Eloquent {
     protected $table = 'spacecraft_flights';
     protected $primaryKey = 'spacecraft_flight_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

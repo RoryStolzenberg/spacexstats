@@ -3,7 +3,7 @@ class EmailSubscription extends Eloquent {
 
     protected $table = 'email_subscriptions';
     protected $primaryKey = 'email_subscription_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

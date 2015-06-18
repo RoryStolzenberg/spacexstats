@@ -4,7 +4,7 @@ class Spacecraft extends Eloquent {
 
 	protected $table = 'spacecraft';
 	protected $primaryKey = 'spacecraft_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];

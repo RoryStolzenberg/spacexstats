@@ -3,7 +3,7 @@
 class Tag extends Eloquent {
     protected $table = 'tags';
     protected $primaryKey = 'tag_id';
-    protected $timestamps = true;
+    public $timestamps = true;
 
     protected $hidden = [];
     protected $appends = [];

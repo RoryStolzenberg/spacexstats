@@ -4,7 +4,7 @@ class Question extends Eloquent {
 
 	protected $table = 'questions';
 	protected $primaryKey = 'question_id';
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [];
     protected $appends = [];
