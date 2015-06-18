@@ -6,9 +6,11 @@ class Mission extends Eloquent {
 
 	protected $table = 'missions';
 	protected $primaryKey = 'mission_id';
+    protected $timestamps = false;
 
-    protected $appends = ['launchDateTime'];
-
+    protected $hidden = ['launch_approximate', 'launch_exact'];
+    protected $appends = ['launch_date_time'];
+    protected $fillable = [];
     protected $guarded = [];
 
 	protected $presenter = "MissionPresenter";
@@ -51,7 +53,7 @@ class Mission extends Eloquent {
     }
 
     public function featuredImage() {
-        return $this->belongsTo('Object', 'featured_image');
+        return $this->belongsTo('Object', 'featured_image')->select(['object_id', 'filename', 'thumb_small']);
     }
 
     // Validation

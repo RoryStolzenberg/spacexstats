@@ -2,7 +2,12 @@
 class Uses extends Eloquent {
     protected $table = 'uses';
     protected $primaryKey = 'use_id';
-    public $timestamps = true;
+    protected $timestamps = false;
+
+    protected $hidden = [];
+    protected $appends = [];
+    protected $fillable = [];
+    protected $guarded = [];
 
     // Relations
     public function mission() {

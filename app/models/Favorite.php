@@ -4,7 +4,12 @@ class Favorite extends Eloquent {
 
 	protected $table = 'favorites';
 	protected $primaryKey = 'favorite_id';
-	public $timestamps = false;
+    protected $timestamps = true;
+
+    protected $hidden = [];
+    protected $appends = [];
+    protected $fillable = [];
+    protected $guarded = [];
 
 	// Relations
 	public function users() {

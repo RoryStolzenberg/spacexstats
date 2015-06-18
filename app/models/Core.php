@@ -3,7 +3,12 @@
 class Core extends Eloquent {
     protected $table = 'cores';
     protected $primaryKey = 'core_id';
-    public $timestamps = true;
+    protected $timestamps = true;
+
+    protected $hidden = [];
+    protected $appends = [];
+    protected $fillable = [];
+    protected $guarded = [];
 
     public function missions() {
         return $this->belongsToMany('Mission', 'uses');

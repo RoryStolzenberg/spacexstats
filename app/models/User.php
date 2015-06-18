@@ -17,6 +17,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $table = 'users';
 	protected $primaryKey = 'user_id';
+    protected $timestamps = true;
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -24,9 +25,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 * @var array
 	 */
 	protected $hidden = ['password', 'remember_token'];
+    protected $appends = [];
+    protected $fillable = [];
 	protected $guarded = ['role_id', 'username','email','password', 'key'];
-
-	protected $dates = ['created_at',' updated_at', 'subscription_expiry'];
+	protected $dates = ['subscription_expiry'];
 
     protected $presenter = "UserPresenter";
 

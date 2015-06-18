@@ -4,9 +4,12 @@ class Statistic extends Eloquent {
 
 	protected $table = 'statistics';
 	protected $primaryKey = 'statistic_id';
+    protected $timestamps = false;
 
-	public $timestamps = false;
-	protected $appends = array('result', 'fullTitle');
+    protected $hidden = [];
+    protected $appends = ['result', 'full_title'];
+    protected $fillable = [];
+    protected $guarded = [];
 
 	// Attribute Accessors
 	public function getResultAttribute() {

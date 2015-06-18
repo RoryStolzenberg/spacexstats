@@ -4,9 +4,10 @@ class Object extends Eloquent {
 
 	protected $table = 'objects';
 	protected $primaryKey = 'object_id';
-	public $timestamps = true;
+    protected $timestamps = true;
 
 	protected $hidden = [];
+    protected $appends = ['thumb_small', 'thumb_large'];
 	protected $fillable = [];
 	protected $guarded = [];
 
@@ -59,13 +60,13 @@ class Object extends Eloquent {
     }
 
     // Attribute accessors
-    public function getAttributeThumbSmall() {
+    public function getThumbSmallAttribute() {
         // TODO: use if statements based on media type later
-        return 'media/small/' . $this->filename;
+        return 'media/small/' . $this->attributes['filename'];
     }
 
-    public function getAttributeThumbLarge() {
+    public function getThumbLargeAttribute() {
         // TODO: use if statements based on media type later
-        return 'media/large/' . $this->filename;
+        return 'media/large/' . $this->attributes['filename'];
     }
 }
