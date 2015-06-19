@@ -7,7 +7,7 @@ class Object extends Eloquent {
     public $timestamps = true;
 
 	protected $hidden = [];
-    protected $appends = ['thumb_small', 'thumb_large'];
+    //protected $appends = ['thumb_small', 'thumb_large'];
 	protected $fillable = [];
 	protected $guarded = [];
 

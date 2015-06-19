@@ -44,8 +44,8 @@ abstract class GenericUpload {
 
     }
 
-	// Move the file to the appropriate directory
-	private function move() {
+
+    private function move() {
 		return $this->file->move($this->directory['full'], $this->fileinfo['filename']);
 	}
 }

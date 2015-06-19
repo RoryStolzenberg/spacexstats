@@ -17,6 +17,10 @@ class MissionPresenter {
         }
     }
 
+    public function launchOfYear() {
+        return '5';
+    }
+
 	public function article() {
 		if (empty($this->entity->article)) {
 			return '<section class="hero hero-centered">

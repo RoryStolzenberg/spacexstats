@@ -34,7 +34,7 @@
             <div class="content-wrapper single-page background" data-stat="{{ $name }}">
                 <h1>
                     @foreach ($statistic as $num => $substatistic)
-                            <span data-substat="{{ $num }}">{{ $substatistic['fullTitle'] }}</span>
+                            <span data-substat="{{ $num }}">{{ $substatistic['full_title'] }}</span>
                     @endforeach
                 </h1>
                 <main>
