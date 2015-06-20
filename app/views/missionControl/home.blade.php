@@ -6,17 +6,11 @@
     require(['common'], function() {
         require(['knockout', 'jquery'], function(ko, $) {
 
-            /*var someViewModel = function() {
-                ko.components.register('tags', {require: 'components/richSelect/richSelect'});
+            var someViewModel = function() {
+                ko.components.register('rich-select', {require: 'components/rich-select/rich-select'});
             };
 
-            ko.applyBindings(someViewModel);*/
-
-            $.ajax('missions/all', {
-                success: function(missions) {
-                    console.log(missions);
-                }
-            })
+            ko.applyBindings(someViewModel);
         });
     });
 </script>
@@ -26,7 +20,7 @@
 <div class="content-wrapper">
 	<h1>Mission Control</h1>
 	<main>
-		<richSelect></richSelect>
+		<rich-select params="fetchFrom: '/missions/all', default: true, mapping: {}"></rich-select>
 	</main>
 </div>
 @stop

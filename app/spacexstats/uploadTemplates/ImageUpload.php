@@ -5,10 +5,7 @@ use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Exif\Exif;
 
 class ImageUpload extends GenericUpload implements UploadInterface {
-	protected 
-	$smallThumbnailSize = 200, 
-	$largeThumbnailSize = 800,
-    $exif;
+	protected $exif;
 
     public function __construct($file) {
         parent::__construct($file);

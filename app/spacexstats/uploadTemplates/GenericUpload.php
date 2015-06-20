@@ -5,6 +5,8 @@ abstract class GenericUpload {
 	protected $file,
 	$fileinfo,
 	$uniqid,
+    $smallThumbnailSize = 200,
+    $largeThumbnailSize = 800,
 	$directory = array('full' => 'media/full/','large' => 'media/large/' ,'small' => 'media/small/'),
     $workingDirectory = 'H:/spacexstats/public/';
 

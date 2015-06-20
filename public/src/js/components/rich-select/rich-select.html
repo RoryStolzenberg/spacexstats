@@ -1,0 +1,14 @@
+<div class="rich-select" tabindex="0" data-bind="">
+
+    <div class="selectedOption" data-bind="click: toggleDropdownVisibility, with: selectedOption">
+        <img data-bind="" />
+        <span class="title" data-bind="text: name"></span>
+    </div>
+
+    <ul data-bind="foreach: options, as: 'option', visible: dropdownVisible">
+        <li data-bind="css { 'selected': isSelected }, click: $parent.selectOption">
+            <img data-bind=""/>
+            <span class="title" data-bind="text: name"></span>
+        </li>
+    </ul>
+</div>
