@@ -21,9 +21,12 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('public/dest/js'));
 });
 
+// Styles task. Compile aoo the styles together, autoprefix them, and convert them from SASS to CSS
 gulp.task('styles', function() {
     var autoprefixer = require('gulp-autoprefixer');
     var sass = require('gulp-sass');
+
+    console.log('called');
 
     gulp.src('public/src/css/styles.scss')
         .pipe(sass())
@@ -31,6 +34,7 @@ gulp.task('styles', function() {
         .pipe(gulp.dest('public/dest/css'));
 });
 
+// Images Task. Minify all images in the src/images folder using imagemin
 gulp.task('images', function() {
     var imagemin = require('gulp-imagemin');
 
@@ -39,7 +43,13 @@ gulp.task('images', function() {
         .pipe(gulp.dest('public/dest/images'));
 });
 
-// Watch task
+// Fonts Task.
+gulp.task('fonts', function() {
+   gulp.src('public/src/fonts/*')
+       .pipe(gulp.dest('public/dest/fonts'));
+});
+
+// Watch task. Watch for changes automatically and recompile the SASS.
 gulp.task('watch', function() {
     gulp.watch('public/src/css/styles.scss', ['styles']);
 });

@@ -14,6 +14,7 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
         self.selectedOption = ko.observable();
         self.selectOption = function(option) {
             self.selectedOption(option);
+            self.dropdownVisible(false);
         };
 
         self.options = ko.observableArray();
@@ -25,6 +26,13 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
             option.name = ko.observable(richSelectOption.name);
             option.summary = ko.observable(richSelectOption.summary);
             //this.image = ko.observable('/media/small/' + richSelectOption.featured_image.filename);
+
+            option.image = ko.computed(function() {
+                if (richSelectOption.featured_image != null) {
+                    return '/media/small/' + richSelectOption.featured_image.filename;
+                }
+                return null;
+            });
 
             option.isSelected = ko.computed(function() {
                 return (option == self.selectedOption());
