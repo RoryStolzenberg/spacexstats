@@ -1,5 +1,8 @@
 <?php
+namespace SpaceXStats\Library;
+
 use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\UploadTemplates;
 
 class FileChecker {
 	protected static $maxFileSize = 1073741824; // 1GB
@@ -26,11 +29,11 @@ class FileChecker {
 			$type = self::determineMissionControlType($file);
 
 			switch ($type) {
-				case MissionControlType::Image: return new SpaceXStats\UploadTemplates\ImageUpload($file);
-				case MissionControlType::GIF: return new SpaceXStats\UploadTemplates\GIFUpload($file);
-				case MissionControlType::Audio: return new SpaceXStats\UploadTemplates\AudioUpload($file);
-				case MissionControlType::Video: return new SpaceXStats\UploadTemplates\VideoUpload($file);
-				case MissionControlType::Document: return new SpaceXStats\UploadTemplates\DocumentUpload($file);
+				case MissionControlType::Image: return new UploadTemplates\ImageUpload($file);
+				case MissionControlType::GIF: return new UploadTemplates\GIFUpload($file);
+				case MissionControlType::Audio: return new UploadTemplates\AudioUpload($file);
+				case MissionControlType::Video: return new UploadTemplates\VideoUpload($file);
+				case MissionControlType::Document: return new UploadTemplates\DocumentUpload($file);
 			}
 		}
 	}

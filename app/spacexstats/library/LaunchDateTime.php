@@ -1,5 +1,7 @@
 <?php
 
+namespace SpaceXStats\Library;
+
 class LaunchDateTime {
     protected $launchDateTime, $launchSpecificity;
 

@@ -1,6 +1,6 @@
 <?php
 
-use Carbon\Carbon;
+namespace SpaceXStats\Library;
 
 class CalendarBuilder {
 	private $missions;
