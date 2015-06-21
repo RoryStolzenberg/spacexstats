@@ -9,10 +9,6 @@
         require(['common'], function() {
             require(['knockout', 'viewmodels/MissionControlUploadViewModel'], function(ko, MissionControlUploadViewModel) {
 
-                ko.components.register('upload', {require: 'components/upload/upload'});
-                ko.components.register('tweet', { require: 'components/tweet/tweet' });
-                ko.components.register('rich-select', { require: 'components/rich-select/rich-select'});
-
                 ko.applyBindings(new MissionControlUploadViewModel());
             });
         });
@@ -21,7 +17,7 @@
     <!-- Knockout Templates -->
 	<script type="text/html" id="uploaded-files-template">
 		<li class="uploaded-file" data-bind="attr: { 'data-index': $index }, click: $root.changeVisibleTemplate">
-            <img />
+            <img data-bind="attr: { src: thumbnail }"/>
             <span data-bind="text: original_name"></span>
         </li>
 	</script>
@@ -127,7 +123,7 @@
 				<section class="upload-upload" data-bind="visible: visibleSection() == 'upload'">
 					<div data-bind="visible: uploadSection() == 'dropzone'">
                         <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
-					    <upload params="dropzoneId: 'uploadFilesDropzone', postLocation: '/missioncontrol/create/upload', uploadedFiles: uploadedFiles"></upload>
+					    <upload params="dropzoneId: 'uploadFilesDropzone', postLocation: '/missioncontrol/create/upload', uploadedFiles: rawFiles"></upload>
                     </div>
 					<div data-bind="visible: uploadSection() == 'form'">
 							<ul class="files-list" data-bind="template: { name: 'uploaded-files-template', foreach: uploadedFiles }">

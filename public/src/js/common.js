@@ -9,7 +9,8 @@ requirejs.config({
         "jquery.throttle-debounce": 'lib/jquery.ba-throttle-debounce.min',
         'knockout': 'lib/knockout-3.2.0.debug',
         'ko.mapping': 'lib/knockout.mapping-latest',
-        'ko.postbox': 'lib/knockout-postbox'
+        'ko.postbox': 'lib/knockout-postbox',
+        'd3': 'lib/d3'
     },
     shim: {
         "jquery.fracs": ["jquery"],

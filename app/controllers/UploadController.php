@@ -1,4 +1,5 @@
 <?php
+use SpaceXStats\Library\FileChecker;
 
 class UploadController extends BaseController {
 	protected $object;

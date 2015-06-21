@@ -1,16 +1,15 @@
-define(['jquery', 'knockout'], function($, ko) {
+define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var MissionControlUploadViewModel = function () {
+
+        ko.components.register('upload', {require: 'components/upload/upload'});
+        ko.components.register('tweet', { require: 'components/tweet/tweet' });
+        ko.components.register('rich-select', { require: 'components/rich-select/rich-select'});
+
         var self = this;
 
-        self.fileMappingOptions = {
-            key: function(data) {
-                return data.id;
-            },
+        var fileMappingOptions = {
             create: function(options) {
-                console.log(options.data);
-                if (options.data.type == 'Image') {
-                    return new UploadedImage(options.data);
-                }
+                return new UploadedImage(options.data);
             }
         };
 
@@ -21,9 +20,18 @@ define(['jquery', 'knockout'], function($, ko) {
             self.subtype = ko.observable();
             self.filename = ko.observable(image.filename);
             self.originalName = ko.observable(image.original_name);
-            self.deltaV = ko.computed(function() {
-
+            self.thumbnail = ko.computed(function() {
+                return '/media/small/' + self.filename();
             });
+            /*self.deltaV = ko.computed(function() {
+                $.ajax('objects/calculateDeltaV', {
+                    type: 'POST',
+                    data: { '': ''},
+                    success: function(response) {
+
+                    }
+                });
+            }).extend({ rateLimit: 5000 });*/
         }
 
         function UploadedGif() {
@@ -51,16 +59,21 @@ define(['jquery', 'knockout'], function($, ko) {
         // Switch between upload dropzone & form
         self.uploadSection = ko.observable("dropzone");
 
-        // Files ready to be submitted to the queue.
-        self.uploadedFiles = ko.observableArray([]);
+        // Files returned from the dropzone
+        self.rawFiles = ko.observableArray([]);
+        self.rawFiles.subscribe(function(newValue) {
+             // map files to
+             koMapping.fromJS(newValue, fileMappingOptions, self.uploadedFiles);
 
-        self.uploadedFiles.subscribe(function(newValue) {
-             if (self.uploadedFiles().length > 0) {
+             if (self.rawFiles().length > 0) {
                  self.uploadSection('form');
              } else {
                  self.uploadSection('dropzone');
              }
         });
+
+        // Uploaded files
+        self.uploadedFiles = ko.observableArray();
 
         // Declare which template to use when a file is uploaded
         self.templateObjectType = function (uploadedFile) {
@@ -140,7 +153,6 @@ define(['jquery', 'knockout'], function($, ko) {
         };
 
         self.submitWriting = function (item, event) {
-
         };
     };
 

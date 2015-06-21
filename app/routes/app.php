@@ -5,7 +5,7 @@ Route::get('/', array(
     'uses' => 'HomeController@home'
 ));
 
-Route::get('/launchsite/{slug}', array(
-    'as' => 'launchsite.get',
-    'uses' => 'LaunchSiteController@get'
+Route::get('/locations', array(
+    'as' => 'locations',
+    'uses' => 'LocationsController@locations'
 ));
