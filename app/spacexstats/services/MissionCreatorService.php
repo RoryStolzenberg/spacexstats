@@ -8,7 +8,7 @@ use \Payload;
 use \Spacecraft;
 use \SpacecraftFlight;
 
-class MissionCreatorService {
+class MissionCreatorService implements CreatorServiceInterface {
     protected $mission, $vehicle, $uses;
 
     protected $errors;

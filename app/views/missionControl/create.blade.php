@@ -11,6 +11,7 @@
 
                 ko.components.register('upload', {require: 'components/upload/upload'});
                 ko.components.register('tweet', { require: 'components/tweet/tweet' });
+                ko.components.register('rich-select', { require: 'components/rich-select/rich-select'});
 
                 ko.applyBindings(new MissionControlUploadViewModel());
             });
@@ -24,6 +25,7 @@
             <span data-bind="text: original_name"></span>
         </li>
 	</script>
+
 	<script type="text/html" id="image-file-template">
 		<div data-bind="attr: { 'data-index': $index }, visible: $root.visibleTemplate() == ko.unwrap($index)">
 			<h2 data-bind="text: original_name"></h2>

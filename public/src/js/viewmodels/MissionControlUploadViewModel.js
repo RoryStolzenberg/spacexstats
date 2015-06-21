@@ -2,8 +2,28 @@ define(['jquery', 'knockout'], function($, ko) {
     var MissionControlUploadViewModel = function () {
         var self = this;
 
-        function UploadedImage() {
+        self.fileMappingOptions = {
+            key: function(data) {
+                return data.id;
+            },
+            create: function(options) {
+                console.log(options.data);
+                if (options.data.type == 'Image') {
+                    return new UploadedImage(options.data);
+                }
+            }
+        };
 
+        function UploadedImage(image) {
+            var self = this;
+            self.id = ko.observable(image.object_id);
+            self.type = ko.observable(image.type);
+            self.subtype = ko.observable();
+            self.filename = ko.observable(image.filename);
+            self.originalName = ko.observable(image.original_name);
+            self.deltaV = ko.computed(function() {
+
+            });
         }
 
         function UploadedGif() {
@@ -23,10 +43,10 @@ define(['jquery', 'knockout'], function($, ko) {
         }
 
         // Switch between "upload", "post", & "write"
+        self.visibleSection = ko.observable("upload");
         self.changeVisibleSection = function (newVisibleSection) {
             self.visibleSection(newVisibleSection);
         };
-        self.visibleSection = ko.observable("upload");
 
         // Switch between upload dropzone & form
         self.uploadSection = ko.observable("dropzone");
@@ -62,7 +82,7 @@ define(['jquery', 'knockout'], function($, ko) {
             self.visibleTemplate(ko.unwrap(context.$index));
         };
 
-        self.visibleTemplate = ko.observable('0');
+        self.visibleTemplate = ko.observable(0);
 
         self.formButtonText = ko.computed(function () {
             return 'Submit';

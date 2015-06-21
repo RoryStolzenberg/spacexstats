@@ -119,12 +119,9 @@ class Spacexstats extends Migration {
             $table->string('filename', Varchar::small);
             $table->smallInteger('dimension_width')->nullable();
             $table->smallInteger('dimension_height')->nullable();
-            $table->double('coord_lat', 8, 6)->nullable();
-            $table->double('coord_lng', 9, 6)->nullable();
-            $table->string('camera_manufacturer', Varchar::compact)->nullable();
-            $table->string('camera_model', Varchar::compact)->nullable();
+            $table->date('originated_at')->nullable();
 
-            /* Twitter related */
+            // Twitter-related properties
             $table->string('tweet_id', Varchar::small)->nullable();
             $table->datetime('tweet_created_at')->nullable();
             $table->string('tweet_user_screen_name', Varchar::small)->nullable();
@@ -132,10 +129,20 @@ class Spacexstats extends Migration {
             $table->string('tweet_text', Varchar::compact)->nullable();
             $table->string('tweet_parent_id', Varchar::small)->nullable();
 
-            // Can this be reconciled to integer values?
+            // Image-related properties
             $table->string('exposure', Varchar::small)->nullable();
             $table->string('aperture', Varchar::small)->nullable();
             $table->string('ISO', Varchar::small)->nullable();
+            $table->double('coord_lat', 8, 6)->nullable();
+            $table->double('coord_lng', 9, 6)->nullable();
+            $table->string('camera_manufacturer', Varchar::compact)->nullable();
+            $table->string('camera_model', Varchar::compact)->nullable();
+
+            // Gif-related properties
+
+            // Video-related properties
+
+            // Audio-related properties
 
             $table->enum('status', array('New', 'Queued', 'Complete', 'Hidden'));
             $table->timestamps();
