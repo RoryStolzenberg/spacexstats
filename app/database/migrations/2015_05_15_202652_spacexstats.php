@@ -49,6 +49,10 @@ class Spacexstats extends Migration {
             $table->string('destination', Varchar::small);
         });
 
+        Schema::create('development_flights', function(Blueprint $table) {
+
+        });
+
         Schema::create('email_subscriptions', function(Blueprint $table) {
             $table->increments('email_subscription_id');
             $table->integer('user_id')->unsigned();
@@ -62,18 +66,15 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('landing_sites', function(Blueprint $table) {
-            $table->increments('landing_site_id');
+        Schema::create('locations', function(Blueprint $table) {
+            $table->increments('location_id');
             $table->string('name', Varchar::small);
             $table->string('location', Varchar::small)->nullable();
             $table->string('state', Varchar::small)->nullable();
-        });
-
-        Schema::create('launch_sites', function(Blueprint $table) {
-            $table->increments('launch_site_id');
-            $table->string('name', Varchar::small);
-            $table->string('location', Varchar::small);
-            $table->string('state', Varchar::small);
+            $table->double('coord_lat', 8, 6)->nullable();
+            $table->double('coord_lng', 9, 6)->nullable();
+            $table->enum('type', array('Launch Site', 'Landing Site', 'ASDS', 'Facility'));
+            $table->enum('status', array('No longer used', 'Active', 'Planned'));
         });
 
         Schema::create('missions', function(Blueprint $table) {
@@ -279,7 +280,7 @@ class Spacexstats extends Migration {
         Schema::table('missions', function(Blueprint $table) {
             $table->foreign('vehicle_id')->references('vehicle_id')->on('vehicles');
             $table->foreign('destination_id')->references('destination_id')->on('destinations');
-            $table->foreign('launch_site_id')->references('launch_site_id')->on('launch_sites');
+            $table->foreign('launch_site_id')->references('location_id')->on('locations');
             $table->foreign('featured_image')->references('object_id')->on('objects');
         });
 
@@ -313,6 +314,7 @@ class Spacexstats extends Migration {
 
         Schema::table('uses', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
+            $tsble->foreign('landing_site_id')->references('location_id')->on('locations');
             $table->foreign('core_id')->references('core_id')->on('cores');
         });
 	}
@@ -330,6 +332,8 @@ class Spacexstats extends Migration {
             'destinations',
             'launch_sites',
             'landing_sites',
+            'locations',
+            'development_flights',
             'vehicles',
             'cores',
             'uses',

@@ -7,7 +7,7 @@
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
     <script>
         require(['common'], function() {
-            require([], function() {
+            require(['d3'], function() {
             });
         });
     </script>
@@ -17,9 +17,6 @@
     <div class="content-wrapper">
         <h1>Locations</h1>
         <main>
-            <canvas>
-
-            </canvas>
         </main>
     </div>
 @stop
