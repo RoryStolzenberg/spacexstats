@@ -13,8 +13,7 @@ class DatabaseSeeder extends Seeder {
 
 		$this->call('RolesTableSeeder');
         $this->call('DestinationsTableSeeder');
-        $this->call('LaunchSitesTableSeeder');
-        $this->call('LandingSitesTableSeeder');
+        $this->call('LocationsTableSeeder');
         $this->call('VehiclesTableSeeder');
         $this->call('UsersTableSeeder');
         $this->call('ProfilesTableSeeder');

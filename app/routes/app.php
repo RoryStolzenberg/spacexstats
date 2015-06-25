@@ -5,7 +5,3 @@ Route::get('/', array(
     'uses' => 'HomeController@home'
 ));
 
-Route::get('/locations', array(
-    'as' => 'locations',
-    'uses' => 'LocationsController@locations'
-));

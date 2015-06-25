@@ -49,10 +49,6 @@ class Spacexstats extends Migration {
             $table->string('destination', Varchar::small);
         });
 
-        Schema::create('development_flights', function(Blueprint $table) {
-
-        });
-
         Schema::create('email_subscriptions', function(Blueprint $table) {
             $table->increments('email_subscription_id');
             $table->integer('user_id')->unsigned();
@@ -314,7 +310,7 @@ class Spacexstats extends Migration {
 
         Schema::table('uses', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
-            $tsble->foreign('landing_site_id')->references('location_id')->on('locations');
+            $table->foreign('landing_site_id')->references('location_id')->on('locations');
             $table->foreign('core_id')->references('core_id')->on('cores');
         });
 	}

@@ -12,7 +12,7 @@ class MissionsTableSeeder extends Seeder {
             'contractor' => 'SpaceX',
             'vehicle_id' => 2,
             'destination_id' => Destination::where('destination', 'Low Earth Orbit')->firstOrFail()->destination_id,
-            'launch_site_id' => LaunchSite::where('name', 'SLC-40')->firstOrFail()->launch_site_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'article' => "Here's an article",
             'featured_image' => 1,
             'status' => 'Complete'
@@ -27,7 +27,7 @@ class MissionsTableSeeder extends Seeder {
             'contractor' => 'SpaceX',
             'vehicle_id' => 2,
             'destination_id' => Destination::where('destination', 'Low Earth Orbit')->firstOrFail()->destination_id,
-            'launch_site_id' => LaunchSite::where('name', 'SLC-40')->firstOrFail()->launch_site_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'article' => "Here's an article",
             'status' => 'Complete'
         ));
@@ -41,7 +41,7 @@ class MissionsTableSeeder extends Seeder {
             'contractor' => 'SpaceX',
             'vehicle_id' => 2,
             'destination_id' => Destination::where('destination', 'Low Earth Orbit')->firstOrFail()->destination_id,
-            'launch_site_id' => LaunchSite::where('name', 'SLC-40')->firstOrFail()->launch_site_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'article' => "Here's an article",
             'status' => 'Complete'
         ));
@@ -55,7 +55,7 @@ class MissionsTableSeeder extends Seeder {
             'contractor' => 'NASA',
             'vehicle_id' => 2,
             'destination_id' => Destination::where('destination', 'Low Earth Orbit')->firstOrFail()->destination_id,
-            'launch_site_id' => LaunchSite::where('name', 'SLC-40')->firstOrFail()->launch_site_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'summary' => 'Here is a summary of the next mission, courtesy me',
             'article' => "Here's an article",
             'status' => 'Upcoming'

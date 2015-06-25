@@ -4064,7 +4064,7 @@ nav.sticky-bar {
   nav.sticky-bar.stuck {
     background-color: #4050C0;
     color: #FFF;
-    z-index: 300; }
+    z-index: 1000; }
 
 .stuck ~ * {
   top: 30px;
