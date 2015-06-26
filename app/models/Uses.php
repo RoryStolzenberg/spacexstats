@@ -19,7 +19,7 @@ class Uses extends Eloquent {
     }
 
     public function landingSite() {
-        return $this->belongsTo('Location');
+        return $this->belongsTo('Location', 'landing_site_id');
     }
 
     // Validation

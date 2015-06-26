@@ -10,7 +10,7 @@ class LocationsController extends BaseController {
 
     // AJAX GET
     public function getLocationData() {
-        $locations = Location::all()->with('missions')->with('uses');
+        $locations = Location::with('missions')->with('uses')->get();
         return Response::json($locations);
     }
 }

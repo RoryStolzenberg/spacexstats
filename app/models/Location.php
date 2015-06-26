@@ -10,11 +10,11 @@ class Location extends Eloquent {
 
     // Relations
     public function uses() {
-        return $this->hasMany('Uses');
+        return $this->hasMany('Uses', 'landing_site_id');
     }
 
     public function missions() {
-        return $this->hasMany('mission');
+        return $this->hasMany('mission', 'launch_site_id');
     }
 
     // Attribute Accessors

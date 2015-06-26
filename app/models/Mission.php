@@ -33,7 +33,7 @@ class Mission extends Eloquent {
 	}
 
 	public function launchSite() {
-		return $this->belongsTo('Location');
+		return $this->belongsTo('Location', 'launch_site_id');
 	}
 
 	public function prelaunchEvents() {

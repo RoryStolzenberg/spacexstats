@@ -4692,3 +4692,7 @@ section.question-list {
     line-height: 50px;
     text-align: center;
     margin: 0 auto; }
+
+/* --------------- LOCATIONS ----------------- */
+#location-nav {
+  background-color: #33495E; }

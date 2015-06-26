@@ -63,5 +63,4 @@ abstract class MissionControlSubtype {
 	const NSFComment 		= 15;
 	const WeatherForecast	= 16;
     const Map               = 17;
-
 }
