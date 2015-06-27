@@ -1,33 +1,5 @@
 <?php
 
-Form::macro('richSelect', function($nameOfProperty, $selectListOptions, $params) {
-	//http://laravel-tricks.com/tricks/getting-formmodel-values-in-custom-formmacros
-	//http://stackoverflow.com/questions/20508893/laravel-4-formmacro-with-formmodel
-
-	$defaultValue = Form::getValueAttribute($nameOfProperty);
-
-	$params = (object)$params;
-	echo '<div class="rich-select" id="'.$nameOfProperty.'" tabindex="0" data-value="'.$defaultValue.'">
-		<div class="default">
-			<img />
-			<span class="title">
-			</span>
-		</div>
-	<ul>';
-	foreach ($selectListOptions as $selectListOption) {
-		if ($selectListOption->{$params->identifier} == $defaultValue) {
-			echo '<li data-value="'. $selectListOption->{$params->identifier}.'" class="default">';
-		} else {
-			echo '<li data-value="'. $selectListOption->{$params->identifier}.'">';
-		}
-				echo '<img src="/assets/images/backgrounds/atlasvula.jpg" />';
-				echo '<span class="title">'.$selectListOption->{$params->title}.'</span>';
-				//echo '<span class="summary">'.substr($option->{$params->summary}, 0, 100).'</span>';
-			echo '</li>';			
-	}
-	echo '</ul></div>';
-});
-
 // Form macro date
 Form::macro('date', function($nameOfProperty = null, $defaultDateArray = array(), $startYear = 1900, $options = array()) {
 

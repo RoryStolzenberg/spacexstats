@@ -54,4 +54,4 @@ gulp.task('watch', function() {
     gulp.watch('public/src/css/styles.scss', ['styles']);
 });
 
-gulp.task('default', ['styles', 'watch']);
+gulp.task('default', ['styles', 'watch', 'browsersync']);

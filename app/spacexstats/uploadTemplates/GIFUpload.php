@@ -10,6 +10,8 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 
 	// Add the image to mission control after being uploaded
     public function addToMissionControl() {
+        $this->addThumbnails();
+
 		return Object::create(array(
 			'user_id' => Auth::id(),
 			'type' => MissionControlType::GIF,
@@ -18,8 +20,6 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
 			'filename' => $this->fileinfo['filename'],
-			'thumb_small' => $this->setThumbnail('small'),
-			'thumb_large' => $this->setThumbnail('large'),
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
@@ -27,7 +27,12 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 		));
 	}
 
-	// Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
+    private function addThumbnails() {
+        $this->setThumbnail('small');
+        $this->setThumbnail('large');
+    }
+
+    // Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
 	private function setThumbnail($size) {
 		$lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
         $gifFilePath = $this->directory['full'] . $this->fileinfo['filename'];

@@ -15,23 +15,11 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         function UploadedImage(image) {
             var self = this;
-            self.id = ko.observable(image.object_id);
-            self.type = ko.observable(image.type);
-            self.subtype = ko.observable();
-            self.filename = ko.observable(image.filename);
-            self.originalName = ko.observable(image.original_name);
+            koMapping.fromJS(image, {}, this);
+
             self.thumbnail = ko.computed(function() {
                 return '/media/small/' + self.filename();
             });
-            /*self.deltaV = ko.computed(function() {
-                $.ajax('objects/calculateDeltaV', {
-                    type: 'POST',
-                    data: { '': ''},
-                    success: function(response) {
-
-                    }
-                });
-            }).extend({ rateLimit: 5000 });*/
         }
 
         function UploadedGif() {
@@ -77,15 +65,16 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         // Declare which template to use when a file is uploaded
         self.templateObjectType = function (uploadedFile) {
-            if (uploadedFile.type == 1) {
+            var uploadedFileType = uploadedFile.type();
+            if (uploadedFileType == 1) {
                 return 'image-file-template';
-            } else if (uploadedFile.type == 2) {
+            } else if (uploadedFileType == 2) {
                 return 'gif-file-template';
-            } else if (uploadedFile.type == 3) {
+            } else if (uploadedFileType == 3) {
                 return 'audio-file-template';
-            } else if (uploadedFile.type == 4) {
+            } else if (uploadedFileType == 4) {
                 return 'video-file-template';
-            } else if (uploadedFile.type == 5) {
+            } else if (uploadedFileType == 5) {
                 return 'document-file-template';
             }
         };

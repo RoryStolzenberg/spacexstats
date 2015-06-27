@@ -17,7 +17,7 @@
     <!-- Knockout Templates -->
 	<script type="text/html" id="uploaded-files-template">
 		<li class="uploaded-file" data-bind="attr: { 'data-index': $index }, click: $root.changeVisibleTemplate">
-            <img data-bind="attr: { src: thumbnail }"/>
+            <img data-bind="attr: { src: thumbnail }"/><br/>
             <span data-bind="text: original_name"></span>
         </li>
 	</script>
@@ -28,7 +28,7 @@
 			<form>
 				<ul class="container">
 					<li class="grid-4">
-						<img data-bind="attr : { src: '/' + thumb_small, alt: original_name }">
+						<img data-bind="attr : { src: thumbnail, alt: original_name }">
 					</li>
 					<li class="grid-4">
 						<label><p>Title</p><input type="text" name="title" /></label>
@@ -36,7 +36,7 @@
 					<li class="grid-8"><label><p>Summary</p><textarea name="summary"></textarea></label></li>
 					<li class="grid-4">
 						<label><p>Related to Mission</p>
-						{{ Form::richSelect('mission_id', $missions, array('identifier' => 'mission_id', 'title' => 'name', 'summary' => 'summary')) }}</label>
+                        <rich-select params="fetchFrom: '/missions/all', default: true, mapping: {}"></rich-select>
 					</li>					
 					<li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
 					<li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
@@ -62,8 +62,7 @@
                     <li class="grid-8"><label><p>Summary</p><textarea name="summary"></textarea></label></li>
                     <li class="grid-4">
                         <label><p>Related to Mission</p>
-                            {{ Form::richSelect('mission_id', $missions, array('identifier' => 'mission_id', 'title' => 'name', 'summary' => 'summary')) }}</label>
-                    </li>
+                            <rich-select params="fetchFrom: '/missions/all', default: true, mapping: {}"></rich-select>                    </li>
                     <li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
                     <li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
                     <li class="grid-6"><label>Tags<tags></tags></label></li>
@@ -87,8 +86,7 @@
                     <li class="grid-8"><label><p>Summary</p><textarea name="summary"></textarea></label></li>
                     <li class="grid-4">
                         <label><p>Related to Mission</p>
-                            {{ Form::richSelect('mission_id', $missions, array('identifier' => 'mission_id', 'title' => 'name', 'summary' => 'summary')) }}</label>
-                    </li>
+                            <rich-select params="fetchFrom: '/missions/all', default: true, mapping: {}"></rich-select>                    </li>
                     <li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
                     <li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
                     <li class="grid-6"><label>Tags<tags></tags></label></li>
@@ -130,7 +128,7 @@
 							</ul>
 							<div class="files-details" data-bind="template: { name: templateObjectType, foreach: uploadedFiles }">
 							</div>
-							<button id="files-submit" data-bind="text: formButtonText, click: submitFiles" />		
+							<button id="files-submit" data-bind="text: formButtonText, click: submitFiles"></button>
 					</div>
 				</section>
 
