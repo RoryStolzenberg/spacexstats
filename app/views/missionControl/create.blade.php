@@ -69,14 +69,21 @@
 					<li class="grid-6">
                         <label>
                             <p>Tags</p>
-                            <tags></tags>
+                            <tags data-bind="tags: tags"></tags>
                         </label>
                     </li>
 
 					<li class="grid-6">
                         <label>
                             <p>Type</p>
-                            {{ Form::select('type', array(1 => 'Mission Patch', 2 => 'Photo', 4 => 'Chart', 5 => 'Screenshot', 11 => 'Infographic')) }}
+                            <select data-bind="value: subtype">
+                                <option>None</option>
+                                <option value="1">Mission Patch</option>
+                                <option value="2">Photo</option>
+                                <option value="3">Chart</option>
+                                <option value="5">Screenshot</option>
+                                <option value="11">Infographic</option>
+                            </select>
                         </label>
                     </li>
 

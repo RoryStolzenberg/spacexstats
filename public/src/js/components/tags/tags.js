@@ -13,10 +13,10 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
 
         self.availableTags = ['elon-musk', 'falcon-9', 'reusability', 'raptor', 'merlin', 'crs', 'commercial-resupply-services', 'gwynne-shotwell', 'dragon'];
 
-        self.tags = ko.observableArray();
+        params.tags = ko.observableArray();
         self.tagInput = ko.observable();
         self.tagsToBeSubmitted = ko.computed(function() {
-            return self.tags().join(' ');
+            return params.tags().join(' ');
         });
 
         self.suggestions = ko.observableArray();
@@ -87,7 +87,7 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
         };
 
         self.init = (function() {
-            var tagArray = params.tags.split(" ");
+            $.ajax('')
             self.tags(tagArray);
         })();
     }

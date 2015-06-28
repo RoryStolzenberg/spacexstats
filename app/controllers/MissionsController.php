@@ -1,6 +1,7 @@
 <?php
 use SpaceXStats\Services\MissionCreatorService;
 use SpaceXStats\Mailers\MissionNotificationsMailer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MissionsController extends BaseController {
 
@@ -14,7 +15,8 @@ class MissionsController extends BaseController {
 	// GET 
 	// /missions/{slug}
 	public function get($slug) {
-		$mission = Mission::whereSlug($slug)->with('vehicle')->first();
+
+        $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
 			return View::make('missions.futureMission', array(

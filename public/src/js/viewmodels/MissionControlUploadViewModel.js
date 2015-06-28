@@ -4,6 +4,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         ko.components.register('upload', {require: 'components/upload/upload'});
         ko.components.register('tweet', { require: 'components/tweet/tweet' });
         ko.components.register('rich-select', { require: 'components/rich-select/rich-select'});
+        ko.components.register('tags', { require: 'components/tags/tags'});
 
         var self = this;
 
@@ -16,15 +17,18 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         function UploadedImage(image) {
             var self = this;
             koMapping.fromJS(image, {
-                include: ['title', 'summary', 'mission_id', 'author', 'attribution', 'anonymous']
+                include: ['title', 'summary', 'subtype', 'mission_id', 'author', 'attribution', 'anonymous']
             }, this);
 
             self.title = ko.observable(null);
             self.summary = ko.observable(null);
+            self.subtype = ko.observable(null);
             self.mission_id = ko.observable(null);
             self.author = ko.observable(null);
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
+            self.tags = ko.observableArray([]);
+            self.originated_date = ko.observable();
 
 
             self.thumbnail = ko.computed(function() {

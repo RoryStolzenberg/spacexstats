@@ -115,7 +115,5 @@ Route::filter('csrf', function()
 
 /* Check if a mission page exists before directing user to the page */
 Route::filter('doesMissionExist', function() {
-	if (Mission::whereSlug(Route::input('slug'))->count() !== 1) {
-		return Redirect::route('home');
-	}
+    Mission::whereSlug(Route::input('slug'))->firstOrFail();
 });
