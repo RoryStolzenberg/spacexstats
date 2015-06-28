@@ -69,7 +69,7 @@
 					<li class="grid-6">
                         <label>
                             <p>Tags</p>
-                            <tags data-bind="tags: tags"></tags>
+                            <tags params="tags: tags"></tags>
                         </label>
                     </li>
 

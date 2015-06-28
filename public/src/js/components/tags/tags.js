@@ -2,7 +2,7 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
     function TagViewModel(params) {
         ko.bindingHandlers.resize = {
             update: function(element) {
-                self.tags();
+                params.tags();
 
                 var elementWidth = $(element).parent().width() - $(element).siblings().outerWidth() - 1; // Why minus one? Who knows.
                 $(element).css({ 'width' : elementWidth});
@@ -11,9 +11,14 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
 
         var self = this;
 
-        params.tags = ko.observableArray();
+        self.availableTags = ko.observableArray();
+
+        self.tags = ko.computed(function() {
+            return params.tags();
+        });
         self.tagInput = ko.observable();
         self.tagsToBeSubmitted = ko.computed(function() {
+            console.log(params.tags());
             return params.tags().join(' ');
         });
 
@@ -72,10 +77,10 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
         self.updateSuggestionList = function() {
             var allResults = [];
             var search = new RegExp(self.tagInput(), "i");
-            allResults = $.grep(self.availableTags, function(tag) {
+            allResults = $.grep(self.availableTags(), function(tag) {
                 // If the possible tag is not present in the currentTags array, allow it as an option
                 // otherwise, just return false. No need to show duplicate tags.
-                if (self.tags().indexOf(tag) == -1) {
+                if (params.tags().indexOf(tag) == -1) {
                     return search.test(tag);
                 }
                 return false;
@@ -89,7 +94,10 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
             $.ajax('/tags/all', {
                 method: 'GET',
                 success: function(tags) {
-                    self.availableTags(tags);
+                    console.log(self.availableTags());
+                    self.availableTags(tags.map(function(tag) {
+                        return tag['name'];
+                    }));
                 }
             });
         })();
