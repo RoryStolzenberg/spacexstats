@@ -86,8 +86,8 @@ class Spacexstats extends Migration {
             $table->integer('vehicle_id')->unsigned();
             $table->integer('destination_id')->unsigned();
             $table->integer('launch_site_id')->unsigned();
-            $table->string('summary', Varchar::summary);
-            $table->string('article', Varchar::article)->nullable();
+            $table->string('summary', Varchar::medium);
+            $table->string('article', Varchar::xlarge)->nullable();
             $table->integer('featured_image')->unsigned()->nullable();
             $table->enum('status', array('Upcoming', 'Complete', 'In Progress'));
 
@@ -116,6 +116,11 @@ class Spacexstats extends Migration {
             $table->string('filename', Varchar::small);
             $table->smallInteger('dimension_width')->nullable();
             $table->smallInteger('dimension_height')->nullable();
+
+            // Mission control related properties
+            $table->string('summary', Varchar::large);
+            $table->string('author', Varchar::small)->nullable();
+            $table->string('attribution', Varchar::medium)->nullable();
             $table->date('originated_at')->nullable();
 
             // Twitter-related properties
@@ -129,7 +134,7 @@ class Spacexstats extends Migration {
             // Image-related properties
             $table->string('exposure', Varchar::small)->nullable();
             $table->string('aperture', Varchar::small)->nullable();
-            $table->string('ISO', Varchar::small)->nullable();
+            $table->smallInteger('ISO')->nullable();
             $table->double('coord_lat', 8, 6)->nullable();
             $table->double('coord_lng', 9, 6)->nullable();
             $table->string('camera_manufacturer', Varchar::compact)->nullable();
@@ -142,6 +147,7 @@ class Spacexstats extends Migration {
             // Audio-related properties
 
             $table->enum('status', array('New', 'Queued', 'Complete', 'Hidden'));
+            $table->boolean('anonymous');
             $table->timestamps();
         });
 

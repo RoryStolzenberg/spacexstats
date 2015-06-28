@@ -1,12 +1,8 @@
 <?php
 use SpaceXStats\Library\FileChecker;
+use SpaceXStats\Services\ObjectCreatorService;
 
 class UploadController extends BaseController {
-	protected $object;
-
-    public function __construct(Object $object) {
-		$this->object = $object;
-	}
 
 	public function show() {
 		return View::make('missionControl.create', array(
@@ -38,9 +34,10 @@ class UploadController extends BaseController {
 
 			// if errors array is empty
 			if (!array_filter($errors)) {
-				$objects = array();
+				$objects = [];
+
 				foreach ($uploads as $upload) {
-					$objects[] = $upload->addToMissionControl('new');
+					$objects[] = $upload->addToMissionControl();
 				}
 
 				return Response::json(['objects' => $objects]);
@@ -52,40 +49,50 @@ class UploadController extends BaseController {
 
 	// AJAX POST
 	public function submit() {
-		$submissions = Input::all();
-
-		// File Submissions
+    	// File Submissions
 		if (Request::header('Submission-Type') == 'files') {
+            $files = Input::get('files');
 			$errors = [];
-			$i = 0;
+            $objectCreators = [];
+            $objects = [];
 
-			// Foreach uploaded file
-			foreach (Input::get('files') as $file) {
-				// Grab any errors
-				$isValidForSubmission = $this->object->isValidForSubmission($file);
-				if ($isValidForSubmission !== true) {
-					$errors[$i] = $isValidForSubmission;
-				}
-				$i++;
-			}
+            // Find each object from file
+            for ($i = 0; $i < count($files); $i++) {
+                $objects[$i] = Object::find($files[$i]['object_id']);
+
+                $objectCreators[$i] = new ObjectCreatorService($objects[$i]);
+
+                // Grab any errors & place them in an errors array for return to the client
+                $isValidForSubmission = $objectCreators[$i]->isValid($files[$i]);
+
+                if ($isValidForSubmission !== true) {
+                    $errors[$i] = $isValidForSubmission;
+                }
+            }
 
 			// Check if there are errors, if no, add all to db, if yes, return with errors.
 			if (empty($errors)) {
-				// add to db
-				foreach (Input::get('files') as $file) {
-					
-				}
+
+				// add all objects to db
+				for ($i = 0; $i < count($files); $i++) {
+                    $objectCreators[$i]->make($files[$i]);
+                }
 
 				// redirect to mission control
-				return Redirect::route('missioncontrol');
+                Session::flash('flashMessage', array(
+                    'contents' => 'Done! Your submitted content will be reviewed and published within 24 hours',
+                    'type' => 'success'
+                ));
+				return Response::json(true);
+
 			} else {
 				return Response::json($errors);
 			}
 
 		// Written & Post submissions
 		} elseif (Request::header('Submission-Type') == 'write' || Request::header('Submission-Type') == 'post') {
-			
-			$isValidForSubmission = $this->object->isValidForSubmission($object);
+
+			$isValidForSubmission = $this->objectCreator->isValid($object);
 			if ($isValidForSubmission === true) {
 				// Add to db
 

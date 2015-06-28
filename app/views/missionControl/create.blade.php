@@ -30,19 +30,62 @@
 					<li class="grid-4">
 						<img data-bind="attr : { src: thumbnail, alt: original_name }">
 					</li>
+
 					<li class="grid-4">
-						<label><p>Title</p><input type="text" name="title" /></label>
+						<label>
+                            <p>Title</p>
+                            <input type="text" name="title" data-bind="value: title" />
+                        </label>
 					</li>
-					<li class="grid-8"><label><p>Summary</p><textarea name="summary"></textarea></label></li>
+
+					<li class="grid-8">
+                        <label>
+                            <p>Summary</p>
+                            <textarea name="summary" data-bind="value: summary"></textarea>
+                        </label>
+                    </li>
+
 					<li class="grid-4">
-						<label><p>Related to Mission</p>
-                        <rich-select params="fetchFrom: '/missions/all', default: true, mapping: {}"></rich-select>
-					</li>					
-					<li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
-					<li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
-					<li class="grid-6"><label>Tags<tags></tags></label></li>
-					<li class="grid-6"><label>Type{{ Form::select('type', array(1 => 'Mission Patch', 2 => 'Photo', 4 => 'Chart', 5 => 'Screenshot', 11 => 'Infographic')) }}</label></li>
-					<li class="grid-12"><label>Submit anonymously?<input type="checkbox" name="anonymous" /></label></li>
+						<label>
+                            <p>Related to Mission</p>
+                            <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
+                        </label>
+					</li>
+
+					<li class="grid-6">
+                        <label>
+                            <p>Author</p>
+                            <input type="text" name="author" data-bind="value: author" />
+                        </label>
+                    </li>
+
+					<li class="grid-6">
+                        <label>
+                            <p>Attribution/Copyright</p>
+                            <textarea name="attribution" data-bind="value: attribution"></textarea>
+                        </label>
+                    </li>
+
+					<li class="grid-6">
+                        <label>
+                            <p>Tags</p>
+                            <tags></tags>
+                        </label>
+                    </li>
+
+					<li class="grid-6">
+                        <label>
+                            <p>Type</p>
+                            {{ Form::select('type', array(1 => 'Mission Patch', 2 => 'Photo', 4 => 'Chart', 5 => 'Screenshot', 11 => 'Infographic')) }}
+                        </label>
+                    </li>
+
+					<li class="grid-12">
+                        <label>
+                            <p>Submit anonymously?</p>
+                            <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
+                        </label>
+                    </li>
 				</ul>
 			</form>
 		</div>
@@ -112,11 +155,13 @@
 			<h1>Upload to Mission Control</h1>
 			<main>
 				<!-- List of methods to upload -->
-				<ul class="upload-type text-center">
-					<li data-bind="click: changeVisibleSection.bind($data, 'upload')"><i class="fa fa-upload"></i> Upload</li>
-					<li data-bind="click: changeVisibleSection.bind($data, 'post')"><i class="fa fa-paperclip"></i> Post</li>
-					<li data-bind="click: changeVisibleSection.bind($data, 'write')"><i class="fa fa-pencil"></i> Write</li>
-				</ul>
+                <nav>
+                    <ul class="upload-type text-center">
+                        <li data-bind="click: changeVisibleSection.bind($data, 'upload')"><i class="fa fa-upload"></i> Upload</li>
+                        <li data-bind="click: changeVisibleSection.bind($data, 'post')"><i class="fa fa-paperclip"></i> Post</li>
+                        <li data-bind="click: changeVisibleSection.bind($data, 'write')"><i class="fa fa-pencil"></i> Write</li>
+                    </ul>
+                </nav>
 				<!-- Upload -->
 				<section class="upload-upload" data-bind="visible: visibleSection() == 'upload'">
 					<div data-bind="visible: uploadSection() == 'dropzone'">

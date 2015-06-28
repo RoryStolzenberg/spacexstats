@@ -11,9 +11,20 @@ class Object extends Eloquent {
 	protected $fillable = [];
 	protected $guarded = [];
 
-	protected $rules = array(
+	protected $submissionRules = array(
+        'All' => array(
+            'user_id' => 'required|integer|exists:users,user_id',
+            'mission_id' => 'integer|exists:missions,mission_id',
+            'type' => 'required|integer'
+        ),
 		'Image' => array(
-			'title' => 'required|max:100',
+			'title' => 'required|varchar:compact',
+            'summary' => 'required|varchar:large',
+            'author' => 'required|varchar:small',
+            'attribution' => 'required|varchar:medium',
+            'ISO' => 'integer',
+            'camera_manufacturer' => 'varchar:compact',
+            'camera_model' => 'varchar:compact'
 		),
 		'GIF' => array(
 		),
@@ -43,14 +54,10 @@ class Object extends Eloquent {
 	}
 
     // Validators
-	public function isValidForUpload($input) {
-		$validator = Validator::make($input, $rules);
-	}
+	public function isValidForSubmission($input) {
+		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);
 
-	public function isValidForSubmission($input, $missionControlType) {
-		$type = MissionControlType::getType($missionControlType);
-
-		$validator = Validator::make($input, $this->rules[$type]);
+		$validator = Validator::make($input, $this->submissionRules[$type]);
 		return ($validator->passes() ? true : $validator->errors());
 	}
 

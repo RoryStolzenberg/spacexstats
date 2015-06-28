@@ -27,7 +27,7 @@ class MissionCreatorService implements CreatorServiceInterface {
         //$missionValidation = true;
         //$usesValidation = $this->uses->isValid($input['uses']);
 
-        if ($missionValidation === true) {
+        if ($missionValidation) {
             return true;
         } else {
             $this->errors = $missionValidation;

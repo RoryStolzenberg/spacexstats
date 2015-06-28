@@ -15,7 +15,17 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         function UploadedImage(image) {
             var self = this;
-            koMapping.fromJS(image, {}, this);
+            koMapping.fromJS(image, {
+                include: ['title', 'summary', 'mission_id', 'author', 'attribution', 'anonymous']
+            }, this);
+
+            self.title = ko.observable(null);
+            self.summary = ko.observable(null);
+            self.mission_id = ko.observable(null);
+            self.author = ko.observable(null);
+            self.attribution = ko.observable(null);
+            self.anonymous = ko.observable(false);
+
 
             self.thumbnail = ko.computed(function() {
                 return '/media/small/' + self.filename();
@@ -23,19 +33,19 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         }
 
         function UploadedGif() {
-
+            var self = this;
         }
 
         function UploadedAudio() {
-
+            var self = this;
         }
 
         function UploadedVideo() {
-
+            var self = this;
         }
 
         function UploadedDocument() {
-
+            var self = this;
         }
 
         // Switch between "upload", "post", & "write"
@@ -100,29 +110,19 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 dataType: 'json',
                 type: 'POST',
                 headers: contentTypeHeader,
-                data: {files: formData},
-                success: function (response) {
+                data: { files: formData},
+                success: function () {
+                    //window.location = '/missioncontrol';
+                },
+                error: function(response) {
                     console.log(response);
                 }
             });
         };
 
         self.submitFiles = function (item, event) {
-            var fileForms = $(event.currentTarget).siblings('.files-details').find('form').map(function () {
-                return {
-                    title: $(this).find('[name="title"]').val(),
-                    summary: $(this).find('[name="summary"]').val(),
-                    mission_id: $(this).find('#mission_id').data('value'),
-                    author: $(this).find('[name="author"]').val(),
-                    attribution: $(this).find('[name="attribution"]').val(),
-                    tags: $(this).find('.tagger').prop('value'),
-                    type: $(this).find('[name="type"]').val(),
-                    association: $(this).find('[name="anonymous"]').val()
-                };
-            }).get();
-
             var contentTypeHeader = {'Submission-Type': 'files'};
-            self.submitToMissionControl(fileForms, contentTypeHeader);
+            self.submitToMissionControl(koMapping.toJS(self.uploadedFiles), contentTypeHeader);
         };
 
         self.submitPost = function (item, event) {

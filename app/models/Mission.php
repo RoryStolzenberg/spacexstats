@@ -62,7 +62,7 @@ class Mission extends Eloquent {
         $rules = array(
             'name' => 'sometimes|varchar:small',
             'launch_exact' => 'sometimes|date_format:Y-m-d H:i:s',
-            'launch_approximate' => 'sometimes|string|max:100'
+            'launch_approximate' => 'sometimes|string|varchar:compact'
         );
 
         $messages = array(

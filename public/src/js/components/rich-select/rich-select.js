@@ -14,6 +14,7 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
         self.selectedOption = ko.observable();
         self.selectOption = function(option) {
             self.selectedOption(option);
+            params.value(option.id);
             self.dropdownVisible(false);
         };
 
@@ -50,9 +51,8 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
                 type: 'GET',
                 success: function(fetchedItems) {
 
-                    var defaultOption = { mission_id: 0, name: 'Select...', summary: '' };
+                    var defaultOption = { mission_id: null, name: 'Select...', summary: '' };
                     fetchedItems.unshift(defaultOption);
-                    console.log(fetchedItems);
 
                     koMapping.fromJS(fetchedItems, self.mappingOptions, self.options);
 
