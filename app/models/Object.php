@@ -46,12 +46,16 @@ class Object extends Eloquent {
 
 	// Relations
 	public function mission() {
-		return $this->belongsTo('mission');
+		return $this->belongsTo('Mission');
 	}
 
 	public function user() {
-		return $this->belongsTo('user');
+		return $this->belongsTo('User');
 	}
+
+    public function tags() {
+        return $this->belongsToMany('Tag', 'object_tags', 'tag_id', 'object_id');
+    }
 
     // Validators
 	public function isValidForSubmission($input) {

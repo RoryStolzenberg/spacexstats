@@ -102,6 +102,12 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('object_tags', function(Blueprint $table) {
+            $table->increments('object_tags_id');
+            $table->integer('object_id')->unsigned();
+            $table->integer('tag_id')->unsigned();
+        });
+
         Schema::create('objects', function(Blueprint $table) {
             $table->increments('object_id');
             $table->integer('user_id')->unsigned();
@@ -234,6 +240,13 @@ class Spacexstats extends Migration {
             $table->enum('display', array('single', 'double', 'count', 'time', 'piechart', 'barchart'));
         });
 
+        Schema::create('tags', function(Blueprint $table) {
+            $table->increments('tag_id');
+            $table->string('name', Varchar::small);
+            $table->string('description', Varchar::medium)->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('users', function(Blueprint $table) {
             $table->increments('user_id');
             $table->integer('role_id')->unsigned();
@@ -354,7 +367,9 @@ class Spacexstats extends Migration {
             'favorites',
             'payloads',
             'email_subscriptions',
-            'payments'
+            'payments',
+            'tags',
+            'object_tags'
         );
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');

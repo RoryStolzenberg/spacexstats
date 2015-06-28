@@ -11,7 +11,7 @@ class Tag extends Eloquent {
     protected $guarded = [];
 
     // Relations
-    public function missions() {
-        return $this->hasMany('Mission');
+    public function objects() {
+        return $this->belongsToMany('Object', 'object_tags', 'object_id', 'tag_id');
     }
 }

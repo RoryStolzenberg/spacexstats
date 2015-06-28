@@ -11,8 +11,6 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
 
         var self = this;
 
-        self.availableTags = ['elon-musk', 'falcon-9', 'reusability', 'raptor', 'merlin', 'crs', 'commercial-resupply-services', 'gwynne-shotwell', 'dragon'];
-
         params.tags = ko.observableArray();
         self.tagInput = ko.observable();
         self.tagsToBeSubmitted = ko.computed(function() {
@@ -32,14 +30,14 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
         });
 
         self.removeTag = function(data) {
-            self.tags.remove(data);
+            params.tags.remove(data);
         };
 
         self.createTag = function(tag) {
-            if (self.tags().indexOf(tag) == -1 && tag.length > 0) {
+            if (params.tags().indexOf(tag) == -1 && tag.length > 0) {
                 // trim and convert the text to lowercase
                 tagText = $.trim(tag.toLowerCase());
-                self.tags.push(tagText);
+                params.tags.push(tagText);
                 self.tagInput("");
             }
             return true;
@@ -66,7 +64,7 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
                 event.preventDefault();
 
                 // grab the last tag to be inserted (if any) and put it back in the input
-                self.tagInput(self.tags.pop());
+                self.tagInput(params.tags.pop());
             }
             return true;
         };
@@ -86,9 +84,14 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
             self.suggestions(allResults);
         };
 
+        // Fetch the available tags to use
         self.init = (function() {
-            $.ajax('')
-            self.tags(tagArray);
+            $.ajax('/tags/all', {
+                method: 'GET',
+                success: function(tags) {
+                    self.availableTags(tags);
+                }
+            });
         })();
     }
 
