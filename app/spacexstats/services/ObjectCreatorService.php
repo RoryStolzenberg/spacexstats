@@ -35,6 +35,7 @@ class ObjectCreatorService implements CreatorServiceInterface {
         try {
             $mission = Mission::findOrFail($input['mission_id']);
             $object->mission()->associate($mission);
+
         } catch (ModelNotFoundException $e) {
             // Model not found, do not set
         }

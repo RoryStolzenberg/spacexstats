@@ -2,7 +2,7 @@
 <div class="tagger-container">
     <div class="wrapper" style="font-size:0;">
         <div class="tags" data-bind="template: { name: 'tag-template', foreach: tags, as: 'tag' }" style="display:inline-block;font-size:12px;"></div>
-        <input type="text" class="tag-input" data-bind="resize: true, textInput: tagInput, event: { keypress: tagInputKeyPress, keyup: updateSuggestionList, focus: toggleSuggestionVisibility, blur: toggleSuggestionVisibility }" style="display:inline-block;" />
+        <input type="text" class="tag-input" data-bind="resize: true, textInput: tagInput, event: { keypress: tagInputKeyPress, keyup: updateSuggestionList, focus: toggleSuggestionVisibility, blur: toggleSuggestionVisibility }, hasFocus: inputHasFocus" style="display:inline-block;" />
     </div>
     <div class="suggestions" data-bind="visible: suggestionVisibility, template: { name: 'suggestion-template', foreach: suggestions, as: 'suggestion' }"></div>
 </div>

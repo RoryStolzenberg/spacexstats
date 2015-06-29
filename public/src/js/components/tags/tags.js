@@ -29,6 +29,8 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
             return true;
         };
 
+        self.inputHasFocus = ko.observable();
+
         $(window).on('resize', function() {
             var elementWidth = $('.tag-input').parent().width() - $('.tag-input').siblings().outerWidth() - 1; // Why minus one? Who knows.
             $('.tag-input').css({ 'width' : elementWidth});
@@ -36,6 +38,7 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
 
         self.removeTag = function(data) {
             params.tags.remove(data);
+            self.inputHasFocus(true);
         };
 
         self.createTag = function(tag) {
