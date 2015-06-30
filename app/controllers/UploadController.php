@@ -3,6 +3,11 @@ use SpaceXStats\Library\FileChecker;
 use SpaceXStats\Services\ObjectActionService;
 
 class UploadController extends BaseController {
+    protected $objectActioner;
+
+    public function __construct(ObjectActionService $objectActioner) {
+        $this->objectActioner = $objectActioner;
+    }
 
 	public function show() {
 		return View::make('missionControl.create', array(
@@ -52,30 +57,25 @@ class UploadController extends BaseController {
     	// File Submissions
 		if (Request::header('Submission-Type') == 'files') {
             $files = Input::get('files');
-			$errors = [];
-            $objectCreators = [];
-            $objects = [];
+            $objectValidities = [];
+            $doesNotContainErrors = true;
 
             // Find each object from file
             for ($i = 0; $i < count($files); $i++) {
-                $objects[$i] = Object::find($files[$i]['object_id']);
+                //$objects[$i] = Object::find($files[$i]['object_id']);
 
-                $objectCreators[$i] = new ObjectActionService($objects[$i]);
-
-                // Grab any errors & place them in an errors array for return to the client
-                $isValidForSubmission = $objectCreators[$i]->isValid($files[$i]);
-
-                if ($isValidForSubmission !== true) {
-                    $errors[$i] = $isValidForSubmission;
+                $objectValidities[$i] = $this->objectActioner->isValid($files[$i]) ? true : $this->objectActioner->getErrors();
+                if ($objectValidities[$i] !== true) {
+                    $doesNotContainErrors = false;
                 }
             }
 
 			// Check if there are errors, if no, add all to db, if yes, return with errors.
-			if (empty($errors)) {
+			if ($doesNotContainErrors) {
 
 				// add all objects to db
 				for ($i = 0; $i < count($files); $i++) {
-                    $objectCreators[$i]->make($files[$i]);
+                    $this->objectActioner->create($files[$i]);
                 }
 
 				// redirect to mission control
@@ -86,7 +86,7 @@ class UploadController extends BaseController {
 				return Response::json(true);
 
 			} else {
-				return Response::json($errors);
+				return Response::json($objectValidities, 400);
 			}
 
 		// Written & Post submissions

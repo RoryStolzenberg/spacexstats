@@ -3,7 +3,7 @@ namespace SpaceXStats\Services;
 
 use \Tag;
 
-class TagActionService extends ActionServiceInteface {
+class TagActionService implements ActionServiceInterface {
     protected $tag, $errors;
 
     public function __construct(Tag $tag) {
@@ -20,7 +20,7 @@ class TagActionService extends ActionServiceInteface {
         }
     }
 
-    public function make($input) {
+    public function create($input) {
         if (!Tag::where('name', $input['name'])->exists()) {
             Tag::create($input);
         }

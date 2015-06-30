@@ -7,11 +7,11 @@ use \Object;
 use \Mission;
 
 class ObjectActionService implements ActionServiceInterface {
-    protected $object, $tagCreator, $errors;
+    protected $object, $tagActioner, $errors;
 
-    public function __construct(\Object $object, TagActionService $tagCreator) {
+    public function __construct(\Object $object, TagActionService $tagActioner) {
         $this->object = $object;
-        $this->tagCreator = $tagCreator;
+        $this->tagActioner = $tagActioner;
     }
 
     public function isValid($input) {
@@ -43,9 +43,9 @@ class ObjectActionService implements ActionServiceInterface {
 
         // Set the tag relations
         $tags = [];
-        foreach ($input['tags'] as $tagName) {
+        foreach ($input['tags'] as $tag) {
             try {
-                $tag = Tag::where('name', $tagName)->firstOrFail();
+                $tag = Tag::where('name', $tag['name'])->firstOrFail();
             } catch (ModelNotFoundException $e) {
             }
             array_push($tags, $tag);
