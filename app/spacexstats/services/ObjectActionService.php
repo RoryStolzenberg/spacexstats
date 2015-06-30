@@ -4,6 +4,7 @@ namespace SpaceXStats\Services;
 use SpaceXStats\Enums\MissionControlType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Object;
+use \Tag;
 use \Mission;
 
 class ObjectActionService implements ActionServiceInterface {
@@ -45,14 +46,17 @@ class ObjectActionService implements ActionServiceInterface {
         $tags = [];
         foreach ($input['tags'] as $tag) {
             try {
-                $tag = Tag::where('name', $tag['name'])->firstOrFail();
+                $tagId = Tag::where('name', $tag['name'])->firstOrFail(['tag_id']);
             } catch (ModelNotFoundException $e) {
+                $tagId = Tag::create(array('name' => $tag['name']));
             }
-            array_push($tags, $tag);
+            array_push($tags, $tagId);
         }
+        $object->tags()->attach($tags);
 
         if ($input['type'] == MissionControlType::Image) {
             $object->attribution = $input['attribution'];
+            $object->anonymous = $input['anonymous'];
             $object->author = $input['author'];
         }
 
