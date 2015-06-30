@@ -1,6 +1,6 @@
 <?php
 use SpaceXStats\Library\FileChecker;
-use SpaceXStats\Services\ObjectCreatorService;
+use SpaceXStats\Services\ObjectActionService;
 
 class UploadController extends BaseController {
 
@@ -60,7 +60,7 @@ class UploadController extends BaseController {
             for ($i = 0; $i < count($files); $i++) {
                 $objects[$i] = Object::find($files[$i]['object_id']);
 
-                $objectCreators[$i] = new ObjectCreatorService($objects[$i]);
+                $objectCreators[$i] = new ObjectActionService($objects[$i]);
 
                 // Grab any errors & place them in an errors array for return to the client
                 $isValidForSubmission = $objectCreators[$i]->isValid($files[$i]);

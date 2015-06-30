@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Object;
 use \Mission;
 
-class ObjectCreatorService implements CreatorServiceInterface {
+class ObjectActionService implements ActionServiceInterface {
     protected $object, $errors;
 
     public function __construct(\Object $object) {
@@ -16,7 +16,7 @@ class ObjectCreatorService implements CreatorServiceInterface {
     public function isValid($input) {
         $objectValidation = $this->object->isValidForSubmission($input);
 
-        if ($objectValidation) {
+        if ($objectValidation === true) {
             return true;
         } else {
             $this->errors = $objectValidation;
@@ -24,7 +24,7 @@ class ObjectCreatorService implements CreatorServiceInterface {
         }
     }
 
-    public function make($input) {
+    public function create($input) {
         $object = Object::find($input['object_id']);
 
         // Global object properties
@@ -38,6 +38,16 @@ class ObjectCreatorService implements CreatorServiceInterface {
 
         } catch (ModelNotFoundException $e) {
             // Model not found, do not set
+        }
+
+        // Set the tag relations
+        $tags = [];
+        foreach ($input['tags'] as $tagName) {
+            try {
+                $tag = Tag::where('name', $tagName)->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                Tag::create(['name' => $tagName]);
+            }
         }
 
         if ($input['type'] == MissionControlType::Image) {

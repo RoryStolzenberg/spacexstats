@@ -8,7 +8,7 @@ use \Payload;
 use \Spacecraft;
 use \SpacecraftFlight;
 
-class MissionCreatorService implements CreatorServiceInterface {
+class MissionActionService implements ActionServiceInterface {
     protected $mission, $vehicle, $uses;
 
     protected $errors;
@@ -27,7 +27,7 @@ class MissionCreatorService implements CreatorServiceInterface {
         //$missionValidation = true;
         //$usesValidation = $this->uses->isValid($input['uses']);
 
-        if ($missionValidation) {
+        if ($missionValidation === true) {
             return true;
         } else {
             $this->errors = $missionValidation;
@@ -35,7 +35,7 @@ class MissionCreatorService implements CreatorServiceInterface {
         }
     }
 
-    public function make($input) {
+    public function create($input) {
 
         // Create the mission
         $missionInput = $input['mission'];

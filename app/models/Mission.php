@@ -13,6 +13,16 @@ class Mission extends Eloquent {
     protected $fillable = [];
     protected $guarded = [];
 
+    public $rules = array(
+        'name' => 'sometimes|varchar:small',
+        'launch_exact' => 'sometimes|date_format:Y-m-d H:i:s',
+        'launch_approximate' => 'sometimes|string|varchar:compact'
+    );
+
+    public $messages = array(
+        'name.varchar' => 'The mission name needs to be shorter than :size characters'
+    );
+
 	protected $presenter = "MissionPresenter";
 
 	// Relations
@@ -59,17 +69,7 @@ class Mission extends Eloquent {
     // Validation
     // One day, add a complex custom validation rule to ensure launch_approximate is validated correctly
     public function isValid($input) {
-        $rules = array(
-            'name' => 'sometimes|varchar:small',
-            'launch_exact' => 'sometimes|date_format:Y-m-d H:i:s',
-            'launch_approximate' => 'sometimes|string|varchar:compact'
-        );
-
-        $messages = array(
-            'name.varchar' => 'The mission name needs to be shorter than :size characters'
-        );
-
-        $validator = Validator::make($input, $rules, $messages);
+        $validator = Validator::make($input, $this->rules, $this->messages);
         return $validator->passes() ? true : $validator->errors();
     }
 

@@ -1,5 +1,5 @@
 <?php
-use SpaceXStats\Services\MissionCreatorService;
+use SpaceXStats\Services\MissionActionService;
 use SpaceXStats\Mailers\MissionNotificationsMailer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -7,7 +7,7 @@ class MissionsController extends BaseController {
 
     protected $missionCreator;
 
-    public function __construct(MissionCreatorService $missionCreator, MissionNotificationsMailer $missionMailer) {
+    public function __construct(MissionActionService $missionCreator, MissionNotificationsMailer $missionMailer) {
         $this->missionCreator = $missionCreator;
         $this->missionMailer = $missionMailer;
     }
@@ -105,7 +105,7 @@ class MissionsController extends BaseController {
 
             if ($this->missionCreator->isValid($input)) {
                 // Create
-                $this->missionCreator->make($input);
+                $this->missionCreator->create($input);
 
                 // Email it out
                 $this->missionMailer->newMission();

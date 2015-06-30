@@ -1,10 +1,11 @@
 <?php
 namespace SpaceXStats\Services;
 
-Interface CreatorServiceInterface {
+Interface ActionServiceInterface {
 
     // https://laracasts.com/series/digging-in/episodes/7#
     public function isValid($input);
-    public function make($input);
+    public function create($input);
+
     public function getErrors();
 }
