@@ -1,4 +1,4 @@
-define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $, htmlString) {
+define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], function(ko, $, koMapping, htmlString) {
     function TagViewModel(params) {
         ko.bindingHandlers.resize = {
             update: function(element) {
@@ -11,16 +11,19 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
 
         var self = this;
 
+        function Tag(tag) {
+            var self = this;
+            self.tag_id = ko.observable(tag.tag_id);
+            self.name = ko.observable(tag.name);
+            self.description = ko.observable(tag.description);
+        }
+
         self.availableTags = ko.observableArray();
 
         self.tags = ko.computed(function() {
             return params.tags();
         });
         self.tagInput = ko.observable();
-        self.tagsToBeSubmitted = ko.computed(function() {
-            console.log(params.tags());
-            return params.tags().join(' ');
-        });
 
         self.suggestions = ko.observableArray();
         self.suggestionVisibility = ko.observable(false);
@@ -41,18 +44,36 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
             self.inputHasFocus(true);
         };
 
-        self.createTag = function(tag) {
-            if (params.tags().indexOf(tag) == -1 && tag.length > 0) {
-                // trim and convert the text to lowercase
-                tagText = $.trim(tag.toLowerCase());
-                params.tags.push(tagText);
+        self.createTag = function(tagText) {
+            var tagIsPresentInCurrentTags = params.tags().filter(function(tag) {
+                return tag.name == tagText;
+            });
+
+            if (tagText.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                // check if tag is present in the available tags array
+                var tagIsPresentInAvailableTags = self.availableTags().filter(function(tag) {
+                    return tag.name() == tagText;
+                });
+
+                if (tagIsPresentInAvailableTags.length === 1) {
+                    // grab tag
+                    var newTag = tagIsPresentInAvailableTags[0];
+                } else {
+                    // trim and convert the text to lowercase, then create!
+                    var newTag = new Tag({ id: null, name: $.trim(tagText.toLowerCase()), description: null });
+                }
+
+                params.tags.push(newTag);
+
+                // reset the input field
                 self.tagInput("");
             }
             return true;
         };
 
         self.suggestionMousedown = function(tag) {
-            self.createTag(tag);
+            self.createTag(tag.name());
             self.updateSuggestionList();
         };
 
@@ -72,7 +93,7 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
                 event.preventDefault();
 
                 // grab the last tag to be inserted (if any) and put it back in the input
-                self.tagInput(params.tags.pop());
+                self.tagInput(params.tags.pop().name());
             }
             return true;
         };
@@ -80,11 +101,12 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
         self.updateSuggestionList = function() {
             var allResults = [];
             var search = new RegExp(self.tagInput(), "i");
-            allResults = $.grep(self.availableTags(), function(tag) {
-                // If the possible tag is not present in the currentTags array, allow it as an option
-                // otherwise, just return false. No need to show duplicate tags.
-                if (params.tags().indexOf(tag) == -1) {
-                    return search.test(tag);
+
+            allResults = self.availableTags().filter(function(availableTag) {
+                if (params.tags().filter(function(currentTag) {
+                    return availableTag.name() == currentTag.name();
+                }).length == 0) {
+                    return search.test(availableTag.name());
                 }
                 return false;
             }).slice(0,6);
@@ -97,10 +119,12 @@ define(['knockout', 'jquery', 'text!components/tags/tags.html'], function(ko, $,
             $.ajax('/tags/all', {
                 method: 'GET',
                 success: function(tags) {
-                    console.log(self.availableTags());
-                    self.availableTags(tags.map(function(tag) {
-                        return tag['name'];
-                    }));
+
+                    koMapping.fromJS(tags, {
+                        create: function(options) {
+                            return new Tag(options.data);
+                        }
+                    }, self.availableTags);
                 }
             });
         })();

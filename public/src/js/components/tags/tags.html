@@ -1,4 +1,3 @@
-<input type="text" class="tagger hidden" data-bind="value: tagsToBeSubmitted" />
 <div class="tagger-container">
     <div class="wrapper" style="font-size:0;">
         <div class="tags" data-bind="template: { name: 'tag-template', foreach: tags, as: 'tag' }" style="display:inline-block;font-size:12px;"></div>
@@ -9,12 +8,12 @@
 
 <script type="text/html" id="tag-template">
     <div>
-        <!--ko text: tag-->
+        <!--ko text: tag.name -->
         <!-- /ko-->
         <span class="remove" data-bind="click: $parent.removeTag.bind($data)"></span>
     </div>
 </script>
 
 <script type="text/html" id="suggestion-template">
-    <div class="suggestion" data-bind="text: suggestion, event: { mousedown: $parent.suggestionMousedown.bind($data) }"></div>
+    <div class="suggestion" data-bind="text: suggestion.name, event: { mousedown: $parent.suggestionMousedown.bind($data) }"></div>
 </script>

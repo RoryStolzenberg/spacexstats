@@ -7,10 +7,11 @@ use \Object;
 use \Mission;
 
 class ObjectActionService implements ActionServiceInterface {
-    protected $object, $errors;
+    protected $object, $tagCreator, $errors;
 
-    public function __construct(\Object $object) {
+    public function __construct(\Object $object, TagActionService $tagCreator) {
         $this->object = $object;
+        $this->tagCreator = $tagCreator;
     }
 
     public function isValid($input) {
@@ -46,8 +47,8 @@ class ObjectActionService implements ActionServiceInterface {
             try {
                 $tag = Tag::where('name', $tagName)->firstOrFail();
             } catch (ModelNotFoundException $e) {
-                Tag::create(['name' => $tagName]);
             }
+            array_push($tags, $tag);
         }
 
         if ($input['type'] == MissionControlType::Image) {

@@ -22,14 +22,11 @@ class TagActionService extends ActionServiceInteface {
 
     public function make($input) {
         if (!Tag::where('name', $input['name'])->exists()) {
-            Tag::create(array(
-                'name' => $input['name'],
-                'description' => $input['description']
-            ));
+            Tag::create($input);
         }
     }
 
     public function getErrors() {
-
+        return $this->errors;
     }
 }

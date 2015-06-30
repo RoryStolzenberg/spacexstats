@@ -116,7 +116,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 headers: contentTypeHeader,
                 data: { files: formData},
                 success: function () {
-                    //window.location = '/missioncontrol';
+                    window.location = '/missioncontrol';
                 },
                 error: function(response) {
                     console.log(response);
