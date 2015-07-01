@@ -48,6 +48,11 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
     Log::error($exception);
+
+    switch ($code) {
+        case 401:
+            return Response::make('No.', 401);
+    }
 });
 
 /*

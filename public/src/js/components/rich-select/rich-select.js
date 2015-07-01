@@ -38,13 +38,12 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
             option.isSelected = ko.computed(function() {
                 return (option == self.selectedOption());
             });
-    }
+        }
 
-    self.dropdownVisible = ko.observable(false);
-    self.toggleDropdownVisibility = function() {
-        self.dropdownVisible(!self.dropdownVisible());
-    };
-
+        self.dropdownVisible = ko.observable(false);
+        self.toggleDropdownVisibility = function() {
+            self.dropdownVisible(!self.dropdownVisible());
+        };
 
         self.init = (function() {
             $.ajax(params.fetchFrom, {
@@ -59,7 +58,7 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
                     if (params.default == true && !params.selected) {
                         self.selectedOption($.grep(self.options(), function(e){ return e.id() == 0; })[0]);
                     } else if (params.selected) {
-                        self.selectedOption($.grep(self.options(), function(e){ return e.id() == params.selected; })[0]);
+                        self.selectedOption($.grep(self.options(), function(e){ return e.id() == params.selected(); })[0]);
                     }
                 }
             });

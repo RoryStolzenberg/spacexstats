@@ -23,8 +23,6 @@ class Spacexstats extends Migration {
 	 */
 	public function up()
 	{
-        DB::unprepared('CREATE DATABASE IF NOT EXISTS spacexstats');
-
         Schema::create('astronauts', function(Blueprint $table) {
             $table->increments('astronaut_id');
             $table->string('first_name', Varchar::small);
@@ -159,7 +157,8 @@ class Spacexstats extends Migration {
 
             // Audio-related properties
 
-            $table->enum('status', array('New', 'Queued', 'Complete', 'Hidden'));
+            $table->enum('status', array('New', 'Queued', 'Complete'));
+            $table->enum('visibility', array('Public', 'Default', 'Hidden'));
             $table->boolean('anonymous');
             $table->timestamps();
         });
@@ -359,7 +358,17 @@ class Spacexstats extends Migration {
 	 */
 	public function down()
 	{
-        DB::unprepared('DROP DATABASE IF EXISTS spacexstats');
+        $tables = [];
+
+        DB::statement( 'SET FOREIGN_KEY_CHECKS=0' );
+
+        foreach (DB::select('SHOW TABLES') as $k => $v) {
+            $tables[] = array_values((array)$v)[0];
+        }
+
+        foreach($tables as $table) {
+            Schema::drop($table);
+        }
 	}
 
 }

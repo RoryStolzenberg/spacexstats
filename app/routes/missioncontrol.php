@@ -34,7 +34,7 @@ Route::group(array('before' => 'mustBe:Administrator'), function() {
         'uses' => 'ReviewController@get'
     ));
 
-    Route::post('missioncontrol/review/update/{object_id}', array(
+    Route::post('missioncontrol/review/update', array(
         'as' => 'missionControl.review.update',
         'uses' => 'ReviewController@update'
     ));
@@ -48,7 +48,6 @@ Route::get('missioncontrol/about', array('as' => 'missionControl.about', functio
 }));
 
 Route::group(array('before' => 'mustBe:Subscriber'), function() {
-
 
     Route::get('missioncontrol/create', array(
         'as' => 'missionControl.create',
@@ -64,12 +63,12 @@ Route::group(array('before' => 'mustBe:Subscriber'), function() {
         'as' => 'missionControl.create.submit',
         'uses' => 'UploadController@submit'
     ));
-
-    Route::get('missioncontrol/{object_id}', array(
-        'as' => 'missionControl.get',
-        'uses' => 'MissionControlController@get'
-    ));
 });
+
+Route::get('missioncontrol/object/{object_id}', array(
+    'as' => 'missionControl.object.get',
+    'uses' => 'ObjectsController@get'
+));
 
 Route::get('missioncontrol', array(
     'as' => 'missionControl',

@@ -32,6 +32,7 @@ class ObjectActionService implements ActionServiceInterface {
         // Global object properties
         $this->object->title = $input['title'];
         $this->object->summary = $input['summary'];
+        $this->object->subtype = $input['subtype'];
 
         // Set the mission relation if it exists
         $this->createMissionRelation($input);

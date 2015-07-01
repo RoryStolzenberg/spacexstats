@@ -30,7 +30,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.tags = ko.observableArray([]);
             self.originated_date = ko.observable(null);
 
-
             self.thumbnail = ko.computed(function() {
                 return '/media/small/' + self.filename();
             });
