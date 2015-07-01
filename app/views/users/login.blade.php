@@ -12,11 +12,16 @@
 		<main>
 
 			{{ Form::open(array('route' => 'users.login')) }}
+                    {{ Form::token() }}
+
 					{{ Form::label('email', 'Email:') }}
 					{{ Form::email('email') }}
 
 					{{ Form::label('password', 'Password:') }}
 					{{ Form::password('password') }}
+
+                    {{ Form::label('rememberMe', 'Remember Me!') }}
+                    {{ Form::checkbox('rememberMe', true, true) }}
 
 					{{ Form::submit('Log In') }}
 			{{ Form::close() }}			

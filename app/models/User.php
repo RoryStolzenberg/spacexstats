@@ -65,13 +65,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $validator->passes() ? true : $validator->errors();
 	}
 
-	public function isValidForLogin($input) {
+	public function isValidForLogin() {
 		$rules = array(
 			'email' => 'required',
-			'password' => 'required'
-		);	
+			'password' => 'required',
+            'rememberMe' => 'boolean'
+		);
 
-		return Auth::attempt($input);
+		return Auth::attempt(array('email' => Input::get('email', null), 'password' => Input::get('password', null)), Input::get('rememberMe', false));
 	}
 
 	public function isValidKey($email, $key) {

@@ -1,6 +1,7 @@
 <?php
 
 use SpaceXStats\Mailers\UserMailer;
+use SpaceXStats\Enums\UserRole;
 
 class UsersController extends BaseController {
 	protected $user, $mailer; 
@@ -15,7 +16,7 @@ class UsersController extends BaseController {
 		// If a user was found
 		if (!empty($user)) {
 			//If the current user is logged in & If the current user is requesting themselves
-			if (Auth::check() && Auth::user()->user_id === $user->user_id) {
+			if (Auth::isAccessingSelf($user)) {
 				$objects = Object::where('user_id',$user->user_id)->get();
 			} else {
 				$objects = Object::where('user_id',$user->user_id)->where('status','Published')->where('association',true)->get();
@@ -62,9 +63,9 @@ class UsersController extends BaseController {
 			if ($isValidForSignUp === true) {
 				$user = User::create(array(
 						'role_id' => UserRole::Unauthenticated,
-						'email' => $input['email'],
-						'username' => $input['username'],
-						'password' => $input['password'],
+						'email' => Input::get('email', null),
+						'username' => Input::get('username', null),
+						'password' => Input::get('password', null),
 						'key' => str_random(32)
 					));
 
@@ -96,7 +97,7 @@ class UsersController extends BaseController {
 
 		} elseif (Request::isMethod('post')) {
 
-			$isValidForLogin = $this->user->isValidForLogin(Input::only('email','password'));
+			$isValidForLogin = $this->user->isValidForLogin();
 
 			if ($isValidForLogin) {
 				return Redirect::intended("/users/".Auth::user()->username);

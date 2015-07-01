@@ -2,6 +2,7 @@
 use SpaceXStats\Enums\UserRole;
 
 class ExtendedGuard extends \Illuminate\Auth\Guard {
+
     public function isAuthenticated() {
         if (is_null($this->user())) {
             return false;
@@ -34,7 +35,7 @@ class ExtendedGuard extends \Illuminate\Auth\Guard {
         }
     }
 
-    public function isAccessingSelf(User $user) {
+    public function isAccessingSelf($user) {
         if (is_null($this->user())) {
             return false;
         } else {
