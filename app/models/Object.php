@@ -54,7 +54,7 @@ class Object extends Eloquent {
 	}
 
     public function tags() {
-        return $this->belongsToMany('Tag', 'object_tags', 'tag_id', 'object_id');
+        return $this->belongsToMany('Tag', 'objects_tags_pivot');
     }
 
     // Validators

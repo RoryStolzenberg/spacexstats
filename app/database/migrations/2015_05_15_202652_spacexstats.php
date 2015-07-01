@@ -23,6 +23,8 @@ class Spacexstats extends Migration {
 	 */
 	public function up()
 	{
+        DB::statement('CREATE DATABASE IF NOT EXISTS spacexstats');
+
         Schema::create('astronauts', function(Blueprint $table) {
             $table->increments('astronaut_id');
             $table->string('first_name', Varchar::small);
@@ -102,12 +104,6 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('object_tags', function(Blueprint $table) {
-            $table->increments('object_tags_id');
-            $table->integer('object_id')->unsigned();
-            $table->integer('tag_id')->unsigned();
-        });
-
         Schema::create('objects', function(Blueprint $table) {
             $table->increments('object_id');
             $table->integer('user_id')->unsigned();
@@ -155,6 +151,12 @@ class Spacexstats extends Migration {
             $table->enum('status', array('New', 'Queued', 'Complete', 'Hidden'));
             $table->boolean('anonymous');
             $table->timestamps();
+        });
+
+        Schema::create('objects_tags_pivot', function(Blueprint $table) {
+            $table->increments('object_tags_id');
+            $table->integer('object_id')->unsigned();
+            $table->integer('tag_id')->unsigned();
         });
 
         Schema::create('orbital_parameters', function(Blueprint $table) {
@@ -304,6 +306,11 @@ class Spacexstats extends Migration {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
         });
 
+        /*Schema::table('objects_tags_pivot', function(Blueprint $table) {
+            $table->foreign('object_id')->references('object_id')->on('objects');
+            $table->foreign('tag_id')->references('tag_id')->on('tags');
+        });*/
+
         Schema::table('payloads', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
         });
@@ -369,7 +376,8 @@ class Spacexstats extends Migration {
             'email_subscriptions',
             'payments',
             'tags',
-            'object_tags'
+            'object_tags',
+            'objects_tags_pivot'
         );
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');

@@ -43,16 +43,16 @@ class ObjectActionService implements ActionServiceInterface {
         }
 
         // Set the tag relations
-        $tags = [];
+        $tagIds = [];
         foreach ($input['tags'] as $tag) {
             try {
-                $tagId = Tag::where('name', $tag['name'])->firstOrFail(['tag_id']);
+                $tagId = Tag::where('name', $tag['name'])->first(['tag_id'])->tag_id;
             } catch (ModelNotFoundException $e) {
-                $tagId = Tag::create(array('name' => $tag['name']));
+                $tagId = Tag::create(array('name' => $tag['name']))->tag_id;
             }
-            array_push($tags, $tagId);
+            array_push($tagIds, $tagId);
         }
-        $object->tags()->attach($tags);
+        $object->tags()->attach($tagIds);
 
         if ($input['type'] == MissionControlType::Image) {
             $object->attribution = $input['attribution'];

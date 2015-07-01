@@ -22,6 +22,6 @@ class Tag extends Eloquent {
 
     // Relations
     public function objects() {
-        return $this->belongsToMany('Object', 'object_tags', 'object_id', 'tag_id');
+        return $this->belongsToMany('Object', 'objects_tags_pivot');
     }
 }
