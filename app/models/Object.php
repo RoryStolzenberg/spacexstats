@@ -57,6 +57,10 @@ class Object extends Eloquent {
         return $this->belongsToMany('Tag', 'objects_tags_pivot');
     }
 
+    public function collections() {
+        return $this->belongsToMany('Collection', 'collections_objects_pivot');
+    }
+
     // Validators
 	public function isValidForSubmission($input) {
 		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);

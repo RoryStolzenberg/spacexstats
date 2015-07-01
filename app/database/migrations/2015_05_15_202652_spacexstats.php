@@ -23,7 +23,7 @@ class Spacexstats extends Migration {
 	 */
 	public function up()
 	{
-        DB::statement('CREATE DATABASE IF NOT EXISTS spacexstats');
+        DB::unprepared('CREATE DATABASE IF NOT EXISTS spacexstats');
 
         Schema::create('astronauts', function(Blueprint $table) {
             $table->increments('astronaut_id');
@@ -34,11 +34,22 @@ class Spacexstats extends Migration {
             $table->string('contracted_by', Varchar::small);
         });
 
-        Schema::create('astronaut_flights', function(Blueprint $table) {
+        // Pivot table
+        Schema::create('astronauts_flights_pivot', function(Blueprint $table) {
             $table->increments('astronaut_flight_id');
             $table->integer('astronaut_id')->unsigned();
             $table->integer('spacecraft_id')->unsigned();
         });
+
+        /*Schema::create('collections', function(Blueprint $table) {
+            $table->increments('collection_id');
+            $table->
+        });
+
+        // Pivot table
+        Schema::create('collections_objects_pivot', function(Blueprint $table) {
+
+        });*/
 
         Schema::create('cores', function(Blueprint $table) {
             $table->increments('core_id');
@@ -154,7 +165,7 @@ class Spacexstats extends Migration {
         });
 
         Schema::create('objects_tags_pivot', function(Blueprint $table) {
-            $table->increments('object_tags_id');
+            $table->increments('objects_tags_id');
             $table->integer('object_id')->unsigned();
             $table->integer('tag_id')->unsigned();
         });
@@ -219,13 +230,13 @@ class Spacexstats extends Migration {
         });
 
         // Pivot table
-        Schema::create('spacecraft_flights', function(Blueprint $table) {
+        Schema::create('spacecraft_flights_pivot', function(Blueprint $table) {
             $table->increments('spacecraft_flight_id');
             $table->integer('mission_id')->unsigned();
             $table->integer('spacecraft_id')->unsigned();
             $table->string('flight_name', Varchar::small);
-            $table->datetime('return')->nullable();
-            $table->enum('return_method', array('Splashdown', 'Landing'))->nullable();
+            $table->datetime('end_of_mission')->nullable();
+            $table->enum('return_method', array('Splashdown', 'Landing', 'Destroyed'))->nullable();
             $table->smallInteger('upmass')->unsigned()->nullable();
             $table->smallInteger('downmass')->unsigned()->nullable();
             $table->datetime('iss_berth')->nullable();
@@ -306,10 +317,10 @@ class Spacexstats extends Migration {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
         });
 
-        /*Schema::table('objects_tags_pivot', function(Blueprint $table) {
+        Schema::table('objects_tags_pivot', function(Blueprint $table) {
             $table->foreign('object_id')->references('object_id')->on('objects');
             $table->foreign('tag_id')->references('tag_id')->on('tags');
-        });*/
+        });
 
         Schema::table('payloads', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
@@ -325,7 +336,7 @@ class Spacexstats extends Migration {
             $table->foreign('favorite_mission_patch')->references('mission_id')->on('missions');
         });
 
-        Schema::table('spacecraft_flights', function(Blueprint $table) {
+        Schema::table('spacecraft_flights_pivot', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
             $table->foreign('spacecraft_id')->references('spacecraft_id')->on('spacecraft');
         });
@@ -348,43 +359,7 @@ class Spacexstats extends Migration {
 	 */
 	public function down()
 	{
-
-        $tables = array(
-            'roles',
-            'destinations',
-            'launch_sites',
-            'landing_sites',
-            'locations',
-            'development_flights',
-            'vehicles',
-            'cores',
-            'uses',
-            'missions',
-            'orbital_parameters',
-            'prelaunch_events',
-            'spacecraft',
-            'spacecraft_flights',
-            'astronauts',
-            'astronaut_flights',
-            'statistics',
-            'questions',
-            'users',
-            'profiles',
-            'objects',
-            'favorites',
-            'payloads',
-            'email_subscriptions',
-            'payments',
-            'tags',
-            'object_tags',
-            'objects_tags_pivot'
-        );
-
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        foreach ($tables as $table) {
-            Schema::dropIfExists($table);
-        }
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+        DB::unprepared('DROP DATABASE IF EXISTS spacexstats');
 	}
 
 }

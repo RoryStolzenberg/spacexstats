@@ -27,22 +27,38 @@ class ObjectActionService implements ActionServiceInterface {
     }
 
     public function create($input) {
-        $object = Object::find($input['object_id']);
+        $this->object = Object::find($input['object_id']);
 
         // Global object properties
-        $object->title = $input['title'];
-        $object->summary = $input['summary'];
+        $this->object->title = $input['title'];
+        $this->object->summary = $input['summary'];
 
         // Set the mission relation if it exists
+        $this->createMissionRelation($input);
+
+        // Set the tag relations
+        $this->createTagRelations($input);
+
+        if ($input['type'] == MissionControlType::Image) {
+            $this->object->attribution = $input['attribution'];
+            $this->object->anonymous = $input['anonymous'];
+            $this->object->author = $input['author'];
+        }
+
+        $this->object->save();
+    }
+
+    private function createMissionRelation($input) {
         try {
             $mission = Mission::findOrFail($input['mission_id']);
-            $object->mission()->associate($mission);
+            $this->object->mission()->associate($mission);
 
         } catch (ModelNotFoundException $e) {
             // Model not found, do not set
         }
+    }
 
-        // Set the tag relations
+    private function createTagRelations($input) {
         $tagIds = [];
         foreach ($input['tags'] as $tag) {
             try {
@@ -52,15 +68,8 @@ class ObjectActionService implements ActionServiceInterface {
             }
             array_push($tagIds, $tagId);
         }
-        $object->tags()->attach($tagIds);
 
-        if ($input['type'] == MissionControlType::Image) {
-            $object->attribution = $input['attribution'];
-            $object->anonymous = $input['anonymous'];
-            $object->author = $input['author'];
-        }
-
-        $object->save();
+        $this->object->tags()->attach($tagIds);
     }
 
     public function getErrors() {
