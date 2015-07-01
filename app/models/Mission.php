@@ -112,6 +112,14 @@ class Mission extends Eloquent {
 
     }
 
+    public function getSuccessfulConsecutiveLaunchAttribute() {
+
+    }
+
+    public function getLaunchIlluminationAttribute() {
+        
+    }
+
     // Attribute Mutators
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;
