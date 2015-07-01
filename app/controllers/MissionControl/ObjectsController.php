@@ -25,7 +25,7 @@ class ObjectsController extends BaseController {
             return App::abort(401);
 
         } elseif ($object->visibility == 'Hidden') {
-            if (Auth::isAdministrator()) {
+            if (Auth::isAdmin()) {
                 return View::make('missionControl.objects.get', array(
                     'object' => $object
                 ));

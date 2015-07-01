@@ -1,5 +1,8 @@
 @extends('templates.main')
 
+@section('title', 'About Mission Control')
+@section('bodyClass', 'missioncontrol-about')
+
 @section('scripts')
 @stop
 

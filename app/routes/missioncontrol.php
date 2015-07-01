@@ -65,8 +65,8 @@ Route::group(array('before' => 'mustBe:Subscriber'), function() {
     ));
 });
 
-Route::get('missioncontrol/object/{object_id}', array(
-    'as' => 'missionControl.object.get',
+Route::get('missioncontrol/objects/{object_id}', array(
+    'as' => 'missionControl.objects.get',
     'uses' => 'ObjectsController@get'
 ));
 

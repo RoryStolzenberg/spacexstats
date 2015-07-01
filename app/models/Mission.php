@@ -117,7 +117,7 @@ class Mission extends Eloquent {
     }
 
     public function getLaunchIlluminationAttribute() {
-        
+
     }
 
     // Attribute Mutators
