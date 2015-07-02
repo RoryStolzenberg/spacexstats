@@ -67,7 +67,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
             'eula' => 'required'
 		);
 
-		$validator = Validator::make($input, $rules);
+        $messages = array(
+            'eula.required' => 'Please confirm you agree with the End User License Agreement'
+        );
+
+		$validator = Validator::make($input, $rules, $messages);
 		return $validator->passes() ? true : $validator->errors();
 	}
 

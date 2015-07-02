@@ -4,7 +4,16 @@ use SpaceXStats\Mailers\UserMailer;
 use SpaceXStats\Enums\UserRole;
 
 class UsersController extends BaseController {
-	protected $user, $mailer; 
+
+	protected $user, $mailer;
+
+    protected $flashMessages = [
+        'accountCouldNotBeCreatedDatabaseError'     => array('type' => 'failure', 'contents' => 'Looks like your account couldn\'t be created. You can try again, or get in touch.'),
+        'accountCreated'                            => array('type' => 'success', 'contents' => 'Your account has been created, please check your email to activate your account!'),
+        'accountCouldNotBeCreatedValidationError'   => array('type' => 'failure', 'contents' => 'Looks like your account couldn\'t be created. Check the errors below and then resubmit.'),
+        'accountActivated'                          => array('type' => 'success', 'contents' => 'Your account has been activated!'),
+        'accountCouldNotBeActivated'                => array('type' => 'failure', 'contents' => 'Your activation attempt was unsuccessful. Try again or get in touch.')
+    ];
 
 	public function __construct(User $user, UserMailer $mailer) {
 		$this->user = $user;
@@ -62,7 +71,8 @@ class UsersController extends BaseController {
 
 			if ($isValidForSignUp === true) {
 
-                DB::transaction(function() {
+                DB::beginTransaction();
+                try {
                     $user = new User();
                     $user->role_id  = UserRole::Unauthenticated;
                     $user->email    = Input::get('email', null);
@@ -75,11 +85,18 @@ class UsersController extends BaseController {
                     $profile->user()->associate($user)->save();
 
                     $this->mailer->welcome($user);
-                });
 
-				return Redirect::home()->with('flashMessage', array('contents' => 'Your account has been created, please check your email to activate your account!', 'type' => 'success'));
+                    DB::commit();
+                } catch (Exception $e) {
+                    DB::rollback();
+
+                    return Redirect::back()->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedDatabaseError']);
+                }
+
+				return Redirect::home()->with('flashMessage', $this->flashMessages['accountCreated']);
 			} else {
-				return Redirect::back()->withErrors($isValidForSignUp)->withInput(Input::except(['password', 'password_confirmation']));
+				return Redirect::back()->withErrors($isValidForSignUp)->withInput(Input::except(['password', 'password_confirmation']))
+                    ->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedValidationError']);
 			}
 		}
 	}
@@ -87,10 +104,10 @@ class UsersController extends BaseController {
 	public function verify($email, $key) {
 		if ($this->user->isValidKey($email, $key)) {
 			return Redirect::route('users.login')
-                ->with('flashMessage', array('contents' => 'Your account has been activated!', 'type' => 'success'));
+                ->with('flashMessage', $this->flashMessages['accountActivated']);
 		} else {
 			return Redirect::route('home')
-                ->with('flashMessage', array('contents' => 'Your activation attempt was unsuccessful. Try again or get in touch.', 'type' => 'failure'));
+                ->with('flashMessage', $this->flashMessages['accountCouldNotBeActivated']);
 		}
 	}
 

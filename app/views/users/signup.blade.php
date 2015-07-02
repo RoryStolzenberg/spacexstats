@@ -13,18 +13,23 @@
 		{{ Form::open(array('route' => 'users.signup')) }}
 			{{ Form::label('username', 'Username:') }}
 			{{ Form::text('username') }}
+            {{ $errors->first('username')  }}
 
 			{{ Form::label('email', 'Email:') }}
 			{{ Form::email('email') }}
+            {{ $errors->first('email')  }}
 
 			{{ Form::label('password', 'Password:') }}
 			{{ Form::password('password') }}
+            {{ $errors->first('password')  }}
 
 			{{ Form::label('password_confirmation', 'Confirm Password:') }}
 			{{ Form::password('password_confirmation') }}
+            {{ $errors->first('password_confirmation')  }}
 
+            {{ Form::label('eula', 'I agree to the terms and conditions') }}
 			{{ Form::checkbox('eula', true) }}
-			{{ Form::label('eula', 'I agree to the terms and conditions') }}
+            {{ $errors->first('eula')  }}
 
 			{{ Form::submit('Join') }}
 		{{ Form::close() }}	
