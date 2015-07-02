@@ -135,6 +135,14 @@ class UsersController extends BaseController {
 		}
 	}
 
+    public function requestChangePassword() {
+
+    }
+
+    public function changePassword() {
+
+    }
+
 	public function logout() {
 		Auth::logout();
 		return Redirect::route('home');

@@ -82,9 +82,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
             'rememberMe' => 'boolean'
 		);
 
-        $user = User::where('email', Input::get('email'))->firstOrFail();
+        $user = User::where('email', Input::get('email'))->first();
 
-        if ($user->role_id > UserRole::Member) {
+        if ($user !== null && $user->role_id > UserRole::Member) {
             return Auth::attempt(array('email' => Input::get('email', null), 'password' => Input::get('password', null)), Input::get('rememberMe', false));
         } else {
             return false;
