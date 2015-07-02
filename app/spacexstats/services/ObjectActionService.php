@@ -62,11 +62,7 @@ class ObjectActionService implements ActionServiceInterface {
     private function createTagRelations($input) {
         $tagIds = [];
         foreach ($input['tags'] as $tag) {
-            try {
-                $tagId = Tag::where('name', $tag['name'])->first(['tag_id'])->tag_id;
-            } catch (ModelNotFoundException $e) {
-                $tagId = Tag::create(array('name' => $tag['name']))->tag_id;
-            }
+            $tagId = Tag::firstOrCreate(array('name' => $tag['name']))->tag_id;
             array_push($tagIds, $tagId);
         }
 

@@ -2,6 +2,8 @@
 
 namespace SpaceXStats\Mailers;
 
+use \User;
+
 class UserMailer extends Mailer {
 
 	public function welcome(User $user) {

@@ -13,7 +13,8 @@
 		"indatus/dispatcher": "~1.4",
         "php-ffmpeg/php-ffmpeg": "~0.5",
         "sybio/gif-frame-extractor": "dev-master",
-        "abraham/twitteroauth": "0.5.2"
+        "abraham/twitteroauth": "0.5.2",
+		"guzzlehttp/guzzle": "~4.0"
 	},
 	"autoload": {
 		"classmap": [

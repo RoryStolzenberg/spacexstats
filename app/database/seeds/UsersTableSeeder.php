@@ -8,7 +8,8 @@ class UsersTableSeeder extends Seeder {
             'username' => 'elonmusk',
             'email' => 'elonmusk@spacexstats.com',
             'password' => 'password',
-            'subscription_expiry' => Carbon::now()->addYear()
+            'subscription_expiry' => Carbon::now()->addYear(),
+            'key' => str_random(32)
         ));
     }
 }

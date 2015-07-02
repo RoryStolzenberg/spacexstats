@@ -26,16 +26,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = ['password', 'remember_token'];
     protected $appends = [];
-    protected $fillable = [];
-	protected $guarded = ['role_id', 'username','email','password', 'key'];
+    protected $fillable = ['role_id', 'username','email','password', 'key'];
+	protected $guarded = [];
 	protected $dates = ['subscription_expiry'];
 
     protected $presenter = "UserPresenter";
 
 	// Relations
-	public function role() {
-		return $this->belongsTo('Role');
-	}
+	//public function role() {
+	//	return $this->belongsTo('Role');
+	//}
 
 	public function profile() {
 		return $this->hasOne('Profile');
@@ -56,8 +56,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	// Helpers
 	public function isValidForSignUp($input) {
 		$rules = array(
-			'username' => 'required|unique:users,username|min:3|max:20',
-			'email' => 'required|email|max:50',
+			'username' => 'required|unique:users,username|min:3|varchar:small',
+			'email' => 'required|unique:users,email|email|varchar:small',
 			'password' => 'required|confirmed|min:6'
 		);
 

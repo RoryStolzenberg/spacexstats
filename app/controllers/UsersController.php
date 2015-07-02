@@ -69,15 +69,24 @@ class UsersController extends BaseController {
 						'key' => str_random(32)
 					));
 
+                //DB::transaction(function() {
+                //    $user = new User();
+                //    $user->role_id()->associate(UserRole::Unauthenticated);
+                //});
+
+                //$user = new User();
+
+
+
 				$profile = new Profile;
 				$profile->user()->associate($user)->save();
 
 				$this->mailer->welcome($user);
 
-				return Response::json($user);
+				return Redirect::home()->with('flashMessage', array('contents' => 'Your account has been created, please check your email to activate your account!', 'type' => 'success'));
 			} else {
-				return Response::json($isValidForSignUp);
-			}			
+				return Redirect::back()->withErrors($isValidForSignUp)->withInput();
+			}
 		}
 	}
 

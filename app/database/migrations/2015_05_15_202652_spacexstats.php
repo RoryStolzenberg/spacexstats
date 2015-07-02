@@ -367,7 +367,9 @@ class Spacexstats extends Migration {
         }
 
         foreach($tables as $table) {
-            Schema::drop($table);
+            if ($table != 'migrations') {
+                Schema::drop($table);
+            }
         }
 	}
 
