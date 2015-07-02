@@ -11,8 +11,8 @@ class Role extends Eloquent {
     protected $guarded = [];
 
 	// Relations
-	//public function user() {
-	//	return $this->hasMany('users');
-	//}
+	public function users() {
+		return $this->hasMany('User');
+	}
 
 }

@@ -61,31 +61,25 @@ class UsersController extends BaseController {
 			$isValidForSignUp = $this->user->isValidForSignUp(Input::all());
 
 			if ($isValidForSignUp === true) {
-				$user = User::create(array(
-						'role_id' => UserRole::Unauthenticated,
-						'email' => Input::get('email', null),
-						'username' => Input::get('username', null),
-						'password' => Input::get('password', null),
-						'key' => str_random(32)
-					));
 
-                //DB::transaction(function() {
-                //    $user = new User();
-                //    $user->role_id()->associate(UserRole::Unauthenticated);
-                //});
+                DB::transaction(function() {
+                    $user = new User();
+                    $user->role_id  = UserRole::Unauthenticated;
+                    $user->email    = Input::get('email', null);
+                    $user->username = Input::get('username', null);
+                    $user->password = Input::get('password', null);
+                    $user->key      = str_random(32);
+                    $user->save();
 
-                //$user = new User();
+                    $profile = new Profile();
+                    $profile->user()->associate($user)->save();
 
-
-
-				$profile = new Profile;
-				$profile->user()->associate($user)->save();
-
-				$this->mailer->welcome($user);
+                    $this->mailer->welcome($user);
+                });
 
 				return Redirect::home()->with('flashMessage', array('contents' => 'Your account has been created, please check your email to activate your account!', 'type' => 'success'));
 			} else {
-				return Redirect::back()->withErrors($isValidForSignUp)->withInput();
+				return Redirect::back()->withErrors($isValidForSignUp)->withInput(Input::except(['password', 'password_confirmation']));
 			}
 		}
 	}
@@ -108,14 +102,19 @@ class UsersController extends BaseController {
 
 			$isValidForLogin = $this->user->isValidForLogin();
 
-			if ($isValidForLogin) {
+			if ($isValidForLogin === true) {
 				return Redirect::intended("/users/".Auth::user()->username);
-			} else {
+
+			} elseif ($isValidForLogin === false) {
 				return Redirect::back()
                     ->with('flashMessage', array('contents' => 'Your login attempt was unsuccessful. Try again.', 'type' => 'failure'))
                     ->withInput()
                     ->withErrors($isValidForLogin);
-			}
+
+			} elseif ($isValidForLogin === 'authenticate') {
+                return Redirect::back()
+                    ->with('flashMessage', array('contents' => 'Your login attempt was unsuccessful. Please check your email and activate your account first.', 'type' => 'failure'));
+            }
 		}
 	}
 

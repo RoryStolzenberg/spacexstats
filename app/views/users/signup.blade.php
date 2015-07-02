@@ -23,7 +23,7 @@
 			{{ Form::label('password_confirmation', 'Confirm Password:') }}
 			{{ Form::password('password_confirmation') }}
 
-			{{ Form::checkbox('eula', 'eula') }}
+			{{ Form::checkbox('eula', true) }}
 			{{ Form::label('eula', 'I agree to the terms and conditions') }}
 
 			{{ Form::submit('Join') }}

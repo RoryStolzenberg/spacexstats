@@ -5,6 +5,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 use Carbon\Carbon;
+use SpaceXStats\Enums\UserRole;
 
 class User extends Eloquent implements UserInterface, RemindableInterface {
 
@@ -26,8 +27,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	protected $hidden = ['password', 'remember_token'];
     protected $appends = [];
-    protected $fillable = ['role_id', 'username','email','password', 'key'];
-	protected $guarded = [];
+    protected $fillable = [];
+	protected $guarded = ['role_id', 'username','email','password', 'key'];
 	protected $dates = ['subscription_expiry'];
 
     protected $presenter = "UserPresenter";
@@ -53,12 +54,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Favorite');
 	}
 
+    public function role() {
+        return $this->belongsTo('Role');
+    }
+
 	// Helpers
 	public function isValidForSignUp($input) {
 		$rules = array(
 			'username' => 'required|unique:users,username|min:3|varchar:small',
 			'email' => 'required|unique:users,email|email|varchar:small',
-			'password' => 'required|confirmed|min:6'
+			'password' => 'required|confirmed|min:6',
+            'eula' => 'required'
 		);
 
 		$validator = Validator::make($input, $rules);
@@ -72,16 +78,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
             'rememberMe' => 'boolean'
 		);
 
-		return Auth::attempt(array('email' => Input::get('email', null), 'password' => Input::get('password', null)), Input::get('rememberMe', false));
+        $user = User::where('email', Input::get('email'))->firstOrFail();
+
+        if ($user->role_id > UserRole::Member) {
+            return Auth::attempt(array('email' => Input::get('email', null), 'password' => Input::get('password', null)), Input::get('rememberMe', false));
+        } else {
+            return false;
+        }
 	}
 
 	public function isValidKey($email, $key) {
-		$user = User::where('email', urldecode($email))->where('key', $key)->first();
+		$user = User::where('email', urldecode($email))->where('key', $key)->firstOrFail();
 		if (!empty($user)) {
 			$user->role_id = UserRole::Member;
 			return $user->save();			
-		} else {
-			return false;
 		}
 	}
 
