@@ -11,6 +11,10 @@ class Object extends Eloquent {
 	protected $fillable = [];
 	protected $guarded = [];
 
+    public function getDates() {
+        return ['created_at', 'updated_at', 'actioned_at'];
+    }
+
 	protected $submissionRules = array(
         'All' => array(
             'user_id' => 'required|integer|exists:users,user_id',
@@ -85,5 +89,9 @@ class Object extends Eloquent {
 
     public function getThumbLargeAttribute($value) {
         return '/'.$value;
+    }
+
+    public function getQueueTimeAttribute() {
+        return $this->actioned_at->diffInSeconds($this->created_at);
     }
 }

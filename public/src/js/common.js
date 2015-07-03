@@ -11,7 +11,8 @@ requirejs.config({
         'knockout': 'lib/knockout-3.2.0.debug',
         'ko.mapping': 'lib/knockout.mapping-latest',
         'ko.postbox': 'lib/knockout-postbox',
-        'd3': 'lib/d3'
+        'd3': 'lib/d3',
+        'moment': 'lib/moment'
     },
     shim: {
         "jquery.fracs": ["jquery"],

@@ -163,7 +163,7 @@ class Spacexstats extends Migration {
 
             // Audio-related properties
 
-            $table->enum('status', array('New', 'Queued', 'Complete', 'Deleted'));
+            $table->enum('status', array('New', 'Queued', 'Published', 'Deleted'));
             $table->enum('visibility', array('Public', 'Default', 'Hidden'));
             $table->datetime('actioned_at')->nullable();
             $table->boolean('anonymous');

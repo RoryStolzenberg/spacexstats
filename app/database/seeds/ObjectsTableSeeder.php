@@ -12,7 +12,7 @@ class ObjectsTableSeeder extends Seeder {
             'mimetype' => 'image/jpeg',
             'title' => 'DSQU Launch',
             'filename' => 'dsqu.jpg',
-            'status' => 'Complete',
+            'status' => 'Published',
             'visibility' => 'Hidden'
         ));
     }

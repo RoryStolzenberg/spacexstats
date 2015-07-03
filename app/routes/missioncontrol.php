@@ -34,7 +34,7 @@ Route::group(array('before' => 'mustBe:Administrator'), function() {
         'uses' => 'ReviewController@get'
     ));
 
-    Route::post('missioncontrol/review/update', array(
+    Route::post('missioncontrol/review/update/{object_id}', array(
         'as' => 'missionControl.review.update',
         'uses' => 'ReviewController@update'
     ));

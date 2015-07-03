@@ -1,7 +1,7 @@
 @extends('templates.main')
 
 @section('title', 'Upload to Mission Control')
-@section('bodyClass', 'upload')
+@section('bodyClass', 'missioncontrol-upload')
 
 @section('scripts')
     <script data-main="/src/js/common" src="/src/js/require.js"></script>

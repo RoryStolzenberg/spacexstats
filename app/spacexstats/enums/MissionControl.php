@@ -51,16 +51,15 @@ abstract class MissionControlSubtype {
 	const Telemetry 		= 3;
 	const Chart 			= 4;
 	const Screenshot		= 5;
-	const Administrator 	= 6;
-	const LaunchVideo   	= 7;
-	const PressConference	= 8;
-	const PressKit 			= 9;
-	const CargoManifest		= 10;
-	const Infographic		= 11;
-	const NewsSummary		= 12;
-	const PressRelease 		= 13;
-	const RedditComment 	= 14;
-	const NSFComment 		= 15;
-	const WeatherForecast	= 16;
-    const Map               = 17;
+	const LaunchVideo   	= 6;
+	const PressConference	= 7;
+	const PressKit 			= 8;
+	const CargoManifest		= 9;
+	const Infographic		= 10;
+	const NewsSummary		= 11;
+	const PressRelease 		= 12;
+	const RedditComment 	= 13;
+	const NSFComment 		= 14;
+	const WeatherForecast	= 15;
+    const Map               = 16;
 }
