@@ -14,8 +14,6 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 
 	// Add the image to mission control after being uploaded
 	public function addToMissionControl() {
-        $this->addThumbnails();
-
 		return \Object::create(array(
 			'user_id' => \Auth::id(),
 			'type' => MissionControlType::Image,
@@ -24,6 +22,8 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
 			'filename' => $this->fileinfo['filename'],
+            'thumb_large' => $this->setThumbnail('large'),
+            'thumb_small' => $this->setThumbnail('small'),
             'cryptographic_hash' => $this->getCryptographicHash(),
 			'dimension_width' => $this->getDimensions('width'),
 			'dimension_height' => $this->getDimensions('height'),
@@ -38,12 +38,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 		));
 	}
 
-    private function addThumbnails() {
-        $this->setThumbnail('small');
-        $this->setThumbnail('large');
-    }
-
-	// Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
+    // Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
 	private function setThumbnail($size) {
 		$lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 

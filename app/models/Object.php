@@ -7,7 +7,7 @@ class Object extends Eloquent {
     public $timestamps = true;
 
 	protected $hidden = [];
-    //protected $appends = ['thumb_small', 'thumb_large'];
+    protected $appends = [];
 	protected $fillable = [];
 	protected $guarded = [];
 
@@ -27,6 +27,10 @@ class Object extends Eloquent {
             'camera_model' => 'varchar:compact'
 		),
 		'GIF' => array(
+            'title' => 'required|varchar:compact',
+            'summary' => 'required|varchar:large',
+            'author' => 'required|varchar:small',
+            'attribution' => 'required|varchar:medium',
 		),
 		'Audio' => array(
 		),
@@ -75,13 +79,11 @@ class Object extends Eloquent {
     }
 
     // Attribute accessors
-    public function getThumbSmallAttribute() {
-        // TODO: use if statements based on media type later
-        return 'media/small/' . $this->attributes['filename'];
+    public function getThumbSmallAttribute($value) {
+        return '/'.$value;
     }
 
-    public function getThumbLargeAttribute() {
-        // TODO: use if statements based on media type later
-        return 'media/large/' . $this->attributes['filename'];
+    public function getThumbLargeAttribute($value) {
+        return '/'.$value;
     }
 }

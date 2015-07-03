@@ -2,6 +2,7 @@
 namespace SpaceXStats\UploadTemplates;
 
 use GifFrameExtractor\GifFrameExtractor as GifFrameExtractor;
+use SpaceXStats\Enums\MissionControlType as MissionControlType;
 
 class GIFUpload extends GenericUpload implements UploadInterface {
 	protected
@@ -10,28 +11,23 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 
 	// Add the image to mission control after being uploaded
     public function addToMissionControl() {
-        $this->addThumbnails();
-
-		return Object::create(array(
-			'user_id' => Auth::id(),
+		return \Object::create(array(
+			'user_id' => \Auth::id(),
 			'type' => MissionControlType::GIF,
 			'size' => $this->fileinfo['size'],
 			'filetype' => $this->fileinfo['filetype'],
-            'cryptographic_hash' => $this->getCryptographicHash(),
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
 			'filename' => $this->fileinfo['filename'],
+            'thumb_large' => $this->setThumbnail('large'),
+            'thumb_small' => $this->setThumbnail('small'),
+            'cryptographic_hash' => $this->getCryptographicHash(),
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
 			'status' => 'new'
 		));
 	}
-
-    private function addThumbnails() {
-        $this->setThumbnail('small');
-        $this->setThumbnail('large');
-    }
 
     // Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
 	private function setThumbnail($size) {
@@ -55,13 +51,13 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 		$image = new \Imagick();
         $image->readImageBlob($blob);
 		$image->thumbnailImage($lengthDimension, $lengthDimension, true);
-		$image->writeImage($this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
+		$image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
 
 		return $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg';
 	}
 
     private function getDimensions($dimension) {
-        $image = new \Imagick($this->directory['full'] . $this->fileinfo['filename']);
+        $image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
         return ($dimension == 'width') ? $image->getImageWidth() : $image->getImageHeight();
     }
 

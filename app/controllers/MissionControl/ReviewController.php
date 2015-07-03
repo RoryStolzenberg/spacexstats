@@ -17,15 +17,13 @@ class ReviewController extends BaseController {
 
     // AJAX POST
     public function update($object_id) {
-        if (Input::has('action')) {
+        if (Input::has(['statusAction', 'visibilityAction'])) {
 
             $object = Object::find($object_id);
 
-            if (Input::get('action') === 'approve') {
-                $object->status = 'Published';
-            } elseif (Input::get('action') === 'remove') {
-                $object->status = 'Removed';
-            }
+            $object->status = Input::get('statusAction');
+            $object->visibility = Input::get('visibilityAction');
+
             return Response::json($object->save());
         } else {
             return Response::json(false, 400);

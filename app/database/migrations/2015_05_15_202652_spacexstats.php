@@ -125,12 +125,14 @@ class Spacexstats extends Migration {
             $table->string('original_name', Varchar::compact);
             $table->string('title', Varchar::compact);
             $table->string('filename', Varchar::small);
-            $table->string('cryptographic_hash', 256)->nullable();
+            $table->string('thumb_large', Varchar::small);
+            $table->string('thumb_small', Varchar::small);
+            $table->char('cryptographic_hash', 64)->nullable();
             $table->string('perceptual_hash')->nullable();
-
 
             $table->smallInteger('dimension_width')->nullable();
             $table->smallInteger('dimension_height')->nullable();
+            $table->smallInteger('length')->nullable();
 
             // Mission control related properties
             $table->string('summary', Varchar::large);
@@ -161,8 +163,9 @@ class Spacexstats extends Migration {
 
             // Audio-related properties
 
-            $table->enum('status', array('New', 'Queued', 'Complete'));
+            $table->enum('status', array('New', 'Queued', 'Complete', 'Deleted'));
             $table->enum('visibility', array('Public', 'Default', 'Hidden'));
+            $table->datetime('actioned_at')->nullable();
             $table->boolean('anonymous');
             $table->timestamps();
         });

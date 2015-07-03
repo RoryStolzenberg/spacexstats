@@ -38,9 +38,12 @@
 								<li>{{ link_to_route('missionControl.create', 'Upload') }}</li>
 								<li>Leaderboards</li>
 							@else 	
-							<li>{{ link_to_route('missionControl.buy', 'Buy')}}</li>
+							    <li>{{ link_to_route('missionControl.buy', 'Buy')}}</li>
 							@endif
 							<li><a href="/docs#missioncontrol">Docs</a></li>
+                            @if (Auth::isAdmin())
+                                <li>{{ link_to_route('missionControl.review.index', 'Review') }}</li>
+                            @endif
 						</ul>
 					</li>
 					<li class="grid-2 grid-small-12 push-2">

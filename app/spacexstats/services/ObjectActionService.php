@@ -29,12 +29,12 @@ class ObjectActionService implements ActionServiceInterface {
     public function create($input) {
         $this->object = Object::find($input['object_id']);
 
-        // Global object properties
-        $this->object->title = $input['title'];
-        $this->object->summary = $input['summary'];
-        $this->object->subtype = $input['subtype'];
-        $this->object->originated_at = $input['originated_at'];
-        $this->object->anonymous = $input['anonymous'];
+        // Global object
+        $this->object->title = array_get($input, 'title', null);
+        $this->object->summary = array_get($input, 'summary', null);
+        $this->object->subtype = array_get($input, 'subtype', null);
+        $this->object->originated_at = array_get($input, 'originated_at', null);
+        $this->object->anonymous = array_get($input, 'anonymous', null);
 
         // Set the mission relation if it exists
         $this->createMissionRelation($input);
@@ -42,9 +42,9 @@ class ObjectActionService implements ActionServiceInterface {
         // Set the tag relations
         $this->createTagRelations($input);
 
-        if ($input['type'] == MissionControlType::Image) {
-            $this->object->attribution = $input['attribution'];
-            $this->object->author = $input['author'];
+        if ($input['type'] == MissionControlType::Image || $input['type'] == MissionControlType::GIF) {
+            $this->object->attribution = array_get($input, 'attribution', null);
+            $this->object->author = array_get($input, 'author', null);
         }
 
         $this->object->save();

@@ -1,11 +1,16 @@
 @extends('templates.main')
 
 @section('scripts')
-    {{ HTML::script('ReviewViewModel.js') }ReviewViewModel.js="text/javascript">
-        $(document).ready(function() {
-            ko.applyBindings(new reviewViewModel());
+    <script data-main="/src/js/common" src="/src/js/require.js"></script>
+    <script>
+        require(['common'], function() {
+            require(['knockout', 'viewmodels/ReviewViewModel'], function(ko, ReviewViewModel) {
+
+                ko.applyBindings(new ReviewViewModel());
+            });
         });
     </script>
+
     <script type="text/html" id="object-review-template">
         <tr>
             <td data-bind="text: name"></td>

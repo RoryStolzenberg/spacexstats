@@ -24,9 +24,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
                 } else if (options.data.type == 5) {
                     return new UploadedDocument(options.data);
-
                 }
-
             }
         };
 
@@ -51,15 +49,11 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.year = ko.observable(null);
             self.month = ko.observable(null);
             self.date = ko.observable(null);
-
-            self.thumbnail = ko.computed(function() {
-                return '/media/small/' + self.filename();
-            });
         }
 
-        function UploadedGif() {
+        function UploadedGif(gif) {
             var self = this;
-            koMapping.fromJS(image, {
+            koMapping.fromJS(gif, {
                 include: ['title', 'summary', 'tags', 'originated_date', 'mission_id', 'author', 'attribution', 'anonymous']
             }, this);
 
@@ -77,21 +71,17 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.year = ko.observable(null);
             self.month = ko.observable(null);
             self.date = ko.observable(null);
-
-            self.thumbnail = ko.computed(function() {
-                return '/media/small/' + self.filename();
-            });
         }
 
-        function UploadedAudio() {
+        function UploadedAudio(audio) {
             var self = this;
         }
 
-        function UploadedVideo() {
+        function UploadedVideo(video) {
             var self = this;
         }
 
-        function UploadedDocument() {
+        function UploadedDocument(document) {
             var self = this;
         }
 
