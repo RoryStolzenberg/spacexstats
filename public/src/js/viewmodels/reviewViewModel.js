@@ -1,4 +1,4 @@
-define(['knockout', 'ko.mapping'], function(ko, koMapping) {
+define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var ReviewViewModel = function() {
         var self = this;
 
@@ -15,11 +15,11 @@ define(['knockout', 'ko.mapping'], function(ko, koMapping) {
 
         self.objectsToReview = ko.observableArray();
 
-        self.action = function(object_id, action) {
-            $.ajax('/missioncontrol/review/update/' + object_id, {
+        self.action = function(object, data) {
+            $.ajax('/missioncontrol/review/update/' + object.object_id, {
                 dataType: 'json',
                 type: 'POST',
-                data: { action: action},
+                data: { action: data},
                 success: function(response) {
                     if (response == true) {
 
@@ -39,6 +39,8 @@ define(['knockout', 'ko.mapping'], function(ko, koMapping) {
                 type: 'GET',
                 success: function(objectsToReview) {
                     koMapping.fromJS(objectsToReview, fileMappingOptions, self.objectsToReview);
+
+                    console.log(self.objectsToReview());
                 }
             });
         })();

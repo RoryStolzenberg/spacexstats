@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "936644f1e536973bf2c384137bf2aaad",
+    "hash": "2b497ee8183951321434cdc5dc95151d",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -835,6 +835,59 @@
                 "password"
             ],
             "time": "2014-11-20 16:49:30"
+        },
+        {
+            "name": "jenssegers/imagehash",
+            "version": "v0.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jenssegers/php-imagehash.git",
+                "reference": "39cbc9b5513f3c25c115f25f6d98a4d736e74a81"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jenssegers/php-imagehash/zipball/39cbc9b5513f3c25c115f25f6d98a4d736e74a81",
+                "reference": "39cbc9b5513f3c25c115f25f6d98a4d736e74a81",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.4",
+                "satooshi/php-coveralls": "~0.6.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Jenssegers\\ImageHash\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jens Segers",
+                    "homepage": "http://jenssegers.be"
+                },
+                {
+                    "name": "Kenneth Rapp"
+                }
+            ],
+            "description": "Perceptual image hashing for PHP",
+            "homepage": "https://github.com/jenssegers/php-imagehash",
+            "keywords": [
+                "ahash",
+                "dhash",
+                "hash",
+                "image hash",
+                "imagehash",
+                "perceptual",
+                "phash"
+            ],
+            "time": "2015-03-21 13:45:08"
         },
         {
             "name": "jeremeamia/SuperClosure",

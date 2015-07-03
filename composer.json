@@ -14,7 +14,8 @@
         "php-ffmpeg/php-ffmpeg": "~0.5",
         "sybio/gif-frame-extractor": "dev-master",
         "abraham/twitteroauth": "0.5.2",
-		"guzzlehttp/guzzle": "~4.0"
+		"guzzlehttp/guzzle": "~4.0",
+		"jenssegers/imagehash": "^0.2.3"
 	},
 	"autoload": {
 		"classmap": [

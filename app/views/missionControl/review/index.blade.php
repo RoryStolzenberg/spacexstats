@@ -27,7 +27,7 @@
     <div class="content-wrapper">
         <h1>Review Queue</h1>
         <main>
-            <table data-bind="template: { name: 'object-review-template', foreach: objects, as: 'object' }">
+            <table data-bind="template: { name: 'object-review-template', foreach: objectsToReview, as: 'objectToReview' }">
             </table>
         </main>
     </div>
