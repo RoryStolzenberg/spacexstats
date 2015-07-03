@@ -24,6 +24,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
 			'filename' => $this->fileinfo['filename'],
+            'cryptographic_hash' => $this->getCryptographicHash(),
 			'dimension_width' => $this->getDimensions('width'),
 			'dimension_height' => $this->getDimensions('height'),
 			'coord_lat' => $this->exif->latitude(),
@@ -53,6 +54,10 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 
 		return $this->directory[$size] . $this->fileinfo['filename'];
 	}
+
+    private function getCryptographicHash() {
+        return hash_file('sha256', $this->directory['full'] . $this->fileinfo['filename']);
+    }
 
 	// get the dimensions of an image
 	private function getDimensions($dimension) {

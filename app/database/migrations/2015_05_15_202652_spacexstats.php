@@ -125,6 +125,10 @@ class Spacexstats extends Migration {
             $table->string('original_name', Varchar::compact);
             $table->string('title', Varchar::compact);
             $table->string('filename', Varchar::small);
+            $table->string('cryptographic_hash', 256)->nullable();
+            $table->string('perceptual_hash')->nullable();
+
+
             $table->smallInteger('dimension_width')->nullable();
             $table->smallInteger('dimension_height')->nullable();
 

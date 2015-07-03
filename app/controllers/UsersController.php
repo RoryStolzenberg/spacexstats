@@ -7,12 +7,15 @@ class UsersController extends BaseController {
 
 	protected $user, $mailer;
 
+
     protected $flashMessages = [
         'accountCouldNotBeCreatedDatabaseError'     => array('type' => 'failure', 'contents' => 'Looks like your account couldn\'t be created. You can try again, or get in touch.'),
         'accountCreated'                            => array('type' => 'success', 'contents' => 'Your account has been created, please check your email to activate your account!'),
         'accountCouldNotBeCreatedValidationError'   => array('type' => 'failure', 'contents' => 'Looks like your account couldn\'t be created. Check the errors below and then resubmit.'),
         'accountActivated'                          => array('type' => 'success', 'contents' => 'Your account has been activated!'),
-        'accountCouldNotBeActivated'                => array('type' => 'failure', 'contents' => 'Your activation attempt was unsuccessful. Try again or get in touch.')
+        'accountCouldNotBeActivated'                => array('type' => 'failure', 'contents' => 'Your activation attempt was unsuccessful. Try again or get in touch.'),
+        'failedLoginCredentials'                    => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Try again.'),
+        'failedLoginNotActivated'                   => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Please check your email and activate your account first.')
     ];
 
 	public function __construct(User $user, UserMailer $mailer) {
@@ -124,13 +127,13 @@ class UsersController extends BaseController {
 
 			} elseif ($isValidForLogin === false) {
 				return Redirect::back()
-                    ->with('flashMessage', array('contents' => 'Your login attempt was unsuccessful. Try again.', 'type' => 'failure'))
+                    ->with('flashMessage', $this->flashMessages['failedLoginCredentials'])
                     ->withInput()
                     ->withErrors($isValidForLogin);
 
 			} elseif ($isValidForLogin === 'authenticate') {
                 return Redirect::back()
-                    ->with('flashMessage', array('contents' => 'Your login attempt was unsuccessful. Please check your email and activate your account first.', 'type' => 'failure'));
+                    ->with('flashMessage', $this->flashMessages['failedLoginNotActivated']);
             }
 		}
 	}
