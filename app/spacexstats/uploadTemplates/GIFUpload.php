@@ -17,6 +17,7 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 			'type' => MissionControlType::GIF,
 			'size' => $this->fileinfo['size'],
 			'filetype' => $this->fileinfo['filetype'],
+            'cryptographic_hash' => $this->getCryptographicHash(),
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
 			'filename' => $this->fileinfo['filename'],
@@ -51,7 +52,7 @@ class GIFUpload extends GenericUpload implements UploadInterface {
         $blob = ob_get_clean();
 
         // Turn Gif frame into thumbnail
-		$image = new Imagick();
+		$image = new \Imagick();
         $image->readImageBlob($blob);
 		$image->thumbnailImage($lengthDimension, $lengthDimension, true);
 		$image->writeImage($this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
@@ -60,8 +61,12 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 	}
 
     private function getDimensions($dimension) {
-        $image = new Imagick($this->directory['full'] . $this->fileinfo['filename']);
+        $image = new \Imagick($this->directory['full'] . $this->fileinfo['filename']);
         return ($dimension == 'width') ? $image->getImageWidth() : $image->getImageHeight();
+    }
+
+    private function getCryptographicHash() {
+        return hash_file('sha256', $this->directory['full'] . $this->fileinfo['filename']);
     }
 
     private function getLength() {

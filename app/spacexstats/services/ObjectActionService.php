@@ -33,6 +33,8 @@ class ObjectActionService implements ActionServiceInterface {
         $this->object->title = $input['title'];
         $this->object->summary = $input['summary'];
         $this->object->subtype = $input['subtype'];
+        $this->object->originated_at = $input['originated_at'];
+        $this->object->anonymous = $input['anonymous'];
 
         // Set the mission relation if it exists
         $this->createMissionRelation($input);
@@ -42,7 +44,6 @@ class ObjectActionService implements ActionServiceInterface {
 
         if ($input['type'] == MissionControlType::Image) {
             $this->object->attribution = $input['attribution'];
-            $this->object->anonymous = $input['anonymous'];
             $this->object->author = $input['author'];
         }
 

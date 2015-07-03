@@ -83,8 +83,17 @@
                                 <option value="3">Chart</option>
                                 <option value="5">Screenshot</option>
                                 <option value="11">Infographic</option>
+                                <option value="12">News Summary</option>
                             </select>
                         </label>
+                    </li>
+
+                    <li class="grid-6">
+                        {{ Form::date(null, \Carbon\Carbon::now(), 1950, array(
+                            'day' => array('data-bind' => 'value: date'),
+                            'month' => array('data-bind' => 'value: month'),
+                            'year' => array('data-bind' => 'value: year'),
+                        )) }}
                     </li>
 
 					<li class="grid-12">
@@ -104,19 +113,65 @@
             <form>
                 <ul class="container">
                     <li class="grid-4">
-                        <img data-bind="attr : { src: '/' + thumb_small, alt: original_name }">
+                        <img data-bind="attr : { src: thumbnail, alt: original_name }">
                     </li>
+
                     <li class="grid-4">
-                        <label><p>Title</p><input type="text" name="title" /></label>
+                        <label>
+                            <p>Title</p>
+                            <input type="text" name="title" data-bind="value: title" />
+                        </label>
                     </li>
-                    <li class="grid-8"><label><p>Summary</p><textarea name="summary"></textarea></label></li>
+
+                    <li class="grid-8">
+                        <label>
+                            <p>Summary</p>
+                            <textarea name="summary" data-bind="value: summary"></textarea>
+                        </label>
+                    </li>
+
                     <li class="grid-4">
-                        <label><p>Related to Mission</p>
-                            <rich-select params="fetchFrom: '/missions/all', default: true, mapping: {}"></rich-select>                    </li>
-                    <li class="grid-6"><label><p>Author</p><input type="text" name="author" /></label></li>
-                    <li class="grid-6"><label><p>Attribution/Copyright</p><textarea name="attribution"></textarea></label></li>
-                    <li class="grid-6"><label>Tags<tags></tags></label></li>
-                    <li class="grid-12"><label>Submit anonymously?<input type="checkbox" name="anonymous" /></label></li>
+                        <label>
+                            <p>Related to Mission</p>
+                            <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <label>
+                            <p>Author</p>
+                            <input type="text" name="author" data-bind="value: author" />
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <label>
+                            <p>Attribution/Copyright</p>
+                            <textarea name="attribution" data-bind="value: attribution"></textarea>
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <label>
+                            <p>Tags</p>
+                            <tags params="tags: tags"></tags>
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        {{ Form::date(null, \Carbon\Carbon::now(), 1950, array(
+                            'day' => array('data-bind' => 'value: date'),
+                            'month' => array('data-bind' => 'value: month'),
+                            'year' => array('data-bind' => 'value: year'),
+                        )) }}
+                    </li>
+
+                    <li class="grid-12">
+                        <label>
+                            <p>Submit anonymously?</p>
+                            <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
+                        </label>
+                    </li>
                 </ul>
             </form>
 		</div>

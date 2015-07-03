@@ -10,7 +10,23 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         var fileMappingOptions = {
             create: function(options) {
-                return new UploadedImage(options.data);
+                if (options.data.type == 1) {
+                    return new UploadedImage(options.data);
+
+                } else if (options.data.type == 2) {
+                    return new UploadedGif(options.data);
+
+                } else if (options.data.type == 3) {
+                    return new UploadedAudio(options.data);
+
+                } else if (options.data.type == 4) {
+                    return new UploadedVideo(options.data);
+
+                } else if (options.data.type == 5) {
+                    return new UploadedDocument(options.data);
+
+                }
+
             }
         };
 
@@ -28,7 +44,13 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_date = ko.observable(null);
+            self.originated_date = ko.computed(function() {
+                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
+            });
+
+            self.year = ko.observable(null);
+            self.month = ko.observable(null);
+            self.date = ko.observable(null);
 
             self.thumbnail = ko.computed(function() {
                 return '/media/small/' + self.filename();
@@ -37,6 +59,28 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         function UploadedGif() {
             var self = this;
+            koMapping.fromJS(image, {
+                include: ['title', 'summary', 'tags', 'originated_date', 'mission_id', 'author', 'attribution', 'anonymous']
+            }, this);
+
+            self.title = ko.observable(null);
+            self.summary = ko.observable(null);
+            self.mission_id = ko.observable(null);
+            self.author = ko.observable(null);
+            self.attribution = ko.observable(null);
+            self.anonymous = ko.observable(false);
+            self.tags = ko.observableArray([]);
+            self.originated_date = ko.computed(function() {
+                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
+            });
+
+            self.year = ko.observable(null);
+            self.month = ko.observable(null);
+            self.date = ko.observable(null);
+
+            self.thumbnail = ko.computed(function() {
+                return '/media/small/' + self.filename();
+            });
         }
 
         function UploadedAudio() {

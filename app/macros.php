@@ -1,7 +1,7 @@
 <?php
 
 // Form macro date
-Form::macro('date', function($nameOfProperty = null, $defaultDateArray = array(), $startYear = 1900, $options = array()) {
+Form::macro('date', function($nameOfProperty = null, $defaultDateArray = null, $startYear = 1900, $options = array()) {
 
     $defaultDay = null;
     $defaultMonth = null;
@@ -20,9 +20,14 @@ Form::macro('date', function($nameOfProperty = null, $defaultDateArray = array()
 
     // There is no usable date, pull in the defaults, if they are defined
     } else {
-        $defaultDay = (array_key_exists('day', $defaultDateArray)) ? $defaultDateArray['day'] : null;
-        $defaultMonth = (array_key_exists('month', $defaultDateArray)) ? $defaultDateArray['month'] : null;
-        $defaultYear = (array_key_exists('year', $defaultDateArray)) ? $defaultDateArray['year'] : null;
+
+        if ($defaultDateArray !== null) {
+            $now = \Carbon\Carbon::now();
+
+            $defaultDay = $now->format('d');
+            $defaultMonth = $now->format('m');
+            $defaultYear = $now->format('y');
+        }
     }
 
     // Check for any options (attributes, ids, classes, data-binds...)
