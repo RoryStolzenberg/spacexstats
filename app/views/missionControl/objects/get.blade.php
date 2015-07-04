@@ -14,6 +14,7 @@
                 <ul class="container">
                     <li class="grid-2">{{ $object->present()->type() }}</li>
                     <li class="grid-2">Comments</li>
+                    <li class="grid-2">Edit</li>
                 </ul>
             </nav>
 
@@ -21,13 +22,27 @@
                 <div class="grid-8">
                     <img src="{{ $object->filename }}" />
                 </div>
-                <div class="grid-4">
+                <aside class="grid-4">
+                    <div class="actions container">
+                        <span class="grid-4">
+
+                        </span>
+                        <span class="grid-4"></span>
+                        <span class="grid-4">
+
+                        </span>
+                    </div>
                     <p>Uploaded by {{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}<br/>
                         On {{ $object->present()->created_at() }}</p>
                     <ul>
                         <li>{{ $object->present()->subtype() }}</li>
                     </ul>
-                </div>
+                </aside>
+            </section>
+
+            <h2>Summary</h2>
+            <section class="notes">
+                <p>{{ $object-> }}</p>
             </section>
 
             <section class="comments">

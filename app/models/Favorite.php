@@ -2,7 +2,7 @@
 
 class Favorite extends Eloquent {
 
-	protected $table = 'favorites';
+	protected $table = 'favorites_pivot';
 	protected $primaryKey = 'favorite_id';
     public $timestamps = true;
 

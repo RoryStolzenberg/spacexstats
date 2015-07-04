@@ -119,5 +119,5 @@ Route::filter('doesMissionExist', function() {
 });
 
 Route::filter('doesObjectExist', function() {
-    Object::find(Route::input('object_id'))->firstOrFail();
+    Object::findOrFail(Route::input('object_id'));
 });

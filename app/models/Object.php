@@ -77,6 +77,10 @@ class Object extends Eloquent {
         return $this->belongsToMany('User', 'favorites_pivot');
     }
 
+    public function notes() {
+        return $this->belongsToMany('User', 'notes_pivot');
+    }
+
     // Validators
 	public function isValidForSubmission($input) {
 		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);

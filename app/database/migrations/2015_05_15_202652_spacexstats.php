@@ -113,6 +113,15 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('notes_pivot', function(Blueprint $table) {
+            $table->increments('note_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('object_id')->unsigned();
+            $table->string('note', Varchar::large);
+
+            $table->timestamps();
+        });
+
         Schema::create('objects', function(Blueprint $table) {
             $table->increments('object_id');
             $table->integer('user_id')->unsigned();

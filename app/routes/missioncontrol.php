@@ -68,7 +68,7 @@ Route::group(array('before' => 'mustBe:Subscriber'), function() {
 Route::get('missioncontrol/objects/{object_id}', array(
     'as' => 'missionControl.objects.get',
     'uses' => 'ObjectsController@get'
-))->before('doesMissionExist');
+))->before('doesObjectExist');
 
 Route::get('missioncontrol', array(
     'as' => 'missionControl',

@@ -30,25 +30,27 @@ class ObjectActionService implements ActionServiceInterface {
         $this->object = Object::find($input['object_id']);
 
         // Global object
-        $this->object->title = array_get($input, 'title', null);
-        $this->object->summary = array_get($input, 'summary', null);
-        $this->object->subtype = array_get($input, 'subtype', null);
-        $this->object->originated_at = array_get($input, 'originated_at', null);
-        $this->object->anonymous = array_get($input, 'anonymous', 0);
-        $this->object->status = 'Queued';
+        DB::transaction(function($input) {
+            $this->object->title = array_get($input, 'title', null);
+            $this->object->summary = array_get($input, 'summary', null);
+            $this->object->subtype = array_get($input, 'subtype', null);
+            $this->object->originated_at = array_get($input, 'originated_at', null);
+            $this->object->anonymous = isset($input['anonymous']);
+            $this->object->status = 'Queued';
 
-        // Set the mission relation if it exists
-        $this->createMissionRelation($input);
+            // Set the mission relation if it exists
+            $this->createMissionRelation($input);
 
-        // Set the tag relations
-        $this->createTagRelations($input);
+            // Set the tag relations
+            $this->createTagRelations($input);
 
-        if ($input['type'] == MissionControlType::Image || $input['type'] == MissionControlType::GIF) {
-            $this->object->attribution = array_get($input, 'attribution', null);
-            $this->object->author = array_get($input, 'author', null);
-        }
+            if ($input['type'] == MissionControlType::Image || $input['type'] == MissionControlType::GIF) {
+                $this->object->attribution = array_get($input, 'attribution', null);
+                $this->object->author = array_get($input, 'author', null);
+            }
 
-        $this->object->save();
+            $this->object->save();
+        });
     }
 
     private function createMissionRelation($input) {
