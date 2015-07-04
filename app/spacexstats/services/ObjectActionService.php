@@ -30,7 +30,7 @@ class ObjectActionService implements ActionServiceInterface {
         $this->object = Object::find($input['object_id']);
 
         // Global object
-        DB::transaction(function($input) {
+        \DB::transaction(function() use($input) {
             $this->object->title = array_get($input, 'title', null);
             $this->object->summary = array_get($input, 'summary', null);
             $this->object->subtype = array_get($input, 'subtype', null);

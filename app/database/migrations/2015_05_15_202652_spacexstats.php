@@ -327,6 +327,11 @@ class Spacexstats extends Migration {
             $table->foreign('featured_image')->references('object_id')->on('objects');
         });
 
+        Schema::table('notes_pivot', function(Blueprint $table) {
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('object_id')->references('object_id')->on('objects');
+        });
+
         Schema::table('objects', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('mission_id')->references('mission_id')->on('missions');

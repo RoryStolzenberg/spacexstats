@@ -10,25 +10,24 @@ class ObjectsController extends BaseController {
 
     public function get($object_id) {
         $object = Object::find($object_id);
+
+        $viewToMake = View::make('missionControl.objects.get', array(
+            'object' => $object,
+            'userNote' => $object->notes->find(Auth::user()->id)
+        ));
         
         if ($object->visibility == 'Public' && $object->status == 'Published') {
-            return View::make('missionControl.objects.get', array(
-                'object' => $object
-            ));
+            return $viewToMake;
 
         } elseif ($object->visibility == 'Default' && $object->status == 'Published') {
             if (Auth::isSubscriber()) {
-                return View::make('missionControl.objects.get', array(
-                    'object' => $object
-                ));
+                return $viewToMake;
             }
             return App::abort(401);
 
         } elseif ($object->visibility == 'Hidden') {
             if (Auth::isAdmin()) {
-                return View::make('missionControl.objects.get', array(
-                    'object' => $object
-                ));
+                return $viewToMake;
             }
             return App::abort(401);
 

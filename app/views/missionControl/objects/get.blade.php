@@ -27,7 +27,9 @@
                         <span class="grid-4">
 
                         </span>
-                        <span class="grid-4"></span>
+                        <span class="grid-4">
+
+                        </span>
                         <span class="grid-4">
 
                         </span>
@@ -42,7 +44,8 @@
 
             <h2>Summary</h2>
             <section class="notes">
-                <p>{{ $object-> }}</p>
+                <textarea>{{ $userNote }}</textarea>
+                <button>Save Note</button>
             </section>
 
             <section class="comments">
