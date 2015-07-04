@@ -37,7 +37,7 @@ Route::group(array('before' => 'mustBe:Administrator'), function() {
     Route::post('missioncontrol/review/update/{object_id}', array(
         'as' => 'missionControl.review.update',
         'uses' => 'ReviewController@update'
-    ));
+    ))->before('doesObjectExist');
 });
 
 Route::get('missioncontrol/about', array('as' => 'missionControl.about', function() {
@@ -68,7 +68,7 @@ Route::group(array('before' => 'mustBe:Subscriber'), function() {
 Route::get('missioncontrol/objects/{object_id}', array(
     'as' => 'missionControl.objects.get',
     'uses' => 'ObjectsController@get'
-));
+))->before('doesMissionExist');
 
 Route::get('missioncontrol', array(
     'as' => 'missionControl',

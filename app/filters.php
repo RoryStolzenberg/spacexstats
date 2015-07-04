@@ -117,3 +117,7 @@ Route::filter('csrf', function()
 Route::filter('doesMissionExist', function() {
     Mission::whereSlug(Route::input('slug'))->firstOrFail();
 });
+
+Route::filter('doesObjectExist', function() {
+    Object::find(Route::input('object_id'))->firstOrFail();
+});

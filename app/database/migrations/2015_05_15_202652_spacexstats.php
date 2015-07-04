@@ -66,7 +66,7 @@ class Spacexstats extends Migration {
             $table->smallInteger('subscription_type')->unsigned();
         });
 
-        Schema::create('favorites', function(Blueprint $table) {
+        Schema::create('favorites_pivot', function(Blueprint $table) {
             $table->increments('favorite_id');
             $table->integer('user_id')->unsigned();
             $table->integer('object_id')->unsigned();

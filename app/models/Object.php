@@ -2,6 +2,8 @@
 
 class Object extends Eloquent {
 
+    use PresentableTrait;
+
 	protected $table = 'objects';
 	protected $primaryKey = 'object_id';
     public $timestamps = true;
@@ -14,6 +16,8 @@ class Object extends Eloquent {
     public function getDates() {
         return ['created_at', 'updated_at', 'actioned_at'];
     }
+
+    protected $presenter = "ObjectPresenter";
 
 	protected $submissionRules = array(
         'All' => array(
@@ -69,6 +73,10 @@ class Object extends Eloquent {
         return $this->belongsToMany('Collection', 'collections_objects_pivot');
     }
 
+    public function favorites() {
+        return $this->belongsToMany('User', 'favorites_pivot');
+    }
+
     // Validators
 	public function isValidForSubmission($input) {
 		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);
@@ -83,6 +91,10 @@ class Object extends Eloquent {
     }
 
     // Attribute accessors
+    public function getFilenameAttribute($value) {
+        return '/media/full/'.$value;
+    }
+
     public function getThumbSmallAttribute($value) {
         return '/'.$value;
     }

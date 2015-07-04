@@ -62,4 +62,25 @@ abstract class MissionControlSubtype {
 	const NSFComment 		= 14;
 	const WeatherForecast	= 15;
     const Map               = 16;
+
+    public static function getType($num) {
+        switch ($num) {
+            case 1: return 'Mission Patch';
+            case 2: return 'Photo';
+            case 3: return 'Telemetry';
+            case 4: return 'Chart';
+            case 5: return 'Screenshot';
+            case 6: return 'Launch Video';
+            case 7: return 'Press Conference';
+            case 8: return 'Press Kit';
+            case 9: return 'Cargo Manifest';
+            case 10: return 'Infographic';
+            case 11: return 'News Summary';
+            case 12: return 'Press Release';
+            case 13: return 'Reddit Comment';
+            case 14: return 'NSF Comment';
+            case 15: return 'Weather Forecast';
+            case 16: return 'Map';
+        }
+    }
 }

@@ -50,9 +50,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Object')->where('status','Published');
 	}
 
-	public function favorites() {
-		return $this->hasMany('Favorite');
-	}
+    public function favorites() {
+        return $this->belongsToMany('Object', 'favorites_pivot');
+    }
 
     public function role() {
         return $this->belongsTo('Role');

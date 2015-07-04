@@ -18,7 +18,7 @@ class MissionPresenter {
     }
 
     public function launchOfYear() {
-        return '5';
+        return $this->ordinal($this->entity->launchOfYear);
     }
 
 	public function article() {

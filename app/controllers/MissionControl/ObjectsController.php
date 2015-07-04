@@ -11,12 +11,12 @@ class ObjectsController extends BaseController {
     public function get($object_id) {
         $object = Object::find($object_id);
         
-        if ($object->visibility == 'Public' && $object->status == 'Complete') {
+        if ($object->visibility == 'Public' && $object->status == 'Published') {
             return View::make('missionControl.objects.get', array(
                 'object' => $object
             ));
 
-        } elseif ($object->visibility == 'Default' && $object->status == 'Complete') {
+        } elseif ($object->visibility == 'Default' && $object->status == 'Published') {
             if (Auth::isSubscriber()) {
                 return View::make('missionControl.objects.get', array(
                     'object' => $object
