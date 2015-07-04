@@ -8,12 +8,13 @@ class ObjectsController extends BaseController {
         $this->dVCalculator = $dVCalculator;
     }
 
+    // AJAX GET
+    // missioncontrol/object/{object_id}
     public function get($object_id) {
-        $object = Object::with('notes')->find($object_id);
+        $object = Object::with('userNote')->find($object_id);
 
         $viewToMake = View::make('missionControl.objects.get', array(
-            'object' => $object,
-            'userNote' => $object->notes->find(Auth::user()->id)
+            'object' => $object
         ));
         
         if ($object->visibility == 'Public' && $object->status == 'Published') {
@@ -34,6 +35,18 @@ class ObjectsController extends BaseController {
         }
 
         return App::abort(401);
+    }
+
+    // AJAX POST
+    // missioncontrol/object/{object_id}/favorite
+    public function favorite() {
+
+    }
+
+    // AJAX POST
+    // missioncontrol/object/{object_id}/download
+    public function download() {
+
     }
 
     // AJAX POST

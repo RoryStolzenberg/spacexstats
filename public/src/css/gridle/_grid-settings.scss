@@ -10,6 +10,7 @@
 
 // register special columns :
 @include gridle_register_column("1on5", 1, 5);
+@include gridle_register_column("1on8", 1, 8);
 @include gridle_register_column("1on9", 1, 9);
 
 // clear each classes :

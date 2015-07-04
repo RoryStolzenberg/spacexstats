@@ -11,9 +11,7 @@ class Spacexstats extends Migration {
      * webcast statuses
      * collections
      * types / subtypes
-     * notes
      * rss_updates
-     * emails_sent
      */
 
 	/**
@@ -58,6 +56,21 @@ class Spacexstats extends Migration {
         Schema::create('destinations', function(Blueprint $table) {
             $table->increments('destination_id');
             $table->string('destination', Varchar::small);
+        });
+
+        Schema::create('downloads', function(Blueprint $table) {
+            $table->increments('download_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('object_id')->unsigned();
+            $table->timestamps();
+        });
+
+        Schema::create('emails', function(Blueprint $table) {
+            $table->increments('email_id');
+            $table->integer('user_id')->unsigned();
+            $table->string('content', Varchar::xlarge);
+            $table->enum('status', array('Queued', 'Sent'));
+            $table->timestamps();
         });
 
         Schema::create('email_subscriptions', function(Blueprint $table) {

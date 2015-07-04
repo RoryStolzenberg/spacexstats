@@ -77,8 +77,16 @@ class Object extends Eloquent {
         return $this->hasMany('Favorite');
     }
 
+    public function userFavorite() {
+        return $this->hasOne('Favorite');
+    }
+
     public function notes() {
         return $this->hasMany('Note');
+    }
+
+    public function userNote() {
+        return $this->hasOne('Note')->where('user_id', Auth::user()->user_id);
     }
 
     // Validators
