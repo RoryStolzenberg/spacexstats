@@ -74,13 +74,13 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 
             $gifTotalDuration = 0;
 
-            // Get the total duration of the gif; if a frame is 0/100ths of a second long, automatically add 10/100ths because browsers play it at that speed anyway.
+            // Get the total duration of the gif; if a frame is 0s of a second long, automatically add 0.1s because browsers play it at that speed anyway.
             // Read more: http://humpy77.deviantart.com/journal/Frame-Delay-Times-for-Animated-GIFs-240992090
             foreach ($gfe->getFrameDurations() as $duration) {
                 $gifTotalDuration += $duration == 0 ? 10 : $duration;
             }
 
-            return $gifTotalDuration;
+            return $gifTotalDuration / 100;
         } else {
             // So it's a gif, but it's not animated. Return 0
             return 0;

@@ -8,7 +8,7 @@ class ObjectsController extends BaseController {
         $this->dVCalculator = $dVCalculator;
     }
 
-    // AJAX GET
+    // GET
     // missioncontrol/object/{object_id}
     public function get($object_id) {
         $object = Object::with('userNote')->find($object_id);
@@ -37,15 +37,38 @@ class ObjectsController extends BaseController {
         return App::abort(401);
     }
 
-    // AJAX POST
-    // missioncontrol/object/{object_id}/favorite
-    public function favorite() {
+    // GET
+    // missioncontrol/object/{object_id}/edit
+    public function edit($object_id) {
 
     }
 
     // AJAX POST
+    // missioncontrol/object/{object_id}/favorite
+    public function favorite($object_id) {
+        if (Auth::member()) {
+            $favorite = Favorite::where('user_id', Auth::user()->id)->where('object_id', $object_id)->get();
+
+            if ($favorite->count() > 0) {
+                $favorite->delete();
+
+                return Response::json('removed');
+            } else {
+                Favorite::create(array(
+                    'user_id' => Auth::user()->id,
+                    'object_id' => $object_id
+                ));
+
+                return Response::json('added');
+            }
+        } else {
+            return Response::json();
+        }
+    }
+
+    // AJAX POST
     // missioncontrol/object/{object_id}/download
-    public function download() {
+    public function download($object_id) {
 
     }
 

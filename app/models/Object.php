@@ -78,7 +78,7 @@ class Object extends Eloquent {
     }
 
     public function userFavorite() {
-        return $this->hasOne('Favorite');
+        return $this->hasOne('Favorite')->where('user_id', Auth::user()->user_id);
     }
 
     public function notes() {
