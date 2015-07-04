@@ -74,11 +74,11 @@ class Object extends Eloquent {
     }
 
     public function favorites() {
-        return $this->belongsToMany('User', 'favorites_pivot');
+        return $this->hasMany('Favorite');
     }
 
     public function notes() {
-        return $this->belongsToMany('User', 'notes_pivot');
+        return $this->hasMany('Note');
     }
 
     // Validators

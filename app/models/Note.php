@@ -1,6 +1,6 @@
 <?php
 class Note extends Eloquent {
-    protected $table = 'notes_pivot';
+    protected $table = 'notes';
     protected $primaryKey = 'note_id';
     public $timestamps = true;
 

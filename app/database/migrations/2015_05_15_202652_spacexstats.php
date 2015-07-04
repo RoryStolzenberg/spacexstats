@@ -66,7 +66,7 @@ class Spacexstats extends Migration {
             $table->smallInteger('subscription_type')->unsigned();
         });
 
-        Schema::create('favorites_pivot', function(Blueprint $table) {
+        Schema::create('favorites', function(Blueprint $table) {
             $table->increments('favorite_id');
             $table->integer('user_id')->unsigned();
             $table->integer('object_id')->unsigned();
@@ -113,7 +113,7 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('notes_pivot', function(Blueprint $table) {
+        Schema::create('notes', function(Blueprint $table) {
             $table->increments('note_id');
             $table->integer('user_id')->unsigned();
             $table->integer('object_id')->unsigned();
@@ -327,7 +327,7 @@ class Spacexstats extends Migration {
             $table->foreign('featured_image')->references('object_id')->on('objects');
         });
 
-        Schema::table('notes_pivot', function(Blueprint $table) {
+        Schema::table('notes', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('object_id')->references('object_id')->on('objects');
         });

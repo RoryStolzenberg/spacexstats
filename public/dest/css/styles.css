@@ -4696,3 +4696,7 @@ section.question-list {
 /* --------------- LOCATIONS ----------------- */
 #location-nav {
   background-color: #33495E; }
+
+/* --------------- OBJECT PAGE ----------------- */
+img.object {
+  max-width: 100%; }

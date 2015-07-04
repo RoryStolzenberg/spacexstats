@@ -9,7 +9,7 @@ class ObjectsController extends BaseController {
     }
 
     public function get($object_id) {
-        $object = Object::find($object_id);
+        $object = Object::with('notes')->find($object_id);
 
         $viewToMake = View::make('missionControl.objects.get', array(
             'object' => $object,

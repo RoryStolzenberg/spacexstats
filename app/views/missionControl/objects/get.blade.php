@@ -20,7 +20,7 @@
 
             <section class="details">
                 <div class="grid-8">
-                    <img src="{{ $object->filename }}" />
+                    <img class="object" src="{{ $object->filename }}" />
                 </div>
                 <aside class="grid-4">
                     <div class="actions container">
