@@ -79,7 +79,7 @@
     }
     elem.setAttribute('style', newStyle.join(';'));
   }
-  var cssPattern = /\s*(.*?)\s*{(.*?)}+/g,
+  var cssPattern = /\s*([^{}]+?)\s*{([^{}]+?)}+/g,
       matchPosition = /\.*?position:.*?sticky.*?;/i,
       getTop = /\.*?top:(.*?);/i,
       toObserve = [];
@@ -95,6 +95,7 @@
             topCSS = ((topMatch !== null) ? parseInt(topMatch[1]) : 0);
 
         var elems = slice.call(document.querySelectorAll(selector));
+        matches[2] = (matches[2].trim().slice(-1) === ";") ? matches[2] : matches[2].trim() + ';';
         elems.forEach(function (elem) {
           var height = elem.offsetHeight,
               parent = elem.parentElement,
@@ -171,7 +172,7 @@
   }
   window.addEventListener('scroll', updateScrollPos);
 
-  window.addEventListener('load', function () {
+  (function() {
     var styles = slice.call(document.querySelectorAll('style'));
     styles.forEach(function (style) {
       var text = style.textContent || style.innerText;
@@ -193,5 +194,5 @@
       };
       req.send();
     });
-  }, false);
+  })();
 })();

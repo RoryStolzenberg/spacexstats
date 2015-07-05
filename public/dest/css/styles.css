@@ -4122,7 +4122,7 @@ nav.sticky-bar {
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  width: 100%;
+  width: inherit;
   font-size: 14px;
   -webkit-transition: background-color ease 0.5s, color ease 0.5s;
           transition: background-color ease 0.5s, color ease 0.5s; }
@@ -4313,18 +4313,6 @@ header > nav {
       left: -250px;
       background-color: #21272B;
       text-align: left; } }
-  @media (max-width: 640px) and (min-width: 641px) and (max-width: 1024px) {
-    header > nav {
-      display: none !important; } }
-  @media (max-width: 640px) and (min-width: 1025px) and (max-width: 1440px) {
-    header > nav {
-      display: none !important; } }
-  @media (max-width: 640px) and (min-width: 1441px) and (max-width: 1920px) {
-    header > nav {
-      display: none !important; } }
-  @media (max-width: 640px) and (min-width: 1921px) {
-    header > nav {
-      display: none !important; } }
   @media (max-width: 640px) {
     header > nav {
       padding-left: 0;

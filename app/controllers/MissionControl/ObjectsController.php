@@ -44,6 +44,38 @@ class ObjectsController extends BaseController {
     }
 
     // AJAX POST
+    // missioncontrol/object/{object_id}/note
+    public function note($object_id) {
+        if (Auth::member()) {
+            $usernote = Note::where('user_id', Auth::user()->id)->where('object_id', $object_id)->get();
+
+            if ($usernote->count() > 0) {
+                if (Input::get('action') == 'update') {
+                    $usernote->note = Input::get('note', null);
+                    $usernote->save();
+
+                    return Response::json('update');
+
+                } elseif (Input::get('action') == 'delete') {
+                    $usernote->delete();
+
+                    return Response::json('delete');
+                }
+            } else {
+                Note::create(array(
+                    'user_id' => Auth::user()->id,
+                    'object_id' => $object_id,
+                    'note' => Input::get('note', null)
+                ));
+
+                return Response::json('create');
+            }
+        } else {
+            return Response::json(false, 400);
+        }
+    }
+
+    // AJAX POST
     // missioncontrol/object/{object_id}/favorite
     public function favorite($object_id) {
         if (Auth::member()) {

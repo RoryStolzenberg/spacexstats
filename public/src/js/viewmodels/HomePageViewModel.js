@@ -1,12 +1,18 @@
 define(['knockout', 'jquery', 'jquery.ui', 'jquery.fracs', 'jquery.throttle-debounce'], function(ko, $, jqueryui, fracs, throttledebounce) {
     var HomePageViewModel = function() {
+
+        ko.components.register('countdown', { require: 'components/countdown/countdown' });
+
         var self = this;
         // Holds the active statistic
         self.activeStatistic = ko.observable();
 
         // Update the hash in the URL when the active statistic changes
         self.activeStatistic.subscribe(function() {
-            window.location.hash = self.activeStatistic().split(' ').join('_');
+            if (self.activeStatistic() != null) {
+                window.location.hash = self.activeStatistic().split(' ').join('_');
+            }
+
         });
 
         self.scrollToStatistic = function(statistic) {

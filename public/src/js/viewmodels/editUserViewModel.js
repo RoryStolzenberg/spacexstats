@@ -1,32 +1,28 @@
-var editUserViewModel = function(username) {
-	var self = this;
-	self.username = username;
+define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
+    var EditUserViewModel = function (username) {
 
-	self.updateProfile = function(formData) {
-		$.ajax('/users/'+self.username+'/edit', 
-			{
-				dataType: 'json',
-				type: 'POST',
-				data: formData,
-				success: function(response) {
-					console.log(response);
-				}
-			}
-		);
-	}
+        ko.components.register('rich-select', { require: 'components/rich-select/rich-select'});
 
-	self.updateDetails = function(formElement) {
-		self.updateProfile({ 
-			summary: $(formElement).find('#summary').val(),
-			twitter_account: $(formElement).find('#twitter_account').val(),
-			reddit_account: $(formElement).find('#reddit_account').val(),
-		});
-	}
+        var self = this;
+        self.username = username;
 
-	self.updateFavorites = function(formElement) {
-		self.updateProfile({ 
-			favorite_mission: $(formElement).find('#favorite_mission').attr('value'),
-			favorite_quote: $(formElement).find('#favorite_quote').val(),
-		});
-	}
-}
+        self.favorite_mission_id = ko.observable();
+        self.patch_mission_id = ko.observable();
+
+        self.updateProfile = function (formData) {
+            $.ajax('/users/' + self.username + '/edit',
+                {
+                    dataType: 'json',
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        console.log(response);
+                    }
+                }
+            );
+        }
+    };
+
+    return EditUserViewModel;
+});
+

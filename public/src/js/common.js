@@ -1,5 +1,4 @@
 requirejs.config({
-    urlArgs: "bust=" + (new Date()).getTime(),
     baseUrl: '/src/js',
     paths: {
         'text': 'lib/requirejs-text',
@@ -12,7 +11,8 @@ requirejs.config({
         'ko.mapping': 'lib/knockout.mapping-latest',
         'ko.postbox': 'lib/knockout-postbox',
         'd3': 'lib/d3',
-        'moment': 'lib/moment'
+        'moment': 'lib/moment',
+        'sticky': 'lib/sticky'
     },
     shim: {
         "jquery.fracs": ["jquery"],

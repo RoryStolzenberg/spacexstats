@@ -89,7 +89,7 @@ main > * {
 nav.sticky-bar {
     position:sticky;
     top:0; // tell the element where to stick
-    width:100%;
+    width:inherit;
     font-size:14px;
     @include transitionMed((background-color, color));
 
@@ -243,7 +243,6 @@ ul, ol {
 /* ------------------ NAV ------------------ */
 header > nav {
     @include gridle_state(small) {
-        @include hide-when-larger-than($small);
         width:250px;
         height:100%;
         position:fixed;

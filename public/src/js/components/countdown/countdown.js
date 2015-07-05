@@ -1,15 +1,15 @@
-define(['knockout', 'text!components/countdown/countdown.html'], function(ko, htmlString) {
-    function CountdownViewModel(params) {
+define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.html'], function($, ko, moment, htmlString) {
+    var CountdownViewModel = function(params) {
         var self = this;
 
         self.launchDateTime = ko.observable(params.launchDateTime);
-        self.isLaunchExact = ko.observable(params.launchSpecificity == 7 ||params.launchSpecificity == 6);
+        self.isLaunchExact = ko.observable(params.launchSpecificity == 7 || params.launchSpecificity == 6);
         self.secondsAwayFromLaunch = ko.observable();
 
 
         self.init = (function() {
             if (self.isLaunchExact()) {
-                self.launchUnixSeconds = ko.observable(Date.parse(params.launchDateTime) / 1000);
+                self.launchUnixSeconds = ko.observable(moment(self.launchDateTime()).unix());
 
                 self.days = ko.observable();
                 self.hours = ko.observable();
@@ -28,7 +28,6 @@ define(['knockout', 'text!components/countdown/countdown.html'], function(ko, ht
                     // Stop the countdown, count up!
                     if (launchUnixSeconds <= currentUnixSeconds) {
                         clearInterval(self.countdownTimer);
-                        self.zeroTimer();
 
                     } else {
                         self.secondsAwayFromLaunch(launchUnixSeconds - currentUnixSeconds);
@@ -52,10 +51,10 @@ define(['knockout', 'text!components/countdown/countdown.html'], function(ko, ht
                     }
                 };
 
-                self.countdownTimer = setInterval(self.countdownProcessor, 1000);
+                setInterval(self.countdownProcessor, 1000);
             }
         })();
-    }
+    };
 
     return { viewModel: CountdownViewModel, template: htmlString };
 });
