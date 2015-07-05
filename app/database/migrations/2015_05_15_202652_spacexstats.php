@@ -137,7 +137,7 @@ class Spacexstats extends Migration {
 
         Schema::create('objects', function(Blueprint $table) {
             $table->increments('object_id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->integer('mission_id')->unsigned()->nullable();
             $table->smallInteger('type')->unsigned();
             $table->smallInteger('subtype')->unsigned()->nullable();
@@ -346,13 +346,13 @@ class Spacexstats extends Migration {
         });
 
         Schema::table('objects', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null');
             $table->foreign('mission_id')->references('mission_id')->on('missions');
         });
 
         Schema::table('objects_tags_pivot', function(Blueprint $table) {
-            $table->foreign('object_id')->references('object_id')->on('objects');
-            $table->foreign('tag_id')->references('tag_id')->on('tags');
+            $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade');
+            $table->foreign('tag_id')->references('tag_id')->on('tags')->onDelete('cascade');
         });
 
         Schema::table('payloads', function(Blueprint $table) {

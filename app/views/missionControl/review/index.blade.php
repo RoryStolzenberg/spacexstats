@@ -27,7 +27,7 @@
                 <button data-bind="click: setAction.bind($data, 'Published')">Publish</button>
             </td>
             <td>
-                <button data-bind="click: setAction.bind($data, 'Removed')">Remove</button>
+                <button data-bind="click: setAction.bind($data, 'Deleted')">Remove</button>
             </td>
         </tr>
         <tr class="obect-extra-details">

@@ -20,10 +20,16 @@ class ReviewController extends BaseController {
         if (Input::has(['status', 'visibility'])) {
 
             $object = Object::find($object_id);
-            $object->fill(Input::only(['status', 'visibility']));
-            $object->actioned_at = \Carbon\Carbon::now();
 
-            $object->save();
+            if (Input::get('status') == "Published") {
+                $object->fill(Input::only(['status', 'visibility']));
+                $object->actioned_at = \Carbon\Carbon::now();
+
+                $object->save();
+
+            } elseif (Input::get('status') == "Deleted") {
+                $object->delete();
+            }
 
             return Response::json(true);
         } else {
