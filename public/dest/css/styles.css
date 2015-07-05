@@ -4454,11 +4454,8 @@ a:link, a:visited, a:hover, a:active {
 .next-stat {
   bottom: -45px; }
 
-.background {
-  background-image: url("../images/backgrounds/bocachica.jpg");
-  background-image: -webkit-linear-gradient(rgba(51, 73, 94, 0.5), rgba(24, 28, 31, 0.5)), url("../images/backgrounds/bocachica.jpg");
-  background-image: linear-gradient(rgba(51, 73, 94, 0.5), rgba(24, 28, 31, 0.5)), url("../images/backgrounds/bocachica.jpg");
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#BF21272B', endColorstr='#BF21272B', gradientType='0')"; }
+.background:nth-of-type(1) {
+  background-image: url("../images/backgrounds/bocachica.jpg"); }
 
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {
@@ -4704,6 +4701,17 @@ textarea {
 .tagger-container .suggestion {
   width: 33%;
   display: inline-block; }
+
+.prepended-input {
+  margin: 0 10px; }
+  .prepended-input span, .prepended-input input {
+    display: inline-block; }
+  .prepended-input span {
+    width: 30px;
+    text-align: center; }
+  .prepended-input input {
+    margin: 0;
+    width: calc(100% - 30px); }
 
 /* --------------- FAQS ----------------- */
 section.question-list {

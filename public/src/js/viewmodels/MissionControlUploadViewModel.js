@@ -31,7 +31,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         function UploadedImage(image) {
             var self = this;
             koMapping.fromJS(image, {
-                include: ['title', 'summary', 'subtype', 'tags', 'originated_date', 'mission_id', 'author', 'attribution', 'anonymous']
+                include: ['title', 'summary', 'subtype', 'tags', 'originated_at', 'mission_id', 'author', 'attribution', 'anonymous']
             }, this);
 
             self.title = ko.observable(null);
@@ -42,7 +42,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_date = ko.computed(function() {
+            self.originated_at = ko.computed(function() {
                 return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
             });
 
@@ -54,7 +54,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         function UploadedGif(gif) {
             var self = this;
             koMapping.fromJS(gif, {
-                include: ['title', 'summary', 'tags', 'originated_date', 'mission_id', 'author', 'attribution', 'anonymous']
+                include: ['title', 'summary', 'tags', 'originated_at', 'mission_id', 'author', 'attribution', 'anonymous']
             }, this);
 
             self.title = ko.observable(null);
@@ -64,7 +64,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_date = ko.computed(function() {
+            self.originated_at = ko.computed(function() {
                 return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
             });
 

@@ -10,6 +10,7 @@ $offwhite: 		#F5F5F5;
 $white:			#FFF;
 
 $green:         #40C085;
+$spacesuitgreen:#1F6F70;
 $red:           #C05B40;
 
 /* --------------- FONT VARIABLES ----------------- */
@@ -70,8 +71,8 @@ $border-radius-large:8px;
 
 @mixin filteredBackground($backgroundImage) {
     background-image: url($backgroundImage);
-    background-image: linear-gradient(rgba(#33495E, 0.5), rgba($slateblack, 0.5)), url($backgroundImage);
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#BF21272B', endColorstr='#BF21272B', gradientType='0')";
+    //background-image: linear-gradient(rgba(#33495E, 0.5), rgba($slateblack, 0.5)), url($backgroundImage);
+    //-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#BF21272B', endColorstr='#BF21272B', gradientType='0')";
 }
 
 @mixin smallCaps() {

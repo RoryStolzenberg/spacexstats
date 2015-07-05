@@ -44,7 +44,7 @@ gulp.task('styles', function() {
 gulp.task('images', function() {
     var imagemin = require('gulp-imagemin');
 
-    gulp.src('public/src/images/*')
+    gulp.src('public/src/images/**/*.{jpg,jpeg,png}')
         .pipe(imagemin())
         .pipe(gulp.dest('public/dest/images'));
 });

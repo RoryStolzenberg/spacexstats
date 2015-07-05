@@ -99,7 +99,7 @@ class Object extends Eloquent {
 
     // Scoped Queries
     public function scopeQueued($query) {
-        return $query->where('status','queued')->orderBy('created_at', 'DESC');
+        return $query->where('status','queued')->orderBy('created_at', 'ASC');
     }
 
     // Attribute accessors

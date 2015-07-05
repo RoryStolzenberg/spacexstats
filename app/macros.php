@@ -36,7 +36,7 @@ Form::macro('date', function($nameOfProperty = null, $defaultDateArray = null, $
     $options['year'] = (!array_key_exists('year', $options)) ? array() : $options['year'];
 
 
-    echo Form::selectRange('day', 1, 31, $defaultDay, $options['day']);
+    echo Form::selectRange('day', 0, 31, $defaultDay, $options['day']);
     echo Form::selectMonth('month', $defaultMonth, $options['month']);
     echo Form::selectRange('year', Carbon\Carbon::now()->year, $startYear, $defaultYear, $options['year']);
 

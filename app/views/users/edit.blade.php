@@ -36,10 +36,15 @@
                         {{ Form::textarea('summary') }}
 
                         {{ Form::label('twitter_account', 'Twitter') }}
-                        {{ Form::text('twitter_account') }}
+                        <div class="prepended-input">
+                            <span>@</span>{{ Form::text('twitter_account') }}
+                        </div>
 
                         {{ Form::label('reddit_account', 'Reddit') }}
-                        {{ Form::text('reddit_account') }}
+                        <div class="prepended-input">
+                            <span>/u/</span>{{ Form::text('reddit_account') }}
+                        </div>
+
                     </div>
 
                     <div class="grid-6">
