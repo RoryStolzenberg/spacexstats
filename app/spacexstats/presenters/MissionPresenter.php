@@ -23,7 +23,7 @@ class MissionPresenter {
 
 	public function article() {
 		if (empty($this->entity->article)) {
-			return '<section class="hero hero-centered">
+			return '<section class="article">
 						<article class="in-progress">
 							<i class="fa fa-newspaper-o fa-5x"></i> <span>Article in progress. Check back soon!</span>
 						</article>

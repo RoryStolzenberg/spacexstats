@@ -38,4 +38,10 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
     private function getPageCount() {
 
     }
+
+
+
+    private function getPageCountDocx() {
+
+    }
 }

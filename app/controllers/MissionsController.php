@@ -18,17 +18,24 @@ class MissionsController extends BaseController {
 
         $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
+        $pastMission = Mission::pastMissions($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
+        $futureMission = Mission::futureMissions($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
+
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
 			return View::make('missions.futureMission', array(
 				'title' => $mission->name . ' Mission',
 				'currentPage' => 'mission',
-				'mission' => $mission
+				'mission' => $mission,
+                'pastMission' => $pastMission,
+                'futureMission' => $futureMission
 			));			
 		} else {
 			return View::make('missions.pastMission', array(
 				'title' => $mission->name . ' Mission',
 				'currentPage' => 'mission',
-				'mission' => $mission
+				'mission' => $mission,
+                'pastMission' => $pastMission,
+                'futureMission' => $futureMission
 			));	
 		}
 	}
@@ -67,7 +74,7 @@ class MissionsController extends BaseController {
 		return View::make('missions.past', array(
 			'title' => 'Past Launches',
 			'currentPage' => 'past',
-			'futureLaunches' => $pastLaunches
+			'pastLaunches' => $pastLaunches
 		));
 	}
 

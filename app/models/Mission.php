@@ -157,16 +157,14 @@ class Mission extends Eloquent {
 	public function scopeFutureMissions($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
 		return $query->where('launch_order_id', '>', $currentLaunchOrderId)
 						->orderBy('launch_order_id')
-						->take($numberOfMissionsToGet)
-						->get();
+						->take($numberOfMissionsToGet);
 	}
 
 	// Get 1 or more previous launches relative to a current launch_order_id
 	public function scopePastMissions($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
 		return $query->where('launch_order_id', '<', $currentLaunchOrderId)
 						->orderBy('launch_order_id')
-						->take($numberOfMissionsToGet)
-						->get();
+						->take($numberOfMissionsToGet);
 	}
 
 	public function scopeLastFromLaunchSite($query, $site) {

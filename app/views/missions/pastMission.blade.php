@@ -19,7 +19,7 @@
 				<li class="grid-1">Videos</li>
 				<li class="grid-1">Articles</li>
 				<li class="grid-3 actions">
-					<i class="fa fa-pencil"></i>
+					<a href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
 					<i class="fa fa-twitter"></i>
 					<i class="fa fa-rss"></i>
 				</li>
@@ -27,7 +27,21 @@
 			</ul>
 		</nav>
 		<section class="highlights">
+            @if(isset($pastMission))
+                <div class="past-mission-link">
+                    {{ link_to_route('missions.get', $pastMission->name, $pastMission->slug) }}
+                    <span>Previous Mission</span>
+                </div>
+            @endif
+            @if(isset($futureMission))
+                <div class="future-mission-link">
+                    {{ link_to_route('missions.get', $futureMission->name, $futureMission->slug) }}
+                    <span>Next Mission</span>
+                </div>
+            @endif
 		</section>
+
+
 		{{ $mission->present()->article() }}
 		<p>{{ $mission->summary }}</p>
 		<h2>Details</h2>
