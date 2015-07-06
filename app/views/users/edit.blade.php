@@ -44,7 +44,6 @@
                         <div class="prepended-input">
                             <span>/u/</span>{{ Form::text('reddit_account') }}
                         </div>
-
                     </div>
 
                     <div class="grid-6">

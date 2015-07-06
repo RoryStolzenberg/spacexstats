@@ -26,7 +26,7 @@ class ObjectsController extends BaseController {
             }
             return App::abort(401);
 
-        } elseif ($object->visibility == 'Hidden') {
+        } elseif ($object->visibility == 'Hidden' || $object->status == 'Queued' || $object->status == 'New') {
             if (Auth::isAdmin()) {
                 return $viewToMake;
             }

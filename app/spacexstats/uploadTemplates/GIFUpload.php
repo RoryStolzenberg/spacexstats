@@ -61,10 +61,6 @@ class GIFUpload extends GenericUpload implements UploadInterface {
         return ($dimension == 'width') ? $image->getImageWidth() : $image->getImageHeight();
     }
 
-    private function getCryptographicHash() {
-        return hash_file('sha256', $this->directory['full'] . $this->fileinfo['filename']);
-    }
-
     private function getLength() {
         $gifFilePath = $this->directory['full'] . $this->fileinfo['filename'];
 

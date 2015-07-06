@@ -15,7 +15,8 @@ gulp.task('browsersync', function() {
 // Clean media folder occasionally
 gulp.task('clean', function() {
     var del = require('del');
-    del(['public/media/small/*', 'public/media/large/*', 'public/media/full/*', 'public/media/tweets/*']);
+    del(['public/media/small/*', 'public/media/large/*', 'public/media/full/*', 'public/media/tweets/*',
+    '!public/media/**/audio.png']);
 });
 
 // Scripts Task

@@ -50,10 +50,6 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 		return $this->directory[$size] . $this->fileinfo['filename'];
 	}
 
-    private function getCryptographicHash() {
-        return hash_file('sha256', $this->directory['full'] . $this->fileinfo['filename']);
-    }
-
 	// get the dimensions of an image
 	private function getDimensions($dimension) {
 		$image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);

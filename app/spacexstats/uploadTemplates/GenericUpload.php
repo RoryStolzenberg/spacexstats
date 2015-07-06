@@ -7,7 +7,8 @@ abstract class GenericUpload {
 	$uniqid,
     $smallThumbnailSize = 200,
     $largeThumbnailSize = 800,
-	$directory = array('full' => 'media/full/','large' => 'media/large/' ,'small' => 'media/small/'),
+	$directory = array('full' => 'media/full/','large' => 'media/large/' ,'small' => 'media/small/',
+        'tweets' => 'media/tweets/', 'frames' => 'media/frames/'),
     $workingDirectory = 'H:/spacexstats/public/';
 
 	public function __construct($file) {
@@ -46,6 +47,9 @@ abstract class GenericUpload {
 
     }
 
+    protected function getCryptographicHash() {
+        return hash_file('sha256', $this->directory['full'] . $this->fileinfo['filename']);
+    }
 
     private function move() {
 		return $this->file->move($this->directory['full'], $this->fileinfo['filename']);

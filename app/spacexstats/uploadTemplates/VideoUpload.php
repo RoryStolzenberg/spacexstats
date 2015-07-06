@@ -1,46 +1,42 @@
 <?php
 namespace SpaceXStats\UploadTemplates;
 
-class VideoUpload extends GenericUpload implements UploadInterface {
-    protected
-        $smallThumbnailSize = 200,
-        $largeThumbnailSize = 800;
+use SpaceXStats\Enums\MissionControlType;
+use FFMpeg\FFProbe;
+use FFMpeg\FFMpeg;
 
+class VideoUpload extends GenericUpload implements UploadInterface {
     public function __construct($file) {
         parent::__construct($file);
 
-        $this->ffprobe = FFMpeg\FFProbe::create([
-            'ffmpeg.binaries' => Credential::FFMpeg,
-            'ffprobe.binaries' => Credential::FFProbe
+        $this->ffprobe = FFProbe::create([
+            'ffmpeg.binaries' => \Credential::FFMpeg,
+            'ffprobe.binaries' => \Credential::FFProbe
         ]);
 
-        $this->ffmpeg = \FFMpeg\FFMpeg::create([
-            'ffmpeg.binaries' => Credential::FFMpeg,
-            'ffprobe.binaries' => Credential::FFProbe
+        $this->ffmpeg = FFMpeg::create([
+            'ffmpeg.binaries' => \Credential::FFMpeg,
+            'ffprobe.binaries' => \Credential::FFProbe
         ]);
     }
 
     public function addToMissionControl() {
-        $this->addThumbnails();
-
-        return Object::create(array(
-            'user_id' => Auth::id(),
+        return \Object::create(array(
+            'user_id' => \Auth::id(),
             'type' => MissionControlType::Video,
             'size' => $this->fileinfo['size'],
             'filetype' => $this->fileinfo['filetype'],
             'mimetype' => $this->fileinfo['mime'],
             'original_name' => $this->fileinfo['original_name'],
             'filename' => $this->fileinfo['filename'],
+            'thumb_large' => $this->setThumbnail('large'),
+            'thumb_small' => $this->setThumbnail('small'),
+            'cryptographic_hash' => $this->getCryptographicHash(),
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
-            'status' => 'new'
+            'status' => 'New'
         ));
-    }
-
-    private function addThumbnails() {
-        $this->setThumbnail('small');
-        $this->setThumbnail('large');
     }
 
     private function setThumbnail($size) {
@@ -53,16 +49,24 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         $video = $this->ffmpeg->open($this->directory['full'] . $this->fileinfo['filename']);
         $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($frameExtractionPoint));
 
+        // Save the frame
+        $frame->save($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
+
         // create an Imagick instance
-        $image = new \Imagick($frame);
+        $image = new \Imagick($this->getImagickSafeDirectory('frames') . $this->fileinfo['filename_without_extension'] . '.jpg');
         $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-        $image->writeImage($this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
+        $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
 
         return $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg';
     }
 
     private function getDimensions($dimension) {
-        return null;
+        $dimensionsObject = $this->ffprobe->streams($this->directory['full'] . $this->fileinfo['filename'])->videos()->first()->getDimensions();
+        if ($dimension == 'width') {
+            return $dimensionsObject->getWidth();
+        } elseif ($dimension == 'height') {
+            return $dimensionsObject->getHeight();
+        }
     }
 
     private function getLength() {

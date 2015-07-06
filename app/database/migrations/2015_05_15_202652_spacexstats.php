@@ -179,14 +179,10 @@ class Spacexstats extends Migration {
             $table->string('camera_manufacturer', Varchar::compact)->nullable();
             $table->string('camera_model', Varchar::compact)->nullable();
 
-            // Gif-related properties
-
             // Video-related properties
 
-            // Audio-related properties
-
             $table->enum('status', array('New', 'Queued', 'Published', 'Deleted'));
-            $table->enum('visibility', array('Public', 'Default', 'Hidden'));
+            $table->enum('visibility', array('Default', 'Public', 'Hidden'));
             $table->datetime('actioned_at')->nullable();
             $table->boolean('anonymous');
             $table->timestamps();
