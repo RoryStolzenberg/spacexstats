@@ -16,7 +16,7 @@ class MissionsController extends BaseController {
 	// /missions/{slug}
 	public function get($slug) {
 
-        $mission = Mission::whereSlug($slug)->with('vehicle')->first();
+        $mission = Mission::whereSlug($slug)->first();
 
         $pastMission = Mission::pastMissions($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
         $futureMission = Mission::futureMissions($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);

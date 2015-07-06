@@ -62,6 +62,35 @@ class Mission extends Eloquent {
         return $this->belongsTo('Object');
     }
 
+    // Conditional Relationships
+    public function launchVideo() {
+        return $this->belongsTo('Object', 'launch_video');
+    }
+
+    public function missionPatch() {
+        return $this->belongsTo('Object', 'mission_patch');
+    }
+
+    public function pressKit() {
+        return $this->belongsTo('Object', 'press_kit');
+    }
+
+    public function cargoManifest() {
+        return $this->belongsTo('Object', 'cargo_manifest');
+    }
+
+    public function prelaunchPressConference() {
+        return $this->belongsTo('Object', 'prelaunch_press_conference');
+    }
+
+    public function postlaunchPressConference() {
+        return $this->belongsTo('Object', 'postlaunch_press_conference');
+    }
+
+    public function redditDiscussion() {
+        return $this->belongsTo('Object', 'reddit_discussion');
+    }
+
     public function featuredImage() {
         return $this->belongsTo('Object', 'featured_image')->select(['object_id', 'filename']);
     }

@@ -102,6 +102,10 @@ class Object extends Eloquent {
         return $query->where('status','queued')->orderBy('created_at', 'ASC');
     }
 
+    public function scopePublished($query) {
+        return $query->where('status','published');
+    }
+
     // Attribute accessors
     public function getFilenameAttribute($value) {
         return '/media/full/'.$value;
