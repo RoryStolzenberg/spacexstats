@@ -10,18 +10,18 @@ class FileChecker {
 	protected static $mimetypes = array(
 		'image' => array('image/jpeg', 'image/pjpeg', 'image/png'),
 		'gif' => array('image/gif'),
-		'video' => array('video/mp4', 'video/mpeg', 'video/ogg'),
+		'video' => array('video/mp4', 'video/mpeg'),
 		'document' => array('application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/plain', 'text/rtf', 'application/rtf'),
-		'audio' => array('audio/mp3', 'audio/mpeg', 'audio/ogg',)
+		'audio' => array('audio/mp3', 'audio/mpeg')
 	);
 
 	protected static $filetypes = array(
 		'image' => array('jpg', 'jpeg', 'png'),
         'gif' => array('gif'),
-		'video' => array('mp4', 'ogv'),
+		'video' => array('mp4'),
 		'document' => array('pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'rtf'),
-		'audio' => array('mp3', 'ogg') // Audio
+		'audio' => array('mp3') // Audio
 	);
 
 	// Create the file
