@@ -106,6 +106,14 @@ class Object extends Eloquent {
         return $query->where('status','published');
     }
 
+    public function scopePublic($query) {
+        return $query->where('visibility', 'public');
+    }
+
+    public function scopeDefault($query) {
+        return $query->where('visiblility', 'default');
+    }
+
     // Attribute accessors
     public function getFilenameAttribute($value) {
         return '/media/full/'.$value;

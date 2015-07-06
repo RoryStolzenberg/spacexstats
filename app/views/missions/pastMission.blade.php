@@ -48,12 +48,45 @@
             @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
 			<div class="grid-8">
 				<h3>Flight Details</h3>
-                <h3>Dragon</h3>
+                @if(count($mission->spaceflightFlight))
+                    <h3>Dragon</h3>
+                @endif
                 <h3>Satellites</h3>
                 <h3>Upper Stage</h3>
 			</div>
 			<div class="grid-4">
 				<h3>Library</h3>
+                <ul class="library">
+                    <li id="launch-video">
+                        <span>Watch the Launch</span>
+                    </li>
+                    <li id="mission-patch">
+                        <span>{{ $mission->name }} Mission Patch</span>
+                    </li>
+                    <li id="press-kit">
+                        <span>Press Kit</span>
+                    </li>
+                    @if(count($mission->spaceflightFlight))
+                        <li id="cargo-manifest">
+                            <span>Cargo Manifest</span>
+                        </li>
+                    @endif
+                    <li id="prelaunch-press-conference">
+                        <span>Prelaunch Press Conference</span>
+                    </li>
+                    <li id="postlaunch-press-conference">
+                        <span>Postlaunch Press Conference</span>
+                    </li>
+                    <li id="reddit-discussion">
+                        <span>/r/SpaceX Reddit Live Thread</span>
+                    </li>
+                    <li id="raw-data-download">
+                        <span>Raw Data Download</span>
+                    </li>
+                    <li id="mission-collection">
+                        <span>{{ $mission->name }} Mission Collection</span>
+                    </li>
+                </ul>
 			</div>			
 		<h2>Timeline</h2>
         <h3>Prelaunch</h3>
