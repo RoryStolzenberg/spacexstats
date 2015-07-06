@@ -112,9 +112,9 @@ class Spacexstats extends Migration {
             $table->integer('launch_site_id')->unsigned();
             $table->string('summary', Varchar::medium);
             $table->string('article', Varchar::xlarge)->nullable();
-            $table->integer('featured_image')->unsigned()->nullable();
             $table->enum('status', array('Upcoming', 'Complete', 'In Progress'));
 
+            // Upperstage stuff
             $table->string('upperstage_outcome', Varchar::compact)->nullable();
             $table->enum('upperstage_engine', array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'));
             $table->smallInteger('upperstage_seco')->unsigned()->nullable();
@@ -122,6 +122,16 @@ class Spacexstats extends Migration {
             $table->date('upperstage_decay_date')->nullable();
             $table->smallInteger('upperstage_norad_id')->nullable();
             $table->char('upperstage_intl_designator', 9)->nullable();
+
+            // Relations to rows on the objects table
+            $table->integer('launch_video')->unsigned()->nullable();
+            $table->integer('mission_patch')->unsigned()->nullable();
+            $table->integer('press_kit')->unsigned()->nullable();
+            $table->integer('cargo_manifest')->unsigned()->nullable();
+            $table->integer('prelaunch_press_conference')->unsigned()->nullable();
+            $table->integer('postlaunch_press_conference')->unsigned()->nullable();
+            $table->integer('reddit_discussion')->unsigned()->nullable();
+            $table->integer('featured_image')->unsigned()->nullable();
 
             $table->timestamps();
         });
