@@ -62,6 +62,7 @@ abstract class MissionControlSubtype {
 	const NSFComment 		= 14;
 	const WeatherForecast	= 15;
     const Map               = 16;
+    const License           = 17;
 
     public static function getType($num) {
         switch ($num) {
@@ -81,6 +82,7 @@ abstract class MissionControlSubtype {
             case 14: return 'NSF Comment';
             case 15: return 'Weather Forecast';
             case 16: return 'Map';
+            case 17: return 'License';
         }
     }
 }

@@ -8,4 +8,8 @@ class SubscriptionType extends Eloquent {
     protected $appends = [];
     protected $fillable = [];
     protected $guarded = ['*'];
+
+    public function emailSubscriptions() {
+        return $this->hasMany('EmailSubscription');
+    }
 }

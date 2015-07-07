@@ -9,4 +9,13 @@ class EmailSubscription extends Eloquent {
     protected $appends = [];
     protected $fillable = [];
     protected $guarded = [];
+
+    // Relations
+    public function emails() {
+        return $this->hasMany('Email');
+    }
+
+    public function subscriptionType() {
+        return $this->belongsTo('SubscriptionType');
+    }
 }

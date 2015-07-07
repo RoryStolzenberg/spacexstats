@@ -12,4 +12,15 @@ class Email extends Eloquent {
     public function getDates() {
         return ['created_at', 'updated_at', 'sent_at'];
     }
+
+    // Relations
+    public function emailSubscription() {
+        return $this->belongsTo('EmailSubscription');
+    }
+
+    // Attribute Mutators
+    public function setContentAttribute($value) {
+        $this->attributes['content'] = $this->attributes['content']  . $value;
+    }
+
 }
