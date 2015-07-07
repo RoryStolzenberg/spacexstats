@@ -351,6 +351,14 @@ class Spacexstats extends Migration {
             $table->foreign('vehicle_id')->references('vehicle_id')->on('vehicles');
             $table->foreign('destination_id')->references('destination_id')->on('destinations');
             $table->foreign('launch_site_id')->references('location_id')->on('locations');
+
+            $table->foreign('launch_video')->references('object_id')->on('objects');
+            $table->foreign('mission_patch')->references('object_id')->on('objects');
+            $table->foreign('press_kit')->references('object_id')->on('objects');
+            $table->foreign('cargo_manifest')->references('object_id')->on('objects');
+            $table->foreign('prelaunch_press_conference')->references('object_id')->on('objects');
+            $table->foreign('postlaunch_press_conference')->references('object_id')->on('objects');
+            $table->foreign('reddit_discussion')->references('object_id')->on('objects');
             $table->foreign('featured_image')->references('object_id')->on('objects');
         });
 

@@ -60,9 +60,12 @@
                     <li id="launch-video">
                         <span>Watch the Launch</span>
                     </li>
+                    @if(count($mission->missionPatch))
                     <li id="mission-patch">
+                        <img src="{{ $mission->missionPatch->thumb_small }}"/>
                         <span>{{ $mission->name }} Mission Patch</span>
                     </li>
+                    @endif
                     <li id="press-kit">
                         <span>Press Kit</span>
                     </li>

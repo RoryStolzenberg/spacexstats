@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('MissionsTableSeeder');
         $this->call('UsesTableSeeder');
         $this->call('TagsTableSeeder');
+        $this->call('SubscriptionTypesSeeder');
 	}
 
 }

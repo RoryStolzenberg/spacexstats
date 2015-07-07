@@ -6,7 +6,6 @@ use SpaceXStats\Enums\EmailSubscription;
 class MissionMailQueue {
     public function newMission(\Mission $mission, $action) {
 
-        DB::transaction(function() use($action) {
             // Get the emails that are applicable to this and update them
             Email::where('status', 'Held')
                 ->whereHas('emailSubscription.subscriptionType', function($q) {
@@ -23,8 +22,11 @@ class MissionMailQueue {
             })->whereDoesntHave('emails', function($q) {
                 $q->where('status', '=', 'Held');
             })->get();
-        });
 
+            $subscriptionsWithNoCorrespondingHeldEmail->emails()->save(new Email(array(
+                 'content' => 'txt',
+                'status' => $this->actionToEnum($action)
+            )));
     }
 
     private function actionToEnum($action) {
