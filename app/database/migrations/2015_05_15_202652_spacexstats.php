@@ -68,15 +68,21 @@ class Spacexstats extends Migration {
         Schema::create('emails', function(Blueprint $table) {
             $table->increments('email_id');
             $table->integer('user_id')->unsigned();
-            $table->string('content', Varchar::xlarge);
-            $table->enum('status', array('Queued', 'Sent'));
+            $table->string('content', Varchar::xlarge)->nullable();
+            $table->enum('status', array('Held', 'Queued', 'Sent'));
+            $table->datetime('sent_at')->nullable();
             $table->timestamps();
         });
 
         Schema::create('email_subscriptions', function(Blueprint $table) {
             $table->increments('email_subscription_id');
             $table->integer('user_id')->unsigned();
-            $table->smallInteger('subscription_type')->unsigned();
+            $table->smallInteger('subscription_type_id')->unsigned();
+        });
+
+        Schema::create('subscription_type', function(Blueprint $table) {
+            $table->increments('subscription_type_id');
+            $table->string('name', Varchar::small);
         });
 
         Schema::create('favorites', function(Blueprint $table) {
@@ -338,6 +344,7 @@ class Spacexstats extends Migration {
         // Add foreign keys
         Schema::table('email_subscriptions', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('subscription_type_id')->references('subscription_type_id')->on('subscription_types');
         });
 
         Schema::table('missions', function(Blueprint $table) {

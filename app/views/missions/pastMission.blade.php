@@ -92,8 +92,11 @@
         <h3>Prelaunch</h3>
         <h3>Launch</h3>
         <h3>Postlaunch</h3>
+
 		<h2>Images</h2>
+        <section class="images"></section>
 		<h2>Videos</h2>
+        <section class="videos"></section>
         <h2>Articles</h2>
         <section class="articles">
         </section>
