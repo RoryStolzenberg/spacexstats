@@ -57,6 +57,7 @@
 			<div class="grid-4">
 				<h3>Library</h3>
                 <ul class="library">
+
                     <li id="launch-video">
                         <span>Watch the Launch</span>
                     </li>

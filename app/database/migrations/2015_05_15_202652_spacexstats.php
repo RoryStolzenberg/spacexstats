@@ -77,12 +77,7 @@ class Spacexstats extends Migration {
         Schema::create('email_subscriptions', function(Blueprint $table) {
             $table->increments('email_subscription_id');
             $table->integer('user_id')->unsigned();
-            $table->smallInteger('subscription_type_id')->unsigned();
-        });
-
-        Schema::create('subscription_type', function(Blueprint $table) {
-            $table->increments('subscription_type_id');
-            $table->string('name', Varchar::small);
+            $table->integer('subscription_type_id')->unsigned();
         });
 
         Schema::create('favorites', function(Blueprint $table) {
@@ -111,7 +106,7 @@ class Spacexstats extends Migration {
             $table->string('launch_approximate', Varchar::small)->nullable();
             $table->string('name', Varchar::small);
             $table->string('slug', Varchar::small);
-            $table->enum('type', array('Dragon (ISS)', 'Dragon (Freeflight)', 'Communications Satellite', 'Constellation Mission', 'Military', 'Scientific'));
+            $table->enum('type', array('Dragon (ISS)', 'Dragon (Freeflight)', 'Communications Satellite', 'Constellation Mission', 'Military', 'Scientific'))->nullable();
             $table->string('contractor', Varchar::medium);
             $table->integer('vehicle_id')->unsigned();
             $table->integer('destination_id')->unsigned();
@@ -119,6 +114,7 @@ class Spacexstats extends Migration {
             $table->string('summary', Varchar::medium);
             $table->string('article', Varchar::xlarge)->nullable();
             $table->enum('status', array('Upcoming', 'Complete', 'In Progress'));
+            $table->enum('outcome', array('Failure', 'Success'))->nullable();
 
             // Upperstage stuff
             $table->string('upperstage_outcome', Varchar::compact)->nullable();
@@ -294,6 +290,12 @@ class Spacexstats extends Migration {
             $table->enum('display', array('single', 'double', 'count', 'time', 'piechart', 'barchart'));
         });
 
+        Schema::create('subscription_types', function(Blueprint $table) {
+            $table->increments('subscription_type_id');
+            $table->string('name', Varchar::small);
+        });
+
+
         Schema::create('tags', function(Blueprint $table) {
             $table->increments('tag_id');
             $table->string('name', Varchar::small);
@@ -416,7 +418,7 @@ class Spacexstats extends Migration {
 	{
         $tables = [];
 
-        DB::statement( 'SET FOREIGN_KEY_CHECKS=0' );
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         foreach (DB::select('SHOW TABLES') as $k => $v) {
             $tables[] = array_values((array)$v)[0];
@@ -427,6 +429,8 @@ class Spacexstats extends Migration {
                 Schema::drop($table);
             }
         }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
 	}
 
 }

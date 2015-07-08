@@ -11,6 +11,8 @@ class DatabaseSeeder extends Seeder {
 	{
 		Eloquent::unguard();
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
 		$this->call('RolesTableSeeder');
         $this->call('DestinationsTableSeeder');
         $this->call('LocationsTableSeeder');
@@ -24,6 +26,8 @@ class DatabaseSeeder extends Seeder {
         $this->call('UsesTableSeeder');
         $this->call('TagsTableSeeder');
         $this->call('SubscriptionTypesSeeder');
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
 	}
 
 }

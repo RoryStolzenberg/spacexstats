@@ -4,7 +4,22 @@ class ProfilesTableSeeder extends Seeder {
         Profile::create(array(
             'user_id' => 1,
             'summary' => 'CEO and Chief Engineer of SpaceX & Tesla Motors. A literal god.',
-            'twitter_account' => 'ElonMusk'
+            'twitter_account' => 'ElonMusk',
+            'favorite_mission' => 1,
+            'favorite_mission_patch' => 1
+        ));
+
+        Profile::create(array(
+            'user_id' => 2,
+            'summary' => 'VP of sales',
+            'favorite_mission' => 4,
+            'favorite_mission_patch' => 1
+        ));
+
+        Profile::create(array(
+            'user_id' => 3,
+            'summary' => 'Creator of the Merlin Engine',
+            'twitter_account' => 'TMueller'
         ));
     }
 }
