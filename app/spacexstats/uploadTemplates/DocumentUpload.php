@@ -45,17 +45,23 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
 
             return $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg';
         }
-        // One day learn to 
+
+        // One day learn to extract thumbnails for all the other media types too
         return "media/{$size}/document.png";
     }
 
     private function getPageCount() {
+        $filetype = $this->fileinfo['filetype'];
+        $mime = $this->fileinfo['mime'];
 
-    }
+        // PDFs only for now
+        if ($filetype == 'pdf' && $mime == 'application/pdf') {
+            // http://stackoverflow.com/a/9642701/1064923
+            $image = new Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
+            $image->pingImage($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
+            return $image->getNumberImages();
+        }
 
-
-
-    private function getPageCountDocx() {
-
+        return null;
     }
 }
