@@ -57,7 +57,7 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
         // PDFs only for now
         if ($filetype == 'pdf' && $mime == 'application/pdf') {
             // http://stackoverflow.com/a/9642701/1064923
-            $image = new Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
+            $image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
             $image->pingImage($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
             return $image->getNumberImages();
         }

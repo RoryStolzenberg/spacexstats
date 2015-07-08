@@ -120,6 +120,25 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         function UploadedDocument(document) {
             var self = this;
+            koMapping.fromJS(document, {
+                include: ['title', 'summary', 'subtype', 'tags', 'originated_at', 'mission_id', 'author', 'attribution', 'anonymous']
+            }, this);
+
+            self.title = ko.observable(null);
+            self.summary = ko.observable(null);
+            self.subtype = ko.observable(null);
+            self.mission_id = ko.observable(null);
+            self.author = ko.observable(null);
+            self.attribution = ko.observable(null);
+            self.anonymous = ko.observable(false);
+            self.tags = ko.observableArray([]);
+            self.originated_at = ko.computed(function() {
+                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
+            });
+
+            self.year = ko.observable(null);
+            self.month = ko.observable(null);
+            self.date = ko.observable(null);
         }
 
         // Switch between "upload", "post", & "write"
