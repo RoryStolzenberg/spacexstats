@@ -29,10 +29,24 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
         $filetype = $this->fileinfo['filetype'];
         $mime = $this->fileinfo['mime'];
 
+        $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
+
         // PDFs
         if ($filetype == 'pdf' && $mime == 'application/pdf') {
+            $image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename'] . '[0]');
+            // Use PNG because: http://stackoverflow.com/questions/10934456/imagemagick-pdf-to-jpgs-sometimes-results-in-black-background
+            $image->setImageFormat('png');
+            $image->setBackgroundColor(new \ImagickPixel('white'));
+            $image->thumbnailImage($lengthDimension, $lengthDimension, true);
+            // http://php.net/manual/en/imagick.flattenimages.php#101164
+            $image = $image->flattenImages();
+            $image->setImageFormat('jpg');
+            $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
 
-        } elseif ($filetype ==)
+            return $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg';
+        }
+        // One day learn to 
+        return "media/{$size}/document.png";
     }
 
     private function getPageCount() {

@@ -35,7 +35,7 @@ class ObjectActionService implements ActionServiceInterface {
             $this->object->summary = array_get($input, 'summary', null);
             $this->object->subtype = array_get($input, 'subtype', null);
             $this->object->originated_at = array_get($input, 'originated_at', null);
-            $this->object->anonymous = array_get($input, 'anonymous', 0);
+            $this->object->anonymous = array_get($input, 'originated_at', false);
             $this->object->status = 'Queued';
 
             // Set the mission relation if it exists

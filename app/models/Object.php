@@ -130,4 +130,9 @@ class Object extends Eloquent {
     public function getQueueTimeAttribute() {
         return $this->actioned_at->diffInSeconds($this->created_at);
     }
+
+    // Attribute mutators
+    public function setAnonymousAttribute($value) {
+        $this->attributes['anonymous'] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
 }
