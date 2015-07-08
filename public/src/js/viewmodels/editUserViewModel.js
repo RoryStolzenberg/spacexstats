@@ -20,6 +20,10 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                     }
                 }
             );
+        };
+
+        self.updateEmailNotifications = function() {
+
         }
     };
 

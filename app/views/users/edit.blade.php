@@ -87,6 +87,10 @@
                                 {{ Form::label('launch_time_change', 'A launch time has changed') }}
                                 {{ Form::checkbox('launch_time_change', 'launch_time_change') }}
                             </li>
+                            <li>
+                                {{ Form::label('new_mission', 'When a new mission exists') }}
+                                {{ Form::checkbox('new_mission', 'new_mission') }}
+                            </li>
                         </ul>
                     </fieldset>
 
@@ -119,7 +123,7 @@
                             </li>
                         </ul>
                     </fieldset>
-
+                    {{ Form::submit('Update Email Notifications', array('data-bind' => 'click: updateEmailNotifications')) }}
                 {{ Form::close() }}
             </section>
 
