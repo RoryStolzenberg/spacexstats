@@ -94,7 +94,7 @@
 				</div>
 			@endforeach			
 		</section>
-		@if (Auth::isAccessingSelf($user) || Auth::isAdministrator())
+		@if (Auth::isAccessingSelf($user) || Auth::isAdmin())
 			<h2>Notes</h2>
 			<section class="notes">
 				

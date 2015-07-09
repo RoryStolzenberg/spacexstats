@@ -31,7 +31,7 @@ class UsersController extends BaseController {
 			if (Auth::isAccessingSelf($user)) {
 				$objects = Object::where('user_id',$user->user_id)->get();
 			} else {
-				$objects = Object::where('user_id',$user->user_id)->where('status','Published')->where('association',true)->get();
+				$objects = Object::where('user_id',$user->user_id)->where('status','Published')->where('anonymous',true)->get();
 			}
 			return View::make('users.profile', array(
 				'user' => $user,

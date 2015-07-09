@@ -20,7 +20,7 @@ class UserPresenter {
      */
     public function subscription_details(User $user) {
         // If the user is accessing themselves and is a subscriber, show when their subscription expires (or if an admin)
-        if ((Auth::isAccessingSelf($user) && Auth::isSubscriber()) || Auth::isAdministrator()) {
+        if ((Auth::isAccessingSelf($user) && Auth::isSubscriber()) || Auth::isAdmin()) {
             $subscriptionExpiry = 'Subscription expires ' . $this->entity->subscription_expiry->toFormattedDateString();
 
             // If the subscription also expires in less than 30 days... ask them to renew!

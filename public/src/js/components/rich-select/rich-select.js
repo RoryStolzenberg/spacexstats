@@ -55,10 +55,11 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
 
                     koMapping.fromJS(fetchedItems, self.mappingOptions, self.options);
 
-                    if (params.default == true && !params.selected) {
+                    if (params.default === true) {
                         self.selectedOption($.grep(self.options(), function(e){ return e.id() == 0; })[0]);
-                    } else if (params.selected) {
-                        self.selectedOption($.grep(self.options(), function(e){ return e.id() == params.selected(); })[0]);
+                    } else {
+                        params.value = params.default;
+                        self.selectedOption($.grep(self.options(), function(e){ return e.id() == ko.unwrap(params.default); })[0]);
                     }
                 }
             });

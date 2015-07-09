@@ -59,7 +59,7 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
             // http://stackoverflow.com/a/9642701/1064923
             $image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
             $image->pingImage($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
-            return $image->getNumberImages();
+            return $image->getNumberImages() / 2; // I have no idea why this is needed
         }
 
         return null;

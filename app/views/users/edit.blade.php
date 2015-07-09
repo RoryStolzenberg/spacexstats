@@ -33,29 +33,29 @@
                     <div class="grid-6">
                         <h3>You</h3>
                         {{ Form::label('summary', 'Write about yourself') }}
-                        {{ Form::textarea('summary') }}
+                        {{ Form::textarea('summary', Input::old('summary'), array('data-bind' => 'getOriginalValue, value: profile.summary')) }}
 
                         {{ Form::label('twitter_account', 'Twitter') }}
                         <div class="prepended-input">
-                            <span>@</span>{{ Form::text('twitter_account') }}
+                            <span>@</span>{{ Form::text('twitter_account', Input::old('twitter_account'), array('data-bind' => 'getOriginalValue, value: profile.twitter_account')) }}
                         </div>
 
                         {{ Form::label('reddit_account', 'Reddit') }}
                         <div class="prepended-input">
-                            <span>/u/</span>{{ Form::text('reddit_account') }}
+                            <span>/u/</span>{{ Form::text('reddit_account', Input::old('reddit_account'), array('data-bind' => 'getOriginalValue, value: profile.reddit_account')) }}
                         </div>
                     </div>
 
                     <div class="grid-6">
                         <h3>Favorites</h3>
                         {{ Form::label('favorite_mission', 'Favorite Mission') }}
-                        <rich-select params="fetchFrom: '/missions/all', default: {{ $user->favorite_mission }}, value: favorite_mission_id, mapping: {}"></rich-select>
+                        <rich-select params="fetchFrom: '/missions/all', default: {{ $user->profile->favorite_mission }}, value: profile.favorite_mission, mapping: {}"></rich-select>
 
                         {{ Form::label('favorite_mission_patch', 'Favorite Mission Patch') }}
-                        <rich-select params="fetchFrom: '/missions/patches', default: {{ $user->favorite_mission_patch }}, value: patch_mission_id, mapping: {}"></rich-select>
+                        <rich-select params="fetchFrom: '/missions/patches', default: {{ $user->profile->favorite_mission_patch }}, value: profile.favorite_mission_patch, mapping: {}"></rich-select>
 
                         {{ Form::label('favorite_quote', 'Favorite Elon Musk Quote') }}
-                        {{ Form::textarea('favorite_quote') }}
+                        {{ Form::textarea('favorite_quote', Input::old('favorite_quote'), array('data-bind' => 'getOriginalValue, value: profile.favorite_quote')) }}
                         <p>- Elon Musk.</p>
                     </div>
 
