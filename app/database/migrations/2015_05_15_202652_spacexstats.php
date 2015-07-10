@@ -74,10 +74,10 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('email_subscriptions', function(Blueprint $table) {
-            $table->increments('email_subscription_id');
+        Schema::create('email_notifications', function(Blueprint $table) {
+            $table->increments('email_notification_id');
             $table->integer('user_id')->unsigned();
-            $table->integer('subscription_type_id')->unsigned();
+            $table->integer('notification_type_id')->unsigned();
         });
 
         Schema::create('favorites', function(Blueprint $table) {
@@ -291,8 +291,8 @@ class Spacexstats extends Migration {
             $table->enum('display', array('single', 'double', 'count', 'time', 'piechart', 'barchart'));
         });
 
-        Schema::create('subscription_types', function(Blueprint $table) {
-            $table->increments('subscription_type_id');
+        Schema::create('notification_types', function(Blueprint $table) {
+            $table->increments('notification_type_id');
             $table->string('name', Varchar::small);
         });
 
@@ -345,9 +345,9 @@ class Spacexstats extends Migration {
         });
 
         // Add foreign keys
-        Schema::table('email_subscriptions', function(Blueprint $table) {
+        Schema::table('email_notifications', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('subscription_type_id')->references('subscription_type_id')->on('subscription_types');
+            $table->foreign('notification_type_id')->references('notification_type_id')->on('notification_types');
         });
 
         Schema::table('missions', function(Blueprint $table) {

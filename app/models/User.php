@@ -62,8 +62,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->belongsTo('Role');
     }
 
-    public function emailSubscriptions() {
-        return $this->hasMany('EmailSubscription');
+    public function emailNotifications() {
+        return $this->hasMany('EmailNotification');
     }
 
 	// Helpers
@@ -107,9 +107,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		}
 	}
 
-    public function hasEmailSubscription($subscriptionType) {
-        return !$this->emailSubscriptions->filter(function($emailSubscription) use($subscriptionType) {
-            return $emailSubscription->subscription_type_id == $subscriptionType;
+    public function hasEmailSubscription($notificationType) {
+        return !$this->emailNotifications->filter(function($emailNotification) use($notificationType) {
+            return $emailNotification->notification_type_id == $notificationType;
         })->isEmpty();
     }
 

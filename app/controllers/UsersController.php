@@ -45,10 +45,10 @@ class UsersController extends BaseController {
 	}
 
     public function edit($username) {
-        $user = User::where('username', $username)->with('emailSubscriptions')->firstOrFail();
+        $user = User::where('username', $username)->with('emailNotifications')->firstOrFail();
 
         JavaScript::put([
-            'emailSubscriptions' => 20
+            'emailNotifications'
         ]);
 
         return View::make('users.edit', array(

@@ -1,8 +1,8 @@
 <?php
-class EmailSubscription extends Eloquent {
+class EmailNotification extends Eloquent {
 
-    protected $table = 'email_subscriptions';
-    protected $primaryKey = 'email_subscription_id';
+    protected $table = 'email_notifications';
+    protected $primaryKey = 'email_notifications_id';
     public $timestamps = true;
 
     protected $hidden = [];
@@ -15,8 +15,8 @@ class EmailSubscription extends Eloquent {
         return $this->hasMany('Email');
     }
 
-    public function subscriptionType() {
-        return $this->belongsTo('SubscriptionType');
+    public function notificationType() {
+        return $this->belongsTo('NotificationType');
     }
 
     public function user() {

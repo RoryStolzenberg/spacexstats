@@ -14,8 +14,8 @@ class Email extends Eloquent {
     }
 
     // Relations
-    public function emailSubscription() {
-        return $this->belongsTo('EmailSubscription');
+    public function emailNotification() {
+        return $this->belongsTo('EmailNotification');
     }
 
     // Attribute Mutators
