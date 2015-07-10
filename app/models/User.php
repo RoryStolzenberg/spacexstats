@@ -62,7 +62,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->belongsTo('Role');
     }
 
-    public function subscriptions() {
+    public function emailSubscriptions() {
         return $this->hasMany('EmailSubscription');
     }
 
@@ -106,6 +106,12 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			return $user->save();			
 		}
 	}
+
+    public function hasEmailSubscription($subscriptionType) {
+        return !$this->emailSubscriptions->filter(function($emailSubscription) use($subscriptionType) {
+            return $emailSubscription->subscription_type_id == $subscriptionType;
+        })->isEmpty();
+    }
 
 	public function setPasswordAttribute($value) {
 		$this->attributes['password'] = Hash::make($value);

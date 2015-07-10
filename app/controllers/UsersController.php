@@ -45,12 +45,13 @@ class UsersController extends BaseController {
 	}
 
     public function edit($username) {
-        $user = User::where('username', $username)->with('profile','subscriptions')->firstOrFail();
+        $user = User::where('username', $username)->with('emailSubscriptions')->firstOrFail();
 
         return View::make('users.edit', array(
             'user' => $user,
             'profile' => $user->profile,
-            'missions' => Mission::all()
+            'missions' => Mission::all(),
+            'emailSubscriptions' => $user->emailSubscriptions
         ));
     }
 
@@ -64,11 +65,15 @@ class UsersController extends BaseController {
         }
 	}
 
-    public function editEmailSubscriptions($username) {
+    public function editEmailNotifications($username) {
         $user = User::where('username', $username)->firstOrFail();
     }
 
-    public function editSMSSubscriptions($username) {
+    public function editSMSNotifications($username) {
+        $user = User::where('username', $username)->firstOrFail();
+    }
+
+    public function editRedditNotifications($username) {
         $user = User::where('username', $username)->firstOrFail();
     }
 

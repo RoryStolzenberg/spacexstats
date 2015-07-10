@@ -39,14 +39,19 @@ Route::group(array('before' => 'mustBeYourself'), function() {
         'uses' => 'UsersController@editProfile'
     ));
 
-    Route::post('/users/{username}/edit/emailsubscription', array(
-        'as' => 'users.edit.emailsubscription',
-        'uses' => 'UsersController@editEmailSubscription'
+    Route::post('/users/{username}/edit/emailnotifications', array(
+        'as' => 'users.edit.emailnotifications',
+        'uses' => 'UsersController@editEmailNotifications'
     ));
 
-    Route::post('/users/{username}/edit/smssubscription', array(
-        'as' => 'users.edit.smssubscription',
-        'uses' => 'UsersController@editSMSSubscription'
+    Route::post('/users/{username}/edit/smsnotifications', array(
+        'as' => 'users.edit.smsnotifications',
+        'uses' => 'UsersController@editSMSNotifications'
+    ));
+
+    Route::post('/users/{username}/edit/redditnotifications', array(
+        'as' => 'users.edit.redditnotifications',
+        'uses' => 'UsersController@editRedditNotifications'
     ));
 });
 
