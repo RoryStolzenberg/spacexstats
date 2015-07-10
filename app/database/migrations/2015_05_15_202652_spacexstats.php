@@ -247,6 +247,7 @@ class Spacexstats extends Migration {
             $table->string('twitter_account', Varchar::small)->nullable();
             $table->integer('favorite_mission')->unsigned()->nullable();
             $table->integer('favorite_mission_patch')->unsigned()->nullable();
+            $table->string('favorite_quote', Varchar::large)->nullable();
 
             $table->timestamps();
         });

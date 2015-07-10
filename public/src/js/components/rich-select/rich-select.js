@@ -14,7 +14,11 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
         self.selectedOption = ko.observable();
         self.selectOption = function(option) {
             self.selectedOption(option);
-            params.value(option.id);
+            if (option.id() != 0) {
+                params.value(option.id());
+            } else {
+                params.value(undefined);
+            }
             self.dropdownVisible(false);
         };
 
@@ -56,10 +60,9 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
                     koMapping.fromJS(fetchedItems, self.mappingOptions, self.options);
 
                     if (params.default === true) {
-                        self.selectedOption($.grep(self.options(), function(e){ return e.id() == 0; })[0]);
+                        self.selectOption($.grep(self.options(), function(e){ return e.id() == 0; })[0]);
                     } else {
-                        params.value = params.default;
-                        self.selectedOption($.grep(self.options(), function(e){ return e.id() == ko.unwrap(params.default); })[0]);
+                        self.selectOption($.grep(self.options(), function(e){ return e.id() == ko.unwrap(params.default); })[0]);
                     }
                 }
             });

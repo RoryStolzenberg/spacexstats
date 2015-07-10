@@ -46,7 +46,7 @@ class UsersController extends BaseController {
 	}
 
 	public function edit($username) {
-		$user = User::where('username', $username)->with('profile')->firstOrFail();
+		$user = User::where('username', $username)->with('profile','subscriptions')->firstOrFail();
 		
 		if (Request::isMethod('get')) {			
 			return View::make('users.edit', array(
@@ -56,7 +56,7 @@ class UsersController extends BaseController {
 			));
 
 		} elseif (Request::isMethod('post')) {
-			if ($user->profile->fill(Input::all())->save()) {
+			if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {
 				return Response::json(['success' => true]);
 			} else {
 				return Response::json(['success' => false]);

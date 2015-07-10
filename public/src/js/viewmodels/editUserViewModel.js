@@ -24,17 +24,32 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
 
         self.updateProfile = function () {
-            /*$.ajax('/users/' + self.username + '/edit',
+            var mappedProfile = koMapping.toJS(self.profile);
+            $.ajax('/users/' + self.username + '/edit',
                 {
                     dataType: 'json',
                     type: 'POST',
-                    data: self.profile,
+                    data: JSON.stringify(mappedProfile, function(key, value) {
+                        if (value === "" || typeof value === 'undefined') {
+                            return null;
+                        }
+                        return value;
+                    }),
+                    contentType: "application/json",
                     success: function (response) {
                         console.log(response);
                     }
                 }
-            );*/
-            console.log(self.profile);
+            );
+        };
+
+        self.emailNotifications = {
+            launch_time_change: ko.observable(),
+            new_mission: ko.observable(),
+            launch_in_24_hours: ko.observable(),
+            launch_in_3_hours: ko.observable(),
+            launch_in_1_hour: ko.observable(),
+            news_summaries: ko.observable()
         };
 
         self.updateEmailNotifications = function() {

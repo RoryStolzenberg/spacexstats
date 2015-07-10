@@ -49,10 +49,10 @@
                     <div class="grid-6">
                         <h3>Favorites</h3>
                         {{ Form::label('favorite_mission', 'Favorite Mission') }}
-                        <rich-select params="fetchFrom: '/missions/all', default: {{ $user->profile->favorite_mission }}, value: profile.favorite_mission, mapping: {}"></rich-select>
+                        <rich-select params="fetchFrom: '/missions/all', default: {{ $user->profile->favorite_mission or 'true' }}, value: profile.favorite_mission, mapping: {}"></rich-select>
 
                         {{ Form::label('favorite_mission_patch', 'Favorite Mission Patch') }}
-                        <rich-select params="fetchFrom: '/missions/patches', default: {{ $user->profile->favorite_mission_patch }}, value: profile.favorite_mission_patch, mapping: {}"></rich-select>
+                        <rich-select params="fetchFrom: '/missions/patches', default: {{ $user->profile->favorite_mission_patch or 'true' }}, value: profile.favorite_mission_patch, mapping: {}"></rich-select>
 
                         {{ Form::label('favorite_quote', 'Favorite Elon Musk Quote') }}
                         {{ Form::textarea('favorite_quote', Input::old('favorite_quote'), array('data-bind' => 'getOriginalValue, value: profile.favorite_quote')) }}
@@ -101,7 +101,7 @@
                     <ul>
                         <li>
                             {{ Form::label('launch_in_24_hours', 'There\'s a SpaceX launch is 24 hours') }}
-                            {{ Form::checkbox('launch_in_24_hours', 'launch_in_24_hours') }}
+                            {{ Form::checkbox('launch_in_24_hours', 'launch_in_24_hours', $) }}
                         </li>
                         <li>
                             {{ Form::label('launch_in_3_hours', 'There\'s a SpaceX launch is 3 hours') }}

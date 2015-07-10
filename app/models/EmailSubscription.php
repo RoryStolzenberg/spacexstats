@@ -18,4 +18,8 @@ class EmailSubscription extends Eloquent {
     public function subscriptionType() {
         return $this->belongsTo('SubscriptionType');
     }
+
+    public function user() {
+        return $this->belongsTo('User');
+    }
 }
