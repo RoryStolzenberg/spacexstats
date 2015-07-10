@@ -47,6 +47,10 @@ class UsersController extends BaseController {
     public function edit($username) {
         $user = User::where('username', $username)->with('emailSubscriptions')->firstOrFail();
 
+        JavaScript::put([
+            'emailSubscriptions' => 20
+        ]);
+
         return View::make('users.edit', array(
             'user' => $user,
             'profile' => $user->profile,

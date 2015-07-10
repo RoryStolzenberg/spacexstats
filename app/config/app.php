@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://spacexstats.dev',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -121,9 +121,11 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
+
 		'Ignited\LaravelOmnipay\LaravelOmnipayServiceProvider',
 		'Aws\Laravel\AwsServiceProvider',
 		'Indatus\Dispatcher\ServiceProvider',
+        'Laracasts\Utilities\UtilitiesServiceProvider',
 
 		'SpaceXStats\Composers\ComposerServiceProvider',
         'SpaceXStats\Validation\ValidationServiceProvider'

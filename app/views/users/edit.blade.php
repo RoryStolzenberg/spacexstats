@@ -86,11 +86,11 @@
                         <ul>
                             <li>
                                 {{ Form::label('launch_time_change', 'A launch time has changed') }}
-                                {{ Form::checkbox('launch_time_change', 'launch_time_change', $user->hasEmailSubscription(\SpaceXStats\Enums\SubscriptionType::LaunchTimeChange)) }}
+                                {{ Form::checkbox('launch_time_change', 'launch_time_change', null, array('data-bind' => 'checked: emailNotifications.launch_time_change')) }}
                             </li>
                             <li>
                                 {{ Form::label('new_mission', 'When a new mission exists') }}
-                                {{ Form::checkbox('new_mission', 'new_mission', $user->hasEmailSubscription(\SpaceXStats\Enums\SubscriptionType::NewMission)) }}
+                                {{ Form::checkbox('new_mission', 'new_mission', null) }}
                             </li>
                         </ul>
                     </fieldset>
@@ -102,15 +102,15 @@
                     <ul>
                         <li>
                             {{ Form::label('launch_in_24_hours', 'There\'s a SpaceX launch is 24 hours') }}
-                            {{ Form::checkbox('launch_in_24_hours', 'launch_in_24_hours', $user->hasEmailSubscription(\SpaceXStats\Enums\SubscriptionType::TMinus24Hours)) }}
+                            {{ Form::checkbox('launch_in_24_hours', 'launch_in_24_hours', null) }}
                         </li>
                         <li>
                             {{ Form::label('launch_in_3_hours', 'There\'s a SpaceX launch is 3 hours') }}
-                            {{ Form::checkbox('launch_in_3_hours', 'launch_in_3_hours', $user->hasEmailSubscription(\SpaceXStats\Enums\SubscriptionType::TMinus3Hours)) }}
+                            {{ Form::checkbox('launch_in_3_hours', 'launch_in_3_hours', null) }}
                         </li>
                         <li>
                             {{ Form::label('launch_in_1_hour', 'There\'s a SpaceX launch is 1 hour') }}
-                            {{ Form::checkbox('launch_in_1_hour', 'launch_in_1_hour', $user->hasEmailSubscription(\SpaceXStats\Enums\SubscriptionType::TMinus1Hour)) }}
+                            {{ Form::checkbox('launch_in_1_hour', 'launch_in_1_hour', null) }}
                         </li>
                     </ul>
 
@@ -120,7 +120,7 @@
                         <ul>
                             <li>
                                 {{ Form::label('news_summaries', 'Monthly SpaceXStats News Summary Infographics') }}
-                                {{ Form::checkbox('news_summaries', 'news_summaries', $user->hasEmailSubscription(\SpaceXStats\Enums\SubscriptionType::NewSummaries)) }}
+                                {{ Form::checkbox('news_summaries', 'news_summaries', null) }}
                             </li>
                         </ul>
                     </fieldset>

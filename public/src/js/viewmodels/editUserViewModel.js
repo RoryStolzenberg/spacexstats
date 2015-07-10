@@ -1,6 +1,8 @@
 define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var EditUserViewModel = function (username) {
 
+        console.log(laravel.emailSubscriptions);
+
         var getOriginalValue = ko.bindingHandlers.value.init;
         ko.bindingHandlers.value.init = function(element, valueAccessor, allBindings) {
             if (allBindings.has('getOriginalValue')) {
@@ -53,7 +55,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
 
         self.updateEmailNotifications = function() {
-
+            console.log(koMapping.toJS(self.emailNotifications));
         }
     };
 
