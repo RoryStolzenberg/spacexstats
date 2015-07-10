@@ -7,7 +7,6 @@ class UsersController extends BaseController {
 
 	protected $user, $mailer;
 
-
     protected $flashMessages = [
         'accountCouldNotBeCreatedDatabaseError'     => array('type' => 'failure', 'contents' => 'Looks like your account couldn\'t be created. You can try again, or get in touch.'),
         'accountCreated'                            => array('type' => 'success', 'contents' => 'Your account has been created, please check your email to activate your account!'),
@@ -45,24 +44,33 @@ class UsersController extends BaseController {
 		}
 	}
 
-	public function edit($username) {
-		$user = User::where('username', $username)->with('profile','subscriptions')->firstOrFail();
-		
-		if (Request::isMethod('get')) {			
-			return View::make('users.edit', array(
-				'user' => $user,
-				'profile' => $user->profile,
-				'missions' => Mission::all()
-			));
+    public function edit($username) {
+        $user = User::where('username', $username)->with('profile','subscriptions')->firstOrFail();
 
-		} elseif (Request::isMethod('post')) {
-			if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {
-				return Response::json(['success' => true]);
-			} else {
-				return Response::json(['success' => false]);
-			}
-		}
+        return View::make('users.edit', array(
+            'user' => $user,
+            'profile' => $user->profile,
+            'missions' => Mission::all()
+        ));
+    }
+
+	public function editProfile($username) {
+		$user = User::where('username', $username)->firstOrFail();
+
+        if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {
+            return Response::json(['success' => true]);
+        } else {
+            return Response::json(['success' => false]);
+        }
 	}
+
+    public function editEmailSubscriptions($username) {
+        $user = User::where('username', $username)->firstOrFail();
+    }
+
+    public function editSMSSubscriptions($username) {
+        $user = User::where('username', $username)->firstOrFail();
+    }
 
 	public function create() {
 		if (Request::isMethod('get')) {

@@ -28,10 +28,28 @@ Route::group(array('before' => 'mustBeLoggedIn'), function() {
     ));
 });
 
-Route::any('/users/{username}/edit', array(
-    'as' => 'users.edit',
-    'uses' => 'UsersController@edit'
-))->before('mustBeYourself');
+Route::group(array('before' => 'mustBeYourself'), function() {
+    Route::get('/users/{username}/edit', array(
+        'as' => 'users.edit',
+        'uses' => 'UsersController@edit'
+    ));
+
+    Route::post('/users/{username}/edit/profile', array(
+        'as' => 'users.edit.profile',
+        'uses' => 'UsersController@editProfile'
+    ));
+
+    Route::post('/users/{username}/edit/emailsubscription', array(
+        'as' => 'users.edit.emailsubscription',
+        'uses' => 'UsersController@editEmailSubscription'
+    ));
+
+    Route::post('/users/{username}/edit/smssubscription', array(
+        'as' => 'users.edit.smssubscription',
+        'uses' => 'UsersController@editSMSSubscription'
+    ));
+});
+
 
 Route::get('/users/{username}', array(
     'as' => 'users.get',
