@@ -27,11 +27,8 @@ define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.htm
                     var launchUnixSeconds = self.launchUnixSeconds();
                     var currentUnixSeconds = Math.floor($.now() / 1000);
 
-                    // Stop the countdown, count up!
-                    if (launchUnixSeconds <= currentUnixSeconds) {
-                        clearInterval(self.countdownTimer);
 
-                    } else {
+                    if (launchUnixSeconds >= currentUnixSeconds) {
                         self.secondsAwayFromLaunch(launchUnixSeconds - currentUnixSeconds);
                         var secondsBetween = self.secondsAwayFromLaunch();
                         // Calculate the number of days, hours, minutes, seconds
@@ -50,12 +47,20 @@ define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.htm
                         self.hoursText(self.hours() == 1 ? 'Hour' : 'Hours');
                         self.minutesText(self.minutes() == 1 ? 'Minute' : 'Minutes');
                         self.secondsText(self.seconds() == 1 ? 'Second' : 'Seconds');
+
+                    // Stop the countdown, count up!
+                    } else {
+
+                    }
+
+                    if (params.callback && typeof params.callback === 'function') {
+                        params.callback();
                     }
                 };
 
                 setInterval(self.countdownProcessor, 1000);
             } else {
-
+                self.countdownText = ko.observable(ko.unwrap(params.countdownTo));
             }
         })();
     };

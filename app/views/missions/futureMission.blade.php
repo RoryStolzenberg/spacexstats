@@ -9,7 +9,7 @@
     <script>
         require(['common'], function() {
             require(['knockout', 'viewmodels/FutureMissionViewModel'], function(ko, FutureMissionViewModel) {
-                ko.applyBindings(new FutureMissionViewModel('{{ $mission->slug}}', '{{ $mission->present()->launchDateTime(DateTime::ISO8601) }}', '{{ $mission->launch_specificity }}' ));
+                ko.applyBindings(new FutureMissionViewModel('{{ $mission->slug}}', 'November', '4' ));
             });
         });
     </script>
@@ -25,9 +25,10 @@
 				<li class="grid-1">Countdown</li>
 				<li class="grid-1">Details</li>
 				<li class="grid-1">Timeline</li>
-				<li class="grid-1">Images</li>
-				<li class="grid-1">Videos</li>
-				<li class="grid-1">Articles</li>
+                @if (Auth::isSubscriber())
+				    <li class="grid-1">Articles</li>
+                @endif
+
 				<li class="grid-2 prefix-3 actions">
 					@if (Auth::isAdmin())
 						<a href="/missions/{{$mission->slug}}/edit"><i class="fa fa-pencil"></i></a>
@@ -65,7 +66,7 @@
             <!-- /ko -->
 		</section>
 		<section class="hero" id="countdown">
-			<countdown params="countdownTo: launchDateTime, specificity: launchSpecificity"></countdown>
+			<countdown params="countdownTo: launchDateTime, specificity: launchSpecificity, callback: someFunc"></countdown>
 		</section>
 		<p>{{ $mission->summary }}</p>
 		<h2>Details</h2>
@@ -78,14 +79,7 @@
         <section class="timeline">
             <canvas></canvas>
         </section>
-		<h2>Images</h2>
-        <section class="images">
 
-        </section>
-		<h2>Videos</h2>
-        <section class="videos">
-
-        </section>
         @if (Auth::isSubscriber())
             <h2>Articles</h2>
             <section class="articles">

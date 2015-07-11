@@ -8,15 +8,23 @@ define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
 
         self.missionSlug = ko.observable(missionSlug);
         self.launchDateTime = ko.observable(launchDateTime);
-        self.launchUnixSeconds = ko.computed(function() {
-            return (moment(self.launchDateTime()).unix());
-        });
-        self.secondsAwayFromLaunch = ko.observable();
+
 
         self.launchSpecificity = ko.observable(launchSpecificity);
         self.isLaunchExact = ko.computed(function() {
            return (self.launchSpecificity() == 7 || self.launchSpecificity() == 6);
         });
+
+        self.launchUnixSeconds = ko.computed(function() {
+            if (self.isLaunchExact()) {
+                return (moment(self.launchDateTime()).unix());
+            }
+            return null;
+        });
+
+        self.someFunc = function() {
+            console.log('yeah bitch');
+        };
 
         self.requestLaunchDateTime = function () {
             $.ajax('/missions/' + self.missionSlug() + '/requestlaunchdatetime',
