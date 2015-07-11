@@ -1,5 +1,3 @@
-
-
 var CreateMissionViewModel = function() {
     var self = this;
 

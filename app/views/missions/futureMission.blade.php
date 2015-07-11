@@ -4,13 +4,16 @@
 @section('bodyClass', 'future-mission')
 
 @section('scripts')
-	@if (!is_null($mission->launch_exact))
-		{{ HTML::script('/assets/js/viewmodels/FutureMissionViewModel.js') }}
-		<script type="text/javascript">
-			$(document).ready(function() {
-				ko.applyBindings(new FutureMissionViewModel('{{ $mission->slug }}', '{{ $mission->present()->launchDateTime(DateTime::ISO8601) }}'));
-			});
-		</script>
+    @if (!is_null($mission->launch_exact))
+    <script data-main="/src/js/common" src="/src/js/require.js"></script>
+    <script>
+        require(['common'], function() {
+            require(['knockout', 'viewmodels/FutureMissionViewModel'], function(ko, FutureMissionViewModel) {
+
+                ko.applyBindings(new FutureMissionViewModel());
+            });
+        });
+    </script>
 	@endif
 @stop
 
@@ -64,21 +67,8 @@
 		</section>
 		<section class="hero hero-centered" id="countdown">
 		@if (!is_null($mission->launch_exact))
-			<table class="countdown">
-				<tr>
-					<td class="value days" data-bind="text: days"></td>
-					<td class="value hours" data-bind="text: hours"></td>
-					<td class="value minutes" data-bind="text: minutes"></td>
-					<td class="value seconds" data-bind="text: seconds"></td>
-				</tr>
-				<tr>
-					<td class="unit days" data-bind="text: daysText"></td>
-					<td class="unit hours" data-bind="text: hoursText"></td>
-					<td class="unit minutes" data-bind="text: minutesText"></td>
-					<td class="unit seconds" data-bind="text: secondsText"></td>
-				</tr>
-			</table>
-		@endif			
+			<countdown params="launchDateTime: , launchSpecificity: "></countdown>
+		@endif
 		</section>
 		<p>{{ $mission->summary }}</p>
 		<h2>Details</h2>

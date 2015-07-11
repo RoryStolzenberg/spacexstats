@@ -6,7 +6,6 @@ define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.htm
         self.isLaunchExact = ko.observable(params.launchSpecificity == 7 || params.launchSpecificity == 6);
         self.secondsAwayFromLaunch = ko.observable();
 
-
         self.init = (function() {
             if (self.isLaunchExact()) {
                 self.launchUnixSeconds = ko.observable(moment(self.launchDateTime()).unix());
