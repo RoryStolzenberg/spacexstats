@@ -16,7 +16,8 @@
         "abraham/twitteroauth": "0.5.2",
 		"guzzlehttp/guzzle": "~4.0",
 		"jenssegers/imagehash": "^0.2.3",
-		"laracasts/utilities": "~1.0"
+		"laracasts/utilities": "~1.0",
+		"aloha/twilio": "^1.0"
 	},
 	"autoload": {
 		"classmap": [
