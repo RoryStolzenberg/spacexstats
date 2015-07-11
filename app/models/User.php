@@ -107,12 +107,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		}
 	}
 
-    public function hasEmailSubscription($notificationType) {
-        return !$this->emailNotifications->filter(function($emailNotification) use($notificationType) {
-            return $emailNotification->notification_type_id == $notificationType;
-        })->isEmpty();
-    }
-
 	public function setPasswordAttribute($value) {
 		$this->attributes['password'] = Hash::make($value);
 	}

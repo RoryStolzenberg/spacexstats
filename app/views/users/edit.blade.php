@@ -82,35 +82,35 @@
                 {{ Form::open() }}
                     <h3>Launch Change Notifications</h3>
                     <fieldset>
-                        <legend>Notify me when</legend>
+                        <legend>Notify me by email when</legend>
                         <ul>
                             <li>
-                                {{ Form::label('launch_time_change', 'A launch time has changed') }}
-                                {{ Form::checkbox('launch_time_change', 'launch_time_change', null, array('data-bind' => 'checked: emailNotifications.launch_time_change')) }}
+                                {{ Form::label('launchTimeChange', 'A launch time has changed') }}
+                                {{ Form::checkbox('launchTimeChange', true, null, array('data-bind' => 'checked: emailNotifications.launchTimeChange')) }}
                             </li>
                             <li>
-                                {{ Form::label('new_mission', 'When a new mission exists') }}
-                                {{ Form::checkbox('new_mission', 'new_mission', null) }}
+                                {{ Form::label('newMission', 'When a new mission exists') }}
+                                {{ Form::checkbox('newMission', true, null, array('data-bind' => 'checked: emailNotifications.launchTimeChange')) }}
                             </li>
                         </ul>
                     </fieldset>
 
                     <h3>Upcoming Launch Notifications</h3>
                     <fieldset>
-                        <legend>Notify when</legend>
+                        <legend>Notify me by email when</legend>
                     </fieldset>
                     <ul>
                         <li>
-                            {{ Form::label('launch_in_24_hours', 'There\'s a SpaceX launch is 24 hours') }}
-                            {{ Form::checkbox('launch_in_24_hours', 'launch_in_24_hours', null) }}
+                            {{ Form::label('tMinus24HoursEmail', 'There\'s a SpaceX launch is 24 hours') }}
+                            {{ Form::checkbox('tMinus24HoursEmail', true, null, array('data-bind' => 'checked: emailNotifications.tMinus24HoursEmail')) }}
                         </li>
                         <li>
-                            {{ Form::label('launch_in_3_hours', 'There\'s a SpaceX launch is 3 hours') }}
-                            {{ Form::checkbox('launch_in_3_hours', 'launch_in_3_hours', null) }}
+                            {{ Form::label('tMinus3HoursEmail', 'There\'s a SpaceX launch is 3 hours') }}
+                            {{ Form::checkbox('tMinus3HoursEmail', true, null, array('data-bind' => 'checked: emailNotifications.tMinus3HoursEmail')) }}
                         </li>
                         <li>
-                            {{ Form::label('launch_in_1_hour', 'There\'s a SpaceX launch is 1 hour') }}
-                            {{ Form::checkbox('launch_in_1_hour', 'launch_in_1_hour', null) }}
+                            {{ Form::label('tMinus1HoursEmail', 'There\'s a SpaceX launch is 1 hour') }}
+                            {{ Form::checkbox('tMinus1HoursEmail', true, null, array('data-bind' => 'checked: emailNotifications.tMinus1HoursEmail')) }}
                         </li>
                     </ul>
 
@@ -119,8 +119,8 @@
                         <legend>Send me</legend>
                         <ul>
                             <li>
-                                {{ Form::label('news_summaries', 'Monthly SpaceXStats News Summary Infographics') }}
-                                {{ Form::checkbox('news_summaries', 'news_summaries', null) }}
+                                {{ Form::label('newsSummaries', 'Monthly SpaceXStats News Summary Infographics') }}
+                                {{ Form::checkbox('newsSummaries', true, null) }}
                             </li>
                         </ul>
                     </fieldset>

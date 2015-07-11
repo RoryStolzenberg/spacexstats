@@ -1,8 +1,6 @@
 define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var EditUserViewModel = function (username) {
 
-        console.log(laravel.emailSubscriptions);
-
         var getOriginalValue = ko.bindingHandlers.value.init;
         ko.bindingHandlers.value.init = function(element, valueAccessor, allBindings) {
             if (allBindings.has('getOriginalValue')) {
@@ -45,13 +43,15 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             );
         };
 
+        console.log();
+
         self.emailNotifications = {
-            launch_time_change: ko.observable(),
-            new_mission: ko.observable(),
-            launch_in_24_hours: ko.observable(),
-            launch_in_3_hours: ko.observable(),
-            launch_in_1_hour: ko.observable(),
-            news_summaries: ko.observable()
+            launchTimeChange: ko.observable(laravel.emailNotifications.launchTimeChange),
+            newMission: ko.observable(laravel.emailNotifications.newMission),
+            tMinus24HoursEmail: ko.observable(laravel.emailNotifications.tMins24HoursEmail),
+            tMinus3HoursEmail: ko.observable(laravel.emailNotifications.tMins3HoursEmail),
+            tMinus1HourEmail: ko.observable(laravel.emailNotifications.tMins1HourEmail),
+            newsSummaries: ko.observable(laravel.emailNotifications.newsSummaries)
         };
 
         self.updateEmailNotifications = function() {

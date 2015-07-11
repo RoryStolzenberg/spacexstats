@@ -2,6 +2,7 @@
 
 use SpaceXStats\Mailers\UserMailer;
 use SpaceXStats\Enums\UserRole;
+use SpaceXStats\Enums\NotificationType;
 
 class UsersController extends BaseController {
 
@@ -45,17 +46,34 @@ class UsersController extends BaseController {
 	}
 
     public function edit($username) {
-        $user = User::where('username', $username)->with('emailNotifications')->firstOrFail();
+        $user = User::where('username', $username)->with('emailNotifications.notificationType')->firstOrFail();
 
-        JavaScript::put([
-            'emailNotifications'
-        ]);
+        $reflector = new ReflectionClass('SpaceXStats\Enums\NotificationType');
+        $notificationTypes = $reflector->getConstants();
+
+        $userEmailNotifications = $user->emailNotifications->keyBy('notification_type_id');
+
+        $hasNotifications = [];
+        foreach ($notificationTypes as $notificationKey => $notificationValue) {
+            $hasNotifications[$notificationKey] = $userEmailNotifications->has($notificationValue);
+        }
+
+        JavaScript::put(['emailNotifications' => $hasNotifications]);
+
+        /*JavaScript::put(array(
+            'emailNotifications' => array(
+                'NewMission' => $user->hasEmailNotification(NotificationType::NewMission),
+                'LaunchTimeChange' => $user->hasEmailNotification(NotificationType::LaunchTimeChange),
+                'TMinus24HoursEmail' => $user->hasEmailNotification(NotificationType::TMinus24HoursEmail),
+                'TMinus3HoursEmail' => $user->hasEmailNotification(NotificationType::TMinus24HoursEmail),
+                'TMinus1HourEmail' => $user->hasEmailNotification(NotificationType::TMinus24HoursEmail),
+
+            )
+        ));*/
 
         return View::make('users.edit', array(
             'user' => $user,
-            'profile' => $user->profile,
-            'missions' => Mission::all(),
-            'emailSubscriptions' => $user->emailSubscriptions
+            'profile' => $user->profile
         ));
     }
 
