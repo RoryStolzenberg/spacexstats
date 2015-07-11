@@ -126,6 +126,7 @@ return array(
 		'Aws\Laravel\AwsServiceProvider',
 		'Indatus\Dispatcher\ServiceProvider',
         'Laracasts\Utilities\UtilitiesServiceProvider',
+        'Aloha\Twilio\TwilioServiceProvider',
 
 		'SpaceXStats\Composers\ComposerServiceProvider',
         'SpaceXStats\Validation\ValidationServiceProvider'
@@ -194,6 +195,7 @@ return array(
 		'SoftDeletingTrait' => 'Illuminate\Database\Eloquent\SoftDeletingTrait',
 		'SSH'               => 'Illuminate\Support\Facades\SSH',
 		'Str'               => 'Illuminate\Support\Str',
+        'Twilio'            => 'Aloha\Twilio\Facades\Twilio',
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
