@@ -47,28 +47,26 @@
 			</ul>
 		</nav>
 		<section class="highlights">
-			@if (!is_null($mission->launch_exact))
-				<div class="webcast-status" data-bind="css: webcast.status, visible: webcast.status !== 'webcast-inactive'">
-					<span data-bind="text: webcast.publicStatus"></span><span class="live-viewers" data-bind="text: webcast.publicViewers, visible: webcast.status() === 'webcast-live'"></span>
-				</div>
-				<div class="display-date-time">
-					<div class="launch" data-bind="text: launchDateTime"></div>
-					<div class="timezone">
-						<span class="timezone-current">UTC</span>
-						<ul class="timezone-list">
-							<li class="timezone-option">Local</li>
-							<li class="timezone-option">ET</li>
-							<li class="timezone-option">PT</li>
-							<li class="timezone-option active">UTC</li>
-						</ul>
-					</div>
-				</div>
-			@endif
+            <!-- ko if: -->
+            <div class="webcast-status" data-bind="css: webcast.status, visible: webcast.status !== 'webcast-inactive'">
+                <span data-bind="text: webcast.publicStatus"></span><span class="live-viewers" data-bind="text: webcast.publicViewers, visible: webcast.status() === 'webcast-live'"></span>
+            </div>
+            <div class="display-date-time">
+                <div class="launch" data-bind="text: launchDateTime"></div>
+                <div class="timezone">
+                    <span class="timezone-current">UTC</span>
+                    <ul class="timezone-list">
+                        <li class="timezone-option">Local</li>
+                        <li class="timezone-option">ET</li>
+                        <li class="timezone-option">PT</li>
+                        <li class="timezone-option active">UTC</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /ko -->
 		</section>
 		<section class="hero hero-centered" id="countdown">
-		@if (!is_null($mission->launch_exact))
-			<countdown params="launchDateTime: , launchSpecificity: "></countdown>
-		@endif
+			<countdown params="countdownTo: launchDateTime, specificity: launchSpecificity"></countdown>
 		</section>
 		<p>{{ $mission->summary }}</p>
 		<h2>Details</h2>

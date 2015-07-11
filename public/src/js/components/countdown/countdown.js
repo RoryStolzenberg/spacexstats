@@ -1,14 +1,16 @@
 define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.html'], function($, ko, moment, htmlString) {
+    // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+    // Rewritten as a Knockout Component for SpaceX Stats 4
     var CountdownViewModel = function(params) {
         var self = this;
 
-        self.launchDateTime = ko.observable(params.launchDateTime);
-        self.isLaunchExact = ko.observable(params.launchSpecificity == 7 || params.launchSpecificity == 6);
+        self.countdownTo = ko.observable(params.countdownTo);
+        self.isLaunchExact = ko.observable(params.specificity == 7 || params.specificity == 6);
         self.secondsAwayFromLaunch = ko.observable();
 
         self.init = (function() {
             if (self.isLaunchExact()) {
-                self.launchUnixSeconds = ko.observable(moment(self.launchDateTime()).unix());
+                self.launchUnixSeconds = ko.observable(moment(self.countdownTo()).unix());
 
                 self.days = ko.observable();
                 self.hours = ko.observable();
@@ -51,6 +53,8 @@ define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.htm
                 };
 
                 setInterval(self.countdownProcessor, 1000);
+            } else {
+
             }
         })();
     };

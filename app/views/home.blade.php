@@ -57,7 +57,7 @@
                                 </table>
                             </div>
                         @elseif ($substatistic['display'] === 'count')
-                            <countdown params="launchDateTime: '{{ $substatistic['result']['launchDateTime'] }}', launchSpecificity: {{ $substatistic['result']['launch_specificity'] }}">
+                            <countdown params="countdownTo: '{{ $substatistic['result']['launchDateTime'] }}', specificity: {{ $substatistic['result']['launch_specificity'] }}">
                             </countdown>
                         @endif
                     @endforeach
