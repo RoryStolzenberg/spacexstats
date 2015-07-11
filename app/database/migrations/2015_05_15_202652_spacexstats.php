@@ -310,6 +310,10 @@ class Spacexstats extends Migration {
             $table->string('username', Varchar::small);
             $table->string('firstname', Varchar::small);
             $table->string('email', Varchar::small);
+            $table->string('mobile', Varchar::small);
+            $table->string('mobile_country_code', Varchar::small);
+            $table->string('mobile_network', Varchar::compact);
+
             $table->char('password', 60);
             $table->datetime('subscription_expiry')->nullable();
 
