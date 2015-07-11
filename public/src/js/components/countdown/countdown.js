@@ -4,13 +4,15 @@ define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.htm
     var CountdownViewModel = function(params) {
         var self = this;
 
-        self.countdownTo = ko.observable(params.countdownTo);
-        self.isLaunchExact = ko.observable(params.specificity == 7 || params.specificity == 6);
+        self.isLaunchExact = ko.computed(function() {
+            return (ko.unwrap(params.specificity) == 7 || ko.unwrap(params.specificity) == 6);
+        });
         self.secondsAwayFromLaunch = ko.observable();
 
         self.init = (function() {
+            console.log(params);
             if (self.isLaunchExact()) {
-                self.launchUnixSeconds = ko.observable(moment(self.countdownTo()).unix());
+                self.launchUnixSeconds = ko.observable(moment(ko.unwrap(params.countdownTo)).unix());
 
                 self.days = ko.observable();
                 self.hours = ko.observable();

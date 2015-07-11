@@ -1,5 +1,5 @@
 requirejs.config({
-    urlArgs: "bust=" + (new Date()).getTime(),
+    //urlArgs: "bust=" + (new Date()).getTime(),
     baseUrl: '/src/js',
     paths: {
         'text': 'lib/requirejs-text',

@@ -9,8 +9,7 @@
     <script>
         require(['common'], function() {
             require(['knockout', 'viewmodels/FutureMissionViewModel'], function(ko, FutureMissionViewModel) {
-
-                ko.applyBindings(new FutureMissionViewModel());
+                ko.applyBindings(new FutureMissionViewModel('{{ $mission->slug}}', '{{ $mission->present()->launchDateTime(DateTime::ISO8601) }}', '{{ $mission->launch_specificity }}' ));
             });
         });
     </script>
@@ -47,7 +46,7 @@
 			</ul>
 		</nav>
 		<section class="highlights">
-            <!-- ko if: -->
+            <!-- ko if: isLaunchExact() == true -->
             <div class="webcast-status" data-bind="css: webcast.status, visible: webcast.status !== 'webcast-inactive'">
                 <span data-bind="text: webcast.publicStatus"></span><span class="live-viewers" data-bind="text: webcast.publicViewers, visible: webcast.status() === 'webcast-live'"></span>
             </div>
@@ -65,7 +64,7 @@
             </div>
             <!-- /ko -->
 		</section>
-		<section class="hero hero-centered" id="countdown">
+		<section class="hero" id="countdown">
 			<countdown params="countdownTo: launchDateTime, specificity: launchSpecificity"></countdown>
 		</section>
 		<p>{{ $mission->summary }}</p>

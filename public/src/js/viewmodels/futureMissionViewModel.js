@@ -1,7 +1,7 @@
 define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
 
-
     var FutureMissionViewModel = function(missionSlug, launchDateTime, launchSpecificity) {
+
         ko.components.register('countdown', {require: 'components/countdown/countdown'});
 
         var self = this;
@@ -15,7 +15,7 @@ define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
 
         self.launchSpecificity = ko.observable(launchSpecificity);
         self.isLaunchExact = ko.computed(function() {
-           return (params.specificity == 7 || params.specificity == 6);
+           return (self.launchSpecificity == 7 || self.launchSpecificity == 6);
         });
 
         self.requestLaunchDateTime = function () {
