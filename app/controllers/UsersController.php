@@ -46,21 +46,20 @@ class UsersController extends BaseController {
 	}
 
     public function edit($username) {
-        $user = User::where('username', $username)->with('emailNotifications.notificationType')->firstOrFail();
+        $user = User::where('username', $username)->with('notifications.notificationType')->firstOrFail();
 
         $reflector = new ReflectionClass('SpaceXStats\Enums\NotificationType');
         $notificationTypes = $reflector->getConstants();
 
-        $userEmailNotifications = $user->emailNotifications->keyBy('notification_type_id');
+        $userNotifications = $user->notifications->keyBy('notification_type_id');
 
         $hasNotifications = [];
         foreach ($notificationTypes as $notificationKey => $notificationValue) {
-            $hasNotifications[$notificationKey] = $userEmailNotifications->has($notificationValue);
+            $hasNotifications[$notificationKey] = $userNotifications->has($notificationValue);
         }
 
         JavaScript::put([
-            'emailNotifications' => $hasNotifications,
-            'SMSNotification' =>
+            'emailNotifications' => $hasNotifications
         ]);
 
         return View::make('users.edit', array(
@@ -86,11 +85,17 @@ class UsersController extends BaseController {
     public function editSMSNotifications($username) {
         $user = User::where('username', $username)->firstOrFail();
 
-        $twilioClient = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
+        //$client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
+        //$number = $client->phone_numbers->get(Input::get('mobile'));
 
-        $number = $twilioClient->phone_numbers->get(Input::get('mobile_number'));
+        /*$client = new Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
+        $message = $client->account->messages->create(array(
+            "From" => "+1 844-707-8834",
+            "To" => '+64 021 280 4843',
+            "Body" => 'SpaceX launching CRS-7 in 1 hour'
+        ));*/
 
-        $i = [];
+        return Response::json(true);
     }
 
     public function editRedditNotifications($username) {

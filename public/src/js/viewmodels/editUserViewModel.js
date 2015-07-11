@@ -24,12 +24,11 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
 
         self.updateProfile = function () {
-            var mappedProfile = koMapping.toJS(self.profile);
-            $.ajax('/users/' + self.username + '/edit',
+            $.ajax('/users/' + self.username + '/edit/profile',
                 {
                     dataType: 'json',
                     type: 'POST',
-                    data: JSON.stringify(mappedProfile, function(key, value) {
+                    data: JSON.stringify(koMapping.toJS(self.profile), function(key, value) {
                         if (value === "" || typeof value === 'undefined') {
                             return null;
                         }
@@ -42,8 +41,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 }
             );
         };
-
-        console.log();
 
         self.emailNotifications = {
             launchTimeChange: ko.observable(laravel.emailNotifications.launchTimeChange),
@@ -58,8 +55,28 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             console.log(koMapping.toJS(self.emailNotifications));
         };
 
-        self.SMSNotifications = {
-            timeBeforeLaunch: null
+        self.SMSNotification = {
+            mobile: ko.observable(),
+            status: ko.observable('tMinus1HourSMS')
+        };
+
+        self.updateSMSNotifications = function() {
+            $.ajax('/users/' + self.username + '/edit/smsnotifications',
+                {
+                    dataType: 'json',
+                    type: 'POST',
+                    data: JSON.stringify(koMapping.toJS(self.SMSNotification), function(key, value) {
+                        if (value === "" || typeof value === 'undefined') {
+                            return null;
+                        }
+                        return value;
+                    }),
+                    contentType: "application/json",
+                    success: function (response) {
+                        console.log(response);
+                    }
+                }
+            );
         }
     };
 

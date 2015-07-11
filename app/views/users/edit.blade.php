@@ -133,20 +133,22 @@
 				<p>Get upcoming launch notifications delivered directly to your mobile.</p>
                 {{ Form::open() }}
                     {{ Form::label('mobile', 'Enter your mobile number') }}
-                    {{ Form::input('tel', 'mobile', $user->mobile) }}
+                    {{ Form::input('tel', 'mobile', $user->mobile, array('id' => 'mobile', 'data-bind' => 'getOriginalValue, value: SMSNotification.mobile')) }}
 
                     <p>How long before a launch would you like to recieve a notification?</p>
                     {{ Form::label('off', 'Off') }}
-                    {{ Form::radio('mobile_notification', 'Off', null, array('id' => 'Off')) }}
+                    {{ Form::radio('mobile_notification', 'Off', null, array('id' => 'Off', 'data-bind' => 'checked: SMSNotification.status')) }}
 
                     {{ Form::label('tMinus24HoursSMS', '24 Hours Before') }}
-                    {{ Form::radio('mobile_notification', 'tMinus24HoursSMS', null, array('id' => 'tMinus24HoursSMS')) }}
+                    {{ Form::radio('mobile_notification', 'tMinus24HoursSMS', null, array('id' => 'tMinus24HoursSMS', 'data-bind' => 'checked: SMSNotification.status')) }}
 
                     {{ Form::label('tMinus3HoursSMS', '3 Hours Before') }}
-                    {{ Form::radio('mobile_notification', 'tMinus3HoursSMS', null, array('id' => 'tMinus3HoursSMS')) }}
+                    {{ Form::radio('mobile_notification', 'tMinus3HoursSMS', null, array('id' => 'tMinus3HoursSMS', 'data-bind' => 'checked: SMSNotification.status')) }}
 
                     {{ Form::label('tMinus1HourSMS', '1 Hour Before') }}
-                    {{ Form::radio('mobile_notification', 'tMinus1HourSMS', null, array('id' => 'tMinus1HourSMS')) }}
+                    {{ Form::radio('mobile_notification', 'tMinus1HourSMS', null, array('id' => 'tMinus1HourSMS', 'data-bind' => 'checked: SMSNotification.status')) }}
+
+                    {{ Form::submit('Update SMS Notifications', array('data-bind' => 'click: updateSMSNotifications')) }}
                 {{ Form::close() }}
 			</section>
 
