@@ -56,6 +56,10 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         self.updateEmailNotifications = function() {
             console.log(koMapping.toJS(self.emailNotifications));
+        };
+
+        self.SMSNotifications = {
+            timeBeforeLaunch: null
         }
     };
 

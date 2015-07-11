@@ -14,13 +14,12 @@ class Email extends Eloquent {
     }
 
     // Relations
-    public function emailNotification() {
-        return $this->belongsTo('EmailNotification');
+    public function notification() {
+        return $this->belongsTo('Notification');
     }
 
     // Attribute Mutators
     public function setContentAttribute($value) {
         $this->attributes['content'] = $this->attributes['content']  . $value;
     }
-
 }

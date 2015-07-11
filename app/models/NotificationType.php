@@ -9,7 +9,7 @@ class NotificationType extends Eloquent {
     protected $fillable = [];
     protected $guarded = ['*'];
 
-    public function emailNotifications() {
-        return $this->hasMany('EmailNotification');
+    public function notifications() {
+        return $this->hasMany('Notification');
     }
 }

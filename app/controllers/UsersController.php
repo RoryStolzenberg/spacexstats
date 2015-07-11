@@ -58,18 +58,10 @@ class UsersController extends BaseController {
             $hasNotifications[$notificationKey] = $userEmailNotifications->has($notificationValue);
         }
 
-        JavaScript::put(['emailNotifications' => $hasNotifications]);
-
-        /*JavaScript::put(array(
-            'emailNotifications' => array(
-                'NewMission' => $user->hasEmailNotification(NotificationType::NewMission),
-                'LaunchTimeChange' => $user->hasEmailNotification(NotificationType::LaunchTimeChange),
-                'TMinus24HoursEmail' => $user->hasEmailNotification(NotificationType::TMinus24HoursEmail),
-                'TMinus3HoursEmail' => $user->hasEmailNotification(NotificationType::TMinus24HoursEmail),
-                'TMinus1HourEmail' => $user->hasEmailNotification(NotificationType::TMinus24HoursEmail),
-
-            )
-        ));*/
+        JavaScript::put([
+            'emailNotifications' => $hasNotifications,
+            'SMSNotification' =>
+        ]);
 
         return View::make('users.edit', array(
             'user' => $user,
@@ -93,6 +85,12 @@ class UsersController extends BaseController {
 
     public function editSMSNotifications($username) {
         $user = User::where('username', $username)->firstOrFail();
+
+        $twilioClient = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
+
+        $number = $twilioClient->phone_numbers->get(Input::get('mobile_number'));
+
+        $i = [];
     }
 
     public function editRedditNotifications($username) {

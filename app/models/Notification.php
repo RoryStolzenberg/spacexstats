@@ -1,8 +1,8 @@
 <?php
-class EmailNotification extends Eloquent {
+class Notification extends Eloquent {
 
-    protected $table = 'email_notifications';
-    protected $primaryKey = 'email_notifications_id';
+    protected $table = 'notifications';
+    protected $primaryKey = 'notifications_id';
     public $timestamps = true;
 
     protected $hidden = [];
@@ -13,6 +13,10 @@ class EmailNotification extends Eloquent {
     // Relations
     public function emails() {
         return $this->hasMany('Email');
+    }
+
+    public function SMSes() {
+        return $this->hasMany('SMS');
     }
 
     public function notificationType() {

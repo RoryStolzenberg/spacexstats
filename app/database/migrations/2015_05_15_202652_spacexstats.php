@@ -68,16 +68,11 @@ class Spacexstats extends Migration {
         Schema::create('emails', function(Blueprint $table) {
             $table->increments('email_id');
             $table->integer('user_id')->unsigned();
+            $table->integer('notification_id')->unsigned();
             $table->string('content', Varchar::xlarge)->nullable();
             $table->enum('status', array('Held', 'Queued', 'Sent'));
             $table->datetime('sent_at')->nullable();
             $table->timestamps();
-        });
-
-        Schema::create('email_notifications', function(Blueprint $table) {
-            $table->increments('email_notification_id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('notification_type_id')->unsigned();
         });
 
         Schema::create('favorites', function(Blueprint $table) {
@@ -143,6 +138,14 @@ class Spacexstats extends Migration {
             $table->integer('user_id')->unsigned();
             $table->integer('object_id')->unsigned();
             $table->string('note', Varchar::large);
+
+            $table->timestamps();
+        });
+
+        Schema::create('notifications', function(Blueprint $table) {
+            $table->increments('notification_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('notification_type_id')->unsigned();
 
             $table->timestamps();
         });
@@ -261,6 +264,14 @@ class Spacexstats extends Migration {
             $table->string('name', Varchar::small);
         });
 
+        Schema::create('smses', function(Blueprint $table) {
+            $table->increments('sms_id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('notification_id')->unsigned();
+            $table->string('content', Varchar::medium)->nullable();
+            $table->timestamps();
+        });
+
         Schema::create('spacecraft', function(Blueprint $table) {
             $table->increments('spacecraft_id');
             $table->enum('type', array('Dragon 1', 'Dragon 2'));
@@ -310,9 +321,10 @@ class Spacexstats extends Migration {
             $table->string('username', Varchar::small);
             $table->string('firstname', Varchar::small);
             $table->string('email', Varchar::small);
-            $table->string('mobile', Varchar::small);
-            $table->string('mobile_country_code', Varchar::small);
-            $table->string('mobile_network', Varchar::compact);
+            $table->string('mobile', Varchar::small)->nullable();
+            $table->string('mobile_national_format', Varchar::small)->nullable();
+            $table->string('mobile_country_code', Varchar::small)->nullable();
+            $table->string('mobile_network', Varchar::compact)->nullable();
 
             $table->char('password', 60);
             $table->datetime('subscription_expiry')->nullable();
@@ -349,7 +361,11 @@ class Spacexstats extends Migration {
         });
 
         // Add foreign keys
-        Schema::table('email_notifications', function(Blueprint $table) {
+        Schema::table('emails', function(Blueprint $table) {
+            $table->foreign('notification_id')->references('notification_id')->on('notifications');
+        });
+
+        Schema::table('notifications', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('notification_type_id')->references('notification_type_id')->on('notification_types');
         });
@@ -396,6 +412,10 @@ class Spacexstats extends Migration {
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('favorite_mission')->references('mission_id')->on('missions');
             $table->foreign('favorite_mission_patch')->references('mission_id')->on('missions');
+        });
+
+        Schema::table('smses', function(Blueprint $table) {
+            $table->foreign('notification_id')->references('notification_id')->on('notifications');
         });
 
         Schema::table('spacecraft_flights_pivot', function(Blueprint $table) {

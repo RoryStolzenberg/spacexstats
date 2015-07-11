@@ -137,16 +137,16 @@
 
                     <p>How long before a launch would you like to recieve a notification?</p>
                     {{ Form::label('off', 'Off') }}
-                    {{ Form::radio('mobile_notification', 'Off') }}
+                    {{ Form::radio('mobile_notification', 'Off', null, array('id' => 'Off')) }}
 
-                    {{ Form::label('tMinus24HoursSMS', 'tMinus24HoursSMS') }}
-                    {{ Form::radio('mobile_notification', 'tMinus24HoursSMS') }}
+                    {{ Form::label('tMinus24HoursSMS', '24 Hours Before') }}
+                    {{ Form::radio('mobile_notification', 'tMinus24HoursSMS', null, array('id' => 'tMinus24HoursSMS')) }}
 
-                    {{ Form::label('tMinus3HoursSMS', 'tMinus3HoursSMS') }}
-                    {{ Form::radio('mobile_notification', 'tMinus3HoursSMS') }}
+                    {{ Form::label('tMinus3HoursSMS', '3 Hours Before') }}
+                    {{ Form::radio('mobile_notification', 'tMinus3HoursSMS', null, array('id' => 'tMinus3HoursSMS')) }}
 
-                    {{ Form::label('tMinus1HourSMS', 'tMinus1HourSMS') }}
-                    {{ Form::radio('mobile_notification', 'tMinus1HourSMS') }}
+                    {{ Form::label('tMinus1HourSMS', '1 Hour Before') }}
+                    {{ Form::radio('mobile_notification', 'tMinus1HourSMS', null, array('id' => 'tMinus1HourSMS')) }}
                 {{ Form::close() }}
 			</section>
 
