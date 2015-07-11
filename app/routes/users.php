@@ -16,8 +16,8 @@ Route::group(array('before' => 'mustBeLoggedOut'), function() {
     ));
 
     Route::get('/users/verify/{email}/{key}', array(
-        'as' => 'users.verify',
-        'uses' => 'UsersController@verify'
+        'as' => 'users.verify.email',
+        'uses' => 'UsersController@verifyEmail'
     ));
 });
 

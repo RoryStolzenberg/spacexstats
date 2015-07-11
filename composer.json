@@ -17,7 +17,7 @@
 		"guzzlehttp/guzzle": "~4.0",
 		"jenssegers/imagehash": "^0.2.3",
 		"laracasts/utilities": "~1.0",
-		"aloha/twilio": "^1.0"
+		"twilio/sdk": "^4.2"
 	},
 	"autoload": {
 		"classmap": [

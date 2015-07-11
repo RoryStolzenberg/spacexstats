@@ -131,6 +131,23 @@
             <h2>Text/SMS Notifications</h2>
             <section class="text-sms-notifications">
 				<p>Get upcoming launch notifications delivered directly to your mobile.</p>
+                {{ Form::open() }}
+                    {{ Form::label('mobile', 'Enter your mobile number') }}
+                    {{ Form::input('tel', 'mobile', $user->mobile) }}
+
+                    <p>How long before a launch would you like to recieve a notification?</p>
+                    {{ Form::label('off', 'Off') }}
+                    {{ Form::radio('mobile_notification', 'Off') }}
+
+                    {{ Form::label('tMinus24HoursSMS', 'tMinus24HoursSMS') }}
+                    {{ Form::radio('mobile_notification', 'tMinus24HoursSMS') }}
+
+                    {{ Form::label('tMinus3HoursSMS', 'tMinus3HoursSMS') }}
+                    {{ Form::radio('mobile_notification', 'tMinus3HoursSMS') }}
+
+                    {{ Form::label('tMinus1HourSMS', 'tMinus1HourSMS') }}
+                    {{ Form::radio('mobile_notification', 'tMinus1HourSMS') }}
+                {{ Form::close() }}
 			</section>
 
 			<h2>Reddit Notifications</h2>

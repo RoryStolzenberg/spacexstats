@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "fad5f318342e70734ca424a14aa4e72f",
+    "hash": "a2b67633e369d42efa8742fc94082ad9",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -116,51 +116,6 @@
                 "driver"
             ],
             "time": "2013-06-21 15:51:20"
-        },
-        {
-            "name": "aloha/twilio",
-            "version": "1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aloha/laravel-twilio.git",
-                "reference": "47e69c0fba9e2e65edf48c6d4125e544cd0140d7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aloha/laravel-twilio/zipball/47e69c0fba9e2e65edf48c6d4125e544cd0140d7",
-                "reference": "47e69c0fba9e2e65edf48c6d4125e544cd0140d7",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "4.*",
-                "php": ">=5.3.0",
-                "twilio/sdk": "3.12.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Aloha\\Twilio": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Travis J Ryan",
-                    "email": "travisjryan@gmail.com"
-                }
-            ],
-            "description": "Twilio API for Laravel 4",
-            "homepage": "https://github.com/aloha/laravel4-twilio",
-            "keywords": [
-                "ivr",
-                "laravel4",
-                "sms",
-                "twilio"
-            ],
-            "time": "2014-09-04 00:36:10"
         },
         {
             "name": "aws/aws-sdk-php",
@@ -2819,16 +2774,16 @@
         },
         {
             "name": "twilio/sdk",
-            "version": "3.12.8",
+            "version": "4.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twilio/twilio-php.git",
-                "reference": "9d8bb7dad58dc52fc4cbc1f0e905950ad839ca73"
+                "reference": "558c96789bf84740d7957aa7fde91014d703261c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/9d8bb7dad58dc52fc4cbc1f0e905950ad839ca73",
-                "reference": "9d8bb7dad58dc52fc4cbc1f0e905950ad839ca73",
+                "url": "https://api.github.com/repos/twilio/twilio-php/zipball/558c96789bf84740d7957aa7fde91014d703261c",
+                "reference": "558c96789bf84740d7957aa7fde91014d703261c",
                 "shasum": ""
             },
             "require": {
@@ -2836,13 +2791,13 @@
             },
             "require-dev": {
                 "mockery/mockery": ">=0.7.2",
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.5.*"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Services_Twilio": ""
-                }
+                "files": [
+                    "Services/Twilio.php"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -2865,7 +2820,7 @@
                 "sms",
                 "twilio"
             ],
-            "time": "2014-12-04 19:17:59"
+            "time": "2015-06-09 17:41:09"
         },
         {
             "name": "wp-cli/php-cli-tools",
