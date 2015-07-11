@@ -15,7 +15,7 @@ define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
 
         self.launchSpecificity = ko.observable(launchSpecificity);
         self.isLaunchExact = ko.computed(function() {
-           return (self.launchSpecificity == 7 || self.launchSpecificity == 6);
+           return (self.launchSpecificity() == 7 || self.launchSpecificity() == 6);
         });
 
         self.requestLaunchDateTime = function () {
