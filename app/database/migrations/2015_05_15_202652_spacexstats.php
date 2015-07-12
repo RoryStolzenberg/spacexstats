@@ -61,7 +61,6 @@ class Spacexstats extends Migration {
 
         Schema::create('emails', function(Blueprint $table) {
             $table->increments('email_id');
-            $table->integer('user_id')->unsigned();
             $table->integer('notification_id')->unsigned();
             $table->string('content', Varchar::xlarge)->nullable();
             $table->enum('status', array('Held', 'Queued', 'Sent'));
