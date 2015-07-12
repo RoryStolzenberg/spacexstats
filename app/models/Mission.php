@@ -6,7 +6,7 @@ class Mission extends Eloquent {
 
 	protected $table = 'missions';
 	protected $primaryKey = 'mission_id';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $hidden = ['launch_date_time'];
     protected $appends = ['launch_date_time'];
@@ -156,7 +156,7 @@ class Mission extends Eloquent {
     }
 
     public function setLaunchDateTimeAttribute($value) {
-        $launchReorderer = new LaunchReorderer($value, $this->launch_order_id);
+        //$launchReorderer = new LaunchReorderer($value, $this->launch_order_id);
         $this->attributes['launch_approximate'] = "June";
     }
 

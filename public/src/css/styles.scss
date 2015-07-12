@@ -21,7 +21,7 @@ html, body {
 
 body {
     overflow-x:hidden;
-    overflow-y:scroll;
+    overflow-y:auto; // Was originally scroll, change it back if something breaks
     position:relative;
     left:0;
     font-size:14px;

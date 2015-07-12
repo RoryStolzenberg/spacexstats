@@ -7,8 +7,8 @@ class MissionsController extends BaseController {
 
     protected $missionCreator;
 
-    public function __construct(MissionActionService $missionCreator, MissionNotificationsMailer $missionMailer) {
-        $this->missionCreator = $missionCreator;
+    public function __construct(MissionActionService $missionActioner, MissionNotificationsMailer $missionMailer) {
+        $this->missionActioner = $missionActioner;
         $this->missionMailer = $missionMailer;
     }
 
@@ -94,7 +94,7 @@ class MissionsController extends BaseController {
 
                 'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
                 'spacecraft' => array('Dragon 1', 'Dragon 2'),
-                'spacecraftReturnMethods' => array('Splashdown', 'Landing'),
+                'spacecraftReturnMethods' => array('Splashdown', 'Landing', 'Destroyed'),
                 'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
                 'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac')
             ));
@@ -103,17 +103,18 @@ class MissionsController extends BaseController {
 
             $input = Input::all();
 
-            if ($this->missionCreator->isValid($input)) {
+            if ($this->missionActioner->isValid($input)) {
                 // Create
-                $this->missionCreator->create($input);
+                $mission = $this->missionActioner->create($input);
 
-                // Email it out
-                $this->missionMailer->newMission();
+                // Email it out to those with subscriptions
+                //$this->missionMailer->newMission();
 
                 // Add to RSS
 
                 // Tweet about it
-                return Redirect::route('missions.get', array('slug' => 'test'));
+
+                return Redirect::route('missions.get', array('slug' => $mission->slug));
             } else {
                 return Redirect::back()
                     ->with('flashMessage', array('contents' => 'The mission could not be created', 'type' => 'failure'))

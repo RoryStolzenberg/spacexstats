@@ -231,6 +231,7 @@ class Spacexstats extends Migration {
             $table->tinyInteger('firststage_meco')->unsigned()->nullable();
             $table->decimal('firststage_landing_coords_lat', 6, 4)->nullable();
             $table->decimal('firststage_landing_coords_lng', 7, 4)->nullable();
+            $table->enum('baseplate_color', array('White', 'Black'))->nullable();
 
             // Second stage stuff
             $table->string('upperstage_note', Varchar::compact)->nullable();
