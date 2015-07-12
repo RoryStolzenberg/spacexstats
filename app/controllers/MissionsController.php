@@ -25,7 +25,8 @@ class MissionsController extends BaseController {
             JavaScript::put([
                 'slug' => $mission->slug,
                 'launchDateTime' => $mission->present()->launchDateTime(DateTime::ISO8601),
-                'launchSpecificity' => $mission->launch_specificity
+                'launchSpecificity' => $mission->launch_specificity,
+                'webcast' => Redis::hgetall('webcast')
             ]);
 
 			return View::make('missions.futureMission', array(

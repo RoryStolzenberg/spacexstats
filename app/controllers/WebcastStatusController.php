@@ -2,12 +2,12 @@
 
 class WebcastStatusController extends BaseController {
 
-	// AJAX POST
+	// AJAX GET
 	public function getStatus() {
 		// Check if the redis values exist
 		try {
 			//if (Redis::exists('webcast:isLive') == 1 && Redis::exists('webcast:viewers') == 1) {
-				return Response::json(array('isLive' => Redis::hget('webcast', 'isLive'), 'viewers' => Redis::hget('webcast', 'viewers')));
+				return Response::json(Redis::hgetall('webcast'));
 			//} else {
 			//	return Response::json(array('isLive' => null, 'viewers' => null));
 			//}

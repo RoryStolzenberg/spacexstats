@@ -37,8 +37,6 @@ define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
             self.secondsSinceLastRequest(Math.floor($.now() / 1000) - self.lastRequest());
             self.secondsToLaunch(self.launchUnixSeconds() - Math.floor($.now() / 1000));
 
-            console.log('secondsSinceLastRequest: ' + self.secondsSinceLastRequest() + ' secondsToLaunch: ' + self.secondsToLaunch());
-
             var aRequestNeedsToBeMade = (self.secondsToLaunch() >= 86400 && self.secondsSinceLastRequest() >= 3600) ||
                 (self.secondsToLaunch() >= 3600 && self.secondsToLaunch() < 86400 && self.secondsSinceLastRequest() >= 900) ||
                 (self.secondsToLaunch() >= 1200 && self.secondsToLaunch() < 3600 && self.secondsSinceLastRequest() >= 300) ||
@@ -56,7 +54,7 @@ define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
             $.ajax('/missions/' + self.missionSlug() + '/requestlaunchdatetime',
                 {
                     dataType: 'json',
-                    type: 'POST',
+                    type: 'GET',
                     success: function (data) {
                         // If there has been a change in the launch datetime, update & broadcast an event
                         if (self.launchDateTime() !== data.launchDateTime) {
@@ -68,8 +66,8 @@ define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
         };
 
         self.webcast = {
-            isLive: ko.observable(),
-            viewers: ko.observable(),
+            isLive: ko.observable(laravel.webcast.isLive),
+            viewers: ko.observable(laravel.webcast.viewers),
             status: ko.pureComputed(function () {
                 if (self.secondsToLaunch() < (60 * 60 * 24) && self.webcast.isLive() == 'true') {
                     return 'webcast-live';
@@ -97,7 +95,7 @@ define(['jquery', 'knockout', 'moment'], function($, ko, moment) {
             $.ajax('/webcast/getstatus',
                 {
                     dataType: 'json',
-                    type: 'POST',
+                    type: 'GET',
                     success: function (data) {
                         self.webcast.isLive(data.isLive);
                         self.webcast.viewers(data.viewers);

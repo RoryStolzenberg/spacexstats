@@ -36,7 +36,7 @@ Route::get('missions/{slug}/edit', array(
     'uses' => 'MissionsController@edit'
 ))->before('doesMissionExist');
 
-Route::post('missions/{slug}/requestlaunchdatetime', array(
+Route::get('missions/{slug}/requestlaunchdatetime', array(
     'as' => 'missions.requestLaunchDateTime',
     'uses' => 'MissionsController@requestLaunchDateTime'
 ))->before('doesMissionExist');

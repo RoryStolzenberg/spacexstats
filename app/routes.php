@@ -16,7 +16,7 @@ function routesInDirectory($app = '') {
 
 routesInDirectory();
 
-Route::post('webcast/getstatus', array(
+Route::get('webcast/getstatus', array(
     'as' => 'webcast.getStatus',
     'uses' => 'WebcastStatusController@getStatus'
 ));

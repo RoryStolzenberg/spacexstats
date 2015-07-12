@@ -7,7 +7,7 @@ class WebcastChecker {
 	public function check() {
 		$livestream = json_decode(file_get_contents($this->url));
 
-		Redis::hmset('webcast', 'isLive', $livestream->channel->isLive === true ? 'true' : 'false', 'viewers', $livestream->channel->currentViewerCount);
+		\Redis::hmset('webcast', 'isLive', $livestream->channel->isLive === true ? 'true' : 'false', 'viewers', $livestream->channel->currentViewerCount);
 
 		// Add to Database if livestream is active
 		if ($livestream->channel->isLive === true) {
