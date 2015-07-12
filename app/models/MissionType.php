@@ -11,6 +11,6 @@ class MissionType extends Eloquent {
 
     // Relationships
     public function missions() {
-        return $this->hasOneOrMany('Mission');
+        return $this->belongsToMany('Mission');
     }
 }

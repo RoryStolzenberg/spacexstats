@@ -95,13 +95,13 @@ class Spacexstats extends Migration {
 
         Schema::create('missions', function(Blueprint $table) {
             $table->increments('mission_id');
+            $table->integer('mission_type_id')->unsigned();
             $table->smallInteger('launch_order_id')->unsigned();
             $table->smallInteger('launch_specificity')->unsigned();
             $table->datetime('launch_exact')->nullable();
             $table->string('launch_approximate', Varchar::small)->nullable();
             $table->string('name', Varchar::small);
             $table->string('slug', Varchar::small);
-            $table->enum('type', array('Dragon (ISS)', 'Dragon (Freeflight)', 'Communications Satellite', 'Constellation Mission', 'Military', 'Scientific'))->nullable();
             $table->string('contractor', Varchar::medium);
             $table->integer('vehicle_id')->unsigned();
             $table->integer('destination_id')->unsigned();
@@ -131,6 +131,12 @@ class Spacexstats extends Migration {
             $table->integer('featured_image')->unsigned()->nullable();
 
             $table->timestamps();
+        });
+
+        Schema::create('mission_types', function(Blueprint $table) {
+            $table->increments('mission_type_id');
+            $table->string('name', Varchar::small);
+            $table->string('icon', Varchar::compact);
         });
 
         Schema::create('notes', function(Blueprint $table) {
@@ -371,6 +377,7 @@ class Spacexstats extends Migration {
         });
 
         Schema::table('missions', function(Blueprint $table) {
+            $table->foreign('mission_type_id')->references('mission_type_id')->on('mission_types');
             $table->foreign('vehicle_id')->references('vehicle_id')->on('vehicles');
             $table->foreign('destination_id')->references('destination_id')->on('destinations');
             $table->foreign('launch_site_id')->references('location_id')->on('locations');

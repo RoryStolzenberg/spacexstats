@@ -55,7 +55,7 @@ class Mission extends Eloquent {
     }
 
     public function missionType() {
-        return $this->belongsTo('MissionType');
+        return $this->hasOne('MissionType');
     }
 
     public function objects() {

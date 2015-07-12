@@ -82,14 +82,16 @@ class MissionsController extends BaseController {
 
             return View::make('missions.create', array(
                 'destinations' => Destination::lists('destination', 'destination_id'),
-                'missionTypes' => array('Dragon (ISS)' => 'Dragon (ISS)',
-                                    'Dragon (Freeflight)' => 'Dragon (Freeflight)',
-                                    'Communications Satellite' => 'Communications Satellite',
-                                    'Constellation Mission' => 'Constellation Mission',
-                                    'Military' => 'Military',
-                                    'Scientific' => 'Scientific'),
-                'launchSites' => LaunchSite::get()->lists('fullLocation', 'launch_site_id'),
-                'landingSites' => LandingSite::get()->lists('fullLocation', 'landing_site_id'),
+                'missionTypes' => MissionType::get()->lists('name', 'mission_type_id'),
+
+                'launchSites' => Location::get()->filter(function($item) {
+                    return $item->type == 'Launch Site';
+                })->lists('fullLocation', 'location_id'),
+
+                'landingSites' => Location::get()->filter(function($item) {
+                    return ($item->type == 'Landing Site') || ($item->type == 'ASDS');
+                })->lists('fullLocation', 'location_id'),
+
                 'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
                 'spacecraft' => array('Dragon 1', 'Dragon 2'),
                 'spacecraftReturnMethods' => array('Splashdown', 'Landing'),
