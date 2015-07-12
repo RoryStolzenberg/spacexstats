@@ -22,6 +22,12 @@ class MissionsController extends BaseController {
         $futureMission = Mission::futureMissions($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
 
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
+            JavaScript::put([
+                'slug' => $mission->slug,
+                'launchDateTime' => $mission->present()->launchDateTime(DateTime::ISO8601),
+                'launchSpecificity' => $mission->launch_specificity
+            ]);
+
 			return View::make('missions.futureMission', array(
 				'mission' => $mission,
                 'pastMission' => $pastMission,

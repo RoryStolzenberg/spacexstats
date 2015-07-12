@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Commands;
 
+use SpaceXStats\Library\WebcastChecker;
 use Indatus\Dispatcher\Scheduling\ScheduledCommand;
 use Indatus\Dispatcher\Scheduling\Schedulable;
 use Indatus\Dispatcher\Drivers\Cron\Scheduler;

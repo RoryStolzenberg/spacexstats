@@ -9,7 +9,7 @@
     <script>
         require(['common'], function() {
             require(['knockout', 'viewmodels/FutureMissionViewModel', 'sticky'], function(ko, FutureMissionViewModel, sticky) {
-                ko.applyBindings(new FutureMissionViewModel('{{ $mission->slug}}', '{{ $mission->present()->launchDateTime(DateTime::ISO8601) }}', '{{ $mission->launch_specificity }}' ));
+                ko.applyBindings(new FutureMissionViewModel());
             });
         });
     </script>

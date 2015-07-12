@@ -42,7 +42,8 @@ class QuestionUpdaterCommand extends ScheduledCommand {
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
-		return $scheduler;
+        // Figure out when activity is the least and run it then
+		return $scheduler->daily()->hours(9);
 	}
 
 	/**

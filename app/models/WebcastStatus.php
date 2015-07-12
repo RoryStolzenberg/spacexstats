@@ -8,7 +8,7 @@ class WebcastStatus extends Eloquent {
 
     protected $hidden = [];
     protected $appends = [];
-    protected $fillable = ['viewers', 'created_at'];
+    protected $fillable = [];
     protected $guarded = [];
 
 }

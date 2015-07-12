@@ -1,8 +1,6 @@
 <?php
 namespace SpaceXStats\Library;
 
-use Carbon\Carbon;
-
 class WebcastChecker {
 	private $url = 'http://xspacexx.api.channel.livestream.com/2.0/livestatus.json';
 
@@ -14,8 +12,7 @@ class WebcastChecker {
 		// Add to Database if livestream is active
 		if ($livestream->channel->isLive === true) {
 			WebcastStatus::create(array(
-				'viewers' => $livestream->channel->currentViewerCount,
-				'created_at' => Carbon::now()
+				'viewers' => $livestream->channel->currentViewerCount
 			));			
 		}
 	}
