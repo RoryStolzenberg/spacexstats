@@ -1,5 +1,5 @@
 <?php
-class NotificationTypesSeeder extends Seeder {
+class NotificationTypesTableSeeder extends Seeder {
     public function run() {
         NotificationType::insert(array(
             array('name' => 'newMission'),

@@ -7,7 +7,7 @@ class Notification extends Eloquent {
     use SoftDeletingTrait;
 
     protected $table = 'notifications';
-    protected $primaryKey = 'notifications_id';
+    protected $primaryKey = 'notification_id';
     public $timestamps = true;
 
     protected $hidden = [];

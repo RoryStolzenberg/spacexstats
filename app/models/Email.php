@@ -20,6 +20,11 @@ class Email extends Eloquent {
 
     // Attribute Mutators
     public function setContentAttribute($value) {
-        $this->attributes['content'] = $this->attributes['content']  . $value;
+        if (array_key_exists('content', $this->attributes)) {
+            $this->attributes['content'] = $this->attributes['content']  . $value;
+        } else {
+            $this->attributes['content'] = $value;
+        }
+
     }
 }
