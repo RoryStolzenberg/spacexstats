@@ -8,9 +8,9 @@ class MissionsController extends BaseController {
 
     protected $missionCreator;
 
-    public function __construct(MissionActionService $missionActioner, MissionMailQueue $missionMailer) {
+    public function __construct(MissionActionService $missionActioner, MissionMailQueue $missionQueuer) {
         $this->missionActioner = $missionActioner;
-        $this->missionMailer = $missionMailer;
+        $this->missionQueuer = $missionQueuer;
     }
 
 	// GET 
@@ -108,8 +108,8 @@ class MissionsController extends BaseController {
                 // Create
                 $mission = $this->missionActioner->create($input);
 
-                // Email it out to those with subscriptions
-                $this->missionMailer->newMission($mission, 'Queue');
+                // Email it out to those with the new Mission notification
+                $this->missionQueuer->newMission($mission);
 
                 // Add to RSS
 

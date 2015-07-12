@@ -8,8 +8,10 @@ class MailQueue {
 
         foreach ($notificationsToQueueEmailsFor as $notification) {
             $email = new Email();
-            $email->user()->associate($notification->user());
-            $email->user
+            $email->notification()->associate($notification);
+            $email->content = $content;
+            $email->status = 'Queued';
+            $email->save();
         }
     }
 

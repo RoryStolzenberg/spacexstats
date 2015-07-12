@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder {
         $this->call('MissionsTableSeeder');
         $this->call('PartFlightsTableSeeder');
         $this->call('TagsTableSeeder');
-        $this->call('NotificationTypesSeeder');
+        $this->call('NotificationTypesTableSeeder');
+        $this->call('NotificationsTableSeeder');
         $this->call('MissionTypesTableSeeder');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');

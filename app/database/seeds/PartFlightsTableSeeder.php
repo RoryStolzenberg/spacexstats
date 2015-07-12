@@ -24,6 +24,5 @@ class PartFlightsTableSeeder extends Seeder {
             'part_id' => 4,
             'firststage_engine' => 'Merlin 1C'
         ));
-
     }
 }
