@@ -1,6 +1,6 @@
 <?php
 class SpacecraftFlight extends Eloquent {
-    protected $table = 'spacecraft_flights';
+    protected $table = 'spacecraft_flights_pivot';
     protected $primaryKey = 'spacecraft_flight_id';
     public $timestamps = false;
 
@@ -15,5 +15,9 @@ class SpacecraftFlight extends Eloquent {
 
     public function spacecraft() {
         return $this->belongsTo('Spacecraft');
+    }
+
+    public function astronauts() {
+        return $this->belongsToMany('Astronaut', 'astronauts_flights_pivot');
     }
 }

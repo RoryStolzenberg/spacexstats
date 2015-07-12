@@ -34,7 +34,7 @@ class Spacexstats extends Migration {
         Schema::create('astronauts_flights_pivot', function(Blueprint $table) {
             $table->increments('astronaut_flight_id');
             $table->integer('astronaut_id')->unsigned();
-            $table->integer('spacecraft_id')->unsigned();
+            $table->integer('spacecraft_flight_id')->unsigned();
         });
 
         /*Schema::create('collections', function(Blueprint $table) {
@@ -46,12 +46,6 @@ class Spacexstats extends Migration {
         Schema::create('collections_objects_pivot', function(Blueprint $table) {
 
         });*/
-
-        Schema::create('cores', function(Blueprint $table) {
-            $table->increments('core_id');
-            $table->string('name', Varchar::small);
-            $table->timestamps();
-        });
 
         Schema::create('destinations', function(Blueprint $table) {
             $table->increments('destination_id');
@@ -111,14 +105,7 @@ class Spacexstats extends Migration {
             $table->enum('status', array('Upcoming', 'Complete', 'In Progress'));
             $table->enum('outcome', array('Failure', 'Success'))->nullable();
 
-            // Upperstage stuff
-            $table->string('upperstage_outcome', Varchar::compact)->nullable();
-            $table->enum('upperstage_engine', array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'));
-            $table->smallInteger('upperstage_seco')->unsigned()->nullable();
-            $table->enum('upperstage_status', array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'))->nullable();
-            $table->date('upperstage_decay_date')->nullable();
-            $table->smallInteger('upperstage_norad_id')->nullable();
-            $table->char('upperstage_intl_designator', 9)->nullable();
+            $table->boolean('fairings_recovered')->nullable();
 
             // Relations to rows on the objects table
             $table->integer('launch_video')->unsigned()->nullable();
@@ -218,6 +205,43 @@ class Spacexstats extends Migration {
 
         Schema::create('orbital_parameters', function(Blueprint $table) {
             $table->increments('orbital_parameter_id');
+        });
+
+        Schema::create('parts', function(Blueprint $table) {
+            $table->increments('part_id');
+            $table->string('name', Varchar::small);
+            $table->enum('type', array('Upper Stage', 'First Stage', 'First Stage Booster'));
+            $table->timestamps();
+        });
+
+        // Pivot table
+        Schema::create('part_flights_pivot', function(Blueprint $table) {
+            $table->increments('part_flight_id');
+            $table->integer('mission_id')->unsigned();
+            $table->integer('part_id')->unsigned();
+
+            // First stage & booster stuff
+            $table->boolean('firststage_landing_legs')->nullable();
+            $table->boolean('firststage_grid_fins')->nullable();
+            $table->enum('firststage_engine', array('Merlin 1A', 'Merlin 1C', 'Merlin 1D', 'Merlin 1D Fullthrust'))->nullable();
+            $table->integer('landing_site_id')->nullable()->unsigned();
+            $table->boolean('firststage_landed')->nullable();
+            $table->string('firststage_outcome', Varchar::compact)->nullable();
+            $table->tinyInteger('firststage_engine_failures')->unsigned()->nullable();
+            $table->tinyInteger('firststage_meco')->unsigned()->nullable();
+            $table->decimal('firststage_landing_coords_lat', 6, 4)->nullable();
+            $table->decimal('firststage_landing_coords_lng', 7, 4)->nullable();
+
+            // Second stage stuff
+            $table->string('upperstage_note', Varchar::compact)->nullable();
+            $table->enum('upperstage_engine', array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'))->nullable();
+            $table->smallInteger('upperstage_seco')->unsigned()->nullable();
+            $table->enum('upperstage_status', array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'))->nullable();
+            $table->date('upperstage_decay_date')->nullable();
+            $table->smallInteger('upperstage_norad_id')->unsigned()->nullable();
+            $table->char('upperstage_intl_designator', 9)->nullable();
+
+            $table->timestamps();
         });
 
         Schema::create('payloads', function(Blueprint $table) {
@@ -341,32 +365,17 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        // Pivot table
-        Schema::create('uses', function(Blueprint $table) {
-            $table->increments('use_id');
-            $table->integer('mission_id')->unsigned();
-            $table->integer('core_id')->unsigned();
-
-            $table->boolean('firststage_landing_legs')->nullable();
-            $table->boolean('firststage_grid_fins')->nullable();
-            $table->enum('firststage_engine', array('Merlin 1A', 'Merlin 1C', 'Merlin 1D', 'Merlin 1D Fullthrust'));
-            $table->integer('landing_site_id')->nullable()->unsigned();
-            $table->boolean('firststage_landed')->nullable();
-            $table->string('firststage_outcome', Varchar::compact)->nullable();
-            $table->smallInteger('firststage_engine_failures')->unsigned()->nullable();
-            $table->smallInteger('firststage_meco')->nullable();
-            $table->decimal('firststage_landing_coords_lat', 6, 4)->nullable();
-            $table->decimal('firststage_landing_coords_lng', 7, 4)->nullable();
-
-            $table->timestamps();
-        });
-
         Schema::create('vehicles', function(Blueprint $table) {
             $table->increments('vehicle_id');
             $table->string('vehicle', Varchar::small);
         });
 
         // Add foreign keys
+        Schema::table('astronauts_flights_pivot', function(Blueprint $table) {
+            $table->foreign('astronaut_id')->references('astronaut_id')->on('astronauts');
+            $table->foreign('spacecraft_flight_id')->references('spacecraft_flight_id')->on('spacecraft_flights_pivot');
+        });
+
         Schema::table('emails', function(Blueprint $table) {
             $table->foreign('notification_id')->references('notification_id')->on('notifications');
         });
@@ -407,6 +416,12 @@ class Spacexstats extends Migration {
             $table->foreign('tag_id')->references('tag_id')->on('tags')->onDelete('cascade');
         });
 
+        Schema::table('part_flights_pivot', function(Blueprint $table) {
+            $table->foreign('mission_id')->references('mission_id')->on('missions');
+            $table->foreign('landing_site_id')->references('location_id')->on('locations');
+            $table->foreign('part_id')->references('part_id')->on('parts');
+        });
+
         Schema::table('payloads', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions');
         });
@@ -432,12 +447,6 @@ class Spacexstats extends Migration {
 
         Schema::table('users', function(Blueprint $table) {
             $table->foreign('role_id')->references('role_id')->on('roles')->onUpdate('cascade')->onDelete('restrict');
-        });
-
-        Schema::table('uses', function(Blueprint $table) {
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
-            $table->foreign('landing_site_id')->references('location_id')->on('locations');
-            $table->foreign('core_id')->references('core_id')->on('cores');
         });
 	}
 

@@ -30,12 +30,12 @@ class Mission extends Eloquent {
 		return $this->belongsTo('Vehicle');
 	}
 
-    public function cores() {
-        return $this->belongsToMany('Core', 'uses');
+    public function parts() {
+        return $this->belongsToMany('Part', 'part_flights_pivot');
     }
 
-    public function uses() {
-        return $this->hasMany('Uses');
+    public function partFlights() {
+        return $this->hasMany('PartFlight');
     }
 
 	public function spacecraftFlight() {
@@ -55,7 +55,7 @@ class Mission extends Eloquent {
     }
 
     public function missionType() {
-        return $this->hasOne('MissionType');
+        return $this->belongsTo('MissionType');
     }
 
     public function objects() {

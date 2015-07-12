@@ -21,9 +21,9 @@ class DatabaseSeeder extends Seeder {
         $this->call('ProfilesTableSeeder');
         $this->call('StatisticsTableSeeder');
         $this->call('ObjectsTableSeeder');
-        $this->call('CoresTableSeeder');
+        $this->call('PartsTableSeeder');
         $this->call('MissionsTableSeeder');
-        $this->call('UsesTableSeeder');
+        $this->call('PartFlightsTableSeeder');
         $this->call('TagsTableSeeder');
         $this->call('NotificationTypesSeeder');
         $this->call('MissionTypesTableSeeder');
