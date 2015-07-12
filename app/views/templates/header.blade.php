@@ -52,6 +52,9 @@
 						@if (Auth::check())
 							{{ link_to_route('users.get', Auth::user()->username, array(Auth::user()->username)) }}
 							<ul class="nav-second-tier">
+                                @if (Auth::isAdmin())
+                                    <li>{{ link_to_route('admin', 'Admin') }}</li>
+                                @endif
 								<li>
 									<form method="post" action="/users/logout">
 										<input type="submit" value="Logout" />

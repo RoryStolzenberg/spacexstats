@@ -40,3 +40,8 @@ Route::get('faq', array(
 	'as' => 'faq',
 	'uses' => 'QuestionsController@index'
 ));
+
+Route::get('admin', array(
+    'as' => 'admin',
+    'uses' => 'AdminController@index'
+))->before('mustBe:Administrator');
