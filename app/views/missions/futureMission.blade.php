@@ -8,8 +8,8 @@
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
     <script>
         require(['common'], function() {
-            require(['knockout', 'viewmodels/FutureMissionViewModel'], function(ko, FutureMissionViewModel) {
-                ko.applyBindings(new FutureMissionViewModel('{{ $mission->slug}}', 'November', '4' ));
+            require(['knockout', 'viewmodels/FutureMissionViewModel', 'sticky'], function(ko, FutureMissionViewModel, sticky) {
+                ko.applyBindings(new FutureMissionViewModel('{{ $mission->slug}}', '{{ $mission->present()->launchDateTime(DateTime::ISO8601) }}', '{{ $mission->launch_specificity }}' ));
             });
         });
     </script>
@@ -66,7 +66,7 @@
             <!-- /ko -->
 		</section>
 		<section class="hero" id="countdown">
-			<countdown params="countdownTo: launchDateTime, specificity: launchSpecificity, callback: someFunc"></countdown>
+			<countdown params="countdownTo: launchDateTime, specificity: launchSpecificity, callback: requestFrequencyManager"></countdown>
 		</section>
 		<p>{{ $mission->summary }}</p>
 		<h2>Details</h2>
@@ -79,7 +79,6 @@
         <section class="timeline">
             <canvas></canvas>
         </section>
-
         @if (Auth::isSubscriber())
             <h2>Articles</h2>
             <section class="articles">

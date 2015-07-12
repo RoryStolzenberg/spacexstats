@@ -1,7 +1,7 @@
 @extends('templates.main')
 
-@section('title', 'Past Missions')
-@section('bodyClass', 'past-missions')
+@section('title', 'Past Launches')
+@section('bodyClass', 'past-launches')
 
 @section('scripts')
 @stop

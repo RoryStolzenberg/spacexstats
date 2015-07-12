@@ -23,29 +23,17 @@ class MissionsController extends BaseController {
 
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
 			return View::make('missions.futureMission', array(
-				'title' => $mission->name . ' Mission',
-				'currentPage' => 'mission',
 				'mission' => $mission,
                 'pastMission' => $pastMission,
                 'futureMission' => $futureMission
 			));			
 		} else {
 			return View::make('missions.pastMission', array(
-				'title' => $mission->name . ' Mission',
-				'currentPage' => 'mission',
 				'mission' => $mission,
                 'pastMission' => $pastMission,
                 'futureMission' => $futureMission
 			));	
 		}
-	}
-
-	/// AJAX POST 
-	// /missions/{slug}/requestlaunchdatetime
-	public function requestLaunchDateTime($slug) {
-		$mission = Mission::whereSlug($slug)->with('vehicle')->first();
-
-		return Response::json(array('launchDateTime' => $mission->present()->launch_exact()));
 	}
 
 	// GET
@@ -58,8 +46,6 @@ class MissionsController extends BaseController {
 		$nextLaunch = $futureLaunches->shift();
 
 		return View::make('missions.future', array(
-			'title' => 'Future Launches',
-			'currentPage' => 'future',
 			'futureLaunches' => $futureLaunches,
 			'nextLaunch' => $nextLaunch
 		));
@@ -72,8 +58,6 @@ class MissionsController extends BaseController {
 									->with('vehicle')->get();
 
 		return View::make('missions.past', array(
-			'title' => 'Past Launches',
-			'currentPage' => 'past',
 			'pastLaunches' => $pastLaunches
 		));
 	}
@@ -138,6 +122,14 @@ class MissionsController extends BaseController {
     public function all() {
         $allMissions = Mission::with('featuredImage')->get(['mission_id', 'name', 'featured_image']);
         return Response::json($allMissions);
+    }
+
+    /// AJAX POST
+    // /missions/{slug}/requestlaunchdatetime
+    public function requestLaunchDateTime($slug) {
+        $mission = Mission::whereSlug($slug)->with('vehicle')->first();
+
+        return Response::json(array('launchDateTime' => $mission->present()->launch_exact()));
     }
 }
  
