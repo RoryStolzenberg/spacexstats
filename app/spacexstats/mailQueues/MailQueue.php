@@ -2,11 +2,23 @@
 namespace SpaceXStats\MailQueues;
 
 class MailQueue {
-    public function queue($content, $action, $subscriptionType) {
-        // Get the emails that are applicable to this and update them
+
+    public function queue($content, $notificationType) {
+        $notificationsToQueueEmailsFor = \Notification::where('notification_type_id', $notificationType);
+
+        foreach ($notificationsToQueueEmailsFor as $notification) {
+            $email = new Email();
+            $email->user()->associate($notification->user());
+            $email->user
+        }
+    }
+
+    //
+    public function updateAndQueue($content, $notificationType, $action) {
+        // Get the emails that are applicable to this subscription and update them
         Email::where('status', 'Held')
-            ->whereHas('emailSubscription.subscriptionType', function($q) use($subscriptionType, $content) {
-                $q->where('name', $subscriptionType);
+            ->whereHas('notification.notificationType', function($q) use($notificationType, $content) {
+                $q->where('name', $notificationType);
             })
             ->update(array(
                 'content' => $content,
@@ -14,13 +26,13 @@ class MailQueue {
             ));
 
         // Get the email subscriptions which do not have a corresponding email and create them
-        $subscriptionsWithNoCorrespondingHeldEmail = \EmailSubscriptions::whereHas('subscriptionType', function($q) use($subscriptionType) {
-            $q->where('name', $subscriptionType);
+        $notificationsWithNoCorrespondingHeldEmail = \Notification::whereHas('notificationType', function($q) use($notificationType) {
+            $q->where('name', $notificationType);
         })->whereDoesntHave('emails', function($q) {
             $q->where('status', '=', 'Held');
         })->get();
 
-        $subscriptionsWithNoCorrespondingHeldEmail->emails()->save(new Email(array(
+        $notificationsWithNoCorrespondingHeldEmail->emails()->save(new \Email(array(
             'content' => $content,
             'status' => $this->actionToEnum($action)
         )));

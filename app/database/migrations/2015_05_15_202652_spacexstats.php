@@ -140,6 +140,7 @@ class Spacexstats extends Migration {
             $table->integer('user_id')->unsigned();
             $table->integer('notification_type_id')->unsigned();
 
+            $table->softDeletes();
             $table->timestamps();
         });
 
