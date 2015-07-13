@@ -2,24 +2,56 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var CreateMissionViewModel = function () {
         var self = this;
 
-        // Spacecraft
-        function spacecraftViewModel(type, spacecraftName, flightName, spacecraftReturn, returnMethod, upmass, downmass, issBerth, issUnberth) {
-            this.type = (typeof type !== undefined) ? type : '';
-            this.spacecraftName = (typeof spacecraftName !== undefined) ? spacecraftName : '';
-            this.flightName = (typeof flightName !== undefined) ? flightName : '';
-            this.spacecraftReturn = (typeof spacecraftReturn !== undefined) ? spacecraftReturn : '';
-            this.returnMethod = (typeof returnMethod !== undefined) ? returnMethod : '';
-            this.upmass = (typeof upmass !== undefined) ? upmass : '';
-            this.downmass = (typeof downmass !== undefined) ? downmass : '';
-            this.issBerth = (typeof issBerth !== undefined) ? issBerth : '';
-            this.issUnberth = (typeof issUnberth !== undefined) ? issUnberth : '';
+        // Data lists
+        self.missionTypes = ko.observableArray([]);
+        self.destinations = ko.observableArray([]);
+        self.launchSites = ko.observableArray([]);
+        self.vehicles = ko.observableArray([]);
+        self.spacecraft = ko.observableArray([]);
+        self.spacecraftReturnMethods = ko.observableArray([]);
+        self.firstStageEngines = ko.observableArray([]);
+        self.upperStageEngines = ko.observableArray([]);
+
+        function Mission(mission) {
+            koMapping.fromJS(mission, {
+
+            }, this);
+            var m = this;
+
+            this.mission_id = ko.observable();
+            this.name = ko.observable();
+            this.mission_type = ko.observable();
+            this.contractor = ko.observable();
+            this.launch_date_time = ko.observable();
+            this.destination_id = ko.observable();
+            this.launch_site_id = ko.observable();
+            this.mission_id = ko.observable();
+
         }
 
-        self.spacecraft = ko.observableArray([]);
+        // Astronaut
+        function Astronaut(astronaut) {
+            var a = this;
+            this.astronaut_id = ko.observable(astronaut.astronaut_id);
+            this.first_name = ko.observable(astronaut.first_name);
+            this.last_name = ko.observable(astronaut.last_name);
+            this.full_name = ko.computed(function() {
+                return a.first_name() + " " + a.last_name();
+            });
+            this.nationality = ko.observable(astronaut.nationality);
+            this.date_of_birth = ko.observable(astronaut.date_of_birth);
+            this.contracted_by = ko.observable(astronaut.contracted_by);
+        }
+
+        function Part() {
+
+        }
+
+        /*self.spacecraft = ko.observableArray([]);
 
         self.addSpacecraft = function () {
             if (self.spacecraft.length == 0) {
-                self.spacecraft.push(new spacecraftViewModel());
+                self.spacecraft.push(new Spacecraft());
             }
         };
 
@@ -27,23 +59,25 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.spacecraft.remove(spacecraft);
         };
 
-        // Payloads
-        function payloadViewModel(name, operator, mass, link) {
-            this.name = (typeof name !== undefined) ? name : '';
-            this.operator = (typeof operator !== undefined) ? operator : '';
-            this.mass = (typeof mass !== undefined) ? mass : '';
-            this.link = (typeof link !== undefined) ? link : '';
-        }
-
         self.payloads = ko.observableArray([]);
 
         self.addPayload = function () {
-            self.payloads.push(new payloadViewModel());
+            self.payloads.push(new Payload());
         };
 
         self.removePayload = function (payload) {
             self.payloads.remove(payload);
-        };
+        };*/
+
+        self.init = (function() {
+            $.ajax('/missions/create', {
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    console.log(response);
+                }
+            });
+        })();
     };
 
     return CreateMissionViewModel;

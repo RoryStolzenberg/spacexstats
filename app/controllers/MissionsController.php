@@ -81,24 +81,27 @@ class MissionsController extends BaseController {
     public function create() {
         if (Request::isMethod('get')) {
 
-            return View::make('missions.create', array(
-                'destinations' => Destination::lists('destination', 'destination_id'),
-                'missionTypes' => MissionType::get()->lists('name', 'mission_type_id'),
+            // Just load the page if the request is not AJAX
+            if (!Request::ajax()) {
+                return View::make('missions.create');
+            // Load the required data for the page if the request is AJAX
+            } else {
+                return Response::json(array(
+                    'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
+                    'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
+                    'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
+                    'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
 
-                'launchSites' => Location::get()->filter(function($item) {
-                    return $item->type == 'Launch Site';
-                })->lists('fullLocation', 'location_id'),
+                    'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
+                    'spacecraft' => array('Dragon 1', 'Dragon 2'),
+                    'spacecraftReturnMethods' => array('Splashdown', 'Landing', 'Destroyed'),
+                    'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
+                    'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac')
+                ));
 
-                'landingSites' => Location::get()->filter(function($item) {
-                    return ($item->type == 'Landing Site') || ($item->type == 'ASDS');
-                })->lists('fullLocation', 'location_id'),
+            }
 
-                'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
-                'spacecraft' => array('Dragon 1', 'Dragon 2'),
-                'spacecraftReturnMethods' => array('Splashdown', 'Landing', 'Destroyed'),
-                'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
-                'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac')
-            ));
+
 
         } elseif (Request::isMethod('post')) {
 

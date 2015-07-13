@@ -3,13 +3,14 @@ namespace SpaceXStats\MailQueues;
 
 class MailQueue {
 
-    public function queue($content, $notificationType) {
+    public function queue($subject, $body, $notificationType) {
         $notificationsToQueueEmailsFor = \Notification::where('notification_type_id', $notificationType)->get();
 
         foreach ($notificationsToQueueEmailsFor as $notification) {
             $email = new \Email();
             $email->notification()->associate($notification);
-            $email->content = $content;
+            $email->subject = $subject;
+            $email->body = $body;
             $email->status = 'Queued';
             $email->save();
         }

@@ -12,93 +12,63 @@
             });
         });
     </script>
-
-    <script type="text/html" id="spacecraft-template">
-        {{ Form::label('spacecraft[type]', 'Type') }}
-        {{ Form::select('spacecraft[type]', $spacecraft, array('data-bind' => 'value: type')) }}
-
-        {{ Form::label('spacecraft[name]', 'Spacecraft Name') }}
-        {{ Form::text('spacecraft[name]', '', array('data-bind' => 'value: spacecraftName')) }}
-
-        {{ Form::label('spacecraftFlight[name]', 'Flight Name') }}
-        {{ Form::text('spacecraftFlight[name]', '', array('data-bind' => 'value: flightName')) }}
-
-        {{ Form::label('spacecraftFlight[return]', 'Spacecraft Return Datetime') }}
-        {{ Form::input('datetime', 'spacecraftFlight[return]', '', array('data-bind' => 'value: spacecraftReturn')) }}
-
-        {{ Form::label('spacecraftFlight[return_method]', 'Spacecraft Return Method') }}
-        {{ Form::select('spacecraftFlight[return_method]', $spacecraftReturnMethods, array('data-bind' => 'value: returnMethod')) }}
-
-        {{ Form::label('spacecraftFlight[upmass]', 'Upmass (kg)') }}
-        {{ Form::text('spacecraftFlight[upmass]', '', array('data-bind' => 'value: upmass')) }}
-
-        {{ Form::label('spacecraftFlight[downmass]', 'Downmass (kg)') }}
-        {{ Form::text('spacecraftFlight[downmass]', '', array('data-bind' => 'value: downmass')) }}
-
-        {{ Form::label('spacecraftFlight[iss_berth]', 'ISS Berth') }}
-        {{ Form::input('datetime', 'spacecraftFlight[iss_berth]', '', array('data-bind' => 'value: issBerth')) }}
-
-        {{ Form::label('spacecraftFlight[iss_unberth]', 'ISS Unberth') }}
-        {{ Form::input('datetime', 'spacecraftFlight[iss_unberth]', '', array('data-bind' => 'value: issUnberth')) }}
-
-        <button type="button" class="fa fa-minus-circle" data-bind="click: $parent.removeSpacecraft"></button>
-    </script>
-    <script type="text/html" id="payload-template">
-        {{ Form::label('payload[name]', 'Payload Name') }}
-        {{ Form::text('payload[name]', '', array('data-bind' => 'value: name, foreachNameAttr: $index')) }}
-
-        {{ Form::label('payload[operator]', 'Payload Operator') }}
-        {{ Form::text('payload[operator]', '', array('data-bind' => 'value: operator, foreachNameAttr: $index')) }}
-
-        {{ Form::label('payload[mass]', 'Mass (kg)') }}
-        {{ Form::text('payload[mass]', '', array('data-bind' => 'value: mass, foreachNameAttr: $index')) }}
-
-        {{ Form::label('payload[link]', 'Gunters Spacepage Link') }}
-        {{ Form::text('payload[link]', '', array('data-bind' => 'value: link, foreachNameAttr: $index')) }}
-
-        <button type="button" class="fa fa-minus-circle" data-bind="click: $parent.removePayload"></button>
-    </script>
 @stop
 
 @section('content')
     <div class="content-wrapper">
         <h1>Create A Mission</h1>
         <main>
-            {{ Form::open(array('route' => 'missions.create', 'method' => 'post')) }}
+            <form>
                 {{ Form::token() }}
 
-                {{ Form::label('mission[name]', 'Mission Name') }}
-                {{ Form::text('mission[name]') }}
+                <fieldset data-bind="with: mission">
+                    <legend>Mission</legend>
 
-                {{ Form::label('mission[mission_type_id]', 'Mission Type') }}
-                <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
-                {{ Form::select('mission[mission_type_id]', $missionTypes) }}
+                    <label>Mission Name</label>
+                    <input type="text" data-bind="value: name"/>
 
-                {{ Form::label('mission[contractor]', 'Payload Contractor') }}
-                {{ Form::text('mission[contractor]') }}
+                    <label>Mission Type</label>
+                    <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
+                    <select data-bind="value: mission_type_id, options: $root.mission_types, optionsText: 'name', optionsValue: 'mission_type_id"></select>
 
-                {{ Form::label('mission[launch_date_time]', 'Launch Date Time') }}
-                {{ Form::text('mission[launch_date_time]') }}
+                    <label for="">Contractor</label>
+                    <input type="text" data-bind="value: contractor"/>
 
-                {{ Form::label('mission[destination_id]', 'Destination') }}
-                {{ Form::select('mission[destination_id]', $destinations) }}
+                    <label for="">Launch Date Time</label>
+                    <input type="text" data-bind="value launch_date_time"/>
 
-                {{ Form::label('mission[launch_site_id]', 'Launch Site') }}
-                {{ Form::select('mission[launch_site_id]', $launchSites) }}
+                    <label for="">Destination</label>
+                    <select data-bind="value: destination_id, options: $root.destinations, optionsText: 'name', optionsValue: 'destination_id"></select>
 
-                {{ Form::label('mission[summary]', 'Summary') }}
-                {{ Form::textarea('mission[summary]') }}
+                    <label for="">Launch Site</label>
+                    <select data-bind="value: launch_site_id, options: $root.launch_sites, optionsText: 'name', optionsValue: 'location_id"></select>
 
+                    <label for="">Summary</label>
+                    <input type="text" data-bind="value: summary"/>
+                </fieldset>
 
+                <fieldset data-bind="width: parts">
+                    <legend>Parts</legend>
+                </fieldset>
 
-                    {{ Form::label('mission[vehicle_id]', 'Launch Vehicle')}}
-                    {{ Form::select('mission[vehicle_id]', $vehicles) }}
+                <fieldset data-bind="width: spacecraft">
+                    <legend>Spacecraft</legend>
+                </fieldset>
 
+                <fieldset data-bind="width: payloads">
+                    <legend>Payloads</legend>
+                </fieldset>
 
+                <input type="submit" data-bind="click: createMission" />
+            </form>
 
-                {{ Form::submit('Create') }}
-
-            {{ Form::close() }}
+                <button type="button" data-bind="click: addPart">Add A Part</button>
+                <div class="add-parts">
+                    <ul>
+                        <li>Reuse A Part...</li>
+                        <li>New Part...</li>
+                    </ul>
+                </div>
         </main>
     </div>
 @stop

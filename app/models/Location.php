@@ -5,7 +5,7 @@ class Location extends Eloquent {
     public $timestamps = false;
 
     protected $hidden = [];
-    protected $appends = [];
+    protected $appends = ['fullLocation'];
     protected $fillable = [];
 
     // Relations
