@@ -17,10 +17,12 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         self.mission = ko.observable(new Mission());
 
         self.createMission = function(data) {
+            console.log(koMapping.toJS(self.mission));
         };
 
         function Mission(mission) {
             koMapping.fromJS(mission, {
+                include: ['mission_id'],
                 'payloads': {
                    create: function(options) {
                        console.log(options);
@@ -46,7 +48,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         }
 
         this.addPayload = function (data) {
-            self.mission.payloads.push(new Payload(data));
+            self.mission().payloads.push(new Payload(data));
         };
 
         this.removePayload = function (data) {
@@ -98,7 +100,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             var p = this;
 
             this.payload_id = ko.observable();
-            this.mission_id = ko.observable();
             this.name = ko.observable();
             this.operator = ko.observable();
             this.mass = ko.observable();

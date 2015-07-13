@@ -12,6 +12,27 @@
             });
         });
     </script>
+
+    <script type="text/html" id="payload-template">
+        <div>
+            <label>Payload Name</label>
+            <input type="text" data-bind="name" />
+
+            <label>Operator</label>
+            <input type="text" data-bind="operator" />
+
+            <label>Mass</label>
+            <input type="text" data-bind="mass" />
+
+            <label>Payload Name</label>
+            <input type="checkbox" data-bind="primary" />
+
+            <label>Gunter's Space Page Link</label>
+            <input type="text" data-bind="link" />
+
+            <button data-bind="click: $root.removePayload"></button>
+        </div>
+    </script>
 @stop
 
 @section('content')
@@ -38,7 +59,7 @@
                     <input type="text" data-bind="value launch_date_time"/>
 
                     <label for="">Destination</label>
-                    <select data-bind="value: destination_id, options: $root.dataLists.destinations, optionsText: 'name', optionsValue: 'destination_id'"></select>
+                    <select data-bind="value: destination_id, options: $root.dataLists.destinations, optionsText: 'destination', optionsValue: 'destination_id'"></select>
 
                     <label for="">Launch Site</label>
                     <select data-bind="value: launch_site_id, options: $root.dataLists.launchSites, optionsText: 'name', optionsValue: 'location_id'"></select>
@@ -50,6 +71,12 @@
                 <fieldset data-bind="">
                     <legend>Parts</legend>
                     <button type="button" data-bind="click: $root.addPart">Add A Part</button>
+                    <div class="add-parts">
+                        <ul>
+                            <li>Reuse A Part...</li>
+                            <li>New Part...</li>
+                        </ul>
+                    </div>
                 </fieldset>
 
                 <fieldset data-bind="">
@@ -58,13 +85,9 @@
 
                 <fieldset data-bind="">
                     <legend>Payloads</legend>
-                    <button type="button" data-bind="click: $root.addPayload">Add A Part</button>
-                    <div class="add-parts">
-                        <ul>
-                            <li>Reuse A Part...</li>
-                            <li>New Part...</li>
-                        </ul>
-                    </div>
+                    <button type="button" data-bind="click: $root.addPayload">Add A Payload</button>
+                    <!-- ko template: { name: 'payload-template', foreach: payloads, as: 'payload' } -->
+                    <!-- /ko -->
                 </fieldset>
 
                 <input type="submit" data-bind="click: $root.createMission" />
