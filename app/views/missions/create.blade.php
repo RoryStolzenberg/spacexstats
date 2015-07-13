@@ -30,7 +30,7 @@
             <label>Gunter's Space Page Link</label>
             <input type="text" data-bind="link" />
 
-            <button data-bind="click: $root.removePayload"></button>
+            <button data-bind="click: $root.removePayload">Remove Payload</button>
         </div>
     </script>
 @stop

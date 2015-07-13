@@ -52,7 +52,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
 
         this.removePayload = function (data) {
-            self.mission.payloads.remove(data);
+            self.mission().payloads.remove(data);
         };
 
         this.addPart = function (data) {
