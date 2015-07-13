@@ -3,31 +3,63 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         var self = this;
 
         // Data lists
-        self.missionTypes = ko.observableArray([]);
-        self.destinations = ko.observableArray([]);
-        self.launchSites = ko.observableArray([]);
-        self.vehicles = ko.observableArray([]);
-        self.spacecraft = ko.observableArray([]);
-        self.spacecraftReturnMethods = ko.observableArray([]);
-        self.firstStageEngines = ko.observableArray([]);
-        self.upperStageEngines = ko.observableArray([]);
+        self.dataLists = {
+            missionTypes: ko.observableArray([]),
+            destinations: ko.observableArray([]),
+            launchSites: ko.observableArray([]),
+            vehicles: ko.observableArray([]),
+            spacecraft: ko.observableArray([]),
+            spacecraftReturnMethods: ko.observableArray([]),
+            firstStageEngines: ko.observableArray([]),
+            upperStageEngines: ko.observableArray([])
+        };
+
+        self.mission = ko.observable(new Mission());
+
+        self.createMission = function(data) {
+        };
 
         function Mission(mission) {
             koMapping.fromJS(mission, {
-
+                'payloads': {
+                   create: function(options) {
+                       console.log(options);
+                   }
+                }
             }, this);
             var m = this;
 
             this.mission_id = ko.observable();
             this.name = ko.observable();
-            this.mission_type = ko.observable();
+            this.mission_type_id = ko.observable();
             this.contractor = ko.observable();
             this.launch_date_time = ko.observable();
             this.destination_id = ko.observable();
             this.launch_site_id = ko.observable();
-            this.mission_id = ko.observable();
+            this.summary = ko.observable();
 
+            /* PAYLOADS */
+            this.payloads = ko.observableArray([]);
+
+            /* PARTS */
+            this.parts = ko.observableArray([]);
         }
+
+        this.addPayload = function (data) {
+            self.mission.payloads.push(new Payload(data));
+        };
+
+        this.removePayload = function (data) {
+            self.mission.payloads.remove(data);
+        };
+
+        this.addPart = function (data) {
+            self.mission.parts.push(new Part(data));
+        };
+
+        this.removePart = function (data) {
+            self.mission.parts.remove(data);
+        };
 
         // Astronaut
         function Astronaut(astronaut) {
@@ -43,13 +75,38 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.contracted_by = ko.observable(astronaut.contracted_by);
         }
 
+
+
         function Part() {
 
         }
 
-        /*self.spacecraft = ko.observableArray([]);
+        self.addPart = function(data) {
 
-        self.addSpacecraft = function () {
+        };
+
+        self.spacecraft = ko.observableArray([]);
+
+        function Spacecraft() {
+
+        }
+
+        function Payload(payload) {
+            koMapping.fromJS(payload, {
+
+            }, this);
+            var p = this;
+
+            this.payload_id = ko.observable();
+            this.mission_id = ko.observable();
+            this.name = ko.observable();
+            this.operator = ko.observable();
+            this.mass = ko.observable();
+            this.primary = ko.observable();
+            this.link = ko.observable();
+        }
+
+        /*self.addSpacecraft = function () {
             if (self.spacecraft.length == 0) {
                 self.spacecraft.push(new Spacecraft());
             }
@@ -57,24 +114,15 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         self.removeSpacecraft = function (spacecraft) {
             self.spacecraft.remove(spacecraft);
-        };
-
-        self.payloads = ko.observableArray([]);
-
-        self.addPayload = function () {
-            self.payloads.push(new Payload());
-        };
-
-        self.removePayload = function (payload) {
-            self.payloads.remove(payload);
         };*/
 
         self.init = (function() {
             $.ajax('/missions/create', {
                 method: 'GET',
                 dataType: 'json',
-                success: function(response) {
-                    console.log(response);
+                success: function(lists) {
+                    // Map the data lists
+                    koMapping.fromJS(lists, {}, self.dataLists);
                 }
             });
         })();

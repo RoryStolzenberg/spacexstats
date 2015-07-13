@@ -18,10 +18,10 @@
     <div class="content-wrapper">
         <h1>Create A Mission</h1>
         <main>
-            <form>
+            <form data-bind="with: mission">
                 {{ Form::token() }}
 
-                <fieldset data-bind="with: mission">
+                <fieldset>
                     <legend>Mission</legend>
 
                     <label>Mission Name</label>
@@ -29,7 +29,7 @@
 
                     <label>Mission Type</label>
                     <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
-                    <select data-bind="value: mission_type_id, options: $root.mission_types, optionsText: 'name', optionsValue: 'mission_type_id"></select>
+                    <select data-bind="value: mission_type_id, options: $root.dataLists.missionTypes, optionsText: 'name', optionsValue: 'mission_type_id'"></select>
 
                     <label for="">Contractor</label>
                     <input type="text" data-bind="value: contractor"/>
@@ -38,37 +38,38 @@
                     <input type="text" data-bind="value launch_date_time"/>
 
                     <label for="">Destination</label>
-                    <select data-bind="value: destination_id, options: $root.destinations, optionsText: 'name', optionsValue: 'destination_id"></select>
+                    <select data-bind="value: destination_id, options: $root.dataLists.destinations, optionsText: 'name', optionsValue: 'destination_id'"></select>
 
                     <label for="">Launch Site</label>
-                    <select data-bind="value: launch_site_id, options: $root.launch_sites, optionsText: 'name', optionsValue: 'location_id"></select>
+                    <select data-bind="value: launch_site_id, options: $root.dataLists.launchSites, optionsText: 'name', optionsValue: 'location_id'"></select>
 
                     <label for="">Summary</label>
                     <input type="text" data-bind="value: summary"/>
                 </fieldset>
 
-                <fieldset data-bind="width: parts">
+                <fieldset data-bind="">
                     <legend>Parts</legend>
+                    <button type="button" data-bind="click: $root.addPart">Add A Part</button>
                 </fieldset>
 
-                <fieldset data-bind="width: spacecraft">
+                <fieldset data-bind="">
                     <legend>Spacecraft</legend>
                 </fieldset>
 
-                <fieldset data-bind="width: payloads">
+                <fieldset data-bind="">
                     <legend>Payloads</legend>
+                    <button type="button" data-bind="click: $root.addPayload">Add A Part</button>
+                    <div class="add-parts">
+                        <ul>
+                            <li>Reuse A Part...</li>
+                            <li>New Part...</li>
+                        </ul>
+                    </div>
                 </fieldset>
 
-                <input type="submit" data-bind="click: createMission" />
+                <input type="submit" data-bind="click: $root.createMission" />
             </form>
 
-                <button type="button" data-bind="click: addPart">Add A Part</button>
-                <div class="add-parts">
-                    <ul>
-                        <li>Reuse A Part...</li>
-                        <li>New Part...</li>
-                    </ul>
-                </div>
         </main>
     </div>
 @stop
