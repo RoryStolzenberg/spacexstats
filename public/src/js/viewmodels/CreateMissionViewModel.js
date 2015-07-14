@@ -22,7 +22,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         function Mission(mission) {
             koMapping.fromJS(mission, {
-                include: ['mission_id'],
+                include: ['mission_id', 'name', 'mission_type_id', 'contractor', 'launch_date_time',
+                    'destination_id', 'launch_site_id', 'summary', 'payloads', 'parts', 'spacecraft'],
                 'payloads': {
                    create: function(options) {
                        console.log(options);
@@ -45,58 +46,64 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
             /* PARTS */
             this.parts = ko.observableArray([]);
+
+            /* SPACECRAFT */
+            this.spacecraft = ko.observable();
         }
 
-        this.addPayload = function (data) {
+        self.addPayload = function (data) {
             self.mission().payloads.push(new Payload(data));
         };
 
-        this.removePayload = function (data) {
+        self.removePayload = function (data) {
             self.mission().payloads.remove(data);
         };
 
-        this.addPart = function (data) {
+        self.addPart = function (data) {
             self.mission.parts.push(new Part(data));
         };
 
-        this.removePart = function (data) {
+        self.removePart = function (data) {
             self.mission.parts.remove(data);
+        };
+
+        self.addSpacecraft = function () {
+            if (self.spacecraft.length == 0) {
+                self.spacecraft.push(new Spacecraft());
+            }
+        };
+
+        self.removeSpacecraft = function (spacecraft) {
+            self.spacecraft.remove(spacecraft);
         };
 
         // Astronaut
         function Astronaut(astronaut) {
             var a = this;
-            this.astronaut_id = ko.observable(astronaut.astronaut_id);
-            this.first_name = ko.observable(astronaut.first_name);
-            this.last_name = ko.observable(astronaut.last_name);
+            this.astronaut_id = ko.observable();
+            this.first_name = ko.observable();
+            this.last_name = ko.observable();
             this.full_name = ko.computed(function() {
                 return a.first_name() + " " + a.last_name();
             });
-            this.nationality = ko.observable(astronaut.nationality);
-            this.date_of_birth = ko.observable(astronaut.date_of_birth);
-            this.contracted_by = ko.observable(astronaut.contracted_by);
+            this.nationality = ko.observable();
+            this.date_of_birth = ko.observable();
+            this.contracted_by = ko.observable();
         }
-
-
 
         function Part() {
 
         }
 
-        self.addPart = function(data) {
-
-        };
-
-        self.spacecraft = ko.observableArray([]);
-
         function Spacecraft() {
-
+            var s = this;
+            this.spacecraft_id = ko.observable();
+            this.type = ko.observable();
+            this.spacecraft_name = ko.observable();
         }
 
         function Payload(payload) {
-            koMapping.fromJS(payload, {
-
-            }, this);
+            koMapping.fromJS(payload, {}, this);
             var p = this;
 
             this.payload_id = ko.observable();
@@ -107,15 +114,32 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.link = ko.observable();
         }
 
-        /*self.addSpacecraft = function () {
-            if (self.spacecraft.length == 0) {
-                self.spacecraft.push(new Spacecraft());
+        // PARTS STUFF
+        self.partSelection = {
+            selectedPart: ko.observable(),
+            selectedPartType: ko.observable(),
+            availableParts: ko.observableArray([]),
+            partsFilter: ko.observable(),
+            filteredAvailableParts: ko.computed({ read: function() {
+                return self.partSelection.availableParts().filter(function(part) {
+                    return part.type == self.partSelection.partsFilter();
+                });
+            }, deferEvaluation: true }),
+            addPartState: ko.observable(null),
+            addPart: function() {
+                self.partSelection.addPartState('AddPart');
+            },
+            addBooster: function() {
+                self.partsFilter('Booster');
+            },
+            addFirstStage: function() {
+                self.partsFilter('First Stage');
+            },
+            addUpperStage: function() {
+                self.partsFilter('Upper Stage');
             }
         };
 
-        self.removeSpacecraft = function (spacecraft) {
-            self.spacecraft.remove(spacecraft);
-        };*/
 
         self.init = (function() {
             $.ajax('/missions/create', {
@@ -124,6 +148,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 success: function(lists) {
                     // Map the data lists
                     koMapping.fromJS(lists, {}, self.dataLists);
+                    console.log(self.datalists);
                 }
             });
         })();

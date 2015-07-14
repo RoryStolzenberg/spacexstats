@@ -15,6 +15,6 @@ class Part extends Eloquent {
     }
 
     public function partFlights() {
-        return $this->hasMany('PartFlights');
+        return $this->hasMany('PartFlight');
     }
 }

@@ -96,7 +96,11 @@ class MissionsController extends BaseController {
                     'spacecraft' => array('Dragon 1', 'Dragon 2'),
                     'spacecraftReturnMethods' => array('Splashdown', 'Landing', 'Destroyed'),
                     'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
-                    'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac')
+                    'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
+
+                    'parts' => Part::with('partFlights')->whereDoesntHave('partFlights', function($q) {
+                        $q->where('landed', false);
+                    })->get()->toArray()
                 ));
 
             }

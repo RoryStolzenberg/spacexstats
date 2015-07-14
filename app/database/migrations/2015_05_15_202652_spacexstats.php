@@ -221,13 +221,13 @@ class Spacexstats extends Migration {
             $table->integer('mission_id')->unsigned();
             $table->integer('part_id')->unsigned();
 
+            $table->enum('type', array('Booster', 'First Stage', 'Upper Stage'));
+
             // First stage & booster stuff
             $table->boolean('firststage_landing_legs')->nullable();
             $table->boolean('firststage_grid_fins')->nullable();
             $table->enum('firststage_engine', array('Merlin 1A', 'Merlin 1C', 'Merlin 1D', 'Merlin 1D Fullthrust'))->nullable();
             $table->integer('landing_site_id')->nullable()->unsigned();
-            $table->boolean('firststage_landed')->nullable();
-            $table->string('firststage_outcome', Varchar::compact)->nullable();
             $table->tinyInteger('firststage_engine_failures')->unsigned()->nullable();
             $table->tinyInteger('firststage_meco')->unsigned()->nullable();
             $table->decimal('firststage_landing_coords_lat', 6, 4)->nullable();
@@ -235,13 +235,15 @@ class Spacexstats extends Migration {
             $table->enum('baseplate_color', array('White', 'Black'))->nullable();
 
             // Second stage stuff
-            $table->string('upperstage_note', Varchar::compact)->nullable();
             $table->enum('upperstage_engine', array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'))->nullable();
             $table->smallInteger('upperstage_seco')->unsigned()->nullable();
             $table->enum('upperstage_status', array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'))->nullable();
             $table->date('upperstage_decay_date')->nullable();
             $table->smallInteger('upperstage_norad_id')->unsigned()->nullable();
             $table->char('upperstage_intl_designator', 9)->nullable();
+
+            $table->boolean('landed')->nullable();
+            $table->string('note', Varchar::compact)->nullable();
 
             $table->timestamps();
         });

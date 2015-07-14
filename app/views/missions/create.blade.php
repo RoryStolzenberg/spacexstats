@@ -68,17 +68,17 @@
                     <input type="text" data-bind="value: summary"/>
                 </fieldset>
 
-                <fieldset data-bind="">
+                <fieldset data-bind="with: $root.partSelection">
                     <legend>Parts</legend>
-                    <button type="button" data-bind="click: $root.addPart">Add A Part</button>
-                    <div class="add-parts">
-                        <ul>
-                            <li>Reuse A Part...</li>
-                            <li>New Part...</li>
-                        </ul>
+                    <button type="button" data-bind="click: addPart">Add A Part</button>
+                    <div class="add-parts" data-bind="visible: addPartState() == 'AddPart'">
+                        <div data-bind="click: addBooster">Add a Booster</div>
+                        <div data-bind="click: addFirstStage">Add a First Stage</div>
+                        <div data-bind="click: addUpperStage">Add an Upper Stage</div>
+
+                        <select data-bind="value: selectedPart, options: filteredAvailableParts, optionsValue: part_id, optionsText: name, optionsCaption: 'New...'"></select>
                     </div>
                 </fieldset>
-
                 <fieldset data-bind="">
                     <legend>Spacecraft</legend>
                 </fieldset>
