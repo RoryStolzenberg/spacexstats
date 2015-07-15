@@ -11,7 +11,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             spacecraft: ko.observableArray([]),
             spacecraftReturnMethods: ko.observableArray([]),
             firstStageEngines: ko.observableArray([]),
-            upperStageEngines: ko.observableArray([])
+            upperStageEngines: ko.observableArray([]),
+            parts: ko.observableArray([])
         };
 
         self.mission = ko.observable(new Mission());
@@ -91,9 +92,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.contracted_by = ko.observable();
         }
 
-        function Part() {
 
-        }
 
         function Spacecraft() {
             var s = this;
@@ -114,29 +113,68 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.link = ko.observable();
         }
 
+        function Part(part) {
+            koMapping.fromJS(part, {
+                include: ['part_id', 'name', 'type', 'part_flights']
+            }, this);
+            var p = this;
+
+            this.part_id = ko.observable();
+            this.name = ko.observable();
+            this.type = ko.observable();
+
+            this.part_flights = ko.observableArray([]);
+        }
+
+        function PartFlight(partFlight) {
+            koMapping.fromJS(partFlight, {
+                include: ['part_id', 'name', 'type', 'part_flights']
+            }, this);
+            var pf = this;
+
+            this.part_flight_id = ko.observable();
+            this.firststage_landing_legs = ko.observable();
+            this.firststage_grid_fins = ko.observable();
+            this.firststage_engine = ko.observable();
+            this.landing_site_id = ko.observable();
+            this.firststage_engine_failures = ko.observable();
+            this.firststage_meco = ko.observable();
+            this.firststage_landing_coords_lat = ko.observable();
+            this.firststage_landing_coords_long = ko.observable();
+            this.baseplate_color = ko.observable();
+            this.upperstage_engine = ko.observable();
+            this.upperstage_seco = ko.observable();
+            this.upperstage_status = ko.observable();
+            this.upperstage_decay_date = ko.observable();
+            this.upperstage_norad_id = ko.observable();
+            this.upperstage_intl_designator = ko.observable();
+            this.landed = ko.observable();
+            this.note = ko.observable();
+            this.part_id = ko.observable();
+        }
+
         // PARTS STUFF
         self.partSelection = {
             selectedPart: ko.observable(),
             selectedPartType: ko.observable(),
-            availableParts: ko.observableArray([]),
             partsFilter: ko.observable(),
-            filteredAvailableParts: ko.computed({ read: function() {
-                return self.partSelection.availableParts().filter(function(part) {
-                    return part.type == self.partSelection.partsFilter();
+            addThisPart: function() {
+                console.log(self.partSelection.selectedPart());
+            },
+            filteredParts: ko.computed({ read: function() {
+                console.log(self.dataLists.parts());
+                return self.dataLists.parts().filter(function(part) {
+                    return part.type() == self.partSelection.partsFilter();
                 });
             }, deferEvaluation: true }),
-            addPartState: ko.observable(null),
-            addPart: function() {
-                self.partSelection.addPartState('AddPart');
-            },
             addBooster: function() {
-                self.partsFilter('Booster');
+                self.partSelection.partsFilter('Booster');
             },
             addFirstStage: function() {
-                self.partsFilter('First Stage');
+                self.partSelection.partsFilter('First Stage');
             },
             addUpperStage: function() {
-                self.partsFilter('Upper Stage');
+                self.partSelection.partsFilter('Upper Stage');
             }
         };
 
@@ -148,7 +186,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 success: function(lists) {
                     // Map the data lists
                     koMapping.fromJS(lists, {}, self.dataLists);
-                    console.log(self.datalists);
+                    console.log(self.dataLists);
                 }
             });
         })();
