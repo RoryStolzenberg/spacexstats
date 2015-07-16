@@ -211,7 +211,7 @@ class Spacexstats extends Migration {
         Schema::create('parts', function(Blueprint $table) {
             $table->increments('part_id');
             $table->string('name', Varchar::small);
-            $table->enum('type', array('Upper Stage', 'First Stage', 'First Stage Booster'));
+            $table->enum('type', array('Upper Stage', 'First Stage', 'Booster'));
             $table->timestamps();
         });
 
@@ -220,8 +220,6 @@ class Spacexstats extends Migration {
             $table->increments('part_flight_id');
             $table->integer('mission_id')->unsigned();
             $table->integer('part_id')->unsigned();
-
-            $table->enum('type', array('Booster', 'First Stage', 'Upper Stage'));
 
             // First stage & booster stuff
             $table->boolean('firststage_landing_legs')->nullable();

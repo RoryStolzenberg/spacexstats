@@ -13,22 +13,56 @@
         });
     </script>
 
+    <script type="text/html" id="part-template">
+        <div>
+            <!-- ko if: type() == 'Booster' || type() == 'First Stage' -->
+                <h3 data-bind="text: heading"></h3>
+
+                <label>Landing Legs?</label>
+                <input type="checkbox" data-bind="checked: firststage_landing_legs" />
+
+                <label>Grid Fins?</label>
+                <input type="checkbox" data-bind="checked: firststage_grid_fins" />
+
+                <label>Engine</label>
+                <select data-bind="value: firststage_engine, options: $root.dataLists.firstStageEngines"></select>
+
+                <label>Engine Failures</label>
+                <input type="text" data-bind="text: firststage_engine_failures" />
+
+                <label>MECO time</label>
+                <input type="text" data-bind="text: firststage_meco" />
+
+                <label>Landing Coords (lat)</label>
+                <input type="text" data-bind="text: firststage_landing_coords_lat" />
+
+                <label>Landing Coords (lng)</label>
+                <input type="text" data-bind="text: firststage_landing_coords_lng" />
+
+                <label>Baseplate Color</label>
+                <input type="text" data-bind="text: baseplate_color" />
+            <!-- /ko -->
+            <!-- ko if: type() == 'Upper Stage' -->
+            <!-- /ko -->
+        </div>
+    </script>
+
     <script type="text/html" id="payload-template">
         <div>
             <label>Payload Name</label>
-            <input type="text" data-bind="name" />
+            <input type="text" data-bind="text: name" />
 
             <label>Operator</label>
-            <input type="text" data-bind="operator" />
+            <input type="text" data-bind="text: operator" />
 
             <label>Mass</label>
-            <input type="text" data-bind="mass" />
+            <input type="text" data-bind="text: mass" />
 
             <label>Payload Name</label>
-            <input type="checkbox" data-bind="primary" />
+            <input type="checkbox" data-bind="text: primary" />
 
             <label>Gunter's Space Page Link</label>
-            <input type="text" data-bind="link" />
+            <input type="text" data-bind="text: link" />
 
             <button data-bind="click: $root.removePayload">Remove Payload</button>
         </div>
@@ -39,8 +73,7 @@
     <div class="content-wrapper">
         <h1>Create A Mission</h1>
         <main>
-            <form data-bind="with: mission">
-                {{ Form::token() }}
+            <!--<form data-bind="with: mission">
 
                 <fieldset>
                     <legend>Mission</legend>
@@ -78,20 +111,12 @@
                         <select data-bind="value: selectedPart, options: filteredParts, optionsText: 'name', optionsCaption: 'New...'"></select>
                         <button data-bind="click: addThisPart">Add Part</button>
                     </div>
-                </fieldset>
-                <fieldset data-bind="">
-                    <legend>Spacecraft</legend>
-                </fieldset>
 
-                <fieldset data-bind="">
-                    <legend>Payloads</legend>
-                    <button type="button" data-bind="click: $root.addPayload">Add A Payload</button>
-                    <!-- ko template: { name: 'payload-template', foreach: payloads, as: 'payload' } -->
+                    <!-- ko template: { name: 'part-template', foreach: $root.mission().parts, as: 'part' } -->
                     <!-- /ko -->
                 </fieldset>
-
                 <input type="submit" data-bind="click: $root.createMission" />
-            </form>
+            </form>-->
 
         </main>
     </div>

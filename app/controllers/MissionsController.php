@@ -98,7 +98,7 @@ class MissionsController extends BaseController {
                     'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
                     'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
 
-                    'parts' => Part::with('partFlights')->whereDoesntHave('partFlights', function($q) {
+                    'parts' => Part::whereDoesntHave('partFlights', function($q) {
                         $q->where('landed', false);
                     })->get()->toArray()
                 ));
