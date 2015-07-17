@@ -15,7 +15,7 @@
 
     <script type="text/html" id="part-template">
         <div>
-            <!-- ko if: type() == 'Booster' || type() == 'First Stage' -->
+            <!-- ko if: part.type() == 'Booster' || part.type() == 'First Stage' -->
                 <h3 data-bind="text: heading"></h3>
 
                 <label>Landing Legs?</label>
@@ -42,7 +42,7 @@
                 <label>Baseplate Color</label>
                 <input type="text" data-bind="text: baseplate_color" />
             <!-- /ko -->
-            <!-- ko if: type() == 'Upper Stage' -->
+            <!-- ko if: part.type() == 'Upper Stage' -->
             <!-- /ko -->
         </div>
     </script>
@@ -73,7 +73,7 @@
     <div class="content-wrapper">
         <h1>Create A Mission</h1>
         <main>
-            <!--<form data-bind="with: mission">
+            <form data-bind="with: mission">
 
                 <fieldset>
                     <legend>Mission</legend>
@@ -104,19 +104,19 @@
                 <fieldset data-bind="with: $root.partSelection">
                     <legend>Parts</legend>
                     <div class="add-parts">
-                        <div data-bind="click: addBooster">Add a Booster</div>
-                        <div data-bind="click: addFirstStage">Add a First Stage</div>
-                        <div data-bind="click: addUpperStage">Add an Upper Stage</div>
+                        <div data-bind="click: filterByBoosters">Add a Booster</div>
+                        <div data-bind="click: filterByFirstStages">Add a First Stage</div>
+                        <div data-bind="click: filterByUpperStages">Add an Upper Stage</div>
 
                         <select data-bind="value: selectedPart, options: filteredParts, optionsText: 'name', optionsCaption: 'New...'"></select>
-                        <button data-bind="click: addThisPart">Add Part</button>
+                        <button data-bind="click: addPart">Add Part</button>
                     </div>
 
-                    <!-- ko template: { name: 'part-template', foreach: $root.mission().parts, as: 'part' } -->
+                    <!-- ko template: { name: 'part-template', foreach: $root.mission.partFlights, as: 'partFlight' } -->
                     <!-- /ko -->
                 </fieldset>
-                <input type="submit" data-bind="click: $root.createMission" />
-            </form>-->
+                <input type="submit" data-bind="click: $root.run" />
+            </form>
 
         </main>
     </div>
