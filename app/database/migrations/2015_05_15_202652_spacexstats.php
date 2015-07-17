@@ -307,7 +307,7 @@ class Spacexstats extends Migration {
         Schema::create('spacecraft', function(Blueprint $table) {
             $table->increments('spacecraft_id');
             $table->enum('type', array('Dragon 1', 'Dragon 2'));
-            $table->string('spacecraft_name', Varchar::small);
+            $table->string('name', Varchar::small);
         });
 
         // Pivot table
@@ -317,7 +317,7 @@ class Spacexstats extends Migration {
             $table->integer('spacecraft_id')->unsigned();
             $table->string('flight_name', Varchar::small);
             $table->datetime('end_of_mission')->nullable();
-            $table->enum('return_method', array('Splashdown', 'Landing', 'Destroyed'))->nullable();
+            $table->enum('return_method', array('Splashdown', 'Landing'))->nullable();
             $table->smallInteger('upmass')->unsigned()->nullable();
             $table->smallInteger('downmass')->unsigned()->nullable();
             $table->datetime('iss_berth')->nullable();

@@ -2,81 +2,137 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var CreateMissionViewModel = function () {
         var self = this;
 
-        // Data lists
-        self.dataLists = {};
-
-        var data = {
-            'mission_id': '1',
-            'name': '5',
-            'payloads': [
-                {
-                    'name': 'heres a payload'
-                },
-                {
-                    'name': 'moar struts'
-                }
-            ],
-            'spacecraftFlight': [
-                {
-                    'title': 'CRS-7',
-                    'astronautFlights': [
-                        {
-                            'astronaut': {
-                                'person': 'Gustavo'
-                            }
-                        }
-                    ]
-                }
-            ]
+        self.run = function() {
+            console.log(koMapping.toJS(self.mission));
         };
 
-        self.mission = koMapping.fromJS(data, {
-            include: [],
-            'partFlights': {
-                create: function(options) {
-                    return new PartFlight(options.data);
+        // Data lists
+        self.dataLists = {
+            destinations: ko.observableArray(),
+            missionTypes: ko.observableArray(),
+            launchSites: ko.observableArray(),
+            landingSites: ko.observableArray(),
+            vehicles: ko.observableArray(),
+            spacecraft: ko.observableArray(),
+            firststageEngines: ko.observableArray(),
+            upperstageEngines: ko.observableArray(),
+            parts: ko.observableArray()
+        };
+
+        self.mission = {};
+
+        function Mission(mission) {
+            koMapping.fromJS(mission, {
+                include: ['mission_id', 'mission_type_id', 'launch_order_id', 'launch_specificity',
+                        'name', 'slug', 'contractor', 'vehicle_id', 'destination_id', 'launch_site_id',
+                        'summary', 'article', 'status', 'outcome', 'fairings_recovered', 'launch_video',
+                        'mission_patch', 'press_kit', 'cargo_manifest', 'prelaunch_press_conference',
+                        'postlaunch_press_conference', 'reddit_discussion', 'featured_image'],
+                'partFlights': {
+                    create: function(options) {
+                        return new PartFlight(options.data);
+                    }
+                },
+                'spacecraftFlight': {
+                    create: function(options) {
+                        return new SpacecraftFlight(options.data);
+                    }
+                },
+                'payloads': {
+                    create: function(options) {
+                        return new Payload(options.data);
+                    }
                 }
-            },
-            'spacecraftFlight': {
-                create: function(options) {
-                    return new SpacecraftFlight(options.data);
-                }
-            },
-            'payloads': {
-                create: function(options) {
-                    return new Payload(options.data);
-                }
-            }
-        });
+            }, this);
+
+            this.mission_id                     = ko.observable(mission.mission_id);
+            this.mission_type_id                = ko.observable(mission.mission_type_id);
+            this.launch_order_id                = ko.observable(mission.launch_order_id);
+            this.launch_specificity             = ko.observable(mission.launch_specificity);
+            this.name                           = ko.observable(mission.name);
+            this.slug                           = ko.observable(mission.slug);
+            this.contractor                     = ko.observable(mission.contractor);
+            this.vehicle_id                     = ko.observable(mission.vehicle_id);
+            this.destination_id                 = ko.observable(mission.destination_id);
+            this.launch_site_id                 = ko.observable(mission.launch_site_id);
+            this.summary                        = ko.observable(mission.summary);
+            this.article                        = ko.observable(mission.article);
+            this.status                         = ko.observable(mission.status);
+            this.outcome                        = ko.observable(mission.outcome);
+            this.fairings_recovered             = ko.observable(mission.fairings_recovered);
+            this.launch_video                   = ko.observable(mission.launch_video);
+            this.mission_patch                  = ko.observable(mission.mission_patch);
+            this.press_kit                      = ko.observable(mission.press_kit);
+            this.cargo_manifest                 = ko.observable(mission.cargo_manifest);
+            this.prelaunch_press_conference     = ko.observable(mission.prelaunch_press_conference);
+            this.postlaunch_press_conference    = ko.observable(mission.postlaunch_press_conference);
+            this.reddit_discussion              = ko.observable(mission.reddit_discussion);
+            this.featured_image                 = ko.observable(mission.featured_image);
+        };
 
         function SpacecraftFlight(spacecraftFlight) {
             koMapping.fromJS(spacecraftFlight, {
+                include: ['spacecraft_flight_id','flight_name','end_of_mission','return_method','upmass','downmass','iss_berth','iss_unberth'],
+                'spacecraft': {
+                    create: function(options) {
+                        return new Spacecraft(options.data);
+                    }
+                },
                 'astronautFlights': {
                     create: function(options) {
                         return new AstronautFlight(options.data);
                     }
                 }
             }, this);
+
+            this.spacecraft_flight_id   = ko.observable(spacecraftFlight.spacecraft_flight_id);
+            this.flight_name            = ko.observable(spacecraftFlight.flight_name);
+            this.end_of_mission         = ko.observable(spacecraftFlight.end_of_mission);
+            this.return_method          = ko.observable(spacecraftFlight.return_method);
+            this.upmass                 = ko.observable(spacecraftFlight.upmass);
+            this.downmass               = ko.observable(spacecraftFlight.downmass);
+            this.iss_berth              = ko.observable(spacecraftFlight.iss_berth);
+            this.iss_unberth            = ko.observable(spacecraftFlight.iss_unberth);
+        }
+
+        function Spacecraft(spacecraft) {
+            koMapping.fromJS(spacecraft, {
+                include: ['spacecraft_id', 'type', 'name']
+            }, this);
+
+            this.spacecraft_id  = ko.observable(spacecraft.spacecraft_id);
+            this.type           = ko.observable(spacecraft.type);
+            this.name           = ko.observable(spacecraft.name);
         }
 
         function AstronautFlight(astronautFlight) {
             koMapping.fromJS(astronautFlight, {
+                include: ['astronaut_flight_id'],
                 'astronaut': {
                     create: function(options) {
                         return new Astronaut(options.data);
                     }
                 }
             }, this);
+
+            this.astronaut_flight_id    = ko.observable(astronautFlight.astronaut_flight_id);
         }
 
         function Astronaut(astronaut) {
             koMapping.fromJS(astronaut, {
-                include: ['some_bullshit']
+                include: ['astronaut_id', 'first_name', 'last_name', 'nationality', 'date_of_birth', 'contracted_by']
             }, this);
 
-            this.some_bullshit = ko.computed(function() {
-                return '77';
-            });
+            this.astronaut_id   = ko.observable(astronaut.astronaut_id);
+            this.first_name     = ko.observable(astronaut.first_name);
+            this.last_name      = ko.observable(astronaut.last_name);
+            this.nationality    = ko.observable(astronaut.nationality);
+            this.date_of_birth  = ko.observable(astronaut.date_of_birth);
+            this.contracted_by  = ko.observable(astronaut.contracted_by);
+
+            this.full_name = ko.computed(function() {
+                return this.first_name() + " " + this.last_name();
+            }, this);
         }
 
         function Payload(payload) {
@@ -96,45 +152,77 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             }, this);
         }
 
-        console.log(koMapping.toJS(self.mission));
+        function PartFlight(partFlight) {
+            koMapping.fromJS(partFlight, {
+                include: ['part_flight_id', 'firststage_landing_legs', 'firststage_grid_fins',
+                    'firststage_engine', 'landing_site_id', 'firststage_engine_failures',
+                    'firststage_meco', 'firststage_landing_coords_lat', 'firststage_landing_coords_lng',
+                    'baseplate_color', 'upperstage_engine', 'upperstage_seco', 'upperstage_status',
+                    'upperstage_decay_date', 'upperstage_norad_id', 'upperstage_intl_designator',
+                    'landed', 'note'],
+                'part': {
+                    create: function(options) {
+                        return new Part(options.data);
+                    }
+                }
+            }, this);
 
-        self.mission.payloads.push(new Payload({ name: 'yolo'}));
+            this.part_flight_id                 = ko.observable(partFlight.part_flight_id);
+            this.firststage_landing_legs        = ko.observable(partFlight.firststage_landing_legs);
+            this.firststage_grid_fins           = ko.observable(partFlight.firststage_grid_fins);
+            this.firststage_engine              = ko.observable(partFlight.firststage_engine);
+            this.landing_site_id                = ko.observable(partFlight.landing_site_id);
+            this.firststage_engine_failures     = ko.observable(partFlight.firststage_engine_failures);
+            this.firststage_meco                = ko.observable(partFlight.firststage_meco);
+            this.firststage_landing_coords_lat  = ko.observable(partFlight.firststage_landing_coords_lat);
+            this.firststage_landing_coords_lng  = ko.observable(partFlight.firststage_landing_coords_lng);
+            this.baseplate_color                = ko.observable(partFlight.baseplate_color);
+            this.upperstage_engine              = ko.observable(partFlight.upperstage_engine);
+            this.upperstage_seco                = ko.observable(partFlight.upperstage_seco);
+            this.upperstage_status              = ko.observable(partFlight.upperstage_status);
+            this.upperstage_decay_date          = ko.observable(partFlight.upperstage_decay_date);
+            this.upperstage_norad_id            = ko.observable(partFlight.upperstage_norad_id);
+            this.upperstage_intl_designator     = ko.observable(partFlight.upperstage_intl_designator);
+            this.landed                         = ko.observable(partFlight.landed);
+            this.note                           = ko.observable(partFlight.note);
 
-        console.log(koMapping.toJS(self.mission));
+            this.heading    = ko.computed(function() {
+                return this.part.type() + " (" + this.part.name() + ")";
+            }, this);
+        }
 
+        function Part(part) {
+            koMapping.fromJS(part, {
+                include: ['part_id', 'name', 'type']
+            }, this);
+
+            this.part_id    = ko.observable(part.part_id);
+            this.name       = ko.observable(part.name);
+            this.type       = ko.observable(part.type);
+        }
 
         // PARTS STUFF
-        /*self.partSelection = {
+        self.partSelection = {
             selectedPart: ko.observable(),
             selectedPartType: ko.observable(),
             partsFilter: ko.observable(),
-            addThisPart: function() {
-                if (typeof self.partSelection.selectedPart() === 'undefined') {
-                    self.mission().parts.push(new Part({}));
-                } else {
-                    self.mission().parts.push(koMapping.fromJS(self.partSelection.selectedPart, {
-                        create: function(options) {
-                            console.log('yolo');
-                            return new Part(options.data);
-                        }
-                    }));
-                }
+            addPart: function() {
             },
             filteredParts: ko.computed({ read: function() {
                 return self.dataLists.parts().filter(function(part) {
                     return part.type() == self.partSelection.partsFilter();
                 });
             }, deferEvaluation: true }),
-            addBooster: function() {
+            filterByBoosters: function() {
                 self.partSelection.partsFilter('Booster');
             },
-            addFirstStage: function() {
+            filterByFirstStages: function() {
                 self.partSelection.partsFilter('First Stage');
             },
-            addUpperStage: function() {
+            filterByUpperStages: function() {
                 self.partSelection.partsFilter('Upper Stage');
             }
-        };*/
+        };
 
 
         self.init = (function() {
@@ -144,9 +232,49 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 success: function(lists) {
                     // Map the data lists
                     koMapping.fromJS(lists, {}, self.dataLists);
+                    console.log(self.dataLists);
                 }
             });
+
+            var data = {
+                'mission_id': '1',
+                'name': '5',
+                'mission_type_id': 7,
+                'payloads': [
+                    {
+                        'name': 'heres a payload'
+                    },
+                    {
+                        'name': 'moar struts'
+                    }
+                ],
+                'spacecraftFlight': [
+                    {
+                        'title': 'CRS-7',
+                        'astronautFlights': [
+                            {
+                                'astronaut': {
+                                    'person': 'Gustavo'
+                                }
+                            }
+                        ]
+                    }
+                ],
+                'partFlights': [
+                    {
+                        'part': {
+                                'part_id': 72,
+                                'name': "F9S1-001",
+                                'type': 'Booster'
+                        }
+                    }
+                ]
+            };
+
+            self.mission = new Mission(data);
         })();
+
+        console.log(koMapping.toJS(self.mission));
     };
 
     return CreateMissionViewModel;
