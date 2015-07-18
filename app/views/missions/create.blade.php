@@ -57,7 +57,7 @@
                 <input type="text" data-bind="text: upperstage_seco"/>
 
                 <label>Decay Date</label>
-                <datetime params="value: upperstage_decay_date"></datetime>
+                <datetime params="value: upperstage_decay_date, type: 'date', startYear: 2006, nullable: true"></datetime>
 
                 <label>NORAD ID</label>
                 <input type="text" data-bind="text: upperstage_norad_id"/>

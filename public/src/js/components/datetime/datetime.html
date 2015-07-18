@@ -1,5 +1,8 @@
 <div class="datetime">
-    <select data-bind="value: day, options: days"></select>
-    <select data-bind="value: month, options: months, optionsValue: 'value', optionsText: 'name'"></select>
-    <select data-bind="value: year, options: years"></select>
+    <!-- ko if: nullable() -->
+    <input type="checkbox" data-bind="checked: isNull" />
+    <!-- /ko -->
+    <select data-bind="value: currentDay, options: days, optionsValue: 'value', optionsText: 'display', disable: isNull() == true"></select>
+    <select data-bind="value: currentMonth, options: months, optionsValue: 'value', optionsText: 'display', disable: isNull() == true"></select>
+    <select data-bind="value: currentYear, options: years, optionsValue: 'value', optionsText: 'display', disable: isNull() == true"></select>
 </div>
