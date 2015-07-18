@@ -1,3 +1,5 @@
-<div class="date-time">
-
+<div class="datetime">
+    <select data-bind="value: day, options: days"></select>
+    <select data-bind="value: month, options: months, optionsValue: 'value', optionsText: 'name'"></select>
+    <select data-bind="value: year, options: years"></select>
 </div>
