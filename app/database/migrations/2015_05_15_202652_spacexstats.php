@@ -28,7 +28,7 @@ class Spacexstats extends Migration {
             $table->enum('gender', array('Male', 'Female'));
             $table->boolean('deceased');
             $table->string('nationality', Varchar::small);
-            $table->date('date_of_birth');
+            $table->date('date_of_birth');  // Nonoptional values
             $table->string('contracted_by', Varchar::small);
         });
 
@@ -67,7 +67,7 @@ class Spacexstats extends Migration {
             $table->string('subject', Varchar::compact)->nullable();
             $table->string('body', Varchar::xlarge)->nullable();
             $table->enum('status', array('Held', 'Queued', 'Sent'));
-            $table->datetime('sent_at')->nullable();
+            $table->datetime('sent_at')->nullable(); // Nonoptional values
             $table->timestamps();
         });
 
@@ -94,7 +94,7 @@ class Spacexstats extends Migration {
             $table->integer('mission_type_id')->unsigned();
             $table->smallInteger('launch_order_id')->unsigned();
             $table->smallInteger('launch_specificity')->unsigned();
-            $table->datetime('launch_exact')->nullable();
+            $table->datetime('launch_exact')->nullable(); // Nonoptional Values
             $table->string('launch_approximate', Varchar::small)->nullable();
             $table->string('name', Varchar::small);
             $table->string('slug', Varchar::small);
@@ -171,11 +171,11 @@ class Spacexstats extends Migration {
             $table->string('summary', Varchar::large);
             $table->string('author', Varchar::small)->nullable();
             $table->string('attribution', Varchar::medium)->nullable();
-            $table->date('originated_at')->nullable();
+            $table->date('originated_at')->nullable(); // Optional day & month
 
             // Twitter-related properties
             $table->string('tweet_id', Varchar::small)->nullable();
-            $table->datetime('tweet_created_at')->nullable();
+            $table->datetime('tweet_created_at')->nullable(); // Optional second, minute, hour, day, month
             $table->string('tweet_user_screen_name', Varchar::small)->nullable();
             $table->string('tweet_user_name', Varchar::small)->nullable();
             $table->string('tweet_text', Varchar::compact)->nullable();
@@ -195,7 +195,7 @@ class Spacexstats extends Migration {
 
             $table->enum('status', array('New', 'Queued', 'Published', 'Deleted'));
             $table->enum('visibility', array('Default', 'Public', 'Hidden'));
-            $table->datetime('actioned_at')->nullable();
+            $table->datetime('actioned_at')->nullable(); // Nonoptional values
             $table->boolean('anonymous');
             $table->timestamps();
         });
@@ -238,7 +238,7 @@ class Spacexstats extends Migration {
             $table->enum('upperstage_engine', array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'))->nullable();
             $table->smallInteger('upperstage_seco')->unsigned()->nullable();
             $table->enum('upperstage_status', array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'))->nullable();
-            $table->date('upperstage_decay_date')->nullable();
+            $table->date('upperstage_decay_date')->nullable(); // Nonoptional Values
             $table->smallInteger('upperstage_norad_id')->unsigned()->nullable();
             $table->char('upperstage_intl_designator', 9)->nullable();
 
@@ -268,9 +268,9 @@ class Spacexstats extends Migration {
         Schema::create('prelaunch_events', function(Blueprint $table) {
             $table->increments('prelaunch_event_id');
             $table->integer('mission_id')->unsigned();
-            $table->enum('event', array('Wet Dress Rehearsal', 'Static Fire', 'Launch Change'));
-            $table->date('occurred_at');
-            $table->datetime('scheduled_launch_exact')->nullable();
+            $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Static Fire', 'Launch Change'));
+            $table->date('occurred_at'); // Nonoptional values
+            $table->datetime('scheduled_launch_exact')->nullable(); // Nonoptional values
             $table->string('scheduled_launch_approx', Varchar::small)->nullable();
             $table->string('summary', Varchar::small)->nullable();
         });
@@ -318,12 +318,12 @@ class Spacexstats extends Migration {
             $table->integer('mission_id')->unsigned();
             $table->integer('spacecraft_id')->unsigned();
             $table->string('flight_name', Varchar::small);
-            $table->datetime('end_of_mission')->nullable();
+            $table->datetime('end_of_mission')->nullable(); // Nonoptional Values
             $table->enum('return_method', array('Splashdown', 'Landing'))->nullable();
             $table->smallInteger('upmass')->unsigned()->nullable();
             $table->smallInteger('downmass')->unsigned()->nullable();
-            $table->datetime('iss_berth')->nullable();
-            $table->datetime('iss_unberth')->nullable();
+            $table->datetime('iss_berth')->nullable(); // Nonoptional Values
+            $table->datetime('iss_unberth')->nullable(); // Nonoptional Values
         });
 
         Schema::create('statistics', function(Blueprint $table) {
