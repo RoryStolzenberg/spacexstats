@@ -97,6 +97,7 @@ class MissionsController extends BaseController {
                     'spacecraftReturnMethods' => array('Splashdown', 'Landing', 'Destroyed'),
                     'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
                     'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
+                    'upperStageStatuses' => array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'),
 
                     'parts' => Part::whereDoesntHave('partFlights', function($q) {
                         $q->where('landed', false);

@@ -14,6 +14,6 @@ class PartFlight extends Eloquent {
     }
 
     public function part() {
-        return $this->belongsTo('Spacecraft');
+        return $this->belongsTo('Part');
     }
 }

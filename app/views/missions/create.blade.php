@@ -15,9 +15,12 @@
 
     <script type="text/html" id="part-template">
         <div>
-            <!-- ko if: part.type() == 'Booster' || part.type() == 'First Stage' -->
-                <h3 data-bind="text: heading"></h3>
+            <h3 data-bind="text: heading"></h3>
 
+            <label>Name</label>
+            <input type="text" data-bind="textInput: part.name"/>
+
+            <!-- ko if: part.type() == 'Booster' || part.type() == 'First Stage' -->
                 <label>Landing Legs?</label>
                 <input type="checkbox" data-bind="checked: firststage_landing_legs" />
 
@@ -42,8 +45,32 @@
                 <label>Baseplate Color</label>
                 <input type="text" data-bind="text: baseplate_color" />
             <!-- /ko -->
+
             <!-- ko if: part.type() == 'Upper Stage' -->
+                <label>Engine</label>
+                <select data-bind="value: upperstage_engine, options: $root.dataLists.upperStageEngines, optionsCaption: 'null'"></select>
+
+                <label>Status</label>
+                <select data-bind="value: upperstage_status, options: $root.dataLists.upperStageStatuses, optionsCaption: 'null'"></select>
+
+                <label>SECO time</label>
+                <input type="text" data-bind="text: upperstage_seco"/>
+
+                <label>Decay Date</label>
+                <datetime params="value: upperstage_decay_date"></datetime>
+
+                <label>NORAD ID</label>
+                <input type="text" data-bind="text: upperstage_norad_id"/>
+
+                <label>International Designator</label>
+                <input type="text" data-bind="text: upperstage_intl_designator"/>
             <!-- /ko -->
+
+            <label>Landed?</label>
+            <input type="checkbox" data-bind="checked: landed" />
+
+            <label>Notes</label>
+            <textarea data-bind="text: note"></textarea>
         </div>
     </script>
 

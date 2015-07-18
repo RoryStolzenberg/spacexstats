@@ -1,5 +1,8 @@
 define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var CreateMissionViewModel = function () {
+
+        ko.components.register('datetime', { require: 'components/datetime/datetime'});
+
         var self = this;
 
         self.run = function() {
@@ -186,7 +189,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.landed                         = ko.observable(partFlight.landed);
             this.note                           = ko.observable(partFlight.note);
 
-            this.heading    = ko.computed(function() {
+            this.heading = ko.computed(function() {
                 return this.part.type() + " (" + this.part.name() + ")";
             }, this);
         }
@@ -204,9 +207,22 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         // PARTS STUFF
         self.partSelection = {
             selectedPart: ko.observable(),
-            selectedPartType: ko.observable(),
             partsFilter: ko.observable(),
             addPart: function() {
+                if (typeof self.partSelection.selectedPart() === 'undefined') {
+                    var partFlight = {
+                        part: {
+                            type: self.partSelection.partsFilter(),
+                            name: ""
+                        }
+                    };
+                    self.mission.partFlights.push(new PartFlight(partFlight));
+                } else {
+                    var partFlight = {
+                        part: koMapping.toJS(self.partSelection.selectedPart)
+                    };
+                    self.mission.partFlights.push(new PartFlight(partFlight));
+                }
             },
             filteredParts: ko.computed({ read: function() {
                 return self.dataLists.parts().filter(function(part) {
@@ -223,6 +239,12 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 self.partSelection.partsFilter('Upper Stage');
             }
         };
+
+        self.payloadSelection = {
+            addPayload: function() {
+
+            }
+        }
 
 
         self.init = (function() {
