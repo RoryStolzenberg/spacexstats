@@ -111,6 +111,7 @@
             <label>End Of Mission</label>
 
             <label>Return Method</label>
+            <select data-bind="value: spacecraft.return_method, options: $root.dataLists.spacecraftReturnMethods"></select>
 
             <label>Upmass</label>
             <input type="text" data-bind="text: upmass"/>
@@ -122,13 +123,15 @@
 
             <label>ISS Unberth</label>
 
-            <fieldset data-bind="with: $root.astronautSelection">
+            <fieldset>
                 <label>Astronauts</label>
 
-                <select data-bind="value: selectedAstronaut, options: $root.dataLists.astronauts, optionsText: 'fullname', optionsCaption: 'New...'"></select>
+                <!-- ko with: $root.astronautSelection -->
+                <select data-bind="value: selectedAstronaut, options: $root.dataLists.astronauts, optionsText: 'fullName', optionsCaption: 'New...'"></select>
                 <button data-bind="click: addAstronaut">Add Astronaut</button>
+                <!-- /ko -->
 
-                <!-- ko template: { name: 'astronautFlight-template', foreach: $root.mission.spacecraftFlight.astronautFlights, as: 'astronautFlight' } -->
+                <!-- ko template: { name: 'astronaut-template', foreach: astronautFlights, as: 'astronautFlight' } -->
                 <!-- /ko -->
             </fieldset>
 
@@ -136,8 +139,24 @@
         </div>
     </script>
 
-    <script type="text/html">
+    <script type="text/html" id="astronaut-template">
+        <div>
+            <h3 data-bind="text: astronaut.full_name"></h3>
+            <label>First Name</label>
+            <input type="text" data-bind="textInput: astronaut.first_name" />
 
+            <label>Last Name</label>
+            <input type="text" data-bind="textInput: astronaut.last_name" />
+
+            <label>Gender</label>
+            <input type="radio" name="gender" value="Male" data-bind="checked: astronaut.gender" />Male
+            <input type="radio" name="gender" value="Female" data-bind="checked: astronaut.gender" />Female
+
+            <label>Deceased</label>
+            <input type="checkbox" data-bind="text: astronaut.deceased" />
+
+            <label>Date of Birth</label>
+        </div>
     </script>
 @stop
 

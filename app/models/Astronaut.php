@@ -5,7 +5,7 @@ class Astronaut extends Eloquent {
     public $timestamps = false;
 
     protected $hidden = [];
-    protected $appends = [];
+    protected $appends = ['fullName'];
     protected $fillable = [];
     protected $guarded = [];
 

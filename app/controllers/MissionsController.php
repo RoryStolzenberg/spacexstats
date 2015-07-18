@@ -94,7 +94,7 @@ class MissionsController extends BaseController {
 
                     'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
                     'spacecraftTypes' => array('Dragon 1', 'Dragon 2'),
-                    'spacecraftReturnMethods' => array('Splashdown', 'Landing', 'Destroyed'),
+                    'spacecraftReturnMethods' => array('Splashdown', 'Landing'),
                     'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
                     'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
                     'upperStageStatuses' => array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'),

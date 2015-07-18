@@ -19,7 +19,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             spacecraft: ko.observableArray(),
             firststageEngines: ko.observableArray(),
             upperstageEngines: ko.observableArray(),
-            parts: ko.observableArray()
+            parts: ko.observableArray(),
+            astronauts: ko.observableArray()
         };
 
         self.mission = {};
@@ -149,10 +150,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.mass       = ko.observable(payload.mass);
             this.primary    = ko.observable(payload.primary);
             this.link       = ko.observable(payload.link);
-
-            this.excessiveTitle = ko.computed(function() {
-                return this.name() + " yeah bitch";
-            }, this);
         }
 
         function PartFlight(partFlight) {
@@ -259,7 +256,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                     var spacecraftFlight = {
                         spacecraft: {
 
-                        }
+                        },
+                        astronautFlights: []
                     };
                     self.mission.spacecraftFlight.push(new SpacecraftFlight(spacecraftFlight));
                 }
@@ -271,7 +269,25 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         self.astronautSelection = {
             selectedAstronaut: ko.observable(),
+            filteredAstronauts: ko.computed(function() {
+
+            }),
             addAstronaut: function() {
+                console.log(self.mission.spacecraftFlight()[0]);
+                if (typeof self.astronautSelection.selectedAstronaut() !== 'undefined') {
+                    var astronautFlight = {
+                        astronaut: koMapping.toJS(self.astronautSelection.selectedAstronaut)
+                    };
+
+                    self.mission.spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
+                } else {
+                    var astronautFlight = {
+                        astronaut: {}
+                    };
+                    self.mission.spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
+                }
+
+
 
             },
             removeAstronaut: function() {
@@ -313,7 +329,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                         'astronautFlights': [
                             {
                                 'astronaut': {
-                                    'person': 'Gustavo'
+                                    'first_name': 'Gustavo'
                                 }
                             }
                         ]
