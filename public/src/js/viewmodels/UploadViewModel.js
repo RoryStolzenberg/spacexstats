@@ -1,5 +1,5 @@
 define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
-    var MissionControlUploadViewModel = function () {
+    var UploadViewModel = function () {
 
         ko.components.register('upload', {require: 'components/upload/upload'});
         ko.components.register('tweet', { require: 'components/tweet/tweet' });
@@ -238,5 +238,5 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
     };
 
-    return MissionControlUploadViewModel;
+    return UploadViewModel;
 });

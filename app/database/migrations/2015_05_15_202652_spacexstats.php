@@ -25,6 +25,8 @@ class Spacexstats extends Migration {
             $table->increments('astronaut_id');
             $table->string('first_name', Varchar::small);
             $table->string('last_name', Varchar::small);
+            $table->enum('gender', array('Male', 'Female'));
+            $table->boolean('deceased');
             $table->string('nationality', Varchar::small);
             $table->date('date_of_birth');
             $table->string('contracted_by', Varchar::small);

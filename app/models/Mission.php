@@ -42,6 +42,10 @@ class Mission extends Eloquent {
 		return $this->hasOne('SpacecraftFlight');
 	}
 
+    public function astronautFlights() {
+        return $this->hasManyThrough('AstronautFlight', 'SpacecraftFlight');
+    }
+
 	public function launchSite() {
 		return $this->belongsTo('Location', 'launch_site_id');
 	}

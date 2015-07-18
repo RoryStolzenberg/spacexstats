@@ -1,5 +1,5 @@
 define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
-    var CreateMissionViewModel = function () {
+    var MissionViewModel = function () {
 
         ko.components.register('datetime', { require: 'components/datetime/datetime'});
 
@@ -224,6 +224,9 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                     self.mission.partFlights.push(new PartFlight(partFlight));
                 }
             },
+            removePart: function(partFlight) {
+                self.mission.partFlights.remove(partFlight);
+            },
             filteredParts: ko.computed({ read: function() {
                 return self.dataLists.parts().filter(function(part) {
                     return part.type() == self.partSelection.partsFilter();
@@ -242,9 +245,39 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         self.payloadSelection = {
             addPayload: function() {
+                self.mission.payloads.push(new Payload({}));
+            },
+            removePayload: function(payload) {
+                self.mission.payloads.remove(payload);
+            }
+        };
+
+        self.spacecraftSelection = {
+            selectedSpacecraft: ko.observable(),
+            addSpacecraft: function() {
+                if (self.mission.spacecraftFlight().length == 0) {
+                    var spacecraftFlight = {
+                        spacecraft: {
+
+                        }
+                    };
+                    self.mission.spacecraftFlight.push(new SpacecraftFlight(spacecraftFlight));
+                }
+            },
+            removeSpacecraft: function(spacecraftFlight) {
+                self.mission.spacecraftFlight.remove(spacecraftFlight);
+            }
+        };
+
+        self.astronautSelection = {
+            selectedAstronaut: ko.observable(),
+            addAstronaut: function() {
+
+            },
+            removeAstronaut: function() {
 
             }
-        }
+        };
 
 
         self.init = (function() {
@@ -254,7 +287,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 success: function(lists) {
                     // Map the data lists
                     koMapping.fromJS(lists, {}, self.dataLists);
-                    console.log(self.dataLists);
                 }
             });
 
@@ -273,6 +305,11 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 'spacecraftFlight': [
                     {
                         'title': 'CRS-7',
+                        'spacecraft': {
+                            'type': 'Dragon 1',
+                            'name': 'Dragon C8'
+                        }
+                        ,
                         'astronautFlights': [
                             {
                                 'astronaut': {
@@ -295,9 +332,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
             self.mission = new Mission(data);
         })();
-
-        console.log(koMapping.toJS(self.mission));
     };
 
-    return CreateMissionViewModel;
+    return MissionViewModel;
 });

@@ -7,13 +7,13 @@
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
     <script>
         require(['common'], function() {
-            require(['knockout', 'viewmodels/CreateMissionViewModel'], function(ko, CreateMissionViewModel) {
-                ko.applyBindings(new CreateMissionViewModel());
+            require(['knockout', 'viewmodels/MissionViewModel'], function(ko, MissionViewModel) {
+                ko.applyBindings(new MissionViewModel());
             });
         });
     </script>
 
-    <script type="text/html" id="part-template">
+    <script type="text/html" id="partFlight-template">
         <div>
             <h3 data-bind="text: heading"></h3>
 
@@ -91,8 +91,53 @@
             <label>Gunter's Space Page Link</label>
             <input type="text" data-bind="text: link" />
 
-            <button data-bind="click: $root.removePayload">Remove Payload</button>
+            <button data-bind="click: $root.payloadSelection.removePayload">Remove This Payload</button>
         </div>
+    </script>
+
+    <script type="text/html" id="spacecraftFlight-template">
+        <div>
+            <h3 data-bind="text: spacecraft.name"></h3>
+
+            <label>Name</label>
+            <input type="text" data-bind="textInput: spacecraft.name"/>
+
+            <label>Type</label>
+            <select data-bind="value: spacecraft.type, options: $root.dataLists.spacecraftTypes"></select>
+
+            <label>Flight Name</label>
+            <input type="text" data-bind="text: iss_berth"/>
+
+            <label>End Of Mission</label>
+
+            <label>Return Method</label>
+
+            <label>Upmass</label>
+            <input type="text" data-bind="text: upmass"/>
+
+            <label>Downmass</label>
+            <input type="text" data-bind="text: downmass"/>
+
+            <label>ISS Berth</label>
+
+            <label>ISS Unberth</label>
+
+            <fieldset data-bind="with: $root.astronautSelection">
+                <label>Astronauts</label>
+
+                <select data-bind="value: selectedAstronaut, options: $root.dataLists.astronauts, optionsText: 'fullname', optionsCaption: 'New...'"></select>
+                <button data-bind="click: addAstronaut">Add Astronaut</button>
+
+                <!-- ko template: { name: 'astronautFlight-template', foreach: $root.mission.spacecraftFlight.astronautFlights, as: 'astronautFlight' } -->
+                <!-- /ko -->
+            </fieldset>
+
+            <button data-bind="click: $root.spacecraftSelection.removeSpacecraft">Remove Spacecraft</button>
+        </div>
+    </script>
+
+    <script type="text/html">
+
     </script>
 @stop
 
@@ -139,9 +184,26 @@
                         <button data-bind="click: addPart">Add Part</button>
                     </div>
 
-                    <!-- ko template: { name: 'part-template', foreach: $root.mission.partFlights, as: 'partFlight' } -->
+                    <!-- ko template: { name: 'partFlight-template', foreach: $root.mission.partFlights, as: 'partFlight' } -->
                     <!-- /ko -->
                 </fieldset>
+
+                <fieldset data-bind="with: $root.payloadSelection">
+                    <legend>Payloads</legend>
+                    <button data-bind="click: addPayload">Add Payload</button>
+
+                    <!-- ko template: { name: 'payload-template', foreach: $root.mission.payloads, as: 'payload' } -->
+                    <!-- /ko -->
+                </fieldset>
+
+                <fieldset data-bind="with: $root.spacecraftSelection">
+                    <legend>Spacecraft</legend>
+                    <button data-bind="click: addSpacecraft">Add Spacecraft</button>
+
+                    <!-- ko template: { name: 'spacecraftFlight-template', foreach: $root.mission.spacecraftFlight, as: 'spacecraftFlight' } -->
+                    <!-- /ko -->
+                </fieldset>
+
                 <input type="submit" data-bind="click: $root.run" />
             </form>
 

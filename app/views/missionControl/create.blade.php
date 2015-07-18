@@ -7,9 +7,9 @@
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
     <script>
         require(['common'], function() {
-            require(['knockout', 'viewmodels/MissionControlUploadViewModel'], function(ko, MissionControlUploadViewModel) {
+            require(['knockout', 'viewmodels/UploadViewModel'], function(ko, UploadViewModel) {
 
-                ko.applyBindings(new MissionControlUploadViewModel());
+                ko.applyBindings(new UploadViewModel());
             });
         });
     </script>

@@ -93,7 +93,7 @@ class MissionsController extends BaseController {
                     'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
 
                     'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
-                    'spacecraft' => array('Dragon 1', 'Dragon 2'),
+                    'spacecraftTypes' => array('Dragon 1', 'Dragon 2'),
                     'spacecraftReturnMethods' => array('Splashdown', 'Landing', 'Destroyed'),
                     'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
                     'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
@@ -101,7 +101,11 @@ class MissionsController extends BaseController {
 
                     'parts' => Part::whereDoesntHave('partFlights', function($q) {
                         $q->where('landed', false);
-                    })->get()->toArray()
+                    })->get()->toArray(),
+
+                    'spacecraft' => Spacecraft::all()->toArray(),
+
+                    'astronauts' => Astronaut::all()->toArray()
                 ));
 
             }
