@@ -7,7 +7,7 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
     * type:         (string) "date" | "datetime" Represents whether time selectable options should be displayed. Required.
     * startYear:    (integer) Represents the year to produce year options from. Optional (defaults to 1950).
     * nullable      (boolean) Represents whether the date can be nulled. Optional.
-    *
+    * isNull        (boolean) Represents whether the date is currently nulled. Optional, requires nullable.
     *
      */
     var DateTimeViewModel = function(params) {
@@ -34,8 +34,7 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
         self.years = [];
 
         self.nullable = ko.observable((typeof params.nullable !== 'undefined') && (params.nullable === true));
-        self.isNull = ko.observable(false
-        );
+        self.isNull = ko.observable((typeof params.isNull !== 'undefined') && (typeof params.nullable !== 'undefined') && (params.nullable === true));
         self.isNull.subscribe(function(newValue) {
             if (newValue == true) {
                 params.value(null);

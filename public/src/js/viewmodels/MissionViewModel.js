@@ -274,7 +274,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             }),
             addAstronaut: function() {
                 console.log(self.mission.spacecraftFlight()[0]);
-                if (typeof self.astronautSelection.selectedAstronaut() !== 'undefined') {
+                if (typeof self.astronautActions.selectedAstronaut() !== 'undefined') {
                     var astronautFlight = {
                         astronaut: koMapping.toJS(self.astronautActions.selectedAstronaut)
                     };

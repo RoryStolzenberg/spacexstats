@@ -57,7 +57,7 @@
                 <input type="text" data-bind="text: upperstage_seco"/>
 
                 <label>Decay Date</label>
-                <datetime params="value: upperstage_decay_date, type: 'date', startYear: 2006, nullable: true"></datetime>
+                <datetime params="value: upperstage_decay_date, type: 'date', startYear: 2006, nullable: true, isNull: true"></datetime>
 
                 <label>NORAD ID</label>
                 <input type="text" data-bind="text: upperstage_norad_id"/>
@@ -109,7 +109,7 @@
             <input type="text" data-bind="text: flight_name"/>
 
             <label>End Of Mission</label>
-            <datetime params="value: end_of_mission, type: 'datetime', startYear: 2006, nullable: true"></datetime>
+            <datetime params="value: end_of_mission, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
 
             <label>Return Method</label>
             <select data-bind="value: return_method, options: $root.dataLists.spacecraftReturnMethods"></select>
@@ -121,8 +121,10 @@
             <input type="text" data-bind="text: downmass"/>
 
             <label>ISS Berth</label>
+            <datetime params="value: iss_berth, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
 
             <label>ISS Unberth</label>
+            <datetime params="value: iss_unberth, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
 
             <fieldset>
                 <label>Astronauts</label>
@@ -157,10 +159,10 @@
             <input type="checkbox" data-bind="text: astronaut.deceased" />
 
             <label>Date of Birth</label>
-            <datetime params="value: date_of_birth, type: 'date'"></datetime>
+            <datetime params="value: astronaut.date_of_birth, type: 'date'"></datetime>
 
             <label>Nationality</label>
-            <input type="text" data-bind="text: nationality" />
+            <input type="text" data-bind="text: astronaut.nationality" />
 
             <button data-bind="click: $root.astronautActions.removeAstronaut">Remove Astronauut</button>
         </div>
