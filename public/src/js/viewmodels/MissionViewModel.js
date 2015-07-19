@@ -202,21 +202,21 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         }
 
         // PARTS STUFF
-        self.partSelection = {
+        self.partActions = {
             selectedPart: ko.observable(),
             partsFilter: ko.observable(),
             addPart: function() {
-                if (typeof self.partSelection.selectedPart() === 'undefined') {
+                if (typeof self.partActions.selectedPart() === 'undefined') {
                     var partFlight = {
                         part: {
-                            type: self.partSelection.partsFilter(),
+                            type: self.partActions.partsFilter(),
                             name: ""
                         }
                     };
                     self.mission.partFlights.push(new PartFlight(partFlight));
                 } else {
                     var partFlight = {
-                        part: koMapping.toJS(self.partSelection.selectedPart)
+                        part: koMapping.toJS(self.partActions.selectedPart)
                     };
                     self.mission.partFlights.push(new PartFlight(partFlight));
                 }
@@ -226,21 +226,21 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             },
             filteredParts: ko.computed({ read: function() {
                 return self.dataLists.parts().filter(function(part) {
-                    return part.type() == self.partSelection.partsFilter();
+                    return part.type() == self.partActions.partsFilter();
                 });
             }, deferEvaluation: true }),
             filterByBoosters: function() {
-                self.partSelection.partsFilter('Booster');
+                self.partActions.partsFilter('Booster');
             },
             filterByFirstStages: function() {
-                self.partSelection.partsFilter('First Stage');
+                self.partActions.partsFilter('First Stage');
             },
             filterByUpperStages: function() {
-                self.partSelection.partsFilter('Upper Stage');
+                self.partActions.partsFilter('Upper Stage');
             }
         };
 
-        self.payloadSelection = {
+        self.payloadActions = {
             addPayload: function() {
                 self.mission.payloads.push(new Payload({}));
             },
@@ -249,7 +249,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             }
         };
 
-        self.spacecraftSelection = {
+        self.spacecraftActions = {
             selectedSpacecraft: ko.observable(),
             addSpacecraft: function() {
                 if (self.mission.spacecraftFlight().length == 0) {
@@ -267,7 +267,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             }
         };
 
-        self.astronautSelection = {
+        self.astronautActions = {
             selectedAstronaut: ko.observable(),
             filteredAstronauts: ko.computed(function() {
 
@@ -276,7 +276,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 console.log(self.mission.spacecraftFlight()[0]);
                 if (typeof self.astronautSelection.selectedAstronaut() !== 'undefined') {
                     var astronautFlight = {
-                        astronaut: koMapping.toJS(self.astronautSelection.selectedAstronaut)
+                        astronaut: koMapping.toJS(self.astronautActions.selectedAstronaut)
                     };
 
                     self.mission.spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
@@ -286,12 +286,9 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                     };
                     self.mission.spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
                 }
-
-
-
             },
-            removeAstronaut: function() {
-
+            removeAstronaut: function(astronautFlight) {
+                self.mission.spacecraftFlight()[0].astronautFlights.remove(astronautFlight);
             }
         };
 

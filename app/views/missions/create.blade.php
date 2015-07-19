@@ -91,7 +91,7 @@
             <label>Gunter's Space Page Link</label>
             <input type="text" data-bind="text: link" />
 
-            <button data-bind="click: $root.payloadSelection.removePayload">Remove This Payload</button>
+            <button data-bind="click: $root.payloadActions.removePayload">Remove This Payload</button>
         </div>
     </script>
 
@@ -127,7 +127,7 @@
             <fieldset>
                 <label>Astronauts</label>
 
-                <!-- ko with: $root.astronautSelection -->
+                <!-- ko with: $root.astronautActions -->
                 <select data-bind="value: selectedAstronaut, options: $root.dataLists.astronauts, optionsText: 'fullName', optionsCaption: 'New...'"></select>
                 <button data-bind="click: addAstronaut">Add Astronaut</button>
                 <!-- /ko -->
@@ -136,7 +136,7 @@
                 <!-- /ko -->
             </fieldset>
 
-            <button data-bind="click: $root.spacecraftSelection.removeSpacecraft">Remove Spacecraft</button>
+            <button data-bind="click: $root.spacecraftActions.removeSpacecraft">Remove Spacecraft</button>
         </div>
     </script>
 
@@ -157,6 +157,12 @@
             <input type="checkbox" data-bind="text: astronaut.deceased" />
 
             <label>Date of Birth</label>
+            <datetime params="value: date_of_birth, type: 'date'"></datetime>
+
+            <label>Nationality</label>
+            <input type="text" data-bind="text: nationality" />
+
+            <button data-bind="click: $root.astronautActions.removeAstronaut">Remove Astronauut</button>
         </div>
     </script>
 @stop
@@ -193,7 +199,7 @@
                     <input type="text" data-bind="value: summary"/>
                 </fieldset>
 
-                <fieldset data-bind="with: $root.partSelection">
+                <fieldset data-bind="with: $root.partActions">
                     <legend>Parts</legend>
                     <div class="add-parts">
                         <div data-bind="click: filterByBoosters">Add a Booster</div>
@@ -208,7 +214,7 @@
                     <!-- /ko -->
                 </fieldset>
 
-                <fieldset data-bind="with: $root.payloadSelection">
+                <fieldset data-bind="with: $root.payloadActions">
                     <legend>Payloads</legend>
                     <button data-bind="click: addPayload">Add Payload</button>
 
@@ -216,7 +222,7 @@
                     <!-- /ko -->
                 </fieldset>
 
-                <fieldset data-bind="with: $root.spacecraftSelection">
+                <fieldset data-bind="with: $root.spacecraftActions">
                     <legend>Spacecraft</legend>
                     <button data-bind="click: addSpacecraft">Add Spacecraft</button>
 
