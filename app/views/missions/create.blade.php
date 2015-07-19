@@ -106,12 +106,13 @@
             <select data-bind="value: spacecraft.type, options: $root.dataLists.spacecraftTypes"></select>
 
             <label>Flight Name</label>
-            <input type="text" data-bind="text: iss_berth"/>
+            <input type="text" data-bind="text: flight_name"/>
 
             <label>End Of Mission</label>
+            <datetime params="value: end_of_mission, type: 'datetime', startYear: 2006, nullable: true"></datetime>
 
             <label>Return Method</label>
-            <select data-bind="value: spacecraft.return_method, options: $root.dataLists.spacecraftReturnMethods"></select>
+            <select data-bind="value: return_method, options: $root.dataLists.spacecraftReturnMethods"></select>
 
             <label>Upmass</label>
             <input type="text" data-bind="text: upmass"/>

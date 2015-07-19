@@ -13,7 +13,7 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
     var DateTimeViewModel = function(params) {
         var self = this;
 
-        self.isValueNull = ko.observable(ko.unwrap(params.value) === null);
+        self.type = ko.observable(params.type);
 
         self.days = [];
         self.months = [
@@ -40,61 +40,86 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
             if (newValue == true) {
                 params.value(null);
             }
-            console.log(ko.unwrap(params.value));
         });
 
+        // Current second computed
+        self.currentSecond = ko.computed({ read: function() {
+            return (params.value() === null) ? '00' : params.value().substr(17,2);
+
+        }, write: function(newValue) {
+            params.value(params.value() === null ? new Date().getFullYear() + '00-00 00:00:' + ("0" + newValue).slice(-2) : params.value().substr(0, 17) + ("0" + newValue).slice(-2));
+            console.log(params.value());
+
+        }, deferEvaluation: true});
+
+        // Current minute computed
+        self.currentMinute = ko.computed({ read: function() {
+            return (params.value() === null) ? '00' : params.value().substr(14,2);
+
+        }, write: function(newValue) {
+            params.value(params.value() === null ? new Date().getFullYear() + '00-00 00:' + ("0" + newValue).slice(-2) + ':00' : params.value().substr(0, 14) + ("0" + newValue).slice(-2) + params.value().substr(16));
+            console.log(params.value());
+
+        }, deferEvaluation: true});
+
+        // Current hour computed
+        self.currentHour = ko.computed({ read: function() {
+            return (params.value() === null) ? '00' : params.value().substr(11,2);
+
+        }, write: function(newValue) {
+            params.value(params.value() === null ? new Date().getFullYear() + '00-00 ' + ("0" + newValue).slice(-2) + ':00:00' : params.value().substr(0, 11) + ("0" + newValue).slice(-2) + params.value().substr(13));
+            console.log(params.value());
+
+        }, deferEvaluation: true});
+
+        // Current day computed
         self.currentDay = ko.computed({ read: function() {
-            if (ko.unwrap(params.value) === null) {
-                return '00';
-            } else {
-                return ko.unwrap(params.value).substr(8,2);
-            }
+            return (params.value() === null) ? '00' : params.value().substr(8,2);
 
         }, write: function(newValue) {
-            if (ko.unwrap(params.value) === null) {
-                params.value(new Date().getFullYear() + '00-' + newValue);
+            if (self.type() == 'date') {
+                params.value(params.value() === null ? new Date().getFullYear() + '00-' + newValue : params.value().substr(0, 8) + newValue);
             } else {
-                params.value(params.value().substr(0, 8) + newValue);
+                params.value(params.value() === null ? new Date().getFullYear() + '00-' + newValue + ' 00:00:00' : params.value().substr(0, 8) + newValue + params.value().substr(10));
             }
             console.log(params.value());
 
+
         }, deferEvaluation: true});
 
+        // Current month computed
         self.currentMonth = ko.computed({ read: function() {
-            if (ko.unwrap(params.value) === null) {
-                return '00';
-            }
-            return ko.unwrap(params.value).substr(5,2);
+            return (params.value() === null) ? '00' : params.value().substr(5,2);
 
         }, write: function(newValue) {
-            if (ko.unwrap(params.value) === null) {
-                params.value(new Date().getFullYear() + '-' + newValue + '-00');
+            if (self.type() == 'date') {
+                params.value(params.value() === null ? new Date().getFullYear() + '-' + newValue + '-00' : params.value().substr(0, 5) + newValue + params.value().substr(7));
             } else {
-                params.value(params.value().substr(0, 5) + newValue + params.value().substr(7, 3));
+                params.value(params.value() === null ? new Date().getFullYear() + '-' + newValue + '-00 00:00:00' : params.value().substr(0, 5) + newValue + params.value().substr(7));
             }
             console.log(params.value());
 
         }, deferEvaluation: true});
 
+        // Current year computed
         self.currentYear = ko.computed({ read: function() {
-            if (ko.unwrap(params.value) === null) {
-                return new Date().getFullYear();
-            }
-            return ko.unwrap(params.value).substr(0,4);
+            return (params.value() === null) ? new Date().getFullYear() : params.value().substr(0,4);
 
         }, write: function(newValue) {
-            if (ko.unwrap(params.value) === null) {
-                params.value(newValue + '-00-00');
+            if (self.type() == 'date') {
+                params.value(params.value() === null ? newValue + '-00-00' : newValue + params.value().substr(4));
             } else {
-                params.value(newValue + params.value().substr(4, 6));
+                params.value(params.value() === null ? newValue + '-00-00 00:00:00' : newValue + params.value().substr(4));
+
             }
+
             console.log(params.value());
 
         }, deferEvaluation: true});
 
         self.init = (function() {
             if (typeof ko.unwrap(params.value) === 'undefined') {
-                params.value(new Date().getFullYear() + '-00-00');
+                params.value(params.type == 'date' ? new Date().getFullYear() + '-00-00' : new Date().getFullYear() + '-00-00 00:00:00');
             }
 
             // Days
@@ -103,6 +128,7 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
                 self.days.push({ value: ('0' + i).slice(-2), display: i });
             }
 
+            // Years
             var currentYear = new Date().getFullYear();
             if (typeof params.startYear !== 'undefined') {
                 var startYear = params.startYear;

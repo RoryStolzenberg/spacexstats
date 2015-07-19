@@ -361,9 +361,9 @@ class Spacexstats extends Migration {
             $table->string('mobile_network', Varchar::compact)->nullable();
 
             $table->char('password', 60);
-            $table->datetime('subscription_expiry')->nullable();
+            $table->datetime('subscription_expiry')->nullable(); // Nonoptional Values
 
-            $table->datetime('last_login')->nullable();
+            $table->datetime('last_login')->nullable(); // Nonoptional Values
             $table->char('key', 32);
             $table->rememberToken();
             $table->timestamps();
