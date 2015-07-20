@@ -191,7 +191,7 @@
                     <input type="text" data-bind="value: contractor"/>
 
                     <label for="">Launch Date Time</label>
-                    <input type="text" data-bind="value launch_date_time"/>
+                    <input type="text" data-bind="value: launch_date_time"/>
 
                     <label for="">Destination</label>
                     <select data-bind="value: destination_id, options: $root.dataLists.destinations, optionsText: 'destination', optionsValue: 'destination_id'"></select>

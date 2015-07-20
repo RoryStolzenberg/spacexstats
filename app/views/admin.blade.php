@@ -19,7 +19,7 @@
             </section>
             <section>
                 <ul>
-                    <li>Create A Mission</li>
+                    <li>{{ link_to_route('missions.create', "Create A Mission") }}</li>
                     <li>Review Queue</li>
                     <li>Meta Stats</li>
                 </ul>

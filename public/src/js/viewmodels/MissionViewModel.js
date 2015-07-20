@@ -15,7 +15,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         self.submit = function() {
 
-            var final = [data: koMapping.toJS(self.mission), _token: self.csrfToken() };
+            var final = { data: koMapping.toJS(self.mission), _token: self.csrfToken() };
 
             $.ajax('/missions/create', {
                 method: 'POST',
@@ -58,8 +58,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         function Mission(mission) {
             koMapping.fromJS(mission, {
-                include: ['mission_id', 'mission_type_id', 'launch_order_id', 'launch_specificity',
-                        'name', 'slug', 'contractor', 'vehicle_id', 'destination_id', 'launch_site_id',
+                include: ['mission_id', 'mission_type_id', 'launch_date_time', 'name', 'contractor',
+                        'vehicle_id', 'destination_id', 'launch_site_id',
                         'summary', 'article', 'status', 'outcome', 'fairings_recovered', 'launch_video',
                         'mission_patch', 'press_kit', 'cargo_manifest', 'prelaunch_press_conference',
                         'postlaunch_press_conference', 'reddit_discussion', 'featured_image', 'payloads'],
@@ -82,10 +82,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
             this.mission_id                     = ko.observable(mission.mission_id);
             this.mission_type_id                = ko.observable(mission.mission_type_id);
-            this.launch_order_id                = ko.observable(mission.launch_order_id);
-            this.launch_specificity             = ko.observable(mission.launch_specificity);
+            this.launch_date_time               = ko.observable(mission.launch_date_time);
             this.name                           = ko.observable(mission.name);
-            this.slug                           = ko.observable(mission.slug);
             this.contractor                     = ko.observable(mission.contractor);
             this.vehicle_id                     = ko.observable(mission.vehicle_id);
             this.destination_id                 = ko.observable(mission.destination_id);

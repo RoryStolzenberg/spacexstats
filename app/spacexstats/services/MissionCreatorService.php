@@ -11,7 +11,7 @@ class MissionCreatorService {
     }
 
     public function isValid() {
-        $this->input = \Input::get();
+        $this->input = \Input::get('data');
 
         $validators = [];
         $validation['missionValidation'] = $this->mission->isValid($this->input['mission']);
