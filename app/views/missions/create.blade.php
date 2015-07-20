@@ -175,6 +175,8 @@
         <main>
             <form data-bind="with: mission">
 
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" data-bind="getOriginalValue, value: $root.csrfToken" />
+
                 <fieldset>
                     <legend>Mission</legend>
 

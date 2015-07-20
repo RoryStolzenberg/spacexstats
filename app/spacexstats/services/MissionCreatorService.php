@@ -7,12 +7,12 @@ class MissionCreatorService {
     private $mission;
 
     public function __construct(\Mission $mission) {
-        $this->input = \Input::all();
-
         $this->mission = $mission;
     }
 
     public function isValid() {
+        $this->input = \Input::get();
+
         $validators = [];
         $validation['missionValidation'] = $this->mission->isValid($this->input['mission']);
         foreach ($this->input['partFlights'] as $partFlight) {

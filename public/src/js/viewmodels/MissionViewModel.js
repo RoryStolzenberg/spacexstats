@@ -1,18 +1,26 @@
 define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var MissionViewModel = function () {
 
+        var getOriginalValue = ko.bindingHandlers.value.init;
+        ko.bindingHandlers.value.init = function(element, valueAccessor, allBindings) {
+            if (allBindings.has('getOriginalValue')) {
+                valueAccessor()(element.value);
+            }
+            getOriginalValue.apply(this, arguments);
+        };
+
         ko.components.register('datetime', { require: 'components/datetime/datetime'});
 
         var self = this;
 
         self.submit = function() {
-            var final = koMapping.toJS(self.mission);
-            console.log(koMapping.toJS(self.mission));
+
+            var final = [data: koMapping.toJS(self.mission), _token: self.csrfToken() };
 
             $.ajax('/missions/create', {
                 method: 'POST',
                 dataType: 'json',
-                data: JSON.stringify(koMapping.toJS(self.mission), function(key, value) {
+                data: JSON.stringify(final, function(key, value) {
                     if (value === "" || typeof value === 'undefined') {
                         return null;
                     }
@@ -46,7 +54,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             payloads: ko.observable([])
         }));
 
-        console.log(self.mission());
+        self.csrfToken = ko.observable();
 
         function Mission(mission) {
             koMapping.fromJS(mission, {
