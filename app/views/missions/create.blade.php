@@ -193,6 +193,9 @@
                     <label for="">Launch Date Time</label>
                     <input type="text" data-bind="value: launch_date_time"/>
 
+                    <label>Vehicle</label>
+                    <select data-bind="value: vehicle_id, options: $root.dataLists.vehicles, optionsText: 'vehicle', optionsValue: 'vehicle_id'"></select>
+
                     <label for="">Destination</label>
                     <select data-bind="value: destination_id, options: $root.dataLists.destinations, optionsText: 'destination', optionsValue: 'destination_id'"></select>
 

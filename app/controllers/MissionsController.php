@@ -99,7 +99,7 @@ class MissionsController extends BaseController {
                     'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
                     'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
                     'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
-                    'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
+                    'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
                     'spacecraftTypes' => array('Dragon 1', 'Dragon 2'),
                     'spacecraftReturnMethods' => array('Splashdown', 'Landing'),
                     'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),

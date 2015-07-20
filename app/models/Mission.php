@@ -8,8 +8,8 @@ class Mission extends Eloquent {
 	protected $primaryKey = 'mission_id';
     public $timestamps = true;
 
-    protected $hidden = ['launch_date_time'];
-    protected $appends = ['launch_date_time'];
+    protected $hidden = ['launch_exact', 'launch_approximate'];
+    protected $appends = ['launchDateTime'];
     protected $fillable = [];
     protected $guarded = [];
 

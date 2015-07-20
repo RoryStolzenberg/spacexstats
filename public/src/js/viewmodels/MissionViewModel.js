@@ -27,7 +27,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 }),
                 contentType: "application/json",
                 success: function(response) {
-                    //window.location =
                     console.log(response);
                 }
             });

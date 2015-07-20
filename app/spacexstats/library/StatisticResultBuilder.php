@@ -1,13 +1,7 @@
 <?php
 class StatisticResultBuilder {
 	public static function nextLaunch() {
-        $mission =  Mission::nextMissions(1)->first()->toArray();
-
-        if ($mission['launch_approximate'] == null) {
-            $dt = new DateTime($mission['launch_exact']);
-            $mission['launchDateTime'] = $dt->format(DateTime::ISO8601);
-        }
-
+        $mission =  Mission::nextMissions(1)->get()->toArray();
 	    return $mission;
 	}
 
