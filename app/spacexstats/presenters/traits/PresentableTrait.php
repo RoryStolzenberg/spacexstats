@@ -1,7 +1,6 @@
 <?php
 
 trait PresentableTrait {
-
 	protected static $presenterInstance;
 
 	public function present() {
@@ -16,5 +15,4 @@ trait PresentableTrait {
 
 		return static::$presenterInstance; 
 	}
-	
 }

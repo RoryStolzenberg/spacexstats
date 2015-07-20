@@ -1,5 +1,5 @@
 <?php
-use SpaceXStats\Services\MissionActionService;
+use SpaceXStats\Services\MissionCreatorService;
 use SpaceXStats\MailQueues\MissionMailQueue;
 use SpaceXStats\Mailers\MissionNotificationsMailer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -8,8 +8,8 @@ class MissionsController extends BaseController {
 
     protected $missionCreator;
 
-    public function __construct(MissionActionService $missionActioner, MissionMailQueue $missionQueuer) {
-        $this->missionActioner = $missionActioner;
+    public function __construct(MissionCreatorService $missionCreator, MissionMailQueue $missionQueuer) {
+        $this->missionCreator = $missionCreator;
         $this->missionQueuer = $missionQueuer;
     }
 
@@ -73,7 +73,15 @@ class MissionsController extends BaseController {
     // GET
     // missions/{slug}/edit
     public function edit($slug) {
+        if (Request::isMethod('get')) {
+            if (!Request::ajax()) {
+                return View::make('missions.edit');
+            } else {
 
+            }
+        } elseif (Request::isMethod('post')) {
+
+        }
     }
 
     // GET
@@ -91,34 +99,25 @@ class MissionsController extends BaseController {
                     'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
                     'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
                     'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
-
                     'vehicles' => Vehicle::get()->lists('vehicle', 'vehicle_id'),
                     'spacecraftTypes' => array('Dragon 1', 'Dragon 2'),
                     'spacecraftReturnMethods' => array('Splashdown', 'Landing'),
                     'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
                     'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
                     'upperStageStatuses' => array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'),
-
                     'parts' => Part::whereDoesntHave('partFlights', function($q) {
                         $q->where('landed', false);
                     })->get()->toArray(),
-
                     'spacecraft' => Spacecraft::all()->toArray(),
-
                     'astronauts' => Astronaut::all()->toArray()
                 ));
-
             }
-
-
 
         } elseif (Request::isMethod('post')) {
 
-            $input = Input::all();
-
-            if ($this->missionActioner->isValid($input)) {
+            if ($this->missionCreator->isValid()) {
                 // Create
-                $mission = $this->missionActioner->create($input);
+                $mission = $this->missionCreator->create();
 
                 // Email it out to those with the new Mission notification
                 $this->missionQueuer->newMission($mission);
@@ -134,9 +133,6 @@ class MissionsController extends BaseController {
                     ->withInput()
                     ->withErrors($this->missionCreator->getErrors());
             }
-
-            // if successful
-
         }
     }
 

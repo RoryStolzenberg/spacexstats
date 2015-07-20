@@ -31,19 +31,19 @@
                 <select data-bind="value: firststage_engine, options: $root.dataLists.firstStageEngines"></select>
 
                 <label>Engine Failures</label>
-                <input type="text" data-bind="text: firststage_engine_failures" />
+                <input type="text" data-bind="value: firststage_engine_failures" />
 
                 <label>MECO time</label>
-                <input type="text" data-bind="text: firststage_meco" />
+                <input type="text" data-bind="value: firststage_meco" />
 
                 <label>Landing Coords (lat)</label>
-                <input type="text" data-bind="text: firststage_landing_coords_lat" />
+                <input type="text" data-bind="value: firststage_landing_coords_lat" />
 
                 <label>Landing Coords (lng)</label>
-                <input type="text" data-bind="text: firststage_landing_coords_lng" />
+                <input type="text" data-bind="value: firststage_landing_coords_lng" />
 
                 <label>Baseplate Color</label>
-                <input type="text" data-bind="text: baseplate_color" />
+                <input type="text" data-bind="value: baseplate_color" />
             <!-- /ko -->
 
             <!-- ko if: part.type() == 'Upper Stage' -->
@@ -54,16 +54,16 @@
                 <select data-bind="value: upperstage_status, options: $root.dataLists.upperStageStatuses, optionsCaption: 'null'"></select>
 
                 <label>SECO time</label>
-                <input type="text" data-bind="text: upperstage_seco"/>
+                <input type="text" data-bind="value: upperstage_seco"/>
 
                 <label>Decay Date</label>
                 <datetime params="value: upperstage_decay_date, type: 'date', startYear: 2006, nullable: true, isNull: true"></datetime>
 
                 <label>NORAD ID</label>
-                <input type="text" data-bind="text: upperstage_norad_id"/>
+                <input type="text" data-bind="value: upperstage_norad_id"/>
 
                 <label>International Designator</label>
-                <input type="text" data-bind="text: upperstage_intl_designator"/>
+                <input type="text" data-bind="value: upperstage_intl_designator"/>
             <!-- /ko -->
 
             <label>Landed?</label>
@@ -77,19 +77,19 @@
     <script type="text/html" id="payload-template">
         <div>
             <label>Payload Name</label>
-            <input type="text" data-bind="text: name" />
+            <input type="text" data-bind="value: name" />
 
             <label>Operator</label>
-            <input type="text" data-bind="text: operator" />
+            <input type="text" data-bind="value: operator" />
 
             <label>Mass</label>
-            <input type="text" data-bind="text: mass" />
+            <input type="text" data-bind="value: mass" />
 
             <label>Payload Name</label>
-            <input type="checkbox" data-bind="text: primary" />
+            <input type="checkbox" data-bind="checked: primary" />
 
             <label>Gunter's Space Page Link</label>
-            <input type="text" data-bind="text: link" />
+            <input type="text" data-bind="value: link" />
 
             <button data-bind="click: $root.payloadActions.removePayload">Remove This Payload</button>
         </div>
@@ -97,7 +97,7 @@
 
     <script type="text/html" id="spacecraftFlight-template">
         <div>
-            <h3 data-bind="text: spacecraft.name"></h3>
+            <h3 data-bind="value: spacecraft.name"></h3>
 
             <label>Name</label>
             <input type="text" data-bind="textInput: spacecraft.name"/>
@@ -106,7 +106,7 @@
             <select data-bind="value: spacecraft.type, options: $root.dataLists.spacecraftTypes"></select>
 
             <label>Flight Name</label>
-            <input type="text" data-bind="text: flight_name"/>
+            <input type="text" data-bind="value: flight_name"/>
 
             <label>End Of Mission</label>
             <datetime params="value: end_of_mission, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
@@ -115,10 +115,10 @@
             <select data-bind="value: return_method, options: $root.dataLists.spacecraftReturnMethods"></select>
 
             <label>Upmass</label>
-            <input type="text" data-bind="text: upmass"/>
+            <input type="text" data-bind="value: upmass"/>
 
             <label>Downmass</label>
-            <input type="text" data-bind="text: downmass"/>
+            <input type="text" data-bind="value: downmass"/>
 
             <label>ISS Berth</label>
             <datetime params="value: iss_berth, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
@@ -156,13 +156,13 @@
             <input type="radio" name="gender" value="Female" data-bind="checked: astronaut.gender" />Female
 
             <label>Deceased</label>
-            <input type="checkbox" data-bind="text: astronaut.deceased" />
+            <input type="checkbox" data-bind="checked: astronaut.deceased" />
 
             <label>Date of Birth</label>
             <datetime params="value: astronaut.date_of_birth, type: 'date'"></datetime>
 
             <label>Nationality</label>
-            <input type="text" data-bind="text: astronaut.nationality" />
+            <input type="text" data-bind="value: astronaut.nationality" />
 
             <button data-bind="click: $root.astronautActions.removeAstronaut">Remove Astronauut</button>
         </div>
@@ -212,7 +212,7 @@
                         <button data-bind="click: addPart">Add Part</button>
                     </div>
 
-                    <!-- ko template: { name: 'partFlight-template', foreach: $root.mission.partFlights, as: 'partFlight' } -->
+                    <!-- ko template: { name: 'partFlight-template', foreach: $root.mission().partFlights, as: 'partFlight' } -->
                     <!-- /ko -->
                 </fieldset>
 
@@ -220,7 +220,7 @@
                     <legend>Payloads</legend>
                     <button data-bind="click: addPayload">Add Payload</button>
 
-                    <!-- ko template: { name: 'payload-template', foreach: $root.mission.payloads, as: 'payload' } -->
+                    <!-- ko template: { name: 'payload-template', foreach: $root.mission().payloads, as: 'payload' } -->
                     <!-- /ko -->
                 </fieldset>
 
@@ -228,11 +228,11 @@
                     <legend>Spacecraft</legend>
                     <button data-bind="click: addSpacecraft">Add Spacecraft</button>
 
-                    <!-- ko template: { name: 'spacecraftFlight-template', foreach: $root.mission.spacecraftFlight, as: 'spacecraftFlight' } -->
+                    <!-- ko template: { name: 'spacecraftFlight-template', foreach: $root.mission().spacecraftFlight, as: 'spacecraftFlight' } -->
                     <!-- /ko -->
                 </fieldset>
 
-                <input type="submit" data-bind="click: $root.run" />
+                <input type="submit" data-bind="click: $root.submit" />
             </form>
 
         </main>

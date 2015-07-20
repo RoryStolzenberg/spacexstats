@@ -5,8 +5,25 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         var self = this;
 
-        self.run = function() {
+        self.submit = function() {
+            var final = koMapping.toJS(self.mission);
             console.log(koMapping.toJS(self.mission));
+
+            $.ajax('/missions/create', {
+                method: 'POST',
+                dataType: 'json',
+                data: JSON.stringify(koMapping.toJS(self.mission), function(key, value) {
+                    if (value === "" || typeof value === 'undefined') {
+                        return null;
+                    }
+                    return value;
+                }),
+                contentType: "application/json",
+                success: function(response) {
+                    //window.location =
+                    console.log(response);
+                }
+            });
         };
 
         // Data lists
@@ -23,7 +40,13 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             astronauts: ko.observableArray()
         };
 
-        self.mission = {};
+        self.mission = ko.observable(new Mission({
+            partFlights: [],
+            spacecraftFlight: [],
+            payloads: ko.observable([])
+        }));
+
+        console.log(self.mission());
 
         function Mission(mission) {
             koMapping.fromJS(mission, {
@@ -31,7 +54,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                         'name', 'slug', 'contractor', 'vehicle_id', 'destination_id', 'launch_site_id',
                         'summary', 'article', 'status', 'outcome', 'fairings_recovered', 'launch_video',
                         'mission_patch', 'press_kit', 'cargo_manifest', 'prelaunch_press_conference',
-                        'postlaunch_press_conference', 'reddit_discussion', 'featured_image'],
+                        'postlaunch_press_conference', 'reddit_discussion', 'featured_image', 'payloads'],
                 'partFlights': {
                     create: function(options) {
                         return new PartFlight(options.data);
@@ -97,6 +120,10 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.downmass               = ko.observable(spacecraftFlight.downmass);
             this.iss_berth              = ko.observable(spacecraftFlight.iss_berth);
             this.iss_unberth            = ko.observable(spacecraftFlight.iss_unberth);
+
+            this.flight_name.subscribe(function() {
+                console.log('ysdnjjjjfg');
+            });
         }
 
         function Spacecraft(spacecraft) {
@@ -213,16 +240,16 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                             name: ""
                         }
                     };
-                    self.mission.partFlights.push(new PartFlight(partFlight));
+                    self.mission().partFlights.push(new PartFlight(partFlight));
                 } else {
                     var partFlight = {
                         part: koMapping.toJS(self.partActions.selectedPart)
                     };
-                    self.mission.partFlights.push(new PartFlight(partFlight));
+                    self.mission().partFlights.push(new PartFlight(partFlight));
                 }
             },
             removePart: function(partFlight) {
-                self.mission.partFlights.remove(partFlight);
+                self.mission().partFlights.remove(partFlight);
             },
             filteredParts: ko.computed({ read: function() {
                 return self.dataLists.parts().filter(function(part) {
@@ -242,28 +269,28 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         self.payloadActions = {
             addPayload: function() {
-                self.mission.payloads.push(new Payload({}));
+                self.mission().payloads.push(new Payload({}));
             },
             removePayload: function(payload) {
-                self.mission.payloads.remove(payload);
+                self.mission().payloads.remove(payload);
             }
         };
 
         self.spacecraftActions = {
             selectedSpacecraft: ko.observable(),
             addSpacecraft: function() {
-                if (self.mission.spacecraftFlight().length == 0) {
+                if (self.mission().spacecraftFlight().length == 0) {
                     var spacecraftFlight = {
                         spacecraft: {
 
                         },
                         astronautFlights: []
                     };
-                    self.mission.spacecraftFlight.push(new SpacecraftFlight(spacecraftFlight));
+                    self.mission().spacecraftFlight.push(new SpacecraftFlight(spacecraftFlight));
                 }
             },
             removeSpacecraft: function(spacecraftFlight) {
-                self.mission.spacecraftFlight.remove(spacecraftFlight);
+                self.mission().spacecraftFlight.remove(spacecraftFlight);
             }
         };
 
@@ -273,22 +300,22 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
             }),
             addAstronaut: function() {
-                console.log(self.mission.spacecraftFlight()[0]);
+                console.log(self.mission().spacecraftFlight()[0]);
                 if (typeof self.astronautActions.selectedAstronaut() !== 'undefined') {
                     var astronautFlight = {
                         astronaut: koMapping.toJS(self.astronautActions.selectedAstronaut)
                     };
 
-                    self.mission.spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
+                    self.mission().spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
                 } else {
                     var astronautFlight = {
                         astronaut: {}
                     };
-                    self.mission.spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
+                    self.mission().spacecraftFlight()[0].astronautFlights.push(new AstronautFlight(astronautFlight));
                 }
             },
             removeAstronaut: function(astronautFlight) {
-                self.mission.spacecraftFlight()[0].astronautFlights.remove(astronautFlight);
+                self.mission().spacecraftFlight()[0].astronautFlights.remove(astronautFlight);
             }
         };
 
@@ -302,48 +329,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                     koMapping.fromJS(lists, {}, self.dataLists);
                 }
             });
-
-            var data = {
-                'mission_id': '1',
-                'name': '5',
-                'mission_type_id': 7,
-                'payloads': [
-                    {
-                        'name': 'heres a payload'
-                    },
-                    {
-                        'name': 'moar struts'
-                    }
-                ],
-                'spacecraftFlight': [
-                    {
-                        'title': 'CRS-7',
-                        'spacecraft': {
-                            'type': 'Dragon 1',
-                            'name': 'Dragon C8'
-                        }
-                        ,
-                        'astronautFlights': [
-                            {
-                                'astronaut': {
-                                    'first_name': 'Gustavo'
-                                }
-                            }
-                        ]
-                    }
-                ],
-                'partFlights': [
-                    {
-                        'part': {
-                                'part_id': 72,
-                                'name': "F9S1-001",
-                                'type': 'Booster'
-                        }
-                    }
-                ]
-            };
-
-            self.mission = new Mission(data);
         })();
     };
 

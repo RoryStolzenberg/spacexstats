@@ -2,7 +2,7 @@
 
 class Mission extends Eloquent {
 
-	use PresentableTrait;
+	use PresentableTrait, ValidatableTrait;
 
 	protected $table = 'missions';
 	protected $primaryKey = 'mission_id';
@@ -13,6 +13,9 @@ class Mission extends Eloquent {
     protected $fillable = [];
     protected $guarded = [];
 
+    protected $presenter = "MissionPresenter";
+
+    // Validation
     public $rules = array(
         'name' => 'sometimes|varchar:small',
         'launch_exact' => 'sometimes|date_format:Y-m-d H:i:s',
@@ -22,8 +25,6 @@ class Mission extends Eloquent {
     public $messages = array(
         'name.varchar' => 'The mission name needs to be shorter than :size characters'
     );
-
-	protected $presenter = "MissionPresenter";
 
 	// Relations
 	public function vehicle() {
@@ -97,13 +98,6 @@ class Mission extends Eloquent {
 
     public function featuredImage() {
         return $this->belongsTo('Object', 'featured_image')->select(['object_id', 'filename']);
-    }
-
-    // Validation
-    // One day, add a complex custom validation rule to ensure launch_approximate is validated correctly
-    public function isValid($input) {
-        $validator = Validator::make($input, $this->rules, $this->messages);
-        return $validator->passes() ? true : $validator->errors();
     }
 
 	// Attribute Accessors
