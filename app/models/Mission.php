@@ -17,9 +17,10 @@ class Mission extends Eloquent {
 
     // Validation
     public $rules = array(
-        'name' => 'sometimes|varchar:small',
-        'launch_exact' => 'sometimes|date_format:Y-m-d H:i:s',
-        'launch_approximate' => 'sometimes|string|varchar:compact'
+        'name' => ['sometimes', 'required', 'string', 'varchar:small'],
+        'contractor' => ['sometimes', 'required', 'string', 'varchar:compact'],
+        'launch_exact' => ['sometimes', 'date_format:Y-m-d H:i:s'],
+        'launch_approximate' => ['sometimes', 'required', 'string', 'varchar:small']
     );
 
     public $messages = array(
@@ -65,6 +66,10 @@ class Mission extends Eloquent {
 
     public function objects() {
         return $this->belongsTo('Object');
+    }
+
+    public function payloads() {
+        return $this->hasMany('Payload');
     }
 
     // Conditional Relationships

@@ -128,10 +128,10 @@ class MissionsController extends BaseController {
 
                 return Redirect::route('missions.get', array('slug' => $mission->slug));
             } else {
-                return Redirect::back()
-                    ->with('flashMessage', array('contents' => 'The mission could not be created', 'type' => 'failure'))
-                    ->withInput()
-                    ->withErrors($this->missionCreator->getErrors());
+                return Response::json(array(
+                    'flashMessage' => array('contents' => 'The mission could not be created', 'type' => 'failure'),
+                    'errors' => $this->missionCreator->getErrors()
+                ), 400);
             }
         }
     }

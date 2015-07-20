@@ -19,7 +19,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
             $.ajax('/missions/create', {
                 method: 'POST',
-                dataType: 'json',
                 data: JSON.stringify(final, function(key, value) {
                     if (value === "" || typeof value === 'undefined') {
                         return null;

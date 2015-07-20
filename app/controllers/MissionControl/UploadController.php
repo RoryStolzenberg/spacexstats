@@ -24,7 +24,7 @@ class UploadController extends BaseController {
 
 		// Check if there is actually something in the POST
 		if (empty(Input::all())) {
-			return Response::json('', 400);
+			return Response::json(null, 400);
 		} else {
 			$i = 0;
 

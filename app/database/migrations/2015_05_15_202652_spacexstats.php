@@ -252,10 +252,10 @@ class Spacexstats extends Migration {
             $table->increments('payload_id');
             $table->integer('mission_id')->unsigned();
             $table->string('name', Varchar::small);
-            $table->string('operator', Varchar::small);
+            $table->string('operator', Varchar::compact);
             $table->decimal('mass', 6, 1)->nullable();
             $table->boolean('primary');
-            $table->string('link', Varchar::small)->nullable();
+            $table->string('link', Varchar::compact)->nullable();
         });
 
         Schema::create('payments', function(Blueprint $table) {

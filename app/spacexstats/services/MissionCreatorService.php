@@ -2,7 +2,7 @@
 namespace SpaceXStats\Services;
 
 class MissionCreatorService {
-    private $input, $errors;
+    private $input, $errors = [];
 
     private $mission;
 
@@ -11,34 +11,50 @@ class MissionCreatorService {
     }
 
     public function isValid() {
-        $this->input = \Input::get('data');
+        $input = \Input::get('data');
+        $this->input['payloads'] = array_pull($input, 'payloads');
+        $this->input['partFlights'] = array_pull($input, 'partFlights');
+        $this->input['spacecraftFlight'] = array_pull($input, 'spacecraftFlight');
+        $this->input['mission'] = $input;
 
         $validators = [];
-        $validation['missionValidation'] = $this->mission->isValid($this->input['mission']);
-        foreach ($this->input['partFlights'] as $partFlight) {
-
+        $validators['missionValidation'] = $this->mission->isValid($this->input['mission']);
+        foreach ($this->input['payloads'] as $payload) {
+            $validators['payloadValidation'] = $this->payload->isValid($payload);
         }
 
-        if ($missionValidation === true) {
+        foreach ($validators as $validator) {
+            if ($validator !== true) {
+                $this->errors = array_merge($this->errors, $validator->toArray());
+            }
+        }
+
+        if (empty($this->errors)) {
             return true;
         } else {
-            $this->errors = $missionValidation;
             return false;
         }
     }
 
     public function create() {
         // Create the mission
-        $missionInput = $this->input['mission'];
-        $mission = \Mission::create($missionInput);
-        $mission->status = 'Upcoming';
-        $mission->save();
+        \DB::transaction(function() {
+            $this->mission->fill($this->input['mission']);
+            $this->mission->status = 'Upcoming';
+            $this->mission->save();
 
-        return $mission;
+            $this->createPayloadRelations();
+        });
+
+        return $this->mission;
     }
 
-    private function createPartRelations() {
-
+    private function createPayloadRelations() {
+        foreach ($this->input['payloads'] as $payloadInput) {
+            $payload = new \Payload();
+            $payload->fill($payloadInput);
+            $payload->mission()->associate($this->mission);
+        }
     }
 
     private function createSpacecraftRelation() {
