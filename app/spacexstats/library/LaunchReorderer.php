@@ -14,44 +14,57 @@ class LaunchReorderer {
 
     // Returns a launch date time instance
 	public function run() {
-        $this->sort();
-    }
-
-    /*private function setMissionProperties() {
-        if ($this->currentMissionDt->getSpecificity() == (LaunchSpecificity::Precise || LaunchSpecificity::Day)) {
-            $this->mission->launch_exact = $this->scheduledLaunch;
-        } else {
-            $this->mission->launch_approx = $this->scheduledLaunch;
-        }
-        $this->mission->launch_order_id =
-        $this->mission->launch_specificity = $this->currentMissionDt->getSpecificity();
-    }*/
-
-	private function sort() {
         // Grab all missions as an array, pass them through
         if (is_null($this->mission->mission_id)) {
-            $allMissions = \Mission::orderBy('launch_order_id', 'ASC')->get()->toArray();
+            $allMissions = \Mission::orderBy('launch_order_id', 'ASC')->get();
         } else {
-            $allMissions = \Mission::where('mission_id', '!=', $this->mission->mission_id)->orderBy('launch_order_id', 'ASC')->get()->toArray();
+            $allMissions = \Mission::where('mission_id', '!=', $this->mission->mission_id)->orderBy('launch_order_id', 'ASC')->get();
         }
 
-        array_push($allMissions, array('launchDateTime' => 'November 2014'));
+        $arrayedMissions = $allMissions->toArray();
 
-        @usort($allMissions, function($a, $b) {
+        // Add the mission we are running from to the array
+        array_push($arrayedMissions, array('context' => true, 'launchDateTime' => $this->scheduledLaunch));
+
+        // Sort the missions by launchDateTime
+        // Use the at symbol because http://stackoverflow.com/a/10985500/1064923
+        @usort($arrayedMissions, function($a, $b) {
             $ldta = $this->parseStringDate($a['launchDateTime']);
             $ldtb = $this->parseStringDate($b['launchDateTime']);
 
             return LaunchDateTime::compare($ldta, $ldtb);
         });
 
-        $v = 4;
-	}
+        // Update each mission's launch_order_id
+        foreach ($arrayedMissions as $index => $arrayedMission) {
+            // If the context is from the current mission, set the current mission properties
+            if (array_get($arrayedMission, 'context', false) == true) {
+                $this->setMissionProperties($index);
 
-    private function updateDatabase() {
-
+            // Else, update the mission properties if it needs updating
+            } else {
+                // Check to see if it actually needs updating in the db
+                if ($arrayedMission['launch_order_id'] !== $index + 1) {
+                    $missionModel = $allMissions->keyBy('launch_order_id')->find($arrayedMission['launch_order_id']);
+                    $missionModel->launch_order_id = $index + 1;
+                    $missionModel->save();
+                }
+            }
+        }
     }
 
-    // Todo: detect number of days in month based off year (for February) :((
+    private function setMissionProperties($index) {
+        if ($this->currentMissionDt->getSpecificity() == (LaunchSpecificity::Precise || LaunchSpecificity::Day)) {
+            $this->mission->launch_exact = $this->scheduledLaunch;
+            $this->mission->launch_approximate = null;
+        } else {
+            $this->mission->launch_approx = $this->scheduledLaunch;
+            $this->mission->launch_approximate = null;
+        }
+        $this->mission->launch_order_id = $index+1;
+        $this->mission->launch_specificity = $this->currentMissionDt->getSpecificity();
+    }
+
 	public function parseStringDate($dateToBeParsed) {
         $dateToBeParsed = trim($dateToBeParsed);
 
