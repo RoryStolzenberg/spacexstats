@@ -159,8 +159,8 @@ class Mission extends Eloquent {
     }
 
     public function setLaunchDateTimeAttribute($value) {
-        //$launchReorderer = new LaunchReorderer($value, $this->launch_order_id);
-        $this->attributes['launch_approximate'] = "June";
+        $launchReorderer = new SpaceXStats\Library\LaunchReorderer($this, $value);
+        $launchReorderer->run();
     }
 
 	// Slug helper

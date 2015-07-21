@@ -1,8 +1,7 @@
 <?php
 class StatisticResultBuilder {
 	public static function nextLaunch() {
-        $mission =  Mission::nextMissions(1)->get()->toArray();
-	    return $mission;
+        return Mission::nextMissions(1)->first()->toArray();
 	}
 
 	public static function launchCount($parameter) {

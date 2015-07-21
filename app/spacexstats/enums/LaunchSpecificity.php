@@ -2,8 +2,8 @@
 namespace SpaceXStats\Enums;
 
 abstract class LaunchSpecificity {
-    const Precise       = 7; // Launch date time down to HH:MM:SS
-    const Day           = 6; // Launch date only
+    const Precise       = 7; // Launch date time down to HH:MM:SS (use countdown)
+    const Day           = 6; // Launch date only (use countdown)
     const SubMonth      = 5; // early March, mid March, late March
     const Month         = 4; // March, April, May
     const Quarter       = 3; // Q1, Q2, Q3, Q4
