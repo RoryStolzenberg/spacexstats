@@ -14,5 +14,4 @@ class PrelaunchEvent extends Eloquent {
 	public function mission() {
 		return $this->belongsTo('mission');
 	}
-
 }

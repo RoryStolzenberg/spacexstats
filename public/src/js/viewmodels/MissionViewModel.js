@@ -232,6 +232,18 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             this.type       = ko.observable(part.type);
         }
 
+        function PrelaunchEvent(prelaunchEvent) {
+            koMapping.fromJS(part, {
+                include: ['prelaunch_event_id', 'mission_id', 'name', 'type']
+            }, this);
+
+            this.prelaunch_event_id     = ko.observable(prelaunchEvent.prelaunch_event_id);
+            this.mission_id             = ko.observable(prelaunchEvent.mission_id);
+            this.event                  = ko.observable(prelaunchEvent.event);
+            this.occurred_at            = ko.observable(prelaunchEvent.occurred_at);
+            this.summary                = ko.observable(prelaunchEvent.summary);
+        }
+
         // PARTS STUFF
         self.partActions = {
             selectedPart: ko.observable(),

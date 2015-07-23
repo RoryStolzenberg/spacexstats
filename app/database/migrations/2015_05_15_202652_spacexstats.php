@@ -271,7 +271,7 @@ class Spacexstats extends Migration {
             $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Static Fire', 'Launch Change'));
             $table->date('occurred_at'); // Nonoptional values
             $table->datetime('scheduled_launch_exact')->nullable(); // Nonoptional values
-            $table->string('scheduled_launch_approx', Varchar::small)->nullable();
+            $table->string('scheduled_launch_approximate', Varchar::small)->nullable();
             $table->string('summary', Varchar::small)->nullable();
         });
 
