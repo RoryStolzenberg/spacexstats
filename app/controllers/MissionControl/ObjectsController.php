@@ -11,29 +11,32 @@ class ObjectsController extends BaseController {
     // GET
     // missioncontrol/object/{object_id}
     public function get($object_id) {
-        $object = Object::with('userNote')->find($object_id);
-
-        $viewToMake = View::make('missionControl.objects.get', array(
-            'object' => $object
-        ));
+        $object = Object::find($object_id);
         
         if ($object->visibility == 'Public' && $object->status == 'Published') {
-            return $viewToMake;
+            return View::make('missionControl.objects.get', array(
+                'object' => $object
+            ));
 
         } elseif ($object->visibility == 'Default' && $object->status == 'Published') {
             if (Auth::isSubscriber()) {
-                return $viewToMake;
+                return View::make('missionControl.objects.get', array(
+                    'object' => $object,
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->get()
+                ));
             }
             return App::abort(401);
 
         } elseif ($object->visibility == 'Hidden' || $object->status == 'Queued' || $object->status == 'New') {
             if (Auth::isAdmin()) {
-                return $viewToMake;
+                return View::make('missionControl.objects.get', array(
+                    'object' => $object,
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->get()
+                ));
             }
             return App::abort(401);
 
         }
-
         return App::abort(401);
     }
 
@@ -43,36 +46,40 @@ class ObjectsController extends BaseController {
 
     }
 
-    // AJAX POST
+    // AJAX POST/PATCH/DELETE
     // missioncontrol/object/{object_id}/note
     public function note($object_id) {
         if (Auth::member()) {
-            $usernote = Note::where('user_id', Auth::user()->id)->where('object_id', $object_id)->get();
 
-            if ($usernote->count() > 0) {
-                if (Input::get('action') == 'update') {
-                    $usernote->note = Input::get('note', null);
-                    $usernote->save();
-
-                    return Response::json('update');
-
-                } elseif (Input::get('action') == 'delete') {
-                    $usernote->delete();
-
-                    return Response::json('delete');
-                }
-            } else {
-                Note::create(array(
-                    'user_id' => Auth::user()->id,
+            // Create
+            if (Request::isMethod('post')) {
+                $usernote = Note::create(array(
+                    'user_id' => Auth::user()->user_id,
                     'object_id' => $object_id,
                     'note' => Input::get('note', null)
                 ));
+                $usernote->note = Input::get('note', null);
+                $usernote->save();
 
-                return Response::json('create');
+                return Response::json(true, 200);
+
+            // Edit
+            } elseif (Request::isMethod('patch')) {
+                $usernote = Auth::user()->notes->where('object_id', $object_id);
+                $usernote->note = Input::get('note', null);
+                $usernote->save();
+
+                return Response::json(true, 200);
+
+            // Delete
+            } elseif (Request::isMethod('delete')) {
+                $usernote = Auth::user()->notes->where('object_id', $object_id);
+                $usernote->delete();
+
+                return Response::json(true, 200);
             }
-        } else {
-            return Response::json(false, 400);
         }
+        return Response::json(false, 401);
     }
 
     // AJAX POST

@@ -60,14 +60,17 @@
                 <p>{{ $object->summary }}</p>
 
                 <h3>Your Note</h3>
-                <!-- ko if: noteState() === 'read' -->
-                <p>{{ $object->userNote->note or null }}</p>
-                <button data-bind="click: editNote">Edit Note</button>
-                <!-- /ko -->
-                <!-- ko if: noteState() === 'write' -->
-                <textarea>{{ $object->userNote->note or null }}</textarea>
-                <button data-bind="click: saveNote">Save Note</button>
-                <!-- /ko -->
+
+                    <!-- ko if: noteState() === 'read' -->
+                    <p>{{ $userNote->note or 'Create a Note!' }}</p>
+                    <button data-bind="click: changeNoteState, text: noteButtonText"></button>
+                    <!-- /ko -->
+
+                    <!-- ko if: noteState() === 'write' -->
+                    <textarea data-bind="getOriginalValue, value: note, valueUpdate: 'afterkeydown'">{{ $userNote->note or null }}</textarea>
+                    <button data-bind="click: saveNote, disable: note().length == 0">Save Note</button>
+                    <!-- /ko -->
+
             </section>
 
             <h2>Comments</h2>

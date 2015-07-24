@@ -81,15 +81,6 @@ class Object extends Eloquent {
         return $this->hasMany('Note');
     }
 
-    // Conditional
-    public function userFavorite() {
-        return $this->hasOne('Favorite')->where('user_id', Auth::user()->user_id);
-    }
-
-    public function userNote() {
-        return $this->hasOne('Note')->where('user_id', Auth::user()->user_id);
-    }
-
     // Validators
 	public function isValidForSubmission($input) {
 		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);
