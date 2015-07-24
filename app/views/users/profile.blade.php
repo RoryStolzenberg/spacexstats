@@ -4,16 +4,6 @@
 @section('bodyClass', 'profile')
 
 @section('scripts')
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script>
-        require(['common'], function() {
-            require(['jquery', 'knockout', 'viewmodels/UserViewModel'], function($, ko, UserViewModel) {
-                $(document).ready(function() {
-                    ko.applyBindings(new UserViewModel());
-                });
-            });
-        });
-    </script>
 @stop
 
 @section('content')
@@ -28,6 +18,7 @@
 					<li class="grid-1">Notes</li>
 				@endif
 				<li class="grid-1">Uploads</li>
+                <li class="grid-1">Comments</li>
 				@if (Auth::check() && Auth::user()->username === $user->username) 
 					<li class="grid-1"><a href="/users/{{ $user->username }}/edit"><i class="fa fa-pencil"></i></a></li>
 				@endif
@@ -76,7 +67,7 @@
 					<tr>
 						<td>Favorite Mission</td>
 						<td>
-                            @if ($user->favorite_mission)
+                            @if ($favoriteMission)
                                 @include('templates.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
                             @else
                                 <p>No favorite mission. Add one!</p>
@@ -86,7 +77,7 @@
 					</tr>
 					<tr>
 						<td>Favorite Mission Patch</td>
-						<td>{{ $user->profile->favorite_patch }}</td>
+						<td>{{ $user->profile->favorite_mission_patch }}</td>
 					</tr>
 					<tr>
 						<td>Favorite Elon Musk Quote</td>
@@ -98,7 +89,7 @@
 		</section>
 		<h2>Favorites</h2>
 		<section class="favorites container">
-			@foreach ($user->favorites as $favorite)
+			@foreach ($favorites as $favorite)
 				<div class="grid-4">
 					{{ $favorite->object->title }}
 				</div>
@@ -111,7 +102,10 @@
 			</section>
 		@endif
 		<h2>Uploads</h2>
-		<section class="uploads" data-bind="template:">
+		<section class="uploads">
+            @foreach ($objects as $object)
+                {{ link_to_route('missionControl.objects.get', $object->title, array($object->object_id)) }}
+            @endforeach
 		</section>
         <h2>Comments</h2>
         <section class="comments"></section>

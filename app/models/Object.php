@@ -77,12 +77,13 @@ class Object extends Eloquent {
         return $this->hasMany('Favorite');
     }
 
-    public function userFavorite() {
-        return $this->hasOne('Favorite')->where('user_id', Auth::user()->user_id);
-    }
-
     public function notes() {
         return $this->hasMany('Note');
+    }
+
+    // Conditional
+    public function userFavorite() {
+        return $this->hasOne('Favorite')->where('user_id', Auth::user()->user_id);
     }
 
     public function userNote() {

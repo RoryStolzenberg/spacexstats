@@ -451,8 +451,6 @@ class Spacexstats extends Migration {
 
         Schema::table('users', function(Blueprint $table) {
             $table->foreign('role_id')->references('role_id')->on('roles')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreign('favorite_mission')->references('mission_id')->on('missions');
-            $table->foreign('favorite_patch')->references('object_id')->on('objects');
         });
 	}
 

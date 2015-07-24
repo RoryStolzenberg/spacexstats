@@ -15,4 +15,12 @@ class Profile extends Eloquent {
 	public function user() {
 		return $this->belongsTo('User');
 	}
+
+    public function favoriteMission() {
+        return $this->belongsTo('Mission', 'favorite_mission');
+    }
+
+    public function favoritePatch() {
+        return $this->belongsTo('Object', 'favorite_mission_patch');
+    }
 }

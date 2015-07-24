@@ -61,11 +61,11 @@
 
                 <h3>Your Note</h3>
                 <!-- ko if: noteState() === 'read' -->
-                <p>{{ $object->userNote->note }}</p>
+                <p>{{ $object->userNote->note or null }}</p>
                 <button data-bind="click: editNote">Edit Note</button>
                 <!-- /ko -->
                 <!-- ko if: noteState() === 'write' -->
-                <textarea>{{ $object->userNote->note }}</textarea>
+                <textarea>{{ $object->userNote->note or null }}</textarea>
                 <button data-bind="click: saveNote">Save Note</button>
                 <!-- /ko -->
             </section>

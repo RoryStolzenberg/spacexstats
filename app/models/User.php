@@ -34,11 +34,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     protected $presenter = "UserPresenter";
 
 	// Relations
-	//public function role() {
-	//	return $this->belongsTo('Role');
-	//}
-
-	public function profile() {
+    public function profile() {
 		return $this->hasOne('Profile');
 	}
 
@@ -67,13 +63,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     }
 
     // Conditional relations
-    public function favoriteMission() {
-        return $this->belongsTo('Mission', 'favorite_mission');
-    }
-
-    public function favoritePatch() {
-        return $this->belongsTo('Object', 'favorite_patch');
-    }
 
 	// Helpers
 	public function isValidForSignUp($input) {
