@@ -24,7 +24,8 @@ class UsersController extends BaseController {
 	}
 
 	public function get($username) {
-		$user = User::where('username', $username)->first();
+		$user = User::where('username', $username)->with(['favoriteMission', 'favoritePatch'])->first();
+
 		// If a user was found
 		if (!empty($user)) {
 			//If the current user is logged in & If the current user is requesting themselves
@@ -33,10 +34,13 @@ class UsersController extends BaseController {
 			} else {
 				$objects = Object::where('user_id',$user->user_id)->where('status','Published')->where('anonymous',true)->get();
 			}
-			return View::make('users.profile', array(
-				'user' => $user,
-				'objects' => $objects,
-				'favoriteMission' => Mission::find($user->profile->favorite_mission)
+
+            Javascript::put([
+                'objects' =>
+            ]);
+
+            return View::make('users.profile', array(
+				'user' => $user
 			));
 		// No user with that username was found
 		} else {

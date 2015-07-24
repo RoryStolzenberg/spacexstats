@@ -8,7 +8,6 @@
     <script>
         require(['common'], function() {
             require(['jquery', 'knockout', 'viewmodels/HomePageViewModel'], function($, ko, HomePageViewModel) {
-
                 $(document).ready(function() {
                     ko.applyBindings(new HomePageViewModel());
                 });

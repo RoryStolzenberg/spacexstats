@@ -46,10 +46,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		return $this->hasMany('Object');
 	}
 
-	public function publishedObjects() {
-		return $this->hasMany('Object')->where('status','Published');
-	}
-
     public function favorites() {
         return $this->hasMany('Favorite');
     }
@@ -68,6 +64,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     public function emails() {
         return $this->hasManyThrough('Email', 'Notification');
+    }
+
+    // Conditional relations
+    public function favoriteMission() {
+        return $this->belongsTo('Mission', 'favorite_mission');
+    }
+
+    public function favoritePatch() {
+        return $this->belongsTo('Object', 'favorite_patch');
     }
 
 	// Helpers

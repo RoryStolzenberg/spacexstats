@@ -4,6 +4,16 @@
 @section('bodyClass', 'profile')
 
 @section('scripts')
+    <script data-main="/src/js/common" src="/src/js/require.js"></script>
+    <script>
+        require(['common'], function() {
+            require(['jquery', 'knockout', 'viewmodels/UserViewModel'], function($, ko, UserViewModel) {
+                $(document).ready(function() {
+                    ko.applyBindings(new UserViewModel());
+                });
+            });
+        });
+    </script>
 @stop
 
 @section('content')
@@ -101,15 +111,10 @@
 			</section>
 		@endif
 		<h2>Uploads</h2>
-		<section class="uploads">
-			@if ($objects->count() == 0) 
-				<p>No Uploads</p>
-			@else
-                @foreach ($objects as $object)
-                    {{ $object->name }}
-                @endforeach
-            @endif
+		<section class="uploads" data-bind="template:">
 		</section>
+        <h2>Comments</h2>
+        <section class="comments"></section>
 	</main>
 </div>
 @stop
