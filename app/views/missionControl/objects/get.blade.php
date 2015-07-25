@@ -62,6 +62,12 @@
             <section class="summary">
                 <p>{{ $object->summary }}</p>
 
+                <div class="tags">
+                    @foreach ($object->tags as $tag)
+                        <span>{{ $tag->name }}</span>
+                    @endforeach
+                </div>
+
                 <h3>Your Note</h3>
                 @if (Auth::isSubscriber())
                     <div data-bind="visible: noteState() == 'read'">

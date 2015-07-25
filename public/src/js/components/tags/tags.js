@@ -46,7 +46,7 @@ define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], f
 
         self.createTag = function(tagText) {
             var tagIsPresentInCurrentTags = params.tags().filter(function(tag) {
-                return tag.name == tagText;
+                return tag.name() == tagText;
             });
 
             if (tagText.length > 0 && tagIsPresentInCurrentTags.length === 0) {
@@ -93,7 +93,7 @@ define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], f
                 event.preventDefault();
 
                 // grab the last tag to be inserted (if any) and put it back in the input
-                if (params.tags().length > 1) {
+                if (params.tags().length > 0) {
                     self.tagInput(params.tags.pop().name());
                 }
             }

@@ -80,7 +80,7 @@ define(['jquery', 'moment', 'knockout', 'ko.mapping'], function($, moment, ko, k
                         self.objectsToReview.remove(otr);
                     },
                     error: function(response) {
-                        alert('Could not be removed');
+                        alert('Something went wrong');
                     }
                 });
             }
