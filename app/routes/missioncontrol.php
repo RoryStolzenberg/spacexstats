@@ -49,6 +49,11 @@ Route::get('missioncontrol/about', array('as' => 'missionControl.about', functio
 
 Route::group(array('before' => 'mustBe:Subscriber'), function() {
 
+    Route::get('missioncontrol/search', array(
+        'as' => 'missionControl.search',
+        'uses' => 'SearchController@search'
+    ));
+
     Route::get('missioncontrol/create', array(
         'as' => 'missionControl.create',
         'uses' => 'UploadController@show'
