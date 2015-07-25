@@ -7,8 +7,6 @@ class QuestionsController extends BaseController {
 		$questions = Question::all();
 
 		return View::make('questions.faq', array(
-			'title' => 'SpaceX Questions',
-			'currentPage' => 'questions',
 			'questionCount' => $questions->count(),
 			'questions' => $questions
 		));

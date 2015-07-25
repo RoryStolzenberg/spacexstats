@@ -1,5 +1,8 @@
 @extends('templates.main')
 
+@section('title', 'SpaceX Questions')
+@section('bodyClass', 'questions')
+
 @section('scripts')
 	{{ HTML::script('/assets/js/viewmodels/questionViewModel.js') }}
 	<script type="text/javascript">
