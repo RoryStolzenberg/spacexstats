@@ -1,6 +1,12 @@
 <?php
 
 class ReviewController extends BaseController {
+    private $elasticsearch;
+
+    public function __construct(SpaceXStats\Search\SearchProvider $searchProvider) {
+        $this->elasticsearch = $searchProvider;
+    }
+
     // GET
     public function index() {
         return View::make('missionControl.review.index', array(
@@ -24,8 +30,10 @@ class ReviewController extends BaseController {
             if (Input::get('status') == "Published") {
                 $object->fill(Input::only(['status', 'visibility']));
                 $object->actioned_at = \Carbon\Carbon::now();
-
                 $object->save();
+
+                // Add the object to our elasticsearch node
+                $this->elasticsearch->indexObject($object);
 
             } elseif (Input::get('status') == "Deleted") {
                 $object->delete();

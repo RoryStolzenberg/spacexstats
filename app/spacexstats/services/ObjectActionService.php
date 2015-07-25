@@ -55,7 +55,7 @@ class ObjectActionService implements ActionServiceInterface {
 
     private function createMissionRelation($input) {
         try {
-            $mission = Mission::findOrFail(array_get($input, 'mision_id', null));
+            $mission = Mission::findOrFail(array_get($input, 'mission_id', null));
             $this->object->mission()->associate($mission);
 
         } catch (ModelNotFoundException $e) {

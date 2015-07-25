@@ -1,8 +1,8 @@
 <?php
-class SearchController extends Controller {
+class SearchController extends BaseController {
     private $elasticsearch;
 
-    public function __construct(\SpaceXStats\Search\SearchProvider $searchProvider) {
+    public function __construct(SpaceXStats\Search\SearchProvider $searchProvider) {
         $this->elasticsearch = $searchProvider;
     }
 
@@ -12,7 +12,7 @@ class SearchController extends Controller {
         // Grab the input
 
         // Set the client
-        //$elasticsearch->
+        //$this->elasticsearch->connect()->indices();
 
 
         return View::make('missionControl.search', array(
