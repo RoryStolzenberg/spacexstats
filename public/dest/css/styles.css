@@ -4760,3 +4760,6 @@ section.question-list {
 /* --------------- OBJECT PAGE ----------------- */
 img.object {
   max-width: 100%; }
+
+.actions.container .is-favorited {
+  color: #CCAC55; }

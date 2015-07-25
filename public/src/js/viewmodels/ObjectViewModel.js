@@ -83,10 +83,19 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         self.isFavorited = ko.observable(laravel.isFavorited !== null);
 
         self.toggleFavorite = function() {
-            $.ajax('/missioncontrol/object/' + object_id + '/favorite', {
-                type: 'POST',
-                success: function(response) {
+            if (self.isFavorited() === false) {
+                var requestType = 'POST';
+                self.favorites(self.favorites() + 1);
+            } else if (self.isFavorited() === true) {
+                var requestType = 'DELETE';
+                self.favorites(self.favorites() - 1);
+            }
 
+            self.isFavorited(!self.isFavorited());
+
+            $.ajax('/missioncontrol/objects/' + object_id + '/favorite', {
+                type: requestType,
+                success: function(response) {
                 }
             });
         };

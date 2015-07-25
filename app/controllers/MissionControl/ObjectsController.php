@@ -94,27 +94,30 @@ class ObjectsController extends BaseController {
         return Response::json(false, 401);
     }
 
-    // AJAX POST
+    // AJAX POST/DELETE
     // missioncontrol/objects/{object_id}/favorite
     public function favorite($object_id) {
-        if (Auth::member()) {
-            $favorite = Favorite::where('user_id', Auth::user()->id)->where('object_id', $object_id)->get();
+        if (Auth::isSubscriber()) {
 
-            if ($favorite->count() > 0) {
-                $favorite->delete();
+            // Create Favorite
+            if (Request::isMethod('post')) {
 
-                return Response::json('removed');
-            } else {
-                Favorite::create(array(
-                    'user_id' => Auth::user()->id,
-                    'object_id' => $object_id
-                ));
+                if (Auth::user()->favorites()->count() == 0) {
+                    Favorite::create(array(
+                        'object_id' => $object_id,
+                        'user_id' => Auth::user()->user_id
+                    ));
+                }
 
-                return Response::json('added');
+            // Delete Favorite
+            } elseif (Request::isMethod('delete')) {
+                Auth::user()->favorites()->where('object_id', $object_id)->firstOrFail()->delete();
             }
-        } else {
-            return Response::json();
+
+            return Response::json(true, 200);
         }
+
+        return Response::json(false, 401);
     }
 
     // AJAX POST

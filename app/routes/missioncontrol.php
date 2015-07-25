@@ -68,6 +68,11 @@ Route::group(array('before' => 'mustBe:Subscriber'), function() {
         'as' => 'missionControl.objects.note',
         'uses' => 'ObjectsController@note'
     ));
+
+    Route::any('missioncontrol/objects/{object_id}/favorite', array(
+        'as' => 'missionControl.objects.favorite',
+        'uses' => 'ObjectsController@favorite'
+    ));
 });
 
 Route::get('missioncontrol/objects/{object_id}', array(

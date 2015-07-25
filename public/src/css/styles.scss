@@ -717,3 +717,9 @@ section.question-list {
 img.object {
     max-width:100%;
 }
+
+.actions.container {
+    .is-favorited {
+        color:$gold;
+    }
+}
