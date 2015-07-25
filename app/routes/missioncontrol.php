@@ -63,6 +63,11 @@ Route::group(array('before' => 'mustBe:Subscriber'), function() {
         'as' => 'missionControl.create.submit',
         'uses' => 'UploadController@submit'
     ));
+
+    Route::any('missioncontrol/objects/{object_id}/note', array(
+        'as' => 'missionControl.objects.note',
+        'uses' => 'ObjectsController@note'
+    ));
 });
 
 Route::get('missioncontrol/objects/{object_id}', array(

@@ -60,16 +60,19 @@
                 <p>{{ $object->summary }}</p>
 
                 <h3>Your Note</h3>
+                @if (Auth::isSubscriber())
+                    <div data-bind="visible: noteState() == 'read'">
+                        <p data-bind="text: noteReadText"></p>
+                        <button data-bind="click: changeNoteState, text: noteButtonText"></button>
+                    </div>
 
-                    <!-- ko if: noteState() === 'read' -->
-                    <p>{{ $userNote->note or 'Create a Note!' }}</p>
-                    <button data-bind="click: changeNoteState, text: noteButtonText"></button>
-                    <!-- /ko -->
-
-                    <!-- ko if: noteState() === 'write' -->
-                    <textarea data-bind="getOriginalValue, value: note, valueUpdate: 'afterkeydown'">{{ $userNote->note or null }}</textarea>
-                    <button data-bind="click: saveNote, disable: note().length == 0">Save Note</button>
-                    <!-- /ko -->
+                    <div data-bind="visible: noteState() == 'write'">
+                        <textarea data-bind="getOriginalValue, value: note, valueUpdate: 'afterkeydown'">{{ $userNote->note or null }}</textarea>
+                        <button data-bind="click: saveNote, disable: note().length == 0">Save Note</button>
+                    </div>
+                @else
+                    Sign up for Mission Control to leave personal notes about this.
+                @endif
 
             </section>
 

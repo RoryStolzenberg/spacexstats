@@ -22,7 +22,7 @@ class ObjectsController extends BaseController {
             if (Auth::isSubscriber()) {
                 return View::make('missionControl.objects.get', array(
                     'object' => $object,
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->get()
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->firstOrFail()
                 ));
             }
             return App::abort(401);
@@ -31,7 +31,7 @@ class ObjectsController extends BaseController {
             if (Auth::isAdmin()) {
                 return View::make('missionControl.objects.get', array(
                     'object' => $object,
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->get()
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->firstOrFail()
                 ));
             }
             return App::abort(401);
@@ -49,7 +49,7 @@ class ObjectsController extends BaseController {
     // AJAX POST/PATCH/DELETE
     // missioncontrol/object/{object_id}/note
     public function note($object_id) {
-        if (Auth::member()) {
+        if (Auth::isSubscriber()) {
 
             // Create
             if (Request::isMethod('post')) {
@@ -65,9 +65,9 @@ class ObjectsController extends BaseController {
 
             // Edit
             } elseif (Request::isMethod('patch')) {
-                $usernote = Auth::user()->notes->where('object_id', $object_id);
+                $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->note = Input::get('note', null);
-                $usernote->save();
+                Auth::user()->notes()->save($usernote);
 
                 return Response::json(true, 200);
 

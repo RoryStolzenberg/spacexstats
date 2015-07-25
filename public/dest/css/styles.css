@@ -4072,7 +4072,7 @@ html, body {
 
 body {
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
   left: 0;
   font-size: 14px; }
@@ -4373,7 +4373,6 @@ body, nav {
 h1, h2, h3, h4, h5, h6 {
   font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
   font-weight: 400;
-  padding: 0 10px;
   text-transform: uppercase; }
 
 h1 {
