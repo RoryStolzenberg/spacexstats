@@ -12,6 +12,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         var self = this;
 
+        /* NOTES */
         self.note = ko.observable();
         self.originalNote = ko.observable("");
 
@@ -69,6 +70,17 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 }
             });
         }
+
+        /* FAVORITES */
+        self.favorites = ko.observable(laravel.totalFavorites);
+        self.favoritesText = ko.computed(function() {
+            if (self.favorites() == 1) {
+                return '1 Favorite';
+            } else {
+                return self.favorites() + ' Favorites';
+            }
+        });
+        self.isFavorited = ko.observable(laravel.isFavorited !== null);
 
         self.toggleFavorite = function() {
             $.ajax('/missioncontrol/object/' + object_id + '/favorite', {

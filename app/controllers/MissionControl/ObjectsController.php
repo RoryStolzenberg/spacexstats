@@ -9,7 +9,7 @@ class ObjectsController extends BaseController {
     }
 
     // GET
-    // missioncontrol/object/{object_id}
+    // missioncontrol/objects/{object_id}
     public function get($object_id) {
         $object = Object::find($object_id);
         
@@ -20,6 +20,12 @@ class ObjectsController extends BaseController {
 
         } elseif ($object->visibility == 'Default' && $object->status == 'Published') {
             if (Auth::isSubscriber()) {
+
+                JavaScript::put([
+                    'totalFavorites' => $object->favorites()->count(),
+                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first()
+                ]);
+
                 return View::make('missionControl.objects.get', array(
                     'object' => $object,
                     'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
@@ -29,6 +35,12 @@ class ObjectsController extends BaseController {
 
         } elseif ($object->visibility == 'Hidden' || $object->status == 'Queued' || $object->status == 'New') {
             if (Auth::isAdmin()) {
+
+                JavaScript::put([
+                    'totalFavorites' => $object->favorites()->count(),
+                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first()
+                ]);
+
                 return View::make('missionControl.objects.get', array(
                     'object' => $object,
                     'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
@@ -41,13 +53,13 @@ class ObjectsController extends BaseController {
     }
 
     // GET
-    // missioncontrol/object/{object_id}/edit
+    // missioncontrol/objects/{object_id}/edit
     public function edit($object_id) {
 
     }
 
     // AJAX POST/PATCH/DELETE
-    // missioncontrol/object/{object_id}/note
+    // missioncontrol/objects/{object_id}/note
     public function note($object_id) {
         if (Auth::isSubscriber()) {
 
@@ -83,7 +95,7 @@ class ObjectsController extends BaseController {
     }
 
     // AJAX POST
-    // missioncontrol/object/{object_id}/favorite
+    // missioncontrol/objects/{object_id}/favorite
     public function favorite($object_id) {
         if (Auth::member()) {
             $favorite = Favorite::where('user_id', Auth::user()->id)->where('object_id', $object_id)->get();

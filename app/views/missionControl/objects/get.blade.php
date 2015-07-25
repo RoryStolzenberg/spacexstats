@@ -39,7 +39,8 @@
                             <i class="fa fa-eye"></i> Views
                         </span>
                         <span class="grid-4">
-                            <i class="fa fa-star" data-bind="click: toggleFavorite"></i> Favorites
+                            <i class="fa fa-star" data-bind="css: { isFavorited: isFavorited() == true }, click: toggleFavorite"></i>
+                            <span data-bind="text: favoritesText"></span>
                         </span>
                         <span class="grid-4">
                             <i class="fa fa-download" data-bind="click: download"></i> Downloads
