@@ -23,7 +23,9 @@
                 <ul class="container">
                     <li class="grid-2">{{ $object->present()->type() }}</li>
                     <li class="grid-2">Comments</li>
-                    <li class="grid-2">Edit</li>
+                    @if (Auth::isSubscriber())
+                        <li class="grid-2">Edit</li>
+                    @endif
                 </ul>
             </nav>
 
@@ -69,7 +71,9 @@
                     <div data-bind="visible: noteState() == 'write'">
                         <textarea data-bind="getOriginalValue, value: note, valueUpdate: 'afterkeydown'">{{ $userNote->note or null }}</textarea>
                         <button data-bind="click: saveNote, disable: note().length == 0">Save Note</button>
+                        <!-- ko if: originalNote() != "" -->
                         <button data-bind="click: deleteNote">Delete Note</button>
+                        <!-- /ko -->
                     </div>
                 @else
                     Sign up for Mission Control to leave personal notes about this.

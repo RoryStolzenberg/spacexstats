@@ -60,6 +60,10 @@
 						<td>Favorites</td>
 						<td>{{ $user->favorites->count() }}</td>
 					</tr>
+                    <tr>
+                        <td>Comments</td>
+                        <td>{{ $user->favorites->count() }}</td>
+                    </tr>
 				</table>
 			</div>
 			<div class="grid-8">

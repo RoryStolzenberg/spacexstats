@@ -13,6 +13,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         var self = this;
 
         self.note = ko.observable();
+        self.originalNote = ko.observable("");
 
         self.noteButtonText = ko.computed({ read: function() {
             if (self.note() == "") {
@@ -33,8 +34,9 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         self.noteState = ko.observable('read');
 
         self.changeNoteState = function() {
+            self.originalNote(self.note());
             if (self.noteState() == 'read') {
-                self.originalNote = self.note();
+
                 self.noteState('write');
             } else {
                 self.noteState('read');
@@ -43,7 +45,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
 
         self.saveNote = function() {
-            if (self.originalNote == "") {
+            if (self.originalNote() == "") {
                 var requestType = 'POST';
             } else {
                 var requestType = 'PATCH';
