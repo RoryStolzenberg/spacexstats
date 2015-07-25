@@ -22,7 +22,7 @@ class ObjectsController extends BaseController {
             if (Auth::isSubscriber()) {
                 return View::make('missionControl.objects.get', array(
                     'object' => $object,
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->firstOrFail()
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
                 ));
             }
             return App::abort(401);
@@ -31,7 +31,7 @@ class ObjectsController extends BaseController {
             if (Auth::isAdmin()) {
                 return View::make('missionControl.objects.get', array(
                     'object' => $object,
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->firstOrFail()
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
                 ));
             }
             return App::abort(401);
@@ -73,7 +73,7 @@ class ObjectsController extends BaseController {
 
             // Delete
             } elseif (Request::isMethod('delete')) {
-                $usernote = Auth::user()->notes->where('object_id', $object_id);
+                $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->delete();
 
                 return Response::json(true, 200);

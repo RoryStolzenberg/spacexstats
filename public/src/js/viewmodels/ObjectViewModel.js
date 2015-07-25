@@ -15,7 +15,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         self.note = ko.observable();
 
         self.noteButtonText = ko.computed({ read: function() {
-            if (self.note() == null) {
+            if (self.note() == "") {
                 return 'Create Note';
             } else {
                 return 'Edit Note';
@@ -23,7 +23,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         }, deferEvaluation: true });
 
         self.noteReadText = ko.computed({ read: function() {
-            if (self.note() == null) {
+            if (self.note() == "") {
                 return 'Create a Note!';
             }  else {
                 return self.note();
@@ -43,8 +43,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
 
         self.saveNote = function() {
-            console.log(self.originalNote);
-            if (typeof self.originalNote == 'undefined') {
+            if (self.originalNote == "") {
                 var requestType = 'POST';
             } else {
                 var requestType = 'PATCH';
@@ -54,8 +53,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 type: requestType,
                 data: { note: self.note() },
                 success: function(response) {
-                    console.log(response);
-
                     self.changeNoteState();
                 }
             });
@@ -65,7 +62,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             $.ajax('/missioncontrol/objects/' + object_id + '/note', {
                 type: 'DELETE',
                 success: function(response) {
-                    console.log(response);
+                    self.note("");
+                    self.changeNoteState();
                 }
             });
         }

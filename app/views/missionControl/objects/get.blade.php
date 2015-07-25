@@ -69,6 +69,7 @@
                     <div data-bind="visible: noteState() == 'write'">
                         <textarea data-bind="getOriginalValue, value: note, valueUpdate: 'afterkeydown'">{{ $userNote->note or null }}</textarea>
                         <button data-bind="click: saveNote, disable: note().length == 0">Save Note</button>
+                        <button data-bind="click: deleteNote">Delete Note</button>
                     </div>
                 @else
                     Sign up for Mission Control to leave personal notes about this.
