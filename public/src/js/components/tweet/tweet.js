@@ -1,8 +1,6 @@
 define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, $, htmlString) {
     function TweetViewModel(params) {
 
-        ko.components.register('datetime', { require: 'components/datetime/datetime' });
-
         function Tweet(tweet) {
             this.tweet_id = ko.observable(tweet.id);
             this.tweet_text = ko.observable(tweet.text);

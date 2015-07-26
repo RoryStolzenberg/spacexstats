@@ -47,7 +47,6 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
 
         }, write: function(newValue) {
             params.value(params.value() === null ? new Date().getFullYear() + '00-00 00:00:' + ("0" + newValue).slice(-2) : params.value().substr(0, 17) + ("0" + newValue).slice(-2));
-            console.log(params.value());
 
         }, deferEvaluation: true});
 
@@ -57,7 +56,6 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
 
         }, write: function(newValue) {
             params.value(params.value() === null ? new Date().getFullYear() + '00-00 00:' + ("0" + newValue).slice(-2) + ':00' : params.value().substr(0, 14) + ("0" + newValue).slice(-2) + params.value().substr(16));
-            console.log(params.value());
 
         }, deferEvaluation: true});
 
@@ -67,7 +65,6 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
 
         }, write: function(newValue) {
             params.value(params.value() === null ? new Date().getFullYear() + '00-00 ' + ("0" + newValue).slice(-2) + ':00:00' : params.value().substr(0, 11) + ("0" + newValue).slice(-2) + params.value().substr(13));
-            console.log(params.value());
 
         }, deferEvaluation: true});
 
@@ -81,8 +78,6 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
             } else {
                 params.value(params.value() === null ? new Date().getFullYear() + '00-' + newValue + ' 00:00:00' : params.value().substr(0, 8) + newValue + params.value().substr(10));
             }
-            console.log(params.value());
-
 
         }, deferEvaluation: true});
 
@@ -96,7 +91,6 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
             } else {
                 params.value(params.value() === null ? new Date().getFullYear() + '-' + newValue + '-00 00:00:00' : params.value().substr(0, 5) + newValue + params.value().substr(7));
             }
-            console.log(params.value());
 
         }, deferEvaluation: true});
 
@@ -112,13 +106,11 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
 
             }
 
-            console.log(params.value());
-
         }, deferEvaluation: true});
 
         self.init = (function() {
             if (typeof ko.unwrap(params.value) === 'undefined') {
-                params.value(params.type == 'date' ? new Date().getFullYear() + '-00-00' : new Date().getFullYear() + '-00-00 00:00:00');
+                params.value = ko.observable(params.type == 'date' ? new Date().getFullYear() + '-00-00' : new Date().getFullYear() + '-00-00 00:00:00');
             }
 
             // Days

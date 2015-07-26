@@ -193,6 +193,10 @@ class Spacexstats extends Migration {
             // Third-party-related properties
             $table->string('external_url', Varchar::compact)->nullable();
 
+            // Post-related properties
+            $table->string('publisher', Varchar::compact)->nullable();
+            $table->mediumText('article')->nullable();
+
             $table->enum('status', array('New', 'Queued', 'Published', 'Deleted'));
             $table->enum('visibility', array('Default', 'Public', 'Hidden'));
             $table->boolean('anonymous');

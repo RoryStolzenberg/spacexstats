@@ -434,66 +434,72 @@
 							<tweet params="action: 'create'"></tweet>
 						</fieldset>
 
-						<fieldset class="post-type article" data-bind="visible: postType() == 'article'">
+						<fieldset class="post-type article" data-bind="visible: postType() == 'article', with: article">
                             <label>Article URL</label>
-							<input type="url" name="article-url" id="article-url" />
+							<input type="url" name="article-url" id="article-url" data-bind="text: external_url" />
 
                             <label>Article Date</label>
-							<datetime></datetime>
+                            <datetime params="value: originated_at, type: 'date'"></datetime>
 
                             <label>Article News Source</label>
-							<input type="text" name="article-publisher" id="article-publisher" />
+							<input type="text" name="article-publisher" id="article-publisher" data-bind="text: publisher" />
 
                             <label>Article Author</label>
-							<input type="text" name="article-author" id="article-author" />
+							<input type="text" name="article-author" id="article-author" data-bind="text: author" />
 
                             <label>Article Title</label>
-                            <input type="text" name="article-author" id="article-author" />
+                            <input type="text" name="article-title" id="article-title" data-bind="text: title" />
 
                             <label>Article Text</label>
-							<textarea></textarea>
+							<textarea data-bind="text: article"></textarea>
 
                             <label>Tags</label>
                             <tags params="tags: tags"></tags>
 						</fieldset>
 
-						<fieldset class="post-type pressrelease" data-bind="visible: postType() == 'pressrelease'">
+						<fieldset class="post-type pressrelease" data-bind="visible: postType() == 'pressrelease', with: pressRelease">
                             <label>Press Release URL</label>
-                            <input type="url" name="article-url" id="article-url" />
+                            <input type="url" name="article-url" id="article-url" data-bind="text: external_url" />
 
                             <label>Press Release Date</label>
-                            <datetime></datetime>
+                            <datetime params="value: originated_at, type: 'date'"></datetime>
 
                             <label>Press Release Title</label>
-                            <input type="text" name="article-author" id="article-author" />
+                            <input type="text" name="article-author" id="article-author" data-bind="text: title" />
 
                             <label>Press Release Text</label>
-                            <textarea></textarea>
+                            <textarea data-bind="text: article"></textarea>
 
                             <label>Tags</label>
                             <tags params="tags: tags"></tags>
 						</fieldset>
 
-						<fieldset class="post-type redditcomment" data-bind="visible: postType() == 'redditcomment'">
+						<fieldset class="post-type redditcomment" data-bind="visible: postType() == 'redditcomment', with: redditComment">
                             <label>Permalink URL</label>
-							<input type="url" name="redditcomment-url" id="redditcomment-url">
+							<input type="url" name="redditcomment-url" id="redditcomment-url" data-bind="text: external_url">
+
+                            <label>Comment Title</label>
+                            <input type="text" name="article-author" id="article-author" data-bind="text: title" />
 
                             <label>Tags</label>
                             <tags params="tags: tags"></tags>
 						</fieldset>
 
-						<fieldset class="post-type nsfcomment" data-bind="visible: postType() == 'nsfcomment'">
+						<fieldset class="post-type nsfcomment" data-bind="visible: postType() == 'nsfcomment', with: nsfComment">
                             <label>Comment URL</label>
-							<input type="url" name="nsfcomment-url" id="article-url" />
+							<input type="url" name="nsfcomment-url" id="article-url" data-bind="text: external_url"/>
+
+                            <label>Comment Title</label>
+                            <input type="text" name="article-author" id="article-author" data-bind="text: title" />
 
                             <label>Comment Date</label>
-                            <datetime></datetime>
+                            <datetime params="value: originated_at, type: 'date'"></datetime>
 
                             <label>Comment Author</label>
 							<input type="author" name="nsfcomment-author" id="article-author" />
 
                             <label>Comment</label>
-							<textarea></textarea>
+							<textarea data-bind="text: comment"></textarea>
 
                             <label>Tags</label>
                             <tags params="tags: tags"></tags>

@@ -164,30 +164,46 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             return 'Submit';
         });
 
-        /* Post */
-        self.postType = ko.observable();
-
-        // Submission of data to mission control
-        self.submitToMissionControl = function (formData, contentTypeHeader) {
-            console.log(formData);
-            $.ajax('/missioncontrol/create/submit', {
-                dataType: 'json',
-                type: 'POST',
-                headers: contentTypeHeader,
-                data: { files: formData},
-                success: function () {
-                    window.location = '/missioncontrol';
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });
-        };
-
         self.submitFiles = function (item, event) {
             var contentTypeHeader = {'Submission-Type': 'files'};
             self.submitToMissionControl(koMapping.toJS(self.uploadedFiles), contentTypeHeader);
         };
+
+        /* Post */
+        self.postType = ko.observable();
+
+        self.article = {
+            external_url: ko.observable(null),
+            originated_at: ko.observable(null),
+            publisher: ko.observable(null),
+            author: ko.observable(null),
+            title: ko.observable(null),
+            article: ko.observable(null),
+            tags: ko.observableArray([])
+        }
+
+        self.pressRelease = {
+            external_url: ko.observable(null),
+            originated_at: ko.observable(null),
+            title: ko.observable(null),
+            article: ko.observable(null),
+            tags: ko.observableArray([])
+        }
+
+        self.redditComment = {
+            external_url: ko.observable(null),
+            title: ko.observable(null),
+            tags: ko.observableArray([])
+        }
+
+        self.nsfComment = {
+            external_url: ko.observable(null),
+            originated_at: ko.observable(null),
+            author: ko.observable(null),
+            title: ko.observable(null),
+            comment: ko.observable(null),
+            tags: ko.observableArray([])
+        }
 
         self.submitPost = function (item, event) {
             var postForm = $(event.currentTarget).parent();
@@ -205,7 +221,25 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.submitToMissionControl(formData, contentTypeHeader);
         };
 
+        /* Write */
         self.submitWriting = function (item, event) {
+        };
+
+        // Submission of data to mission control
+        self.submitToMissionControl = function (formData, contentTypeHeader) {
+            console.log(formData);
+            $.ajax('/missioncontrol/create/submit', {
+                dataType: 'json',
+                type: 'POST',
+                headers: contentTypeHeader,
+                data: { files: formData},
+                success: function () {
+                    window.location = '/missioncontrol';
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
         };
     };
 
