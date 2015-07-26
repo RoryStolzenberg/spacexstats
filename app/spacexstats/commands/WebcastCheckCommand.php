@@ -53,7 +53,15 @@ class WebcastCheckCommand extends ScheduledCommand {
 	 */
 	public function fire()
 	{
-		$checker = new WebcastChecker();
-		$checker->check();
+        $livestream = json_decode(file_get_contents('http://xspacexx.api.channel.livestream.com/2.0/livestatus.json'));
+
+        \Redis::hmset('webcast', 'isLive', $livestream->channel->isLive === true ? 'true' : 'false', 'viewers', $livestream->channel->currentViewerCount);
+
+        // Add to Database if livestream is active
+        if ($livestream->channel->isLive === true) {
+            \WebcastStatus::create(array(
+                'viewers' => $livestream->channel->currentViewerCount
+            ));
+        }
 	}
 }

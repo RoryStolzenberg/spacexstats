@@ -128,7 +128,8 @@ return array(
         'Laracasts\Utilities\UtilitiesServiceProvider',
 
 		'SpaceXStats\Composers\ComposerServiceProvider',
-        'SpaceXStats\Validation\ValidationServiceProvider'
+        'SpaceXStats\Validation\ValidationServiceProvider',
+        'SpaceXStats\Search\SearchServiceProvider'
 	),
 
 	/*
@@ -160,7 +161,6 @@ return array(
 		'App'               => 'Illuminate\Support\Facades\App',
 		'Artisan'           => 'Illuminate\Support\Facades\Artisan',
 		'Auth'              => 'Illuminate\Support\Facades\Auth',
-		'AWS'				=> 'Aws\Laravel\AwsFacade',
 		'Blade'             => 'Illuminate\Support\Facades\Blade',
 		'Cache'             => 'Illuminate\Support\Facades\Cache',
 		'ClassLoader'       => 'Illuminate\Support\ClassLoader',
@@ -179,7 +179,6 @@ return array(
 		'Lang'              => 'Illuminate\Support\Facades\Lang',
 		'Log'               => 'Illuminate\Support\Facades\Log',
 		'Mail'              => 'Illuminate\Support\Facades\Mail',
-		'Omnipay' 			=> 'Ignited\LaravelOmnipay\Facades\OmnipayFacade',
 		'Paginator'         => 'Illuminate\Support\Facades\Paginator',
 		'Password'          => 'Illuminate\Support\Facades\Password',
 		'Queue'             => 'Illuminate\Support\Facades\Queue',
@@ -198,6 +197,10 @@ return array(
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
 
+        'AWS'				=> 'Aws\Laravel\AwsFacade',
+        'Omnipay' 			=> 'Ignited\LaravelOmnipay\Facades\OmnipayFacade',
+
+        'Search'            => 'SpaceXStats\Facades\Search'
 	),
 
 );

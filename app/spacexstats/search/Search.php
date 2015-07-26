@@ -4,7 +4,7 @@ namespace SpaceXStats\Search;
 use Elasticsearch\Client;
 use Credential;
 
-class SearchProvider {
+class Search {
     private $elasticSearchClient;
 
     public function __construct() {

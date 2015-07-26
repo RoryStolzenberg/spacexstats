@@ -105,3 +105,13 @@ Auth::extend('roles', function() {
        App::make('session.store')
    );
 });
+
+/*
+|--------------------------------------------------------------------------
+| Extend Auth Facade to provide User Roles
+|--------------------------------------------------------------------------
+|
+| Here I have extended the Auth facade to provide access to useful methods
+| for the checking and validation of user roles in this application.
+|
+*/
