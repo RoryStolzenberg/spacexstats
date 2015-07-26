@@ -421,7 +421,7 @@
 
 				<!-- Post -->
 				<section class="upload-post" data-bind="visible: visibleSection() == 'post'">
-					{{ Form::open(array('url' => '/missioncontrol/create/create', 'method' => 'post')) }}
+					<form>
 						<fieldset class="post-type-selection">
 							<label><input type="radio" name="type" value="tweet" data-bind="checked: postType" />Tweet</label>
                             <label><input type="radio" name="type" value="article" data-bind="checked: postType" />News Article</label>
@@ -500,12 +500,12 @@
 						</fieldset>
 
 						<input type="submit" value="Submit" name="submit" id="post-submit" />
-					{{ Form::close() }}
+					</form>
 				</section>
 				
 				<!-- Update -->
 				<section class="upload-write" data-bind="visible: visibleSection() == 'write'">
-					{{ Form::open(array('url' => '/missioncontrol/create/send', 'method' => 'post')) }}
+					<form>
 						<input type="radio" name="write-mission-related" value="yes">
 						<input type="radio" name="write-mission-related" value="no">
 						<select name="write-mission" id="write-mission-select">
@@ -513,7 +513,7 @@
 						</select>
 						<textarea></textarea>
 						<input type="submit" value="Submit" name="submit" id="write-submit" />
-					{{ Form::close() }}					
+					</form>
 				</section>
 			</main>
 	</div>

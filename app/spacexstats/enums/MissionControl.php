@@ -17,7 +17,7 @@ abstract class MissionControlType {
     const Webpage       = 10;
 
 	// Update
-	const Update		= 11;
+	const Post		    = 11;
 
 	// Private 
 	const Pivot			= 12;
@@ -37,7 +37,7 @@ abstract class MissionControlType {
 			case 9: return 'Comment';
             case 10: return 'Webpage';
 
-			case 11: return 'Update';
+			case 11: return 'Post';
 
 			case 12: return 'Pivot';
 			case 13: return 'Person';
