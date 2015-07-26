@@ -40,3 +40,8 @@ Route::get('missions/{slug}/requestlaunchdatetime', array(
     'as' => 'missions.requestLaunchDateTime',
     'uses' => 'MissionsController@requestLaunchDateTime'
 ))->before('doesMissionExist');
+
+Route::get('missions/{slug}/raw', array(
+    'as' => 'missions.raw',
+    'uses' => 'MissionsController@raw'
+))->before('mustBe:Subscriber|doesMissionExist');

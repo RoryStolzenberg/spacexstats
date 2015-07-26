@@ -61,35 +61,44 @@
                     <li id="launch-video">
                         <span>Watch the Launch</span>
                     </li>
-                    @if(count($mission->missionPatch))
+
+                    @if($mission->missionPatch()->count() == 1)
                     <li id="mission-patch">
                         <img src="{{ $mission->missionPatch->thumb_small }}"/>
                         <span>{{ $mission->name }} Mission Patch</span>
                     </li>
                     @endif
+
                     <li id="press-kit">
                         <span>Press Kit</span>
                     </li>
-                    @if(count($mission->spaceflightFlight))
+
+                    @if($mission->spacecraftFlight()->count() == 1)
                         <li id="cargo-manifest">
                             <span>Cargo Manifest</span>
                         </li>
                     @endif
+
                     <li id="prelaunch-press-conference">
                         <span>Prelaunch Press Conference</span>
                     </li>
+
                     <li id="postlaunch-press-conference">
                         <span>Postlaunch Press Conference</span>
                     </li>
+
                     <li id="reddit-discussion">
                         <span>/r/SpaceX Reddit Live Thread</span>
                     </li>
+
                     <li id="raw-data-download">
-                        <span>Raw Data Download</span>
+                        <span>{{ link_to_route('missions.raw', 'Raw Data Download', $mission->slug) }}</span>
                     </li>
+
                     <li id="mission-collection">
                         <span>{{ $mission->name }} Mission Collection</span>
                     </li>
+
                 </ul>
 			</div>			
 		<h2>Timeline</h2>

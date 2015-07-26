@@ -143,12 +143,39 @@ class MissionsController extends BaseController {
         return Response::json($allMissions);
     }
 
-    /// AJAX POST
+    // AJAX POST
     // /missions/{slug}/requestlaunchdatetime
     public function requestLaunchDateTime($slug) {
         $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
         return Response::json(array('launchDateTime' => $mission->present()->launch_exact()));
+    }
+
+    // AJAX GET
+    // /missions/{slug}/raw
+    public function raw($slug) {
+        $mission = Mission::whereSlug($slug)->first();
+
+        $json = [
+            'json_generated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            'mission_type' => $mission->missionType->name,
+            'launch_date_time' => $mission->launch_date_time,
+            'name' => $mission->name,
+            'contractor' => $mission->contractor,
+            'vehicle' => $mission->vehicle->vehicle,
+            'destination' => $mission->destination->destination,
+            'launch_site' => $mission->launchSite->fullLocation,
+            'summary' => $mission->summary,
+            'status' => $mission->status,
+            'outcome' => $mission->outcome,
+            'fairings_recovered' => $mission->fairings_recovered,
+            'mission_created_at' => $mission->created_at->toDateTimeString()
+        ];
+
+        return Response::make(json_encode($json), 200, array(
+            'Content-type' => 'application/json',
+            'Content-Disposition' => 'attachment;filename="'.$slug.'.json"'
+        ));
     }
 }
  

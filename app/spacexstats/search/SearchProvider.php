@@ -41,7 +41,7 @@ class SearchProvider {
             'status' => $object->status,
             'visibility' => $object->visibility,
             'anonymous' => $object->anonymous,
-            'actioned_at' => $object->actioned_at,
+            'actioned_at' => $object->actioned_at->toDateTimeString(),
             'tags' => $object->tags()->lists('name')
         ];
 
