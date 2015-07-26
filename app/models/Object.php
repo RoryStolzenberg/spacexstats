@@ -23,26 +23,26 @@ class Object extends Eloquent {
         'All' => array(
             'user_id' => 'required|integer|exists:users,user_id',
             'mission_id' => 'integer|exists:missions,mission_id',
-            'type' => 'required|integer'
-        ),
-		'Image' => array(
-			'title' => 'required|varchar:compact',
+            'type' => 'required|integer',
+            'originated_at' => 'required',
+            'title' => 'required|varchar:compact',
             'summary' => 'required|varchar:large',
             'author' => 'required|varchar:small',
-            'attribution' => 'required|varchar:medium',
+            'attribution' => 'required|varchar:medium'
+        ),
+		'Image' => array(
             'ISO' => 'integer',
             'camera_manufacturer' => 'varchar:compact',
             'camera_model' => 'varchar:compact'
 		),
 		'GIF' => array(
-            'title' => 'required|varchar:compact',
-            'summary' => 'required|varchar:large',
-            'author' => 'required|varchar:small',
-            'attribution' => 'required|varchar:medium',
+            'length' => 'required|integer'
 		),
 		'Audio' => array(
+            'length' => 'required|integer'
 		),
 		'Video' => array(
+            'length' => 'required|integer'
 		),
 		'Document' => array(
 		),
@@ -85,7 +85,7 @@ class Object extends Eloquent {
 	public function isValidForSubmission($input) {
 		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);
 
-		$validator = Validator::make($input, $this->submissionRules[$type]);
+		$validator = Validator::make($input, array_merge($this->submissionRules['All'], $this->submissionRules[$type]));
 		return ($validator->passes() ? true : $validator->errors());
 	}
 

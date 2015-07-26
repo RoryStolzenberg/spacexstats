@@ -151,7 +151,7 @@ class MissionsController extends BaseController {
         return Response::json(array('launchDateTime' => $mission->present()->launch_exact()));
     }
 
-    // AJAX GET
+    // GET
     // /missions/{slug}/raw
     public function raw($slug) {
         $mission = Mission::whereSlug($slug)->first();

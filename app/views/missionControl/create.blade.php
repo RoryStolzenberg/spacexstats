@@ -89,11 +89,7 @@
                     </li>
 
                     <li class="grid-6">
-                        {{ Form::date(null, \Carbon\Carbon::now(), 1950, array(
-                            'day' => array('data-bind' => 'value: date'),
-                            'month' => array('data-bind' => 'value: month'),
-                            'year' => array('data-bind' => 'value: year'),
-                        )) }}
+                        <datetime params="value: originated_at, type: 'date'"></datetime>
                     </li>
 
 					<li class="grid-12">
@@ -159,11 +155,7 @@
                     </li>
 
                     <li class="grid-6">
-                        {{ Form::date(null, \Carbon\Carbon::now(), 1950, array(
-                            'day' => array('data-bind' => 'value: date'),
-                            'month' => array('data-bind' => 'value: month'),
-                            'year' => array('data-bind' => 'value: year'),
-                        )) }}
+                        <datetime params="value: originated_at, type: 'date'"></datetime>
                     </li>
 
                     <li class="grid-12">
@@ -229,11 +221,7 @@
                     </li>
 
                     <li class="grid-6">
-                        {{ Form::date(null, \Carbon\Carbon::now(), 1950, array(
-                            'day' => array('data-bind' => 'value: date'),
-                            'month' => array('data-bind' => 'value: month'),
-                            'year' => array('data-bind' => 'value: year'),
-                        )) }}
+                        <datetime params="value: originated_at, type: 'date'"></datetime>
                     </li>
 
                     <li class="grid-12">
@@ -310,11 +298,7 @@
                     </li>
 
                     <li class="grid-6">
-                        {{ Form::date(null, \Carbon\Carbon::now(), 1950, array(
-                            'day' => array('data-bind' => 'value: date'),
-                            'month' => array('data-bind' => 'value: month'),
-                            'year' => array('data-bind' => 'value: year'),
-                        )) }}
+                        <datetime params="value: originated_at, type: 'date'"></datetime>
                     </li>
 
                     <li class="grid-12">
@@ -392,11 +376,7 @@
                     </li>
 
                     <li class="grid-6">
-                        {{ Form::date(null, \Carbon\Carbon::now(), 1950, array(
-                            'day' => array('data-bind' => 'value: date'),
-                            'month' => array('data-bind' => 'value: month'),
-                            'year' => array('data-bind' => 'value: year'),
-                        )) }}
+                        <datetime params="value: originated_at, type: 'date'"></datetime>
                     </li>
 
                     <li class="grid-12">

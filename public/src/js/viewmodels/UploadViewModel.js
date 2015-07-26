@@ -3,6 +3,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         ko.components.register('upload', {require: 'components/upload/upload'});
         ko.components.register('tweet', { require: 'components/tweet/tweet' });
+        ko.components.register('datetime', { require: 'components/datetime/datetime' });
         ko.components.register('rich-select', { require: 'components/rich-select/rich-select'});
         ko.components.register('tags', { require: 'components/tags/tags'});
 
@@ -42,13 +43,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_at = ko.computed(function() {
-                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
-            });
-
-            self.year = ko.observable(null);
-            self.month = ko.observable(null);
-            self.date = ko.observable(null);
+            self.originated_at = ko.observable(null);
         }
 
         function UploadedGif(gif) {
@@ -64,13 +59,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_at = ko.computed(function() {
-                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
-            });
-
-            self.year = ko.observable(null);
-            self.month = ko.observable(null);
-            self.date = ko.observable(null);
+            self.originated_at = ko.observable(null);
         }
 
         function UploadedAudio(audio) {
@@ -86,13 +75,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_at = ko.computed(function() {
-                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
-            });
-
-            self.year = ko.observable(null);
-            self.month = ko.observable(null);
-            self.date = ko.observable(null);
+            self.originated_at = ko.observable(null);
         }
 
         function UploadedVideo(video) {
@@ -109,13 +92,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_at = ko.computed(function() {
-                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
-            });
-
-            self.year = ko.observable(null);
-            self.month = ko.observable(null);
-            self.date = ko.observable(null);
+            self.originated_at = ko.observable(null);
         }
 
         function UploadedDocument(document) {
@@ -132,13 +109,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.attribution = ko.observable(null);
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
-            self.originated_at = ko.computed(function() {
-                return self.year() + '-' + ("0" + self.month()).slice(-2)  + '-' + ("0" + self.date()).slice(-2);
-            });
-
-            self.year = ko.observable(null);
-            self.month = ko.observable(null);
-            self.date = ko.observable(null);
+            self.originated_at = ko.observable(null);
         }
 
         // Switch between "upload", "post", & "write"

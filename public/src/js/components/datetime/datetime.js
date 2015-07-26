@@ -128,7 +128,8 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
             }
 
             // Years
-            var currentYear = new Date().getFullYear();
+            var initialYear = new Date().getFullYear();
+            var currentYear = initialYear;
             if (typeof params.startYear !== 'undefined') {
                 var startYear = params.startYear;
             } else {
@@ -139,6 +140,9 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
                 self.years.push({ value: currentYear, display: currentYear });
                 currentYear--;
             }
+
+            // Set the initial year
+            self.currentYear(initialYear);
         })();
     };
 
