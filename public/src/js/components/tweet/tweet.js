@@ -1,18 +1,19 @@
 define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, $, htmlString) {
     function TweetViewModel(params) {
 
+        ko.components.register('datetime', { require: 'components/datetime/datetime' });
+
         function Tweet(tweet) {
-            this.id = ko.observable(tweet.id);
-            this.text = ko.observable(tweet.text);
-            this.name = ko.observable(tweet.user.name);
-            this.screenName = ko.observable(tweet.user.screen_name);
-            this.createdAt = ko.observable(new Date(tweet.created_at));
+            this.tweet_id = ko.observable(tweet.id);
+            this.tweet_text = ko.observable(tweet.text);
+            this.tweet_user_name = ko.observable(tweet.user.name);
+            this.tweet_user_screen_name = ko.observable(tweet.user.screen_name);
+            this.tweet_created_at = ko.observable(tweet.created_at);
+            this.tweet_parent_id = ko.observable();
             this.images = ko.observableArray(tweet.media.entities);
         }
 
         var self = this;
-
-        self.twitterYears = ko.observableArray([]);
 
         self.action = params.action;
 
@@ -39,16 +40,6 @@ define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, 
         });
 
         self.tweet = ko.observable();
-
-        // Init
-        self.init = (function() {
-            var currentYear = new Date().getFullYear();
-            var startYear = 2006; // Twitter was founded
-
-            while (startYear <= currentYear) {
-                self.twitterYears.push(startYear++);
-            }
-        })();
     }
     return { viewModel: TweetViewModel, template: htmlString };
 });

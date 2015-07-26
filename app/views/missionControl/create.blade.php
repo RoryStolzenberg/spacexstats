@@ -371,6 +371,7 @@
                                 <option value="6">Press Kit</option>
                                 <option value="7">Cargo Manifest</option>
                                 <option value="15">Weather Forecast</option>
+                                <option value="17">License</option>
                             </select>
                         </label>
                     </li>
@@ -434,34 +435,68 @@
 						</fieldset>
 
 						<fieldset class="post-type article" data-bind="visible: postType() == 'article'">
+                            <label>Article URL</label>
 							<input type="url" name="article-url" id="article-url" />
-							<input type="date" name="article-date" id="article-date" />
-							<input type="publisher" name="article-publisher" id="article-publisher" />
-							<input type="author" name="article-author" id="article-author" />
+
+                            <label>Article Date</label>
+							<datetime></datetime>
+
+                            <label>Article News Source</label>
+							<input type="text" name="article-publisher" id="article-publisher" />
+
+                            <label>Article Author</label>
+							<input type="text" name="article-author" id="article-author" />
+
+                            <label>Article Title</label>
+                            <input type="text" name="article-author" id="article-author" />
+
+                            <label>Article Text</label>
 							<textarea></textarea>
+
+                            <label>Tags</label>
+                            <tags params="tags: tags"></tags>
 						</fieldset>
 
 						<fieldset class="post-type pressrelease" data-bind="visible: postType() == 'pressrelease'">
-							<input type="url" name="pressrelease-url" id="pressrelease-url">
-							<input type="date" name="article-date" id="article-date" />
-							<textarea></textarea>
+                            <label>Press Release URL</label>
+                            <input type="url" name="article-url" id="article-url" />
+
+                            <label>Press Release Date</label>
+                            <datetime></datetime>
+
+                            <label>Press Release Title</label>
+                            <input type="text" name="article-author" id="article-author" />
+
+                            <label>Press Release Text</label>
+                            <textarea></textarea>
+
+                            <label>Tags</label>
+                            <tags params="tags: tags"></tags>
 						</fieldset>
 
 						<fieldset class="post-type redditcomment" data-bind="visible: postType() == 'redditcomment'">
-							<input type="url" name="redditcomment-url" id="redditcomment-url">							
+                            <label>Permalink URL</label>
+							<input type="url" name="redditcomment-url" id="redditcomment-url">
+
+                            <label>Tags</label>
+                            <tags params="tags: tags"></tags>
 						</fieldset>
 
 						<fieldset class="post-type nsfcomment" data-bind="visible: postType() == 'nsfcomment'">
+                            <label>Comment URL</label>
 							<input type="url" name="nsfcomment-url" id="article-url" />
-							<input type="date" name="nsfcomment-date" id="article-date" />
+
+                            <label>Comment Date</label>
+                            <datetime></datetime>
+
+                            <label>Comment Author</label>
 							<input type="author" name="nsfcomment-author" id="article-author" />
-							<textarea></textarea>							
-						</fieldset>
 
-						<fieldset class="post-type transcript">
-						</fieldset>
+                            <label>Comment</label>
+							<textarea></textarea>
 
-						<fieldset class="tags">
+                            <label>Tags</label>
+                            <tags params="tags: tags"></tags>
 						</fieldset>
 
 						<input type="submit" value="Submit" name="submit" id="post-submit" />
