@@ -27,7 +27,7 @@ class ReviewController extends BaseController {
                 $object->save();
 
                 // Add the object to our elasticsearch node
-                $this->elasticsearch->indexObject($object);
+                Search::indexObject($object);
 
             } elseif (Input::get('status') == "Deleted") {
                 $object->delete();

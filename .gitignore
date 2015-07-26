@@ -15,4 +15,5 @@ test.log
 *.sublime-project
 *.sublime-workspace
 /.idea
+_ide_helper.php
 
