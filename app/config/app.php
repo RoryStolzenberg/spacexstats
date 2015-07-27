@@ -196,11 +196,12 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+        'Search'            => 'SpaceXStats\Facades\Search',
 
         'AWS'				=> 'Aws\Laravel\AwsFacade',
-        'Omnipay' 			=> 'Ignited\LaravelOmnipay\Facades\OmnipayFacade',
+        'Omnipay' 			=> 'Ignited\LaravelOmnipay\Facades\OmnipayFacade'
 
-        'Search'            => 'SpaceXStats\Facades\Search'
+
 	),
 
 );

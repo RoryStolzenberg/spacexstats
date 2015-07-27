@@ -8,6 +8,8 @@ class SearchController extends BaseController {
         // Set the client
         //$this->elasticsearch->connect()->indices();
 
+        Search::null();
+
 
         return View::make('missionControl.search', array(
 
