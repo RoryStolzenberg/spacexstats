@@ -172,6 +172,16 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         /* Post */
         self.postType = ko.observable();
 
+        self.tweet = {
+            tweet_text: ko.observable(null),
+            tweet_user_profile_image_url: ko.observable(null),
+            tweet_user_screen_name: ko.observable(null),
+            tweet_user_name: ko.observable(null),
+            tweet_created_at: ko.observable(null),
+            tweet_images: ko.observableArray([]),
+            tags: ko.observableArray([])
+        };
+
         self.article = {
             external_url: ko.observable(null),
             originated_at: ko.observable(null),

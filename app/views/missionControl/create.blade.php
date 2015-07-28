@@ -431,7 +431,7 @@
 						</fieldset>
 
 						<fieldset class="post-type tweet" data-bind="visible: postType() == 'tweet'">
-							<tweet params="action: 'create'"></tweet>
+							<tweet params="action: 'write', tweet: tweet"></tweet>
 						</fieldset>
 
 						<fieldset class="post-type article" data-bind="visible: postType() == 'article', with: article">

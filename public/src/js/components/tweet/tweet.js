@@ -1,18 +1,9 @@
-define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, $, htmlString) {
+define(['knockout', 'moment', 'jquery', 'text!components/tweet/tweet.html'], function(ko, moment, $, htmlString) {
     function TweetViewModel(params) {
-
-        function Tweet(tweet) {
-            this.tweet_id = ko.observable(tweet.id);
-            this.tweet_text = ko.observable(tweet.text);
-            this.tweet_user_name = ko.observable(tweet.user.name);
-            this.tweet_user_screen_name = ko.observable(tweet.user.screen_name);
-            this.tweet_created_at = ko.observable(tweet.created_at);
-            this.tweet_parent_id = ko.observable();
-            this.images = ko.observableArray(tweet.media.entities);
-        }
 
         var self = this;
 
+        self.tweet = params.tweet;
         self.action = params.action;
 
         self.tweetUrl = ko.observable();
@@ -29,15 +20,19 @@ define(['knockout', 'jquery', 'text!components/tweet/tweet.html'], function(ko, 
                     dataType: 'json',
                     type: 'GET',
                     success: function (response) {
-                        self.tweet(new Tweet(response));
+                        self.tweet.tweet_text(response.text);
+                        self.tweet.tweet_user_profile_image_url(response.user.profile_image_url.replace("_normal", ""));
+                        self.tweet.tweet_user_screen_name(response.user.screen_name);
+                        self.tweet.tweet_user_name(response.user.name);
+                        self.tweet.tweet_created_at(moment(response.created_at).format());
+                        self.tweet.tweet_images(response.entities.media);
                     }
                 });
             }
             // Allow default action
             return true;
         });
-
-        self.tweet = ko.observable();
     }
+
     return { viewModel: TweetViewModel, template: htmlString };
 });

@@ -176,6 +176,7 @@ class Spacexstats extends Migration {
             // Twitter-related properties
             $table->string('tweet_id', Varchar::small)->nullable();
             $table->datetime('tweet_created_at')->nullable(); // Optional second, minute, hour, day, month
+            $table->string('tweet_user_profile_image_url', Varchar::compact)->nullable();
             $table->string('tweet_user_screen_name', Varchar::small)->nullable();
             $table->string('tweet_user_name', Varchar::small)->nullable();
             $table->string('tweet_text', Varchar::compact)->nullable();
