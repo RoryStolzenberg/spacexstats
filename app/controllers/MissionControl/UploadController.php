@@ -13,17 +13,34 @@ class UploadController extends BaseController {
 		return View::make('missionControl.create', array(
 			'title' => 'Upload',
 			'currentPage' => 'upload',
-			'missions' => Mission::all() // Provide all missions for the rich Select dropdown
+			'missions' => Mission::all(), // Provide all missions for the rich Select dropdown
+            'tags' => Tag::all() // Provide all tags for the tagger component
 		));
 	}	
 
 	// AJAX POST
-	public function upload() {
-		$uploads = [];
-		$errors = [];
+	public function upload()
+    {
+        // New way of uploading
+        if (!empty(Input::all())) {
+
+            $files = Input::file('file');
+
+            $upload = Upload::check($files);
+
+            if ($upload->hasErrors()) {
+                return Response::json($upload->getErrors());
+            }
+
+            $objects = $upload->make();
+            return Response::json($objects);
+
+        }
+        return Response::json(false, 400);
+    }
 
 		// Check if there is actually something in the POST
-		if (empty(Input::all())) {
+		/*if (empty(Input::all())) {
 			return Response::json(null, 400);
 		} else {
 			$i = 0;
@@ -49,8 +66,7 @@ class UploadController extends BaseController {
 			} else {
 				return Response::json(['errors' => $errors]);
 			}	
-		}
-	}
+		}*/
 
 	// AJAX POST
 	public function submit() {

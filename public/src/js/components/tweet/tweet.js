@@ -3,6 +3,23 @@ define(['knockout', 'moment', 'jquery', 'text!components/tweet/tweet.html'], fun
 
         var self = this;
 
+        function Image(image) {
+            var self = this;
+            koMapping.fromJS(image, {
+                include: ['title', 'summary', 'subtype', 'tags', 'originated_at', 'mission_id', 'author', 'attribution', 'anonymous']
+            }, this);
+
+            self.title = ko.observable(null);
+            self.summary = ko.observable(null);
+            self.subtype = ko.observable(null);
+            self.mission_id = ko.observable(null);
+            self.author = ko.observable(null);
+            self.attribution = ko.observable(null);
+            self.anonymous = ko.observable(false);
+            self.tags = ko.observableArray([]);
+            self.originated_at = ko.observable(null);
+        }
+
         self.tweet = params.tweet;
         self.action = params.action;
 
@@ -25,7 +42,10 @@ define(['knockout', 'moment', 'jquery', 'text!components/tweet/tweet.html'], fun
                         self.tweet.tweet_user_screen_name(response.user.screen_name);
                         self.tweet.tweet_user_name(response.user.name);
                         self.tweet.tweet_created_at(moment(response.created_at).format());
-                        self.tweet.tweet_images(response.entities.media);
+
+                        response.entities.media.forEach(function(image) {
+                           self.tweet.images.push(new Image());
+                        });
                     }
                 });
             }

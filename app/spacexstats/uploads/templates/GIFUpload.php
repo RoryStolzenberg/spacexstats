@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\UploadTemplates;
+namespace SpaceXStats\Uploads\Templates;
 
 use GifFrameExtractor\GifFrameExtractor as GifFrameExtractor;
 use SpaceXStats\Enums\MissionControlType as MissionControlType;

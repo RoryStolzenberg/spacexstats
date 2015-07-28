@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\UploadTemplates;
+namespace SpaceXStats\Uploads\Templates;
 
 abstract class GenericUpload {
 	protected $file,
