@@ -51,7 +51,6 @@ class Upload {
             foreach ($this->objects as $object) {
                 $object->addToMissionControl();
             }
-
         } else {
             throw new Exception("We cannot add an object to Mission Control when the files array has errors");
         }

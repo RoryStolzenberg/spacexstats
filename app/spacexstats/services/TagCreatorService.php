@@ -3,7 +3,7 @@ namespace SpaceXStats\Services;
 
 use \Tag;
 
-class TagActionService implements ActionServiceInterface {
+class TagCreatorService implements CreatorServiceInterface {
     protected $tag, $errors;
 
     public function __construct(Tag $tag) {

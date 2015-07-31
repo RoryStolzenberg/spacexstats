@@ -49,13 +49,9 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         $video = $this->ffmpeg->open($this->directory['full'] . $this->fileinfo['filename']);
         $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($frameExtractionPoint));
 
-        // Save the frame
-        $frame->save($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
-
         // create an Imagick instance
-        $image = new \Imagick($this->getImagickSafeDirectory('frames') . $this->fileinfo['filename_without_extension'] . '.jpg');
-        $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-        $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
+        $frame->thumbnailImage($lengthDimension, $lengthDimension, true);
+        $frame->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
 
         return $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg';
     }

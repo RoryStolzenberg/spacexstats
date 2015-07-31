@@ -118,17 +118,11 @@ define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], f
 
         // Fetch the available tags to use
         self.init = (function() {
-            $.ajax('/tags/all', {
-                method: 'GET',
-                success: function(tags) {
-
-                    koMapping.fromJS(tags, {
-                        create: function(options) {
-                            return new Tag(options.data);
-                        }
-                    }, self.availableTags);
+            koMapping.fromJS(laravel.tags, {
+                create: function(options) {
+                    return new Tag(options.data);
                 }
-            });
+            }, self.availableTags);
         })();
     }
 

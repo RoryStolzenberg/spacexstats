@@ -7,12 +7,12 @@ use \Object;
 use \Tag;
 use \Mission;
 
-class ObjectActionService implements ActionServiceInterface {
-    protected $object, $tagActioner, $errors;
+class ObjectCreatorService implements CreatorServiceInterface {
+    protected $object, $tagCreator, $errors;
 
-    public function __construct(\Object $object, TagActionService $tagActioner) {
+    public function __construct(\Object $object, TagCreatorService $tagCreator) {
         $this->object = $object;
-        $this->tagActioner = $tagActioner;
+        $this->tagCreator = $tagCreator;
     }
 
     public function isValid($input) {

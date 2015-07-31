@@ -1,20 +1,23 @@
 <?php
-use SpaceXStats\Library\FileChecker;
-use SpaceXStats\Services\ObjectActionService;
+use SpaceXStats\Services\ObjectCreatorService;
 
 class UploadController extends BaseController {
     protected $objectActioner;
 
-    public function __construct(ObjectActionService $objectActioner) {
-        $this->objectActioner = $objectActioner;
+    public function __construct(ObjectCreatorService $objectCreator) {
+        $this->objectCreator = $objectCreator;
     }
 
 	public function show() {
+
+        JavaScript::put([
+            'tags' => Tag::all()
+        ]);
+
 		return View::make('missionControl.create', array(
 			'title' => 'Upload',
 			'currentPage' => 'upload',
 			'missions' => Mission::all(), // Provide all missions for the rich Select dropdown
-            'tags' => Tag::all() // Provide all tags for the tagger component
 		));
 	}	
 
@@ -24,7 +27,6 @@ class UploadController extends BaseController {
         if (!empty(Input::all())) {
 
             $files = Input::file('file');
-
             $upload = Upload::check($files);
 
             if ($upload->hasErrors()) {
@@ -36,35 +38,6 @@ class UploadController extends BaseController {
         }
         return Response::json(false, 400);
     }
-
-		// Check if there is actually something in the POST
-		/*if (empty(Input::all())) {
-			return Response::json(null, 400);
-		} else {
-			$i = 0;
-
-			$files = Input::file('file');
-
-			// Iterate over each file
-			foreach ($files as $file) {
-				$errors[$i] = FileChecker::errors($file);
-				$uploads[$i] = FileChecker::create($file);
-				$i++;
-			}
-
-			// if errors array is empty
-			if (!array_filter($errors)) {
-				$objects = [];
-
-				foreach ($uploads as $upload) {
-					$objects[] = $upload->addToMissionControl();
-				}
-
-				return Response::json(['objects' => $objects]);
-			} else {
-				return Response::json(['errors' => $errors]);
-			}	
-		}*/
 
 	// AJAX POST
 	public function submit() {
