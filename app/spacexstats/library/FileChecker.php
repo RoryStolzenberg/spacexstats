@@ -11,8 +11,7 @@ class FileChecker {
 		'image' => array('image/jpeg', 'image/pjpeg', 'image/png'),
 		'gif' => array('image/gif'),
 		'video' => array('video/mp4', 'video/mpeg'),
-		'document' => array('application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-            'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/plain', 'text/rtf', 'application/rtf'),
+		'document' => array(),
 		'audio' => array('audio/mp3', 'audio/mpeg')
 	);
 
@@ -84,9 +83,6 @@ class FileChecker {
 			$errors[] = "UPLOAD_ERR_MISMATCH";
 		}
 
-		// If it's an image, check the image dimensions are between 100 & 10000 pixels
-		//if (self)
-		
 		if ($returnErrors && isset($errors)) {
 			// return the errors directly
 			return $errors;

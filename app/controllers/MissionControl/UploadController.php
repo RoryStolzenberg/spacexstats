@@ -21,7 +21,6 @@ class UploadController extends BaseController {
 	// AJAX POST
 	public function upload()
     {
-        // New way of uploading
         if (!empty(Input::all())) {
 
             $files = Input::file('file');
@@ -34,7 +33,6 @@ class UploadController extends BaseController {
 
             $objects = $upload->make();
             return Response::json($objects);
-
         }
         return Response::json(false, 400);
     }
