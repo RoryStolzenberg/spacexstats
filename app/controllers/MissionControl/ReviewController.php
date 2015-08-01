@@ -33,7 +33,7 @@ class ReviewController extends BaseController {
                         'Body' => fopen(public_path() . $object->media, 'rb'),
                         'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
                     ]);
-                    unlink($object->media);
+                    unlink(public_path() . $object->media);
                 }
 
                 if ($object->hasThumbs()) {
@@ -44,7 +44,7 @@ class ReviewController extends BaseController {
                         'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
                         'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
                     ]);
-                    unlink($object->media_thumb_large);
+                    unlink(public_path() . $object->media_thumb_large);
 
                     $s3->putObject([
                         'Bucket' => Credential::AWSS3BucketSmallThumbs,
@@ -53,7 +53,7 @@ class ReviewController extends BaseController {
                         'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
                         'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
                     ]);
-                    unlink($object->media_thumb_small);
+                    unlink(public_path() . $object->media_thumb_small);
                 }
 
                 $object->fill(Input::only(['status', 'visibility']));
