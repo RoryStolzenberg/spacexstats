@@ -9,7 +9,7 @@ class Object extends Eloquent {
     public $timestamps = true;
 
 	protected $hidden = [];
-    protected $appends = [];
+    protected $appends = ['media', 'media_thumb_large', 'media_thumb_small'];
 	protected $fillable = [];
 	protected $guarded = [];
 
@@ -58,7 +58,11 @@ class Object extends Eloquent {
 
     // Functions
     public function hasFile() {
-        return !is_null($this->filename) || !is_null($this->thumb_small) || !is_null($this->thumb_large);
+        return !is_null($this->filename);
+    }
+
+    public function hasThumbs() {
+        return !is_null($this->thumb_filename) && $this->thumb_filename !== "audio.png" && $this->thumb_filename !== "document.png";
     }
 
 	// Relations
@@ -112,16 +116,46 @@ class Object extends Eloquent {
     }
 
     // Attribute accessors
-    public function getFilenameAttribute($value) {
-        return '/media/full/'.$value;
+    public function getMediaAttribute() {
+        if (!empty($this->filename)) {
+            if ($this->status == 'Published') {
+
+            } elseif ($this->status == 'Queued' || $this->status == 'New') {
+                return '/media/full/' . $this->filename;
+            }
+        }
+        return null;
     }
 
-    public function getThumbSmallAttribute($value) {
-        return '/'.$value;
+    public function getMediaThumbSmallAttribute() {
+        if (!empty($this->thumb_filename)) {
+            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png') {
+                return '/media/small/audio.png';
+            } else {
+                if ($this->status == 'Published') {
+
+                } elseif ($this->status == 'Queued' || $this->status == 'New') {
+                    return '/media/small/' . $this->thumb_filename;
+                }
+            }
+        }
+        return null;
+        return '/media/small/' . $this->thumb_filename;
     }
 
-    public function getThumbLargeAttribute($value) {
-        return '/'.$value;
+    public function getMediaThumbLargeAttribute() {
+        if (!empty($this->thumb_filename)) {
+            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png') {
+                return '/media/large/audio.png';
+            } else {
+                if ($this->status == 'Published') {
+
+                } elseif ($this->status == 'Queued' || $this->status == 'New') {
+                    return '/media/large/' . $this->thumb_filename;
+                }
+            }
+        }
+        return null;
     }
 
     public function getQueueTimeAttribute() {

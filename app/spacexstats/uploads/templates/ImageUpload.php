@@ -14,6 +14,8 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 
 	// Add the image to mission control after being uploaded
 	public function addToMissionControl() {
+        $this->setThumbnails();
+
 		return \Object::create(array(
 			'user_id' => \Auth::id(),
 			'type' => MissionControlType::Image,
@@ -21,9 +23,8 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 			'filetype' => $this->fileinfo['filetype'],
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
-			'filename' => $this->directory['full'] . $this->fileinfo['filename'],
-            'thumb_large' => $this->setThumbnail('large'),
-            'thumb_small' => $this->setThumbnail('small'),
+			'filename' => $this->fileinfo['filename'],
+            'thumb_filename' => $this->fileinfo['filename'],
             'cryptographic_hash' => $this->getCryptographicHash(),
 			'dimension_width' => $this->getDimensions('width'),
 			'dimension_height' => $this->getDimensions('height'),
@@ -39,16 +40,18 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 	}
 
     // Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
-	private function setThumbnail($size) {
-		$lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
+    private function setThumbnails() {
+        $thumbnailsToCreate = ['small', 'large'];
 
-		// create an Imagick instance
-		$image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
-		$image->thumbnailImage($lengthDimension, $lengthDimension, true);
-		$image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename']);
+        foreach ($thumbnailsToCreate as $size) {
+            $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
-		return $this->directory[$size] . $this->fileinfo['filename'];
-	}
+            // create an Imagick instance
+            $image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
+            $image->thumbnailImage($lengthDimension, $lengthDimension, true);
+            $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename']);
+        }
+    }
 
 	// get the dimensions of an image
 	private function getDimensions($dimension) {

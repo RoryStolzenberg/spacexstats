@@ -11,6 +11,8 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 
 	// Add the image to mission control after being uploaded
     public function addToMissionControl() {
+        $this->setThumbnails();
+
 		return \Object::create(array(
 			'user_id' => \Auth::id(),
 			'type' => MissionControlType::GIF,
@@ -18,9 +20,8 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 			'filetype' => $this->fileinfo['filetype'],
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
-			'filename' => $this->directory['full'] . $this->fileinfo['filename'],
-            'thumb_large' => $this->setThumbnail('large'),
-            'thumb_small' => $this->setThumbnail('small'),
+            'filename' => $this->fileinfo['filename'],
+            'thumb_filename' => $this->getThumbnail(),
             'cryptographic_hash' => $this->getCryptographicHash(),
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
@@ -30,31 +31,36 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 	}
 
     // Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
-	private function setThumbnail($size) {
-		$lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
-        $gifFilePath = $this->directory['full'] . $this->fileinfo['filename'];
+	private function setThumbnails() {
+        $thumbnailsToCreate = ['small', 'large'];
+        foreach ($thumbnailsToCreate as $size) {
+            $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
+            $gifFilePath = $this->directory['full'] . $this->fileinfo['filename'];
 
-        $gfe = new GifFrameExtractor();
-        $gfe->extract($gifFilePath);
+            $gfe = new GifFrameExtractor();
+            $gfe->extract($gifFilePath);
 
-        $gifFrames = $gfe->getFrameImages();
+            $gifFrames = $gfe->getFrameImages();
 
-        // Grab a frame approximately 10% of the way through the GIF
-        $resource = $gifFrames[(int)round(count($gifFrames) / 10)];
+            // Grab a frame approximately 10% of the way through the GIF
+            $resource = $gifFrames[(int)round(count($gifFrames) / 10)];
 
-        // Convert img GD resource into an image for imagick
-        ob_start();
-        imagejpeg($resource);
-        $blob = ob_get_clean();
+            // Convert img GD resource into an image for imagick
+            ob_start();
+            imagejpeg($resource);
+            $blob = ob_get_clean();
 
-        // Turn Gif frame into thumbnail
-		$image = new \Imagick();
-        $image->readImageBlob($blob);
-		$image->thumbnailImage($lengthDimension, $lengthDimension, true);
-		$image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
-
-		return $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg';
+            // Turn Gif frame into thumbnail
+            $image = new \Imagick();
+            $image->readImageBlob($blob);
+            $image->thumbnailImage($lengthDimension, $lengthDimension, true);
+            $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
+        }
 	}
+
+    private function getThumbnail() {
+        return $this->fileinfo['filename_without_extension'] . '.jpg';
+    }
 
     private function getDimensions($dimension) {
         $image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);

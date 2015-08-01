@@ -21,6 +21,8 @@ class VideoUpload extends GenericUpload implements UploadInterface {
     }
 
     public function addToMissionControl() {
+        $this->setThumbnails();
+
         return \Object::create(array(
             'user_id' => \Auth::id(),
             'type' => MissionControlType::Video,
@@ -28,9 +30,8 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             'filetype' => $this->fileinfo['filetype'],
             'mimetype' => $this->fileinfo['mime'],
             'original_name' => $this->fileinfo['original_name'],
-            'filename' => $this->directory['full'] . $this->fileinfo['filename'],
-            'thumb_large' => $this->setThumbnail('large'),
-            'thumb_small' => $this->setThumbnail('small'),
+            'filename' => $this->fileinfo['filename'],
+            'thumb_filename' => $this->getThumbnail(),
             'cryptographic_hash' => $this->getCryptographicHash(),
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
@@ -39,21 +40,27 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         ));
     }
 
-    private function setThumbnail($size) {
-        $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
+    private function setThumbnails() {
+        $thumbnailsToCreate = ['small', 'large'];
 
-        // Set the point in the video to extract the frame at approximately 10% of the video length;
-        $frameExtractionPoint = (int)round($this->getLength() / 10);
+        foreach ($thumbnailsToCreate as $size) {
+            $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
-        // Open the video and extract a frame at 10% of the video's duration
-        $video = $this->ffmpeg->open($this->directory['full'] . $this->fileinfo['filename']);
-        $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($frameExtractionPoint));
+            // Set the point in the video to extract the frame at approximately 10% of the video length;
+            $frameExtractionPoint = (int)round($this->getLength() / 10);
 
-        // create an Imagick instance
-        $frame->thumbnailImage($lengthDimension, $lengthDimension, true);
-        $frame->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
+            // Open the video and extract a frame at 10% of the video's duration
+            $video = $this->ffmpeg->open($this->directory['full'] . $this->fileinfo['filename']);
+            $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($frameExtractionPoint));
 
-        return $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg';
+            // create an Imagick instance
+            $frame->thumbnailImage($lengthDimension, $lengthDimension, true);
+            $frame->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
+        }
+    }
+
+    private function getThumbnail() {
+        return $this->fileinfo['filename_without_extension'] . '.jpg';
     }
 
     private function getDimensions($dimension) {

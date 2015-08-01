@@ -16,7 +16,7 @@
 
     <script type="text/html" id="object-review-template">
         <tr>
-            <td><img data-bind="attr: { src: thumb_small }" /></td>
+            <td><img data-bind="attr: { src: media_thumb_small }" /></td>
             <td><a data-bind="text: title, attr : { href: linkToObject }"></a></td>
             <td data-bind="text: textType"></td>
             <td data-bind="text: textSubtype"></td>

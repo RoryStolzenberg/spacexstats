@@ -112,3 +112,29 @@ $breakpointsReversed: ($xxlarge, $xlarge, $large, $medium, $small);
         display:inherit;
     }
 }
+
+@mixin hide-when-larger-than($selectedBreakpoint) {
+    $seen: false;
+    @each $breakpoint in $breakpoints {
+        @if $seen {
+            @include hide-only-for($breakpoint);
+        }
+
+        @if $selectedBreakpoint == $breakpoint {
+            $seen: true;
+        }
+    }
+}
+
+@mixin hide-when-smaller-than($selectedBreakpoint) {
+    $seen: false;
+    @each $breakpoint in $breakpointsReversed {
+        @if $seen {
+            @include hide-only-for($breakpoint);
+        }
+
+        @if $selectedBreakpoint == $breakpoint {
+            $seen: true;
+        }
+    }
+}

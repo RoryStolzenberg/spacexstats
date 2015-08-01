@@ -16,7 +16,7 @@
     <!-- Knockout Templates -->
 	<script type="text/html" id="uploaded-files-template">
 		<li class="uploaded-file" data-bind="attr: { 'data-index': $index }, click: $root.changeVisibleTemplate">
-            <img data-bind="attr: { src: thumb_small }"/><br/>
+            <img data-bind="attr: { src: media_thumb_small }"/><br/>
             <span data-bind="text: original_name"></span>
         </li>
 	</script>
@@ -27,7 +27,7 @@
 			<form>
 				<ul class="container">
 					<li class="grid-4">
-						<img data-bind="attr : { src: thumb_small, alt: original_name }">
+						<img data-bind="attr: { src: media_thumb_small, alt: media_thumb_small }" />
 					</li>
 
 					<li class="grid-4">
@@ -108,7 +108,7 @@
             <form>
                 <ul class="container">
                     <li class="grid-4">
-                        <img data-bind="attr : { src: thumb_small, alt: original_name }">
+                        <img data-bind="attr : { src: media_thumb_small, alt: media_thumb_small }">
                     </li>
 
                     <li class="grid-4">
@@ -174,7 +174,7 @@
             <form>
                 <ul class="container">
                     <li class="grid-4">
-                        <img data-bind="attr : { src: thumb_small, alt: original_name }">
+                        <img data-bind="attr : { src: media_thumb_small, alt: media_thumb_small }">
                     </li>
 
                     <li class="grid-4">
@@ -240,7 +240,7 @@
             <form>
                 <ul class="container">
                     <li class="grid-4">
-                        <img data-bind="attr : { src: thumb_small, alt: original_name }">
+                        <img data-bind="attr : { src: media_thumb_small, alt: media_thumb_small }">
                     </li>
 
                     <li class="grid-4">
@@ -317,7 +317,7 @@
             <form>
                 <ul class="container">
                     <li class="grid-4">
-                        <img data-bind="attr : { src: thumb_small, alt: original_name }">
+                        <img data-bind="attr : { src: media_thumb_small, alt: media_thumb_small }">
                     </li>
 
                     <li class="grid-4">
