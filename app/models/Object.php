@@ -65,6 +65,41 @@ class Object extends Eloquent {
         return !is_null($this->thumb_filename) && $this->thumb_filename !== "audio.png" && $this->thumb_filename !== "document.png";
     }
 
+    public function putToS3() {
+        $s3 = AWS::get('s3');
+
+        if ($this->hasFile()) {
+            $s3->putObject([
+                'Bucket' => Credential::AWSS3Bucket,
+                'Key' => $this->filename,
+                'Body' => fopen(public_path() . $this->media, 'rb'),
+                'ACL' =>  \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
+            ]);
+
+            unlink(public_path() . $this->media);
+        }
+
+        if ($this->hasThumbs()) {
+            $s3->putObject([
+                'Bucket' => Credential::AWSS3BucketLargeThumbs,
+                'Key' => $this->thumb_filename,
+                'Body' => fopen(public_path() . $this->media_thumb_large, 'rb'),
+                'ACL' =>  \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
+                'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
+            ]);
+            unlink(public_path() . $this->media_thumb_large);
+
+            $s3->putObject([
+                'Bucket' => Credential::AWSS3BucketSmallThumbs,
+                'Key' => $this->thumb_filename,
+                'Body' => fopen(public_path() . $this->media_thumb_small, 'rb'),
+                'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
+                'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
+            ]);
+            unlink(public_path() . $this->media_thumb_small);
+        }
+    }
+
 	// Relations
 	public function mission() {
 		return $this->belongsTo('Mission');
@@ -119,6 +154,8 @@ class Object extends Eloquent {
     public function getMediaAttribute() {
         if (!empty($this->filename)) {
             if ($this->status == 'Published') {
+                $s3 = AWS::get('s3');
+                $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes');
 
             } elseif ($this->status == 'Queued' || $this->status == 'New') {
                 return '/media/full/' . $this->filename;
@@ -133,6 +170,8 @@ class Object extends Eloquent {
                 return '/media/small/audio.png';
             } else {
                 if ($this->status == 'Published') {
+                    $s3 = AWS::get('s3');
+                    $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/small/' . $this->thumb_filename;
@@ -149,6 +188,8 @@ class Object extends Eloquent {
                 return '/media/large/audio.png';
             } else {
                 if ($this->status == 'Published') {
+                    $s3 = AWS::get('s3');
+                    $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/large/' . $this->thumb_filename;
