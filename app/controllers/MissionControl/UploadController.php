@@ -60,7 +60,7 @@ class UploadController extends BaseController {
 
 				// add all objects to db
 				for ($i = 0; $i < count($files); $i++) {
-                    $this->objectActioner->create($files[$i]);
+                    $this->objectCreator->create($files[$i]);
                 }
 
 				// redirect to mission control

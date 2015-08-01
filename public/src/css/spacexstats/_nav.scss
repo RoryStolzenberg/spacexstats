@@ -1,0 +1,56 @@
+header > nav {
+    @include gridle_state(small) {
+        width:250px;
+        height:100%;
+        position:fixed;
+        top:0;
+        left:-250px;
+        background-color:$lightblack;
+        text-align:left;
+    }
+
+    @include gridle(9);
+    @include gridle(10, large);
+    @include gridle(11, xlarge);
+    height:100%;
+
+    ul {
+        @include gridle_container();
+        cursor:pointer;
+
+    }
+}
+
+li > ul.nav-second-tier {
+    display:none;
+}
+
+li:hover {
+    background-color:rgba($white,0.1);
+}
+
+li:hover > ul.nav-second-tier, li > ul.nav-second-tier:hover {
+    display:block;
+    background-color:$white;
+    color:$slateblack;
+    z-index:300;
+    position:relative;
+    box-shadow:10px 10px 15px rgba($lightblack, 0.2);
+}
+
+.wide {
+    width:250%;
+}
+
+body, nav {
+    @include transitionMed(left);
+}
+
+/* Mobile navigation */
+.nav-open {
+    left:250px;
+
+    nav {
+        left:0;
+    }
+}

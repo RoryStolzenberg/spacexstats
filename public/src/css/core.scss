@@ -1,7 +1,7 @@
 /* --------------- COLOR SWATCHES ----------------- */
 $slateblack:	rgb(24,28,31);
 $lightblack:	#21272B;
-$blue:			#4050C0;
+$blue:			#3569A4;
 $october:		#33495E;
 $grey: 			#888;
 $bordergrey: 	#CCC;
@@ -110,31 +110,5 @@ $breakpointsReversed: ($xxlarge, $xlarge, $large, $medium, $small);
 @mixin show-only-for($breakpoint) {
     @media #{$breakpoint} {
         display:inherit;
-    }
-}
-
-@mixin hide-when-larger-than($selectedBreakpoint) {
-    $seen: false;
-    @each $breakpoint in $breakpoints {
-        @if $seen {
-            @include hide-only-for($breakpoint);
-        }
-
-        @if $selectedBreakpoint == $breakpoint {
-            $seen: true;
-        }
-    }
-}
-
-@mixin hide-when-smaller-than($selectedBreakpoint) {
-    $seen: false;
-    @each $breakpoint in $breakpointsReversed {
-        @if $seen {
-            @include hide-only-for($breakpoint);
-        }
-
-        @if $selectedBreakpoint == $breakpoint {
-            $seen: true;
-        }
     }
 }

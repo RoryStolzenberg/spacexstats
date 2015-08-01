@@ -1,0 +1,72 @@
+.header-wrapper {
+    width:100%;
+    background-color:$blue;
+    height:200px;
+    position:absolute;
+    box-shadow:0 0 15px rgba($slateblack, 0.5);
+
+    header {
+        @include gridle_container();
+        max-width:1400px;
+        padding:0 5px;
+        width:100%;
+        margin:0 auto;
+        font-family:$notoSans;
+        color:$white;
+        z-index:100;
+        line-height:50px;
+        height:50px;
+
+        i {
+            @include hide-when-larger-than($small);
+            @include gridle(1);
+            line-height:50px;
+            cursor:pointer;
+        }
+
+        a {
+            display:block;
+        }
+    }
+}
+
+#logo {
+    @include gridle(6, small);
+    @include gridle(3, medium);
+    @include gridle(2, large);
+    @include gridle(1, xlarge);
+    font-weight:800;
+    font-size:20px;
+    font-family:$brandonGrotesque;
+}
+
+.flash-message {
+    position: fixed;
+    z-index: 500;
+    max-width: 1000px;
+    margin: 0px auto;
+    width: 100%;
+    left: 0px;
+    right: 0px;
+    padding: 8px 10px;
+    border-radius:0 0 $border-radius-small $border-radius-small;
+    box-shadow:0 0 15px rgba($slateblack, 0.5);
+    color:$white;
+
+    &.success {
+        background-color:rgba($green, 0.9);
+
+        &:before {
+
+        }
+    }
+
+    &.failure {
+        background-color:rgba($red, 0.9);
+
+        &:before {
+
+        }
+    }
+}
+

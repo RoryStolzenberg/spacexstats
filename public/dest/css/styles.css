@@ -62,7 +62,7 @@ table {
 
 /* ----------------- BREAK POINTS ----------------- */
 /* -------------- VISIBILITY MIXINS --------------- */
-.container:after, .header-wrapper header:after, header > nav ul:after, section.details:after, .upload-type:after {
+.container:after, .header-wrapper header:after, section.details:after, .upload-type:after {
   content: "";
   display: table;
   clear: both; }
@@ -86,13 +86,13 @@ table {
 .push-1on5, .push-1on8, .push-1on9, .push-0, .push-1, .push-2, .push-3, .push-4, .push-5, .push-6, .push-7, .push-8, .push-9, .push-10, .push-11, .push-12, .push-small-1on5, .push-small-1on8, .push-small-1on9, .push-small-0, .push-small-1, .push-small-2, .push-small-3, .push-small-4, .push-small-5, .push-small-6, .push-small-7, .push-small-8, .push-small-9, .push-small-10, .push-small-11, .push-small-12, .push-medium-1on5, .push-medium-1on8, .push-medium-1on9, .push-medium-0, .push-medium-1, .push-medium-2, .push-medium-3, .push-medium-4, .push-medium-5, .push-medium-6, .push-medium-7, .push-medium-8, .push-medium-9, .push-medium-10, .push-medium-11, .push-medium-12, .push-large-1on5, .push-large-1on8, .push-large-1on9, .push-large-0, .push-large-1, .push-large-2, .push-large-3, .push-large-4, .push-large-5, .push-large-6, .push-large-7, .push-large-8, .push-large-9, .push-large-10, .push-large-11, .push-large-12, .push-xlarge-1on5, .push-xlarge-1on8, .push-xlarge-1on9, .push-xlarge-0, .push-xlarge-1, .push-xlarge-2, .push-xlarge-3, .push-xlarge-4, .push-xlarge-5, .push-xlarge-6, .push-xlarge-7, .push-xlarge-8, .push-xlarge-9, .push-xlarge-10, .push-xlarge-11, .push-xlarge-12, .push-xxlarge-1on5, .push-xxlarge-1on8, .push-xxlarge-1on9, .push-xxlarge-0, .push-xxlarge-1, .push-xxlarge-2, .push-xxlarge-3, .push-xxlarge-4, .push-xxlarge-5, .push-xxlarge-6, .push-xxlarge-7, .push-xxlarge-8, .push-xxlarge-9, .push-xxlarge-10, .push-xxlarge-11, .push-xxlarge-12, .pull-1on5, .pull-1on8, .pull-1on9, .pull-0, .pull-1, .pull-2, .pull-3, .pull-4, .pull-5, .pull-6, .pull-7, .pull-8, .pull-9, .pull-10, .pull-11, .pull-12, .pull-small-1on5, .pull-small-1on8, .pull-small-1on9, .pull-small-0, .pull-small-1, .pull-small-2, .pull-small-3, .pull-small-4, .pull-small-5, .pull-small-6, .pull-small-7, .pull-small-8, .pull-small-9, .pull-small-10, .pull-small-11, .pull-small-12, .pull-medium-1on5, .pull-medium-1on8, .pull-medium-1on9, .pull-medium-0, .pull-medium-1, .pull-medium-2, .pull-medium-3, .pull-medium-4, .pull-medium-5, .pull-medium-6, .pull-medium-7, .pull-medium-8, .pull-medium-9, .pull-medium-10, .pull-medium-11, .pull-medium-12, .pull-large-1on5, .pull-large-1on8, .pull-large-1on9, .pull-large-0, .pull-large-1, .pull-large-2, .pull-large-3, .pull-large-4, .pull-large-5, .pull-large-6, .pull-large-7, .pull-large-8, .pull-large-9, .pull-large-10, .pull-large-11, .pull-large-12, .pull-xlarge-1on5, .pull-xlarge-1on8, .pull-xlarge-1on9, .pull-xlarge-0, .pull-xlarge-1, .pull-xlarge-2, .pull-xlarge-3, .pull-xlarge-4, .pull-xlarge-5, .pull-xlarge-6, .pull-xlarge-7, .pull-xlarge-8, .pull-xlarge-9, .pull-xlarge-10, .pull-xlarge-11, .pull-xlarge-12, .pull-xxlarge-1on5, .pull-xxlarge-1on8, .pull-xxlarge-1on9, .pull-xxlarge-0, .pull-xxlarge-1, .pull-xxlarge-2, .pull-xxlarge-3, .pull-xxlarge-4, .pull-xxlarge-5, .pull-xxlarge-6, .pull-xxlarge-7, .pull-xxlarge-8, .pull-xxlarge-9, .pull-xxlarge-10, .pull-xxlarge-11, .pull-xxlarge-12 {
   position: relative; }
 
-.container, .header-wrapper header, header > nav ul, section.details, .upload-type {
+.container, .header-wrapper header, section.details, .upload-type {
   box-sizing: border-box; }
 
 .parent, .parent-small, .parent-medium, .parent-large, .parent-xlarge, .parent-xxlarge {
   box-sizing: border-box; }
 
-.grid-1on5, .grid-1on8, .grid-1on9, .grid-0, .grid-1, .grid-2, .grid-3, .grid-4, .grid-5, .grid-6, .grid-7, .grid-8, .grid-9, .grid-10, .grid-11, .grid-12, .grid-small-1on5, .grid-small-1on8, .grid-small-1on9, .grid-small-0, .grid-small-1, .grid-small-2, .grid-small-3, .grid-small-4, .grid-small-5, .grid-small-6, .grid-small-7, .grid-small-8, .grid-small-9, .grid-small-10, .grid-small-11, .grid-small-12, .grid-medium-1on5, .grid-medium-1on8, .grid-medium-1on9, .grid-medium-0, .grid-medium-1, .grid-medium-2, .grid-medium-3, .grid-medium-4, .grid-medium-5, .grid-medium-6, .grid-medium-7, .grid-medium-8, .grid-medium-9, .grid-medium-10, .grid-medium-11, .grid-medium-12, .grid-large-1on5, .grid-large-1on8, .grid-large-1on9, .grid-large-0, .grid-large-1, .grid-large-2, .grid-large-3, .grid-large-4, .grid-large-5, .grid-large-6, .grid-large-7, .grid-large-8, .grid-large-9, .grid-large-10, .grid-large-11, .grid-large-12, .grid-xlarge-1on5, .grid-xlarge-1on8, .grid-xlarge-1on9, .grid-xlarge-0, .grid-xlarge-1, .grid-xlarge-2, .grid-xlarge-3, .grid-xlarge-4, .grid-xlarge-5, .grid-xlarge-6, .grid-xlarge-7, .grid-xlarge-8, .grid-xlarge-9, .grid-xlarge-10, .grid-xlarge-11, .grid-xlarge-12, .grid-xxlarge-1on5, .grid-xxlarge-1on8, .grid-xxlarge-1on9, .grid-xxlarge-0, .grid-xxlarge-1, .grid-xxlarge-2, .grid-xxlarge-3, .grid-xxlarge-4, .grid-xxlarge-5, .grid-xxlarge-6, .grid-xxlarge-7, .grid-xxlarge-8, .grid-xxlarge-9, .grid-xxlarge-10, .grid-xxlarge-11, .grid-xxlarge-12, .header-wrapper header i, #logo, header > nav, section.details #live-tweets, .upload-type li {
+.grid-1on5, .grid-1on8, .grid-1on9, .grid-0, .grid-1, .grid-2, .grid-3, .grid-4, .grid-5, .grid-6, .grid-7, .grid-8, .grid-9, .grid-10, .grid-11, .grid-12, .grid-small-1on5, .grid-small-1on8, .grid-small-1on9, .grid-small-0, .grid-small-1, .grid-small-2, .grid-small-3, .grid-small-4, .grid-small-5, .grid-small-6, .grid-small-7, .grid-small-8, .grid-small-9, .grid-small-10, .grid-small-11, .grid-small-12, .grid-medium-1on5, .grid-medium-1on8, .grid-medium-1on9, .grid-medium-0, .grid-medium-1, .grid-medium-2, .grid-medium-3, .grid-medium-4, .grid-medium-5, .grid-medium-6, .grid-medium-7, .grid-medium-8, .grid-medium-9, .grid-medium-10, .grid-medium-11, .grid-medium-12, .grid-large-1on5, .grid-large-1on8, .grid-large-1on9, .grid-large-0, .grid-large-1, .grid-large-2, .grid-large-3, .grid-large-4, .grid-large-5, .grid-large-6, .grid-large-7, .grid-large-8, .grid-large-9, .grid-large-10, .grid-large-11, .grid-large-12, .grid-xlarge-1on5, .grid-xlarge-1on8, .grid-xlarge-1on9, .grid-xlarge-0, .grid-xlarge-1, .grid-xlarge-2, .grid-xlarge-3, .grid-xlarge-4, .grid-xlarge-5, .grid-xlarge-6, .grid-xlarge-7, .grid-xlarge-8, .grid-xlarge-9, .grid-xlarge-10, .grid-xlarge-11, .grid-xlarge-12, .grid-xxlarge-1on5, .grid-xxlarge-1on8, .grid-xxlarge-1on9, .grid-xxlarge-0, .grid-xxlarge-1, .grid-xxlarge-2, .grid-xxlarge-3, .grid-xxlarge-4, .grid-xxlarge-5, .grid-xxlarge-6, .grid-xxlarge-7, .grid-xxlarge-8, .grid-xxlarge-9, .grid-xxlarge-10, .grid-xxlarge-11, .grid-xxlarge-12, .header-wrapper header i, #logo, section.details #live-tweets, .upload-type li {
   display: inline-block;
   min-height: 1px;
   box-sizing: border-box; }
@@ -4060,7 +4060,6 @@ table {
 .fa-medium:before {
   content: ""; }
 
-/* ---------------- GLOBAL STYLES ----------------- */
 *, *:before, *:after {
   box-sizing: border-box; }
 
@@ -4117,71 +4116,37 @@ main {
 main > * {
   padding: 0 10px; }
 
-/* Sticky Bar Nav */
-nav.sticky-bar {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  width: inherit;
-  font-size: 14px;
-  -webkit-transition: background-color ease 0.5s, color ease 0.5s;
-          transition: background-color ease 0.5s, color ease 0.5s; }
-  nav.sticky-bar.stuck {
-    background-color: #4050C0;
-    color: #FFF;
-    z-index: 1000; }
-
-.stuck ~ * {
-  top: 30px;
-  position: relative; }
-
-.highlights {
-  height: 40px;
-  width: 100%;
-  position: relative; }
-
-.hero {
-  /* Calculated height: the viewport, subtracting the header (50px), the title (80px), the page nav (30px), highlights (40px), the summary (100px) */
-  height: calc(100vh - 300px);
-  text-align: center;
-  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
-  text-transform: uppercase;
-  /* ------------- DISPLAY STATISTICS --------------- */ }
-  .hero:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -0.25em; }
-  .hero > * {
-    display: inline-block;
-    vertical-align: middle;
-    top: -5%;
-    position: relative; }
-  .hero table {
-    border-collapse: collapse;
-    position: relative; }
-    .hero table td {
-      min-width: 260px; }
-    .hero table .value {
-      font-size: 180px;
-      font-weight: 300;
-      line-height: 1; }
-    .hero table .unit {
-      font-size: 30px;
-      font-weight: 300; }
-  .hero.statistic {
-    height: calc(100% - 30px - 100px); }
-    .hero.statistic .description {
-      height: 100px; }
-
 ul, ol {
   list-style-type: none; }
 
-/* ------------------ HEADER ------------------ */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
+  font-weight: 400;
+  text-transform: uppercase; }
+
+h1 {
+  height: 80px;
+  color: #FFF;
+  line-height: 80px;
+  font-size: 50px;
+  font-weight: lighter;
+  text-transform: none; }
+
+h2 {
+  font-size: 24px;
+  margin: 10px 0;
+  padding: 5px 10px;
+  border-bottom: 1px solid #CCC;
+  clear: both; }
+
+h3 {
+  font-size: 18px;
+  color: #33495E;
+  margin: 20px 0 10px 0; }
+
 .header-wrapper {
   width: 100%;
-  background-color: #4050C0;
+  background-color: #3569A4;
   height: 200px;
   position: absolute;
   box-shadow: 0 0 15px rgba(24, 28, 31, 0.5); }
@@ -4296,105 +4261,65 @@ ul, ol {
   .flash-message.failure {
     background-color: rgba(192, 91, 64, 0.9); }
 
-/* ------------------ NAV ------------------ */
-header > nav {
-  float: left;
-  direction: ltr;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 75%;
-  height: 100%; }
-  @media (max-width: 640px) {
-    header > nav {
-      width: 250px;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: -250px;
-      background-color: #21272B;
-      text-align: left; } }
-  @media (max-width: 640px) {
-    header > nav {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 641px) and (max-width: 1024px) {
-    header > nav {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    header > nav {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 1441px) and (max-width: 1920px) {
-    header > nav {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 1921px) {
-    header > nav {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    header > nav {
-      width: 83.33333%; } }
-  @media (min-width: 1441px) and (max-width: 1920px) {
-    header > nav {
-      width: 91.66667%; } }
-  header > nav ul {
-    cursor: pointer; }
+/* Sticky Bar Nav */
+nav.sticky-bar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: inherit;
+  font-size: 14px;
+  -webkit-transition: background-color ease 0.5s, color ease 0.5s;
+          transition: background-color ease 0.5s, color ease 0.5s; }
+  nav.sticky-bar.stuck {
+    background-color: #3569A4;
+    color: #FFF;
+    z-index: 1000; }
 
-li > ul.nav-second-tier {
-  display: none; }
+.stuck ~ * {
+  top: 30px;
+  position: relative; }
 
-li:hover {
-  background-color: rgba(255, 255, 255, 0.1); }
+.highlights {
+  height: 40px;
+  width: 100%;
+  position: relative; }
 
-li:hover > ul.nav-second-tier, li > ul.nav-second-tier:hover {
-  display: block;
-  background-color: #FFF;
-  color: #181c1f;
-  z-index: 300;
-  position: relative;
-  box-shadow: 10px 10px 15px rgba(33, 39, 43, 0.2); }
-
-.wide {
-  width: 250%; }
-
-body, nav {
-  -webkit-transition: left ease 0.5s;
-          transition: left ease 0.5s; }
-
-/* Mobile navigation */
-.nav-open {
-  left: 250px; }
-  .nav-open nav {
-    left: 0; }
-
-/* -------------- CONTENT HEADERS ----------------- */
-h1, h2, h3, h4, h5, h6 {
+.hero {
+  /* Calculated height: the viewport, subtracting the header (50px), the title (80px), the page nav (30px), highlights (40px), the summary (100px) */
+  height: calc(100vh - 300px);
+  text-align: center;
   font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
-  font-weight: 400;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  /* ------------- DISPLAY STATISTICS --------------- */ }
+  .hero:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em; }
+  .hero > * {
+    display: inline-block;
+    vertical-align: middle;
+    top: -5%;
+    position: relative; }
+  .hero table {
+    border-collapse: collapse;
+    position: relative; }
+    .hero table td {
+      min-width: 260px; }
+    .hero table .value {
+      font-size: 180px;
+      font-weight: 300;
+      line-height: 1; }
+    .hero table .unit {
+      font-size: 30px;
+      font-weight: 300; }
+  .hero.statistic {
+    height: calc(100% - 30px - 100px); }
+    .hero.statistic .description {
+      height: 100px; }
 
-h1 {
-  height: 80px;
-  color: #FFF;
-  line-height: 80px;
-  font-size: 50px;
-  font-weight: lighter;
-  text-transform: none; }
-
-h2 {
-  font-size: 24px;
-  margin: 10px 0;
-  padding: 5px 10px;
-  border-bottom: 1px solid #CCC;
-  clear: both; }
-
-h3 {
-  font-size: 18px;
-  color: #33495E;
-  margin: 20px 0 10px 0; }
-
+/* ------------------ NAV ------------------ */
 /* -------------- CONTENT ----------------- */
 p {
   padding-top: 10px;
@@ -4458,7 +4383,7 @@ a:link, a:visited, a:hover, a:active {
 
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {
-  background-color: #4050C0;
+  background-color: #3569A4;
   border-radius: 8px;
   color: #FFF;
   margin: 0 10px;
@@ -4746,7 +4671,7 @@ section.question-list {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background-color: #4050C0;
+    background-color: #3569A4;
     display: block;
     color: #FFF;
     line-height: 50px;
