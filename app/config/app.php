@@ -129,7 +129,8 @@ return array(
 
 		'SpaceXStats\Composers\ComposerServiceProvider',
         'SpaceXStats\Validation\ValidationServiceProvider',
-        'SpaceXStats\Search\SearchServiceProvider'
+        'SpaceXStats\Search\SearchServiceProvider',
+        'SpaceXStats\Uploads\UploadServiceProvider'
 	),
 
 	/*
@@ -196,6 +197,8 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+
+        'Upload'            => 'SpaceXStats\Facades\Upload',
         'Search'            => 'SpaceXStats\Facades\Search',
 
         'AWS'				=> 'Aws\Laravel\AwsFacade',

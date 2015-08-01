@@ -12,31 +12,22 @@ class Upload {
         $this->files = $files;
 
         // Check files for errors, push any errors to the errors array
-        if (is_array($this->files)) {
-            $i = 0;
-            foreach ($this->files as $file) {
+        $i = 0;
+        foreach ($this->files as $file) {
 
-                if (!$this->checker->check($file)) {
-                    $this->errors[$i] = $this->checker->errors();
-                } else {
-                    $this->objects[$i] = $this->checker->create();
-                }
-                $i++;
-
-            }
-        } else {
-            if (!$this->checker->check($this->files)) {
-                $this->errors[0] = $this->checker->errors();
+            if ($this->checker->check($file)) {
+                $this->objects[$i] = $this->checker->create();
             } else {
-                $this->objects[0] = $this->checker->create();
+                $this->errors[$i] = $this->checker->errors();
             }
+            $i++;
         }
 
         return $this;
     }
 
     public function hasErrors() {
-        return empty($this->errors);
+        return !empty($this->errors);
     }
 
     // Turn the error codes and constants into messages.
@@ -48,9 +39,13 @@ class Upload {
     public function create() {
         if (!$this->hasErrors()) {
 
+            $returnableObjects = [];
+
             foreach ($this->objects as $object) {
-                $object->addToMissionControl();
+                array_push($returnableObjects, $object->addToMissionControl());
             }
+
+            return $returnableObjects;
         } else {
             throw new Exception("We cannot add an object to Mission Control when the files array has errors");
         }

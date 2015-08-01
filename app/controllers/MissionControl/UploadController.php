@@ -2,7 +2,7 @@
 use SpaceXStats\Services\ObjectCreatorService;
 
 class UploadController extends BaseController {
-    protected $objectActioner;
+    protected $objectCreator;
 
     public function __construct(ObjectCreatorService $objectCreator) {
         $this->objectCreator = $objectCreator;
@@ -30,11 +30,11 @@ class UploadController extends BaseController {
             $upload = Upload::check($files);
 
             if ($upload->hasErrors()) {
-                return Response::json($upload->getErrors());
+                return Response::json(['errors' => $upload->getErrors()]);
             }
 
-            $objects = $upload->make();
-            return Response::json($objects);
+            $objects = $upload->create();
+            return Response::json(['objects' => $objects]);
         }
         return Response::json(false, 400);
     }
@@ -49,9 +49,7 @@ class UploadController extends BaseController {
 
             // Find each object from file
             for ($i = 0; $i < count($files); $i++) {
-                //$objects[$i] = Object::find($files[$i]['object_id']);
-
-                $objectValidities[$i] = $this->objectActioner->isValid($files[$i]) ? true : $this->objectActioner->getErrors();
+                $objectValidities[$i] = $this->objectCreator->isValid($files[$i]) ? true : $this->objectCreator->getErrors();
                 if ($objectValidities[$i] !== true) {
                     $doesNotContainErrors = false;
                 }

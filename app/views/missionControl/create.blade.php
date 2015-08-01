@@ -8,7 +8,6 @@
     <script>
         require(['common'], function() {
             require(['knockout', 'viewmodels/UploadViewModel'], function(ko, UploadViewModel) {
-
                 ko.applyBindings(new UploadViewModel());
             });
         });
