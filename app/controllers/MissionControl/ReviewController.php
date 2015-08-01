@@ -22,25 +22,15 @@ class ReviewController extends BaseController {
             $object = Object::find($object_id);
 
             if (Input::get('status') == "Published") {
-                $object->fill(Input::only(['status', 'visibility']));
-                $object->actioned_at = \Carbon\Carbon::now();
-
-
-                // Add the object to our elasticsearch node
-                Search::indexObject($object);
-
                 // if it is a file, add it and thumbs to S3
-                $s3 = \Aws\S3\S3Client::factory([
-                    'key' => Credential::AWSKey,
-                    'secret' => Credential::AWSSecret
-                ]);
+                $s3 = AWS::createClient('s3');
 
                 // Put the necessary objects
                 if ($object->hasFile()) {
                     $s3->putObject([
                         'Bucket' => Credential::AWSS3Bucket,
                         'Key' => $object->filename,
-                        'Body' => fopen($object->media, 'rb'),
+                        'Body' => fopen(public_path() . $object->media, 'rb'),
                         'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
                     ]);
                     unlink($object->media);
@@ -50,7 +40,7 @@ class ReviewController extends BaseController {
                     $s3->putObject([
                         'Bucket' => Credential::AWSS3BucketLargeThumbs,
                         'Key' => $object->thumb_filename,
-                        'Body' => fopen($object->media_thumb_large, 'rb'),
+                        'Body' => fopen(public_path() . $object->media_thumb_large, 'rb'),
                         'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
                         'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
                     ]);
@@ -59,13 +49,18 @@ class ReviewController extends BaseController {
                     $s3->putObject([
                         'Bucket' => Credential::AWSS3BucketSmallThumbs,
                         'Key' => $object->thumb_filename,
-                        'Body' => fopen($object->media_thumb_small, 'rb'),
+                        'Body' => fopen(public_path() . $object->media_thumb_small, 'rb'),
                         'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
                         'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
                     ]);
                     unlink($object->media_thumb_small);
                 }
 
+                $object->fill(Input::only(['status', 'visibility']));
+                $object->actioned_at = \Carbon\Carbon::now();
+
+                // Add the object to our elasticsearch node
+                Search::indexObject($object);
                 $object->save();
 
             } elseif (Input::get('status') == "Deleted") {
