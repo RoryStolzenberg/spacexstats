@@ -28,7 +28,7 @@ class AudioUpload extends GenericUpload implements UploadInterface {
             'filetype' => $this->fileinfo['filetype'],
             'mimetype' => $this->fileinfo['mime'],
             'original_name' => $this->fileinfo['original_name'],
-            'filename' => $this->fileinfo['filename'],
+            'filename' => $this->directory['full'] . $this->fileinfo['filename'],
             'thumb_large' => 'media/large/audio.png',
             'thumb_small' => 'media/small/audio.png',
             'cryptographic_hash' => $this->getCryptographicHash(),

@@ -24,10 +24,40 @@ class ReviewController extends BaseController {
             if (Input::get('status') == "Published") {
                 $object->fill(Input::only(['status', 'visibility']));
                 $object->actioned_at = \Carbon\Carbon::now();
-                $object->save();
+
 
                 // Add the object to our elasticsearch node
                 Search::indexObject($object);
+
+                // if it is a file, add it and thumbs to S3
+                if ($object->hasFile()) {
+                    // Open connection
+                    $s3 = \Aws\S3\S3Client::factory([
+                        'key' => Credential::AWSKey,
+                        'secret' => Credential::AWSSecret
+                    ]);
+
+                    // Put the necessary objects
+                    if (!is_null($object->filename)) {
+                        $s3->putObject([
+                            'Bucket' => Credential::AWSS3Bucket,
+                            'Key' => $object->filename,
+                            'Body' => fopen('media/full/' . $object->filename, 'rb'),
+                            'ACL' => 'public-read'
+                        ]);
+                        unlink('media/full' . $object->filename);
+                    }
+
+                    if (!is_null($object->thumb_large)) {
+
+                    }
+
+                    if (!is_null($object->thumb_small)) {
+
+                    }
+                }
+
+                $object->save();
 
             } elseif (Input::get('status') == "Deleted") {
                 $object->delete();

@@ -56,6 +56,11 @@ class Object extends Eloquent {
 		)
 	);
 
+    // Functions
+    public function hasFile() {
+        return !is_null($this->filename) || !is_null($this->thumb_small) || !is_null($this->thumb_large);
+    }
+
 	// Relations
 	public function mission() {
 		return $this->belongsTo('Mission');

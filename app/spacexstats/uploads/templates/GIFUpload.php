@@ -18,7 +18,7 @@ class GIFUpload extends GenericUpload implements UploadInterface {
 			'filetype' => $this->fileinfo['filetype'],
 			'mimetype' => $this->fileinfo['mime'],
 			'original_name' => $this->fileinfo['original_name'],
-			'filename' => $this->fileinfo['filename'],
+			'filename' => $this->directory['full'] . $this->fileinfo['filename'],
             'thumb_large' => $this->setThumbnail('large'),
             'thumb_small' => $this->setThumbnail('small'),
             'cryptographic_hash' => $this->getCryptographicHash(),
