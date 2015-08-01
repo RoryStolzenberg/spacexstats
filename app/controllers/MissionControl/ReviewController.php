@@ -23,7 +23,7 @@ class ReviewController extends BaseController {
 
             if (Input::get('status') == "Published") {
                 // if it is a file, add it and thumbs to S3
-                $s3 = AWS::createClient('s3');
+                $s3 = AWS::get('s3');
 
                 // Put the necessary objects
                 if ($object->hasFile()) {
