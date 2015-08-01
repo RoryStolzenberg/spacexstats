@@ -7,8 +7,10 @@
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
     <script>
         require(['common'], function() {
-            require(['knockout', 'viewmodels/UploadViewModel'], function(ko, UploadViewModel) {
-                ko.applyBindings(new UploadViewModel());
+            require(['jquery', 'knockout', 'viewmodels/UploadViewModel'], function($, ko, UploadViewModel) {
+                $(document).ready(function() {
+                    ko.applyBindings(new UploadViewModel());
+                });
             });
         });
     </script>
@@ -19,87 +21,6 @@
             <img data-bind="attr: { src: media_thumb_small }"/><br/>
             <span data-bind="text: original_name"></span>
         </li>
-	</script>
-
-	<script type="text/html" id="image-file-template">
-		<div data-bind="attr: { 'data-index': $index }, visible: $root.visibleTemplate() == ko.unwrap($index)">
-			<h2 data-bind="text: original_name"></h2>
-			<form>
-				<ul class="container">
-					<li class="grid-4">
-						<img data-bind="attr: { src: media_thumb_small, alt: media_thumb_small }" />
-					</li>
-
-					<li class="grid-4">
-						<label>
-                            <p>Title</p>
-                            <input type="text" name="title" data-bind="value: title" />
-                        </label>
-					</li>
-
-					<li class="grid-8">
-                        <label>
-                            <p>Summary</p>
-                            <textarea name="summary" data-bind="value: summary"></textarea>
-                        </label>
-                    </li>
-
-					<li class="grid-4">
-						<label>
-                            <p>Related to Mission</p>
-                            <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
-                        </label>
-					</li>
-
-					<li class="grid-6">
-                        <label>
-                            <p>Author</p>
-                            <input type="text" name="author" data-bind="value: author" />
-                        </label>
-                    </li>
-
-					<li class="grid-6">
-                        <label>
-                            <p>Attribution/Copyright</p>
-                            <textarea name="attribution" data-bind="value: attribution"></textarea>
-                        </label>
-                    </li>
-
-					<li class="grid-6">
-                        <label>
-                            <p>Tags</p>
-                            <tags params="tags: tags"></tags>
-                        </label>
-                    </li>
-
-					<li class="grid-6">
-                        <label>
-                            <p>Type</p>
-                            <select data-bind="value: subtype">
-                                <option>None</option>
-                                <option value="1">Mission Patch</option>
-                                <option value="2">Photo</option>
-                                <option value="3">Chart</option>
-                                <option value="5">Screenshot</option>
-                                <option value="11">Infographic</option>
-                                <option value="12">News Summary</option>
-                            </select>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <datetime params="value: originated_at, type: 'date'"></datetime>
-                    </li>
-
-					<li class="grid-12">
-                        <label>
-                            <p>Submit anonymously?</p>
-                            <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
-                        </label>
-                    </li>
-				</ul>
-			</form>
-		</div>
 	</script>
 
 	<script type="text/html" id="gif-file-template">
@@ -392,6 +313,86 @@
 @stop
 
 @section('content')
+    <script type="text/html" id="image-file-template">
+        <div data-bind="attr: { 'data-index': $index }, visible: $root.visibleTemplate() == ko.unwrap($index)">
+            <h2 data-bind="text: original_name"></h2>
+            <form>
+                <ul class="container">
+                    <li class="grid-4">
+                        <img data-bind="attr: { src: media_thumb_small, alt: media_thumb_small }" />
+                    </li>
+
+                    <li class="grid-4">
+                        <label>
+                            <p>Title</p>
+                            <input type="text" name="title" data-bind="value: title" />
+                        </label>
+                    </li>
+
+                    <li class="grid-8">
+                        <label>
+                            <p>Summary</p>
+                            <textarea name="summary" data-bind="value: summary"></textarea>
+                        </label>
+                    </li>
+
+                    <li class="grid-4">
+                        <label>
+                            <p>Related to Mission</p>
+                            <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <label>
+                            <p>Author</p>
+                            <input type="text" name="author" data-bind="value: author" />
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <label>
+                            <p>Attribution/Copyright</p>
+                            <textarea name="attribution" data-bind="value: attribution"></textarea>
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <label>
+                            <p>Tags</p>
+                            <tags params="tags: tags"></tags>
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <label>
+                            <p>Type</p>
+                            <select data-bind="value: subtype">
+                                <option>None</option>
+                                <option value="1">Mission Patch</option>
+                                <option value="2">Photo</option>
+                                <option value="3">Chart</option>
+                                <option value="5">Screenshot</option>
+                                <option value="11">Infographic</option>
+                                <option value="12">News Summary</option>
+                            </select>
+                        </label>
+                    </li>
+
+                    <li class="grid-6">
+                        <datetime params="value: originated_at, type: 'date'"></datetime>
+                    </li>
+
+                    <li class="grid-12">
+                        <label>
+                            <p>Submit anonymously?</p>
+                            <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
+                        </label>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </script>
 	<div class="content-wrapper">	
 			<h1>Upload to Mission Control</h1>
 			<main>

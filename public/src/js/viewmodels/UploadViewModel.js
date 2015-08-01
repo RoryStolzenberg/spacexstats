@@ -32,7 +32,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         function UploadedImage(image) {
             var self = this;
             koMapping.fromJS(image, {
-                include: ['title', 'summary', 'subtype', 'tags', 'originated_at', 'mission_id', 'author', 'attribution', 'anonymous', 'media_thumb_small']
+                include: ['title', 'summary', 'subtype', 'tags', 'originated_at', 'mission_id', 'author', 'attribution', 'anonymous']
             }, this);
 
             self.title = ko.observable(null);
@@ -44,8 +44,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             self.anonymous = ko.observable(false);
             self.tags = ko.observableArray([]);
             self.originated_at = ko.observable(null);
-            self.media_thumb_small = ko.observable(null);
-            self.media_thumb_large = ko.observable(null);
         }
 
         function UploadedGif(gif) {
