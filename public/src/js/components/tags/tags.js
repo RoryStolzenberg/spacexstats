@@ -3,7 +3,7 @@ define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], f
 
         ko.bindingHandlers.resize = {
             update: function(element, valueAccessor) {
-                console.log(ko.unwrap(valueAccessor()));
+                ko.unwrap(valueAccessor());
                 var elementWidth = $(element).parent().innerWidth() - $(element).siblings().outerWidth() - 1; // Why minus one? Who knows.
                 $(element).css({ 'width' : elementWidth});
             }
@@ -83,7 +83,11 @@ define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], f
         };
 
         self.tagInputKeyPress = function(data, event) {
-            if (event.key == ' ' || event.key == 'Enter') {
+            // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+            // event.key == ' ' || event.key == 'Enter'
+            if (event.which == 32 || event.which == 13) {
                 event.preventDefault();
 
                 // Remove any rulebreaking chars
@@ -94,7 +98,8 @@ define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], f
 
                 self.createTag(tag);
 
-            } else if (event.key == 'Backspace' && self.tagInput() == "") {
+            // event.key == 'Backspace'
+            } else if (event.which == 8 && self.tagInput() == "") {
                 event.preventDefault();
 
                 // grab the last tag to be inserted (if any) and put it back in the input
