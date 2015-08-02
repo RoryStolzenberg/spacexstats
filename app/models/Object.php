@@ -25,15 +25,15 @@ class Object extends Eloquent {
             'mission_id' => 'integer|exists:missions,mission_id',
             'type' => 'required|integer',
             'originated_at' => 'required',
-            'title' => 'required|varchar:compact',
-            'summary' => 'required|varchar:large',
-            'author' => 'required|varchar:small',
-            'attribution' => 'required|varchar:medium'
+            'title' => 'required|varchar:small',
+            'summary' => 'required|varchar:medium',
+            'author' => 'required|varchar:tiny',
+            'attribution' => 'required|varchar:compact'
         ),
 		'Image' => array(
             'ISO' => 'integer',
-            'camera_manufacturer' => 'varchar:compact',
-            'camera_model' => 'varchar:compact'
+            'camera_manufacturer' => 'varchar:small',
+            'camera_model' => 'varchar:small'
 		),
 		'GIF' => array(
             'length' => 'required|integer'

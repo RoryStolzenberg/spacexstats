@@ -510,15 +510,17 @@
 					</form>
 				</section>
 				
-				<!-- Update -->
+				<!-- Write -->
 				<section class="upload-write" data-bind="visible: visibleSection() == 'write'">
-					<form>
-						<input type="radio" name="write-mission-related" value="yes">
-						<input type="radio" name="write-mission-related" value="no">
-						<select name="write-mission" id="write-mission-select">
-							
-						</select>
-						<textarea></textarea>
+					<form data-bind="with: write">
+						<label>Select related mission</label>
+                        <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
+
+                        <label>Title</label>
+                        <input type="text" data-bind="textInput: title"/>
+
+                        <label>Content</label>
+						<textarea data-bind="textInput: "></textarea>
 						<input type="submit" value="Submit" name="submit" id="write-submit" />
 					</form>
 				</section>

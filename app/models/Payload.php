@@ -15,11 +15,11 @@ class Payload extends Eloquent {
     // Validation
     public $rules = array(
         'mission_id'    => ['required', 'exists:missions,mission_id'],
-        'name'          => ['required', 'varchar:small'],
-        'operator'      => ['required', 'varchar:compact'],
+        'name'          => ['required', 'varchar:tiny'],
+        'operator'      => ['required', 'varchar:small'],
         'mass'          => ['min:0', 'numeric', 'digits_between:0,5'],
         'primary'       => ['boolean'],
-        'link'          => ['varchar:compact']
+        'link'          => ['varchar:small']
     );
 
     public $messages = array();

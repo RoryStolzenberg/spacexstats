@@ -17,10 +17,10 @@ class Mission extends Eloquent {
 
     // Validation
     public $rules = array(
-        'name' => ['sometimes', 'required', 'string', 'varchar:small'],
-        'contractor' => ['sometimes', 'required', 'string', 'varchar:compact'],
+        'name' => ['sometimes', 'required', 'string', 'varchar:tiny'],
+        'contractor' => ['sometimes', 'required', 'string', 'varchar:small'],
         'launch_exact' => ['sometimes', 'date_format:Y-m-d H:i:s'],
-        'launch_approximate' => ['sometimes', 'required', 'string', 'varchar:small']
+        'launch_approximate' => ['sometimes', 'required', 'string', 'varchar:tiny']
     );
 
     public $messages = array(

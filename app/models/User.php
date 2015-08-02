@@ -67,8 +67,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	// Helpers
 	public function isValidForSignUp($input) {
 		$rules = array(
-			'username' => 'required|unique:users,username|min:3|varchar:small',
-			'email' => 'required|unique:users,email|email|varchar:small',
+			'username' => 'required|unique:users,username|min:3|varchar:tiny',
+			'email' => 'required|unique:users,email|email|varchar:tiny',
 			'password' => 'required|confirmed|min:6',
             'eula' => 'required'
 		);

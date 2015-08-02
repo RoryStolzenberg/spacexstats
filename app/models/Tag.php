@@ -11,8 +11,8 @@ class Tag extends Eloquent {
     protected $guarded = [];
 
     protected $rules = array(
-        'name' => 'required|string|varchar:small,unique:tags',
-        'description' => 'string|varchar:medium'
+        'name' => 'required|string|varchar:tiny,unique:tags',
+        'description' => 'string|varchar:compact'
     );
 
     public function isValid($input) {

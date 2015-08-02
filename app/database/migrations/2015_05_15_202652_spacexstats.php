@@ -23,13 +23,13 @@ class Spacexstats extends Migration {
 	{
         Schema::create('astronauts', function(Blueprint $table) {
             $table->increments('astronaut_id');
-            $table->string('first_name', Varchar::small);
-            $table->string('last_name', Varchar::small);
+            $table->string('first_name', Varchar::tiny);
+            $table->string('last_name', Varchar::tiny);
             $table->enum('gender', array('Male', 'Female'));
             $table->boolean('deceased');
-            $table->string('nationality', Varchar::small);
+            $table->string('nationality', Varchar::tiny);
             $table->date('date_of_birth');  // Nonoptional values
-            $table->string('contracted_by', Varchar::small);
+            $table->string('contracted_by', Varchar::tiny);
         });
 
         // Pivot table
@@ -51,7 +51,7 @@ class Spacexstats extends Migration {
 
         Schema::create('destinations', function(Blueprint $table) {
             $table->increments('destination_id');
-            $table->string('destination', Varchar::small);
+            $table->string('destination', Varchar::tiny);
         });
 
         Schema::create('downloads', function(Blueprint $table) {
@@ -64,8 +64,8 @@ class Spacexstats extends Migration {
         Schema::create('emails', function(Blueprint $table) {
             $table->increments('email_id');
             $table->integer('notification_id')->unsigned();
-            $table->string('subject', Varchar::compact)->nullable();
-            $table->string('body', Varchar::xlarge)->nullable();
+            $table->string('subject', Varchar::small)->nullable();
+            $table->string('body', Varchar::large)->nullable();
             $table->enum('status', array('Held', 'Queued', 'Sent'));
             $table->datetime('sent_at')->nullable(); // Nonoptional values
             $table->timestamps();
@@ -80,9 +80,9 @@ class Spacexstats extends Migration {
 
         Schema::create('locations', function(Blueprint $table) {
             $table->increments('location_id');
-            $table->string('name', Varchar::small);
-            $table->string('location', Varchar::small)->nullable();
-            $table->string('state', Varchar::small)->nullable();
+            $table->string('name', Varchar::tiny);
+            $table->string('location', Varchar::tiny)->nullable();
+            $table->string('state', Varchar::tiny)->nullable();
             $table->double('coord_lat', 8, 6)->nullable();
             $table->double('coord_lng', 9, 6)->nullable();
             $table->enum('type', array('Launch Site', 'Landing Site', 'ASDS', 'Facility'));
@@ -95,15 +95,15 @@ class Spacexstats extends Migration {
             $table->smallInteger('launch_order_id')->unsigned();
             $table->smallInteger('launch_specificity')->unsigned();
             $table->datetime('launch_exact')->nullable(); // Nonoptional Values
-            $table->string('launch_approximate', Varchar::small)->nullable();
-            $table->string('name', Varchar::small);
-            $table->string('slug', Varchar::small);
-            $table->string('contractor', Varchar::medium);
+            $table->string('launch_approximate', Varchar::tiny)->nullable();
+            $table->string('name', Varchar::tiny);
+            $table->string('slug', Varchar::tiny);
+            $table->string('contractor', Varchar::compact);
             $table->integer('vehicle_id')->unsigned();
             $table->integer('destination_id')->unsigned();
             $table->integer('launch_site_id')->unsigned();
-            $table->string('summary', Varchar::medium);
-            $table->string('article', Varchar::xlarge)->nullable();
+            $table->string('summary', Varchar::compact);
+            $table->string('article', Varchar::large)->nullable();
             $table->enum('status', array('Upcoming', 'Complete', 'In Progress'));
             $table->enum('outcome', array('Failure', 'Success'))->nullable();
 
@@ -124,15 +124,15 @@ class Spacexstats extends Migration {
 
         Schema::create('mission_types', function(Blueprint $table) {
             $table->increments('mission_type_id');
-            $table->string('name', Varchar::small);
-            $table->string('icon', Varchar::compact);
+            $table->string('name', Varchar::tiny);
+            $table->string('icon', Varchar::small);
         });
 
         Schema::create('notes', function(Blueprint $table) {
             $table->increments('note_id');
             $table->integer('user_id')->unsigned();
             $table->integer('object_id')->unsigned();
-            $table->string('note', Varchar::large);
+            $table->string('note', Varchar::medium);
 
             $table->timestamps();
         });
@@ -153,12 +153,12 @@ class Spacexstats extends Migration {
             $table->smallInteger('type')->unsigned();
             $table->smallInteger('subtype')->unsigned()->nullable();
             $table->integer('size')->unsigned();
-            $table->string('filetype', Varchar::compact);
-            $table->string('mimetype', Varchar::compact);
-            $table->string('original_name', Varchar::compact);
-            $table->string('title', Varchar::compact);
-            $table->string('filename', Varchar::small);
-            $table->string('thumb_filename', Varchar::small);
+            $table->string('filetype', Varchar::small);
+            $table->string('mimetype', Varchar::small);
+            $table->string('original_name', Varchar::small);
+            $table->string('title', Varchar::small);
+            $table->string('filename', Varchar::tiny);
+            $table->string('thumb_filename', Varchar::tiny);
             $table->char('cryptographic_hash', 64)->nullable();
             $table->string('perceptual_hash')->nullable();
 
@@ -167,34 +167,34 @@ class Spacexstats extends Migration {
             $table->smallInteger('length')->nullable();
 
             // Mission control related properties
-            $table->string('summary', Varchar::large);
-            $table->string('author', Varchar::small)->nullable();
-            $table->string('attribution', Varchar::medium)->nullable();
+            $table->string('summary', Varchar::medium);
+            $table->string('author', Varchar::tiny)->nullable();
+            $table->string('attribution', Varchar::compact)->nullable();
             $table->date('originated_at')->nullable(); // Optional day & month
 
             // Twitter-related properties
-            $table->string('tweet_id', Varchar::small)->nullable();
+            $table->string('tweet_id', Varchar::tiny)->nullable();
             $table->datetime('tweet_created_at')->nullable(); // Optional second, minute, hour, day, month
-            $table->string('tweet_user_profile_image_url', Varchar::compact)->nullable();
-            $table->string('tweet_user_screen_name', Varchar::small)->nullable();
-            $table->string('tweet_user_name', Varchar::small)->nullable();
-            $table->string('tweet_text', Varchar::compact)->nullable();
-            $table->string('tweet_parent_id', Varchar::small)->nullable();
+            $table->string('tweet_user_profile_image_url', Varchar::small)->nullable();
+            $table->string('tweet_user_screen_name', Varchar::tiny)->nullable();
+            $table->string('tweet_user_name', Varchar::tiny)->nullable();
+            $table->string('tweet_text', Varchar::small)->nullable();
+            $table->string('tweet_parent_id', Varchar::tiny)->nullable();
 
             // Image-related properties
-            $table->string('exposure', Varchar::small)->nullable();
-            $table->string('aperture', Varchar::small)->nullable();
+            $table->string('exposure', Varchar::tiny)->nullable();
+            $table->string('aperture', Varchar::tiny)->nullable();
             $table->smallInteger('ISO')->nullable();
             $table->double('coord_lat', 8, 6)->nullable();
             $table->double('coord_lng', 9, 6)->nullable();
-            $table->string('camera_manufacturer', Varchar::compact)->nullable();
-            $table->string('camera_model', Varchar::compact)->nullable();
+            $table->string('camera_manufacturer', Varchar::small)->nullable();
+            $table->string('camera_model', Varchar::small)->nullable();
 
             // Third-party-related properties
-            $table->string('external_url', Varchar::compact)->nullable();
+            $table->string('external_url', Varchar::small)->nullable();
 
             // Post-related properties
-            $table->string('publisher', Varchar::compact)->nullable();
+            $table->string('publisher', Varchar::small)->nullable();
             $table->mediumText('article')->nullable();
 
             $table->enum('status', array('New', 'Queued', 'Published', 'Deleted'));
@@ -216,7 +216,7 @@ class Spacexstats extends Migration {
 
         Schema::create('parts', function(Blueprint $table) {
             $table->increments('part_id');
-            $table->string('name', Varchar::small);
+            $table->string('name', Varchar::tiny);
             $table->enum('type', array('Upper Stage', 'First Stage', 'Booster'));
             $table->timestamps();
         });
@@ -247,7 +247,7 @@ class Spacexstats extends Migration {
             $table->char('upperstage_intl_designator', 9)->nullable();
 
             $table->boolean('landed')->nullable();
-            $table->string('note', Varchar::compact)->nullable();
+            $table->string('note', Varchar::small)->nullable();
 
             $table->timestamps();
         });
@@ -255,11 +255,11 @@ class Spacexstats extends Migration {
         Schema::create('payloads', function(Blueprint $table) {
             $table->increments('payload_id');
             $table->integer('mission_id')->unsigned();
-            $table->string('name', Varchar::small);
-            $table->string('operator', Varchar::compact);
+            $table->string('name', Varchar::tiny);
+            $table->string('operator', Varchar::small);
             $table->decimal('mass', 6, 1)->nullable();
             $table->boolean('primary');
-            $table->string('link', Varchar::compact)->nullable();
+            $table->string('link', Varchar::small)->nullable();
         });
 
         Schema::create('payments', function(Blueprint $table) {
@@ -275,20 +275,20 @@ class Spacexstats extends Migration {
             $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Static Fire', 'Launch Change'));
             $table->date('occurred_at'); // Nonoptional values
             $table->datetime('scheduled_launch_exact')->nullable(); // Nonoptional values
-            $table->string('scheduled_launch_approximate', Varchar::small)->nullable();
-            $table->string('summary', Varchar::small)->nullable();
+            $table->string('scheduled_launch_approximate', Varchar::tiny)->nullable();
+            $table->string('summary', Varchar::tiny)->nullable();
         });
 
         Schema::create('profiles', function(Blueprint $table) {
             $table->integer('user_id')->unsigned();
-            $table->string('summary', Varchar::large)->nullable();
-            $table->string('banner_filename', Varchar::small)->nullable();
+            $table->string('summary', Varchar::medium)->nullable();
+            $table->string('banner_filename', Varchar::tiny)->nullable();
             $table->smallInteger('banner_position')->nullable();
-            $table->string('reddit_account', Varchar::small)->nullable();
-            $table->string('twitter_account', Varchar::small)->nullable();
+            $table->string('reddit_account', Varchar::tiny)->nullable();
+            $table->string('twitter_account', Varchar::tiny)->nullable();
             $table->integer('favorite_mission')->unsigned()->nullable();
             $table->integer('favorite_mission_patch')->unsigned()->nullable();
-            $table->string('favorite_quote', Varchar::large)->nullable();
+            $table->string('favorite_quote', Varchar::medium)->nullable();
 
             $table->timestamps();
         });
@@ -299,21 +299,21 @@ class Spacexstats extends Migration {
 
         Schema::create('roles', function(Blueprint $table) {
             $table->increments('role_id');
-            $table->string('name', Varchar::small);
+            $table->string('name', Varchar::tiny);
         });
 
         Schema::create('smses', function(Blueprint $table) {
             $table->increments('sms_id');
             $table->integer('user_id')->unsigned();
             $table->integer('notification_id')->unsigned();
-            $table->string('content', Varchar::medium)->nullable();
+            $table->string('content', Varchar::compact)->nullable();
             $table->timestamps();
         });
 
         Schema::create('spacecraft', function(Blueprint $table) {
             $table->increments('spacecraft_id');
             $table->enum('type', array('Dragon 1', 'Dragon 2'));
-            $table->string('name', Varchar::small);
+            $table->string('name', Varchar::tiny);
         });
 
         // Pivot table
@@ -321,7 +321,7 @@ class Spacexstats extends Migration {
             $table->increments('spacecraft_flight_id');
             $table->integer('mission_id')->unsigned();
             $table->integer('spacecraft_id')->unsigned();
-            $table->string('flight_name', Varchar::small);
+            $table->string('flight_name', Varchar::tiny);
             $table->datetime('end_of_mission')->nullable(); // Nonoptional Values
             $table->enum('return_method', array('Splashdown', 'Landing'))->nullable();
             $table->smallInteger('upmass')->unsigned()->nullable();
@@ -333,36 +333,36 @@ class Spacexstats extends Migration {
         Schema::create('statistics', function(Blueprint $table) {
             $table->increments('statistic_id');
             $table->smallInteger('order')->unsigned();
-            $table->string('type', Varchar::small);
-            $table->string('name', Varchar::small);
-            $table->string('unit', Varchar::small)->nullable();
-            $table->string('description', Varchar::medium);
+            $table->string('type', Varchar::tiny);
+            $table->string('name', Varchar::tiny);
+            $table->string('unit', Varchar::tiny)->nullable();
+            $table->string('description', Varchar::compact);
             $table->enum('display', array('single', 'double', 'count', 'time', 'piechart', 'barchart'));
         });
 
         Schema::create('notification_types', function(Blueprint $table) {
             $table->increments('notification_type_id');
-            $table->string('name', Varchar::small);
+            $table->string('name', Varchar::tiny);
         });
 
 
         Schema::create('tags', function(Blueprint $table) {
             $table->increments('tag_id');
-            $table->string('name', Varchar::small);
-            $table->string('description', Varchar::medium)->nullable();
+            $table->string('name', Varchar::tiny);
+            $table->string('description', Varchar::compact)->nullable();
             $table->timestamps();
         });
 
         Schema::create('users', function(Blueprint $table) {
             $table->increments('user_id');
             $table->integer('role_id')->unsigned();
-            $table->string('username', Varchar::small);
-            $table->string('firstname', Varchar::small);
-            $table->string('email', Varchar::small);
-            $table->string('mobile', Varchar::small)->nullable();
-            $table->string('mobile_national_format', Varchar::small)->nullable();
-            $table->string('mobile_country_code', Varchar::small)->nullable();
-            $table->string('mobile_network', Varchar::compact)->nullable();
+            $table->string('username', Varchar::tiny);
+            $table->string('firstname', Varchar::tiny);
+            $table->string('email', Varchar::tiny);
+            $table->string('mobile', Varchar::tiny)->nullable();
+            $table->string('mobile_national_format', Varchar::tiny)->nullable();
+            $table->string('mobile_country_code', Varchar::tiny)->nullable();
+            $table->string('mobile_network', Varchar::small)->nullable();
 
             $table->char('password', 60);
             $table->datetime('subscription_expiry')->nullable(); // Nonoptional Values
@@ -375,7 +375,7 @@ class Spacexstats extends Migration {
 
         Schema::create('vehicles', function(Blueprint $table) {
             $table->increments('vehicle_id');
-            $table->string('vehicle', Varchar::small);
+            $table->string('vehicle', Varchar::tiny);
         });
 
         // Add foreign keys
