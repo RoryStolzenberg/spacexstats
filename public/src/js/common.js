@@ -3,7 +3,7 @@ requirejs.config({
     baseUrl: '/src/js',
     paths: {
         'text': 'lib/requirejs-text',
-        'jquery': 'lib/jquery-1.9.1',
+        'jquery': 'lib/jquery-2.1.4',
         'jquery.ui' : 'lib/jquery-ui.min',
         "jquery.fracs": 'lib/jquery.fracs-0.15.0',
         'dropzone': 'lib/dropzone',

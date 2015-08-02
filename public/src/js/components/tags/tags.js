@@ -1,15 +1,25 @@
 define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], function(ko, $, koMapping, htmlString) {
     function TagViewModel(params) {
-        ko.bindingHandlers.resize = {
-            update: function(element) {
-                params.tags();
 
-                var elementWidth = $(element).parent().width() - $(element).siblings().outerWidth() - 1; // Why minus one? Who knows.
+        ko.bindingHandlers.resize = {
+            update: function(element, valueAccessor) {
+                console.log(ko.unwrap(valueAccessor()));
+                var elementWidth = $(element).parent().innerWidth() - $(element).siblings().outerWidth() - 1; // Why minus one? Who knows.
                 $(element).css({ 'width' : elementWidth});
             }
         };
 
         var self = this;
+
+        $(window).on('resize', function() {
+            self.setDimensions();
+        });
+
+        self.setDimensions = function(data, event) {
+            var cur = $(event.delegateTarget);
+            var elementWidth = cur.children('.wrapper').innerWidth() - cur.find('.tag-input').siblings().outerWidth() - 1; // Why minus one? Who knows.
+            cur.find('.tag-input').css({ 'width' : elementWidth});
+        }
 
         function Tag(tag) {
             var self = this;
@@ -33,11 +43,6 @@ define(['knockout', 'jquery', 'ko.mapping', 'text!components/tags/tags.html'], f
         };
 
         self.inputHasFocus = ko.observable();
-
-        $(window).on('resize', function() {
-            var elementWidth = $('.tag-input').parent().width() - $('.tag-input').siblings().outerWidth() - 1; // Why minus one? Who knows.
-            $('.tag-input').css({ 'width' : elementWidth});
-        });
 
         self.removeTag = function(data) {
             params.tags.remove(data);

@@ -5,7 +5,10 @@
 
 @section('scripts')
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script>
+    <script type="text/javascript">
+
+    </script>
+    <script type="text/javascript">
         require(['common'], function() {
             require(['jquery', 'knockout', 'viewmodels/UploadViewModel'], function($, ko, UploadViewModel) {
                 $(document).ready(function() {
@@ -517,11 +520,18 @@
                         <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
 
                         <label>Title</label>
-                        <input type="text" data-bind="textInput: title"/>
+                        <input type="text" data-bind="value: title"/>
 
                         <label>Content</label>
-						<textarea data-bind="textInput: "></textarea>
-						<input type="submit" value="Submit" name="submit" id="write-submit" />
+						<textarea data-bind="value: content"></textarea>
+
+                        <p>Submit anonymously?</p>
+                        <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
+
+                        <label>Tags</label>
+                        <tags params="tags: tags"></tags>
+
+						<input type="submit" value="Submit" name="submit" id="write-submit" data-bind="click: $root.submitWriting" />
 					</form>
 				</section>
 			</main>

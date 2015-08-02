@@ -167,7 +167,7 @@ class Spacexstats extends Migration {
             $table->smallInteger('length')->nullable();
 
             // Mission control related properties
-            $table->string('summary', Varchar::medium);
+            $table->string('summary', Varchar::large);
             $table->string('author', Varchar::tiny)->nullable();
             $table->string('attribution', Varchar::compact)->nullable();
             $table->date('originated_at')->nullable(); // Optional day & month
@@ -197,7 +197,7 @@ class Spacexstats extends Migration {
             $table->string('publisher', Varchar::small)->nullable();
             $table->mediumText('article')->nullable();
 
-            $table->enum('status', array('New', 'Queued', 'Published', 'Deleted'));
+            $table->enum('status', array('New', 'Queued', 'Published'));
             $table->enum('visibility', array('Default', 'Public', 'Hidden'));
             $table->boolean('anonymous');
             $table->datetime('actioned_at')->nullable(); // Nonoptional values

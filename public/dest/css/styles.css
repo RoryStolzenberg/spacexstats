@@ -4666,7 +4666,8 @@ textarea {
     margin-left: 60px; }
 
 .tagger-container .wrapper {
-  border: 1px solid #CCC; }
+  border: 1px solid #CCC;
+  font-size: 0; }
 
 .tagger-container .tags {
   display: inline-block; }

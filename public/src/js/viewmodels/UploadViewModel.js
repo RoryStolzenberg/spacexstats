@@ -240,7 +240,16 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         };
 
         /* Write */
-        self.submitWriting = function (item, event) {
+        self.write = {
+            mission_id: ko.observable(null),
+            title: ko.observable(null),
+            content:ko.observable(null),
+            anonymous:ko.observable(false),
+            tags: ko.observableArray([])
+        }
+
+        self.submitWriting = function () {
+            console.log(koMapping.toJS(self.write, {}));
         };
 
         // Submission of data to mission control
