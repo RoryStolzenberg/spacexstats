@@ -43,20 +43,27 @@ class VideoUpload extends GenericUpload implements UploadInterface {
     private function setThumbnails() {
         $thumbnailsToCreate = ['small', 'large'];
 
+        // Set the point in the video to extract the frame at approximately 10% of the video length;
+        $frameExtractionPoint = (int)round($this->getLength() / 10);
+
+        // Open the video and extract a frame at 10% of the video's duration
+        $video = $this->ffmpeg->open($this->directory['full'] . $this->fileinfo['filename']);
+        $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($frameExtractionPoint));
+
+        // Save frame to temporary location
+        $frame->save($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
+
         foreach ($thumbnailsToCreate as $size) {
             $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
-            // Set the point in the video to extract the frame at approximately 10% of the video length;
-            $frameExtractionPoint = (int)round($this->getLength() / 10);
-
-            // Open the video and extract a frame at 10% of the video's duration
-            $video = $this->ffmpeg->open($this->directory['full'] . $this->fileinfo['filename']);
-            $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($frameExtractionPoint));
-
             // create an Imagick instance
-            $frame->thumbnailImage($lengthDimension, $lengthDimension, true);
-            $frame->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image = new \Imagick($this->getImagickSafeDirectory('frames') . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image->thumbnailImage($lengthDimension, $lengthDimension, true);
+            $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
         }
+
+        // Delete the temporary frame
+        unlink($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
     }
 
     private function getThumbnail() {

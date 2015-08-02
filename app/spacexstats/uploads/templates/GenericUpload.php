@@ -8,7 +8,7 @@ abstract class GenericUpload {
     $smallThumbnailSize = 200,
     $largeThumbnailSize = 800,
 	$directory = array('full' => 'media/full/','large' => 'media/large/' ,'small' => 'media/small/',
-        'twitter' => 'media/twitter/'),
+        'twitter' => 'media/twitter/', 'frames' => 'media/frames/'),
     $workingDirectory = 'H:/spacexstats/public/';
 
 	public function __construct($file) {

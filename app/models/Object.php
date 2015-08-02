@@ -75,7 +75,6 @@ class Object extends Eloquent {
                 'Body' => fopen(public_path() . $this->media, 'rb'),
                 'ACL' =>  \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
             ]);
-
             unlink(public_path() . $this->media);
         }
 
