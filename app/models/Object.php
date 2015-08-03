@@ -19,42 +19,30 @@ class Object extends Eloquent {
 
     protected $presenter = "ObjectPresenter";
 
-	protected $submissionRules = array(
-        'All' => array(
-            'user_id' => 'required|integer|exists:users,user_id',
-            'mission_id' => 'integer|exists:missions,mission_id',
-            'type' => 'required|integer',
-            'originated_at' => 'required',
-            'title' => 'required|varchar:small',
-            'summary' => 'required|varchar:medium',
-            'author' => 'required|varchar:tiny',
-            'attribution' => 'required|varchar:compact'
-        ),
-		'Image' => array(
-            'ISO' => 'integer',
-            'camera_manufacturer' => 'varchar:small',
-            'camera_model' => 'varchar:small'
-		),
-		'GIF' => array(
-            'length' => 'required|integer'
-		),
-		'Audio' => array(
-            'length' => 'required|integer'
-		),
-		'Video' => array(
-            'length' => 'required|integer'
-		),
-		'Document' => array(
-		),
-		'Tweet' => array(
-		),
-		'Article' => array(
-		),
-		'Comment' => array(
-		),
-		'Update' => array(
-		)
-	);
+	protected $rules = array(
+        'user_id' => 'integer|exists:users,user_id',
+        'mission_id' => 'integer|exists:missions,mission_id',
+
+        'type' => 'integer',
+        'subtype' => 'integer',
+
+        'size' => 'integer',
+
+        'title' => 'varchar:small',
+
+        'dimension_width' => 'integer',
+        'dimension_height' => 'integer',
+        'length' => 'integer',
+
+        'summary' => 'varchar:large',
+        'author' => 'varchar:tiny',
+        'attribution' => 'varchar:compact',
+        'originated_at' => '',
+
+        'ISO' => 'integer',
+        'camera_manufacturer' => 'varchar:small',
+        'camera_model' => 'varchar:small'
+    );
 
     // Functions
     public function hasFile() {
@@ -128,7 +116,7 @@ class Object extends Eloquent {
 	public function isValidForSubmission($input) {
 		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);
 
-		$validator = Validator::make($input, array_merge($this->submissionRules['All'], $this->submissionRules[$type]));
+		$validator = Validator::make($input, $this->submissionRules[$type]);
 		return ($validator->passes() ? true : $validator->errors());
 	}
 

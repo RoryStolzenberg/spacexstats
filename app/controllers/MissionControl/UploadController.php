@@ -43,7 +43,7 @@ class UploadController extends BaseController {
 	public function submit() {
     	// File Submissions
 		if (Request::header('Submission-Type') == 'files') {
-            $files = Input::get('files');
+            $files = Input::get('data');
             $objectValidities = [];
             $doesNotContainErrors = true;
 
@@ -55,35 +55,40 @@ class UploadController extends BaseController {
                 }
             }
 
-			// Check if there are errors, if no, add all to db, if yes, return with errors.
-			if ($doesNotContainErrors) {
+            // Check if there are errors, if no, add all to db, if yes, return with errors.
+            if ($doesNotContainErrors) {
 
-				// add all objects to db
-				for ($i = 0; $i < count($files); $i++) {
+                // add all objects to db
+                for ($i = 0; $i < count($files); $i++) {
                     $this->objectCreator->createFromFileSubmission($files[$i]);
                 }
 
-				// redirect to mission control
+                // redirect to mission control
                 Session::flash('flashMessage', array(
                     'contents' => 'Done! Your submitted content will be reviewed and published within 24 hours',
                     'type' => 'success'
                 ));
-				return Response::json(true);
+                return Response::json(true);
 
-			} else {
-				return Response::json($objectValidities, 400);
-			}
+            } else {
+                return Response::json($objectValidities, 400);
+            }
 
-		// Written & Post submissions
-		} elseif (Request::header('Submission-Type') == 'write' || Request::header('Submission-Type') == 'post') {
+        // Post submissions
+        } elseif (Request::header('Submission-Type') == 'post') {
 
-			$isValidForSubmission = $this->objectCreator->isValid($object);
-			if ($isValidForSubmission === true) {
+		// Written Submissions
+		} elseif (Request::header('Submission-Type') == 'write') {
+
+			$isValid = $this->objectCreator->isValid(Input::all());
+
+			if ($isValid === true) {
 				// Add to db
+                $this->objectCreator->createFromWrittenSubmission(Input::all());
 
 				// redirect
 			} else {
-				return Response::json($isValidForSubmission);
+				return Response::json($isValid, 400);
 			}
 		}
 	}
