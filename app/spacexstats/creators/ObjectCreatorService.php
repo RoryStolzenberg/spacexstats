@@ -7,15 +7,15 @@ use \Object;
 use \Tag;
 use \Mission;
 
-class ObjectCreatorService implements CreatorServiceInterface {
+class ObjectCreatorService {
     protected $object, $tagCreator, $errors;
 
     public function __construct(\Object $object) {
         $this->object = $object;
     }
 
-    public function isValid($input) {
-        $objectValidation = $this->object->isValidForSubmission($input);
+    public function isValid($input, $type) {
+        //$objectValidation = $this->object->isValidForSubmission($input);
 
         if ($objectValidation === true) {
             return true;
@@ -25,11 +25,7 @@ class ObjectCreatorService implements CreatorServiceInterface {
         }
     }
 
-    public function create($input) {
-        Object::create($input);
-    }
-
-    public function createFromFileSubmission($input) {
+    public function createFromFile($input) {
         $this->object = Object::find($input['object_id']);
 
         // Global object
@@ -53,7 +49,7 @@ class ObjectCreatorService implements CreatorServiceInterface {
         });
     }
 
-    public function createFromWrittenSubmission($input) {
+    public function createFromWriting($input) {
         $this->object = new Object();
 
         \DB::transaction(function() use($input) {
@@ -72,26 +68,6 @@ class ObjectCreatorService implements CreatorServiceInterface {
 
             $this->object->save();
         });
-    }
-
-    private function createMissionRelation($input) {
-        try {
-            $mission = Mission::findOrFail(array_get($input, 'mission_id', null))->get();
-            $this->object->mission()->associate($mission);
-
-        } catch (ModelNotFoundException $e) {
-            // Model not found, do not set
-        }
-    }
-
-    private function createTagRelations($input) {
-        $tagIds = [];
-        foreach ($input['tags'] as $tag) {
-            $tagId = Tag::firstOrCreate(array('name' => $tag['name']))->tag_id;
-            array_push($tagIds, $tagId);
-        }
-
-        $this->object->tags()->attach($tagIds);
     }
 
     public function getErrors() {

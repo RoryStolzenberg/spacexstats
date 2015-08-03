@@ -249,7 +249,9 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         }
 
         self.submitWriting = function () {
-            console.log(koMapping.toJS(self.write, {}));
+            var formData = koMapping.toJS(self.write, {});
+            var contentTypeHeader = {'Submission-Type': 'write'};
+            self.submitToMissionControl(formData, contentTypeHeader)
         };
 
         // Submission of data to mission control
@@ -259,7 +261,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 dataType: 'json',
                 type: 'POST',
                 headers: contentTypeHeader,
-                data: { files: formData},
+                data: { data: formData},
                 success: function () {
                     window.location = '/missioncontrol';
                 },
