@@ -45,6 +45,10 @@ class Object extends Eloquent {
     );
 
     // Functions
+    public function getRules() {
+        return $this->rules;
+    }
+
     public function hasFile() {
         return !is_null($this->filename);
     }
@@ -111,14 +115,6 @@ class Object extends Eloquent {
     public function notes() {
         return $this->hasMany('Note');
     }
-
-    // Validators
-	public function isValidForSubmission($input) {
-		$type = SpaceXStats\Enums\MissionControlType::getType($input['type']);
-
-		$validator = Validator::make($input, $this->submissionRules[$type]);
-		return ($validator->passes() ? true : $validator->errors());
-	}
 
     // Scoped Queries
     public function scopeQueued($query) {

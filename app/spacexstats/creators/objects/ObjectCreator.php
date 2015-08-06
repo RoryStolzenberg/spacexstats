@@ -1,30 +1,36 @@
 <?php
 namespace SpaceXStats\Creators\Objects;
 
-abstract class ObjectCreator {
-    protected $object, $errors;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-    protected function createMissionRelation($input) {
+abstract class ObjectCreator {
+    protected $object, $input, $errors;
+
+    public function __construct(\Object $object) {
+        $this->object = $object;
+    }
+
+    protected function createMissionRelation() {
         try {
-            $mission = Mission::findOrFail(array_get($input, 'mission_id', null))->get();
+            $mission = \Mission::findOrFail(array_get($this->input, 'mission_id', null))->get();
             $this->object->mission()->associate($mission);
 
-        } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        } catch (ModelNotFoundException $e) {
             // Model not found, do not set
         }
     }
 
-    protected function createTagRelations($input) {
+    protected function createTagRelations() {
         $tagIds = [];
-        foreach ($input['tags'] as $tag) {
-            $tagId = Tag::firstOrCreate(array('name' => $tag['name']))->tag_id;
+        foreach ($this->input['tags'] as $tag) {
+            $tagId = \Tag::firstOrCreate(array('name' => $tag['name']))->tag_id;
             array_push($tagIds, $tagId);
         }
 
         $this->object->tags()->attach($tagIds);
     }
 
-    protected function getErrors() {
+    public function getErrors() {
         return $this->errors();
     }
 }

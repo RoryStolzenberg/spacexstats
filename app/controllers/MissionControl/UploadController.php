@@ -1,12 +1,5 @@
 <?php
-use SpaceXStats\Services\ObjectCreatorService;
-
 class UploadController extends BaseController {
-    protected $objectCreator;
-
-    public function __construct(ObjectCreatorService $objectCreator) {
-        $this->objectCreator = $objectCreator;
-    }
 
 	public function show() {
 
@@ -49,7 +42,10 @@ class UploadController extends BaseController {
 
             // Find each object from file
             for ($i = 0; $i < count($files); $i++) {
-                $objectValidities[$i] = $this->objectCreator->isValid($files[$i]) ? true : $this->objectCreator->getErrors();
+
+                $objectCreators[$i] = App::make('SpaceXStats\Creators\Objects\ObjectFromFile');
+                $objectValidities[$i] = $objectCreators[$i]->isValid($files[$i]) ? true : $objectCreators[$i]->getErrors();
+
                 if ($objectValidities[$i] !== true) {
                     $doesNotContainErrors = false;
                 }
@@ -57,10 +53,9 @@ class UploadController extends BaseController {
 
             // Check if there are errors, if no, add all to db, if yes, return with errors.
             if ($doesNotContainErrors) {
-
                 // add all objects to db
                 for ($i = 0; $i < count($files); $i++) {
-                    $this->objectCreator->createFromFileSubmission($files[$i]);
+                    $objectCreators[$i]->create();
                 }
 
                 // redirect to mission control
