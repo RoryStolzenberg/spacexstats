@@ -10,6 +10,17 @@ abstract class ObjectCreator {
         $this->object = $object;
     }
 
+    protected function validate($rules) {
+        $validator = \Validator::make($this->input, $rules);
+
+        if ($validator->passes()) {
+            return true;
+        } else {
+            $this->errors = $validator->errors();
+            return false;
+        }
+    }
+
     protected function createMissionRelation() {
         try {
             $mission = \Mission::findOrFail(array_get($this->input, 'mission_id', null))->get();

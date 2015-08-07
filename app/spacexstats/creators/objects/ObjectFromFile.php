@@ -28,15 +28,7 @@ class ObjectFromFile extends ObjectCreator implements Creatable {
         }
 
         $rules = array_intersect_key($this->object->getRules(), $rulesToGet);
-
-        $validator = \Validator::make($input, $rules);
-
-        if ($validator->passes()) {
-            return true;
-        } else {
-            $this->errors = $validator->errors();
-            return false;
-        }
+        return $this->validate($rules);
     }
 
     public function create() {
