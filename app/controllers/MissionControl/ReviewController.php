@@ -33,7 +33,7 @@ class ReviewController extends BaseController {
                 // Add the object to our elasticsearch node
                 Search::indexObject($object);
 
-                // Save the object
+                // Save the object if there's no errors
                 $object->save();
 
             } elseif (Input::get('status') == "Deleted") {

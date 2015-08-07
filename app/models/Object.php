@@ -54,7 +54,7 @@ class Object extends Eloquent {
     }
 
     public function hasThumbs() {
-        return !is_null($this->thumb_filename) && $this->thumb_filename !== "audio.png" && $this->thumb_filename !== "document.png";
+        return !is_null($this->thumb_filename) && $this->thumb_filename !== "audio.png" && $this->thumb_filename !== "document.png" && $this->thumb_filename !== "text.png";
     }
 
     public function putToS3() {

@@ -153,12 +153,12 @@ class Spacexstats extends Migration {
             $table->smallInteger('type')->unsigned();
             $table->smallInteger('subtype')->unsigned()->nullable();
             $table->integer('size')->unsigned();
-            $table->string('filetype', Varchar::small);
-            $table->string('mimetype', Varchar::small);
-            $table->string('original_name', Varchar::small);
+            $table->string('filetype', Varchar::small)->nullable();
+            $table->string('mimetype', Varchar::small)->nullable();
+            $table->string('original_name', Varchar::small)->nullable();
             $table->string('title', Varchar::small);
-            $table->string('filename', Varchar::tiny);
-            $table->string('thumb_filename', Varchar::tiny);
+            $table->string('filename', Varchar::tiny)->nullable();
+            $table->string('thumb_filename', Varchar::tiny)->nullable();
             $table->char('cryptographic_hash', 64)->nullable();
             $table->string('perceptual_hash')->nullable();
 
