@@ -149,8 +149,8 @@ class Object extends Eloquent {
 
     public function getMediaThumbSmallAttribute() {
         if (!empty($this->thumb_filename)) {
-            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png') {
-                return '/media/small/audio.png';
+            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png' || $this->thumb_filename == 'text.png') {
+                return '/media/small/' . $this->thumb_filename;
             } else {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');
@@ -162,13 +162,12 @@ class Object extends Eloquent {
             }
         }
         return null;
-        return '/media/small/' . $this->thumb_filename;
     }
 
     public function getMediaThumbLargeAttribute() {
         if (!empty($this->thumb_filename)) {
-            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png') {
-                return '/media/large/audio.png';
+            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png' || $this->thumb_filename == 'text.png') {
+                return '/media/large/' . $this->thumb_filename;
             } else {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');

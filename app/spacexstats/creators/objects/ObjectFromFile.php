@@ -45,13 +45,10 @@ class ObjectFromFile extends ObjectCreator implements Creatable {
             $this->object->author = array_get($this->input, 'author', null);
             $this->object->status = 'Queued';
 
-            // Set the mission relation if it exists
             $this->createMissionRelation();
-
-            // Set the tag relations
             $this->createTagRelations();
 
-            $this->object->save();
+            $this->object->push();
         });
     }
 }

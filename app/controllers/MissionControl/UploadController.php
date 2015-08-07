@@ -57,14 +57,6 @@ class UploadController extends BaseController {
                 for ($i = 0; $i < count($files); $i++) {
                     $objectCreators[$i]->create();
                 }
-
-                // redirect to mission control
-                Session::flash('flashMessage', array(
-                    'contents' => 'Done! Your submitted content will be reviewed and published within 24 hours',
-                    'type' => 'success'
-                ));
-                return Response::json(true);
-
             } else {
                 return Response::json($objectValidities, 400);
             }
@@ -75,17 +67,22 @@ class UploadController extends BaseController {
 		// Written Submissions
 		} elseif (Request::header('Submission-Type') == 'write') {
 
-			$isValid = $this->objectCreator->isValid(Input::all());
-
-			if ($isValid === true) {
+			$objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromWriting');
+			if ($objectCreator->isValid(Input::get('data'))) {
 				// Add to db
-                $this->objectCreator->createFromWrittenSubmission(Input::all());
+                $objectCreator->create();
 
-				// redirect
 			} else {
-				return Response::json($isValid, 400);
+				return Response::json($objectCreator->getErrors(), 400);
 			}
 		}
+
+        // redirect to mission control
+        Session::flash('flashMessage', array(
+            'contents' => 'Done! Your submitted content will be reviewed and published within 24 hours',
+            'type' => 'success'
+        ));
+        return Response::json(true);
 	}
 
     // AJAX GET

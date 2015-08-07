@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Enums;
 
-abstract class MissionControlType {
+abstract class MissionControlType extends Enum {
 	// Upload
 	const Image 		= 1;
 	const GIF 			= 2;
@@ -9,15 +9,15 @@ abstract class MissionControlType {
 	const Video 		= 4;
 	const Document 		= 5;
 
-	// Post
+	// Submission
 	const Tweet 		= 6;
 	const Article 		= 7;
 	const Transcript	= 8;
 	const Comment		= 9;
     const Webpage       = 10;
 
-	// Update
-	const Post		    = 11;
+	// Writing
+	const Text		    = 11;
 
 	// Private 
 	const Pivot			= 12;
@@ -41,11 +41,13 @@ abstract class MissionControlType {
 
 			case 12: return 'Pivot';
 			case 13: return 'Person';
+
+            default: return null;
 		}
 	}
 }
 
-abstract class MissionControlSubtype {
+abstract class MissionControlSubtype extends Enum {
 	const MissionPatch 		= 1;
 	const Photo				= 2;
 	const Telemetry 		= 3;
@@ -61,7 +63,7 @@ abstract class MissionControlSubtype {
 	const RedditComment 	= 13;
 	const NSFComment 		= 14;
 	const WeatherForecast	= 15;
-    const Map               = 16;
+    const HazardMap         = 16;
     const License           = 17;
 
     public static function getType($num) {
@@ -81,8 +83,10 @@ abstract class MissionControlSubtype {
             case 13: return 'Reddit Comment';
             case 14: return 'NSF Comment';
             case 15: return 'Weather Forecast';
-            case 16: return 'Map';
+            case 16: return 'Hazard Map';
             case 17: return 'License';
+
+            default: return null;
         }
     }
 }

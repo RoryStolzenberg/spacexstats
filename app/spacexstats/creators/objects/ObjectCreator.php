@@ -23,7 +23,7 @@ abstract class ObjectCreator {
 
     protected function createMissionRelation() {
         try {
-            $mission = \Mission::findOrFail(array_get($this->input, 'mission_id', null))->get();
+            $mission = \Mission::findOrFail(array_get($this->input, 'mission_id', null));
             $this->object->mission()->associate($mission);
 
         } catch (ModelNotFoundException $e) {

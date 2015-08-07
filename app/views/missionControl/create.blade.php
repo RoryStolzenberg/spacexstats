@@ -84,10 +84,11 @@
                                 <option>None</option>
                                 <option value="1">Mission Patch</option>
                                 <option value="2">Photo</option>
-                                <option value="3">Chart</option>
                                 <option value="5">Screenshot</option>
                                 <option value="11">Infographic</option>
                                 <option value="12">News Summary</option>
+                                <option value="16">Hazard Map</option>
+                                <optiom value="17">License</optiom>
                             </select>
                         </label>
                     </li>
