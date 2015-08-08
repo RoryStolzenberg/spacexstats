@@ -1,6 +1,6 @@
 <?php
 
-class Publisher extends Eloquent {
+class Tweeter extends Eloquent {
 
     protected $table = 'tweeters';
     protected $primaryKey = 'tweeter_id';

@@ -42,7 +42,16 @@ abstract class ObjectCreator {
     }
 
     protected function createPublisherRelation() {
+        try {
+            $publisher = \Publisher::findOrFail(array_get($this->input, 'publisher_id', null));
+        } catch (ModelNotFoundException $e) {
 
+            $publisher = \Publisher::create([
+
+            ]);
+        }
+
+        $this->object->publisher()->associate($publisher);
     }
 
     protected function createTweeterRelation() {

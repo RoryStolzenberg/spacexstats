@@ -177,7 +177,7 @@ class Spacexstats extends Migration {
             $table->datetime('tweet_created_at')->nullable(); // Optional second, minute, hour, day, month
             $table->string('tweet_text', Varchar::small)->nullable();
             $table->string('tweet_parent_id', Varchar::tiny)->nullable();
-            $table->integer('tweeter_id')->unsigned();
+            $table->integer('tweeter_id')->unsigned()->nullable();
 
             // Image-related properties
             $table->string('exposure', Varchar::tiny)->nullable();
@@ -189,7 +189,7 @@ class Spacexstats extends Migration {
             $table->string('camera_model', Varchar::small)->nullable();
 
             // Post-related properties
-            $table->integer('publisher_id')->unsigned();
+            $table->integer('publisher_id')->unsigned()->nullable();
             $table->mediumText('article')->nullable();
 
             // Third-party-related properties
