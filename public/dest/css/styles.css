@@ -4333,6 +4333,41 @@ body, nav {
   .nav-open nav {
     left: 0; }
 
+.tagger-container .wrapper {
+  border: 1px solid #CCC;
+  font-size: 0; }
+
+.tagger-container .tags {
+  display: inline-block; }
+
+.tagger-container .tags div {
+  font-family: "Segoe WP", sans-serif;
+  display: inline-block;
+  background-color: #33495E;
+  color: #FFF;
+  border-radius: 15px;
+  padding: 5px 10px;
+  margin: 4px 3px;
+  line-height: 1; }
+  .tagger-container .tags div .remove {
+    padding-left: 10px;
+    width: 20px;
+    height: 20px; }
+  .tagger-container .tags div .remove:before {
+    content: "x"; }
+
+.tagger-container input {
+  display: inline-block;
+  vertical-align: top;
+  border: none;
+  box-shadow: none;
+  margin: 0;
+  outline: none; }
+
+.tagger-container .suggestion {
+  width: 33%;
+  display: inline-block; }
+
 /* Sticky Bar Nav */
 nav.sticky-bar {
   position: -webkit-sticky;
@@ -4664,40 +4699,6 @@ textarea {
     line-height: 50px;
     vertical-align: top;
     margin-left: 60px; }
-
-.tagger-container .wrapper {
-  border: 1px solid #CCC;
-  font-size: 0; }
-
-.tagger-container .tags {
-  display: inline-block; }
-
-.tagger-container .tags div {
-  font-family: "Segoe WP", sans-serif;
-  display: inline-block;
-  background-color: #33495E;
-  color: #FFF;
-  border-radius: 15px;
-  padding: 5px 10px;
-  margin: 4px 3px;
-  line-height: 1; }
-  .tagger-container .tags div .remove {
-    padding-left: 10px;
-    width: 20px;
-    height: 20px; }
-  .tagger-container .tags div .remove:before {
-    content: "x"; }
-
-.tagger-container input {
-  display: inline-block;
-  vertical-align: top;
-  border: none;
-  box-shadow: none;
-  margin: 0; }
-
-.tagger-container .suggestion {
-  width: 33%;
-  display: inline-block; }
 
 .prepended-input {
   margin: 0 10px; }

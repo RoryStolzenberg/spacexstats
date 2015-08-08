@@ -14,6 +14,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launch Count',
             'name' => 'Falcon 9',
             'description' => 'Falcon 9 has launched {{n}} times',
+            'unit' => 'Flights',
             'display' => 'single'
         ));
 
@@ -22,6 +23,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launch Count',
             'name' => 'Falcon Heavy',
             'description' => 'Falcon Heavy has launched {{n}} times',
+            'unit' => 'Flights',
             'display' => 'single'
         ));
     }

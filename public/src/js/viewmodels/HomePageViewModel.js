@@ -12,7 +12,6 @@ define(['knockout', 'jquery', 'jquery.ui', 'jquery.fracs', 'jquery.throttle-debo
             if (self.activeStatistic() != null) {
                 window.location.hash = self.activeStatistic().split(' ').join('_');
             }
-
         });
 
         self.scrollToStatistic = function(statistic) {
@@ -41,11 +40,12 @@ define(['knockout', 'jquery', 'jquery.ui', 'jquery.fracs', 'jquery.throttle-debo
             var stat = $('div[data-stat="' + statistic + '"]')
             var substat = $(event.target).data('substat');
 
-
             // Slide in header from right
-            stat.find('span[data-substat="' + substat + '"]')
-                .css('opacity', 0)
-                .slide
+            $.when(
+                stat.find('[data-substat]:not(nav [data-substat])').fadeOut(300).promise()
+            ).done(function() {
+                stat.find('[data-substat="' + substat + '"]:not(nav [data-substat])').fadeIn(300)
+            });
 
         };
 
