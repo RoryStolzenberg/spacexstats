@@ -12,7 +12,7 @@ Route::get('missions/past', array(
 Route::get('missions/all', array(
     'as' => 'missions.all',
     'uses' => 'MissionsController@all'
-));
+))->before('mustBe:Subscriber');
 
 Route::group(array('before' => 'mustBe:Administrator'), function() {
     Route::get('missions/create', array(

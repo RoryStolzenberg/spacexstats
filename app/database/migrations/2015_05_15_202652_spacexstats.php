@@ -188,12 +188,12 @@ class Spacexstats extends Migration {
             $table->string('camera_manufacturer', Varchar::small)->nullable();
             $table->string('camera_model', Varchar::small)->nullable();
 
-            // Third-party-related properties
-            $table->string('external_url', Varchar::small)->nullable();
-
             // Post-related properties
             $table->integer('publisher_id')->unsigned();
             $table->mediumText('article')->nullable();
+
+            // Third-party-related properties
+            $table->string('external_url', Varchar::small)->nullable();
 
             $table->enum('status', array('New', 'Queued', 'Published'));
             $table->enum('visibility', array('Default', 'Public', 'Hidden'));

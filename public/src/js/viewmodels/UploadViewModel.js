@@ -262,6 +262,21 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 }
             });
         };
+
+        self.missionData = ko.observableArray([]);
+        self.tagData = [];
+        self.publisherData = [];
+
+        self.init = (function() {
+            $.ajax('/missions/all', {
+                dataType: 'json',
+                method: 'GET',
+                success: function(response) {
+                    self.missionData(response);
+                }
+            })
+        })();
+
     };
 
     return UploadViewModel;

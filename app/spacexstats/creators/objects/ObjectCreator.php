@@ -41,6 +41,14 @@ abstract class ObjectCreator {
         $this->object->tags()->attach($tagIds);
     }
 
+    protected function createPublisherRelation() {
+
+    }
+
+    protected function createTweeterRelation() {
+
+    }
+
     public function getErrors() {
         return $this->errors();
     }

@@ -27,6 +27,11 @@ class ObjectFromArticle extends ObjectCreator implements Creatable {
                 'originated_at'         => \Carbon\Carbon::now(),
                 'status'                => Status::QueuedStatus
             ]);
+
+            $this->createMissionRelation();
+            $this->createTagRelations();
+
+            $this->createPublisherRelation();
         });
     }
 }
