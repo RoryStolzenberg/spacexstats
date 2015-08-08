@@ -12,15 +12,18 @@ class ObjectsController extends BaseController {
     // missioncontrol/objects/{object_id}
     public function get($object_id) {
         $object = Object::find($object_id);
+
+        $object->incrementViewcounter();
         
         if ($object->visibility == 'Public' && $object->status == 'Published') {
+
             return View::make('missionControl.objects.get', array(
                 'object' => $object
             ));
 
-        } elseif ($object->visibility == 'Default' && $object->status == 'Published') {
-            if (Auth::isSubscriber()) {
+        } elseif ($object->visibility == 'Default' && $object->status == 'Published' && Auth::isSubscriber()) {
 
+                // Inject dynamic data into page
                 JavaScript::put([
                     'totalFavorites' => $object->favorites()->count(),
                     'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first()
@@ -30,12 +33,10 @@ class ObjectsController extends BaseController {
                     'object' => $object,
                     'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
                 ));
-            }
-            return App::abort(401);
 
-        } elseif ($object->visibility == 'Hidden' || $object->status == 'Queued' || $object->status == 'New') {
-            if (Auth::isAdmin()) {
+        } elseif ($object->visibility == 'Hidden' || $object->status == 'Queued' || $object->status == 'New' && Auth::isAdmin()) {
 
+                // Inject dynamic data into page
                 JavaScript::put([
                     'totalFavorites' => $object->favorites()->count(),
                     'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first()
@@ -45,9 +46,6 @@ class ObjectsController extends BaseController {
                     'object' => $object,
                     'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
                 ));
-            }
-            return App::abort(401);
-
         }
         return App::abort(401);
     }

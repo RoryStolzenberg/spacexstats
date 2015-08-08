@@ -91,6 +91,22 @@ class Object extends Eloquent {
         }
     }
 
+    public function incrementViewCounter() {
+        // Only increment the view counter if the curreunt user is a subscriber
+        if (Auth::isSubscriber()) {
+
+            // Only increment the view counter if the user has not visited in 1 hour
+            if (Redis::exists('objectViewByUser:' . $this->object_id . ':' . Auth::user()->user_id)) {
+
+                // Increment
+                Redis::hincrby('object:' . $this->object_id, 'views', 1);
+
+                // Add user to recent views
+                Redis::setex('objectViewByUser:' . $this->object_id . ':' . Auth::user()->user_id, true, 3600);
+            }
+        }
+    }
+
 	// Relations
 	public function mission() {
 		return $this->belongsTo('Mission');
@@ -191,6 +207,10 @@ class Object extends Eloquent {
 
     public function getQueueTimeAttribute() {
         return $this->actioned_at->diffInSeconds($this->created_at);
+    }
+
+    public function getViewsAttribute() {
+        return Redis::hget('object:' . $this->object_id, 'views');
     }
 
     // Attribute mutators

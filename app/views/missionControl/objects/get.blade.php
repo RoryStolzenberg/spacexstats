@@ -36,7 +36,7 @@
                 <aside class="grid-4">
                     <div class="actions container">
                         <span class="grid-4">
-                            <i class="fa fa-eye"></i> Views
+                            <i class="fa fa-eye"></i>{{ $object->views }} Views
                         </span>
                         <span class="grid-4">
                             <i class="fa fa-star" data-bind="css: { 'is-favorited': isFavorited() == true }, click: toggleFavorite"></i>
