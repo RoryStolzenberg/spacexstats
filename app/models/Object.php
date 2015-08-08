@@ -100,6 +100,14 @@ class Object extends Eloquent {
 		return $this->belongsTo('User');
 	}
 
+    public function tweeter() {
+        return $this->belongsTo('Tweeter');
+    }
+
+    public function publisher() {
+        return $this->belongsTo('Publisher');
+    }
+
     public function tags() {
         return $this->belongsToMany('Tag', 'objects_tags_pivot');
     }

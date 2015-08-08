@@ -175,11 +175,9 @@ class Spacexstats extends Migration {
             // Twitter-related properties
             $table->string('tweet_id', Varchar::tiny)->nullable();
             $table->datetime('tweet_created_at')->nullable(); // Optional second, minute, hour, day, month
-            $table->string('tweet_user_profile_image_url', Varchar::small)->nullable();
-            $table->string('tweet_user_screen_name', Varchar::tiny)->nullable();
-            $table->string('tweet_user_name', Varchar::tiny)->nullable();
             $table->string('tweet_text', Varchar::small)->nullable();
             $table->string('tweet_parent_id', Varchar::tiny)->nullable();
+            $table->integer('tweeter_id')->unsigned();
 
             // Image-related properties
             $table->string('exposure', Varchar::tiny)->nullable();
@@ -194,7 +192,7 @@ class Spacexstats extends Migration {
             $table->string('external_url', Varchar::small)->nullable();
 
             // Post-related properties
-            $table->string('publisher', Varchar::small)->nullable();
+            $table->integer('publisher_id')->unsigned();
             $table->mediumText('article')->nullable();
 
             $table->enum('status', array('New', 'Queued', 'Published'));
@@ -293,6 +291,12 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('publishers', function(Blueprint $table) {
+            $table->increments('publisher_id');
+            $table->string('name', Varchar::tiny);
+            $table->string('icon', Varchar::small);
+        });
+
         Schema::create('questions', function(Blueprint $table) {
             $table->increments('question_id');
         });
@@ -345,12 +349,18 @@ class Spacexstats extends Migration {
             $table->string('name', Varchar::tiny);
         });
 
-
         Schema::create('tags', function(Blueprint $table) {
             $table->increments('tag_id');
             $table->string('name', Varchar::tiny);
             $table->string('description', Varchar::compact)->nullable();
             $table->timestamps();
+        });
+
+        Schema::create('tweeters', function(Blueprint $table) {
+            $table->increments('tweeter_id');
+            $table->string('user_profile_image_url', Varchar::small)->nullable();
+            $table->string('user_screen_name', Varchar::tiny)->nullable();
+            $table->string('user_name', Varchar::tiny)->nullable();
         });
 
         Schema::create('users', function(Blueprint $table) {
@@ -417,6 +427,9 @@ class Spacexstats extends Migration {
         Schema::table('objects', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null');
             $table->foreign('mission_id')->references('mission_id')->on('missions');
+
+            $table->foreign('publisher_id')->references('publisher_id')->on('publishers');
+            $table->foreign('tweeter_id')->references('tweeter_id')->on('tweeters');
         });
 
         Schema::table('objects_tags_pivot', function(Blueprint $table) {
