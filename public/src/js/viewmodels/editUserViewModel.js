@@ -12,6 +12,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             reddit_account: ko.observable(laravel.profile.reddit_account),
             favorite_mission: ko.observable(laravel.profile.favorite_mission),
             favorite_mission_patch: ko.observable(laravel.profile.favorite_mission_patch),
+            favorite_quote: ko.observable(laravel.profile.favorite_quote)
         };
 
         self.missions = ko.observable(laravel.missions);
