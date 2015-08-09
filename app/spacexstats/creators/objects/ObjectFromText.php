@@ -2,8 +2,9 @@
 namespace SpaceXStats\Creators\Objects;
 
 use SpaceXStats\Creators\Creatable;
-use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\Status;
+use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Enums\MissionControlSubtype;
 
 class ObjectFromText extends ObjectCreator implements Creatable {
 

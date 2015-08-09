@@ -68,12 +68,13 @@ class UsersController extends BaseController {
         }
 
         JavaScript::put([
-            'emailNotifications' => $hasNotifications
+            'missions' => Mission::with('featuredImage')->get(),
+            'emailNotifications' => $hasNotifications,
+            'profile' => $user->profile
         ]);
 
         return View::make('users.edit', array(
             'user' => $user,
-            'profile' => $user->profile
         ));
     }
 

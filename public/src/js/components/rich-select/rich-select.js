@@ -93,10 +93,12 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
                 }
             }, self.options);
 
+            console.log(params.value());
+
             // set default value
             if (params.value() != null) {
                 self.selectedOption($.grep(self.options(), function(e) {
-                    return e.id() == ko.unwrap(params.default);
+                    return e.id() == ko.unwrap(params.value);
                 })[0]);
             } else {
                 self.selectedOption($.grep(self.options(), function(e) {

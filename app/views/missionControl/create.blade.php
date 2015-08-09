@@ -486,6 +486,9 @@
                             <label>Comment Title</label>
                             <input type="text" name="article-author" id="article-author" data-bind="text: title" />
 
+                            <label>Select Related Mission</label>
+                            <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
+
                             <label>Tags</label>
                             <tags params="tags: tags"></tags>
 						</fieldset>
@@ -507,11 +510,13 @@
 							<textarea data-bind="value: comment"></textarea>
 
                             <label>Select Related Mission</label>
+                            <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
+
                             <label>Tags</label>
                             <tags params="tags: tags"></tags>
 						</fieldset>
 
-						<input type="submit" value="Submit" name="submit" id="post-submit" data-bind="click: $" />
+						<input type="submit" value="Submit" name="submit" id="post-submit" data-bind="click: submitPost" />
 					</form>
 				</section>
 				

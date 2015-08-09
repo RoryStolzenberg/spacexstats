@@ -58,21 +58,39 @@ class UploadController extends BaseController {
                 return Response::json($objectValidities, 400);
             }
 
-        // Post submissions
-        } elseif (Request::header('Submission-Type') == 'post') {
+        // NSF Comment
+        } else {
+            switch (Request::header('Submission-Type')) {
 
-		// Written Submissions
-		} elseif (Request::header('Submission-Type') == 'write') {
+                case 'article':
+                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromArticle');
+                    break;
 
-			$objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromWriting');
-			if ($objectCreator->isValid(Input::get('data'))) {
-				// Add to db
+                case 'pressRelease':
+                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromPressRelease');
+                    break;
+
+                case 'redditComment':
+                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromRedditComment');
+                    break;
+
+                case 'NSFComment':
+                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromNSFComment');
+                    break;
+
+                case 'text':
+                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromText');
+                    break;
+            }
+
+            if ($objectCreator->isValid(Input::get('data'))) {
+                // Add to db
                 $objectCreator->create();
 
-			} else {
-				return Response::json($objectCreator->getErrors(), 400);
-			}
-		}
+            } else {
+                return Response::json($objectCreator->getErrors(), 400);
+            }
+        }
 
         // redirect to mission control
         Session::flash('flashMessage', array(

@@ -7,7 +7,7 @@ use SpaceXStats\Enums\Status;
 use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\MissionControlSubtype;
 
-class ObjectFromNSFComment extends ObjectCreator implements Creatable {
+class ObjectFromRedditComment extends ObjectCreator implements Creatable {
 
     public function isValid($input) {
         $this->input = $input;
@@ -22,7 +22,7 @@ class ObjectFromNSFComment extends ObjectCreator implements Creatable {
             $this->object = \Object::create([
                 'user_id'               => \Auth::user()->user_id,
                 'type'                  => MissionControlType::Comment,
-                'subtype'               => MissionControlSubtype::NSFComment,
+                'subtype'               => MissionControlSubtype::RedditComment,
                 'title'                 => $this->input['title'],
                 'size'                  => strlen($this->input['comment']),
                 'summary'               => $this->input['comment'],

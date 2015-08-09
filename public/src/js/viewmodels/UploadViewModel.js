@@ -183,7 +183,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             tweet_user_name: ko.observable(null),
             tweet_created_at: ko.observable(null),
             tweet_images: ko.observableArray([]),
-            tags: ko.observableArray([])
+            tags: ko.observableArray([]),
+            mission_id: ko.observable(null)
         };
 
         self.article = {
@@ -193,7 +194,8 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             author: ko.observable(null),
             title: ko.observable(null),
             article: ko.observable(null),
-            tags: ko.observableArray([])
+            tags: ko.observableArray([]),
+            mission_id: ko.observable(null)
         }
 
         self.pressRelease = {
@@ -201,13 +203,15 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             originated_at: ko.observable(null),
             title: ko.observable(null),
             article: ko.observable(null),
-            tags: ko.observableArray([])
+            tags: ko.observableArray([]),
+            mission_id: ko.observable(null)
         }
 
         self.redditComment = {
             external_url: ko.observable(null),
             title: ko.observable(null),
-            tags: ko.observableArray([])
+            tags: ko.observableArray([]),
+            mission_id: ko.observable(null)
         }
 
         self.NSFComment = {
@@ -221,7 +225,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
         }
 
         self.submitPost = function (item, event) {
-            var postForm = $(event.currentTarget).parent();
 
             if (self.postType() == 'tweet') {
                 var contentTypeHeader = {'Submission-Type': 'tweet'};

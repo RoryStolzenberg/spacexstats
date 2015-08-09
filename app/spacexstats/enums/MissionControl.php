@@ -48,43 +48,43 @@ abstract class MissionControlType extends Enum {
 }
 
 abstract class MissionControlSubtype extends Enum {
-	const MissionPatch 		= 101;
-	const Photo				= 102;
-	const Telemetry 		= 103;
-	const Chart 			= 104;
-	const Screenshot		= 105;
-	const LaunchVideo   	= 106;
-	const PressConference	= 107;
-	const PressKit 			= 108;
-	const CargoManifest		= 109;
-	const Infographic		= 110;
-	const NewsSummary		= 111;
-	const PressRelease 		= 112;
-	const RedditComment 	= 113;
-	const NSFComment 		= 114;
-	const WeatherForecast	= 115;
-    const HazardMap         = 116;
-    const License           = 117;
+	const MissionPatch 		= 1;
+	const Photo				= 2;
+	const Telemetry 		= 3;
+	const Chart 			= 4;
+	const Screenshot		= 5;
+	const LaunchVideo   	= 6;
+	const PressConference	= 7;
+	const PressKit 			= 8;
+	const CargoManifest		= 9;
+	const Infographic		= 10;
+	const NewsSummary		= 11;
+	const PressRelease 		= 12;
+	const RedditComment 	= 13;
+	const NSFComment 		= 14;
+	const WeatherForecast	= 15;
+    const HazardMap         = 16;
+    const License           = 17;
 
     public static function getType($num) {
         switch ($num) {
-            case 101: return 'Mission Patch';
-            case 102: return 'Photo';
-            case 103: return 'Telemetry';
-            case 104: return 'Chart';
-            case 105: return 'Screenshot';
-            case 106: return 'Launch Video';
-            case 107: return 'Press Conference';
-            case 108: return 'Press Kit';
-            case 109: return 'Cargo Manifest';
-            case 110: return 'Infographic';
-            case 111: return 'News Summary';
-            case 112: return 'Press Release';
-            case 113: return 'Reddit Comment';
-            case 114: return 'NSF Comment';
-            case 115: return 'Weather Forecast';
-            case 116: return 'Hazard Map';
-            case 117: return 'License';
+            case 1: return 'Mission Patch';
+            case 2: return 'Photo';
+            case 3: return 'Telemetry';
+            case 4: return 'Chart';
+            case 5: return 'Screenshot';
+            case 6: return 'Launch Video';
+            case 7: return 'Press Conference';
+            case 8: return 'Press Kit';
+            case 9: return 'Cargo Manifest';
+            case 10: return 'Infographic';
+            case 11: return 'News Summary';
+            case 12: return 'Press Release';
+            case 13: return 'Reddit Comment';
+            case 14: return 'NSF Comment';
+            case 15: return 'Weather Forecast';
+            case 16: return 'Hazard Map';
+            case 17: return 'License';
 
             default: return null;
         }

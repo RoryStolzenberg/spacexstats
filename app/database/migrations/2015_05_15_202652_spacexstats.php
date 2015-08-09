@@ -39,6 +39,17 @@ class Spacexstats extends Migration {
             $table->integer('spacecraft_flight_id')->unsigned();
         });
 
+
+        Schema::create('awards', function(Blueprint $table) {
+            $table->increments('award_id');
+            $table->integer('object_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->enum('type', array('Created', 'Edited'));
+            $table->smallInteger('value')->unsigned();
+
+            $table->timestamps();
+        });
+
         /*Schema::create('collections', function(Blueprint $table) {
             $table->increments('collection_id');
             $table->
