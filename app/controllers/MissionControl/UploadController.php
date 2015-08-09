@@ -4,14 +4,11 @@ class UploadController extends BaseController {
 	public function show() {
 
         JavaScript::put([
-            'tags' => Tag::all()
+            'tags' => Tag::all(),
+            'missions' => Mission::with('featuredImage')->get()
         ]);
 
-		return View::make('missionControl.create', array(
-			'title' => 'Upload',
-			'currentPage' => 'upload',
-			'missions' => Mission::all(), // Provide all missions for the rich Select dropdown
-		));
+		return View::make('missionControl.create');
 	}	
 
 	// AJAX POST

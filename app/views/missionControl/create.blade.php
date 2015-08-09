@@ -406,7 +406,7 @@
                     <ul class="upload-type text-center">
                         <li data-bind="click: changeVisibleSection.bind($data, 'upload')"><i class="fa fa-upload"></i> Upload</li>
                         <li data-bind="click: changeVisibleSection.bind($data, 'post')"><i class="fa fa-paperclip"></i> Post</li>
-                        <li data-bind="click: changeVisibleSection.bind($data, 'write')"><i class="fa fa-pencil"></i> Write</li>
+                        <li data-bind="click: changeVisibleSection.bind($data, 'text')"><i class="fa fa-pencil"></i> Write</li>
                     </ul>
                 </nav>
 				<!-- Upload -->
@@ -432,7 +432,7 @@
                             <label><input type="radio" name="type" value="article" data-bind="checked: postType" />News Article</label>
                             <label><input type="radio" name="type" value="pressrelease" data-bind="checked: postType" />SpaceX press release</label>
                             <label><input type="radio" name="type" value="redditcomment" data-bind="checked: postType" />Reddit comment</label>
-                            <label><input type="radio" name="type" value="nsfcomment" data-bind="checked: postType" />NSF comment</label>
+                            <label><input type="radio" name="type" value="NSFComment" data-bind="checked: postType" />NSF comment</label>
 						</fieldset>
 
 						<fieldset class="post-type tweet" data-bind="visible: postType() == 'tweet'">
@@ -490,33 +490,34 @@
                             <tags params="tags: tags"></tags>
 						</fieldset>
 
-						<fieldset class="post-type nsfcomment" data-bind="visible: postType() == 'nsfcomment', with: nsfComment">
+						<fieldset class="post-type nsf-comment" data-bind="visible: postType() == 'NSFComment', with: NSFComment">
                             <label>Comment URL</label>
-							<input type="url" name="nsfcomment-url" id="article-url" data-bind="text: external_url"/>
+							<input type="url" name="nsfcomment-url" id="article-url" data-bind="value: external_url"/>
 
                             <label>Comment Title</label>
-                            <input type="text" name="article-author" id="article-author" data-bind="text: title" />
+                            <input type="text" name="article-author" id="article-author" data-bind="value: title" />
 
                             <label>Comment Date</label>
                             <datetime params="value: originated_at, type: 'date'"></datetime>
 
                             <label>Comment Author</label>
-							<input type="author" name="nsfcomment-author" id="article-author" />
+							<input type="author" name="nsf-comment-author" id="article-author" data-bind="value: author" />
 
                             <label>Comment</label>
-							<textarea data-bind="text: comment"></textarea>
+							<textarea data-bind="value: comment"></textarea>
 
+                            <label>Select Related Mission</label>
                             <label>Tags</label>
                             <tags params="tags: tags"></tags>
 						</fieldset>
 
-						<input type="submit" value="Submit" name="submit" id="post-submit" />
+						<input type="submit" value="Submit" name="submit" id="post-submit" data-bind="click: $" />
 					</form>
 				</section>
 				
 				<!-- Write -->
-				<section class="upload-write" data-bind="visible: visibleSection() == 'write'">
-					<form data-bind="with: write">
+				<section class="upload-text" data-bind="visible: visibleSection() == 'text'">
+					<form data-bind="with: text">
 						<label>Select related mission</label>
                         <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
 
@@ -532,7 +533,7 @@
                         <label>Tags</label>
                         <tags params="tags: tags"></tags>
 
-						<input type="submit" value="Submit" name="submit" id="write-submit" data-bind="click: $root.submitWriting" />
+						<input type="submit" value="Submit" name="submit" id="text-submit" data-bind="click: $root.submitText" />
 					</form>
 				</section>
 			</main>

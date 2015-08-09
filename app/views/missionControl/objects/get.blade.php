@@ -31,12 +31,18 @@
 
             <section class="details">
                 <div class="grid-8">
-                    <img class="object" src="{{ $object->filename }}" />
+                    @if($object->type == \SpaceXStats\Enums\MissionControlType::Image)
+                        <img class="object" src="{{ $object->filename }}" />
+                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Text)
+                        <div>
+                            {{ $object->summary }}
+                        </div>
+                    @endif
                 </div>
                 <aside class="grid-4">
                     <div class="actions container">
                         <span class="grid-4">
-                            <i class="fa fa-eye"></i>{{ $object->views }} Views
+                            <i class="fa fa-eye"></i> {{ $object->views }} Views
                         </span>
                         <span class="grid-4">
                             <i class="fa fa-star" data-bind="css: { 'is-favorited': isFavorited() == true }, click: toggleFavorite"></i>
@@ -60,8 +66,11 @@
 
             <h2>Summary</h2>
             <section class="summary">
-                <p>{{ $object->summary }}</p>
+                @if ($object->type != \SpaceXStats\Enums\MissionControlType::Text)
+                    <p>{{ $object->summary }}</p>
+                @endif
 
+                <h3>Tags</h3>
                 <div class="tags">
                     @foreach ($object->tags as $tag)
                         <span>{{ $tag->name }}</span>

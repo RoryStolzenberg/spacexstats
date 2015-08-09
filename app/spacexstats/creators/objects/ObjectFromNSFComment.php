@@ -1,11 +1,10 @@
 <?php
+
 namespace SpaceXStats\Creators\Objects;
 
-use SpaceXStats\Creators\Creatable;
-use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\Status;
+use SpaceXStats\Enums\MissionControlSubtype;
 
-class ObjectFromWriting extends ObjectCreator implements Creatable {
+class ObjectFromNSFComment extends ObjectCreator implements Creatable {
 
     public function isValid($input) {
         $this->input = $input;
@@ -19,13 +18,13 @@ class ObjectFromWriting extends ObjectCreator implements Creatable {
 
             $this->object = \Object::create([
                 'user_id'               => \Auth::user()->user_id,
-                'type'                  => MissionControlType::Text,
+                'type'                  => MissionControlType::Comment,
+                'subtype'               => MissionControlSubtype::NSFComment,
                 'title'                 => $this->input['title'],
-                'size'                  => strlen($this->input['content']),
-                'summary'               => $this->input['content'],
-                'anonymous'             => array_get($this->input, 'anonymous', false),
-                'thumb_filename'        => 'text.png',
-                'cryptographic_hash'    => hash('sha256', $this->input['content']),
+                'size'                  => strlen($this->input['comment']),
+                'summary'               => $this->input['comment'],
+                'thumb_filename'        => 'comment.png',
+                'cryptographic_hash'    => hash('sha256', $this->input['comment']),
                 'originated_at'         => \Carbon\Carbon::now(),
                 'status'                => Status::QueuedStatus
             ]);

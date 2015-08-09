@@ -102,7 +102,14 @@
 		@if (Auth::isAccessingSelf($user) || Auth::isAdmin())
 			<h2>Notes</h2>
 			<section class="notes">
-				
+                <ul>
+                    @foreach ($notes as $note)
+                        <li>
+                            <h4>{{ $note->object->title }}</h4>
+                            {{ $note->note }}
+                        </li>
+                    @endforeach
+                </ul>
 			</section>
 		@endif
 		<h2>Uploads</h2>

@@ -54,7 +54,7 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
 
             option.image = ko.computed(function() {
                 if (richSelectOption.featured_image != null) {
-                    return richSelectOption.featured_image;
+                    return richSelectOption.featured_image.filename;
                 }
                 return null;
             });
@@ -69,7 +69,7 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
             self.dropdownVisible(!self.dropdownVisible());
         };
 
-        params.data.subscribe(function(newValue) {
+        self.init = (function() {
             // remap data with standardized values
             var data = ko.unwrap(params.data).map(function(item) {
                 return {
@@ -103,8 +103,7 @@ define(['knockout', 'ko.mapping', 'jquery', 'text!components/rich-select/rich-se
                     return e.id() == 0;
                 })[0]);
             }
-        });
-
+        })();
     }
 
     return {viewModel: RichSelectViewModel, template: htmlString};

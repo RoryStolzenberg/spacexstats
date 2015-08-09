@@ -9,6 +9,10 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         var self = this;
 
+        self.missionData = ko.observableArray(laravel.missions);
+        self.tagData = ko.observableArray(laravel.tags);
+        self.publisherData = [];
+
         var fileMappingOptions = {
             create: function(options) {
                 if (options.data.type == 1) {
@@ -206,33 +210,33 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             tags: ko.observableArray([])
         }
 
-        self.nsfComment = {
+        self.NSFComment = {
             external_url: ko.observable(null),
             originated_at: ko.observable(null),
             author: ko.observable(null),
             title: ko.observable(null),
             comment: ko.observable(null),
-            tags: ko.observableArray([])
+            tags: ko.observableArray([]),
+            mission_id: ko.observable(null)
         }
 
         self.submitPost = function (item, event) {
             var postForm = $(event.currentTarget).parent();
 
             if (self.postType() == 'tweet') {
-                var formData = {
-                    url: postForm.find('[name="tweet-url"]').val(),
-                    author: postForm.find('[name="tweet-author"]').val(),
-                    tweet: postForm.find('[name="tweet"]').val()
-                };
-
                 var contentTypeHeader = {'Submission-Type': 'tweet'};
+            }
+
+            if (self.postType() == 'NSFComment') {
+                var formData = koMapping.toJS(self.NSFComment);
+                var contentTypeHeader = {'Submission-Type': 'NSFComment'}
             }
 
             self.submitToMissionControl(formData, contentTypeHeader);
         };
 
-        /* Write */
-        self.write = {
+        /* Text */
+        self.text = {
             mission_id: ko.observable(null),
             title: ko.observable(null),
             content:ko.observable(null),
@@ -240,9 +244,9 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
             tags: ko.observableArray([])
         }
 
-        self.submitWriting = function () {
-            var formData = koMapping.toJS(self.write, {});
-            var contentTypeHeader = {'Submission-Type': 'write'};
+        self.submitText = function () {
+            var formData = koMapping.toJS(self.text, {});
+            var contentTypeHeader = {'Submission-Type': 'text'};
             self.submitToMissionControl(formData, contentTypeHeader)
         };
 
@@ -262,21 +266,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 }
             });
         };
-
-        self.missionData = ko.observableArray([]);
-        self.tagData = [];
-        self.publisherData = [];
-
-        self.init = (function() {
-            $.ajax('/missions/all', {
-                dataType: 'json',
-                method: 'GET',
-                success: function(response) {
-                    self.missionData(response);
-                }
-            })
-        })();
-
     };
 
     return UploadViewModel;

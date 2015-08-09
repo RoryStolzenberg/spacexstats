@@ -37,6 +37,7 @@ define(['knockout', 'moment', 'jquery', 'text!components/tweet/tweet.html'], fun
                     dataType: 'json',
                     type: 'GET',
                     success: function (response) {
+
                         self.tweet.tweet_text(response.text);
                         self.tweet.tweet_user_profile_image_url(response.user.profile_image_url.replace("_normal", ""));
                         self.tweet.tweet_user_screen_name(response.user.screen_name);
@@ -49,6 +50,7 @@ define(['knockout', 'moment', 'jquery', 'text!components/tweet/tweet.html'], fun
                     }
                 });
             }
+
             // Allow default action
             return true;
         });
