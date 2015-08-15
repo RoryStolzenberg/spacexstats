@@ -4,6 +4,7 @@
 @section('bodyClass', 'home')
 
 @section('scripts')
+
     <script data-main="src/js/common" src="src/js/require.js"></script>
     <script>
         require(['common'], function() {

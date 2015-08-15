@@ -31,6 +31,7 @@
 	{{ HTML::style('/dest/css/styles.css') }}
 
     <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 	<script>
 		/*$(document).ready(function() {
 			var mobileNavigation = $('.nav-mobile');

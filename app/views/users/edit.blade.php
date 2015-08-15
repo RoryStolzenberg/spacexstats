@@ -4,14 +4,11 @@
 @section('bodyClass', 'edit-user')
 
 @section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-    <script>
-        
-    </script>
+    <script src="/dest/js/app.js"></script>
 @stop
 
 @section('content')
-	<div class="content-wrapper">
+	<div class="content-wrapper" ng-app="editUserApp" ng-controller="editUserController" ng-strict-di>
 		<h1>Editing Your Profile</h1>
 		<main>
 			<nav class="sticky-bar">
@@ -29,28 +26,28 @@
                     <div class="grid-6">
                         <h3>You</h3>
                         <label for="summary">Write about yourself</label>
-                        <textarea data-bind="value: profile.summary"></textarea>
+                        <textarea ng-model="profile.summary"></textarea>
 
                         <label for="twitter_account">Twitter</label>
                         <div class="prepended-input">
-                            <span>@</span><input type="text" data-bind="value: profile.twitter_account" />
+                            <span>@</span><input type="text" ng-model="profile.twitter_account" />
                         </div>
 
                         <label>Reddit</label>
                         <div class="prepended-input">
-                            <span>/u/</span><input type="text" data-bind="value: profile.reddit_account" />
+                            <span>/u/</span><input type="text" ng-model="profile.reddit_account" />
                         </div>
                     </div>
 
                     <div class="grid-6">
                         <h3>Favorites</h3>
                         <label>Favorite Mission</label>
-                        <rich-select params="data: missions, hasDefaultOption: true, value: profile.favorite_mission, uniqueKey: 'mission_id', searchable: true"></rich-select>
+                        <select-list data="missions" has-default-option="true" unique-key="mission_id" searchable="true" value="profile.favorite_mission"></select-list>
 
                         <label>Favorite Mission Patch</label>
 
                         <label>Favorite Elon Musk Quote</label>
-                        <textarea data-bind="value: profile.favorite_quote"></textarea>
+                        <textarea ng-model="profile.favorite_quote"></textarea>
                         <p>- Elon Musk.</p>
                     </div>
 
@@ -60,7 +57,7 @@
                         <p>If you're a Mission Control subscriber, you can change your banner from the default blue to a custom image.</p>
                     </div>
 
-                    <input type="submit" value="Update Profile" data-bind="click: updateProfile" />
+                    <input type="submit" value="Update Profile" ng-click="updateProfile()" />
                 </form>
 			</section>
 

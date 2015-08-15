@@ -19,21 +19,21 @@ gulp.task('clean', function() {
     '!public/media/**/audio.png']);
 });
 
-// Scripts Task
+// Scripts Task. Concat and minify.
 gulp.task('scripts', function() {
     var uglify = require('gulp-uglify');
+    var concat = require('gulp-concat');
 
-    gulp.src('public/src/js/**/*.js')
+    gulp.src('public/src/js/angular/**/*.js')
+        .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(gulp.dest('public/dest/js'));
 });
 
-// Styles task. Compile aoo the styles together, autoprefix them, and convert them from SASS to CSS
+// Styles task. Compile all the styles together, autoprefix them, and convert them from SASS to CSS
 gulp.task('styles', function() {
     var autoprefixer = require('gulp-autoprefixer');
     var sass = require('gulp-sass');
-
-    console.log('called');
 
     gulp.src('public/src/css/styles.scss')
         .pipe(sass())
@@ -59,6 +59,7 @@ gulp.task('fonts', function() {
 // Watch task. Watch for changes automatically and recompile the SASS.
 gulp.task('watch', function() {
     gulp.watch('public/src/css/styles.scss', ['styles']);
+    gulp.watch('public/src/js/**/*.*', ['scripts']);
 });
 
 gulp.task('default', ['styles', 'watch', 'browsersync']);
