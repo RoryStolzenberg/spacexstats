@@ -47,6 +47,16 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
         self.updateEmailNotifications = function() {
             console.log(koMapping.toJS(self.emailNotifications));
+            $.ajax('/users/' + self.username + '/edit/emailnotifications',
+                {
+                    dataType: 'json',
+                    type: 'POST',
+                    data: { emailNotifications: koMapping.toJS(self.emailNotifications) },
+                    success: function (response) {
+                        console.log(response);
+                    }
+                }
+            );
         };
 
         self.SMSNotification = {
@@ -59,13 +69,7 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
                 {
                     dataType: 'json',
                     type: 'POST',
-                    data: JSON.stringify(koMapping.toJS(self.SMSNotification), function(key, value) {
-                        if (value === "" || typeof value === 'undefined') {
-                            return null;
-                        }
-                        return value;
-                    }),
-                    contentType: "application/json",
+                    data: { SMSNotifications: koMapping.toJS(self.SMSNotification) },
                     success: function (response) {
                         console.log(response);
                     }

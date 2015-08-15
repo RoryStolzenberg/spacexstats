@@ -4,13 +4,9 @@
 @section('bodyClass', 'edit-user')
 
 @section('scripts')
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script>
-        require(['common'], function() {
-            require(['knockout', 'viewmodels/EditUserViewModel', 'lib/sticky'], function(ko, EditUserViewModel, sticky) {
-                ko.applyBindings(new EditUserViewModel('{{ $user->username  }}'));
-            });
-        });
+        
     </script>
 @stop
 
@@ -78,7 +74,7 @@
 			<section class="email-notifications">
                 <p>You can turn on and off email notifications here.</p>
 
-                {{ Form::open() }}
+                <form>
                     <h3>Launch Change Notifications</h3>
                     <fieldset>
                         <legend>Notify me by email when</legend>
@@ -89,7 +85,7 @@
                             </li>
                             <li>
                                 {{ Form::label('newMission', 'When a new mission exists') }}
-                                {{ Form::checkbox('newMission', true, null, array('data-bind' => 'checked: emailNotifications.launchTimeChange')) }}
+                                {{ Form::checkbox('newMission', true, null, array('data-bind' => 'checked: emailNotifications.newMission')) }}
                             </li>
                         </ul>
                     </fieldset>
@@ -119,18 +115,18 @@
                         <ul>
                             <li>
                                 {{ Form::label('newsSummaries', 'Monthly SpaceXStats News Summary Infographics') }}
-                                {{ Form::checkbox('newsSummaries', true, null) }}
+                                {{ Form::checkbox('newsSummaries', true, null, array('data-bind' => 'checked: emailNotifications.newsSummaries')) }}
                             </li>
                         </ul>
                     </fieldset>
                     {{ Form::submit('Update Email Notifications', array('data-bind' => 'click: updateEmailNotifications')) }}
-                {{ Form::close() }}
+                </form>
             </section>
 
             <h2>Text/SMS Notifications</h2>
             <section class="text-sms-notifications">
 				<p>Get upcoming launch notifications delivered directly to your mobile.</p>
-                {{ Form::open() }}
+                <form>
                     {{ Form::label('mobile', 'Enter your mobile number') }}
                     {{ Form::input('tel', 'mobile', $user->mobile, array('id' => 'mobile', 'data-bind' => 'getOriginalValue, value: SMSNotification.mobile')) }}
 
@@ -148,7 +144,7 @@
                     {{ Form::radio('mobile_notification', 'tMinus1HourSMS', null, array('id' => 'tMinus1HourSMS', 'data-bind' => 'checked: SMSNotification.status')) }}
 
                     {{ Form::submit('Update SMS Notifications', array('data-bind' => 'click: updateSMSNotifications')) }}
-                {{ Form::close() }}
+                </form>
 			</section>
 
 			<h2>Reddit Notifications</h2>

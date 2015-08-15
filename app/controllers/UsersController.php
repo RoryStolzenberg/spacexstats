@@ -89,7 +89,13 @@ class UsersController extends BaseController {
 	}
 
     public function editEmailNotifications($username) {
-        $user = User::where('username', $username)->firstOrFail();
+        $user = User::where('username', $username)->with('notifications')->firstOrFail();
+
+        $emailNotifications = Input::get('emailNotifications');
+
+        foreach ($emailNotifications as $notificationType => $notificationValue) {
+            //$user->notifications()->where('')
+        }
     }
 
     public function editSMSNotifications($username) {
