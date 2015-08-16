@@ -321,7 +321,7 @@ class Spacexstats extends Migration {
             $table->increments('sms_id');
             $table->integer('user_id')->unsigned();
             $table->integer('notification_id')->unsigned();
-            $table->string('content', Varchar::compact)->nullable();
+            $table->string('message', Varchar::compact)->nullable();
             $table->timestamps();
         });
 

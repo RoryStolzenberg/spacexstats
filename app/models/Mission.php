@@ -1,5 +1,7 @@
 <?php
 
+use \SpaceXStats\Enums\LaunchSpecificity;
+
 class Mission extends Eloquent {
 
 	use PresentableTrait, ValidatableTrait;
@@ -107,7 +109,7 @@ class Mission extends Eloquent {
 
 	// Attribute Accessors
 	public function getLaunchDateTimeAttribute() {
-		return ($this->attributes['launch_specificity'] > 6) ? $this->attributes['launch_exact'] : $this->attributes['launch_approximate'];
+		return ($this->attributes['launch_specificity'] >= LaunchSpecificity::Day) ? $this->attributes['launch_exact'] : $this->attributes['launch_approximate'];
 	}
 
 	public function getLaunchProbabilityAttribute() {
