@@ -1,1 +1,75 @@
-angular.module("editUserApp",["directives.selectList"],["$interpolateProvider",function(e){e.startSymbol("[["),e.endSymbol("]]")}]).controller("editUserController",["$http","$scope",function(e,t){t.username="badddffffffdd",t.missions=laravel.missions,t.profile={summary:laravel.profile.summary,twitter_account:laravel.profile.twitter_account,reddit_account:laravel.profile.reddit_account,favorite_quote:laravel.profile.favorite_quote,favorite_mission:laravel.profile.favorite_mission,favorite_patch:laravel.profile.favorite_patch},t.updateProfile=function(){e.post("/users/"+t.username+"/edit/profile")}}]),angular.module("directives.selectList",[]).directive("selectList",function(){return{restrict:"E",scope:{options:"=",hasDefaultOption:"@",selectedOption:"=",uniqueKey:"@",searchable:"@"},link:function(e,t,i){e.optionsObj=e.options.map(function(t){return{id:t[e.uniqueKey],name:t.name,isSelected:e.selectedOption==t[e.uniqueKey],image:t.featuredImage?t.featuredImage.media_thumb_small:null}}),e.$watch("selectedOption",function(t){e.selectedOptionObj=e.options.filter(function(i){return i[e.uniqueKey]==t})}),e.selectOption=function(t){e.selectedOption=t[e.uniqueKey],e.dropdownIsVisible=!1},e.toggleDropdown=function(){e.dropdownIsVisible=!e.dropdownIsVisible},e.dropdownIsVisible=!1},templateUrl:"/src/js/angular/directives/selectList/selectList.html"}});
+angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+
+}]).controller("editUserController", ['$http', '$scope', function($http, $scope) {
+
+    $scope.username = 'badddffffffdd';
+
+    $scope.missions = laravel.missions;
+
+    $scope.profile = {
+        summary: laravel.profile.summary,
+        twitter_account: laravel.profile.twitter_account,
+        reddit_account: laravel.profile.reddit_account,
+        favorite_quote: laravel.profile.favorite_quote,
+        favorite_mission: laravel.profile.favorite_mission,
+        favorite_patch: laravel.profile.favorite_patch
+    };
+
+    $scope.$watch("profile.favorite_mission", function(newValue) {
+        console.log($scope.profile);
+    });
+
+    $scope.updateProfile = function() {
+        $http.post('/users/' + $scope.username + '/edit/profile')
+    }
+
+}]);
+
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            }
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/src/js/angular/directives/selectList/selectList.html'
+    }
+});
+

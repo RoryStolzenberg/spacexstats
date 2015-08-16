@@ -31,7 +31,7 @@ gulp.task('scripts', function() {
 
     gulp.src('public/src/js/angular/**/*.js')
         .pipe(concat('app.js'))
-        .pipe(uglify()).on('error', handleError)
+        //.pipe(uglify()).on('error', handleError)
         .pipe(gulp.dest('public/dest/js'));
 });
 
@@ -63,7 +63,7 @@ gulp.task('fonts', function() {
 
 // Watch task. Watch for changes automatically and recompile the SASS.
 gulp.task('watch', function() {
-    gulp.watch('public/src/css/styles.scss', ['styles']);
+    gulp.watch('public/src/css/**/*.scss', ['styles']);
     gulp.watch('public/src/js/**/*.*', ['scripts']);
 });
 

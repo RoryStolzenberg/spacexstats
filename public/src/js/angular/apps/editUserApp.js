@@ -17,6 +17,10 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
         favorite_patch: laravel.profile.favorite_patch
     };
 
+    $scope.$watch("profile.favorite_mission", function(newValue) {
+        console.log($scope.profile);
+    });
+
     $scope.updateProfile = function() {
         $http.post('/users/' + $scope.username + '/edit/profile')
     }

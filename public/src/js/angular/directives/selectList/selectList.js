@@ -14,24 +14,28 @@ angular.module("directives.selectList", []).directive("selectList", function() {
                 return {
                     id: option[$scope.uniqueKey],
                     name: option.name,
-                    isSelected: $scope.selectedOption == option[$scope.uniqueKey],
                     image: option.featuredImage ? option.featuredImage.media_thumb_small : null
                 };
             });
 
             $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.options.filter(function(option) {
-                    return option[$scope.uniqueKey] == newValue;
-                });
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
             });
 
             $scope.selectOption = function(option) {
-                $scope.selectedOption = option[$scope.uniqueKey];
+                $scope.selectedOption = option['id'];
                 $scope.dropdownIsVisible = false;
             }
 
             $scope.toggleDropdown = function() {
                 $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
             }
 
             $scope.dropdownIsVisible = false;
