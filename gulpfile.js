@@ -3,6 +3,11 @@
 
 var gulp = require('gulp');
 
+function handleError() {
+    console.log('error');
+    this.emit('end');
+}
+
 // Refresh browser on changes
 gulp.task('browsersync', function() {
     var browserSync = require('browser-sync');
@@ -26,7 +31,7 @@ gulp.task('scripts', function() {
 
     gulp.src('public/src/js/angular/**/*.js')
         .pipe(concat('app.js'))
-        .pipe(uglify())
+        .pipe(uglify()).on('error', handleError)
         .pipe(gulp.dest('public/dest/js'));
 });
 

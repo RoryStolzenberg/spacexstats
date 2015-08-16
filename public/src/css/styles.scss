@@ -4,10 +4,15 @@
 @import "dropzone";
 @import "fontawesome/font-awesome";
 
+// SpaceXStats website
 @import "spacexstats/layout";
 @import "spacexstats/header";
 @import "spacexstats/nav";
-@import "spacexstats/tags";
+
+// SpaceXStats components
+@import "spacexstats/components/tags";
+@import "spacexstats/components/selectList";
+
 
 /* Sticky Bar Nav */
 nav.sticky-bar {
@@ -314,48 +319,6 @@ input:focus, button:focus, textarea:focus {
 
 textarea {
     min-height:50px;
-}
-
-.rich-select {
-    margin:0 10px;
-    position: relative;
-
-    >.default {
-        border:1px solid $bordergrey;
-        height:50px;
-        overflow:hidden;
-    }
-
-    ul {
-        display:block;
-        position:absolute;
-        background-color:$white;
-        box-shadow:10px 10px 15px rgba($lightblack, 0.2);
-        border:1px solid $bordergrey;
-        border-top:none;
-        width:100%;
-        max-height:270px; /* 4 options + half of the next option to indicate scrolling */
-        overflow:auto;
-    }
-
-    li {
-        margin:5px 0;
-        padding:0;
-        height:50px;
-    }
-
-    img {
-        width:50px;
-        height:50px;
-        position:absolute;
-    }
-
-    .title {
-        font-weight:bold;
-        line-height: 50px;
-        vertical-align: top;
-        margin-left:60px;
-    }
 }
 
 .prepended-input {

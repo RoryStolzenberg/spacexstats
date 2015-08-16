@@ -4368,6 +4368,38 @@ body, nav {
   width: 33%;
   display: inline-block; }
 
+.select-list {
+  margin: 0 10px;
+  position: relative; }
+  .select-list > .default {
+    border: 1px solid #CCC;
+    height: 50px;
+    overflow: hidden; }
+  .select-list ul {
+    display: block;
+    position: absolute;
+    background-color: #FFF;
+    box-shadow: 10px 10px 15px rgba(33, 39, 43, 0.2);
+    border: 1px solid #CCC;
+    border-top: none;
+    width: 100%;
+    max-height: 270px;
+    /* 4 options + half of the next option to indicate scrolling */
+    overflow: auto; }
+  .select-list li {
+    margin: 5px 0;
+    padding: 0;
+    height: 50px; }
+  .select-list img {
+    width: 50px;
+    height: 50px;
+    position: absolute; }
+  .select-list .name {
+    font-weight: bold;
+    line-height: 50px;
+    vertical-align: top;
+    margin-left: 60px; }
+
 /* Sticky Bar Nav */
 nav.sticky-bar {
   position: -webkit-sticky;
@@ -4667,38 +4699,6 @@ input:focus, button:focus, textarea:focus {
 
 textarea {
   min-height: 50px; }
-
-.rich-select {
-  margin: 0 10px;
-  position: relative; }
-  .rich-select > .default {
-    border: 1px solid #CCC;
-    height: 50px;
-    overflow: hidden; }
-  .rich-select ul {
-    display: block;
-    position: absolute;
-    background-color: #FFF;
-    box-shadow: 10px 10px 15px rgba(33, 39, 43, 0.2);
-    border: 1px solid #CCC;
-    border-top: none;
-    width: 100%;
-    max-height: 270px;
-    /* 4 options + half of the next option to indicate scrolling */
-    overflow: auto; }
-  .rich-select li {
-    margin: 5px 0;
-    padding: 0;
-    height: 50px; }
-  .rich-select img {
-    width: 50px;
-    height: 50px;
-    position: absolute; }
-  .rich-select .title {
-    font-weight: bold;
-    line-height: 50px;
-    vertical-align: top;
-    margin-left: 60px; }
 
 .prepended-input {
   margin: 0 10px; }

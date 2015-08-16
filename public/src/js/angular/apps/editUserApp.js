@@ -6,6 +6,8 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
 
     $scope.username = 'badddffffffdd';
 
+    $scope.missions = laravel.missions;
+
     $scope.profile = {
         summary: laravel.profile.summary,
         twitter_account: laravel.profile.twitter_account,

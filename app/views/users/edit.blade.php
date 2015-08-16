@@ -42,7 +42,7 @@
                     <div class="grid-6">
                         <h3>Favorites</h3>
                         <label>Favorite Mission</label>
-                        <select-list data="missions" has-default-option="true" unique-key="mission_id" searchable="true" value="profile.favorite_mission"></select-list>
+                        <select-list options="missions" has-default-option="true" unique-key="mission_id" searchable="true" selected-option="profile.favorite_mission"></select-list>
 
                         <label>Favorite Mission Patch</label>
 

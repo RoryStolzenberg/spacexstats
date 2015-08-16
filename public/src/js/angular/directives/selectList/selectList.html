@@ -1,19 +1,16 @@
-<div class="rich-select" tabindex="0">
-    <div class="selected-option default" ng-click="toggleDropdown">
+<div class="select-list" tabindex="0">
+    <div class="selected-option default" ng-click="toggleDropdown()">
         <img ng-attr-src="selectedOption.image" />
-        <span class="title">[[ selectedOption.title ]]</span>
+        <span class="name">[[ selectedOption.name ]]</span>
     </div>
 
     <ul ng-show="dropdownIsVisible" class="options">
-        <li ng-if="searchable">
-            <input type="text" data-bind="textInput: searchValue" />
+        <li ng-show="searchable">
+            <input type="text" ng-model="search.name" />
         </li>
-        <li ng-repeat="option in options | filter:bySearch as results" ng-class="{'selected': isSelected }" ng-click="$parent.selectOption">
+        <li ng-repeat="option in optionsObj | filter: search" ng-class="{'selected': isSelected }" ng-click="$parent.selectOption(option)">
             <img ng-attr-src="option.image" />
-            <span class="title">[[ option.title ]]</span>
-        </li>
-        <li ng-if="results.length == 0">
-            <span>No results!</span>
+            <span class="name">[[ option.name ]]</span>
         </li>
     </ul>
 </div>
