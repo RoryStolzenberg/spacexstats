@@ -34,6 +34,12 @@ angular.module("directives.selectList", []).directive("selectList", function() {
                 $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
             }
 
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
             $scope.isSelected = function(option) {
                 return option.id == $scope.selectedOption;
             }

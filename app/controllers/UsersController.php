@@ -55,7 +55,7 @@ class UsersController extends BaseController {
 	}
 
     public function edit($username) {
-        $user = User::where('username', $username)->with('notifications.notificationType')->firstOrFail();
+        $user = User::where('username', $username)->with(['notifications.notificationType', 'profile'])->firstOrFail();
 
         $reflector = new ReflectionClass('SpaceXStats\Enums\NotificationType');
         $notificationTypes = $reflector->getConstants();
@@ -69,8 +69,8 @@ class UsersController extends BaseController {
 
         JavaScript::put([
             'missions' => Mission::with('featuredImage')->get(),
-            'emailNotifications' => $hasNotifications,
-            'profile' => $user->profile
+            'notifications' => $hasNotifications,
+            'user' => $user
         ]);
 
         return View::make('users.edit', array(

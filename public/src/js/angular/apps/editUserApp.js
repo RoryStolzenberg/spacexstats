@@ -4,25 +4,43 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
 
 }]).controller("editUserController", ['$http', '$scope', function($http, $scope) {
 
-    $scope.username = 'badddffffffdd';
+    $scope.username = laravel.user.username;
 
     $scope.missions = laravel.missions;
 
     $scope.profile = {
-        summary: laravel.profile.summary,
-        twitter_account: laravel.profile.twitter_account,
-        reddit_account: laravel.profile.reddit_account,
-        favorite_quote: laravel.profile.favorite_quote,
-        favorite_mission: laravel.profile.favorite_mission,
-        favorite_patch: laravel.profile.favorite_patch
+        summary: laravel.user.profile.summary,
+        twitter_account: laravel.user.profile.twitter_account,
+        reddit_account: laravel.user.profile.reddit_account,
+        favorite_quote: laravel.user.profile.favorite_quote,
+        favorite_mission: laravel.user.profile.favorite_mission,
+        favorite_patch: laravel.user.profile.favorite_patch
     };
-
-    $scope.$watch("profile.favorite_mission", function(newValue) {
-        console.log($scope.profile);
-    });
 
     $scope.updateProfile = function() {
         $http.post('/users/' + $scope.username + '/edit/profile')
+    }
+
+    $scope.emailNotifications = {
+        launchTimeChange: laravel.notifications.launchTimeChange,
+        newMission: laravel.notifications.newMission,
+        tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
+        tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
+        tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+        newsSummaries: laravel.notifications.newsSummaries
+    }
+
+    $scope.updateEmailNotifications = function() {
+        $http.post('/users/' + $scope.username + '/edit/emailnotifications')
+    }
+
+    $scope.SMSNotification = {
+        mobile: laravel.user.mobile,
+        status: laravel.notifications.tMinus1HourSMS
+    }
+
+    $scope.updateSMSNotifications = function() {
+        $http.post('/users/' + $scope.username + '/edit/smsnotifications')
     }
 
 }]);
