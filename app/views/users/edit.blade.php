@@ -101,8 +101,8 @@
                             <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.tMinus3HoursEmail" />
                         </li>
                         <li>
-                            <label for="tMinus1HoursEmail">There's a SpaceX launch in 1 hour</label>
-                            <input type="checkbox" id="tMinus1HoursEmail" value="true" ng-model="emailNotifications.tMinus1HoursEmail" />
+                            <label for="tMinus1HourEmail">There's a SpaceX launch in 1 hour</label>
+                            <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.tMinus1HourEmail" />
                         </li>
                     </ul>
 

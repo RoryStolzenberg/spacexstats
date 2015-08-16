@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\MailQueues;
 
+use SpaceXStats\Enums\EmailStatus;
+
 class MailQueue {
 
     public function queue($subject, $body, $notificationType) {
@@ -11,7 +13,7 @@ class MailQueue {
             $email->notification()->associate($notification);
             $email->subject = $subject;
             $email->body = $body;
-            $email->status = 'Queued';
+            $email->status = EmailStatus::Queued;
             $email->save();
         }
     }
@@ -32,7 +34,7 @@ class MailQueue {
         $notificationsWithNoCorrespondingHeldEmail = \Notification::whereHas('notificationType', function($q) use($notificationType) {
             $q->where('name', $notificationType);
         })->whereDoesntHave('emails', function($q) {
-            $q->where('status', '=', 'Held');
+            $q->where('status', '=', EmailStatus::Held);
         })->get();
 
         $notificationsWithNoCorrespondingHeldEmail->emails()->save(new \Email(array(
@@ -43,9 +45,9 @@ class MailQueue {
 
     private function actionToEnum($action) {
         if ($action == 'Queue') {
-            return 'Queued';
+            return EmailStatus::Queued;
         } elseif ($action == 'Hold') {
-            return 'Held';
+            return EmailStatus::Held;
         }
     }
 }

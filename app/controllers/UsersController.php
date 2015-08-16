@@ -92,7 +92,15 @@ class UsersController extends BaseController {
         $emailNotifications = Input::get('emailNotifications');
 
         foreach ($emailNotifications as $notificationType => $notificationValue) {
-            //$user->notifications()->where('')
+            if ($notificationValue === true) {
+                // Check if that notification type exists for that user
+                    // If yes, do nothing
+                    // If no, create notification
+            } else {
+                // Check if that notification type exists for that user
+                    // If yes, delete (soft delete)
+                    // If no, do nothing
+            }
         }
     }
 

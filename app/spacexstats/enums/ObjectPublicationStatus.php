@@ -2,7 +2,7 @@
 
 namespace SpaceXStats\Enums;
 
-abstract class Status extends Enum {
+abstract class ObjectPublicationStatus extends Enum {
     const NewStatus = 'New';
     const QueuedStatus = 'Queued';
     const PublishedStatus = 'Published';
