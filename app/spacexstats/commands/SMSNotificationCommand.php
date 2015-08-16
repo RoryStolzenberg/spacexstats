@@ -6,8 +6,7 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-use Carbon\Carbon;
-use SpaceXStats\Enums\LaunchSpecificity;
+use SpaceXStats\Notifications\NotificationManager;
 
 class SMSNotificationCommand extends ScheduledCommand {
 
@@ -53,24 +52,10 @@ class SMSNotificationCommand extends ScheduledCommand {
 	 */
 	public function fire()
 	{
-        $now = Carbon::now();
-        $lastRun = $now->subMinute();
+        $notifier = new NotificationManager('SMS');
 
-		$nextMission = \Mission::future()->first();
-
-        if ($nextMission->launchSpecificity == LaunchSpecificity::Precise) {
-
-            $nowDiffInSeconds = $nextMission->launchDateTime->diffInSeconds($now);
-            $lastRunDiffInSeconds = $nextMission->launchDateTime->diffInSeconds($lastRun);
-
-            // if the current time to launch is 86,400 seconds or less (24 hour notification)
-            if ($nowDiffInSeconds < 86400 && $lastRunDiffInSeconds >= 86400) {
-                // Send notification
-            } else if ($nowDiffInSeconds < 10800 && $lastRunDiffInSeconds >= 10800) {
-
-            } else if ($nowDiffInSeconds < 3600 && $lastRunDiffInSeconds >= 3600) {
-
-            }
+        if ($notifier->notificationIsNeeded()) {
+            $notifier->notify();
         }
 	}
 }
