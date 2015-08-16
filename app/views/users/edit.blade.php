@@ -93,16 +93,16 @@
                     </fieldset>
                     <ul>
                         <li>
-                            {{ Form::label('tMinus24HoursEmail', 'There\'s a SpaceX launch is 24 hours') }}
-                            {{ Form::checkbox('tMinus24HoursEmail', true, null, array('data-bind' => 'checked: emailNotifications.tMinus24HoursEmail')) }}
+                            <label for="tMinus24HoursEmail">There's a SpaceX launch in 24 hours</label>
+                            <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.tMinus24HoursEmail" />
                         </li>
                         <li>
-                            {{ Form::label('tMinus3HoursEmail', 'There\'s a SpaceX launch is 3 hours') }}
-                            {{ Form::checkbox('tMinus3HoursEmail', true, null, array('data-bind' => 'checked: emailNotifications.tMinus3HoursEmail')) }}
+                            <label for="tMinus3HoursEmail">There's a SpaceX launch in 3 hours</label>
+                            <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.tMinus3HoursEmail" />
                         </li>
                         <li>
-                            {{ Form::label('tMinus1HoursEmail', 'There\'s a SpaceX launch is 1 hour') }}
-                            {{ Form::checkbox('tMinus1HoursEmail', true, null, array('data-bind' => 'checked: emailNotifications.tMinus1HoursEmail')) }}
+                            <label for="tMinus1HoursEmail">There's a SpaceX launch in 1 hour</label>
+                            <input type="checkbox" id="tMinus1HoursEmail" value="true" ng-model="emailNotifications.tMinus1HoursEmail" />
                         </li>
                     </ul>
 
@@ -111,12 +111,12 @@
                         <legend>Send me</legend>
                         <ul>
                             <li>
-                                {{ Form::label('newsSummaries', 'Monthly SpaceXStats News Summary Infographics') }}
-                                {{ Form::checkbox('newsSummaries', true, null, array('data-bind' => 'checked: emailNotifications.newsSummaries')) }}
+                                <label for="newsSummaries">Monthly SpaceXStats News Summary Infographics</label>
+                                <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.newsSummaries" />
                             </li>
                         </ul>
                     </fieldset>
-                    {{ Form::submit('Update Email Notifications', array('data-bind' => 'click: updateEmailNotifications')) }}
+                    <input type="submit" ng-click="updateEmailNotifications()" />
                 </form>
             </section>
 

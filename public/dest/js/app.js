@@ -34,7 +34,15 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
     }
 
     $scope.updateEmailNotifications = function() {
-        $http.post('/users/' + $scope.username + '/edit/emailnotifications')
+        console.log(laravel);
+        console.log($scope.emailNotifications);
+
+        $http.post('/users/' + $scope.username + '/edit/emailnotifications',
+            { 'emailNotifications': $scope.emailNotifications }
+        )
+            .then(function(reponse) {
+                console.log(response);
+            });
     }
 
     $scope.SMSNotification = {
