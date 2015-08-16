@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Enums;
 
-abstract class ExifProperty {
+abstract class ExifProperty extends Enum {
 	const DateTime 				= 'DateTimeOriginal';
 	const CameraManufacturer	= 'Make';
 	const CameraModel			= 'Model';

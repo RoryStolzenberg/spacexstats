@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Enums;
 
-abstract class Varchar {
+abstract class Varchar extends Enum {
 
     /**
      * Varchar constant for data types requiring tiny values (maximum length of 50)

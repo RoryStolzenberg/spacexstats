@@ -8,7 +8,7 @@ class UserPresenter {
     }
 
     public function role_id() {
-        return SpaceXStats\Enums\UserRole::getRole($this->entity->role_id);
+        return SpaceXStats\Enums\UserRole::getKey($this->entity->role_id);
     }
 
     public function created_at() {
