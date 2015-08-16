@@ -3,7 +3,7 @@ namespace SpaceXStats\MailQueues;
 
 use SpaceXStats\Enums\EmailStatus;
 
-class MailQueue {
+abstract class MailQueue {
 
     public function queue($subject, $body, $notificationType) {
         $notificationsToQueueEmailsFor = \Notification::where('notification_type_id', $notificationType)->get();

@@ -25,6 +25,4 @@ class MissionMailQueue extends MailQueue {
     public function tMinus1Hour(\Mission $mission) {
 
     }
-
-
 }

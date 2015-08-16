@@ -177,35 +177,35 @@ class Mission extends Eloquent {
 		return $query->where('status', 'Upcoming');
 	}
 
-	public function scopeNextMissions($query, $take = 1) {
+	public function scopeFuture($query, $take = 1) {
 		return $query->whereUpcoming()->orderBy('launch_order_id')->take($take);
 	}
 
-	public function scopePreviousMissions($query, $take = 1) {
+	public function scopePast($query, $take = 1) {
 		return $query->whereComplete()->orderBy('launch_order_id', 'desc')->take($take);
 	}
 
-	// Get 1 or more future launches relative to a current launch_order_id
-	public function scopeFutureMissions($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
+	// Get 1 or more next launches relative to a current launch_order_id
+	public function scopeNext($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
 		return $query->where('launch_order_id', '>', $currentLaunchOrderId)
 						->orderBy('launch_order_id')
 						->take($numberOfMissionsToGet);
 	}
 
 	// Get 1 or more previous launches relative to a current launch_order_id
-	public function scopePastMissions($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
+	public function scopePrevious($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
 		return $query->where('launch_order_id', '<', $currentLaunchOrderId)
 						->orderBy('launch_order_id')
 						->take($numberOfMissionsToGet);
 	}
 
-	public function scopeLastFromLaunchSite($query, $site) {
+	public function scopePastFromLaunchSite($query, $site) {
 		return $query->whereComplete()->whereHas('launchSite', function($q) use($site) {
 			$q->where('name',$site);
 		})->orderBy('launch_order_id','DESC');
 	}
 
-	public function scopeNextFromLaunchSite($query, $site) {
+	public function scopeFutureFromLaunchSite($query, $site) {
 		$nextLaunch = $query->whereUpcoming()->whereHas('launchSite', function($q) use($site) {
 			$q->where('name',$site);
 		})->orderBy('launch_order_id','ASC');

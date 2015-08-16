@@ -40,7 +40,7 @@ class SMSNotificationCommand extends ScheduledCommand {
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
-		return $scheduler->everyMinutes(5);
+		return $scheduler->everyMinutes(1);
 	}
 
 	/**
@@ -50,31 +50,6 @@ class SMSNotificationCommand extends ScheduledCommand {
 	 */
 	public function fire()
 	{
-		//
+		// Check for upcoming launches
 	}
-
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return array(
-			array('example', InputArgument::REQUIRED, 'An example argument.'),
-		);
-	}
-
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		return array(
-			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
-		);
-	}
-
 }
