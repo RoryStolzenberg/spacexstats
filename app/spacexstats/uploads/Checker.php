@@ -79,8 +79,8 @@ class Checker {
     private function resolve() {
         foreach ($this->filetypes as $mediaType => $arrayOfFileTypes) {
             if (in_array(strtolower($this->file->getClientOriginalExtension()), $arrayOfFileTypes) && in_array($this->file->getMimeType(), $this->mimetypes[$mediaType])) {
-                $reflector = new \ReflectionClass('SpaceXStats\Enums\MissionControlType');
-                return $reflector->getConstant($mediaType);
+
+                return MissionControlType::getKey($mediaType);
             }
         }
         return false;

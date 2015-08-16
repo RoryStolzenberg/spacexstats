@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Enums;
 
-abstract class NotificationType {
+abstract class NotificationType extends Enum {
     const newMission = 1;
     const launchTimeChange = 2;
     const tMinus24HoursEmail = 3;

@@ -57,9 +57,7 @@ class UsersController extends BaseController {
     public function edit($username) {
         $user = User::where('username', $username)->with(['notifications.notificationType', 'profile'])->firstOrFail();
 
-        $reflector = new ReflectionClass('SpaceXStats\Enums\NotificationType');
-        $notificationTypes = $reflector->getConstants();
-
+        $notificationTypes = SpaceXStats\Enums\NotificationType::toArray();
         $userNotifications = $user->notifications->keyBy('notification_type_id');
 
         $hasNotifications = [];
