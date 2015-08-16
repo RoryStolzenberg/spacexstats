@@ -51,11 +51,11 @@
                         <p>- Elon Musk.</p>
                     </div>
 
-                    <div class="grid-12">
+                    <!--<div class="grid-12">
                         <h3>Change Your Banner</h3>
 
                         <p>If you're a Mission Control subscriber, you can change your banner from the default blue to a custom image.</p>
-                    </div>
+                    </div>-->
 
                     <input type="submit" value="Update Profile" ng-click="updateProfile()" />
                 </form>
@@ -77,12 +77,12 @@
                         <legend>Notify me by email when</legend>
                         <ul>
                             <li>
-                                {{ Form::label('launchTimeChange', 'A launch time has changed') }}
-                                {{ Form::checkbox('launchTimeChange', true, null, array('data-bind' => 'checked: emailNotifications.launchTimeChange')) }}
+                                <label for="launchTimeChange">A launch time has changed</label>
+                                <input type="checkbox" id="launchTimeChange" value="true" ng-model="emailNotifications.launchTimeChange" />
                             </li>
                             <li>
-                                {{ Form::label('newMission', 'When a new mission exists') }}
-                                {{ Form::checkbox('newMission', true, null, array('data-bind' => 'checked: emailNotifications.newMission')) }}
+                                <label for="newMission">When a new mission exists</label>
+                                <input type="checkbox" id="newMission" value="true" ng-model="emailNotifications.newMission" />
                             </li>
                         </ul>
                     </fieldset>

@@ -18,7 +18,10 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
     };
 
     $scope.updateProfile = function() {
-        $http.post('/users/' + $scope.username + '/edit/profile')
+        $http.post('/users/' + $scope.username + '/edit/profile', $scope.profile)
+            .then(function(response) {
+                 console.log(response);
+            });
     }
 
     $scope.emailNotifications = {
