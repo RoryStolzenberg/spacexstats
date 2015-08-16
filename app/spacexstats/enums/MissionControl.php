@@ -22,29 +22,6 @@ abstract class MissionControlType extends Enum {
 	// Private 
 	const Pivot			= 12;
 	const Person 		= 13;
-
-	public static function getType($num) {
-		switch ($num) {
-			case 1: return 'Image';
-			case 2: return 'GIF';
-			case 3: return 'Audio';
-			case 4: return 'Video';
-			case 5: return 'Document';
-
-			case 6: return 'Tweet';
-			case 7: return 'Article';
-			case 8: return 'Transcript';
-			case 9: return 'Comment';
-            case 10: return 'Webpage';
-
-			case 11: return 'Text';
-
-			case 12: return 'Pivot';
-			case 13: return 'Person';
-
-            default: return null;
-		}
-	}
 }
 
 abstract class MissionControlSubtype extends Enum {
@@ -65,28 +42,4 @@ abstract class MissionControlSubtype extends Enum {
 	const WeatherForecast	= 15;
     const HazardMap         = 16;
     const License           = 17;
-
-    public static function getType($num) {
-        switch ($num) {
-            case 1: return 'Mission Patch';
-            case 2: return 'Photo';
-            case 3: return 'Telemetry';
-            case 4: return 'Chart';
-            case 5: return 'Screenshot';
-            case 6: return 'Launch Video';
-            case 7: return 'Press Conference';
-            case 8: return 'Press Kit';
-            case 9: return 'Cargo Manifest';
-            case 10: return 'Infographic';
-            case 11: return 'News Summary';
-            case 12: return 'Press Release';
-            case 13: return 'Reddit Comment';
-            case 14: return 'NSF Comment';
-            case 15: return 'Weather Forecast';
-            case 16: return 'Hazard Map';
-            case 17: return 'License';
-
-            default: return null;
-        }
-    }
 }

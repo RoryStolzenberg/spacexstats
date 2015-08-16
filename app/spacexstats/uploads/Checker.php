@@ -79,7 +79,6 @@ class Checker {
     private function resolve() {
         foreach ($this->filetypes as $mediaType => $arrayOfFileTypes) {
             if (in_array(strtolower($this->file->getClientOriginalExtension()), $arrayOfFileTypes) && in_array($this->file->getMimeType(), $this->mimetypes[$mediaType])) {
-
                 return MissionControlType::getKey($mediaType);
             }
         }

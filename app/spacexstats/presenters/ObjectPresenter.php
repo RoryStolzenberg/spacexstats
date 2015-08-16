@@ -7,14 +7,14 @@ class ObjectPresenter {
     }
 
     public function type() {
-        return \SpaceXStats\Enums\MissionControlType::getType($this->entity->type);
+        return \SpaceXStats\Enums\MissionControlType::getKey($this->entity->type);
     }
 
     public function subtype() {
         if ($this->entity->subtype) {
-            return \SpaceXStats\Enums\MissionControlSubtype::getType($this->entity->subtype);
+            return \SpaceXStats\Enums\MissionControlSubtype::getKey($this->entity->subtype);
         } else {
-            return "";
+            return null;
         }
     }
 
