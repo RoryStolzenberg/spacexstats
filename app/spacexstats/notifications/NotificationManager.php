@@ -7,11 +7,9 @@ use SpaceXStats\Enums\LaunchSpecificity;
 use SpaceXStats\Enums\NotificationType;
 
 abstract class NotificationManager {
-    protected $domain, $now, $lastRun, $nextMission, $notificationType;
+    protected $now, $lastRun, $nextMission, $notificationType, $timeRemaining;
 
-    public function __construct($domain) {
-        $this->domain = $domain;
-
+    public function __construct() {
         $this->now = Carbon::now();
         $this->lastRun = $this->now->subMinute();
 
@@ -27,13 +25,13 @@ abstract class NotificationManager {
 
             // determine if messages should be sent
             if ($nowDiffInSeconds < 86400 && $lastRunDiffInSeconds >= 86400) {
-                $this->tMinus = \DateInterval::createFromDateString('24 hours');
+                $this->timeRemaining = \DateInterval::createFromDateString('24 hours');
                 return true;
             } elseif ($nowDiffInSeconds < 10800 && $lastRunDiffInSeconds >= 10800) {
-                $this->tMinus = \DateInterval::createFromDateString('3 hours');
+                $this->timeRemaining = \DateInterval::createFromDateString('3 hours');
                 return true;
             } elseif ($nowDiffInSeconds < 3600 && $lastRunDiffInSeconds >= 3600) {
-                $this->tMinus = \DateInterval::createFromDateString('1 hour');
+                $this->timeRemaining = \DateInterval::createFromDateString('1 hour');
                 return true;
             }
             return false;

@@ -3,6 +3,7 @@
 namespace SpaceXStats\Notifications;
 
 use SpaceXStats\Enums\NotificationType;
+use SpaceXStats\SMS\SMSSender;
 
 class SMSNotificationManager extends NotificationManager {
 
@@ -10,5 +11,24 @@ class SMSNotificationManager extends NotificationManager {
 
     public function notify() {
         // grab all users with this particular notification
+        $usersToNotify = \User::whereHas('Notification', function($q) {
+            $q->where('notification_type_id', $this->notificationType);
+        })->with('notifications.notification_type')->get();
+
+        // pad out message
+        if ($this->timeRemaining->format('%h') == 24) {
+            $timeRemainingString = "24 hours";
+        } elseif ($this->timeRemaining->format('%h') == 3) {
+            $timeRemainingString = "3 hours";
+        } elseif ($this->timeRemaining->format('%h') == 1) {
+            $timeRemainingString = "1 hour";
+        }
+
+        $messageToSend = sprintf($this->message,
+            $this->nextMission->name, $this->nextMission->vehicle->vehicle, $timeRemainingString, $this->nextMission->launchDateTime, $this->nextMission->launchSite->fullLocation, $this->nextMission->slug);
+
+        // Send!
+        $sms = new SMSSender();
+        $sms->send($usersToNotify, $messageToSend);
     }
 }

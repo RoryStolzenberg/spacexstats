@@ -52,7 +52,7 @@ class SMSNotificationCommand extends ScheduledCommand {
 	 */
 	public function fire()
 	{
-        $notifier = new NotificationManager('SMS');
+        $notifier = new SMSNotificationManager();
 
         if ($notifier->notificationIsNeeded()) {
             $notifier->notify();
