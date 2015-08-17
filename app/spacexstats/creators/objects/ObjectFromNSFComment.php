@@ -2,12 +2,11 @@
 
 namespace SpaceXStats\Creators\Objects;
 
-use SpaceXStats\Creators\Creatable;
 use SpaceXStats\Enums\Status;
 use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\MissionControlSubtype;
 
-class ObjectFromNSFComment extends ObjectCreator implements Creatable {
+class ObjectFromNSFComment extends ObjectCreator {
 
     public function isValid($input) {
         $this->input = $input;

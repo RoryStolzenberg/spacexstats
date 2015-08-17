@@ -61,4 +61,8 @@ abstract class ObjectCreator {
     public function getErrors() {
         return $this->errors();
     }
+
+    // https://laracasts.com/series/digging-in/episodes/7#
+    abstract public function isValid($input);
+    abstract public function create();
 }
