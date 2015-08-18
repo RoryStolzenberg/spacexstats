@@ -9,8 +9,8 @@ class HeaderComposer {
 		});*/
 
 		$view->with('nearbyMissions', array(
-			'past' => \Mission::previousMissions(3)->get(),
-			'future' => \Mission::nextMissions(3)->get()
+			'past' => \Mission::past(3)->get(),
+			'future' => \Mission::future(3)->get()
 		));
 	}
 }

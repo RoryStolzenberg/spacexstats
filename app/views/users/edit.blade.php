@@ -124,7 +124,8 @@
             <section class="text-sms-notifications">
 				<p>Get upcoming launch notifications delivered directly to your mobile.</p>
                 <form>
-                    {{ Form::label('mobile', 'Enter your mobile number') }}
+                    <label for="mobile">Enter your mobile number</label>
+                    <input type="tel" id="mobile" ng-model=""
                     {{ Form::input('tel', 'mobile', $user->mobile, array('id' => 'mobile', 'data-bind' => 'getOriginalValue, value: SMSNotification.mobile')) }}
 
                     <p>How long before a launch would you like to recieve a notification?</p>
