@@ -105,19 +105,45 @@ class UsersController extends BaseController {
     }
 
     public function editSMSNotifications($username) {
-        $user = User::where('username', $username)->firstOrFail();
+        $user = User::where('username', $username)->with('notifications.notification_type')->firstOrFail();
 
-        //$client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
-        //$number = $client->phone_numbers->get(Input::get('mobile'));
+        $sms = Input::get('SMSNotification');
 
-        /*$client = new Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
-        $message = $client->account->messages->create(array(
-            "From" => "+1 844-707-8834",
-            "To" => '+64 021 280 4843',
-            "Body" => 'SpaceX launching CRS-7 in 1 hour'
-        ));*/
+        // Delete any previous SMS notification
+        $oldSMSNotification = Notification::where('user_id', $user->user_id)
+            ->where('notification_type_id', NotificationType::tMinus24HoursSMS)
+            ->orWhere('notification_type_id', NotificationType::tMinus3HoursSMS)
+            ->orWhere('notification_type_id', NotificationType::tMinus1HourSMS)
+            ->delete();
 
-        return Response::json(true);
+        // Check if new status is not null
+        if ($sms['status'] != null) {
+
+            $client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
+            $number = $client->phone_numbers->get(Input::get('SMSNotification.mobile'));
+
+            // Check for errors
+            if ($number->status != 404) {
+
+                // Set user mobile details
+                $user->setMobileDetails($number);
+                $user->save();
+
+                // Insert new notification
+
+                return Response::json(true);
+
+            } else {
+                return Response::json(false);
+            }
+
+        } else {
+
+            $user->resetMobileDetails();
+            $user->save();
+
+            return Response::json(true);
+        }
     }
 
     public function editRedditNotifications($username) {

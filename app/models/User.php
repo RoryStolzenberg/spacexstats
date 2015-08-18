@@ -105,6 +105,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		}
 	}
 
+    public function setMobileDetails($number) {
+        $this->attributes['mobile'] = $number->phone_number;
+        $this->attributes['mobile_national_format'] = $number->national_format;
+        $this->attributes['mobile_country_code'] = $number->country_code;
+        $this->attributes['mobile_carrier'] = $number->carrier->name ?: null;
+    }
+
+    public function resetMobileDetails() {
+        $this->attributes['mobile'] = null;
+        $this->attributes['mobile_national_format'] = null;
+        $this->attributes['mobile_country_code'] = null;
+        $this->attributes['mobile_carrier'] = null;
+    }
+
 	public function setPasswordAttribute($value) {
 		$this->attributes['password'] = Hash::make($value);
 	}

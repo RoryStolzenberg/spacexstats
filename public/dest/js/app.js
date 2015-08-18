@@ -40,18 +40,32 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
         $http.post('/users/' + $scope.username + '/edit/emailnotifications',
             { 'emailNotifications': $scope.emailNotifications }
         )
-            .then(function(reponse) {
+            .then(function(response) {
                 console.log(response);
             });
     }
 
     $scope.SMSNotification = {
-        mobile: laravel.user.mobile,
-        status: laravel.notifications.tMinus1HourSMS
+        mobile: laravel.user.mobile
+    }
+
+    if (laravel.notifications.tMinus24HoursSMS === true) {
+        $scope.SMSNotification.status = "tMinus24HoursSMS";
+    } else if (laravel.notifications.tMinus3HoursSMS === true) {
+        $scope.SMSNotification.status = "tMinus3HoursSMS";
+    } else if (laravel.notifications.tMinus1HourSMS === true) {
+        $scope.SMSNotification.status = "tMinus1HourSMS";
+    } else {
+        $scope.SMSNotification.status = null;
     }
 
     $scope.updateSMSNotifications = function() {
-        $http.post('/users/' + $scope.username + '/edit/smsnotifications')
+        $http.post('/users/' + $scope.username + '/edit/smsnotifications',
+            { 'SMSNotification': $scope.SMSNotification }
+        )
+            .then(function(response) {
+                console.log(response);
+            });
     }
 
 }]);

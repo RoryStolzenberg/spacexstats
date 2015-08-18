@@ -380,13 +380,20 @@ class Spacexstats extends Migration {
             $table->string('username', Varchar::tiny);
             $table->string('firstname', Varchar::tiny);
             $table->string('email', Varchar::tiny);
+
             $table->string('mobile', Varchar::tiny)->nullable();
             $table->string('mobile_national_format', Varchar::tiny)->nullable();
             $table->string('mobile_country_code', Varchar::tiny)->nullable();
-            $table->string('mobile_network', Varchar::small)->nullable();
+            $table->string('mobile_carrier', Varchar::small)->nullable();
 
             $table->char('password', 60);
             $table->datetime('subscription_expiry')->nullable(); // Nonoptional Values
+
+            // Specific roles
+            $table->boolean('launchCentralFlag');
+            $table->boolean('articleWriterFlag');
+            $table->boolean('canSeeHiddenItemsFlag');
+            $table->boolean('bannedFlag');
 
             $table->datetime('last_login')->nullable(); // Nonoptional Values
             $table->char('key', 32);

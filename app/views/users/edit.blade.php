@@ -125,23 +125,22 @@
 				<p>Get upcoming launch notifications delivered directly to your mobile.</p>
                 <form>
                     <label for="mobile">Enter your mobile number</label>
-                    <input type="tel" id="mobile" ng-model=""
-                    {{ Form::input('tel', 'mobile', $user->mobile, array('id' => 'mobile', 'data-bind' => 'getOriginalValue, value: SMSNotification.mobile')) }}
+                    <input type="tel" id="mobile" ng-model="SMSNotification.mobile" />
 
                     <p>How long before a launch would you like to recieve a notification?</p>
-                    {{ Form::label('off', 'Off') }}
-                    {{ Form::radio('mobile_notification', 'Off', null, array('id' => 'Off', 'data-bind' => 'checked: SMSNotification.status')) }}
+                    <label for="off">Off</label>
+                    <input type="radio" name="status" ng-model="SMSNotification.status" value="null" />
 
-                    {{ Form::label('tMinus24HoursSMS', '24 Hours Before') }}
-                    {{ Form::radio('mobile_notification', 'tMinus24HoursSMS', null, array('id' => 'tMinus24HoursSMS', 'data-bind' => 'checked: SMSNotification.status')) }}
+                    <label for="tMinus24HoursSMS">24 Hours Before</label>
+                    <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus24HoursSMS" />
 
-                    {{ Form::label('tMinus3HoursSMS', '3 Hours Before') }}
-                    {{ Form::radio('mobile_notification', 'tMinus3HoursSMS', null, array('id' => 'tMinus3HoursSMS', 'data-bind' => 'checked: SMSNotification.status')) }}
+                    <label for="tMinus3HoursSMS">3 Hours Before</label>
+                    <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus3HoursSMS" />
 
-                    {{ Form::label('tMinus1HourSMS', '1 Hour Before') }}
-                    {{ Form::radio('mobile_notification', 'tMinus1HourSMS', null, array('id' => 'tMinus1HourSMS', 'data-bind' => 'checked: SMSNotification.status')) }}
+                    <label for="tMinus1HourSMS">1 Hour Before</label>
+                    <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus1HourSMS" />
 
-                    {{ Form::submit('Update SMS Notifications', array('data-bind' => 'click: updateSMSNotifications')) }}
+                    <input type="submit" ng-click="updateSMSNotifications()" />
                 </form>
 			</section>
 
