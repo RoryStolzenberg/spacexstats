@@ -59,6 +59,10 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
         $scope.SMSNotification.status = null;
     }
 
+    $scope.$watch('SMSNotification.status', function() {
+        console.log('yay');
+    })
+
     $scope.updateSMSNotifications = function() {
         $http.post('/users/' + $scope.username + '/edit/smsnotifications',
             { 'SMSNotification': $scope.SMSNotification }

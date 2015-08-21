@@ -46,7 +46,7 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 
             $scope.dropdownIsVisible = false;
         },
-        templateUrl: '/src/js/angular/directives/selectList/selectList.html'
+        templateUrl: '/js/templates/selectList.html'
     }
 });
 

@@ -105,7 +105,7 @@ class UsersController extends BaseController {
     }
 
     public function editSMSNotifications($username) {
-        $user = User::where('username', $username)->with('notifications.notification_type')->firstOrFail();
+        $user = User::where('username', $username)->with('notifications.notificationType')->firstOrFail();
 
         $sms = Input::get('SMSNotification');
 
@@ -120,10 +120,10 @@ class UsersController extends BaseController {
         if ($sms['status'] != null) {
 
             $client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
-            $number = $client->phone_numbers->get(Input::get('SMSNotification.mobile'));
+            $number = $client->phone_numbers->get($sms['mobile']);
 
             // Check for errors
-            if ($number->status != 404) {
+            if (!isset($number->status)) {
 
                 // Set user mobile details
                 $user->setMobileDetails($number);

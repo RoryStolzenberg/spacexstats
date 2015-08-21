@@ -28,7 +28,7 @@
     <meta name="theme-color" content="#ccac55">
 
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="/dest/css/styles.css" />
+    <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 
     <!-- JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

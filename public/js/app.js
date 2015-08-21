@@ -59,6 +59,10 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
         $scope.SMSNotification.status = null;
     }
 
+    $scope.$watch('SMSNotification.status', function() {
+        console.log('yay');
+    })
+
     $scope.updateSMSNotifications = function() {
         $http.post('/users/' + $scope.username + '/edit/smsnotifications',
             { 'SMSNotification': $scope.SMSNotification }
@@ -69,6 +73,16 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
     }
 
 }]);
+
+angular.module('FlashMessageService', [])
+    .service('FlashMessage', function() {
+        this.add = function(message) {
+            $('#flash-message-container').append('<p class="flash-message">' + message + '</p>');
+            setTimeout(function() {
+                $('.flash-message').hide('blind', {}, 500);
+            }, 5000);
+        };
+    });
 
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
@@ -118,7 +132,7 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 
             $scope.dropdownIsVisible = false;
         },
-        templateUrl: '/src/js/angular/directives/selectList/selectList.html'
+        templateUrl: '/js/templates/selectList.html'
     }
 });
 

@@ -28,12 +28,20 @@ gulp.task('clean', function() {
 gulp.task('scripts', function() {
     var uglify = require('gulp-uglify');
     var concat = require('gulp-concat');
+    var rename = require('gulp-rename');
 
+    // Move angular stuff
     gulp.src('frontendapp/js/angular/**/*.js')
         .pipe(concat('app.js'))
-        .pipe(uglify()).on('error', handleError)
+        //.pipe(uglify()).on('error', handleError)
         .pipe(gulp.dest('public/js'));
 
+    // Move templates
+    gulp.src('frontendapp/js/angular/**/*.html')
+        .pipe(rename({ dirname: ''}))
+        .pipe(gulp.dest('public/js/templates'));
+
+    // Move library
     gulp.src('frontendapp/src/js/lib/**/*.js')
         .pipe(gulp.dest('public/js'));
 });

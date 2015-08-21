@@ -4,7 +4,7 @@
 @section('bodyClass', 'edit-user')
 
 @section('scripts')
-    <script src="/dest/js/app.js"></script>
+    <script src="/js/app.js"></script>
 @stop
 
 @section('content')
