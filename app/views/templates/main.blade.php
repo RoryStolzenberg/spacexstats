@@ -28,12 +28,14 @@
     <meta name="theme-color" content="#ccac55">
 
     <!-- CSS -->
-	{{ HTML::style('/dest/css/styles.css') }}
+    <link rel="stylesheet" type="text/css" href="/dest/css/styles.css" />
 
     <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
 	<script>
-		/*$(document).ready(function() {
+        // Mobile left hand side drawer
+		$(document).ready(function() {
 			var mobileNavigation = $('.nav-mobile');
 			var contentToPush = $('body');
 
@@ -41,7 +43,7 @@
 				console.log('click');
 				contentToPush.toggleClass('nav-open');
 			});
-		});*/
+		});
 	</script>
 
 	<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
@@ -49,9 +51,11 @@
 
 <body class="@yield('bodyClass')">
 
-@if (Session::has('flashMessage'))
-    <p class="flash-message {{ Session::get('flashMessage.type') }}">{{ Session::get('flashMessage.contents') }}</p>
-@endif
+<div id="flash-message-container">
+    @if (Session::has('flashMessage'))
+        <p class="flash-message {{ Session::get('flashMessage.type') }}">{{ Session::get('flashMessage.contents') }}</p>
+    @endif
+</div>
 
 @include('templates.header')
 @yield('content')

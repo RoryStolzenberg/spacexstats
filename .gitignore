@@ -1,7 +1,7 @@
 /bootstrap/compiled.php
 /node_modules
 /vendor
-/public/src/dev
+/frontendapp/dev
 /public/media
 /.sass-cache
 app/config/credentials.php
