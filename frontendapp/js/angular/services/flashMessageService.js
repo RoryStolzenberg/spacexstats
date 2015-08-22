@@ -1,9 +1,11 @@
 angular.module('flashMessageService', [])
     .service('flashMessage', function() {
         this.add = function(data) {
-            $('#flash-message-container').append('<p class="flash-message ' + data.type + '">' + data.contents + '</p>');
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
             setTimeout(function() {
-                $('.flash-message').slideUp(500, function() {
+                $('.flash-message').slideUp(300, function() {
                    $(this).remove();
                 });
             }, 3000);
