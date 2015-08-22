@@ -36,11 +36,6 @@
 			</tr>
 			@endforeach
 		</table>
-		<?php
-			$calc = new LaunchProbabilityCalculator(3);
-		?>
-
-		<pre>{{ $calc->get() }}</pre>	
 	</main>
 </div>
 @stop

@@ -38,7 +38,7 @@ body {
         main {
             min-height:initial;
             min-height:auto;
-            height:calc(100% - 80px - 50px);
+            height:calc(100% - 120px - 50px);
         }
     }
 
@@ -65,7 +65,7 @@ main {
     background-color:$white;
     box-shadow:0 0 15px rgba($slateblack, 0.5);
     color:$slateblack;
-    min-height:calc(100% - 80px);
+    min-height:calc(100% - 120px);
     display:block; // Make IE happy
 
     nav {
@@ -89,9 +89,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    height:80px;
+    height:120px;
     color:$white;
-    line-height:80px;
+    line-height:120px;
     font-size:50px;
     font-weight:lighter;
     text-transform: none;

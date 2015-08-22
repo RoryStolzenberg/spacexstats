@@ -3,10 +3,13 @@
 class HomeController extends BaseController {
 
 	public function home()	{
-		return View::make('home', array(
-			'statistics' => StatisticPresenter::format(Statistic::orderBy('order')->get()),
-			'currentPage' => 'home'
-		));
+
+        JavaScript::put([
+            'statistics' => array_values(Statistic::orderBy('order')->get
+            ()->groupBy('type')->toArray())
+        ]);
+
+		return View::make('home');
 	}
 
 }

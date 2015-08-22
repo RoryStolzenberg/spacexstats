@@ -55,18 +55,5 @@
 
 	<link href='http://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
 </head>
-
-<body class="@yield('bodyClass')">
-
-<div id="flash-message-container">
-    @if (Session::has('flashMessage'))
-        <p class="flash-message {{ Session::get('flashMessage.type') }}">{{ Session::get('flashMessage.contents') }}</p>
-    @endif
-</div>
-
-@include('templates.header')
 @yield('content')
-
-@yield('scripts')
-</body>
 </html>
