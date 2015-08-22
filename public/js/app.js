@@ -1,8 +1,8 @@
-angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("editUserController", ['$http', '$scope', function($http, $scope) {
+}]).controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
     $scope.username = laravel.user.username;
 
@@ -68,19 +68,21 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
             { 'SMSNotification': $scope.SMSNotification }
         )
             .then(function(response) {
-                console.log(response);
+                flashMessage.add(response.data);
             });
     }
 
 }]);
 
-angular.module('FlashMessageService', [])
-    .service('FlashMessage', function() {
-        this.add = function(message) {
-            $('#flash-message-container').append('<p class="flash-message">' + message + '</p>');
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+            $('#flash-message-container').append('<p class="flash-message ' + data.type + '">' + data.contents + '</p>');
             setTimeout(function() {
-                $('.flash-message').hide('blind', {}, 500);
-            }, 5000);
+                $('.flash-message').slideUp(500, function() {
+                   $(this).remove();
+                });
+            }, 3000);
         };
     });
 

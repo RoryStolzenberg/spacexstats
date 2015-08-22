@@ -1,8 +1,8 @@
-angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("editUserController", ['$http', '$scope', function($http, $scope) {
+}]).controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
     $scope.username = laravel.user.username;
 
@@ -68,7 +68,7 @@ angular.module("editUserApp", ["directives.selectList"], ['$interpolateProvider'
             { 'SMSNotification': $scope.SMSNotification }
         )
             .then(function(response) {
-                console.log(response);
+                flashMessage.add(response.data);
             });
     }
 

@@ -13,9 +13,11 @@ class UsersController extends BaseController {
         'accountCreated'                            => array('type' => 'success', 'contents' => 'Your account has been created, please check your email to activate your account!'),
         'accountCouldNotBeCreatedValidationError'   => array('type' => 'failure', 'contents' => 'Looks like your account couldn\'t be created. Check the errors below and then resubmit.'),
         'accountActivated'                          => array('type' => 'success', 'contents' => 'Your account has been activated!'),
-        'accountCouldNotBeActivated'                => array('type' => 'failure', 'contents' => 'Your activation attempt was unsuccessful. Try again or get in touch.'),
+        'accountCouldNotBeActivated'                => array('type' => 'failure', 'contents' => 'Your activation attempt was unsuccessful.  You can try again, or get in touch.'),
         'failedLoginCredentials'                    => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Try again.'),
-        'failedLoginNotActivated'                   => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Please check your email and activate your account first.')
+        'failedLoginNotActivated'                   => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Please check your email and activate your account first.'),
+        'SMSNotificationSuccess'                    => array('type' => 'success', 'contents' => 'SMS Notification settings updated!'),
+        'SMSNotificationFailure'                    => array('type' => 'failure', 'contents' => 'Something went wrong. You can try again, or get in touch. '),
     ];
 
 	public function __construct(User $user, UserMailer $mailer) {
@@ -130,11 +132,15 @@ class UsersController extends BaseController {
                 $user->save();
 
                 // Insert new notification
+                Notification::create(array(
+                    'user_id' => Auth::user()->user_id,
+                    'notification_type_id' => NotificationType::fromString($sms['status'])
+                ));
 
-                return Response::json(true);
+                return Response::json($this->flashMessages['SMSNotificationSuccess']);
 
             } else {
-                return Response::json(false);
+                return Response::json($this->flashMessages['SMSNotificationFailure']);
             }
 
         } else {
@@ -142,7 +148,7 @@ class UsersController extends BaseController {
             $user->resetMobileDetails();
             $user->save();
 
-            return Response::json(true);
+            return Response::json($this->flashMessages['SMSNotificationSuccess']);
         }
     }
 
