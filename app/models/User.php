@@ -109,7 +109,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $this->attributes['mobile'] = $number->phone_number;
         $this->attributes['mobile_national_format'] = $number->national_format;
         $this->attributes['mobile_country_code'] = $number->country_code;
-        $this->attributes['mobile_carrier'] = $number->carrier->name ?: null;
+        $this->attributes['mobile_carrier'] = isset($number->carrier->name) ? $number->carrier->name : null;
     }
 
     public function resetMobileDetails() {
