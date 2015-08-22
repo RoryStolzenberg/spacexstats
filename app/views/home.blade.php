@@ -10,7 +10,7 @@
         @endif
     </div>
 
-    @yield('templates.header')
+    @include('templates.header')
 
     <!-- Main content -->
     <div class="content-wrapper single-page background subtract">
@@ -29,9 +29,9 @@
     <!-- Statistics -->
     <div class="content-wrapper single-page background" ng-repeat="statistic in statistics">
         <h1>
-                <span ng-repeat="substatistic in statistic">
-                    [[ fullTitle ]]
-                </span>
+            <span ng-repeat="substatistic in statistic">
+                [[ fullTitle ]]
+            </span>
         </h1>
 
         <main>
