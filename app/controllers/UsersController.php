@@ -138,18 +138,14 @@ class UsersController extends BaseController {
                 ));
 
                 return Response::json($this->flashMessages['SMSNotificationSuccess']);
-
-            } else {
-                return Response::json($this->flashMessages['SMSNotificationFailure']);
             }
-
-        } else {
-
-            $user->resetMobileDetails();
-            $user->save();
-
-            return Response::json($this->flashMessages['SMSNotificationSuccess']);
+            return Response::json($this->flashMessages['SMSNotificationFailure']);
         }
+
+        $user->resetMobileDetails();
+        $user->save();
+
+        return Response::json($this->flashMessages['SMSNotificationSuccess']);
     }
 
     public function editRedditNotifications($username) {

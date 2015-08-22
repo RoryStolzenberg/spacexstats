@@ -129,7 +129,7 @@
 
                     <p>How long before a launch would you like to recieve a notification?</p>
                     <label for="off">Off</label>
-                    <input type="radio" name="status" ng-model="SMSNotification.status" value="null" />
+                    <input type="radio" name="status" ng-model="SMSNotification.status" value="false" />
 
                     <label for="tMinus24HoursSMS">24 Hours Before</label>
                     <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus24HoursSMS" />

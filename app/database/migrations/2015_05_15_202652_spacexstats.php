@@ -60,6 +60,15 @@ class Spacexstats extends Migration {
 
         });*/
 
+        Schema::create('dataviews', function(Blueprint $table) {
+            $table->increments('dataview_id');
+            $table->string('name', Varchar::small);
+            $table->string('first_column_title', Varchar::small);
+            $table->string('second_column_title', Varchar::small);
+            $table->string('summary', Varchar::medium);
+            $table->integer('banner_image')->unsigned();
+        });
+
         Schema::create('destinations', function(Blueprint $table) {
             $table->increments('destination_id');
             $table->string('destination', Varchar::tiny);
@@ -410,6 +419,10 @@ class Spacexstats extends Migration {
         Schema::table('astronauts_flights_pivot', function(Blueprint $table) {
             $table->foreign('astronaut_id')->references('astronaut_id')->on('astronauts');
             $table->foreign('spacecraft_flight_id')->references('spacecraft_flight_id')->on('spacecraft_flights_pivot');
+        });
+
+        Schema::table('dataviews', function(Blueprint $table) {
+            $table->foreign('banner_image')->references('object_id')->on('objects');
         });
 
         Schema::table('emails', function(Blueprint $table) {
