@@ -22,6 +22,12 @@ class MissionsController extends BaseController {
         $pastMission = Mission::previous($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
         $futureMission = Mission::next($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
 
+        $data = array(
+            'mission' => $mission,
+            'pastMission' => $pastMission,
+            'futureMission' => $futureMission
+        );
+
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
             JavaScript::put([
                 'slug' => $mission->slug,
@@ -30,18 +36,10 @@ class MissionsController extends BaseController {
                 'webcast' => Redis::hgetall('webcast')
             ]);
 
-			return View::make('missions.futureMission', array(
-				'mission' => $mission,
-                'pastMission' => $pastMission,
-                'futureMission' => $futureMission
-			));			
-		} else {
-			return View::make('missions.pastMission', array(
-				'mission' => $mission,
-                'pastMission' => $pastMission,
-                'futureMission' => $futureMission
-			));	
+			return View::make('missions.futureMission', $data);
 		}
+		return View::make('missions.pastMission', $data);
+
 	}
 
 	// GET

@@ -37,11 +37,11 @@
 			</ul>
 		</nav>
 		<section class="highlights" ng-if="isLaunchExact == true">
-            <div class="webcast-status" data-bind="css: webcast.status, visible: webcast.status !== 'webcast-inactive'">
-                <span>[[ webcast.publicStatus ]]</span><span class="live-viewers" data-bind="visible: webcast.status() === 'webcast-live'">[[ webcast.publicViewers ]]</span>
+            <div class="webcast-status" ng-class="webcast.status" ng-show="webcast.status != 'webcast-inactive'">
+                <span>[[ webcast.publicStatus ]]</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">[[ webcast.publicViewers ]]</span>
             </div>
             <div class="display-date-time">
-                <div class="launch" data-bind="text: launchDateTime"></div>
+                <div class="launch">[[ launchDateTime ]]</div>
                 <div class="timezone">
                     <span class="timezone-current">UTC</span>
                     <ul class="timezone-list">
@@ -70,7 +70,8 @@
         @if (Auth::isSubscriber())
             <h2>Articles</h2>
             <section class="articles">
-
+                @foreach ($mission->articles() as $article)
+                @endforeach
             </section>
         @endif
 	</main>

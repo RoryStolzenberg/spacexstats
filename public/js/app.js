@@ -1,3 +1,11 @@
+angular.module("homePageApp", ["directives.countdown"], ['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+
+}]).controller("homePageController", ['$scope', function($scope) {
+
+}]);
+
 angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -55,6 +63,8 @@ angular.module("futureMissionApp", ["directives.countdown", "flashMessageService
                 if ($scope.launchDateTime !== response.data.launchDateTime) {
                     $scope.launchDateTime = response.data.launchDateTime;
                     $scope.launchSpecificity = response.data.launchSpecificity;
+
+                    flashMessage.add({ type: 'success', contents: 'Launch time updated!' });
                 }
             });
     }

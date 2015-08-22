@@ -67,7 +67,7 @@ class Mission extends Eloquent {
     }
 
     public function objects() {
-        return $this->belongsTo('Object');
+        return $this->hasMany('Object');
     }
 
     public function payloads() {
@@ -75,6 +75,10 @@ class Mission extends Eloquent {
     }
 
     // Conditional Relationships
+    public function articles() {
+        return $this->hasMany('Object')->where('type', \SpaceXStats\Enums\MissionControlType::Article);
+    }
+
     public function launchVideo() {
         return $this->belongsTo('Object', 'launch_video');
     }

@@ -5,13 +5,16 @@
 @import "fontawesome/font-awesome";
 
 // SpaceXStats website
-@import "spacexstats/_layout";
-@import "spacexstats/_header";
-@import "spacexstats/_nav";
+@import "spacexstats/layout";
+@import "spacexstats/header";
+@import "spacexstats/nav";
+
+// SpaceXStats pages
+@import "spacexstats/futureMissionPage";
 
 // SpaceXStats components
-@import "spacexstats/components/_tags";
-@import "spacexstats/components/_selectList";
+@import "spacexstats/components/tags";
+@import "spacexstats/components/selectList";
 
 
 /* Sticky Bar Nav */
@@ -172,102 +175,6 @@ a:link, a:visited, a:hover, a:active {
     color:$white;
     margin:0 10px;
     overflow:hidden;
-}
-
-/* ------------- FUTURE MISSION PAGE  -------------- */
-.display-date-time {
-    position:absolute;
-    right:0;
-    top:10px;
-    width:200px;
-
-
-    .launch {
-        display:inline-block;
-        text-align:right;
-        background-color:$gold;
-        color:$white;
-        height:40px;
-        line-height:40px;
-        width:100%;
-        padding:0 20px;
-        position:relative;
-        right:-10px;
-
-        &:after {
-            width: 0px;
-            height: 0px;
-            border-right:10px solid transparent;
-            border-top:10px solid darken($gold, 30%);
-            display: block;
-            top: 40px;
-            right:0;
-            position: absolute;
-            content: "";
-        }
-    }
-
-    .timezone {
-        @include smallCaps();
-        text-align:right;
-        padding:0 10px;
-
-        .timezone-current {
-            cursor:pointer;
-            line-height:2;
-        }
-
-        .timezone-current:after {
-            width: 0;
-            height: 0;
-            border-bottom: 6px solid transparent;
-            border-top: 6px solid transparent;
-            border-left: 8px solid $bordergrey;
-            display:inline-block;
-            content:"";
-            margin-left: 10px;
-            vertical-align: -5%; // Make it look perfect
-            @include transitionMed(transform);
-            transform:rotate(0deg);
-        }
-
-        .timezone-list {
-            border:1px solid $bordergrey;
-            padding:0 10px;
-            transform:scale(0.5);
-            opacity:0;
-            @include transitionMed(opacity);
-            @include transitionMed(transform);
-        }
-
-        &.active {
-            .timezone-current:after {
-                transform:rotate(90deg);
-            }
-
-            .timezone-list {
-                height:auto;
-                opacity:1;
-                transform:scale(1);
-            }
-        }
-
-        .timezone-option {
-            margin:5px 0;
-        }
-    }
-}
-
-section.details {
-    @include gridle_container();
-
-    #live-tweets {
-        @include gridle(4);
-    }
-
-    #mission-details {
-
-    }
 }
 
 /* ----------- MISSION CONTROL UPLOAD ------------- */

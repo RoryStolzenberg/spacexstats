@@ -4147,7 +4147,7 @@ h3 {
 .header-wrapper {
   width: 100%;
   background-color: #3569A4;
-  height: 200px;
+  height: 400px;
   position: absolute;
   box-shadow: 0 0 15px rgba(24, 28, 31, 0.5); }
   .header-wrapper header {
@@ -4332,6 +4332,109 @@ body, nav {
   left: 250px; }
   .nav-open nav {
     left: 0; }
+
+.display-date-time {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200px; }
+  .display-date-time .launch {
+    display: inline-block;
+    text-align: right;
+    background-color: #CCAC55;
+    color: #FFF;
+    height: 40px;
+    line-height: 40px;
+    width: 100%;
+    padding: 0 20px;
+    position: relative;
+    right: -10px; }
+    .display-date-time .launch:after {
+      width: 0px;
+      height: 0px;
+      border-right: 10px solid transparent;
+      border-top: 10px solid #69551f;
+      display: block;
+      top: 40px;
+      right: 0;
+      position: absolute;
+      content: ""; }
+  .display-date-time .timezone {
+    font-size: 14px;
+    color: #888;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-family: "Segoe WP", sans-serif;
+    text-align: right;
+    padding: 0 10px; }
+    .display-date-time .timezone .timezone-current {
+      cursor: pointer;
+      line-height: 2; }
+    .display-date-time .timezone .timezone-current:after {
+      width: 0;
+      height: 0;
+      border-bottom: 6px solid transparent;
+      border-top: 6px solid transparent;
+      border-left: 8px solid #CCC;
+      display: inline-block;
+      content: "";
+      margin-left: 10px;
+      vertical-align: -5%;
+      -webkit-transition: -webkit-transform ease 0.5s;
+              transition: transform ease 0.5s;
+      -webkit-transform: rotate(0deg);
+          -ms-transform: rotate(0deg);
+              transform: rotate(0deg); }
+    .display-date-time .timezone .timezone-list {
+      border: 1px solid #CCC;
+      padding: 0 10px;
+      -webkit-transform: scale(0.5);
+          -ms-transform: scale(0.5);
+              transform: scale(0.5);
+      opacity: 0;
+      -webkit-transition: opacity ease 0.5s;
+              transition: opacity ease 0.5s;
+      -webkit-transition: -webkit-transform ease 0.5s;
+              transition: transform ease 0.5s; }
+    .display-date-time .timezone.active .timezone-current:after {
+      -webkit-transform: rotate(90deg);
+          -ms-transform: rotate(90deg);
+              transform: rotate(90deg); }
+    .display-date-time .timezone.active .timezone-list {
+      height: auto;
+      opacity: 1;
+      -webkit-transform: scale(1);
+          -ms-transform: scale(1);
+              transform: scale(1); }
+    .display-date-time .timezone .timezone-option {
+      margin: 5px 0; }
+
+section.details #live-tweets {
+  float: left;
+  direction: ltr;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 33.33333%; }
+  @media (max-width: 640px) {
+    section.details #live-tweets {
+      padding-left: 0;
+      padding-right: 0; } }
+  @media (min-width: 641px) and (max-width: 1024px) {
+    section.details #live-tweets {
+      padding-left: 0;
+      padding-right: 0; } }
+  @media (min-width: 1025px) and (max-width: 1440px) {
+    section.details #live-tweets {
+      padding-left: 0;
+      padding-right: 0; } }
+  @media (min-width: 1441px) and (max-width: 1920px) {
+    section.details #live-tweets {
+      padding-left: 0;
+      padding-right: 0; } }
+  @media (min-width: 1921px) {
+    section.details #live-tweets {
+      padding-left: 0;
+      padding-right: 0; } }
 
 .tagger-container .wrapper {
   border: 1px solid #CCC;
@@ -4529,110 +4632,6 @@ a:link, a:visited, a:hover, a:active {
   color: #FFF;
   margin: 0 10px;
   overflow: hidden; }
-
-/* ------------- FUTURE MISSION PAGE  -------------- */
-.display-date-time {
-  position: absolute;
-  right: 0;
-  top: 10px;
-  width: 200px; }
-  .display-date-time .launch {
-    display: inline-block;
-    text-align: right;
-    background-color: #CCAC55;
-    color: #FFF;
-    height: 40px;
-    line-height: 40px;
-    width: 100%;
-    padding: 0 20px;
-    position: relative;
-    right: -10px; }
-    .display-date-time .launch:after {
-      width: 0px;
-      height: 0px;
-      border-right: 10px solid transparent;
-      border-top: 10px solid #69551f;
-      display: block;
-      top: 40px;
-      right: 0;
-      position: absolute;
-      content: ""; }
-  .display-date-time .timezone {
-    font-size: 14px;
-    color: #888;
-    text-transform: uppercase;
-    font-weight: 600;
-    font-family: "Segoe WP", sans-serif;
-    text-align: right;
-    padding: 0 10px; }
-    .display-date-time .timezone .timezone-current {
-      cursor: pointer;
-      line-height: 2; }
-    .display-date-time .timezone .timezone-current:after {
-      width: 0;
-      height: 0;
-      border-bottom: 6px solid transparent;
-      border-top: 6px solid transparent;
-      border-left: 8px solid #CCC;
-      display: inline-block;
-      content: "";
-      margin-left: 10px;
-      vertical-align: -5%;
-      -webkit-transition: -webkit-transform ease 0.5s;
-              transition: transform ease 0.5s;
-      -webkit-transform: rotate(0deg);
-          -ms-transform: rotate(0deg);
-              transform: rotate(0deg); }
-    .display-date-time .timezone .timezone-list {
-      border: 1px solid #CCC;
-      padding: 0 10px;
-      -webkit-transform: scale(0.5);
-          -ms-transform: scale(0.5);
-              transform: scale(0.5);
-      opacity: 0;
-      -webkit-transition: opacity ease 0.5s;
-              transition: opacity ease 0.5s;
-      -webkit-transition: -webkit-transform ease 0.5s;
-              transition: transform ease 0.5s; }
-    .display-date-time .timezone.active .timezone-current:after {
-      -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
-              transform: rotate(90deg); }
-    .display-date-time .timezone.active .timezone-list {
-      height: auto;
-      opacity: 1;
-      -webkit-transform: scale(1);
-          -ms-transform: scale(1);
-              transform: scale(1); }
-    .display-date-time .timezone .timezone-option {
-      margin: 5px 0; }
-
-section.details #live-tweets {
-  float: left;
-  direction: ltr;
-  padding-left: 10px;
-  padding-right: 10px;
-  width: 33.33333%; }
-  @media (max-width: 640px) {
-    section.details #live-tweets {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 641px) and (max-width: 1024px) {
-    section.details #live-tweets {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 1025px) and (max-width: 1440px) {
-    section.details #live-tweets {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 1441px) and (max-width: 1920px) {
-    section.details #live-tweets {
-      padding-left: 0;
-      padding-right: 0; } }
-  @media (min-width: 1921px) {
-    section.details #live-tweets {
-      padding-left: 0;
-      padding-right: 0; } }
 
 /* ----------- MISSION CONTROL UPLOAD ------------- */
 .upload-type li {

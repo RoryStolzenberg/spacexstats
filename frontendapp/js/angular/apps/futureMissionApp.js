@@ -55,6 +55,8 @@ angular.module("futureMissionApp", ["directives.countdown", "flashMessageService
                 if ($scope.launchDateTime !== response.data.launchDateTime) {
                     $scope.launchDateTime = response.data.launchDateTime;
                     $scope.launchSpecificity = response.data.launchSpecificity;
+
+                    flashMessage.add({ type: 'success', contents: 'Launch time updated!' });
                 }
             });
     }
