@@ -19,8 +19,8 @@ class MissionsController extends BaseController {
 
         $mission = Mission::whereSlug($slug)->first();
 
-        $pastMission = Mission::pastMissions($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
-        $futureMission = Mission::futureMissions($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
+        $pastMission = Mission::previous($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
+        $futureMission = Mission::next($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
 
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
             JavaScript::put([

@@ -1,6 +1,5 @@
 define(['jquery', 'knockout', 'moment', 'text!components/countdown/countdown.html'], function($, ko, moment, htmlString) {
-    // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-    // Rewritten as a Knockout Component for SpaceX Stats 4
+
     var CountdownViewModel = function(params) {
         var self = this;
 
