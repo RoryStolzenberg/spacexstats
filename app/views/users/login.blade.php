@@ -1,31 +1,32 @@
 @extends('templates.main')
-
 @section('title', 'Log In')
-@section('bodyClass', 'login')
-
-@section('scripts')
-@stop
 
 @section('content')
-	<div class="content-wrapper single-page">
-		<h1>Log In</h1>
-		<main>
+<body class="login">
 
-			{{ Form::open(array('route' => 'users.login')) }}
-                    {{ Form::token() }}
+    @include('templates.flashMessage')
+    @include('templates.header')
 
-					{{ Form::label('email', 'Email:') }}
-					{{ Form::email('email') }}
+    <div class="content-wrapper single-page">
+        <h1>Log In</h1>
+        <main>
 
-					{{ Form::label('password', 'Password:') }}
-					{{ Form::password('password') }}
+            {{ Form::open(array('route' => 'users.login')) }}
+            {{ Form::token() }}
 
-                    {{ Form::label('rememberMe', 'Remember Me!') }}
-                    {{ Form::checkbox('rememberMe', true, true) }}
+            {{ Form::label('email', 'Email:') }}
+            {{ Form::email('email') }}
 
-					{{ Form::submit('Log In') }}
-			{{ Form::close() }}			
-		</main>
-	</div>
+            {{ Form::label('password', 'Password:') }}
+            {{ Form::password('password') }}
+
+            {{ Form::label('rememberMe', 'Remember Me!') }}
+            {{ Form::checkbox('rememberMe', true, true) }}
+
+            {{ Form::submit('Log In') }}
+            {{ Form::close() }}
+        </main>
+    </div>
+</body>
 @stop
 

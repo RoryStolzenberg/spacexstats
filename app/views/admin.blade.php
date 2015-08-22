@@ -1,12 +1,17 @@
 @extends('templates.main')
-
 @section('title', 'Admin')
-@section('bodyClass', 'admin')
-
-@section('scripts')
-@stop
 
 @section('content')
+<body class="admin">
+
+    <div id="flash-message-container">
+        @if (Session::has('flashMessage'))
+            <p class="flash-message {{ Session::get('flashMessage.type') }}">{{ Session::get('flashMessage.contents') }}</p>
+        @endif
+    </div>
+
+    @include('templates.header')
+
     <div class="content-wrapper">
         <h1>Admin</h1>
         <main>
@@ -26,4 +31,5 @@
             </section>
         </main>
     </div>
+</body>
 @stop

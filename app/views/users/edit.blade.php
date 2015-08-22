@@ -1,27 +1,26 @@
 @extends('templates.main')
-
 @section('title', 'Editing User ' . $user->username)
-@section('bodyClass', 'edit-user')
-
-@section('scripts')
-    <script src="/js/app.js"></script>
-@stop
 
 @section('content')
-	<div class="content-wrapper" ng-app="editUserApp" ng-controller="editUserController" ng-strict-di>
-		<h1>Editing Your Profile</h1>
-		<main>
-			<nav class="sticky-bar">
-				<ul class="container">
-					<li class="grid-2">Profile</li>
-					<li class="grid-2">Account</li>
-					<li class="grid-2">Email Notifications</li>
+<body class="edit-user">
+
+    @include('templates.flashMessage')
+    @include('templates.header')
+
+    <div class="content-wrapper" ng-app="editUserApp" ng-controller="editUserController" ng-strict-di>
+        <h1>Editing Your Profile</h1>
+        <main>
+            <nav class="sticky-bar">
+                <ul class="container">
+                    <li class="grid-2">Profile</li>
+                    <li class="grid-2">Account</li>
+                    <li class="grid-2">Email Notifications</li>
                     <li class="grid-2">Text/SMS Notifications</li>
-					<li class="grid-2">Reddit Notifications</li>
-				</ul>
-			</nav>
-			<h2>Profile</h2>
-			<section class="profile">
+                    <li class="grid-2">Reddit Notifications</li>
+                </ul>
+            </nav>
+            <h2>Profile</h2>
+            <section class="profile">
                 <form>
                     <div class="grid-6">
                         <h3>You</h3>
@@ -59,16 +58,16 @@
 
                     <input type="submit" value="Update Profile" ng-click="updateProfile()" />
                 </form>
-			</section>
+            </section>
 
-			<h2>Account</h2>
-			<section class="account">
-				<!-- Change password -->
-				<!-- Buy More Mission Control -->	
-			</section>
+            <h2>Account</h2>
+            <section class="account">
+                <!-- Change password -->
+                <!-- Buy More Mission Control -->
+            </section>
 
-			<h2>Email Notifications</h2>
-			<section class="email-notifications">
+            <h2>Email Notifications</h2>
+            <section class="email-notifications">
                 <p>You can turn on and off email notifications here.</p>
 
                 <form>
@@ -122,7 +121,7 @@
 
             <h2>Text/SMS Notifications</h2>
             <section class="text-sms-notifications">
-				<p>Get upcoming launch notifications delivered directly to your mobile.</p>
+                <p>Get upcoming launch notifications delivered directly to your mobile.</p>
                 <form>
                     <label for="mobile">Enter your mobile number</label>
                     <input type="tel" id="mobile" ng-model="SMSNotification.mobile" />
@@ -142,20 +141,23 @@
 
                     <input type="submit" ng-click="updateSMSNotifications()" />
                 </form>
-			</section>
+            </section>
 
-			<h2>Reddit Notifications</h2>
-			<section class="reddit-notifications container">
-				<div class="grid-6">
-					<h3>/r/SpaceX Notifications</h3>
-					<p>/r/SpaceX notifications allow you to automatically receive Reddit notifications about comments and posts with certain words made within the /r/SpaceX community via Personal Messages. Simply enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
-				</div>
-				<div class="grid-6">
-					<h3>Redditwide Notifications</h3>
-					<p>Get notified by Reddit private message when threads are created across all of Reddit with certain keywords. Enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
-				</div>
-			</section>
-		</main>
-	</div>
+            <h2>Reddit Notifications</h2>
+            <section class="reddit-notifications container">
+                <div class="grid-6">
+                    <h3>/r/SpaceX Notifications</h3>
+                    <p>/r/SpaceX notifications allow you to automatically receive Reddit notifications about comments and posts with certain words made within the /r/SpaceX community via Personal Messages. Simply enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
+                </div>
+                <div class="grid-6">
+                    <h3>Redditwide Notifications</h3>
+                    <p>Get notified by Reddit private message when threads are created across all of Reddit with certain keywords. Enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
 @stop
 
