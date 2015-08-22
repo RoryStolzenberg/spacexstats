@@ -16,8 +16,9 @@ class UsersController extends BaseController {
         'accountCouldNotBeActivated'                => array('type' => 'failure', 'contents' => 'Your activation attempt was unsuccessful.  You can try again, or get in touch.'),
         'failedLoginCredentials'                    => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Try again.'),
         'failedLoginNotActivated'                   => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Please check your email and activate your account first.'),
+        'somethingWentWrong'                        => array('type' => 'failure', 'contents' => 'Something went wrong. You can try again, or get in touch.'),
         'SMSNotificationSuccess'                    => array('type' => 'success', 'contents' => 'SMS Notification settings updated!'),
-        'SMSNotificationFailure'                    => array('type' => 'failure', 'contents' => 'Something went wrong. You can try again, or get in touch. '),
+        'updateProfileSuccess'                      => array('type' => 'success', 'contents' => 'Profile settings updated!'),
     ];
 
 	public function __construct(User $user, UserMailer $mailer) {
@@ -82,9 +83,9 @@ class UsersController extends BaseController {
 		$user = User::where('username', $username)->firstOrFail();
 
         if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {
-            return Response::json(['success' => true]);
+            return Response::json($this->flashMessages['updateProfileSuccess']);
         } else {
-            return Response::json(['success' => false]);
+            return Response::json($this->flashMessages['somethingWentWrong']);
         }
 	}
 

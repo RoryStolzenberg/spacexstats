@@ -20,7 +20,7 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
     $scope.updateProfile = function() {
         $http.post('/users/' + $scope.username + '/edit/profile', $scope.profile)
             .then(function(response) {
-                 console.log(response);
+                flashMessage.add(response.data);
             });
     }
 
