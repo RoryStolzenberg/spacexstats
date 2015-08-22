@@ -235,7 +235,7 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
-angular.module('directives.countdown', []).directive('countdown', function() {
+angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
     return {
         restrict: 'E',
         scope: {
@@ -256,15 +256,6 @@ angular.module('directives.countdown', []).directive('countdown', function() {
 
                     $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
 
-                    $scope.days = null;
-                    $scope.hours = null;
-                    $scope.minutes = null;
-                    $scope.seconds = null;
-
-                    $scope.daysText = null;
-                    $scope.hoursText = null;
-                    $scope.minutesText = null;
-                    $scope.secondsText = null;
 
                     $scope.countdownProcessor = function() {
 
@@ -292,11 +283,8 @@ angular.module('directives.countdown', []).directive('countdown', function() {
                             $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
                             $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
 
-                            console.log($scope.seconds);
-
                             // Stop the countdown, count up!
                         } else {
-
                         }
 
                         if ($scope.callback && typeof $scope.callback === 'function') {
@@ -304,7 +292,7 @@ angular.module('directives.countdown', []).directive('countdown', function() {
                         }
                     };
 
-                    setInterval($scope.countdownProcessor, 1000);
+                    $interval($scope.countdownProcessor, 1000);
                 } else {
                     $scope.countdownText = $scope.countdownTo;
                 }
@@ -313,4 +301,4 @@ angular.module('directives.countdown', []).directive('countdown', function() {
         },
         templateUrl: '/js/templates/countdown.html'
     }
-});
+}]);
