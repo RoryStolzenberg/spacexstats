@@ -4,18 +4,21 @@ angular.module('directives.countdown', []).directive('countdown', function() {
     return {
         restrict: 'E',
         scope: {
-            specificity: '@',
+            specificity: '=',
             countdownTo: '=',
             callback: '&'
         },
         link: function($scope) {
 
-            $scope.isLaunchExact = $scope.$watch('specificity', function(newValue) {
-                return (newValue == 6 || newValue == 7);
+            $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+            $scope.$watch('specificity', function(newValue) {
+                $scope.isLaunchExact = (newValue == 6 || newValue == 7);
             });
 
-            self.init = (function() {
-                if ($scope.isLaunchExact()) {
+            (function() {
+                if ($scope.isLaunchExact) {
+
                     $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
 
                     $scope.days = null;
@@ -29,37 +32,40 @@ angular.module('directives.countdown', []).directive('countdown', function() {
                     $scope.secondsText = null;
 
                     $scope.countdownProcessor = function() {
-                        var launchUnixSeconds = $scope.launchUnixSeconds();
+
+                        var launchUnixSeconds = $scope.launchUnixSeconds;
                         var currentUnixSeconds = Math.floor($.now() / 1000);
 
-
                         if (launchUnixSeconds >= currentUnixSeconds) {
-                            $scope.secondsAwayFromLaunch(launchUnixSeconds - currentUnixSeconds);
-                            var secondsBetween = $scope.secondsAwayFromLaunch();
+                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                            var secondsBetween = $scope.secondsAwayFromLaunch;
                             // Calculate the number of days, hours, minutes, seconds
-                            $scope.days(Math.floor(secondsBetween / (60 * 60 * 24)));
-                            secondsBetween -= $scope.days() * 60 * 60 * 24;
+                            $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                            secondsBetween -= $scope.days * 60 * 60 * 24;
 
-                            $scope.hours(Math.floor(secondsBetween / (60 * 60)));
-                            secondsBetween -= $scope.hours() * 60 * 60;
+                            $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                            secondsBetween -= $scope.hours * 60 * 60;
 
-                            $scope.minutes(Math.floor(secondsBetween / 60));
-                            secondsBetween -= $scope.minutes() * 60;
+                            $scope.minutes = Math.floor(secondsBetween / 60);
+                            secondsBetween -= $scope.minutes * 60;
 
-                            $scope.seconds(secondsBetween);
+                            $scope.seconds = secondsBetween;
 
-                            $scope.daysText($scope.days() == 1 ? 'Day' : 'Days');
-                            $scope.hoursText($scope.hours() == 1 ? 'Hour' : 'Hours');
-                            $scope.minutesText($scope.minutes() == 1 ? 'Minute' : 'Minutes');
-                            $scope.secondsText($scope.seconds() == 1 ? 'Second' : 'Seconds');
+                            $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                            $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                            $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                            $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                            console.log($scope.seconds);
 
                             // Stop the countdown, count up!
                         } else {
 
                         }
 
-                        if (params.callback && typeof params.callback === 'function') {
-                            params.callback();
+                        if ($scope.callback && typeof $scope.callback === 'function') {
+                            $scope.callback();
                         }
                     };
 

@@ -1,3 +1,101 @@
+angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+
+}]).controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+
+    $scope.missionSlug = laravel.slug;
+    $scope.launchDateTime = laravel.launchDateTime;
+    $scope.launchSpecificity = laravel.launchSpecificity;
+
+    $scope.$watch("launchSpecificity", function(newValue) {
+        $scope.isLaunchExact =  (newValue == 6 || newValue == 7);
+    });
+
+    $scope.$watchCollection('[isLaunchExact, launchDateTime]', function(newValues) {
+        if (newValues[0] === true) {
+            $scope.launchUnixSeconds =  (moment(newValues[1]).unix());
+        }
+        $scope.launchUnixSeconds =  null;
+    });
+
+    $scope.lastRequest = moment().unix();
+    $scope.secondsSinceLastRequest = 0;
+
+    $scope.secondsToLaunch;
+
+    $scope.requestFrequencyManager = function() {
+        $scope.secondsSinceLastRequest = Math.floor($.now() / 1000) - $scope.lastRequest;
+        $scope.secondsToLaunch = $scope.launchUnixSeconds - Math.floor($.now() / 1000);
+
+        /*
+         Make requests to the server for launchdatetime and webcast updates at the following frequencies:
+         >24hrs to launch    =   1hr / request
+         1hr-24hrs           =   15min / request
+         20min-1hr           =   5 min / request
+         <20min              =   30sec / request
+         */
+        var aRequestNeedsToBeMade = ($scope.secondsToLaunch >= 86400 && $scope.secondsSinceLastRequest >= 3600) ||
+            ($scope.secondsToLaunch >= 3600 && $scope.secondsToLaunch < 86400 && $scope.secondsSinceLastRequest >= 900) ||
+            ($scope.secondsToLaunch >= 1200 && $scope.secondsToLaunch < 3600 && $scope.secondsSinceLastRequest >= 300) ||
+            ($scope.secondsToLaunch < 1200 && $scope.secondsSinceLastRequest >= 30);
+
+        if (aRequestNeedsToBeMade === true) {
+            // Make both requests then update the time since last request
+            $scope.requestLaunchDateTime();
+            $scope.requestWebcastStatus();
+            $scope.lastRequest = moment().unix();
+        }
+    }
+
+    $scope.requestLaunchDateTime = function() {
+        $http.get('/missions/' + $scope.missionSlug + '/requestlaunchdatetime')
+            .then(function(response) {
+                // If there has been a change in the launch datetime, update
+                if ($scope.launchDateTime !== response.data.launchDateTime) {
+                    $scope.launchDateTime = response.data.launchDateTime;
+                    $scope.launchSpecificity = response.data.launchSpecificity;
+                }
+            });
+    }
+
+    $scope.requestWebcastStatus = function() {
+        $http.get('/webcast/getstatus')
+            .then(function(response) {
+                $scope.webcast.isLive = response.data.isLive;
+                $scope.webcast.viewers = response.data.viewers;
+            });
+    }
+
+    $scope.webcast = {
+        isLive: laravel.webcast.isLive,
+        viewers: laravel.webcast.viewers
+    }
+
+    $scope.$watchCollection('[webcast.isLive, secondsToLaunch]', function(newValues) {
+        if (newValues[1] < (60 * 60 * 24) && newValues[0] == 'true') {
+            $scope.webcast.status = 'webcast-live';
+        } else if (newValues[1] < (60 * 60 * 24) && newValues[0] == 'false') {
+            $scope.webcast.status = 'webcast-updates';
+        } else {
+            $scope.webcast.status = 'webcast-inactive';
+        }
+    });
+
+    $scope.$watch('webcast.status', function(newValue) {
+        if (newValue === 'webcast-live') {
+            $scope.webcast.publicStatus = 'Live Webcast'
+        } else if (newValue === 'webcast-updates') {
+            $scope.webcast.publicStatus = 'Launch Updates'
+        }
+    }),
+
+    $scope.$watch('webcast.viewers', function(newValue) {
+        $scope.webcast.publicViewers = ' (' + newValue + ' viewers)';
+    })
+
+}]);
+
 angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -70,14 +168,6 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
-angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
-
-}]);
-
 angular.module('flashMessageService', [])
     .service('flashMessage', function() {
         this.add = function(data) {
@@ -89,82 +179,6 @@ angular.module('flashMessageService', [])
             }, 3000);
         };
     });
-
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-angular.module('directives.countdown', []).directive('countdown', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            specificity: '@',
-            countdownTo: '=',
-            callback: '&'
-        },
-        link: function($scope) {
-
-            $scope.isLaunchExact = $scope.$watch('specificity', function(newValue) {
-                return (newValue == 6 || newValue == 7);
-            });
-
-            self.init = (function() {
-                if ($scope.isLaunchExact()) {
-                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-                    $scope.days = null;
-                    $scope.hours = null;
-                    $scope.minutes = null;
-                    $scope.seconds = null;
-
-                    $scope.daysText = null;
-                    $scope.hoursText = null;
-                    $scope.minutesText = null;
-                    $scope.secondsText = null;
-
-                    $scope.countdownProcessor = function() {
-                        var launchUnixSeconds = $scope.launchUnixSeconds();
-                        var currentUnixSeconds = Math.floor($.now() / 1000);
-
-
-                        if (launchUnixSeconds >= currentUnixSeconds) {
-                            $scope.secondsAwayFromLaunch(launchUnixSeconds - currentUnixSeconds);
-                            var secondsBetween = $scope.secondsAwayFromLaunch();
-                            // Calculate the number of days, hours, minutes, seconds
-                            $scope.days(Math.floor(secondsBetween / (60 * 60 * 24)));
-                            secondsBetween -= $scope.days() * 60 * 60 * 24;
-
-                            $scope.hours(Math.floor(secondsBetween / (60 * 60)));
-                            secondsBetween -= $scope.hours() * 60 * 60;
-
-                            $scope.minutes(Math.floor(secondsBetween / 60));
-                            secondsBetween -= $scope.minutes() * 60;
-
-                            $scope.seconds(secondsBetween);
-
-                            $scope.daysText($scope.days() == 1 ? 'Day' : 'Days');
-                            $scope.hoursText($scope.hours() == 1 ? 'Hour' : 'Hours');
-                            $scope.minutesText($scope.minutes() == 1 ? 'Minute' : 'Minutes');
-                            $scope.secondsText($scope.seconds() == 1 ? 'Second' : 'Seconds');
-
-                            // Stop the countdown, count up!
-                        } else {
-
-                        }
-
-                        if (params.callback && typeof params.callback === 'function') {
-                            params.callback();
-                        }
-                    };
-
-                    setInterval($scope.countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            })();
-
-        },
-        templateUrl: '/js/templates/countdown.html'
-    }
-});
 
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
@@ -218,3 +232,85 @@ angular.module("directives.selectList", []).directive("selectList", function() {
     }
 });
 
+
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+angular.module('directives.countdown', []).directive('countdown', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            specificity: '=',
+            countdownTo: '=',
+            callback: '&'
+        },
+        link: function($scope) {
+
+            $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+            $scope.$watch('specificity', function(newValue) {
+                $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+            });
+
+            (function() {
+                if ($scope.isLaunchExact) {
+
+                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+
+                    $scope.days = null;
+                    $scope.hours = null;
+                    $scope.minutes = null;
+                    $scope.seconds = null;
+
+                    $scope.daysText = null;
+                    $scope.hoursText = null;
+                    $scope.minutesText = null;
+                    $scope.secondsText = null;
+
+                    $scope.countdownProcessor = function() {
+
+                        var launchUnixSeconds = $scope.launchUnixSeconds;
+                        var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                        if (launchUnixSeconds >= currentUnixSeconds) {
+                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                            var secondsBetween = $scope.secondsAwayFromLaunch;
+                            // Calculate the number of days, hours, minutes, seconds
+                            $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                            secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                            $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                            secondsBetween -= $scope.hours * 60 * 60;
+
+                            $scope.minutes = Math.floor(secondsBetween / 60);
+                            secondsBetween -= $scope.minutes * 60;
+
+                            $scope.seconds = secondsBetween;
+
+                            $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                            $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                            $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                            $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                            console.log($scope.seconds);
+
+                            // Stop the countdown, count up!
+                        } else {
+
+                        }
+
+                        if ($scope.callback && typeof $scope.callback === 'function') {
+                            $scope.callback();
+                        }
+                    };
+
+                    setInterval($scope.countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            })();
+
+        },
+        templateUrl: '/js/templates/countdown.html'
+    }
+});

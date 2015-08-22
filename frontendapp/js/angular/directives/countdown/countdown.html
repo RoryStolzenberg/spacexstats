@@ -1,9 +1,9 @@
-<table class="countdown" ng-if="launchExact == true">
+<table class="countdown" ng-if="isLaunchExact == true">
     <tr>
         <td class="value days">[[ days ]]</td>
         <td class="value hours">[[ hours ]]</td>
         <td class="value minutes">[[ minutes ]]</td>
-        <td class="value seconds"><[[ seconds ]]</td>
+        <td class="value seconds">[[ seconds ]]</td>
     </tr>
     <tr>
         <td class="unit days">[[ daysText ]]</td>
@@ -12,7 +12,7 @@
         <td class="unit seconds">[[ secondsText ]]</td>
     </tr>
 </table>
-<table class="single" ng-if="launchExact == true">
+<table class="single" ng-if="isLaunchExact != true">
     <tr>
         <td class="value">[[ countdownText ]]</td>
     </tr>
