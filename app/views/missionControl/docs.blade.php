@@ -1,18 +1,17 @@
 @extends('templates.main')
-@section('title', 'About Mission Control')
+@section('title', 'Mission Control Docs')
 
 @section('content')
-<body class="missioncontrol-about">
+    <body class="missioncontrol-docs">
 
     @include('templates.flashMessage')
     @include('templates.header')
 
     <div class="content-wrapper single-page background">
-        <h1>Mission Control</h1>
+        <h1>Mission Control Docs</h1>
         <main>
-            <a href="/missioncontrol/buy">Buy Today!</a>
         </main>
     </div>
-</body>
+    </body>
 @stop
 

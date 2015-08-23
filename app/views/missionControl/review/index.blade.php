@@ -1,9 +1,21 @@
 @extends('templates.main')
-
 @section('title', 'Review Queue')
-@section('bodyClass', 'review')
 
-@section('scripts')
+@section('content')
+<body class="review">
+
+    @include('templates.flashMessage')
+    @include('templates.header')
+
+    <div class="content-wrapper">
+        <h1>Review Queue</h1>
+        <main>
+            <p class="review-queue-lengths"><span data-bind="text: objectsToReview().length"></span> items to review.</p>
+            <table data-bind="template: { name: 'object-review-template', foreach: objectsToReview, as: 'objectToReview' }">
+            </table>
+        </main>
+    </div>
+
     <script data-main="/src/js/common" src="/src/js/require.js"></script>
     <script>
         require(['common'], function() {
@@ -34,15 +46,5 @@
             <td colspan="7" data-bind="text: summary"></td>
         </tr>
     </script>
-@stop
-
-@section('content')
-    <div class="content-wrapper">
-        <h1>Review Queue</h1>
-        <main>
-            <p class="review-queue-lengths"><span data-bind="text: objectsToReview().length"></span> items to review.</p>
-            <table data-bind="template: { name: 'object-review-template', foreach: objectsToReview, as: 'objectToReview' }">
-            </table>
-        </main>
-    </div>
+</body>
 @stop

@@ -1,21 +1,12 @@
 @extends('templates.main')
-
 @section('title', $object->title)
-@section('bodyClass', 'object')
-
-@section('scripts')
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script>
-        require(['common'], function() {
-            require(['knockout', 'viewmodels/ObjectViewModel'], function(ko, ObjectViewModel) {
-
-                ko.applyBindings(new ObjectViewModel({{ $object->object_id  }}));
-            });
-        });
-    </script>
-@stop
 
 @section('content')
+<body class="object">
+
+    @include('templates.flashMessage')
+    @include('templates.header')
+
     <div class="content-wrapper">
         <h1>{{ $object->title }}</h1>
         <main>
@@ -115,4 +106,14 @@
             </section>
         </main>
     </div>
+    <script data-main="/src/js/common" src="/src/js/require.js"></script>
+    <script>
+        require(['common'], function() {
+            require(['knockout', 'viewmodels/ObjectViewModel'], function(ko, ObjectViewModel) {
+
+                ko.applyBindings(new ObjectViewModel({{ $object->object_id  }}));
+            });
+        });
+    </script>
+</body>
 @stop
