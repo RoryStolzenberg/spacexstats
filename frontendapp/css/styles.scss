@@ -10,6 +10,7 @@
 @import "spacexstats/nav";
 
 // SpaceXStats pages
+@import "spacexstats/homePage";
 @import "spacexstats/futureMissionPage";
 
 // SpaceXStats components
@@ -44,8 +45,8 @@ nav.sticky-bar {
 }
 
 .hero {
-    /* Calculated height: the viewport, subtracting the header (50px), the title (80px), the page nav (30px), highlights (40px), the summary (100px) */
-    height:calc(100vh - 300px);
+    /* Calculated height: the viewport, subtracting the header (50px), the title (120px), the page nav (30px), highlights (40px), the summary (100px) */
+    height:calc(100vh - 340px);
     text-align:center;
     font-family:$brandonGrotesque;
     text-transform:uppercase;
@@ -68,6 +69,7 @@ nav.sticky-bar {
     table {
         border-collapse:collapse;
         position:relative;
+        text-align:center;
 
         td {
             min-width:260px;
@@ -117,56 +119,6 @@ a:link, a:visited, a:hover, a:active {
 .smallcaps {
     @include smallCaps();
 }
-
-/* ----------------- HOME PAGE  ------------------- */
-#statistics-navigation {
-    position: fixed;
-    top:50%;
-
-    .statistic-link {
-        display: block;
-        width: 5px;
-        height: 5px;
-        padding: 10px;
-
-        &:before {
-            width: 6px;
-            height: 6px;
-            top:-3px;
-            left:-3px;
-            position:relative;
-            border-radius:50%;
-            content: "";
-            display: block;
-            background-color:$white;
-
-            &.active {
-                background-color:$white;
-            }
-        }
-    }
-}
-
-.previous-stat, .next-stat {
-    position:absolute;
-    width:40px;
-    height:40px;
-    right:0;
-    background-color:transparent;
-    border:none;
-    padding:0;
-    color:$white;
-}
-
-.previous-stat {
-    top:-60px;
-}
-
-.next-stat {
-    bottom:-45px;
-}
-
-.background:nth-of-type(1) {	@include filteredBackground("../images/backgrounds/bocachica.jpg"); }
 
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {

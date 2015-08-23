@@ -2,9 +2,59 @@ angular.module("homePageApp", ["directives.countdown"], ['$interpolateProvider',
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("homePageController", ['$scope', function($scope) {
-    $scope.statistics = laravel.statistics;
-}]);
+}]).controller("homePageController", ['$scope', 'Statistic', function($scope, Statistic) {
+    $scope.statistics = [];
+
+    $scope.activeStatistic;
+
+    laravel.statistics.forEach(function(statistic) {
+        $scope.statistics.push(new Statistic(statistic));
+    });
+
+    $scope.goToClickedStatistic = function() {
+
+    }
+
+    $scope.goToPreviousStatistic = function() {
+
+    }
+
+    $scope.goToNextStatistic = function() {
+
+    }
+}])
+
+.factory('Statistic', ['Substatistic', function(Substatistic) {
+    return function(statistic) {
+
+        var self = {};
+
+        self.substatistics = [];
+
+        statistic.forEach(function(substatistic) {
+             self.substatistics.push(new Substatistic(substatistic));
+        });
+
+        self.isActiveStatistic = false;
+
+        self.activeSubstatistic = 0;
+
+        self.changeSubstatistic = function() {
+
+        }
+
+        return self;
+    }
+}])
+
+.factory('Substatistic', function() {
+    return function(substatistic) {
+
+        var self = substatistic;
+
+        return self;
+    }
+});
 
 angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
@@ -192,59 +242,6 @@ angular.module('flashMessageService', [])
         };
     });
 
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            hasDefaultOption: '@',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@'
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            }
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            }
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
-
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -314,3 +311,56 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
         templateUrl: '/js/templates/countdown.html'
     }
 }]);
+
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            }
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+

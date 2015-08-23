@@ -17,15 +17,15 @@
     <!-- Navigation -->
     <ul id="statistics-navigation">
         <li class="statistic-holder" ng-repeat="statistic in statistics">
-            <a class="statistic-link" ng-class="{ 'active' : isActiveStatistic() }" ng-click="$parent.goToClickedStatistic()" href=""></a>
+            <a class="statistic-link" ng-class="{ 'active' : statistic.isActiveStatistic }" ng-click="$parent.goToClickedStatistic()" href=""></a>
         </li>
     </ul>
 
     <!-- Statistics -->
     <div class="content-wrapper single-page background" ng-repeat="statistic in statistics">
         <h1>
-            <span ng-repeat="substatistic in statistic">
-                [[ fullTitle ]]
+            <span ng-repeat="substatistic in statistic.substatistics">
+                [[ substatistic.full_title ]]
             </span>
         </h1>
 
@@ -34,22 +34,28 @@
 
             <nav ng-click="changeSubstatistic()">
                 <ul class="container">
-                    <li class="grid-2" ng-repeat="substatistic in statistic">[[ name ]]</li>
+                    <li class="grid-2" ng-repeat="substatistic in statistic.substatistics">[[ substatistic.name ]]</li>
                 </ul>
             </nav>
 
-            <div ng-repeat="substatistic in statistic">
-                <div class="hero hero-centered statistic" ng-if="display == 'single'">
-
+            <div ng-repeat="substatistic in statistic.substatistics">
+                <div class="hero hero-centered statistic" ng-if="substatistic.display == 'single'">
+                    <table class="">
+                        <tr class="value">
+                            <td>[[ substatistic.result ]]</td>
+                        </tr>
+                        <tr class="unit">
+                            <td>[[ substatistic.unit ]]</td>
+                        </tr>
+                    </table>
                 </div>
 
-                <countdown ng-if="display == 'countdown'" countdown-to="result.launchDateTime" specificity="result.launch_specificity" callback=""></countdown>
+                <countdown ng-if="substatistic.display == 'countdown'" countdown-to="result.launchDateTime" specificity="result.launch_specificity" callback=""></countdown>
             </div>
 
-            <p class="description" ng-repeat="substatistic in statistic">
-                <span>[[ description ]]</span>
+            <p class="description" ng-repeat="substatistic in statistic.substatistics">
+                <span>[[ substatistic.description ]]</span>
             </p>
-
 
             <button class="next-stat" ng-click="$parent.goToNextStatistic()"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>

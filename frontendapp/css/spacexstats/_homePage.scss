@@ -1,0 +1,48 @@
+#statistics-navigation {
+    position: fixed;
+    top:50%;
+
+    .statistic-link {
+        display: block;
+        width: 5px;
+        height: 5px;
+        padding: 10px;
+
+        &:before {
+            width: 6px;
+            height: 6px;
+            top:-3px;
+            left:-3px;
+            position:relative;
+            border-radius:50%;
+            content: "";
+            display: block;
+            background-color:$white;
+
+            &.active {
+                background-color:$white;
+            }
+        }
+    }
+}
+
+.previous-stat, .next-stat {
+    position:absolute;
+    width:40px;
+    height:40px;
+    right:0;
+    background-color:transparent;
+    border:none;
+    padding:0;
+    color:$white;
+}
+
+.previous-stat {
+    top:-60px;
+}
+
+.next-stat {
+    bottom:-45px;
+}
+
+.background {	@include filteredBackground("../images/backgrounds/bocachica.jpg"); }
