@@ -38,20 +38,18 @@
                 </ul>
             </nav>
 
-            <div ng-repeat="substatistic in statistic.substatistics">
-                <div class="hero hero-centered statistic" ng-if="substatistic.display == 'single'">
-                    <table class="">
-                        <tr class="value">
-                            <td>[[ substatistic.result ]]</td>
-                        </tr>
-                        <tr class="unit">
-                            <td>[[ substatistic.unit ]]</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <countdown ng-if="substatistic.display == 'countdown'" countdown-to="result.launchDateTime" specificity="result.launch_specificity" callback=""></countdown>
+            <div class="hero hero-centered statistic" ng-repeat-start="substatistic in statistic.substatistics"ng-if="substatistic.display == 'single'">
+                <table class="">
+                    <tr class="value">
+                        <td>[[ substatistic.result ]]</td>
+                    </tr>
+                    <tr class="unit">
+                        <td>[[ substatistic.unit ]]</td>
+                    </tr>
+                </table>
             </div>
+
+            <countdown ng-repeat-end ng-if="substatistic.display == 'countdown'" countdown-to="result.launchDateTime" specificity="result.launch_specificity" callback=""></countdown>
 
             <p class="description" ng-repeat="substatistic in statistic.substatistics">
                 <span>[[ substatistic.description ]]</span>
