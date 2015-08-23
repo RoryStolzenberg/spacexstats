@@ -4,12 +4,7 @@
 @section('content')
 <body class="admin">
 
-    <div id="flash-message-container">
-        @if (Session::has('flashMessage'))
-            <p class="flash-message {{ Session::get('flashMessage.type') }}">{{ Session::get('flashMessage.contents') }}</p>
-        @endif
-    </div>
-
+    @include('templates.flashMessage')
     @include('templates.header')
 
     <div class="content-wrapper">

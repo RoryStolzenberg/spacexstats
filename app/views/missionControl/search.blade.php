@@ -1,12 +1,12 @@
 @extends('templates.main')
-
 @section('title', 'Search results for')
-@section('bodyClass', 'search')
-
-@section('scripts')
-@stop
 
 @section('content')
+<body class="search">
+
+    @include('templates.flashMessage')
+    @include('templates.header')
+
     <div class="content-wrapper">
         <h1>Search results for</h1>
         <main>
@@ -16,5 +16,6 @@
             </form>
         </main>
     </div>
+</body>
 @stop
 

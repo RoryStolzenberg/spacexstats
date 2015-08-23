@@ -1,17 +1,3 @@
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
 angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -256,6 +242,20 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
     }
 
 }]);
+
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
 
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {

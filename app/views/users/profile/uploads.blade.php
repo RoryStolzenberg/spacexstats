@@ -1,18 +1,17 @@
 <?php
 @extends('templates.main')
-
 @section('title', $user->username . '\'s Uploads')
-@section('bodyClass', 'profile-uploads')
 
-@section('scripts')
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script>
-        require(['common'], function() {
-            require(['jquery', 'knockout', 'viewmodels/UserUploadsViewModel'], function($, ko, UserUploadsViewModel) {
-                $(document).ready(function() {
-                    ko.applyBindings(new UserUploadsViewModel());
-                });
-            });
-        });
-    </script>
+@section('content')
+<body class="profile-uploads">
+
+    @include('templates.flashMessage')
+    @include('templates.header')
+
+    <div class="content-wrapper">
+        <h1>{{ $user->username }} Uploads</h1>
+        <main>
+        </main>
+    </div>
+</body>
 @stop
