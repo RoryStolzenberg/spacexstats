@@ -5,14 +5,14 @@ angular.module("homePageApp", ["directives.countdown"], ['$interpolateProvider',
 }]).controller("homePageController", ['$scope', 'Statistic', function($scope, Statistic) {
     $scope.statistics = [];
 
-    $scope.activeStatistic;
+    $scope.activeStatistic = false;
 
     laravel.statistics.forEach(function(statistic) {
         $scope.statistics.push(new Statistic(statistic));
     });
 
-    $scope.goToClickedStatistic = function() {
-
+    $scope.goToClickedStatistic = function(statisticType) {
+        $scope.activeStatistic = statisticType;
     }
 
     $scope.goToPreviousStatistic = function() {
@@ -29,18 +29,22 @@ angular.module("homePageApp", ["directives.countdown"], ['$interpolateProvider',
 
         var self = {};
 
-        self.substatistics = [];
-
         statistic.forEach(function(substatistic) {
-             self.substatistics.push(new Substatistic(substatistic));
+
+            var substatisticObject = new Substatistic(substatistic);
+
+            if (!self.substatistics) {
+
+                self.substatistics = [];
+                self.activeSubstatistic = substatisticObject;
+                self.type = substatisticObject.type;
+            }
+
+            self.substatistics.push(substatisticObject);
         });
 
-        self.isActiveStatistic = false;
-
-        self.activeSubstatistic = 0;
-
-        self.changeSubstatistic = function() {
-
+        self.changeSubstatistic = function(newSubstatistic) {
+            self.activeSubstatistic = newSubstatistic;
         }
 
         return self;
