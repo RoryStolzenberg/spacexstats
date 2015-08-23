@@ -13,6 +13,18 @@
                 <input type="search" placeholder="Search..." />
                 <input type="submit" value="Search" />
             </form>
+
+            <div class="grid-8">
+                <h2>Uploads - New | Hot | Top</h2>
+            </div>
+
+            <div class="grid-4">
+                <h2>Community Leaderboards</h2>
+            </div>
+
+            <h2>Recent Comments</h2>
+
+            <h2>Recent Favorites</h2>
         </main>
     </div>
 </body>
