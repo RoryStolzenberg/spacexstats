@@ -154,10 +154,6 @@ class Mission extends Eloquent {
 
     }
 
-    public function getLaunchIlluminationAttribute() {
-
-    }
-
     // Attribute Mutators
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;

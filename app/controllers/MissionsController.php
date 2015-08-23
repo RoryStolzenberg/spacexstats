@@ -45,16 +45,16 @@ class MissionsController extends BaseController {
 	// GET
 	// missions/future
 	public function future() {
-		$futureLaunches = Mission::where('status','=','Upcoming')
+        $futureMissions = Mission::where('status','=','Upcoming')
                                     ->orWhere('status','In Progress')
 									->orderBy('launch_order_id')
 									->with('vehicle')->get();
-		$nextLaunch = $futureLaunches->shift();
 
-		return View::make('missions.future', array(
-			'futureLaunches' => $futureLaunches,
-			'nextLaunch' => $nextLaunch
-		));
+        JavaScript::put([
+            'missions' => $futureMissions
+        ]);
+
+		return View::make('missions.future');
 	}
 
     // GET

@@ -22,6 +22,10 @@ angular.module("homePageApp", ["directives.countdown"], ['$interpolateProvider',
     $scope.goToNextStatistic = function() {
 
     }
+
+    $scope.$watch("activeStatistic", function(newValue, oldValue) {
+
+    });
 }])
 
 .factory('Statistic', ['Substatistic', function(Substatistic) {
