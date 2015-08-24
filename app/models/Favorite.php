@@ -12,11 +12,11 @@ class Favorite extends Eloquent {
     protected $guarded = [];
 
 	// Relations
-	public function users() {
-		return $this->belongsTo('user');
+	public function user() {
+		return $this->belongsTo('User');
 	}
 
 	public function object() {
-		return $this->belongsTo('object');
+		return $this->belongsTo('Object');
 	}
 }

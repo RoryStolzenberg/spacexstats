@@ -10,9 +10,8 @@ class Collection extends Eloquent {
     protected $fillable = [];
     protected $guarded = [];
 
-
-    public function objects()
-    {
+    // Relationships
+    public function objects() {
         return $this->belongsToMany('Objects', 'collections_objects_pivot');
     }
 }

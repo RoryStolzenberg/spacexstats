@@ -1,6 +1,6 @@
 <?php
 
-use SpaceXStats\Mailers\UserMailer;
+use SpaceXStats\Mail\Mailers\UserMailer;
 use SpaceXStats\Enums\UserRole;
 use SpaceXStats\Enums\NotificationType;
 
@@ -151,6 +151,38 @@ class UsersController extends BaseController {
 
     public function editRedditNotifications($username) {
         $user = User::where('username', $username)->firstOrFail();
+    }
+
+    // GET: /users/{username}/favorites
+    public function favorites($username) {
+        $user = User::where('username', $username)->first();
+
+        return View::make('users.favorites', array(
+            'favorites' => Favorite::where('user_id', $user)->with('object')->get()
+        ));
+    }
+
+    // GET: /users/{username}/notes
+    public function notes($username) {
+        $user = User::where('username', $username)->first();
+
+        return View::make('users.favorites', array(
+            'favorites' => Note::where('user_id', $user)->with('object')->get()
+        ));
+    }
+
+    // GET: /users/{username}/uploads
+    public function uploads($username) {
+        // is admin
+    }
+
+    // GET: /users/{username}/comments
+    public function comments($username) {
+        $user = User::where('username', $username)->first();
+
+        return View::make('users.favorites', array(
+            'favorites' => Comment::where('user_id', $user)->with('object')->get()
+        ));
     }
 
 	public function create() {

@@ -1,7 +1,7 @@
 <?php
 use SpaceXStats\Services\MissionCreatorService;
-use SpaceXStats\MailQueues\MissionMailQueue;
-use SpaceXStats\Mailers\MissionNotificationsMailer;
+use SpaceXStats\Mail\MailQueues\MissionMailQueue;
+use SpaceXStats\Mail\Mailers\MissionNotificationsMailer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class MissionsController extends BaseController {

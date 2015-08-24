@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\MailQueues;
+namespace SpaceXStats\Mail\MailQueues;
 
 use SpaceXStats\Enums\EmailStatus;
 

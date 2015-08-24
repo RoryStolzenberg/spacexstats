@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceXStats\Mailers;
+namespace SpaceXStats\Mail\Mailers;
 
 class MissionNotificationsMailer extends Mailer {
 

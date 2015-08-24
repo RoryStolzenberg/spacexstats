@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceXStats\Mailers;
+namespace SpaceXStats\Mail\Mailers;
 
 abstract class Mailer {
 	public function sendTo($user, $subject, $view, $data = []) {
