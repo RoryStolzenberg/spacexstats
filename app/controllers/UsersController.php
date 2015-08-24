@@ -157,7 +157,8 @@ class UsersController extends BaseController {
     public function favorites($username) {
         $user = User::where('username', $username)->first();
 
-        return View::make('users.favorites', array(
+        return View::make('users.profile.favorites', array(
+            'user' => $user,
             'favorites' => Favorite::where('user_id', $user)->with('object')->get()
         ));
     }
@@ -166,7 +167,8 @@ class UsersController extends BaseController {
     public function notes($username) {
         $user = User::where('username', $username)->first();
 
-        return View::make('users.favorites', array(
+        return View::make('users.profile.notes', array(
+            'user' => $user,
             'favorites' => Note::where('user_id', $user)->with('object')->get()
         ));
     }
@@ -180,7 +182,8 @@ class UsersController extends BaseController {
     public function comments($username) {
         $user = User::where('username', $username)->first();
 
-        return View::make('users.favorites', array(
+        return View::make('users.profile.comments', array(
+            'user' => $user,
             'favorites' => Comment::where('user_id', $user)->with('object')->get()
         ));
     }

@@ -91,7 +91,7 @@
 
                 </div>
             </section>
-            <h2>Favorites</h2>
+            <h2><a href="/users/{{ $user->username }}/favorites">Favorites</a></h2>
             <section class="favorites container">
                 @foreach ($favorites as $favorite)
                     <div class="grid-4">

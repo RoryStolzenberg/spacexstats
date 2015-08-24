@@ -1,3 +1,17 @@
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+
 angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -171,6 +185,32 @@ angular.module("futureMissionApp", ["directives.countdown", "flashMessageService
 
 }]);
 
+angular.module("uploadApp", [], ['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+}])
+
+.controller("uploadAppController", ["$scope", function($scope) {
+    $scope.activeSection = "upload";
+
+    $scope.changeSection = function(section) {
+        $scope.activeSection = section;
+    }
+}])
+
+.controller("uploadController", ["$scope", function($scope) {
+    $scope.activeSection = "upload";
+    $scope.buttonText = "Next";
+}])
+
+.controller("postController", ["$scope", function($scope) {
+
+}])
+
+.controller("writeController", ["$scope", function($scope) {
+
+}]);
+
 angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -243,20 +283,6 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
         restrict: 'E',
@@ -309,6 +335,20 @@ angular.module("directives.selectList", []).directive("selectList", function() {
     }
 });
 
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+            console.log(mission);
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -379,17 +419,3 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
         templateUrl: '/js/templates/countdown.html'
     }
 }]);
-
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-            console.log(mission);
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});

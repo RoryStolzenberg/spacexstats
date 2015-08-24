@@ -2,7 +2,7 @@
 @section('title', 'Upload to Mission Control')
 
 @section('content')
-<body class="missioncontrol-upload">
+<body class="missioncontrol-upload" ng-app="uploadApp" ng-controller="uploadAppController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')
@@ -13,13 +13,13 @@
             <!-- List of methods to upload -->
             <nav>
                 <ul class="upload-type text-center">
-                    <li data-bind="click: changeVisibleSection.bind($data, 'upload')"><i class="fa fa-upload"></i> Upload</li>
-                    <li data-bind="click: changeVisibleSection.bind($data, 'post')"><i class="fa fa-paperclip"></i> Post</li>
-                    <li data-bind="click: changeVisibleSection.bind($data, 'text')"><i class="fa fa-pencil"></i> Write</li>
+                    <li ng-click="changeSection('upload')"><i class="fa fa-upload"></i> Upload</li>
+                    <li ng-click="changeSection('post')"><i class="fa fa-paperclip"></i> Post</li>
+                    <li ng-click="changeSection('write')"><i class="fa fa-pencil"></i> Write</li>
                 </ul>
             </nav>
             <!-- Upload -->
-            <section class="upload-upload" data-bind="visible: visibleSection() == 'upload'">
+            <section class="upload-upload" ng-controller="uploadController" ng-show="activeSection == 'upload'">
                 <div data-bind="visible: uploadSection() == 'dropzone'">
                     <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
                     <upload params="dropzoneId: 'uploadFilesDropzone', postLocation: '/missioncontrol/create/upload', uploadedFiles: rawFiles"></upload>
@@ -34,7 +34,7 @@
             </section>
 
             <!-- Post -->
-            <section class="upload-post" data-bind="visible: visibleSection() == 'post'">
+            <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
                 <form>
                     <fieldset class="post-type-selection">
                         <label><input type="radio" name="type" value="tweet" data-bind="checked: postType" />Tweet</label>
@@ -130,7 +130,7 @@
             </section>
 
             <!-- Write -->
-            <section class="upload-text" data-bind="visible: visibleSection() == 'text'">
+            <section class="upload-text" ng-controller="writeController" ng-show="activeSection == 'write'">
                 <form data-bind="with: text">
                     <label>Select related mission</label>
                     <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
@@ -152,17 +152,6 @@
             </section>
         </main>
     </div>
-
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script type="text/javascript">
-        require(['common'], function() {
-            require(['jquery', 'knockout', 'viewmodels/UploadViewModel'], function($, ko, UploadViewModel) {
-                $(document).ready(function() {
-                    ko.applyBindings(new UploadViewModel());
-                });
-            });
-        });
-    </script>
 
     <!-- Knockout Templates -->
     <script type="text/html" id="uploaded-files-template">

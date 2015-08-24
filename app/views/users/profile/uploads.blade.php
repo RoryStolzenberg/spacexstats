@@ -1,4 +1,3 @@
-<?php
 @extends('templates.main')
 @section('title', $user->username . '\'s Uploads')
 
@@ -9,7 +8,7 @@
     @include('templates.header')
 
     <div class="content-wrapper">
-        <h1>{{ $user->username }} Uploads</h1>
+        <h1>{{ $user->username }}'s Uploads</h1>
         <main>
         </main>
     </div>
