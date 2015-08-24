@@ -183,7 +183,8 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
     }
 
 }]).controller("uploadController", ["$scope", function($scope) {
-    $scope.activeSection = "upload";
+    $scope.activeUploadSection = "dropzone";
+
     $scope.buttonText = "Next";
     $scope.uploadedFiles = [];
 
@@ -196,11 +197,11 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
 
 }]).controller("writeController", ["$scope", function($scope) {
 
-}]).run(function() {
+}]).run(['$rootScope', function($rootScope) {
     $rootScope.postToMissionControl = function() {
 
     }
-});
+}]);
 
 angular.module('questionsApp', [], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
@@ -445,7 +446,7 @@ angular.module('directives.upload', []).directive('upload', function() {
         link: function($scope, element, attrs) {
             console.log('creating dropzone');
 
-            var dropzone = element.dropzone({
+            var dropzone = new Dropzone(element[0], {
                 url: $scope.action,
                 autoProcessQueue: false,
                 maxFilesize: 1024, // MB

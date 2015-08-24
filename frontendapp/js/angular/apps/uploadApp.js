@@ -10,7 +10,8 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
     }
 
 }]).controller("uploadController", ["$scope", function($scope) {
-    $scope.activeSection = "upload";
+    $scope.activeUploadSection = "dropzone";
+
     $scope.buttonText = "Next";
     $scope.uploadedFiles = [];
 
@@ -23,8 +24,8 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
 
 }]).controller("writeController", ["$scope", function($scope) {
 
-}]).run(function() {
+}]).run(['$rootScope', function($rootScope) {
     $rootScope.postToMissionControl = function() {
 
     }
-});
+}]);

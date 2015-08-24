@@ -20,11 +20,11 @@
             </nav>
             <!-- Upload -->
             <section class="upload-upload" ng-controller="uploadController" ng-show="activeSection == 'upload'">
-                <div data-bind="visible: uploadSection() == 'dropzone'">
+                <div ng-show="activeUploadSection == 'dropzone'">
                     <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
                     <upload files="uploadedFiles" action="'/missioncontrol/create/upload'" callback="" multi-upload="true"></upload>
                 </div>
-                <div data-bind="visible: uploadSection() == 'form'">
+                <div ng-show="activeUploadSection == 'data'">
                     <ul class="files-list" data-bind="template: { name: 'uploaded-files-template', foreach: uploadedFiles }">
                     </ul>
                     <div class="files-details" data-bind="template: { name: templateObjectType, foreach: uploadedFiles }">
@@ -153,7 +153,7 @@
         </main>
     </div>
 
-    <!-- Knockout Templates -->
+        <!-- Knockout Templates -->
     <script type="text/html" id="uploaded-files-template">
         <li class="uploaded-file" data-bind="attr: { 'data-index': $index }, click: $root.changeVisibleTemplate">
             <img data-bind="attr: { src: media_thumb_small }"/><br/>

@@ -10,7 +10,7 @@ angular.module('directives.upload', []).directive('upload', function() {
         link: function($scope, element, attrs) {
             console.log('creating dropzone');
 
-            var dropzone = element.dropzone({
+            var dropzone = new Dropzone(element[0], {
                 url: $scope.action,
                 autoProcessQueue: false,
                 maxFilesize: 1024, // MB

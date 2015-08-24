@@ -36,9 +36,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
 
-    <script src="/public/js/sticky.js"></script>
+    <script src="/js/dropzone.js" type="text/javascript"></script>
 
-    <script src="/public/js/app.js"></script>
+    <script src="/js/sticky.js"></script>
+
+    <script src="/js/app.js"></script>
 
 	<script>
         // Mobile left hand side drawer

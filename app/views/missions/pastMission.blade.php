@@ -110,6 +110,9 @@
             <section class="images"></section>
             <h2>Videos</h2>
             <section class="videos"></section>
+            <h2>Documents</h2>
+            <section class="documents">
+            </section>
             <h2>Articles</h2>
             <section class="articles">
             </section>
