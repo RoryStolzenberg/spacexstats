@@ -197,8 +197,18 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
 }]).controller("writeController", ["$scope", function($scope) {
 
 }]).run(function() {
-    $rootScope.
+    $rootScope.postToMissionControl = function() {
+
+    }
 });
+
+angular.module('questionsApp', [], ['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+
+}]).controller("questionsController", ["$scope", function($scope) {
+    $scope
+}]);
 
 angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
@@ -286,6 +296,59 @@ angular.module('flashMessageService', [])
         };
     });
 
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            }
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+
+
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -355,59 +418,6 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
         templateUrl: '/js/templates/countdown.html'
     }
 }]);
-
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            hasDefaultOption: '@',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@'
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            }
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            }
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
 
 angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {

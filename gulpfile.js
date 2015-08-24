@@ -42,7 +42,7 @@ gulp.task('scripts', function() {
         .pipe(gulp.dest('public/js/templates'));
 
     // Move library
-    gulp.src('frontendapp/src/js/lib/**/*.js')
+    gulp.src('frontendapp/js/lib/**/*.js')
         .pipe(gulp.dest('public/js'));
 });
 

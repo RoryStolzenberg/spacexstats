@@ -24,5 +24,7 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
 }]).controller("writeController", ["$scope", function($scope) {
 
 }]).run(function() {
-    $rootScope.
+    $rootScope.postToMissionControl = function() {
+
+    }
 });
