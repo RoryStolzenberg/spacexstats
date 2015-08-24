@@ -1,17 +1,3 @@
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
 angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -185,31 +171,34 @@ angular.module("futureMissionApp", ["directives.countdown", "flashMessageService
 
 }]);
 
-angular.module("uploadApp", [], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
-}])
 
-.controller("uploadAppController", ["$scope", function($scope) {
+}]).controller("uploadAppController", ["$scope", function($scope) {
     $scope.activeSection = "upload";
 
     $scope.changeSection = function(section) {
         $scope.activeSection = section;
     }
-}])
 
-.controller("uploadController", ["$scope", function($scope) {
+}]).controller("uploadController", ["$scope", function($scope) {
     $scope.activeSection = "upload";
     $scope.buttonText = "Next";
-}])
+    $scope.uploadedFiles = [];
 
-.controller("postController", ["$scope", function($scope) {
+    $scope.uploadFiles = function() {
 
-}])
+    }
 
-.controller("writeController", ["$scope", function($scope) {
 
-}]);
+}]).controller("postController", ["$scope", function($scope) {
+
+}]).controller("writeController", ["$scope", function($scope) {
+
+}]).run(function() {
+    $rootScope.
+});
 
 angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
@@ -283,72 +272,19 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            hasDefaultOption: '@',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@'
-        },
-        link: function($scope, element, attributes) {
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
 
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
 
-            $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            }
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            }
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
-
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-            console.log(mission);
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -419,3 +355,103 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
         templateUrl: '/js/templates/countdown.html'
     }
 }]);
+
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            }
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+            console.log(mission);
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
+angular.module('directives.upload', []).directive('upload', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            files: '=',
+            action: '@',
+            callback: '&',
+            multiUpload: '@'
+        },
+        link: function($scope, element, attrs) {
+            console.log('creating dropzone');
+
+            var dropzone = element.dropzone({
+                url: $scope.action,
+                autoProcessQueue: false,
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: $scope.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(files, message) {
+
+                }
+            });
+
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        },
+        templateUrl: '/js/templates/upload.html'
+    }
+});

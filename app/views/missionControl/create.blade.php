@@ -22,14 +22,14 @@
             <section class="upload-upload" ng-controller="uploadController" ng-show="activeSection == 'upload'">
                 <div data-bind="visible: uploadSection() == 'dropzone'">
                     <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
-                    <upload params="dropzoneId: 'uploadFilesDropzone', postLocation: '/missioncontrol/create/upload', uploadedFiles: rawFiles"></upload>
+                    <upload files="uploadedFiles" action="'/missioncontrol/create/upload'" callback="" multi-upload="true"></upload>
                 </div>
                 <div data-bind="visible: uploadSection() == 'form'">
                     <ul class="files-list" data-bind="template: { name: 'uploaded-files-template', foreach: uploadedFiles }">
                     </ul>
                     <div class="files-details" data-bind="template: { name: templateObjectType, foreach: uploadedFiles }">
                     </div>
-                    <button id="files-submit" data-bind="text: formButtonText, click: submitFiles"></button>
+                    <button id="files-submit" ng-click="submitFiles()">[[ formButtonText ]]</button>
                 </div>
             </section>
 
