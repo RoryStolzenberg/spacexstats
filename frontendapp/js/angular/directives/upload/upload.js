@@ -1,6 +1,6 @@
 angular.module('directives.upload', []).directive('upload', function() {
     return {
-        restrict: 'E',
+        restrict: 'A',
         scope: {
             files: '=',
             action: '@',
