@@ -15,6 +15,14 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
     $scope.buttonText = "Next";
     $scope.uploadedFiles = [];
 
+    $scope.$watch("uploadedFiles", function() {
+        console.log('called');
+    });
+
+    $scope.someFunc = function() {
+        console.log('lol');
+    }
+
 }]).controller("postController", ["$scope", function($scope) {
 
 }]).controller("writeController", ["$scope", function($scope) {

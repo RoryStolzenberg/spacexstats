@@ -1,10 +1,9 @@
-angular.module('directives.upload', []).directive('upload', function() {
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {
         restrict: 'A',
         link: function($scope, element, attrs) {
 
-            console.log(attrs);
-
+            // Initialize the dropzone
             var dropzone = new Dropzone(element[0], {
                 url: attrs.action,
                 autoProcessQueue: false,
@@ -15,14 +14,22 @@ angular.module('directives.upload', []).directive('upload', function() {
                 parallelUploads: 5,
                 maxFiles: 5,
                 successmultiple: function(files, message) {
-                    console.log(files);
-                    console.log(message);
+
+                    // Apply the returned files to the $scope.files variable on the controller
+                    $scope.files = files;
+
+                    // Run a callback function
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope);
+                    }
                 }
             });
 
+            // upload the files
             $scope.uploadFiles = function() {
                 dropzone.processQueue();
             }
         }
     }
-});
+}]);

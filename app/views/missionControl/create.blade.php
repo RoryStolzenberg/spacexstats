@@ -22,7 +22,7 @@
             <section class="upload-upload" ng-controller="uploadController" ng-show="activeSection == 'upload'">
                 <div ng-show="activeUploadSection == 'dropzone'">
                     <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
-                    <form method="post" class="dropzone" upload enctype="multipart/form-data" files="uploadedFiles" action="/missioncontrol/create/upload" callback="" multi-upload="true">
+                    <form method="post" class="dropzone" upload enctype="multipart/form-data" action="/missioncontrol/create/upload" callback="someFunc()" multi-upload="true">
                     </form>
                     <button id="upload" ng-click="uploadFiles()">Upload</button>
                 </div>
