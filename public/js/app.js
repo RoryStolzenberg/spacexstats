@@ -188,11 +188,6 @@ angular.module("uploadApp", ["directives.upload"], ['$interpolateProvider', func
     $scope.buttonText = "Next";
     $scope.uploadedFiles = [];
 
-    $scope.uploadFiles = function() {
-
-    }
-
-
 }]).controller("postController", ["$scope", function($scope) {
 
 }]).controller("writeController", ["$scope", function($scope) {
@@ -297,59 +292,6 @@ angular.module('flashMessageService', [])
         };
     });
 
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            hasDefaultOption: '@',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@'
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            }
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            }
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
-
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -420,6 +362,34 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
+angular.module('directives.upload', []).directive('upload', function() {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            console.log(attrs);
+
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(files, message) {
+                    console.log(files);
+                    console.log(message);
+                }
+            });
+
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+});
 angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {
         restrict: 'E',
@@ -434,35 +404,55 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
     }
 });
 
-angular.module('directives.upload', []).directive('upload', function() {
+angular.module("directives.selectList", []).directive("selectList", function() {
     return {
         restrict: 'E',
         scope: {
-            files: '=',
-            action: '@',
-            callback: '&',
-            multiUpload: '@'
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
         },
-        link: function($scope, element, attrs) {
-            console.log('creating dropzone');
+        link: function($scope, element, attributes) {
 
-            var dropzone = new Dropzone(element[0], {
-                url: $scope.action,
-                autoProcessQueue: false,
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: $scope.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(files, message) {
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
 
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
                 }
             });
 
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
             }
+
+            $scope.dropdownIsVisible = false;
         },
-        templateUrl: '/js/templates/upload.html'
+        templateUrl: '/js/templates/selectList.html'
     }
 });
+

@@ -1,32 +1,28 @@
 angular.module('directives.upload', []).directive('upload', function() {
     return {
         restrict: 'A',
-        scope: {
-            files: '=',
-            action: '@',
-            callback: '&',
-            multiUpload: '@'
-        },
         link: function($scope, element, attrs) {
-            console.log('creating dropzone');
+
+            console.log(attrs);
 
             var dropzone = new Dropzone(element[0], {
-                url: $scope.action,
+                url: attrs.action,
                 autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
                 maxFilesize: 1024, // MB
                 addRemoveLinks: true,
-                uploadMultiple: $scope.multiUpload,
+                uploadMultiple: attrs.multiUpload,
                 parallelUploads: 5,
                 maxFiles: 5,
                 successmultiple: function(files, message) {
-
+                    console.log(files);
+                    console.log(message);
                 }
             });
 
             $scope.uploadFiles = function() {
                 dropzone.processQueue();
             }
-        },
-        templateUrl: '/js/templates/upload.html'
+        }
     }
 });

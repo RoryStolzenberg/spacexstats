@@ -4545,6 +4545,11 @@ section.details #live-tweets {
     vertical-align: top;
     margin-left: 60px; }
 
+.dropzone {
+  border: 3px dashed blue;
+  border-radius: 8px;
+  height: 300px; }
+
 /* Sticky Bar Nav */
 nav.sticky-bar {
   position: -webkit-sticky;
@@ -4662,11 +4667,6 @@ a:link, a:visited, a:hover, a:active {
     .upload-type li {
       padding-left: 0;
       padding-right: 0; } }
-
-.dropzone {
-  border: 3px dashed blue;
-  border-radius: 8px;
-  height: 300px; }
 
 /* --------------- FORM DESIGN ----------------- */
 form ul li {

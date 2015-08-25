@@ -2,7 +2,7 @@
 @import "core";
 @import "gridle/grid";
 @import "dropzone";
-@import "fontawesome/font-awesome";
+@import 'fontawesome/font-awesome';
 
 // SpaceXStats website
 @import "spacexstats/layout";
@@ -16,6 +16,7 @@
 // SpaceXStats components
 @import "spacexstats/components/tags";
 @import "spacexstats/components/selectList";
+@import "spacexstats/components/dropzone";
 
 
 /* Sticky Bar Nav */
@@ -138,12 +139,6 @@ a:link, a:visited, a:hover, a:active {
         font-size:$content-large;
         cursor:pointer;
     }
-}
-
-.dropzone {
-    border:3px dashed blue;
-    border-radius:$border-radius-large;
-    height:300px;
 }
 
 /* --------------- FORM DESIGN ----------------- */
