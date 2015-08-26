@@ -13,15 +13,14 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
                 uploadMultiple: attrs.multiUpload,
                 parallelUploads: 5,
                 maxFiles: 5,
-                successmultiple: function(files, message) {
+                successmultiple: function(dropzoneStatus, files) {
 
-                    // Apply the returned files to the $scope.files variable on the controller
-                    $scope.files = files;
+                    $scope.files = files.objects;
 
-                    // Run a callback function
+                    // Run a callback function with the files passed through as a parameter
                     if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
                         var func = $parse(attrs.callback);
-                        func($scope);
+                        func($scope, { files: files });
                     }
                 }
             });

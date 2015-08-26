@@ -49,7 +49,7 @@ angular.module("homePageApp", ["directives.countdown"], ['$interpolateProvider',
 
         self.changeSubstatistic = function(newSubstatistic) {
             self.activeSubstatistic = newSubstatistic;
-        }
+        };
 
         return self;
     }

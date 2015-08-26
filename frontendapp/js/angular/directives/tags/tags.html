@@ -1,0 +1,19 @@
+<div class="tagger-container">
+    <div class="wrapper">
+        <div class="tags" ng-repeat="tag in selectedTags" style="display:inline-block;font-size:12px;">
+            <div>
+                [[ tag.name ]]
+                <span class="remove" ng-click="removeTag(tag)"></span>
+            </div>
+        </div>
+        <input type="text" class="tag-input"
+               ng-model="tagInput"
+               ng-keypress="tagInputKeyPress()"
+               ng-keyup="updateSuggestionList()"
+               ng-focus="toggleSuggestionVisibility()"
+               ng-blur="toggleSuggestionVisibility()" style="display:inline-block;" />
+    </div>
+    <div class="suggestions" ng-show="areSuggestionsVisible">
+        <div class="suggestion" ng-repeat="tag in tags" ng-click="createTag(tag)">[[ tag.name ]] </div>
+    </div>
+</div>

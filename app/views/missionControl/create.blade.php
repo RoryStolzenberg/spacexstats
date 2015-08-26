@@ -18,20 +18,108 @@
                     <li ng-click="changeSection('write')"><i class="fa fa-pencil"></i> Write</li>
                 </ul>
             </nav>
+
             <!-- Upload -->
             <section class="upload-upload" ng-controller="uploadController" ng-show="activeSection == 'upload'">
+
                 <div ng-show="activeUploadSection == 'dropzone'">
                     <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
-                    <form method="post" class="dropzone" upload enctype="multipart/form-data" action="/missioncontrol/create/upload" callback="someFunc()" multi-upload="true">
+                    <form method="post" class="dropzone" upload enctype="multipart/form-data" action="/missioncontrol/create/upload" callback="uploadCallback(somescome)" multi-upload="true">
                     </form>
                     <button id="upload" ng-click="uploadFiles()">Upload</button>
                 </div>
+
                 <div ng-show="activeUploadSection == 'data'">
-                    <ul class="files-list" data-bind="template: { name: 'uploaded-files-template', foreach: uploadedFiles }">
+                    <ul class="files-list">
+                        <li class="uploaded-file" ng-repeat="file in files" ng-show="isVisibleFile(file)" ng-click="setVisibleFile(file)">
+                            <img ng-attr-src="file.media_thumb_small"/><br/>
+                            <span>[[ file.original_name ]]</span>
+                        </li>
                     </ul>
-                    <div class="files-details" data-bind="template: { name: templateObjectType, foreach: uploadedFiles }">
+
+                    <div class="files-details" ng-repeat="file in files">
+                        <div ng-if="file.type == 1" ng-show="isVisibleFile(file)">
+                            <h2>[[ file.original_name ]]</h2>
+                            <form>
+                                <ul class="container">
+                                    <li class="grid-4">
+                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                    </li>
+
+                                    <li class="grid-4">
+                                        <label>
+                                            <p>Title</p>
+                                            <input type="text" name="title" ng-model="file.title" />
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-8">
+                                        <label>
+                                            <p>Summary</p>
+                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-4">
+                                        <label>
+                                            <p>Related to Mission</p>
+                                            <select-list options="missions" hasDefaultOption="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Author</p>
+                                            <input type="text" name="author" ng-model="file.author" />
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Attribution/Copyright</p>
+                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Tags</p>
+                                            <tags params="tags: tags"></tags>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Type</p>
+                                            <select ng-model="file.subtype">
+                                                <option>None</option>
+                                                <option value="1">Mission Patch</option>
+                                                <option value="2">Photo</option>
+                                                <option value="5">Screenshot</option>
+                                                <option value="11">Infographic</option>
+                                                <option value="12">News Summary</option>
+                                                <option value="16">Hazard Map</option>
+                                                <optiom value="17">License</optiom>
+                                            </select>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <datetime params="value: originated_at, type: 'date'"></datetime>
+                                    </li>
+
+                                    <li class="grid-12">
+                                        <label>
+                                            <p>Submit anonymously?</p>
+                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous" />
+                                        </label>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
                     </div>
-                    <button id="files-submit" ng-click="submitFiles()">[[ formButtonText ]]</button>
+
+                    <button id="files-submit" ng-click="fileSubmitButtonFunction()">[[ formButtonText ]]</button>
                 </div>
             </section>
 
@@ -156,93 +244,8 @@
     </div>
 
         <!-- Knockout Templates -->
-    <script type="text/html" id="uploaded-files-template">
-        <li class="uploaded-file" data-bind="attr: { 'data-index': $index }, click: $root.changeVisibleTemplate">
-            <img data-bind="attr: { src: media_thumb_small }"/><br/>
-            <span data-bind="text: original_name"></span>
-        </li>
-    </script>
-
     <script type="text/html" id="image-file-template">
-        <div data-bind="attr: { 'data-index': $index }, visible: $root.visibleTemplate() == ko.unwrap($index)">
-            <h2 data-bind="text: original_name"></h2>
-            <form>
-                <ul class="container">
-                    <li class="grid-4">
-                        <img data-bind="attr: { src: media_thumb_small, alt: media_thumb_small }" />
-                    </li>
 
-                    <li class="grid-4">
-                        <label>
-                            <p>Title</p>
-                            <input type="text" name="title" data-bind="value: title" />
-                        </label>
-                    </li>
-
-                    <li class="grid-8">
-                        <label>
-                            <p>Summary</p>
-                            <textarea name="summary" data-bind="value: summary"></textarea>
-                        </label>
-                    </li>
-
-                    <li class="grid-4">
-                        <label>
-                            <p>Related to Mission</p>
-                            <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Author</p>
-                            <input type="text" name="author" data-bind="value: author" />
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Attribution/Copyright</p>
-                            <textarea name="attribution" data-bind="value: attribution"></textarea>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Tags</p>
-                            <tags params="tags: tags"></tags>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Type</p>
-                            <select data-bind="value: subtype">
-                                <option>None</option>
-                                <option value="1">Mission Patch</option>
-                                <option value="2">Photo</option>
-                                <option value="5">Screenshot</option>
-                                <option value="11">Infographic</option>
-                                <option value="12">News Summary</option>
-                                <option value="16">Hazard Map</option>
-                                <optiom value="17">License</optiom>
-                            </select>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <datetime params="value: originated_at, type: 'date'"></datetime>
-                    </li>
-
-                    <li class="grid-12">
-                        <label>
-                            <p>Submit anonymously?</p>
-                            <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
-                        </label>
-                    </li>
-                </ul>
-            </form>
-        </div>
     </script>
 
     <script type="text/html" id="gif-file-template">
