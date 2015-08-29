@@ -84,7 +84,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags params="tags: tags"></tags>
+                                            <tags available-tags="tags" selected-tags="file.tags"></tags>
                                         </label>
                                     </li>
 

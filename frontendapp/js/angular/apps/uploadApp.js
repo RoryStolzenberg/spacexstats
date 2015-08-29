@@ -1,4 +1,4 @@
-angular.module("uploadApp", ["directives.upload", "directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
@@ -6,6 +6,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList"], ['$i
     $scope.activeSection = "upload";
 
     $scope.missions = laravel.missions;
+    $scope.tags = laravel.tags;
 
     $scope.changeSection = function(section) {
         $scope.activeSection = section;

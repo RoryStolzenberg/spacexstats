@@ -2,7 +2,7 @@
 @section('title', 'Mission Control')
 
 @section('content')
-<body class="missioncontrol">
+<body class="missioncontrol" ng-app="missionControlApp" ng-controller="missionControlController">
     @include('templates.flashMessage')
     @include('templates.header')
 
@@ -25,6 +25,7 @@
             <h2>Recent Comments</h2>
 
             <h2>Recent Favorites</h2>
+            <tags available-tags="tags" selected-tags="selectedTags"></tags>
         </main>
     </div>
 </body>
