@@ -78,6 +78,11 @@ Route::group(array('before' => 'mustBe:Subscriber'), function() {
         'as' => 'missionControl.objects.favorite',
         'uses' => 'ObjectsController@favorite'
     ));
+
+    Route::get('missioncontrol/objects/{object_id}/download', array(
+        'as' => 'missionControl.objects.download',
+        'uses' => 'ObjectsController@download'
+    ));
 });
 
 Route::get('missioncontrol/objects/{object_id}', array(

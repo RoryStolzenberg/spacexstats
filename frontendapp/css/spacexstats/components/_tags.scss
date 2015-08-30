@@ -15,31 +15,6 @@
         }
     }
 
-    .tags {
-        display:inline-block;
-    }
-
-    .tags div {
-        font-family:$segoeWP;
-        display: inline-block;
-        background-color:$october;
-        color:$white;
-        border-radius: 15px;
-        padding: 5px 10px;
-        margin:4px 3px;
-        line-height:1;
-
-        .remove {
-            padding-left:10px;
-            width:20px;
-            height:20px;
-        }
-
-        .remove:before {
-            content:"x";
-        }
-    }
-
     input {
         display:inline-block;
         vertical-align: top;
@@ -58,5 +33,30 @@
     .suggestion {
         width:33%;
         display:inline-block;
+    }
+}
+
+.tags {
+    display:inline-block;
+
+    div {
+        font-family:$segoeWP;
+        display: inline-block;
+        background-color:$october;
+        color:$white;
+        border-radius: 15px;
+        padding: 5px 10px;
+        margin:4px 3px;
+        line-height:1;
+
+        .remove {
+            padding-left:10px;
+            width:20px;
+            height:20px;
+        }
+
+        .remove:before {
+            content:"x";
+        }
     }
 }

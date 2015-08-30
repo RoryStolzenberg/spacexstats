@@ -2,7 +2,7 @@
 @section('title', $object->title)
 
 @section('content')
-<body class="object">
+<body class="object" ng-app="objectApp" ng-controller="objectController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')
@@ -23,7 +23,7 @@
             <section class="details">
                 <div class="grid-8">
                     @if($object->type == \SpaceXStats\Enums\MissionControlType::Image)
-                        <img class="object" src="{{ $object->filename }}" />
+                        <img class="object" src="{{ $object->media }}" />
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Text)
                         <div>
                             {{ $object->summary }}
@@ -43,15 +43,21 @@
                             <i class="fa fa-download" data-bind="click: download"></i> Downloads
                         </span>
                     </div>
-                    @if ($object->anonymous == false || Auth::isAdmin())
-                        <p>Uploaded by {{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}<br/>
-                            On {{ $object->present()->created_at() }}</p>
-                    @elseif ($object->anonymous == true)
-                        <p>Uploaded on {{ $object->present()->created_at() }}</p>
-                    @endif
-                    <ul>
-                        <li>{{ $object->present()->subtype() }}</li>
-                    </ul>
+                    <div class="more">
+                        @if ($object->anonymous == false || Auth::isAdmin())
+                            <p>Uploaded by {{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}<br/>
+                                On {{ $object->present()->created_at() }}</p>
+                        @elseif ($object->anonymous == true)
+                            <p>Uploaded on {{ $object->present()->created_at() }}</p>
+                        @endif
+                        <ul>
+                            <li>{{ $object->present()->subtype() }}</li>
+                        </ul>
+                    </div>
+                    <div class="legal">
+                        {{ $object->author }}
+                        {{ $object->attribution }}
+                    </div>
                 </aside>
             </section>
 
@@ -64,7 +70,7 @@
                 <h3>Tags</h3>
                 <div class="tags">
                     @foreach ($object->tags as $tag)
-                        <span>{{ $tag->name }}</span>
+                        <div><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
                     @endforeach
                 </div>
 
@@ -106,14 +112,5 @@
             </section>
         </main>
     </div>
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script>
-        require(['common'], function() {
-            require(['knockout', 'viewmodels/ObjectViewModel'], function(ko, ObjectViewModel) {
-
-                ko.applyBindings(new ObjectViewModel({{ $object->object_id  }}));
-            });
-        });
-    </script>
 </body>
 @stop

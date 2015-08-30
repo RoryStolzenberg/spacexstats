@@ -2,11 +2,6 @@
 use SpaceXStats\Library\DeltaVCalculator;
 
 class ObjectsController extends BaseController {
-    protected $dVCalculator;
-
-    public function __construct(DeltaVCalculator $dVCalculator) {
-        $this->dVCalculator = $dVCalculator;
-    }
 
     // GET
     // missioncontrol/objects/{object_id}
@@ -14,37 +9,42 @@ class ObjectsController extends BaseController {
         $object = Object::find($object_id);
 
         $object->incrementViewcounter();
-        
+
+        // Object is visible to everyone and is published
         if ($object->visibility == 'Public' && $object->status == 'Published') {
 
             return View::make('missionControl.objects.get', array(
                 'object' => $object
             ));
 
+        // Object is visible to subscribers, is published, and the logged in user is also a subscriber
         } elseif ($object->visibility == 'Default' && $object->status == 'Published' && Auth::isSubscriber()) {
 
                 // Inject dynamic data into page
                 JavaScript::put([
                     'totalFavorites' => $object->favorites()->count(),
-                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first()
+                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first(),
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first(),
+                    'object' => $object
                 ]);
 
                 return View::make('missionControl.objects.get', array(
-                    'object' => $object,
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
+                    'object' => $object
                 ));
 
-        } elseif ($object->visibility == 'Hidden' || $object->status == 'Queued' || $object->status == 'New' && Auth::isAdmin()) {
+        // Object is hidden and not published, and the logged in user is an admin
+        } elseif ($object->visibility == 'Hidden' || $object->status != "Published" && Auth::isAdmin()) {
 
                 // Inject dynamic data into page
                 JavaScript::put([
                     'totalFavorites' => $object->favorites()->count(),
-                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first()
+                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first(),
+                    'object' => $object,
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
                 ]);
 
                 return View::make('missionControl.objects.get', array(
-                    'object' => $object,
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
+                    'object' => $object
                 ));
         }
         return App::abort(401);
@@ -121,15 +121,17 @@ class ObjectsController extends BaseController {
     // AJAX POST
     // missioncontrol/object/{object_id}/download
     public function download($object_id) {
+        // Check the request path is valid
+        if (Request::path()) {
+            // Retrieve file
 
-    }
+            // Add entry to the downloads table
+            Download::create(array(
+                'user_id' => Auth::user()->user_id,
+                'object_id' => $object_id
+            ));
 
-    // AJAX POST
-    public function calculateDeltaV() {
-        if (Auth::isSubscriber()) {
-            return Response::json(null);
-        } else {
-            return Response::json(null, 401);
+            // Present file download
         }
     }
 }

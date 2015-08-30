@@ -2,14 +2,6 @@ define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
 
     var ObjectViewModel = function(object_id) {
 
-        var getOriginalValue = ko.bindingHandlers.value.init;
-        ko.bindingHandlers.value.init = function(element, valueAccessor, allBindings) {
-            if (allBindings.has('getOriginalValue')) {
-                valueAccessor()(element.value);
-            }
-            getOriginalValue.apply(this, arguments);
-        };
-
         var self = this;
 
         /* NOTES */

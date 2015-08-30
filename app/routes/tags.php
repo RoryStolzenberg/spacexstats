@@ -7,14 +7,14 @@ Route::get('missioncontrol/tags', array(
 Route::get('missioncontrol/tags/{slug}', array(
     'as' => 'tags.get',
     'uses' => 'TagsController@get'
-))->before('doesTagExist|mustBe:subscriber');
+))->before('doesTagExist|mustBe:Subscriber');
 
 Route::get('missioncontrol/tags/{slug}/edit', array(
     'as' => 'tags.edit',
     'uses' => 'TagsController@edit'
-))->before('doesTagExist|mustBe:subscriber');
+))->before('doesTagExist|mustBe:Subscriber');
 
 Route::post('missioncontrol/tags/{slug}/edit', array(
     'as' => 'tags.edit',
     'uses' => 'TagsController@edit'
-))->before('doesTagExist|mustBe:subscriber');
+))->before('doesTagExist|mustBe:Subscriber');

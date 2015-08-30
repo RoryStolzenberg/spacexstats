@@ -444,6 +444,79 @@ angular.module('reviewApp', [], ['$interpolateProvider', function($interpolatePr
 });
 
 
+angular.module('objectApp', [], ['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+
+}]).controller("objectController", ["$scope", "$http", function($scope, $http) {
+
+    $scope.note = laravel.note;
+    $scope.object = laravel.object;
+
+    $scope.$watch("note", function(noteValue) {
+        if (noteValue == "") {
+            $scope.noteButtonText = "Create Note";
+            $scope.noteReadText = "Create a Note!";
+        } else {
+            $scope.noteButtonText = "Edit Note";
+            $scope.noteReadText = noteValue;
+        }
+    });
+
+    $scope.noteState = "read";
+    $scope.changeNoteState = function() {
+        $scope.originalNote = "";
+
+        if ($scope.noteState == "read") {
+            $scope.noteState = "write";
+        } else {
+            $scope.noteState = "read";
+        }
+    };
+
+    $scope.saveNote = function() {
+
+    };
+
+    $scope.deleteNote = function() {
+        $http.delete('/missioncontrol/objects/' + object.object_id + '/note')
+            .then(function() {
+                $scope.note = "";
+                $scope.changeNoteState();
+            });
+    };
+
+    /* FAVORITES */
+    $scope.favorites = laravel.totalFavorites;
+    $scope.favoritesText;
+
+    $scope.isFavorited = laravel.isFavorited !== null;
+    $scope.toggleFavorite = function() {
+
+        $scope.isFavorited = !$scope.isFavorited;
+
+        if ($scope.isFavorited === false) {
+
+            var requestType = 'POST';
+            $scope.favorites++;
+            $http.post('/missioncontrol/objects/' + object_id + '/favorite');
+
+        } else if ($scope.isFavorited === true) {
+
+            var requestType = 'DELETE';
+            $scope.favorites--;
+            $http.delete('/missioncontrol/objects/' + object_id + '/favorite');
+
+        }
+    };
+
+    /* DOWNLOAD */
+    $scope.makeDownloadRequest = function() {
+        $http.get('/missioncontrol')
+    }
+}]);
+
+
 angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -530,6 +603,73 @@ angular.module('flashMessageService', [])
         };
     });
 
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            }
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+            console.log(mission);
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -600,73 +740,40 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-            console.log(mission);
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
+        restrict: 'A',
+        link: function($scope, element, attrs) {
 
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            hasDefaultOption: '@',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@'
-        },
-        link: function($scope, element, attributes) {
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
 
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
+                    $scope.files = files.objects;
 
-            $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            }
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
                 }
             });
 
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
             }
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
+        }
     }
-});
-
-
+}]);
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         restrict: 'E',
@@ -776,40 +883,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
 });
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',

@@ -193,7 +193,7 @@ class Object extends Eloquent {
         if (!empty($this->filename)) {
             if ($this->status == 'Published') {
                 $s3 = AWS::get('s3');
-                $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes');
+                return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes');
 
             } elseif ($this->status == 'Queued' || $this->status == 'New') {
                 return '/media/full/' . $this->filename;
