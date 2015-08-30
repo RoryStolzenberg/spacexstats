@@ -36,11 +36,11 @@
                             <i class="fa fa-eye"></i> {{ $object->views }} Views
                         </span>
                         <span class="grid-4">
-                            <i class="fa fa-star" data-bind="css: { 'is-favorited': isFavorited() == true }, click: toggleFavorite"></i>
-                            <span data-bind="text: favoritesText"></span>
+                            <i class="fa fa-star" ng-click="toggleFavorite()" ng-class="{ 'is-favorited' : isFavorited === true }"></i>
+                            <span>[[ favoritesText ]]</span>
                         </span>
                         <span class="grid-4">
-                            <i class="fa fa-download" data-bind="click: download"></i> Downloads
+                            <i class="fa fa-download" ng-click="makeDownloadRequest()"></i> Downloads
                         </span>
                     </div>
                     <div class="more">
@@ -76,16 +76,16 @@
 
                 <h3>Your Note</h3>
                 @if (Auth::isSubscriber())
-                    <div data-bind="visible: noteState() == 'read'">
-                        <p data-bind="text: noteReadText"></p>
-                        <button data-bind="click: changeNoteState, text: noteButtonText"></button>
+                    <div ng-show="noteState === 'read'">
+                        <p>[[ noteReadText ]]</p>
+                        <button ng-click="changeNoteState()">[[ noteButtonText ]]</button>
                     </div>
 
-                    <div data-bind="visible: noteState() == 'write'">
-                        <textarea data-bind="getOriginalValue, value: note, valueUpdate: 'afterkeydown'">{{ $userNote->note or null }}</textarea>
-                        <button data-bind="click: saveNote, disable: note().length == 0">Save Note</button>
+                    <div ng-show="noteState === 'write'">
+                        <textarea ng-model="note"></textarea>
+                        <button ng-click="saveNote()" data-bind="disable: note().length == 0">Save Note</button>
                         <!-- ko if: originalNote() != "" -->
-                        <button data-bind="click: deleteNote">Delete Note</button>
+                        <button ng-click="deleteNote()">Delete Note</button>
                         <!-- /ko -->
                     </div>
                 @else

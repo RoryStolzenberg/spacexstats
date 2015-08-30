@@ -29,7 +29,22 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
     };
 
     $scope.saveNote = function() {
+        if ($scope.originalNote === "") {
 
+            $http.post('/missioncontrol/objects/' + object_id + '/note', {
+                note: $scope.note
+            }).then(function() {
+                self.changeNoteState();
+            });
+
+        } else {
+
+            $http.patch('/missioncontrol/objects/' + object_id + '/note', {
+                note: $scope.note
+            }).then(function() {
+                self.changeNoteState();
+            });
+        }
     };
 
     $scope.deleteNote = function() {
@@ -42,7 +57,14 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
     /* FAVORITES */
     $scope.favorites = laravel.totalFavorites;
-    $scope.favoritesText;
+
+    $scope.$watch("favorites", function(newFavoritesValue) {
+        if (newFavoritesValue == 1) {
+            $scope.favoritesText = "1 Favorite";
+        }  else {
+            $scope.favoritesText = $scope.favorites + " Favorites";
+        }
+    });
 
     $scope.isFavorited = laravel.isFavorited !== null;
     $scope.toggleFavorite = function() {
@@ -66,7 +88,10 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
     /* DOWNLOAD */
     $scope.makeDownloadRequest = function() {
-        $http.get('/missioncontrol')
+        $http.get('/missioncontrol/objects/' + object_id + '/download')
+            .then(function() {
+
+            });
     }
 }]);
 
