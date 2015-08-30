@@ -2,6 +2,17 @@
     .wrapper {
         border:1px solid $bordergrey;
         font-size:0;
+        overflow:hidden;
+
+        .tag-wrapper {
+            display:inline-block;
+            font-size:12px;
+        }
+
+        &.active {
+            border:1px solid $gold;
+            box-shadow:0 0 5px rgba($october, 0.2);
+        }
     }
 
     .tags {
@@ -37,6 +48,11 @@
         margin:0;
         // Remove --webkit-focus-ring-color from Chrome
         outline:none;
+
+        &:focus {
+            border:none;
+            box-shadow:none;
+        }
     }
 
     .suggestion {

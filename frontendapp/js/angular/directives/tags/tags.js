@@ -1,4 +1,4 @@
-angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
+angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         restrict: 'E',
         scope: {
@@ -8,9 +8,9 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
         link: function($scope, element, attributes) {
 
             $scope.suggestions = [];
+            $scope.inputWidth = {};
 
             $scope.createTag = function(createdTag) {
-                console.log(createdTag);
                 var tagIsPresentInCurrentTags = $scope.selectedTags.filter(function(tag) {
                     return tag.name == createdTag;
                 });
@@ -35,13 +35,10 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
                     // reset the input field
                     $scope.tagInput = "";
                 }
-                return true;
             };
-
 
             $scope.removeTag = function(removedTag) {
                 $scope.selectedTags.splice($scope.selectedTags.indexOf(removedTag), 1);
-                // give focus to form
             };
 
             $scope.tagInputKeyPress = function(event) {
@@ -69,7 +66,10 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
                         $scope.tagInput = $scope.selectedTags.pop().name;
                     }
                 }
-                return true;
+
+                $timeout(function() {
+                    $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                });
             };
 
             $scope.areSuggestionsVisible = false;
@@ -89,13 +89,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
                     return false;
                 }).slice(0,6);
             };
-
-            $scope.$watch("selectedTags", function() {
-                $scope.inputLength = {
-                    width: $(element).find('input.tag-input').parent().innerWidth() - $(element).find('input.tag-input').siblings().outerWidth(true) - 1 + "px"
-                };
-                console.log($scope.inputLength);
-            }, true);
         },
         templateUrl: '/js/templates/tags.html'
     }

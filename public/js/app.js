@@ -426,6 +426,73 @@ angular.module('flashMessageService', [])
         };
     });
 
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            }
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+            console.log(mission);
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -496,74 +563,7 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-            console.log(mission);
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            hasDefaultOption: '@',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@'
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            }
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            }
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
-
-angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
+angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         restrict: 'E',
         scope: {
@@ -573,9 +573,9 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
         link: function($scope, element, attributes) {
 
             $scope.suggestions = [];
+            $scope.inputWidth = {};
 
             $scope.createTag = function(createdTag) {
-                console.log(createdTag);
                 var tagIsPresentInCurrentTags = $scope.selectedTags.filter(function(tag) {
                     return tag.name == createdTag;
                 });
@@ -600,13 +600,10 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
                     // reset the input field
                     $scope.tagInput = "";
                 }
-                return true;
             };
-
 
             $scope.removeTag = function(removedTag) {
                 $scope.selectedTags.splice($scope.selectedTags.indexOf(removedTag), 1);
-                // give focus to form
             };
 
             $scope.tagInputKeyPress = function(event) {
@@ -634,7 +631,10 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
                         $scope.tagInput = $scope.selectedTags.pop().name;
                     }
                 }
-                return true;
+
+                $timeout(function() {
+                    $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                });
             };
 
             $scope.areSuggestionsVisible = false;
@@ -654,13 +654,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", function(Tag) {
                     return false;
                 }).slice(0,6);
             };
-
-            $scope.$watch("selectedTags", function() {
-                $scope.inputLength = {
-                    width: $(element).find('input.tag-input').parent().innerWidth() - $(element).find('input.tag-input').siblings().outerWidth(true) - 1 + "px"
-                };
-                console.log($scope.inputLength);
-            }, true);
         },
         templateUrl: '/js/templates/tags.html'
     }

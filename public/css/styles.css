@@ -4478,7 +4478,14 @@ section.details #live-tweets {
 
 .tagger-container .wrapper {
   border: 1px solid #CCC;
-  font-size: 0; }
+  font-size: 0;
+  overflow: hidden; }
+  .tagger-container .wrapper .tag-wrapper {
+    display: inline-block;
+    font-size: 12px; }
+  .tagger-container .wrapper.active {
+    border: 1px solid #CCAC55;
+    box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
 
 .tagger-container .tags {
   display: inline-block; }
@@ -4506,6 +4513,9 @@ section.details #live-tweets {
   box-shadow: none;
   margin: 0;
   outline: none; }
+  .tagger-container input:focus {
+    border: none;
+    box-shadow: none; }
 
 .tagger-container .suggestion {
   width: 33%;

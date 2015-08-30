@@ -1,7 +1,7 @@
 <div class="tagger-container">
-    <div class="wrapper">
-        <div class="tag-wrapper" style="display:inline-block;font-size:12px;">
-            <div class="tags" ng-repeat="tag in selectedTags" style="display:inline-block;font-size:12px;">
+    <div class="wrapper" ng-class="{ 'active': areSuggestionsVisible }">
+        <div class="tag-wrapper">
+            <div class="tags" ng-repeat="tag in selectedTags">
                 <div>
                     [[ tag.name ]]
                     <span class="remove" ng-click="removeTag(tag)"></span>
@@ -10,12 +10,11 @@
         </div>
         <input type="text" class="tag-input"
                ng-model="tagInput"
-               ng-keypress="tagInputKeyPress($event)"
+               ng-style="{ width: inputLength + 'px'}"
+               ng-keypress="tagInputKeyPress($event, updateInputLength)"
                ng-keyup="updateSuggestionList()"
                ng-focus="toggleSuggestionVisibility()"
-               ng-blur="toggleSuggestionVisibility()"
-               ng-style="[[ inputLength ]]"
-               style="display:inline-block;" />
+               ng-blur="toggleSuggestionVisibility()" />
     </div>
     <div class="suggestions" ng-show="areSuggestionsVisible">
         <div class="suggestion" ng-repeat="tag in suggestions" ng-mousedown="createTag(tag.name)">[[ tag.name ]] </div>
