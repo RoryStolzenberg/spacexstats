@@ -15,7 +15,7 @@ angular.module('reviewApp', [], ['$interpolateProvider', function($interpolatePr
         $http.post('/missioncontrol/review/update/' + object.object_id, {
                 visibility: object.visibility, status: object.status
         }).then(function() {
-            $scope.objectsToRemove.splice($scope.objectsToRemove.indexOf(object), 1);
+            $scope.objectsToReview.splice($scope.objectsToReview.indexOf(object), 1);
 
         }, function(response) {
             alert('An error occured');
