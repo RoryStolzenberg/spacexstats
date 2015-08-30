@@ -1,5 +1,8 @@
 <?php
 
+use SpaceXStats\Enums\ObjectPublicationStatus;
+use SpaceXStats\Enums\VisibilityStatus;
+
 class Object extends Eloquent {
 
     use PresentableTrait;
@@ -44,6 +47,34 @@ class Object extends Eloquent {
         'camera_model' => 'varchar:small'
     );
 
+    // Observers
+    public static function boot() {
+        parent::boot();
+
+        // Delete any files before deleting the object
+        static::deleting(function($object) {
+            $s3 = AWS::get('s3');
+
+            if ($object->hasFile()) {
+                if ($object->status === ObjectPublicationStatus::PublishedStatus) {
+                    $s3->deleteObject(Credential::AWSS3Bucket, $object->filename);
+                } else {
+                    unlink(public_path() . $object->media);
+                }
+            }
+
+            if ($object->hasThumbs()) {
+                if ($object->status === ObjectPublicationStatus::PublishedStatus) {
+                    $s3->deleteObject(Credential::AWSS3BucketLargeThumbs, $object->filename);
+                    $s3->deleteObject(Credential::AWSS3BucketSmallThumbs, $object->filename);
+                } else {
+                    unlink(public_path() . $object->media_thumb_large);
+                    unlink(public_path() . $object->media_thumb_small);
+                }
+            }
+        });
+    }
+
     // Functions
     public function getRules() {
         return $this->rules;
@@ -65,7 +96,7 @@ class Object extends Eloquent {
                 'Bucket' => Credential::AWSS3Bucket,
                 'Key' => $this->filename,
                 'Body' => fopen(public_path() . $this->media, 'rb'),
-                'ACL' =>  \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
+                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? \Aws\S3\Enum\CannedAcl::PUBLIC_READ : \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
             ]);
             unlink(public_path() . $this->media);
         }
@@ -75,7 +106,7 @@ class Object extends Eloquent {
                 'Bucket' => Credential::AWSS3BucketLargeThumbs,
                 'Key' => $this->thumb_filename,
                 'Body' => fopen(public_path() . $this->media_thumb_large, 'rb'),
-                'ACL' =>  \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
+                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? \Aws\S3\Enum\CannedAcl::PUBLIC_READ : \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
                 'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
             ]);
             unlink(public_path() . $this->media_thumb_large);
@@ -92,7 +123,7 @@ class Object extends Eloquent {
     }
 
     public function incrementViewCounter() {
-        // Only increment the view counter if the curreunt user is a subscriber
+        // Only increment the view counter if the currunt user is a subscriber
         if (Auth::isSubscriber()) {
 
             // Only increment the view counter if the user has not visited in 1 hour

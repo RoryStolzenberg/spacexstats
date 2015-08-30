@@ -1,3 +1,17 @@
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+
 angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -357,7 +371,34 @@ angular.module('reviewApp', [], ['$interpolateProvider', function($interpolatePr
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("reviewController", ["$scope", function($scope) {
+}]).controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
+
+    $scope.visibilities = ['Default', 'Public', 'Hidden'];
+
+    $scope.objectsToReview = [];
+
+    $scope.action = function(object, newStatus) {
+
+        object.status = newStatus;
+
+        $http.post('/missioncontrol/review/update/' + object.object_id, {
+                visibility: object.visibility, status: object.status
+        }).then(function() {
+            $scope.objectsToRemove.splice($scope.objectsToRemove.indexOf(object), 1);
+
+        }, function(response) {
+            alert('An error occured');
+        });
+    };
+
+    (function() {
+        $http.get('/missioncontrol/review/get').then(function(response) {
+            response.data.forEach(function(objectToReview) {
+                 $scope.objectsToReview.push(new ObjectToReview(objectToReview));
+            });
+            console.log($scope.objectsToReview);
+        });
+    })();
 
 }]).factory("ObjectToReview", function() {
     return function (object) {
@@ -365,13 +406,9 @@ angular.module('reviewApp', [], ['$interpolateProvider', function($interpolatePr
 
         self.visibility = "Default";
 
-        self.linkToObject = function() {
-            return '/missioncontrol/object/' + self.object_id;
-        };
+        self.linkToObject = '/missioncontrol/object/' + self.object_id;
 
-        self.linkToUser = function() {
-            return 'users/' + self.user.username;
-        };
+        self.linkToUser = 'users/' + self.user.username;
 
         self.textType = function() {
             switch(self.type) {
@@ -413,7 +450,7 @@ angular.module('reviewApp', [], ['$interpolateProvider', function($interpolatePr
             }
         };
 
-        self.createdAtRelative = 
+        self.createdAtRelative = moment.utc(self.created_at).fromNow();
 
         return self;
     }
@@ -493,20 +530,6 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
 angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {
         restrict: 'E',
@@ -520,59 +543,6 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
         templateUrl: '/js/templates/missionCard.html'
     }
 });
-
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            hasDefaultOption: '@',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@'
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            }
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            }
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -678,6 +648,59 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            hasDefaultOption: '@',
+            selectedOption: '=',
+            uniqueKey: '@',
+            searchable: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                $scope.selectedOptionObj = $scope.optionsObj
+                    .filter(function(option) {
+                    return option['id'] == newValue;
+                }).shift();
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            }
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            }
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            }
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+
+
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         restrict: 'E',

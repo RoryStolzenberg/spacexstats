@@ -23,12 +23,12 @@ class ReviewController extends BaseController {
 
             if (Input::get('status') == "Published") {
 
+                // Put the necessary objects to S3
+                $object->putToS3();
+
                 // Update the object properties
                 $object->fill(Input::only(['status', 'visibility']));
                 $object->actioned_at = \Carbon\Carbon::now();
-
-                // Put the necessary objects to S3
-                $object->putToS3();
 
                 // Add the object to our elasticsearch node
                 Search::indexObject($object);

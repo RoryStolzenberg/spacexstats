@@ -10,31 +10,28 @@
     <div class="content-wrapper">
         <h1>Review Queue</h1>
         <main>
-            <p class="review-queue-lengths"><span data-bind="text: objectsToReview().length"></span> items to review.</p>
-            <table data-bind="template: { name: 'object-review-template', foreach: objectsToReview, as: 'objectToReview' }">
+            <p class="review-queue-lengths"><span>[[ objectsToReview.length ]]</span> items to review.</p>
+            <table>
+                <tr ng-repeat-start="object in objectsToReview">
+                    <td><img ng-attr-src="[[object.media_thumb_small]]" /></td>
+                    <td><a ng-attr-href="[[ object.linkToObject ]]">[[ object.title ]]</a></td>
+                    <td>[[ object.textType() ]]</td>
+                    <td>[[ object.textSubtype() ]]</td>
+                    <td>Uploaded by <a ng-attr-href="object.linkToUser">[[ object.user.username ]]</a></td>
+                    <td ng-attr-title="[[ object.created_at ]]">[[ object.createdAtRelative ]]</td>
+                    <td><select ng-model="object.visibility" ng-options="visibility for visibility in visibilities"></select></td>
+                    <td>
+                        <button ng-click="action(object, 'Published')">Publish</button>
+                    </td>
+                    <td>
+                        <button ng-click="action(object, 'Deleted')">Remove</button>
+                    </td>
+                </tr>
+                <tr class="obect-extra-details" ng-repeat-end>
+                    <td colspan="7" data-bind="text: summary"></td>
+                </tr>
             </table>
         </main>
     </div>
-
-    <script type="text/html" id="object-review-template">
-        <tr>
-            <td><img data-bind="attr: { src: media_thumb_small }" /></td>
-            <td><a data-bind="text: title, attr : { href: linkToObject }"></a></td>
-            <td data-bind="text: textType"></td>
-            <td data-bind="text: textSubtype"></td>
-            <td>Uploaded by <a data-bind="text: user.username, attr { href: linkToUser }"></a></td>
-            <td data-bind="text: createdAtRelative, attr: { title: created_at }"></td>
-            <td><select data-bind="options: $root.visibilities"></select></td>
-            <td>
-                <button data-bind="click: setAction.bind($data, 'Published')">Publish</button>
-            </td>
-            <td>
-                <button data-bind="click: setAction.bind($data, 'Deleted')">Remove</button>
-            </td>
-        </tr>
-        <tr class="obect-extra-details">
-            <td colspan="7" data-bind="text: summary"></td>
-        </tr>
-    </script>
 </body>
 @stop
