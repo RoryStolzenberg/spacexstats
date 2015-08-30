@@ -2,7 +2,7 @@
 @section('title', 'Review Queue')
 
 @section('content')
-<body class="review">
+<body class="review" ng-app="reviewApp" ng-controller="reviewController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')
@@ -15,16 +15,6 @@
             </table>
         </main>
     </div>
-
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script>
-        require(['common'], function() {
-            require(['knockout', 'viewmodels/ReviewViewModel'], function(ko, ReviewViewModel) {
-
-                ko.applyBindings(new ReviewViewModel());
-            });
-        });
-    </script>
 
     <script type="text/html" id="object-review-template">
         <tr>

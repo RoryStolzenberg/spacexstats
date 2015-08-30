@@ -1,4 +1,4 @@
-angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
@@ -12,7 +12,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         $scope.activeSection = section;
     }
 
-}]).controller("uploadController", ["$scope", "objectFromFile", function($scope, objectFromFile) {
+}]).controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
     $scope.activeUploadSection = "dropzone";
     $scope.buttonText = "Next";
 
@@ -38,21 +38,34 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
         // Change the upload section
         $scope.activeUploadSection = "data";
-
         $scope.$apply();
     };
 
     $scope.fileSubmitButtonFunction = function() {
-
+        console.log($scope.files);
+        $rootScope.postToMissionControl($scope.files, 'files');
     }
 
 }]).controller("postController", ["$scope", function($scope) {
 
 }]).controller("writeController", ["$scope", function($scope) {
 
-}]).run(['$rootScope', function($rootScope) {
-    $rootScope.postToMissionControl = function() {
+}]).run(['$rootScope', '$http', function($rootScope, $http) {
+    $rootScope.postToMissionControl = function(dataToUpload, submissionHeader) {
+        var req = {
+            method: 'POST',
+            url: '/missioncontrol/create/submit',
+            headers: {
+                'Submission-Type': submissionHeader
+            },
+            data: {
+                data: dataToUpload
+            }
+        };
 
+        $http(req).then(function() {
+            window.location = '/missioncontrol';
+        });
     }
 }]).factory("Image", function() {
     return function (image) {

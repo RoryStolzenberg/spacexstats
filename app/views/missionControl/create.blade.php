@@ -37,6 +37,8 @@
                         </li>
                     </ul>
 
+                    <div class="delta-v" delta-v="files"></div>
+
                     <div class="files-details" ng-repeat="file in files">
                         <div ng-if="file.type == 1" ng-show="isVisibleFile(file)">
                             <h2>[[ file.original_name ]]</h2>
@@ -119,7 +121,7 @@
                         </div>
                     </div>
 
-                    <button id="files-submit" ng-click="fileSubmitButtonFunction()">[[ formButtonText ]]</button>
+                    <button id="files-submit" ng-click="fileSubmitButtonFunction()">[[ buttonText ]]</button>
                 </div>
             </section>
 

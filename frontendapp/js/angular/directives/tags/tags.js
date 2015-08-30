@@ -34,11 +34,16 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
 
                     // reset the input field
                     $scope.tagInput = "";
+
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
                 }
             };
 
             $scope.removeTag = function(removedTag) {
                 $scope.selectedTags.splice($scope.selectedTags.indexOf(removedTag), 1);
+                $scope.updateSuggestionList();
+                $scope.updateInputLength();
             };
 
             $scope.tagInputKeyPress = function(event) {
@@ -66,7 +71,9 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                         $scope.tagInput = $scope.selectedTags.pop().name;
                     }
                 }
+            };
 
+            $scope.updateInputLength = function() {
                 $timeout(function() {
                     $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
                 });

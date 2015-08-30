@@ -64,7 +64,7 @@ define(['jquery', 'moment', 'knockout', 'ko.mapping'], function($, moment, ko, k
             });
 
             otr.createdAtRelative = ko.computed(function() {
-                return moment.utc(otr.created_at()).fromNow();
+                return
             });
 
             otr.setAction = function(actionToTake) {

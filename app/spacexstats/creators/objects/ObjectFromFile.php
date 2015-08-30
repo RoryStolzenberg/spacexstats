@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Creators\Objects;
 
-use SpaceXStats\Enums\Status;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\MissionControlSubtype;
 
@@ -44,7 +44,7 @@ class ObjectFromFile extends ObjectCreator {
             $this->object->anonymous = array_get($this->input, 'anonymous', false);
             $this->object->attribution = array_get($this->input, 'attribution', null);
             $this->object->author = array_get($this->input, 'author', null);
-            $this->object->status = Status::QueuedStatus;
+            $this->object->status = ObjectPublicationStatus::QueuedStatus;
 
             $this->createMissionRelation();
             $this->createTagRelations();
