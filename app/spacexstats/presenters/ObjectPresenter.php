@@ -11,11 +11,7 @@ class ObjectPresenter {
     }
 
     public function subtype() {
-        if ($this->entity->subtype) {
-            return \SpaceXStats\Enums\MissionControlSubtype::getKey($this->entity->subtype);
-        } else {
-            return null;
-        }
+        return $this->entity->subtype ? \SpaceXStats\Enums\MissionControlSubtype::getKey($this->entity->subtype) : null;
     }
 
     public function created_at() {

@@ -210,7 +210,7 @@ class Object extends Eloquent {
         $s3 = AWS::get('s3');
 
         return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes', array(
-            'ResponseContentDisposition' => 'attachment; filename="' . $this->filename . '"'
+            'ResponseContentDisposition' => 'attachment; filename="' . $this->title . '.' . $this->filetype . '"'
         ));
     }
 

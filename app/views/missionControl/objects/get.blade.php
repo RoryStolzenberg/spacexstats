@@ -23,9 +23,14 @@
             <section class="details">
                 <div class="grid-8 content">
                     @if($object->type == \SpaceXStats\Enums\MissionControlType::Image)
-                        <img class="object" src="{{ $object->media }}" />
+                        <img id="object" src="{{ $object->media }}" />
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::GIF)
-                        <img class="object" src="{{ $object->media }}" />
+                        <img id="object" src="{{ $object->media }}" />
+                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Audio)
+                        <audio id="object" class="video-js vjs-default-skin" controls
+                               preload="auto" data-setup="{}" width="100%">
+                            <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
+                        </audio>
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Text)
                         <div>
                             {{ $object->summary }}
@@ -123,5 +128,8 @@
 
         </main>
     </div>
+
+    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
 </body>
 @stop

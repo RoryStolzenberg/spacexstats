@@ -253,6 +253,81 @@
                         </div>
                     </div>
 
+                    <div ng-if="file.type == 4" ng-show="isVisibleFile(file)">
+                        <h2>[[ file.original_name ]]</h2>
+                        <form>
+                            <ul class="container">
+                                <li class="grid-4">
+                                    <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                </li>
+
+                                <li class="grid-4">
+                                    <label>
+                                        <p>Title</p>
+                                        <input type="text" name="title" ng-model="file.title" />
+                                    </label>
+                                </li>
+
+                                <li class="grid-8">
+                                    <label>
+                                        <p>Summary</p>
+                                        <textarea name="summary" ng-model="file.summary"></textarea>
+                                    </label>
+                                </li>
+
+                                <li class="grid-4">
+                                    <label>
+                                        <p>Related to Mission</p>
+                                        <select-list options="missions" hasDefaultOption="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                    </label>
+                                </li>
+
+                                <li class="grid-6">
+                                    <label>
+                                        <p>Author</p>
+                                        <input type="text" name="author" ng-model="file.author" />
+                                    </label>
+                                </li>
+
+                                <li class="grid-6">
+                                    <label>
+                                        <p>Attribution/Copyright</p>
+                                        <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                    </label>
+                                </li>
+
+                                <li class="grid-6">
+                                    <label>
+                                        <p>Tags</p>
+                                        <tags available-tags="tags" selected-tags="file.tags"></tags>
+                                    </label>
+                                </li>
+
+                                <li class="grid-6">
+                                    <label>
+                                        <p>Type</p>
+                                        <select data-bind="value: subtype">
+                                            <option>None</option>
+                                            <option value="6">Launch Video</option>
+                                            <option value="7">Press Conference</option>
+                                        </select>
+                                    </label>
+                                </li>
+
+                                <li class="grid-6">
+                                    <datetime params="value: originated_at, type: 'date'"></datetime>
+                                </li>
+
+                                <li class="grid-12">
+                                    <label>
+                                        <p>Submit anonymously?</p>
+                                        <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
+                                    </label>
+                                </li>
+                            </ul>
+                        </form>
+                    </div>
+
                     <button id="files-submit" ng-click="fileSubmitButtonFunction()">[[ buttonText ]]</button>
                 </div>
             </section>

@@ -12,7 +12,7 @@ class ReviewController extends BaseController {
     // AJAX GET
     public function get() {
         $objectsToReview = Object::queued()->with('user', 'tags')->get();
-        return Response::json($objectsToReview);
+        return Response::json($objectsToReview, 200);
     }
 
     // AJAX POST
@@ -40,10 +40,9 @@ class ReviewController extends BaseController {
                 $object->delete();
             }
 
-            return Response::json(true);
-        } else {
-            return Response::json(false, 400);
+            return Response::json(null, 204);
         }
+        return Response::json(false, 400);
     }
 }
 
