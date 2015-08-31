@@ -31,7 +31,7 @@ class ReviewController extends BaseController {
                 $object->actioned_at = \Carbon\Carbon::now();
 
                 // Add the object to our elasticsearch node
-                Search::indexObject($object);
+                Search::index($object);
 
                 // Save the object if there's no errors
                 $object->save();

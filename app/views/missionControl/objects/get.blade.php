@@ -21,7 +21,7 @@
             </nav>
 
             <section class="details">
-                <div class="grid-8">
+                <div class="grid-8 content">
                     @if($object->type == \SpaceXStats\Enums\MissionControlType::Image)
                         <img class="object" src="{{ $object->media }}" />
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Text)
@@ -30,7 +30,7 @@
                         </div>
                     @endif
                 </div>
-                <aside class="grid-4">
+                <aside class="grid-4 aside">
                     <div class="actions container">
                         <span class="grid-4">
                             <i class="fa fa-eye"></i> {{ $object->views }} Views
@@ -57,6 +57,14 @@
                     <div class="legal">
                         {{ $object->author }}
                         {{ $object->attribution }}
+                    </div>
+                    @if ($object->type == \SpaceXStats\Enums\MissionControlType::Image)
+                        <ul class="exif">
+                            <li>{{ $object->ISO }} ISO</li>
+                        </ul>
+                    @endif
+                    <div class="file-details">
+                        {{ $object->size }}
                     </div>
                 </aside>
             </section>
@@ -92,20 +100,25 @@
 
             <h2>Comments</h2>
             <section class="comments">
-                <div id="disqus_thread"></div>
-                <script type="text/javascript">
-                    /* * * CONFIGURATION VARIABLES * * */
-                    var disqus_shortname = 'spacexstats';
+                @if (Auth::isSubscriber())
+                    <div id="disqus_thread"></div>
+                    <script type="text/javascript">
+                        /* * * CONFIGURATION VARIABLES * * */
+                        var disqus_shortname = 'spacexstats';
 
-                    /* * * DON'T EDIT BELOW THIS LINE * * */
-                    (function() {
-                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                    })();
-                </script>
-                <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                        /* * * DON'T EDIT BELOW THIS LINE * * */
+                        (function() {
+                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                        })();
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                @else
+                    <p>You need to be a Mission Control subscriber to comment. Sign up today!</p>
+                @endif
             </section>
+
         </main>
     </div>
 </body>

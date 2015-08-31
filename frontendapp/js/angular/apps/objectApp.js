@@ -4,7 +4,7 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
 }]).controller("objectController", ["$scope", "$http", function($scope, $http) {
 
-    $scope.note = laravel.userNote.note;
+    $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
     $scope.object = laravel.object;
 
     $scope.$watch("note", function(noteValue) {

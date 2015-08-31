@@ -450,7 +450,7 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
 }]).controller("objectController", ["$scope", "$http", function($scope, $http) {
 
-    $scope.note = laravel.userNote.note;
+    $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
     $scope.object = laravel.object;
 
     $scope.$watch("note", function(noteValue) {
@@ -679,20 +679,6 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 });
 
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-            console.log(mission);
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -797,6 +783,20 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+            console.log(mission);
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         restrict: 'E',

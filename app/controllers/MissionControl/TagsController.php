@@ -13,4 +13,12 @@ class TagsController extends BaseController {
             'tag' => Tag::where('name', $tag)->with('objects')->firstOrFail()
         ));
     }
+
+    // GET
+    // /tags/{tag}/edit
+    public function edit($tag) {
+        return View::make('missionControl.tags.edit', array(
+            'tag' => Tag::where('name', $tag)->firstOrFail()
+        ));
+    }
 }
