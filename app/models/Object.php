@@ -253,7 +253,7 @@ class Object extends Eloquent {
     }
 
     public function getViewsAttribute() {
-        return Redis::hget('object:' . $this->object_id, 'views');
+        return Redis::hget('object:' . $this->object_id, 'views') !== null ? Redis::hget('object:' . $this->object_id, 'views') : 0;
     }
 
     // Attribute mutators

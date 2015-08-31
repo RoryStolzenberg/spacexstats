@@ -24,6 +24,8 @@
                 <div class="grid-8 content">
                     @if($object->type == \SpaceXStats\Enums\MissionControlType::Image)
                         <img class="object" src="{{ $object->media }}" />
+                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::GIF)
+                        <img class="object" src="{{ $object->media }}" />
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Text)
                         <div>
                             {{ $object->summary }}
