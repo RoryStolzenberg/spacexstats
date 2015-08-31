@@ -68,11 +68,9 @@
                 @endif
 
                 <h3>Tags</h3>
-                <div class="tags">
-                    @foreach ($object->tags as $tag)
-                        <div><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
-                    @endforeach
-                </div>
+                @foreach ($object->tags as $tag)
+                    <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
+                @endforeach
 
                 <h3>Your Note</h3>
                 @if (Auth::isSubscriber())
