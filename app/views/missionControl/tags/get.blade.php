@@ -25,7 +25,7 @@
             <h2>Objects with the tag '{{ $tag->name }}'</h2>
             <section class="objects">
                 @foreach ($tag->objects as $object)
-                    {{ $object->title }}
+                    <a href="/missioncontrol/objects/{{ $object->object_id }}">{{ $object->title }}</a>
                 @endforeach
             </section>
         </main>
