@@ -1,0 +1,19 @@
+body.object {
+    .content {
+        margin-left:-10px;
+        text-align:center;
+    }
+
+    .aside {
+        margin-left:10px;
+    }
+}
+img.object {
+    max-width:100%;
+}
+
+.actions.container {
+    .is-favorited {
+        color:$gold;
+    }
+}
