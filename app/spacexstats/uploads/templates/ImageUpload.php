@@ -2,6 +2,7 @@
 namespace SpaceXStats\Uploads\Templates;
 
 use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Exif\Exif;
 
 class ImageUpload extends GenericUpload implements UploadInterface {
@@ -35,7 +36,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
             'exposure' => $this->exif->exposure(),
             'aperture' => $this->exif->aperture(),
             'ISO' => $this->exif->iso(),
-			'status' => 'New'
+			'status' => ObjectPublicationStatus::NewStatus
 		));
 	}
 

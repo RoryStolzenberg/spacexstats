@@ -2,6 +2,7 @@
 namespace SpaceXStats\Uploads\Templates;
 
 use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 
 class DocumentUpload extends GenericUpload implements UploadInterface {
     public function __construct($file) {
@@ -22,7 +23,7 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
             'thumb_filename' => $this->getThumbnail(),
             'cryptographic_hash' => $this->getCryptographicHash(),
             'length' => $this->getPageCount(),
-            'status' => 'New'
+            'status' => ObjectPublicationStatus::NewStatus
         ));
     }
 

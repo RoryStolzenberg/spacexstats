@@ -2,7 +2,8 @@
 namespace SpaceXStats\Uploads\Templates;
 
 use GifFrameExtractor\GifFrameExtractor as GifFrameExtractor;
-use SpaceXStats\Enums\MissionControlType as MissionControlType;
+use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 
 class GIFUpload extends GenericUpload implements UploadInterface {
 	protected
@@ -26,7 +27,7 @@ class GIFUpload extends GenericUpload implements UploadInterface {
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
-			'status' => 'new'
+			'status' => ObjectPublicationStatus::NewStatus
 		));
 	}
 

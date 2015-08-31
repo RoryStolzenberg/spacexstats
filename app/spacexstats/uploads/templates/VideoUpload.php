@@ -2,6 +2,7 @@
 namespace SpaceXStats\Uploads\Templates;
 
 use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 use FFMpeg\FFProbe;
 use FFMpeg\FFMpeg;
 
@@ -36,7 +37,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
-            'status' => 'New'
+            'status' => ObjectPublicationStatus::NewStatus
         ));
     }
 

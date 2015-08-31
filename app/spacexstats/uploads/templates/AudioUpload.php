@@ -2,6 +2,7 @@
 namespace SpaceXStats\Uploads\Templates;
 
 use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 use FFMpeg\FFProbe;
 use FFMpeg\FFMpeg;
 
@@ -32,7 +33,7 @@ class AudioUpload extends GenericUpload implements UploadInterface {
             'thumb_filename' => 'audio.png',
             'cryptographic_hash' => $this->getCryptographicHash(),
             'length' => $this->getLength(),
-            'status' => 'New'
+            'status' => ObjectPublicationStatus::NewStatus
         ));
     }
 
