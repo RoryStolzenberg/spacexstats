@@ -66,7 +66,7 @@
                         </ul>
                     @endif
                     <div class="file-details">
-                        {{ $object->size }}
+                        {{ $object->present()->size() }}
                     </div>
                 </aside>
             </section>
