@@ -39,8 +39,8 @@ class ObjectsController extends BaseController {
                 JavaScript::put([
                     'totalFavorites' => $object->favorites()->count(),
                     'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first(),
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first(),
                     'object' => $object,
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first()
                 ]);
 
                 return View::make('missionControl.objects.get', array(
@@ -121,17 +121,13 @@ class ObjectsController extends BaseController {
     // AJAX POST
     // missioncontrol/object/{object_id}/download
     public function download($object_id) {
-        // Check the request path is valid
-        if (Request::path()) {
-            // Retrieve file
+        // Add entry to the downloads table
+        Download::create(array(
+            'user_id' => Auth::user()->user_id,
+            'object_id' => $object_id
+        ));
 
-            // Add entry to the downloads table
-            Download::create(array(
-                'user_id' => Auth::user()->user_id,
-                'object_id' => $object_id
-            ));
-
-            // Present file download
-        }
+        // Present file download
+        return Response::json(true, 200);
     }
 }

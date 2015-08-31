@@ -80,6 +80,22 @@ class Object extends Eloquent {
         return $this->rules;
     }
 
+    public function incrementViewCounter() {
+        // Only increment the view counter if the currunt user is a subscriber
+        if (Auth::isSubscriber()) {
+
+            // Only increment the view counter if the user has not visited in 1 hour
+            if (Redis::exists('objectViewByUser:' . $this->object_id . ':' . Auth::user()->user_id)) {
+
+                // Increment
+                Redis::hincrby('object:' . $this->object_id, 'views', 1);
+
+                // Add user to recent views
+                Redis::setex('objectViewByUser:' . $this->object_id . ':' . Auth::user()->user_id, true, 3600);
+            }
+        }
+    }
+
     public function hasFile() {
         return !is_null($this->filename);
     }
@@ -122,22 +138,6 @@ class Object extends Eloquent {
         }
     }
 
-    public function incrementViewCounter() {
-        // Only increment the view counter if the currunt user is a subscriber
-        if (Auth::isSubscriber()) {
-
-            // Only increment the view counter if the user has not visited in 1 hour
-            if (Redis::exists('objectViewByUser:' . $this->object_id . ':' . Auth::user()->user_id)) {
-
-                // Increment
-                Redis::hincrby('object:' . $this->object_id, 'views', 1);
-
-                // Add user to recent views
-                Redis::setex('objectViewByUser:' . $this->object_id . ':' . Auth::user()->user_id, true, 3600);
-            }
-        }
-    }
-
 	// Relations
 	public function mission() {
 		return $this->belongsTo('Mission');
@@ -171,6 +171,10 @@ class Object extends Eloquent {
         return $this->hasMany('Note');
     }
 
+    public function downloads() {
+        return $this->hasMany('Download');
+    }
+
     // Scoped Queries
     public function scopeQueued($query) {
         return $query->where('status','queued')->orderBy('created_at', 'ASC');
@@ -202,6 +206,14 @@ class Object extends Eloquent {
         return null;
     }
 
+    public function getMediaDownloadAttribute() {
+        $s3 = AWS::get('s3');
+
+        return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes', array(
+            'ResponseContentDisposition' => 'attachment; filename="' . $this->filename . '"'
+        ));
+    }
+
     public function getMediaThumbSmallAttribute() {
         if (!empty($this->thumb_filename)) {
             if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png' || $this->thumb_filename == 'text.png') {
@@ -209,7 +221,7 @@ class Object extends Eloquent {
             } else {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');
-                    $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
+                    return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/small/' . $this->thumb_filename;
@@ -226,7 +238,7 @@ class Object extends Eloquent {
             } else {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');
-                    $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
+                    return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/large/' . $this->thumb_filename;

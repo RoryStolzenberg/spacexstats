@@ -13,7 +13,7 @@ class Search {
         ));
     }
 
-    public function indexObject($object) {
+    public function index($object) {
         $paramBody = [
             'object_id' => $object->object_id,
             'user_id' => $object->user_id,
@@ -65,6 +65,10 @@ class Search {
         ];
 
         return $this->elasticSearchClient->index($params);
+    }
+
+    public function moreLikeThis() {
+
     }
 
     public function get() {

@@ -76,23 +76,20 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
             var requestType = 'POST';
             $scope.favorites++;
-            $http.post('/missioncontrol/objects/' + object_id + '/favorite');
+            $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
 
         } else if ($scope.isFavorited === false) {
 
             var requestType = 'DELETE';
             $scope.favorites--;
-            $http.delete('/missioncontrol/objects/' + object_id + '/favorite');
+            $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
 
         }
     };
 
     /* DOWNLOAD */
-    $scope.makeDownloadRequest = function() {
-        $http.get('/missioncontrol/objects/' + object_id + '/download')
-            .then(function() {
-
-            });
+    $scope.incrementDownloads = function() {
+        $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
     }
 }]);
 

@@ -40,7 +40,7 @@
                             <span>[[ favoritesText ]]</span>
                         </span>
                         <span class="grid-4">
-                            <i class="fa fa-download" ng-click="makeDownloadRequest()"></i> Downloads
+                            <a href="{{ $object->mediaDownload }}" target="_blank" download><i class="fa fa-download" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
                         </span>
                     </div>
                     <div class="more">
