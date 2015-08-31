@@ -4476,6 +4476,19 @@ section.details #live-tweets {
       padding-left: 0;
       padding-right: 0; } }
 
+body.object .content {
+  margin-left: -10px;
+  text-align: center; }
+
+body.object .aside {
+  margin-left: 10px; }
+
+img.object {
+  max-width: 100%; }
+
+.actions.container .is-favorited {
+  color: #CCAC55; }
+
 .tagger-container .wrapper {
   border: 1px solid #CCC;
   font-size: 0;
@@ -4763,16 +4776,3 @@ section.question-list {
 /* --------------- LOCATIONS ----------------- */
 #location-nav {
   background-color: #33495E; }
-
-/* --------------- OBJECT PAGE ----------------- */
-body.object .content {
-  margin-left: -10px; }
-
-body.object .aside {
-  margin-left: 10px; }
-
-img.object {
-  max-width: 100%; }
-
-.actions.container .is-favorited {
-  color: #CCAC55; }
