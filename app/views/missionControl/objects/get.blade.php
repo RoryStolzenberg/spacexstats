@@ -84,9 +84,7 @@
                     <div ng-show="noteState === 'write'">
                         <textarea ng-model="note"></textarea>
                         <button ng-click="saveNote()" data-bind="disable: note().length == 0">Save Note</button>
-                        <!-- ko if: originalNote() != "" -->
-                        <button ng-click="deleteNote()">Delete Note</button>
-                        <!-- /ko -->
+                        <button ng-if="originalNote !== ''" ng-click="deleteNote()">Delete Note</button>
                     </div>
                 @else
                     Sign up for Mission Control to leave personal notes about this.

@@ -450,11 +450,11 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
 }]).controller("objectController", ["$scope", "$http", function($scope, $http) {
 
-    $scope.note = laravel.note;
+    $scope.note = laravel.userNote.note;
     $scope.object = laravel.object;
 
     $scope.$watch("note", function(noteValue) {
-        if (noteValue == "") {
+        if (noteValue === "" || noteValue === null) {
             $scope.noteButtonText = "Create Note";
             $scope.noteReadText = "Create a Note!";
         } else {
@@ -465,7 +465,8 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
     $scope.noteState = "read";
     $scope.changeNoteState = function() {
-        $scope.originalNote = "";
+
+        $scope.originalNote = $scope.note;
 
         if ($scope.noteState == "read") {
             $scope.noteState = "write";
@@ -477,24 +478,24 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
     $scope.saveNote = function() {
         if ($scope.originalNote === "") {
 
-            $http.post('/missioncontrol/objects/' + object_id + '/note', {
+            $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
                 note: $scope.note
             }).then(function() {
-                self.changeNoteState();
+                $scope.changeNoteState();
             });
 
         } else {
 
-            $http.patch('/missioncontrol/objects/' + object_id + '/note', {
+            $http.patch('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
                 note: $scope.note
             }).then(function() {
-                self.changeNoteState();
+                $scope.changeNoteState();
             });
         }
     };
 
     $scope.deleteNote = function() {
-        $http.delete('/missioncontrol/objects/' + object.object_id + '/note')
+        $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/note')
             .then(function() {
                 $scope.note = "";
                 $scope.changeNoteState();
@@ -517,13 +518,13 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
         $scope.isFavorited = !$scope.isFavorited;
 
-        if ($scope.isFavorited === false) {
+        if ($scope.isFavorited === true) {
 
             var requestType = 'POST';
             $scope.favorites++;
             $http.post('/missioncontrol/objects/' + object_id + '/favorite');
 
-        } else if ($scope.isFavorited === true) {
+        } else if ($scope.isFavorited === false) {
 
             var requestType = 'DELETE';
             $scope.favorites--;
@@ -765,6 +766,40 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
     }
 });
 
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         restrict: 'E',
@@ -874,40 +909,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
 });
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',

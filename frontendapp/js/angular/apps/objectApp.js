@@ -4,11 +4,11 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
 }]).controller("objectController", ["$scope", "$http", function($scope, $http) {
 
-    $scope.note = laravel.note;
+    $scope.note = laravel.userNote.note;
     $scope.object = laravel.object;
 
     $scope.$watch("note", function(noteValue) {
-        if (noteValue == "") {
+        if (noteValue === "" || noteValue === null) {
             $scope.noteButtonText = "Create Note";
             $scope.noteReadText = "Create a Note!";
         } else {
@@ -19,7 +19,8 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
     $scope.noteState = "read";
     $scope.changeNoteState = function() {
-        $scope.originalNote = "";
+
+        $scope.originalNote = $scope.note;
 
         if ($scope.noteState == "read") {
             $scope.noteState = "write";
@@ -31,24 +32,24 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
     $scope.saveNote = function() {
         if ($scope.originalNote === "") {
 
-            $http.post('/missioncontrol/objects/' + object_id + '/note', {
+            $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
                 note: $scope.note
             }).then(function() {
-                self.changeNoteState();
+                $scope.changeNoteState();
             });
 
         } else {
 
-            $http.patch('/missioncontrol/objects/' + object_id + '/note', {
+            $http.patch('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
                 note: $scope.note
             }).then(function() {
-                self.changeNoteState();
+                $scope.changeNoteState();
             });
         }
     };
 
     $scope.deleteNote = function() {
-        $http.delete('/missioncontrol/objects/' + object.object_id + '/note')
+        $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/note')
             .then(function() {
                 $scope.note = "";
                 $scope.changeNoteState();
@@ -71,13 +72,13 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 
         $scope.isFavorited = !$scope.isFavorited;
 
-        if ($scope.isFavorited === false) {
+        if ($scope.isFavorited === true) {
 
             var requestType = 'POST';
             $scope.favorites++;
             $http.post('/missioncontrol/objects/' + object_id + '/favorite');
 
-        } else if ($scope.isFavorited === true) {
+        } else if ($scope.isFavorited === false) {
 
             var requestType = 'DELETE';
             $scope.favorites--;
