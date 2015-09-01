@@ -241,7 +241,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="tags" selected-tags="file.tags"></tags>
+                                            <tags available-tags="data.tags" selected-tags="file.tags"></tags>
                                         </label>
                                     </li>
 
@@ -258,7 +258,6 @@
                                 </ul>
                             </form>
                         </div>
-                    </div>
 
                     <!-- VIDEO FILE TEMPLATE -->
                     <div ng-if="file.type == 4" ng-show="isVisibleFile(file)">
@@ -315,7 +314,7 @@
                                 <li class="grid-6">
                                     <label>
                                         <p>Tags</p>
-                                        <tags available-tags="tags" selected-tags="file.tags"></tags>
+                                        <tags available-tags="data.tags" selected-tags="file.tags"></tags>
                                     </label>
                                 </li>
 
