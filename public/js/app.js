@@ -1,3 +1,17 @@
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+
 angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -143,7 +157,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
         // Once files have been successfully upload, convert to Objects
         $scope.files.forEach(function(file, index) {
-            file = objectFromFile.create(file);
+            file = objectFromFile.create(file, index);
 
             // Set the initial visible file
             if (index === 0) {
@@ -183,8 +197,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         });
     }
 }]).factory("Image", function() {
-    return function (image) {
+    return function (image, index) {
         var self = image;
+
+        self.index = index;
 
         self.title = null;
         self.summary = null;
@@ -200,8 +216,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
     }
 
 }).factory("GIF", function() {
-    return function(gif) {
+    return function(gif, index) {
         var self = gif;
+
+        self.index = index;
 
         self.title = null;
         self.summary = null;
@@ -217,8 +235,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
     }
 
 }).factory("Audio", function() {
-    return function(audio) {
+    return function(audio, index) {
         var self = audio;
+
+        self.index = index;
 
         self.title = null;
         self.summary = null;
@@ -234,8 +254,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
     }
 
 }).factory("Video", function() {
-    return function(video) {
+    return function(video, index) {
         var self = video;
+
+        self.index = index;
 
         self.title = null;
         self.summary = null;
@@ -251,8 +273,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
     }
 
 }).factory("Document", function() {
-    return function(document) {
+    return function(document, index) {
         var self = document;
+
+        self.index = index;
 
         self.title = null;
         self.summary = null;
@@ -267,13 +291,13 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         return self;
     }
 }).service("objectFromFile", ["Image", "GIF", "Audio", "Video", "Document", function(Image, GIF, Audio, Video, Document) {
-    this.create = function(file) {
+    this.create = function(file, index) {
         switch(file.type) {
-            case 1: return new Image(file);
-            case 2: return new GIF(file);
-            case 3: return new Audio(file);
-            case 4: return new Video(file);
-            case 5: return new Document(file);
+            case 1: return new Image(file, index);
+            case 2: return new GIF(file, index);
+            case 3: return new Audio(file, index);
+            case 4: return new Video(file, index);
+            case 5: return new Document(file, index);
             default: return null;
         }
     }
@@ -611,20 +635,6 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
     }
 
 }]);
-
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
 
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {

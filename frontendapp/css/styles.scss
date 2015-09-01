@@ -14,6 +14,7 @@
 @import "spacexstats/pages/home";
 @import "spacexstats/pages/futureMission";
 @import "spacexstats/pages/object";
+@import "spacexstats/pages/upload";
 
 // SpaceXStats components
 @import "spacexstats/components/tags";
@@ -130,17 +131,6 @@ a:link, a:visited, a:hover, a:active {
     color:$white;
     margin:0 10px;
     overflow:hidden;
-}
-
-/* ----------- MISSION CONTROL UPLOAD ------------- */
-.upload-type {
-    @include gridle_container();
-
-    li {
-        @include gridle(4);
-        font-size:$content-large;
-        cursor:pointer;
-    }
 }
 
 /* --------------- FORM DESIGN ----------------- */

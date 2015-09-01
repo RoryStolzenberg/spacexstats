@@ -29,10 +29,10 @@
                     <button id="upload" ng-click="uploadFiles()">Upload</button>
                 </div>
 
-                <div ng-show="activeUploadSection == 'data'">
+                <div ng-show="activeUploadSection == 'data'" ng-form="uploadForm">
                     <ul class="files-list">
-                        <li class="uploaded-file" ng-repeat="file in files" ng-show="isVisibleFile(file)" ng-click="setVisibleFile(file)">
-                            <img ng-attr-src="file.media_thumb_small"/><br/>
+                        <li class="uploaded-file" ng-repeat="file in files" ng-class="{ valid: uploadForm['fileForm' + $index].$valid, invalid: uploadForm['fileForm' + $index].$invalid }"  ng-click="setVisibleFile(file)">
+                            <img ng-attr-src="[[file.media_thumb_small]]"/><br/>
                             <span>[[ file.original_name ]]</span>
                         </li>
                     </ul>
@@ -44,7 +44,7 @@
                         <!-- IMAGE FILE TEMPLATE -->
                         <div ng-if="file.type == 1" ng-show="isVisibleFile(file)">
                             <h2>[[ file.original_name ]]</h2>
-                            <form>
+                            <form name="[['fileForm' + $index]]" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
                                         <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
@@ -53,42 +53,49 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" />
+                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title" min="5" required/>
                                         </label>
                                     </li>
 
                                     <li class="grid-8">
                                         <label>
                                             <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" min="100" required></textarea>
                                         </label>
                                     </li>
 
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="missions" hasDefaultOption="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list
+                                                    name="mission"
+                                                    options="missions"
+                                                    hasDefaultOption="false"
+                                                    selected-option="file.mission_id"
+                                                    unique-key="mission_id"
+                                                    searchable="true">
+                                            </select-list>
                                         </label>
                                     </li>
 
                                     <li class="grid-6">
                                         <label>
                                             <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" />
+                                            <input type="text" name="author" ng-model="file.author" placeholder="Who took this image?" required />
                                         </label>
                                     </li>
 
                                     <li class="grid-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="tags" selected-tags="file.tags"></tags>
+                                            <tags available-tags="tags" selected-tags="file.tags" ></tags>
                                         </label>
                                     </li>
 
@@ -96,7 +103,7 @@
                                         <label>
                                             <p>Type</p>
                                             <select ng-model="file.subtype">
-                                                <option>None</option>
+                                                <option selected>None</option>
                                                 <option value="1">Mission Patch</option>
                                                 <option value="2">Photo</option>
                                                 <option value="5">Screenshot</option>

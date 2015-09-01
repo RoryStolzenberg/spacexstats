@@ -2,6 +2,7 @@
 'use strict';
 
 var gulp = require('gulp');
+var browserSync = require('browser-sync').create();
 
 function handleError() {
     console.log('error');
@@ -9,11 +10,13 @@ function handleError() {
 }
 
 // Refresh browser on changes
-gulp.task('browsersync', function() {
-    var browserSync = require('browser-sync');
-
+gulp.task('browsersync', function(gulpCallback) {
     browserSync.init({
         proxy: "spacexstats.dev"
+    }, function callback() {
+        gulp.watch('frontendapp/css/**/*.scss', ['styles']);
+
+        gulpCallback();
     });
 });
 
@@ -54,7 +57,8 @@ gulp.task('styles', function() {
     gulp.src('frontendapp/css/styles.scss')
         .pipe(sass())
         .pipe(autoprefixer())
-        .pipe(gulp.dest('public/css'));
+        .pipe(gulp.dest('public/css'))
+        .pipe(browserSync.stream());
 });
 
 // Images Task. Minify all images in the src/images folder using imagemin

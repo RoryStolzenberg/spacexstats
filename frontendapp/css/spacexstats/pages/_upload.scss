@@ -1,0 +1,37 @@
+// Upload Section
+.files-list {
+    li.uploaded-file {
+        width:300px;
+        height:200px;
+        padding:20px;
+        cursor:pointer;
+        text-align:center;
+        display:inline-block;
+        overflow:hidden;
+
+        @include transitionMed('background-color');
+
+        img {
+            max-width:100%;
+            max-height:100%;
+        }
+
+        &.invalid {
+            background-color:$red;
+        }
+
+        &.valid {
+            background-color:$green;
+        }
+    }
+}
+
+.upload-type {
+    @include gridle_container();
+
+    li {
+        @include gridle(4);
+        font-size:$content-large;
+        cursor:pointer;
+    }
+}
