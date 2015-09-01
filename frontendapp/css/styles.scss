@@ -9,6 +9,7 @@
 @import "spacexstats/layout/layout";
 @import "spacexstats/layout/header";
 @import "spacexstats/layout/nav";
+@import "spacexstats/layout/forms";
 
 // SpaceXStats pages
 @import "spacexstats/pages/home";
@@ -134,55 +135,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 /* --------------- FORM DESIGN ----------------- */
-form {
-    ul li {
-        height:100px;
-        padding:0 10px;
-    }
-}
 
-label {
-    @include smallCaps();
-    margin:0 10px;
-}
-
-input, textarea, button {
-    width:calc(100% - 20px);
-    margin:0 10px;
-    padding:5px;
-    border:1px solid $bordergrey;
-    font-family:$notoSans;
-    font-size:14px;
-    box-shadow:0 0 0px rgba($october, 0.2);
-    @include transitionFast(border);
-    @include transitionFast(box-shadow);
-}
-
-input:focus, button:focus, textarea:focus {
-    border:1px solid $gold;
-    box-shadow:0 0 5px rgba($october, 0.2);
-}
-
-textarea {
-    min-height:50px;
-}
-
-.prepended-input {
-    margin:0 10px;
-    span, input {
-        display:inline-block;
-    }
-
-    span {
-        width:30px;
-        text-align:center;
-    }
-
-    input {
-        margin:0;
-        width:calc(100% - 30px);
-    }
-}
 
 /* --------------- FAQS ----------------- */
 section.question-list {

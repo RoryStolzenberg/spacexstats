@@ -3,7 +3,8 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         restrict: 'E',
         scope: {
             availableTags: '=',
-            selectedTags: '='
+            selectedTags: '=',
+            placeholder: '@'
         },
         link: function($scope, element, attributes) {
 

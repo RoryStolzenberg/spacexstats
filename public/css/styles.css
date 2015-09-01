@@ -4333,6 +4333,51 @@ body, nav {
   .nav-open nav {
     left: 0; }
 
+form ul li {
+  height: 100px;
+  padding: 0 10px; }
+
+label {
+  font-size: 14px;
+  color: #888;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-family: "Segoe WP", sans-serif;
+  margin: 0 10px; }
+
+input, textarea, button {
+  width: calc(100% - 20px);
+  margin: 0 10px;
+  padding: 5px;
+  border: 1px solid #CCC;
+  font-family: "Noto Sans", sans-serif;
+  font-size: 14px;
+  box-shadow: 0 0 0px rgba(51, 73, 94, 0.2);
+  -webkit-transition: border ease 0.2s;
+          transition: border ease 0.2s;
+  -webkit-transition: box-shadow ease 0.2s;
+          transition: box-shadow ease 0.2s; }
+  input:focus, textarea:focus, button:focus {
+    border: 1px solid #CCAC55 !important;
+    box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
+  input.invalid, textarea.invalid, button.invalid {
+    border: 1px solid #C05B40; }
+
+textarea {
+  resize: vertical;
+  min-height: 50px; }
+
+.prepended-input {
+  margin: 0 10px; }
+  .prepended-input span, .prepended-input input {
+    display: inline-block; }
+  .prepended-input span {
+    width: 30px;
+    text-align: center; }
+  .prepended-input input {
+    margin: 0;
+    width: calc(100% - 30px); }
+
 #statistics-navigation {
   position: fixed;
   top: 50%; }
@@ -4706,49 +4751,6 @@ a:link, a:visited, a:hover, a:active {
   overflow: hidden; }
 
 /* --------------- FORM DESIGN ----------------- */
-form ul li {
-  height: 100px;
-  padding: 0 10px; }
-
-label {
-  font-size: 14px;
-  color: #888;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-family: "Segoe WP", sans-serif;
-  margin: 0 10px; }
-
-input, textarea, button {
-  width: calc(100% - 20px);
-  margin: 0 10px;
-  padding: 5px;
-  border: 1px solid #CCC;
-  font-family: "Noto Sans", sans-serif;
-  font-size: 14px;
-  box-shadow: 0 0 0px rgba(51, 73, 94, 0.2);
-  -webkit-transition: border ease 0.2s;
-          transition: border ease 0.2s;
-  -webkit-transition: box-shadow ease 0.2s;
-          transition: box-shadow ease 0.2s; }
-
-input:focus, button:focus, textarea:focus {
-  border: 1px solid #CCAC55;
-  box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
-
-textarea {
-  min-height: 50px; }
-
-.prepended-input {
-  margin: 0 10px; }
-  .prepended-input span, .prepended-input input {
-    display: inline-block; }
-  .prepended-input span {
-    width: 30px;
-    text-align: center; }
-  .prepended-input input {
-    margin: 0;
-    width: calc(100% - 30px); }
-
 /* --------------- FAQS ----------------- */
 section.question-list {
   -webkit-columns: 3 200px;

@@ -5,8 +5,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 }]).controller("uploadAppController", ["$scope", function($scope) {
     $scope.activeSection = "upload";
 
-    $scope.missions = laravel.missions;
-    $scope.tags = laravel.tags;
+    $scope.data = {
+        missions: laravel.missions,
+        tags: laravel.tags
+    }
 
     $scope.changeSection = function(section) {
         $scope.activeSection = section;
@@ -14,7 +16,6 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
 }]).controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
     $scope.activeUploadSection = "dropzone";
-    $scope.buttonText = "Next";
 
     $scope.currentVisibleFile = null;
     $scope.isVisibleFile = function(file) {
