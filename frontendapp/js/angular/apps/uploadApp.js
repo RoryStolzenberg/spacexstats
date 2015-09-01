@@ -8,7 +8,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
     $scope.data = {
         missions: laravel.missions,
         tags: laravel.tags
-    }
+    };
 
     $scope.changeSection = function(section) {
         $scope.activeSection = section;
@@ -49,7 +49,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
 }]).controller("postController", ["$scope", function($scope) {
 
-}]).controller("writeController", ["$scope", function($scope) {
+}]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
+
+    $scope.fileSubmitButtonFunction = function() {
+    }
 
 }]).run(['$rootScope', '$http', function($rootScope, $http) {
     $rootScope.postToMissionControl = function(dataToUpload, submissionHeader) {
@@ -133,6 +136,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
         self.title = null;
         self.summary = null;
+        self.external_url = null;
         self.subtype = null;
         self.mission_id = null;
         self.author = null;

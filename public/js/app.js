@@ -1,17 +1,3 @@
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
 angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -134,8 +120,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 }]).controller("uploadAppController", ["$scope", function($scope) {
     $scope.activeSection = "upload";
 
-    $scope.missions = laravel.missions;
-    $scope.tags = laravel.tags;
+    $scope.data = {
+        missions: laravel.missions,
+        tags: laravel.tags
+    };
 
     $scope.changeSection = function(section) {
         $scope.activeSection = section;
@@ -143,7 +131,6 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
 }]).controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
     $scope.activeUploadSection = "dropzone";
-    $scope.buttonText = "Next";
 
     $scope.currentVisibleFile = null;
     $scope.isVisibleFile = function(file) {
@@ -177,7 +164,10 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
 }]).controller("postController", ["$scope", function($scope) {
 
-}]).controller("writeController", ["$scope", function($scope) {
+}]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
+
+    $scope.fileSubmitButtonFunction = function() {
+    }
 
 }]).run(['$rootScope', '$http', function($rootScope, $http) {
     $rootScope.postToMissionControl = function(dataToUpload, submissionHeader) {
@@ -261,6 +251,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
         self.title = null;
         self.summary = null;
+        self.external_url = null;
         self.subtype = null;
         self.mission_id = null;
         self.author = null;
@@ -636,6 +627,20 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
         restrict: 'E',
@@ -793,26 +798,13 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-            console.log(mission);
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         restrict: 'E',
         scope: {
             availableTags: '=',
-            selectedTags: '='
+            selectedTags: '=',
+            placeholder: '@'
         },
         link: function($scope, element, attributes) {
 
@@ -938,3 +930,17 @@ angular.module('directives.deltaV', []).directive('deltaV', function() {
     }
 });
 
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+            console.log(mission);
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});

@@ -14,7 +14,9 @@ gulp.task('browsersync', function(gulpCallback) {
     browserSync.init({
         proxy: "spacexstats.dev"
     }, function callback() {
+
         gulp.watch('frontendapp/css/**/*.scss', ['styles']);
+        gulp.watch('frontendapp/js/**/*.*', ['scripts']);
 
         gulpCallback();
     });
@@ -37,7 +39,8 @@ gulp.task('scripts', function() {
     gulp.src('frontendapp/js/angular/**/*.js')
         .pipe(concat('app.js'))
         //.pipe(uglify()).on('error', handleError)
-        .pipe(gulp.dest('public/js'));
+        .pipe(gulp.dest('public/js'))
+        .pipe(browserSync.stream());
 
     // Move templates
     gulp.src('frontendapp/js/angular/**/*.html')

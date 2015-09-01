@@ -70,7 +70,7 @@
                                             <select-list
                                                     name="mission"
                                                     options="data.missions"
-                                                    hasDefaultOption="false"
+                                                    has-default-option="false"
                                                     selected-option="file.mission_id"
                                                     unique-key="mission_id"
                                                     searchable="true">
@@ -155,7 +155,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" hasDefaultOption="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" has-default-option="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -220,7 +220,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" hasDefaultOption="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" has-default-option="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -263,7 +263,7 @@
                     <!-- VIDEO FILE TEMPLATE -->
                     <div ng-if="file.type == 4" ng-show="isVisibleFile(file)">
                         <h2>[[ file.original_name ]]</h2>
-                        <form>
+                        <form name="[['fileForm' + $index]]" novalidate>
                             <ul class="container">
                                 <li class="grid-4">
                                     <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
@@ -285,8 +285,16 @@
 
                                 <li class="grid-4">
                                     <label>
+                                        <p>Youtube Link</p>
+                                        <input type="text" name="external_url" ng-model="file.external_url" />
+                                    </label>
+
+                                </li>
+
+                                <li class="grid-4">
+                                    <label>
                                         <p>Related to Mission</p>
-                                        <select-list options="data.missions" hasDefaultOption="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                        <select-list options="data.missions" has-default-option="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                     </label>
                                 </li>
 
@@ -315,7 +323,7 @@
                                     <label>
                                         <p>Type</p>
                                         <select ng-init="file.subtype = options[0]" ng-model="file.subtype">
-                                            <option>None</option>
+                                            <option value="">None</option>
                                             <option value="6">Launch Video</option>
                                             <option value="7">Press Conference</option>
                                         </select>
@@ -450,7 +458,7 @@
                     <select-list
                             name="mission"
                             options="data.missions"
-                            hasDefaultOption="false"
+                            has-default-option="false"
                             selected-option="text.mission_id"
                             unique-key="mission_id"
                             searchable="true">
