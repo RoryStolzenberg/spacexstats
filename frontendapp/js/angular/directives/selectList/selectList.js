@@ -3,10 +3,10 @@ angular.module("directives.selectList", []).directive("selectList", function() {
         restrict: 'E',
         scope: {
             options: '=',
-            hasDefaultOption: '@',
             selectedOption: '=',
             uniqueKey: '@',
-            searchable: '@'
+            searchable: '@',
+            placeholder: '@'
         },
         link: function($scope, element, attributes) {
 
@@ -19,20 +19,29 @@ angular.module("directives.selectList", []).directive("selectList", function() {
             });
 
             $scope.$watch("selectedOption", function(newValue) {
-                $scope.selectedOptionObj = $scope.optionsObj
-                    .filter(function(option) {
-                    return option['id'] == newValue;
-                }).shift();
+                if (newValue !== null) {
+                    $scope.selectedOptionObj = $scope.optionsObj
+                        .filter(function(option) {
+                            return option['id'] == newValue;
+                        }).shift();
+                } else {
+                    $scope.selectedOptionObj = null;
+                }
             });
 
             $scope.selectOption = function(option) {
                 $scope.selectedOption = option['id'];
                 $scope.dropdownIsVisible = false;
-            }
+            };
+
+            $scope.selectDefault = function() {
+                $scope.selectedOption = null;
+                $scope.dropdownIsVisible = false;
+            };
 
             $scope.toggleDropdown = function() {
                 $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            }
+            };
 
             $scope.$watch("dropdownIsVisible", function(newValue) {
                 if (!newValue) {
@@ -42,7 +51,7 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 
             $scope.isSelected = function(option) {
                 return option.id == $scope.selectedOption;
-            }
+            };
 
             $scope.dropdownIsVisible = false;
         },

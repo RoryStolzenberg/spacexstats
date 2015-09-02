@@ -70,7 +70,6 @@
                                             <select-list
                                                     name="mission"
                                                     options="data.missions"
-                                                    has-default-option="false"
                                                     selected-option="file.mission_id"
                                                     unique-key="mission_id"
                                                     searchable="true">
@@ -155,7 +154,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" has-default-option="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -220,7 +219,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" has-default-option="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -259,90 +258,169 @@
                             </form>
                         </div>
 
-                    <!-- VIDEO FILE TEMPLATE -->
-                    <div ng-if="file.type == 4" ng-show="isVisibleFile(file)">
-                        <h2>[[ file.original_name ]]</h2>
-                        <form name="[['fileForm' + $index]]" novalidate>
-                            <ul class="container">
-                                <li class="grid-4">
-                                    <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
-                                </li>
+                        <!-- VIDEO FILE TEMPLATE -->
+                        <div ng-if="file.type == 4" ng-show="isVisibleFile(file)">
+                            <h2>[[ file.original_name ]]</h2>
+                            <form name="[['fileForm' + $index]]" novalidate>
+                                <ul class="container">
+                                    <li class="grid-4">
+                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                    </li>
 
-                                <li class="grid-4">
-                                    <label>
-                                        <p>Title</p>
-                                        <input type="text" name="title" ng-model="file.title" />
-                                    </label>
-                                </li>
+                                    <li class="grid-4">
+                                        <label>
+                                            <p>Title</p>
+                                            <input type="text" name="title" ng-model="file.title" />
+                                        </label>
+                                    </li>
 
-                                <li class="grid-8">
-                                    <label>
-                                        <p>Summary</p>
-                                        <textarea name="summary" ng-model="file.summary"></textarea>
-                                    </label>
-                                </li>
+                                    <li class="grid-8">
+                                        <label>
+                                            <p>Summary</p>
+                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                        </label>
+                                    </li>
 
-                                <li class="grid-4">
-                                    <label>
-                                        <p>Youtube Link</p>
-                                        <input type="text" name="external_url" ng-model="file.external_url" />
-                                    </label>
+                                    <li class="grid-4">
+                                        <label>
+                                            <p>Youtube Link</p>
+                                            <input type="text" name="external_url" ng-model="file.external_url" />
+                                        </label>
 
-                                </li>
+                                    </li>
 
-                                <li class="grid-4">
-                                    <label>
-                                        <p>Related to Mission</p>
-                                        <select-list options="data.missions" has-default-option="false" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
-                                    </label>
-                                </li>
+                                    <li class="grid-4">
+                                        <label>
+                                            <p>Related to Mission</p>
+                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                        </label>
+                                    </li>
 
-                                <li class="grid-6">
-                                    <label>
-                                        <p>Author</p>
-                                        <input type="text" name="author" ng-model="file.author" />
-                                    </label>
-                                </li>
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Author</p>
+                                            <input type="text" name="author" ng-model="file.author" />
+                                        </label>
+                                    </li>
 
-                                <li class="grid-6">
-                                    <label>
-                                        <p>Attribution/Copyright</p>
-                                        <textarea name="attribution" ng-model="file.attribution"></textarea>
-                                    </label>
-                                </li>
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Attribution/Copyright</p>
+                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                        </label>
+                                    </li>
 
-                                <li class="grid-6">
-                                    <label>
-                                        <p>Tags</p>
-                                        <tags available-tags="data.tags" selected-tags="file.tags"></tags>
-                                    </label>
-                                </li>
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Tags</p>
+                                            <tags available-tags="data.tags" selected-tags="file.tags"></tags>
+                                        </label>
+                                    </li>
 
-                                <li class="grid-6">
-                                    <label>
-                                        <p>Type</p>
-                                        <select ng-init="file.subtype = options[0]" ng-model="file.subtype">
-                                            <option value="">None</option>
-                                            <option value="6">Launch Video</option>
-                                            <option value="7">Press Conference</option>
-                                        </select>
-                                    </label>
-                                </li>
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Type</p>
+                                            <select ng-init="file.subtype = options[0]" ng-model="file.subtype">
+                                                <option value="">None</option>
+                                                <option value="6">Launch Video</option>
+                                                <option value="7">Press Conference</option>
+                                            </select>
+                                        </label>
+                                    </li>
 
-                                <li class="grid-6">
-                                    <datetime params="value: originated_at, type: 'date'"></datetime>
-                                </li>
+                                    <li class="grid-6">
+                                        <datetime params="value: originated_at, type: 'date'"></datetime>
+                                    </li>
 
-                                <li class="grid-12">
-                                    <label>
-                                        <p>Submit anonymously?</p>
-                                        <input type="checkbox" name="anonymous" ng-model="file.anonymous"/>
-                                    </label>
-                                </li>
-                            </ul>
-                        </form>
+                                    <li class="grid-12">
+                                        <label>
+                                            <p>Submit anonymously?</p>
+                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous"/>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+
+                        <!-- DOCUMENT FILE TEMPLATE -->
+                        <div ng-if="file.type == 5" ng-show="isVisibleFile(file)">
+                            <h2>[[ file.original_name ]]</h2>
+                            <form name="[['fileForm' + $index]]" novalidate>
+                                <ul class="container">
+                                    <li class="grid-4">
+                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                    </li>
+
+                                    <li class="grid-4">
+                                        <label>
+                                            <p>Title</p>
+                                            <input type="text" name="title" ng-model="file.title" />
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-8">
+                                        <label>
+                                            <p>Summary</p>
+                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-4">
+                                        <label>
+                                            <p>Related to Mission</p>
+                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Author</p>
+                                            <input type="text" name="author" ng-model="file.author" />
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Attribution/Copyright</p>
+                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Tags</p>
+                                            <tags available-tags="data.tags" selected-tags="file.tags"></tags>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <label>
+                                            <p>Type</p>
+                                            <select ng-init="file.subtype = options[0]" ng-model="file.subtype">
+                                                <option>None</option>
+                                                <option value="6">Press Kit</option>
+                                                <option value="7">Cargo Manifest</option>
+                                                <option value="15">Weather Forecast</option>
+                                                <option value="17">License</option>
+                                            </select>
+                                        </label>
+                                    </li>
+
+                                    <li class="grid-6">
+                                        <datetime params="value: originated_at, type: 'date'"></datetime>
+                                    </li>
+
+                                    <li class="grid-12">
+                                        <label>
+                                            <p>Submit anonymously?</p>
+                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous"/>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+
                     </div>
-
                     <button id="files-submit" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()">Submit</button>
                 </div>
             </section>
@@ -457,10 +535,10 @@
                     <select-list
                             name="mission"
                             options="data.missions"
-                            has-default-option="false"
                             selected-option="text.mission_id"
                             unique-key="mission_id"
-                            searchable="true">
+                            searchable="true"
+                            placeholder="Select a related mission...">
                     </select-list>
 
                     <p>Submit anonymously?</p>
@@ -474,86 +552,6 @@
             </section>
         </main>
     </div>
-
-        <!-- Knockout Templates -->
-    <script type="text/html" id="document-file-template">
-        <div data-bind="attr: { 'data-index': $index }, visible: $root.visibleTemplate() == ko.unwrap($index)">
-            <h2 data-bind="text: original_name"></h2>
-            <form>
-                <ul class="container">
-                    <li class="grid-4">
-                        <img data-bind="attr : { src: media_thumb_small, alt: media_thumb_small }">
-                    </li>
-
-                    <li class="grid-4">
-                        <label>
-                            <p>Title</p>
-                            <input type="text" name="title" data-bind="value: title" />
-                        </label>
-                    </li>
-
-                    <li class="grid-8">
-                        <label>
-                            <p>Summary</p>
-                            <textarea name="summary" data-bind="value: summary"></textarea>
-                        </label>
-                    </li>
-
-                    <li class="grid-4">
-                        <label>
-                            <p>Related to Mission</p>
-                            <rich-select params="fetchFrom: '/missions/all', default: true, value: mission_id, mapping: {}"></rich-select>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Author</p>
-                            <input type="text" name="author" data-bind="value: author" />
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Attribution/Copyright</p>
-                            <textarea name="attribution" data-bind="value: attribution"></textarea>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Tags</p>
-                            <tags params="tags: tags"></tags>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <label>
-                            <p>Type</p>
-                            <select data-bind="value: subtype">
-                                <option>None</option>
-                                <option value="6">Press Kit</option>
-                                <option value="7">Cargo Manifest</option>
-                                <option value="15">Weather Forecast</option>
-                                <option value="17">License</option>
-                            </select>
-                        </label>
-                    </li>
-
-                    <li class="grid-6">
-                        <datetime params="value: originated_at, type: 'date'"></datetime>
-                    </li>
-
-                    <li class="grid-12">
-                        <label>
-                            <p>Submit anonymously?</p>
-                            <input type="checkbox" name="anonymous" data-bind="checked: anonymous" />
-                        </label>
-                    </li>
-                </ul>
-            </form>
-        </div>
-    </script>
 </body>
 @stop
 

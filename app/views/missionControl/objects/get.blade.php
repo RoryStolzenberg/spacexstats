@@ -31,15 +31,21 @@
                                preload="none" data-setup="{}" width="100%">
                             <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
                         </audio>
+
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Video)
                         @if ($object->external_url != null)
-                            <iframe width="100%" src="{{ $object->external_url }}" frameborder="0" allowfullscreen></iframe>
+                            <iframe width="100%" src="{{ $object->embed_url }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                         @else
                             <video id="object" class="video-js vjs-default-skin" controls
                                    preload="none" data-setup="{}" width="100%">
                                 <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
                             </video>
                         @endif
+
+                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Document)
+                        <object data="{{ $object->media }}" type="application/pdf" width="100%" height="100%">
+                            <p>Alternative text - include a link <a href="{{ $object->media }}">to the PDF!</a></p>
+                        </object>
 
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Text)
                         <div>
