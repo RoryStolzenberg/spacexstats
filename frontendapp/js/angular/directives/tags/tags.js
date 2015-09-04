@@ -1,18 +1,19 @@
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
+        require: 'ngModel',
         restrict: 'E',
         scope: {
             availableTags: '=',
-            selectedTags: '=',
+            ngModel: '=',
             placeholder: '@'
         },
-        link: function($scope, element, attributes) {
+        link: function($scope, element, attributes, ctrl) {
 
             $scope.suggestions = [];
             $scope.inputWidth = {};
 
             $scope.createTag = function(createdTag) {
-                var tagIsPresentInCurrentTags = $scope.selectedTags.filter(function(tag) {
+                var tagIsPresentInCurrentTags = $scope.ngModel.filter(function(tag) {
                     return tag.name == createdTag;
                 });
 
@@ -31,7 +32,7 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                         var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
                     }
 
-                    $scope.selectedTags.push(newTag);
+                    $scope.ngModel.push(newTag);
 
                     // reset the input field
                     $scope.tagInput = "";
@@ -42,7 +43,7 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
             };
 
             $scope.removeTag = function(removedTag) {
-                $scope.selectedTags.splice($scope.selectedTags.indexOf(removedTag), 1);
+                $scope.ngModel.splice($scope.ngModel.indexOf(removedTag), 1);
                 $scope.updateSuggestionList();
                 $scope.updateInputLength();
             };
@@ -68,8 +69,8 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                     event.preventDefault();
 
                     // grab the last tag to be inserted (if any) and put it back in the input
-                    if ($scope.selectedTags.length > 0) {
-                        $scope.tagInput = $scope.selectedTags.pop().name;
+                    if ($scope.ngModel.length > 0) {
+                        $scope.tagInput = $scope.ngModel.pop().name;
                     }
                 }
             };
@@ -89,7 +90,7 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                 var search = new RegExp($scope.tagInput, "i");
 
                 $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                    if ($scope.selectedTags.filter(function(currentTag) {
+                    if ($scope.ngModel.filter(function(currentTag) {
                             return availableTag.name == currentTag.name;
                         }).length == 0) {
                         return search.test(availableTag.name);
@@ -97,6 +98,7 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                     return false;
                 }).slice(0,6);
             };
+
         },
         templateUrl: '/js/templates/tags.html'
     }
@@ -104,6 +106,17 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
     return function(tag) {
         var self = tag;
         return self;
+    }
+}).directive('taglength', function() {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function(scope, element, attrs, ctrl) {
+
+            ctrl.$validators.taglength = function(mv, vv) {
+                return (mv.length > 0);
+            };
+        }
     }
 });
 

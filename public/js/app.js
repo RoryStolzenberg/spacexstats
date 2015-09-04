@@ -1,17 +1,3 @@
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
 angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -180,7 +166,15 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
 }]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
+    $scope.text = {
+        title: null,
+        content: null,
+        mission_id: null,
+        tags: []
+    };
+
     $scope.fileSubmitButtonFunction = function() {
+        console.log($scope.text);
     }
 
 }]).run(['$rootScope', '$http', function($rootScope, $http) {
@@ -641,67 +635,19 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            selectedOption: '=',
-            uniqueKey: '@',
-            searchable: '@',
-            placeholder: '@'
-        },
-        link: function($scope, element, attributes) {
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
 
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
 
-            $scope.$watch("selectedOption", function(newValue) {
-                if (newValue !== null) {
-                    $scope.selectedOptionObj = $scope.optionsObj
-                        .filter(function(option) {
-                            return option['id'] == newValue;
-                        }).shift();
-                } else {
-                    $scope.selectedOptionObj = null;
-                }
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.selectDefault = function() {
-                $scope.selectedOption = null;
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            };
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            };
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -781,118 +727,70 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
             mission: '='
         },
         link: function($scope) {
-            console.log(mission);
+            console.log($scope.mission);
         },
         templateUrl: '/js/templates/missionCard.html'
     }
 });
 
-angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+angular.module("directives.selectList", []).directive("selectList", function() {
     return {
         restrict: 'E',
         scope: {
-            availableTags: '=',
-            selectedTags: '=',
+            options: '=',
+            selectedOption: '=ngModel',
+            uniqueKey: '@',
+            searchable: '@',
             placeholder: '@'
         },
         link: function($scope, element, attributes) {
 
-            $scope.suggestions = [];
-            $scope.inputWidth = {};
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
 
-            $scope.createTag = function(createdTag) {
-                var tagIsPresentInCurrentTags = $scope.selectedTags.filter(function(tag) {
-                    return tag.name == createdTag;
-                });
-
-                if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                    // check if tag is present in the available tags array
-                    var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (tagIsPresentInAvailableTags.length === 1) {
-                        // grab tag
-                        var newTag = tagIsPresentInAvailableTags[0];
-                    } else {
-                        // trim and convert the text to lowercase, then create!
-                        var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
-                    }
-
-                    $scope.selectedTags.push(newTag);
-
-                    // reset the input field
-                    $scope.tagInput = "";
-
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
+            $scope.$watch("selectedOption", function(newValue) {
+                if (newValue !== null) {
+                    $scope.selectedOptionObj = $scope.optionsObj
+                        .filter(function(option) {
+                            return option['id'] == newValue;
+                        }).shift();
+                } else {
+                    $scope.selectedOptionObj = null;
                 }
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
             };
 
-            $scope.removeTag = function(removedTag) {
-                $scope.selectedTags.splice($scope.selectedTags.indexOf(removedTag), 1);
-                $scope.updateSuggestionList();
-                $scope.updateInputLength();
+            $scope.selectDefault = function() {
+                $scope.selectedOption = null;
+                $scope.dropdownIsVisible = false;
             };
 
-            $scope.tagInputKeyPress = function(event) {
-                // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            };
 
-                // event.key == ' ' || event.key == 'Enter'
-                if (event.which == 32 || event.which == 13) {
-                    event.preventDefault();
-
-                    // Remove any rulebreaking chars
-                    var tag = $scope.tagInput;
-                    tag = tag.replace(/["']/g, "");
-                    // Remove whitespace if present
-                    tag = tag.trim();
-
-                    $scope.createTag(tag);
-
-                // event.key == 'Backspace'
-                } else if (event.which == 8 && $scope.tagInput == "") {
-                    event.preventDefault();
-
-                    // grab the last tag to be inserted (if any) and put it back in the input
-                    if ($scope.selectedTags.length > 0) {
-                        $scope.tagInput = $scope.selectedTags.pop().name;
-                    }
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
                 }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
             };
 
-            $scope.updateInputLength = function() {
-                $timeout(function() {
-                    $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                });
-            };
-
-            $scope.areSuggestionsVisible = false;
-            $scope.toggleSuggestionVisibility = function() {
-                $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-            };
-
-            $scope.updateSuggestionList = function() {
-                var search = new RegExp($scope.tagInput, "i");
-
-                $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                    if ($scope.selectedTags.filter(function(currentTag) {
-                            return availableTag.name == currentTag.name;
-                        }).length == 0) {
-                        return search.test(availableTag.name);
-                    }
-                    return false;
-                }).slice(0,6);
-            };
+            $scope.dropdownIsVisible = false;
         },
-        templateUrl: '/js/templates/tags.html'
-    }
-}]).factory("Tag", function() {
-    return function(tag) {
-        var self = tag;
-        return self;
+        templateUrl: '/js/templates/selectList.html'
     }
 });
 
@@ -931,6 +829,129 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
+angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+    return {
+        require: 'ngModel',
+        restrict: 'E',
+        scope: {
+            availableTags: '=',
+            ngModel: '=',
+            placeholder: '@'
+        },
+        link: function($scope, element, attributes, ctrl) {
+
+            $scope.suggestions = [];
+            $scope.inputWidth = {};
+
+            $scope.createTag = function(createdTag) {
+                var tagIsPresentInCurrentTags = $scope.ngModel.filter(function(tag) {
+                    return tag.name == createdTag;
+                });
+
+                if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                    // check if tag is present in the available tags array
+                    var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (tagIsPresentInAvailableTags.length === 1) {
+                        // grab tag
+                        var newTag = tagIsPresentInAvailableTags[0];
+                    } else {
+                        // trim and convert the text to lowercase, then create!
+                        var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
+                    }
+
+                    $scope.ngModel.push(newTag);
+
+                    // reset the input field
+                    $scope.tagInput = "";
+
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                }
+            };
+
+            $scope.removeTag = function(removedTag) {
+                $scope.ngModel.splice($scope.ngModel.indexOf(removedTag), 1);
+                $scope.updateSuggestionList();
+                $scope.updateInputLength();
+            };
+
+            $scope.tagInputKeyPress = function(event) {
+                // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                // event.key == ' ' || event.key == 'Enter'
+                if (event.which == 32 || event.which == 13) {
+                    event.preventDefault();
+
+                    // Remove any rulebreaking chars
+                    var tag = $scope.tagInput;
+                    tag = tag.replace(/["']/g, "");
+                    // Remove whitespace if present
+                    tag = tag.trim();
+
+                    $scope.createTag(tag);
+
+                // event.key == 'Backspace'
+                } else if (event.which == 8 && $scope.tagInput == "") {
+                    event.preventDefault();
+
+                    // grab the last tag to be inserted (if any) and put it back in the input
+                    if ($scope.ngModel.length > 0) {
+                        $scope.tagInput = $scope.ngModel.pop().name;
+                    }
+                }
+            };
+
+            $scope.updateInputLength = function() {
+                $timeout(function() {
+                    $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                });
+            };
+
+            $scope.areSuggestionsVisible = false;
+            $scope.toggleSuggestionVisibility = function() {
+                $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+            };
+
+            $scope.updateSuggestionList = function() {
+                var search = new RegExp($scope.tagInput, "i");
+
+                $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                    if ($scope.ngModel.filter(function(currentTag) {
+                            return availableTag.name == currentTag.name;
+                        }).length == 0) {
+                        return search.test(availableTag.name);
+                    }
+                    return false;
+                }).slice(0,6);
+            };
+
+        },
+        templateUrl: '/js/templates/tags.html'
+    }
+}]).factory("Tag", function() {
+    return function(tag) {
+        var self = tag;
+        return self;
+    }
+}).directive('taglength', function() {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function(scope, element, attrs, ctrl) {
+
+            ctrl.$validators.taglength = function(mv, vv) {
+                return (mv.length > 0);
+            };
+        }
+    }
+});
+
+
 angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',

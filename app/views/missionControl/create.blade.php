@@ -70,7 +70,7 @@
                                             <select-list
                                                     name="mission"
                                                     options="data.missions"
-                                                    selected-option="file.mission_id"
+                                                    ng-model="file.mission_id"
                                                     unique-key="mission_id"
                                                     searchable="true">
                                             </select-list>
@@ -94,7 +94,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="tags" selected-tags="file.tags" ></tags>
+                                            <tags available-tags="tags" ng-model="file.tags" ></tags>
                                         </label>
                                     </li>
 
@@ -154,7 +154,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -175,7 +175,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="tags" selected-tags="file.tags"></tags>
+                                            <tags available-tags="tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
@@ -219,7 +219,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -240,7 +240,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="data.tags" selected-tags="file.tags"></tags>
+                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
@@ -292,7 +292,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -313,7 +313,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="data.tags" selected-tags="file.tags"></tags>
+                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
@@ -368,7 +368,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" selected-option="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -389,7 +389,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="data.tags" selected-tags="file.tags"></tags>
+                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
@@ -460,7 +460,6 @@
                         <textarea data-bind="text: article"></textarea>
 
                         <label>Tags</label>
-                        <tags params="tags: tags"></tags>
                     </fieldset>
 
                     <fieldset class="post-type pressrelease" data-bind="visible: postType() == 'pressrelease', with: pressRelease">
@@ -477,7 +476,6 @@
                         <textarea data-bind="text: article"></textarea>
 
                         <label>Tags</label>
-                        <tags params="tags: tags"></tags>
                     </fieldset>
 
                     <fieldset class="post-type redditcomment" data-bind="visible: postType() == 'redditcomment', with: redditComment">
@@ -491,7 +489,6 @@
                         <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
 
                         <label>Tags</label>
-                        <tags params="tags: tags"></tags>
                     </fieldset>
 
                     <fieldset class="post-type nsf-comment" data-bind="visible: postType() == 'NSFComment', with: NSFComment">
@@ -514,7 +511,6 @@
                         <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
 
                         <label>Tags</label>
-                        <tags params="tags: tags"></tags>
                     </fieldset>
 
                     <input type="submit" value="Submit" name="submit" id="post-submit" data-bind="click: submitPost" />
@@ -535,7 +531,7 @@
                     <select-list
                             name="mission"
                             options="data.missions"
-                            selected-option="text.mission_id"
+                            ng-model="text.mission_id"
                             unique-key="mission_id"
                             searchable="true"
                             placeholder="Select a related mission...">
@@ -545,7 +541,8 @@
                     <input type="checkbox" name="anonymous" ng-model="text.anonymous" />
 
                     <label>Tags</label>
-                    <tags params="tags: tags"></tags>
+                    <tags available-tags="data.tags" name="tags" ng-model="text.tags" taglength></tags>
+                    <span ng-show="writeForm.tags.$error.taglength">Yay</span>
 
                     <input type="submit" value="Submit" name="submit" ng-disabled="writeForm.$invalid" ng-click="fileSubmitButtonFunction()" />
                 </form>

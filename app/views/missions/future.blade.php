@@ -12,10 +12,10 @@
         <main>
             <p>Browse all upcoming SpaceX launches &amp; missions here.</p>
 
-            <p>Filter a launch: <input type="text" ng-model="search.name" /></p>
+            <p>Filter a launch: <input type="text" ng-model="x.name" /></p>
 
-            <h2 ng-repeat-start="mission in missions | filter:search" ng-if="missions.indexOf(mission) == 0">Next Launch</h2>
-            <h2 ng-if="missions.indexOf(mission) == 1">More Missions</h2>
+            <h2 ng-repeat-start="mission in missions | filter:x as search" ng-show="missions.indexOf(mission) == 0 && search.length == missions.length">Next Launch</h2>
+            <h2 ng-show="missions.indexOf(mission) == 1  && search.length == missions.length">More Missions</h2>
             <mission-card ng-repeat-end mission="mission" size="large"></mission-card>
         </main>
     </div>

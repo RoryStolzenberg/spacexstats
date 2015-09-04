@@ -51,7 +51,15 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
 }]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
+    $scope.text = {
+        title: null,
+        content: null,
+        mission_id: null,
+        tags: []
+    };
+
     $scope.fileSubmitButtonFunction = function() {
+        console.log($scope.text);
     }
 
 }]).run(['$rootScope', '$http', function($rootScope, $http) {

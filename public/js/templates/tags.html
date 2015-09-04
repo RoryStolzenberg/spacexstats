@@ -1,7 +1,7 @@
 <div class="tagger-container">
     <div class="wrapper" ng-class="{ 'active': areSuggestionsVisible }">
         <div class="tag-wrapper">
-            <div class="tag" ng-repeat="tag in selectedTags">
+            <div class="tag" ng-repeat="tag in ngModel">
                 [[ tag.name ]]
                 <span class="remove" ng-click="removeTag(tag)"></span>
             </div>

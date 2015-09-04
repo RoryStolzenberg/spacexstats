@@ -6,7 +6,7 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
             mission: '='
         },
         link: function($scope) {
-            console.log(mission);
+            console.log($scope.mission);
         },
         templateUrl: '/js/templates/missionCard.html'
     }

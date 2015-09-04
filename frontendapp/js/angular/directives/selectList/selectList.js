@@ -3,7 +3,7 @@ angular.module("directives.selectList", []).directive("selectList", function() {
         restrict: 'E',
         scope: {
             options: '=',
-            selectedOption: '=',
+            selectedOption: '=ngModel',
             uniqueKey: '@',
             searchable: '@',
             placeholder: '@'
