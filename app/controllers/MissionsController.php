@@ -60,12 +60,16 @@ class MissionsController extends BaseController {
     // GET
     // missions/past
 	public function past() {
-		$pastLaunches = Mission::where('status','=','Complete')->orWhere('status','=','In Progress')
+		$pastMissions = Mission::where('status','=','Complete')
+                                    ->orWhere('status','=','In Progress')
+                                    ->orderBy('launch_order_id', 'DESC')
 									->with('vehicle')->get();
 
-		return View::make('missions.past', array(
-			'pastLaunches' => $pastLaunches
-		));
+        JavaScript::put([
+            'missions' => $pastMissions
+        ]);
+
+		return View::make('missions.past');
 	}
 
     // GET
@@ -87,29 +91,25 @@ class MissionsController extends BaseController {
     public function create() {
         if (Request::isMethod('get')) {
 
-            // Just load the page if the request is not AJAX
-            if (!Request::ajax()) {
-                return View::make('missions.create');
-            // Load the required data for the page if the request is AJAX
-            } else {
-                return Response::json(array(
-                    'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
-                    'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
-                    'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
-                    'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
-                    'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
-                    'spacecraftTypes' => array('Dragon 1', 'Dragon 2'),
-                    'spacecraftReturnMethods' => array('Splashdown', 'Landing'),
-                    'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
-                    'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
-                    'upperStageStatuses' => array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'),
-                    'parts' => Part::whereDoesntHave('partFlights', function($q) {
-                        $q->where('landed', false);
-                    })->get()->toArray(),
-                    'spacecraft' => Spacecraft::all()->toArray(),
-                    'astronauts' => Astronaut::all()->toArray()
-                ));
-            }
+            JavaScript::put([
+                'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
+                'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
+                'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
+                'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
+                'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
+                'spacecraftTypes' => array('Dragon 1', 'Dragon 2'),
+                'spacecraftReturnMethods' => array('Splashdown', 'Landing'),
+                'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
+                'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
+                'upperStageStatuses' => array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'),
+                'parts' => Part::whereDoesntHave('partFlights', function($q) {
+                    $q->where('landed', false);
+                })->get()->toArray(),
+                'spacecraft' => Spacecraft::all()->toArray(),
+                'astronauts' => Astronaut::all()->toArray()
+            ]);
+
+            return View::make('missions.create');
 
         } elseif (Request::isMethod('post')) {
 

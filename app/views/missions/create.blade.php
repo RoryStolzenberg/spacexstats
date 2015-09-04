@@ -1,18 +1,7 @@
 @extends('templates.main')
-
-@section('title', 'Create Mission')
-@section('bodyClass', 'create-mission')
+@section('title', 'Future Launches')
 
 @section('scripts')
-    <script data-main="/src/js/common" src="/src/js/require.js"></script>
-    <script>
-        require(['common'], function() {
-            require(['knockout', 'viewmodels/MissionViewModel'], function(ko, MissionViewModel) {
-                ko.applyBindings(new MissionViewModel());
-            });
-        });
-    </script>
-
     <script type="text/html" id="partFlight-template">
         <div>
             <h3 data-bind="text: heading"></h3>
@@ -170,18 +159,23 @@
 @stop
 
 @section('content')
+<body class="create-mission" ng-app="missionApp" ng-controller="missionController" ng-strict-di>
+
+    @include('templates.flashMessage')
+    @include('templates.header')
+
     <div class="content-wrapper">
         <h1>Create A Mission</h1>
         <main>
-            <form data-bind="with: mission">
+            <form>
 
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" data-bind="getOriginalValue, value: $root.csrfToken" />
+                <input type="hidden" name="_token" value="{{ csrf_token() }}" ng-model="CSRFToken" />
 
                 <fieldset>
                     <legend>Mission</legend>
 
                     <label>Mission Name</label>
-                    <input type="text" data-bind="value: name"/>
+                    <input type="text" ng-model="mission.name" />
 
                     <label>Mission Type</label>
                     <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
@@ -242,4 +236,5 @@
 
         </main>
     </div>
+</body>
 @stop

@@ -1,9 +1,29 @@
-angular.module("missionsApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("missionsListApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("missionsController", ['$scope', function($scope) {
+}]).controller("missionsListController", ['$scope', function($scope) {
     $scope.missions = laravel.missions;
+
+    // Cheap way to get the next launch (only use on future mission page)
+    $scope.nextLaunch = function() {
+        return $scope.missions[0];
+    };
+
+    // Cheap way to get the previous launch (only use on past mission page)
+    $scope.lastLaunch = function() {
+        return $scope.missions[$scope.missions.length - 1];
+    };
+
+    $scope.currentYear = function() {
+        return moment().year();
+    };
+
+    $scope.missionsInYear = function(year, completeness) {
+        return $scope.missions.filter(function(mission) {
+            return moment(mission.launchDateTime).year() == year && mission.status == completeness;
+        }).length;
+    }
 }]);
 angular.module("missionControlApp", ["directives.tags"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
@@ -561,6 +581,27 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
         $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
     }
 }]);
+
+
+angular.module("missionApp", [], ['$interpolateProvider', function($interpolateProvider) {
+    $interpolateProvider.startSymbol('[[');
+    $interpolateProvider.endSymbol(']]');
+
+}]).controller("missionController", ['$scope', function($scope) {
+    $scope.mission = new Mission();
+    $scope.data = {
+
+    }
+
+
+}]).factory("Mission", function() {
+    return function (mission) {
+        var self = mission;
+
+        return self;
+    }
+});
+
 
 
 angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
