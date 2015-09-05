@@ -4148,6 +4148,9 @@ h3 {
   height: 400px;
   position: absolute;
   box-shadow: 0 0 15px rgba(24, 28, 31, 0.5); }
+  .header-wrapper.no-background {
+    background-color: transparent;
+    box-shadow: none; }
   .header-wrapper header {
     max-width: 1400px;
     padding: 0 5px;
@@ -4345,7 +4348,7 @@ form input, form textarea, form button, form select {
     border: 1px solid #CCAC55 !important;
     box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
 
-form input, form textarea, form button {
+form input, form textarea {
   width: calc(100% - 20px);
   margin: 0 10px;
   padding: 5px;
@@ -4376,6 +4379,30 @@ form .prepended-input {
   form .prepended-input input {
     margin: 0;
     width: calc(100% - 30px); }
+
+form button.icon-button {
+  width: 100px;
+  height: 100px; }
+  form button.icon-button img {
+    text-align: center; }
+
+form input[type="submit"], form button {
+  height: 32px;
+  min-width: 150px;
+  padding: 0 20px;
+  width: auto;
+  border-radius: 2px;
+  border: none;
+  color: #F5F5F5;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0; }
+  form input[type="submit"][type="submit"], form input[type="submit"].submit, form button[type="submit"], form button.submit {
+    background-color: #3569A4; }
+  form input[type="submit"][disabled], form input[type="submit"].disabled, form button[disabled], form button.disabled {
+    background-color: #888; }
 
 #statistics-navigation {
   position: fixed;
@@ -4415,7 +4442,7 @@ form .prepended-input {
   bottom: -45px; }
 
 .background {
-  background-image: url("../images/backgrounds/bocachica.jpg"); }
+  background-image: url("../images/backgrounds/dscovr2.jpg"); }
 
 .display-date-time {
   position: absolute;

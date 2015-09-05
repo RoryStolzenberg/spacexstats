@@ -64,16 +64,18 @@
                 <fieldset>
                     <legend>Parts</legend>
                     <div class="add-parts">
-                        <button ng-click="partFilter.type = 'Booster'">Add a Booster</button>
-                        <button ng-click="partFilter.type = 'First Stage'">Add a First Stage</button>
-                        <button ng-click="partFilter.type = 'Upper Stage'">Add an Upper Stage</button>
+                        <button class="icon-button" ng-click="partFilter.type = 'Booster'">Add a Booster</button>
+                        <button class="icon-button" ng-click="partFilter.type = 'First Stage'">Add a First Stage</button>
+                        <button class="icon-button" ng-click="partFilter.type = 'Upper Stage'">Add an Upper Stage</button>
 
-                        <div ng-repeat="part in data.parts | filter:partFilter">
-                            <span>[[ part.name ]]</span>
-                            <button ng-click="mission.addPartFlight(part)">Reuse This [[ partFilter.type ]]</button>
+                        <div ng-show="partFilter.type !== ''">
+                            <div ng-repeat="part in data.parts | filter:partFilter">
+                                <span>[[ part.name ]]</span>
+                                <button ng-click="mission.addPartFlight(part)">Reuse This [[ partFilter.type ]]</button>
+                            </div>
+
+                            <button ng-click="mission.addPartFlight()">Create A [[ partFilter.type ]]</button>
                         </div>
-
-                        <button ng-click="mission.addPartFlight()">Create A [[ partFilter.type ]]</button>
                     </div>
 
                     <div ng-repeat="partFlight in mission.partFlights">

@@ -5,7 +5,7 @@
 <body class="missioncontrol-about">
 
     @include('templates.flashMessage')
-    @include('templates.header')
+    @include('templates.header', ['class' => 'no-background'])
 
     <div class="content-wrapper single-page background">
         <h1>Mission Control</h1>

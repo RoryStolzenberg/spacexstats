@@ -5,6 +5,11 @@
     position:absolute;
     box-shadow:0 0 15px rgba($slateblack, 0.5);
 
+    &.no-background {
+        background-color:transparent;
+        box-shadow:none;
+    }
+
     header {
         @include gridle_container();
         max-width:1400px;

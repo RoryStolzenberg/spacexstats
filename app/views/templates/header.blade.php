@@ -1,4 +1,4 @@
-<div class="header-wrapper">
+<div class="header-wrapper {{ $class or '' }}">
 	<header class="text-center">
 			<i class="fa fa-navicon toggleMobileNavigation gridle-show-small"></i>
 			<span id="logo"><a href="/">SpaceX Stats</a></span>

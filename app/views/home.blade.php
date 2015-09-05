@@ -5,7 +5,7 @@
 <body class="home" ng-app="homePageApp" ng-controller="homePageController" ng-strict-di>
 
     @include('templates.flashMessage')
-    @include('templates.header')
+    @include('templates.header', ['class' => 'no-background'])
 
     <!-- Main content -->
     <div class="content-wrapper single-page background subtract">

@@ -11,19 +11,19 @@
         <h1>Join SpaceX Stats</h1>
         <main>
             {{ Form::open(array('route' => 'users.signup')) }}
-            {{ Form::label('username', 'Username:') }}
+            {{ Form::label('username', 'Username') }}
             {{ Form::text('username') }}
             {{ $errors->first('username')  }}
 
-            {{ Form::label('email', 'Email:') }}
+            {{ Form::label('email', 'Email') }}
             {{ Form::email('email') }}
             {{ $errors->first('email')  }}
 
-            {{ Form::label('password', 'Password:') }}
+            {{ Form::label('password', 'Password') }}
             {{ Form::password('password') }}
             {{ $errors->first('password')  }}
 
-            {{ Form::label('password_confirmation', 'Confirm Password:') }}
+            {{ Form::label('password_confirmation', 'Confirm Password') }}
             {{ Form::password('password_confirmation') }}
             {{ $errors->first('password_confirmation')  }}
 
@@ -31,7 +31,7 @@
             {{ Form::checkbox('eula', true) }}
             {{ $errors->first('eula')  }}
 
-            {{ Form::submit('Join') }}
+            {{ Form::submit('Sign Up') }}
             {{ Form::close() }}
         </main>
     </div>
