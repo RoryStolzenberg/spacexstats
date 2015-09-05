@@ -5,7 +5,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             type: '@',
             datetimevalue: '=ngModel',
             startYear: '@',
-            nullable: '@'
+            isNullable: '@'
         },
         link: function($scope) {
             if ($scope.datetimevalue != null) {
@@ -52,8 +52,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             $scope.years = function() {
                 var years = [];
 
-                var initialYear = moment().year();
-                var currentYear = initialYear;
+                var currentYear = moment().year();
 
                 if (typeof $scope.startYear !== 'undefined') {
                     var startYear = $scope.startYear;

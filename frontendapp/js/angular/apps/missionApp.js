@@ -17,8 +17,15 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         vehicles: laravel.vehicles,
         firststageEngines: laravel.firststageEngines,
         upperstageEngines: laravel.upperstageEngines,
-        astronauts: laravel.astronauts
+        astronauts: laravel.astronauts,
+        spacecraftTypes: laravel.spacecraftTypes,
+        returnMethods: laravel.returnMethods
     };
+
+    $scope.selected = {
+        astronaut: null
+    };
+
 
     $scope.submitMission = function() {
         console.log($scope.mission);
@@ -54,53 +61,93 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
             self.spacecraftFlight = new SpacecraftFlight(spacecraft);
         };
 
+        self.removeSpacecraftFlight = function() {
+            self.spacecraftFlight = null;
+        };
+
         return self;
     }
 
 }]).factory("Payload", function() {
-    return function (payload) {
-        if (payload == null) {
-            var self = this;
-        } else {
-            var self = payload;
-        }
+    return function() {
+        var self = {
+
+        };
         return self;
     }
 
-}).factory("PartFlight", function() {
+}).factory("PartFlight", ["Part", function(Part) {
     return function(part) {
-        if (partFlight == null) {
+        if (part == null) {
             var self = this;
 
-            self.part = null;
+            self.part = new Part();
 
         } else {
-            var self = partFlight;
+            var self = new Part(part);
         }
         return self;
     }
 
-}).factory("Part", function() {
-    return function() {
+}]).factory("Part", function() {
+    return function(part) {
+        if (part == null) {
+            var self = this;
+        } else {
+            var self = part;
+        }
 
+        return self;
     }
 
-}).factory("SpacecraftFlight", function() {
-    return function(spacecraftFlight) {
-        if (spacecraftFlight == null) {
+}).factory("SpacecraftFlight", ["Spacecraft", "AstronautFlight", function(Spacecraft, AstronautFlight) {
+    return function(spacecraft) {
+        var self = this;
+
+        self.spacecraft = new Spacecraft(spacecraft);
+
+        self.astronautFlights = [];
+
+        self.addAstronautFlight = function(astronaut) {
+            self.astronautFlights.push(new AstronautFlight(astronaut));
+        };
+
+        self.removeAstronautFlight = function(astronautFlight) {
+            self.astronautFlights.splice(self.astronautFlights.indexOf(astronautFlight), 1);
+        };
+
+        return self;
+    }
+
+}]).factory("Spacecraft", function() {
+    return function(spacecraft) {
+        if (spacecraft == null) {
             var self = this;
-
-            self.spacecraft = null;
-
         } else {
-            var self = spacecraftFlight;
+            var self = spacecraft;
         }
         return self;
     }
-}).factory("Spacecraft", function() {
-    return function() {
 
+}).factory("AstronautFlight", ["Astronaut", function(Astronaut) {
+    return function(astronaut) {
+        var self = this;
+
+        self.astronaut = new Astronaut(astronaut);
+
+        return self;
     }
+
+}]).factory("Astronaut", function() {
+    return function(astronaut) {
+        if (astronaut == null) {
+            var self = this;
+        } else {
+            var self = astronaut;
+        }
+        return self;
+    }
+
 });
 
 

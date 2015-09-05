@@ -602,8 +602,15 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         vehicles: laravel.vehicles,
         firststageEngines: laravel.firststageEngines,
         upperstageEngines: laravel.upperstageEngines,
-        astronauts: laravel.astronauts
+        astronauts: laravel.astronauts,
+        spacecraftTypes: laravel.spacecraftTypes,
+        returnMethods: laravel.returnMethods
     };
+
+    $scope.selected = {
+        astronaut: null
+    };
+
 
     $scope.submitMission = function() {
         console.log($scope.mission);
@@ -639,53 +646,93 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
             self.spacecraftFlight = new SpacecraftFlight(spacecraft);
         };
 
+        self.removeSpacecraftFlight = function() {
+            self.spacecraftFlight = null;
+        };
+
         return self;
     }
 
 }]).factory("Payload", function() {
-    return function (payload) {
-        if (payload == null) {
-            var self = this;
-        } else {
-            var self = payload;
-        }
+    return function() {
+        var self = {
+
+        };
         return self;
     }
 
-}).factory("PartFlight", function() {
+}).factory("PartFlight", ["Part", function(Part) {
     return function(part) {
-        if (partFlight == null) {
+        if (part == null) {
             var self = this;
 
-            self.part = null;
+            self.part = new Part();
 
         } else {
-            var self = partFlight;
+            var self = new Part(part);
         }
         return self;
     }
 
-}).factory("Part", function() {
-    return function() {
+}]).factory("Part", function() {
+    return function(part) {
+        if (part == null) {
+            var self = this;
+        } else {
+            var self = part;
+        }
 
+        return self;
     }
 
-}).factory("SpacecraftFlight", function() {
-    return function(spacecraftFlight) {
-        if (spacecraftFlight == null) {
+}).factory("SpacecraftFlight", ["Spacecraft", "AstronautFlight", function(Spacecraft, AstronautFlight) {
+    return function(spacecraft) {
+        var self = this;
+
+        self.spacecraft = new Spacecraft(spacecraft);
+
+        self.astronautFlights = [];
+
+        self.addAstronautFlight = function(astronaut) {
+            self.astronautFlights.push(new AstronautFlight(astronaut));
+        };
+
+        self.removeAstronautFlight = function(astronautFlight) {
+            self.astronautFlights.splice(self.astronautFlights.indexOf(astronautFlight), 1);
+        };
+
+        return self;
+    }
+
+}]).factory("Spacecraft", function() {
+    return function(spacecraft) {
+        if (spacecraft == null) {
             var self = this;
-
-            self.spacecraft = null;
-
         } else {
-            var self = spacecraftFlight;
+            var self = spacecraft;
         }
         return self;
     }
-}).factory("Spacecraft", function() {
-    return function() {
 
+}).factory("AstronautFlight", ["Astronaut", function(Astronaut) {
+    return function(astronaut) {
+        var self = this;
+
+        self.astronaut = new Astronaut(astronaut);
+
+        return self;
     }
+
+}]).factory("Astronaut", function() {
+    return function(astronaut) {
+        if (astronaut == null) {
+            var self = this;
+        } else {
+            var self = astronaut;
+        }
+        return self;
+    }
+
 });
 
 
@@ -777,19 +824,6 @@ angular.module('flashMessageService', [])
         };
     });
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
         restrict: 'E',
@@ -852,40 +886,6 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 });
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -955,6 +955,19 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
         templateUrl: '/js/templates/countdown.html'
     }
 }]);
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
 
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
@@ -1079,6 +1092,40 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
 });
 
 
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         restrict: 'E',
@@ -1086,7 +1133,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             type: '@',
             datetimevalue: '=ngModel',
             startYear: '@',
-            nullable: '@'
+            isNullable: '@'
         },
         link: function($scope) {
             if ($scope.datetimevalue != null) {
@@ -1133,8 +1180,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             $scope.years = function() {
                 var years = [];
 
-                var initialYear = moment().year();
-                var currentYear = initialYear;
+                var currentYear = moment().year();
 
                 if (typeof $scope.startYear !== 'undefined') {
                     var startYear = $scope.startYear;
