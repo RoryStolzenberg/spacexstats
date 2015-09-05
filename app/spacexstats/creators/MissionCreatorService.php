@@ -11,7 +11,7 @@ class MissionCreatorService {
     }
 
     public function isValid() {
-        $input = \Input::get('data');
+        $input = \Input::get('mission');
         $this->input['payloads'] = array_pull($input, 'payloads');
         $this->input['partFlights'] = array_pull($input, 'partFlights');
         $this->input['spacecraftFlight'] = array_pull($input, 'spacecraftFlight');

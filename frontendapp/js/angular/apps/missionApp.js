@@ -29,6 +29,7 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
 
     $scope.submitMission = function() {
         console.log($scope.mission);
+        missionService.create($scope.mission);
     }
 
 
@@ -148,10 +149,12 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         return self;
     }
 
-}).service("missionService", ["$http", function($http) {
+}).service("missionService", ["$http", "CSRF_TOKEN",
+    function($http, CSRF_TOKEN) {
     this.create = function(mission) {
         $http.post('/missions/create', {
-
+            mission: mission,
+            _token: CSRF_TOKEN
         }).then(function(response) {
 
         });

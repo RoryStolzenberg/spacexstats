@@ -26,7 +26,7 @@ input, textarea, button {
         box-shadow:0 0 5px rgba($october, 0.2);
     }
 
-    &.invalid {
+    &.invalid, &.ng-invalid.ng-touched {
         border:1px solid $red;
     }
 }

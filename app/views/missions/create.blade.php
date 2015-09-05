@@ -10,9 +10,7 @@
     <div class="content-wrapper">
         <h1>Create A Mission</h1>
         <main>
-            <form name="createMission">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}" ng-model="CSRFToken" />
-
+            <form name="createMissionForm">
                 <fieldset>
                     <legend>Mission</legend>
 
@@ -37,7 +35,7 @@
                     <select ng-model="mission.destination_id" ng-options="destination.destination_id as destination.destination for destination in data.destinations" required></select>
 
                     <label for="">Launch Site</label>
-                    <select ng-model="mission.launch_site_id" ng-options="launchSite.location as launchSite.fullLocation for launchSite in data.launchSites" required></select>
+                    <select ng-model="mission.launch_site_id" ng-options="launchSite.location_id as launchSite.fullLocation for launchSite in data.launchSites" required></select>
 
                     <label for="">Summary</label>
                     <input type="text" ng-model="mission.summary" required />
@@ -219,10 +217,14 @@
                     </div>
                 </fieldset>
 
-                <input type="submit" ng-click="submitMission()" />
+                <input type="submit" ng-click="submitMission()" ng-disabled="createMissionForm.$invalid" value="Create Mission"/>
             </form>
 
         </main>
     </div>
+
+    <script type="text/javascript">
+        angular.module("missionApp").constant("CSRF_TOKEN", '{{ csrf_token() }}');
+    </script>
 </body>
 @stop

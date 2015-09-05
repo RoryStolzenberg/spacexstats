@@ -4360,7 +4360,7 @@ input, textarea, button {
   input:focus, textarea:focus, button:focus {
     border: 1px solid #CCAC55 !important;
     box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
-  input.invalid, textarea.invalid, button.invalid {
+  input.invalid, input.ng-invalid.ng-touched, textarea.invalid, textarea.ng-invalid.ng-touched, button.invalid, button.ng-invalid.ng-touched {
     border: 1px solid #C05B40; }
 
 textarea {

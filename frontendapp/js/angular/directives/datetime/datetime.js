@@ -79,7 +79,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 return years;
             };
 
-            $scope.makeNull = function() {
+            $scope.changeNull = function() {
                 console.log($scope.isNull);
                 $scope.datetime = {
                     year: null,
