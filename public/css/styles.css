@@ -4331,10 +4331,11 @@ form ul li {
 
 form label {
   font-size: 14px;
-  color: #888;
+  color: #21272B;
   text-transform: uppercase;
   font-weight: 600;
   font-family: "Segoe WP", sans-serif;
+  line-height: 2;
   margin: 0 10px; }
 
 form input, form textarea, form button, form select {
@@ -4472,7 +4473,7 @@ form input[type="submit"], form button {
       content: ""; }
   .display-date-time .timezone {
     font-size: 14px;
-    color: #888;
+    color: #21272B;
     text-transform: uppercase;
     font-weight: 600;
     font-family: "Segoe WP", sans-serif;
@@ -4763,7 +4764,7 @@ a:link, a:visited, a:hover, a:active {
 
 .smallcaps {
   font-size: 14px;
-  color: #888;
+  color: #21272B;
   text-transform: uppercase;
   font-weight: 600;
   font-family: "Segoe WP", sans-serif; }

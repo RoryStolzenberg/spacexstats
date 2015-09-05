@@ -43,7 +43,6 @@
 
 
             {{ $mission->present()->article() }}
-            <p>{{ $mission->summary }}</p>
             <h2>Details</h2>
             @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
             <div class="grid-8">
@@ -89,6 +88,10 @@
 
                     <li id="reddit-discussion">
                         <span>/r/SpaceX Reddit Live Thread</span>
+                    </li>
+
+                    <li id="flightclub-link">
+                        <span>FlightClub Simulation</span>
                     </li>
 
                     <li id="raw-data-download">
