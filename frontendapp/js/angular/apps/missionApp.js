@@ -2,7 +2,7 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("missionController", ['$scope', 'Mission', function($scope, Mission) {
+}]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
     // Set the current mission being edited/created
     $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
 
@@ -148,7 +148,23 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         return self;
     }
 
-});
+}).service("missionService", ["$http", function($http) {
+    this.create = function(mission) {
+        $http.post('/missions/create', {
+
+        }).then(function(response) {
+
+        });
+    };
+
+    this.edit = function(mission) {
+        $http.patch('/missions/' + mission.slug + '/edit', {
+
+        }).then(function(response) {
+
+        });
+    }
+}]);
 
 
 

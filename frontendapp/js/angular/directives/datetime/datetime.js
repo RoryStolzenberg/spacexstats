@@ -8,18 +8,29 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             isNullable: '@'
         },
         link: function($scope) {
+
             if ($scope.datetimevalue != null) {
                 var current = moment($scope.datetimevalue);
 
-                $scope.datetime.year = current.year();
-                $scope.datetime.month = current.month();
-                $scope.datetime.day = current.day();
-                $scope.datetime.hour = current.hour();
-                $scope.datetime.minute = current.minute();
-                $scope.datetime.second = current.second();
+                $scope.datetime = {
+                    year: current.year(),
+                    month: current.month(),
+                    day: current.month(),
+                    hour: current.hour(),
+                    minute: current.minute(),
+                    second: current.second()
+                };
 
             } else {
 
+                $scope.datetime = {
+                    year: null,
+                    month: null,
+                    day: null,
+                    hour: null,
+                    minute: null,
+                    second: null
+                };
             }
 
             $scope.days = function() {
@@ -66,6 +77,18 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 }
 
                 return years;
+            };
+
+            $scope.makeNull = function() {
+                console.log($scope.isNull);
+                $scope.datetime = {
+                    year: null,
+                    month: null,
+                    day: null,
+                    hour: null,
+                    minute: null,
+                    second: null
+                };
             };
 
             $scope.$watch('datetime', function() {

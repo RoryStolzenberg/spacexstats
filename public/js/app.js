@@ -587,7 +587,7 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("missionController", ['$scope', 'Mission', function($scope, Mission) {
+}]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
     // Set the current mission being edited/created
     $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
 
@@ -733,7 +733,23 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         return self;
     }
 
-});
+}).service("missionService", ["$http", function($http) {
+    this.create = function(mission) {
+        $http.post('/missions/create', {
+
+        }).then(function(response) {
+
+        });
+    };
+
+    this.edit = function(mission) {
+        $http.patch('/missions/' + mission.slug + '/edit', {
+
+        }).then(function(response) {
+
+        });
+    }
+}]);
 
 
 
@@ -886,6 +902,19 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 });
 
 
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -956,19 +985,40 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
+        restrict: 'A',
+        link: function($scope, element, attrs) {
 
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
@@ -1092,40 +1142,29 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
 });
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',
-        link: function($scope, element, attrs) {
+        scope: {
+            deltaV: '='
+        },
+        link: function($scope, element, attributes) {
 
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
+            $scope.$watch("deltaV", function(files) {
+                if (typeof files !== 'undefined') {
+                    files.forEach(function(file) {
+                        console.log(Object.prototype.toString.call(file));
+                    });
                 }
             });
 
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
+            $scope.calculatedValue = 0;
+        },
+        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
     }
-}]);
+});
+
+
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         restrict: 'E',
@@ -1136,18 +1175,29 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             isNullable: '@'
         },
         link: function($scope) {
+
             if ($scope.datetimevalue != null) {
                 var current = moment($scope.datetimevalue);
 
-                $scope.datetime.year = current.year();
-                $scope.datetime.month = current.month();
-                $scope.datetime.day = current.day();
-                $scope.datetime.hour = current.hour();
-                $scope.datetime.minute = current.minute();
-                $scope.datetime.second = current.second();
+                $scope.datetime = {
+                    year: current.year(),
+                    month: current.month(),
+                    day: current.month(),
+                    hour: current.hour(),
+                    minute: current.minute(),
+                    second: current.second()
+                };
 
             } else {
 
+                $scope.datetime = {
+                    year: null,
+                    month: null,
+                    day: null,
+                    hour: null,
+                    minute: null,
+                    second: null
+                };
             }
 
             $scope.days = function() {
@@ -1196,6 +1246,18 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 return years;
             };
 
+            $scope.makeNull = function() {
+                console.log($scope.isNull);
+                $scope.datetime = {
+                    year: null,
+                    month: null,
+                    day: null,
+                    hour: null,
+                    minute: null,
+                    second: null
+                };
+            };
+
             $scope.$watch('datetime', function() {
                 if ($scope.type == 'datetime') {
 
@@ -1206,29 +1268,6 @@ angular.module('directives.datetime', []).directive('datetime', function() {
 
         },
         templateUrl: '/js/templates/datetime.html'
-    }
-});
-
-
-angular.module('directives.deltaV', []).directive('deltaV', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            deltaV: '='
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.$watch("deltaV", function(files) {
-                if (typeof files !== 'undefined') {
-                    files.forEach(function(file) {
-                        console.log(Object.prototype.toString.call(file));
-                    });
-                }
-            });
-
-            $scope.calculatedValue = 0;
-        },
-        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
     }
 });
 

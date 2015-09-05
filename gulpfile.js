@@ -59,9 +59,11 @@ gulp.task('styles', function() {
 
     gulp.src('frontendapp/css/styles.scss')
         .pipe(sass())
+        .on('error', handleError)
         .pipe(autoprefixer())
         .pipe(gulp.dest('public/css'))
         .pipe(browserSync.stream());
+
 });
 
 // Images Task. Minify all images in the src/images folder using imagemin

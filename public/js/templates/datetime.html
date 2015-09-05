@@ -1,5 +1,5 @@
 <div class="datetime">
-    <input type="checkbox" ng-if="isNullable == true" ng-model="isNull" />
+    <input type="checkbox" ng-if="isNullable == 'true'" ng-model="isNull"/>
 
     <select ng-model="datetime.day" ng-options="day.value as day.display for day in days() track by value" ng-disabled="isNull == true"></select>
     <select ng-model="datetime.month" ng-options="month.value as month.display for month in months" ng-disabled="isNull == true"></select>
