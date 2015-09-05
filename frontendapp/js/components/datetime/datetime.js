@@ -114,10 +114,7 @@ define(['jquery', 'knockout', 'moment', 'text!components/datetime/datetime.html'
             }
 
             // Days
-            self.days.push({ value: '00', display: '-'});
-            for (i = 1; i <= 31; i++) {
-                self.days.push({ value: ('0' + i).slice(-2), display: i });
-            }
+            self.
 
             // Years
             var initialYear = new Date().getFullYear();

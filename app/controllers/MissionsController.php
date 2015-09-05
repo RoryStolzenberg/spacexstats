@@ -13,9 +13,13 @@ class MissionsController extends BaseController {
         $this->missionQueuer = $missionQueuer;
     }
 
-	// GET 
-	// /missions/{slug}
-	public function get($slug) {
+    /**
+     * GET, /missions/{slug}. Where slug is a slugged name of the Mission.
+     *
+     * @param $slug
+     * @return \Illuminate\View\View
+     */
+    public function get($slug) {
 
         $mission = Mission::whereSlug($slug)->first();
 
@@ -42,9 +46,12 @@ class MissionsController extends BaseController {
 
 	}
 
-	// GET
-	// missions/future
-	public function future() {
+    /**
+     * GET, /missions/future. Shows all future missions in a list.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function future() {
         $futureMissions = Mission::where('status','=','Upcoming')
                                     ->orWhere('status','In Progress')
 									->orderBy('launch_order_id')
@@ -59,7 +66,10 @@ class MissionsController extends BaseController {
 
     // GET
     // missions/past
-	public function past() {
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function past() {
 		$pastMissions = Mission::where('status','=','Complete')
                                     ->orWhere('status','=','In Progress')
                                     ->orderBy('launch_order_id', 'DESC')
@@ -72,8 +82,12 @@ class MissionsController extends BaseController {
 		return View::make('missions.past');
 	}
 
-    // GET
+    // GET & POST
     // missions/{slug}/edit
+    /**
+     * @param $slug
+     * @return \Illuminate\View\View
+     */
     public function edit($slug) {
         if (Request::isMethod('get')) {
             if (!Request::ajax()) {
@@ -88,6 +102,9 @@ class MissionsController extends BaseController {
 
     // GET
     // missions/create
+    /**
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
     public function create() {
         if (Request::isMethod('get')) {
 
@@ -136,6 +153,9 @@ class MissionsController extends BaseController {
 
     // AJAX GET
     // missions/all
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function all() {
         $allMissions = Mission::with('featuredImage')->get();
         return Response::json($allMissions);
@@ -143,6 +163,10 @@ class MissionsController extends BaseController {
 
     // AJAX POST
     // /missions/{slug}/requestlaunchdatetime
+    /**
+     * @param $slug
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function requestLaunchDateTime($slug) {
         $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
@@ -151,6 +175,10 @@ class MissionsController extends BaseController {
 
     // GET
     // /missions/{slug}/raw
+    /**
+     * @param $slug
+     * @return \Illuminate\Http\Response
+     */
     public function raw($slug) {
         $mission = Mission::whereSlug($slug)->first();
 

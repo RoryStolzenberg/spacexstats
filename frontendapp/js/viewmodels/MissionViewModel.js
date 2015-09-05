@@ -1,16 +1,6 @@
 define(['jquery', 'knockout', 'ko.mapping'], function($, ko, koMapping) {
     var MissionViewModel = function () {
 
-        var getOriginalValue = ko.bindingHandlers.value.init;
-        ko.bindingHandlers.value.init = function(element, valueAccessor, allBindings) {
-            if (allBindings.has('getOriginalValue')) {
-                valueAccessor()(element.value);
-            }
-            getOriginalValue.apply(this, arguments);
-        };
-
-        ko.components.register('datetime', { require: 'components/datetime/datetime'});
-
         var self = this;
 
         self.submit = function() {

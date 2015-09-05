@@ -583,24 +583,111 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 }]);
 
 
-angular.module("missionApp", [], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
-}]).controller("missionController", ['$scope', function($scope) {
-    $scope.mission = new Mission();
-    $scope.data = {
+}]).controller("missionController", ['$scope', 'Mission', function($scope, Mission) {
+    // Set the current mission being edited/created
+    $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
 
+    // Scope the possible form data info
+    $scope.data = {
+        parts: laravel.parts,
+        spacecraft: laravel.spacecraft,
+        destinations: laravel.destinations,
+        missionTypes: laravel.missionTypes,
+        launchSites: laravel.launchSites,
+        landingSites: laravel.landingSites,
+        vehicles: laravel.vehicles,
+        firststageEngines: laravel.firststageEngines,
+        upperstageEngines: laravel.upperstageEngines,
+        astronauts: laravel.astronauts
+    };
+
+    $scope.submitMission = function() {
+        console.log($scope.mission);
     }
 
 
-}]).factory("Mission", function() {
+}]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", function(PartFlight, Payload, SpacecraftFlight) {
     return function (mission) {
-        var self = mission;
+        if (mission == null) {
+            var self = this;
+
+            self.payloads = [];
+            self.partFlights = [];
+            self.spacecraftFlight = null;
+
+        } else {
+            var self = mission;
+        }
+
+        self.addPartFlight = function(part) {
+            self.partFlights.push(new PartFlight(part));
+        };
+
+        self.addPayload = function() {
+            self.payloads.push(new Payload());
+        };
+
+        self.removePayload = function(payload) {
+            self.payloads.splice(self.payloads.indexOf(payload), 1);
+        };
+
+        self.addSpacecraftFlight = function(spacecraft) {
+            self.spacecraftFlight = new SpacecraftFlight(spacecraft);
+        };
 
         return self;
     }
+
+}]).factory("Payload", function() {
+    return function (payload) {
+        if (payload == null) {
+            var self = this;
+        } else {
+            var self = payload;
+        }
+        return self;
+    }
+
+}).factory("PartFlight", function() {
+    return function(part) {
+        if (partFlight == null) {
+            var self = this;
+
+            self.part = null;
+
+        } else {
+            var self = partFlight;
+        }
+        return self;
+    }
+
+}).factory("Part", function() {
+    return function() {
+
+    }
+
+}).factory("SpacecraftFlight", function() {
+    return function(spacecraftFlight) {
+        if (spacecraftFlight == null) {
+            var self = this;
+
+            self.spacecraft = null;
+
+        } else {
+            var self = spacecraftFlight;
+        }
+        return self;
+    }
+}).factory("Spacecraft", function() {
+    return function() {
+
+    }
 });
+
 
 
 
@@ -690,76 +777,6 @@ angular.module('flashMessageService', [])
         };
     });
 
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
-    return {
-        restrict: 'E',
-        scope: {
-            specificity: '=',
-            countdownTo: '=',
-            callback: '&'
-        },
-        link: function($scope) {
-
-            $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-            $scope.$watch('specificity', function(newValue) {
-                $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-            });
-
-            (function() {
-                if ($scope.isLaunchExact) {
-
-                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                    $scope.countdownProcessor = function() {
-
-                        var launchUnixSeconds = $scope.launchUnixSeconds;
-                        var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                        if (launchUnixSeconds >= currentUnixSeconds) {
-                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                            var secondsBetween = $scope.secondsAwayFromLaunch;
-                            // Calculate the number of days, hours, minutes, seconds
-                            $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                            secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                            $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                            secondsBetween -= $scope.hours * 60 * 60;
-
-                            $scope.minutes = Math.floor(secondsBetween / 60);
-                            secondsBetween -= $scope.minutes * 60;
-
-                            $scope.seconds = secondsBetween;
-
-                            $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                            $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                            $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                            $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                            // Stop the countdown, count up!
-                        } else {
-                        }
-
-                        if ($scope.callback && typeof $scope.callback === 'function') {
-                            $scope.callback();
-                        }
-                    };
-
-                    $interval($scope.countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            })();
-
-        },
-        templateUrl: '/js/templates/countdown.html'
-    }
-}]);
-
 angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {
         restrict: 'E',
@@ -768,7 +785,6 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
             mission: '='
         },
         link: function($scope) {
-            console.log($scope.mission);
         },
         templateUrl: '/js/templates/missionCard.html'
     }
@@ -870,6 +886,76 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
+    return {
+        restrict: 'E',
+        scope: {
+            specificity: '=',
+            countdownTo: '=',
+            callback: '&'
+        },
+        link: function($scope) {
+
+            $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+            $scope.$watch('specificity', function(newValue) {
+                $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+            });
+
+            (function() {
+                if ($scope.isLaunchExact) {
+
+                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+
+
+                    $scope.countdownProcessor = function() {
+
+                        var launchUnixSeconds = $scope.launchUnixSeconds;
+                        var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                        if (launchUnixSeconds >= currentUnixSeconds) {
+                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                            var secondsBetween = $scope.secondsAwayFromLaunch;
+                            // Calculate the number of days, hours, minutes, seconds
+                            $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                            secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                            $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                            secondsBetween -= $scope.hours * 60 * 60;
+
+                            $scope.minutes = Math.floor(secondsBetween / 60);
+                            secondsBetween -= $scope.minutes * 60;
+
+                            $scope.seconds = secondsBetween;
+
+                            $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                            $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                            $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                            $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                            // Stop the countdown, count up!
+                        } else {
+                        }
+
+                        if ($scope.callback && typeof $scope.callback === 'function') {
+                            $scope.callback();
+                        }
+                    };
+
+                    $interval($scope.countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            })();
+
+        },
+        templateUrl: '/js/templates/countdown.html'
+    }
+}]);
+
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
@@ -989,6 +1075,91 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                 return (mv.length > 0);
             };
         }
+    }
+});
+
+
+angular.module('directives.datetime', []).directive('datetime', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            type: '@',
+            datetimevalue: '=ngModel',
+            startYear: '@',
+            nullable: '@'
+        },
+        link: function($scope) {
+            if ($scope.datetimevalue != null) {
+                var current = moment($scope.datetimevalue);
+
+                $scope.datetime.year = current.year();
+                $scope.datetime.month = current.month();
+                $scope.datetime.day = current.day();
+                $scope.datetime.hour = current.hour();
+                $scope.datetime.minute = current.minute();
+                $scope.datetime.second = current.second();
+
+            } else {
+
+            }
+
+            $scope.days = function() {
+                var days = [];
+                days.push({ value: '00', display: '-'});
+
+                for (i = 1; i <= 31; i++) {
+                    days.push({ value: ('0' + i).slice(-2), display: i });
+                }
+
+                return days;
+            };
+
+            $scope.months = [
+                { value: '00', display: '-'},
+                { value: '01', display: 'January'},
+                { value: '02', display: 'February'},
+                { value: '03', display: 'March'},
+                { value: '04', display: 'April'},
+                { value: '05', display: 'May'},
+                { value: '06', display: 'June'},
+                { value: '07', display: 'July'},
+                { value: '08', display: 'August'},
+                { value: '09', display: 'September'},
+                { value: '10', display: 'October'},
+                { value: '11', display: 'November'},
+                { value: '12', display: 'December'}
+            ];
+
+            $scope.years = function() {
+                var years = [];
+
+                var initialYear = moment().year();
+                var currentYear = initialYear;
+
+                if (typeof $scope.startYear !== 'undefined') {
+                    var startYear = $scope.startYear;
+                } else {
+                    var startYear = 1950;
+                }
+
+                while (currentYear >= startYear) {
+                    years.push({ value: currentYear, display: currentYear });
+                    currentYear--;
+                }
+
+                return years;
+            };
+
+            $scope.$watch('datetime', function() {
+                if ($scope.type == 'datetime') {
+
+                } else if ($scope.type == 'date') {
+
+                }
+            });
+
+        },
+        templateUrl: '/js/templates/datetime.html'
     }
 });
 

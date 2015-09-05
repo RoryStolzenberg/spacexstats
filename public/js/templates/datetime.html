@@ -1,0 +1,11 @@
+<div class="datetime">
+    <input type="checkbox" ng-if="isNullable" ng-model="isNull" />
+
+    <select ng-model="datetime.day" ng-options="value as display for day in days()" ng-disabled="isNull == true"></select>
+    <select ng-model="datetime.month" ng-options="value as display for month in months" ng-disabled="isNull == true"></select>
+    <select ng-model="datetime.year" ng-options="value as display for year in years()" ng-disabled="isNull == true"></select>
+
+    <input ng-if="type == 'datetime'" type="number" min="0" max="23" ng-model="datetime.hour" ng-disabled="isNull == true" />:
+    <input ng-if="type == 'datetime'" type="number" min="0" max="59" ng-model="datetime.minute" ng-disabled="isNull == true" />:
+    <input ng-if="type == 'datetime'" type="number" min="0" max="59" ng-model="datetime.second" ng-disabled="isNull == true" />
+</div>

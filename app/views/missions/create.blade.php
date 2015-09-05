@@ -2,135 +2,6 @@
 @section('title', 'Future Launches')
 
 @section('scripts')
-    <script type="text/html" id="partFlight-template">
-        <div>
-            <h3 data-bind="text: heading"></h3>
-
-            <label>Name</label>
-            <input type="text" data-bind="textInput: part.name"/>
-
-            <!-- ko if: part.type() == 'Booster' || part.type() == 'First Stage' -->
-                <label>Landing Legs?</label>
-                <input type="checkbox" data-bind="checked: firststage_landing_legs" />
-
-                <label>Grid Fins?</label>
-                <input type="checkbox" data-bind="checked: firststage_grid_fins" />
-
-                <label>Engine</label>
-                <select data-bind="value: firststage_engine, options: $root.dataLists.firstStageEngines"></select>
-
-                <label>Engine Failures</label>
-                <input type="text" data-bind="value: firststage_engine_failures" />
-
-                <label>MECO time</label>
-                <input type="text" data-bind="value: firststage_meco" />
-
-                <label>Landing Coords (lat)</label>
-                <input type="text" data-bind="value: firststage_landing_coords_lat" />
-
-                <label>Landing Coords (lng)</label>
-                <input type="text" data-bind="value: firststage_landing_coords_lng" />
-
-                <label>Baseplate Color</label>
-                <input type="text" data-bind="value: baseplate_color" />
-            <!-- /ko -->
-
-            <!-- ko if: part.type() == 'Upper Stage' -->
-                <label>Engine</label>
-                <select data-bind="value: upperstage_engine, options: $root.dataLists.upperStageEngines, optionsCaption: 'null'"></select>
-
-                <label>Status</label>
-                <select data-bind="value: upperstage_status, options: $root.dataLists.upperStageStatuses, optionsCaption: 'null'"></select>
-
-                <label>SECO time</label>
-                <input type="text" data-bind="value: upperstage_seco"/>
-
-                <label>Decay Date</label>
-                <datetime params="value: upperstage_decay_date, type: 'date', startYear: 2006, nullable: true, isNull: true"></datetime>
-
-                <label>NORAD ID</label>
-                <input type="text" data-bind="value: upperstage_norad_id"/>
-
-                <label>International Designator</label>
-                <input type="text" data-bind="value: upperstage_intl_designator"/>
-            <!-- /ko -->
-
-            <label>Landed?</label>
-            <input type="checkbox" data-bind="checked: landed" />
-
-            <label>Notes</label>
-            <textarea data-bind="text: note"></textarea>
-        </div>
-    </script>
-
-    <script type="text/html" id="payload-template">
-        <div>
-            <label>Payload Name</label>
-            <input type="text" data-bind="value: name" />
-
-            <label>Operator</label>
-            <input type="text" data-bind="value: operator" />
-
-            <label>Mass</label>
-            <input type="text" data-bind="value: mass" />
-
-            <label>Payload Name</label>
-            <input type="checkbox" data-bind="checked: primary" />
-
-            <label>Gunter's Space Page Link</label>
-            <input type="text" data-bind="value: link" />
-
-            <button data-bind="click: $root.payloadActions.removePayload">Remove This Payload</button>
-        </div>
-    </script>
-
-    <script type="text/html" id="spacecraftFlight-template">
-        <div>
-            <h3 data-bind="value: spacecraft.name"></h3>
-
-            <label>Name</label>
-            <input type="text" data-bind="textInput: spacecraft.name"/>
-
-            <label>Type</label>
-            <select data-bind="value: spacecraft.type, options: $root.dataLists.spacecraftTypes"></select>
-
-            <label>Flight Name</label>
-            <input type="text" data-bind="value: flight_name"/>
-
-            <label>End Of Mission</label>
-            <datetime params="value: end_of_mission, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
-
-            <label>Return Method</label>
-            <select data-bind="value: return_method, options: $root.dataLists.spacecraftReturnMethods"></select>
-
-            <label>Upmass</label>
-            <input type="text" data-bind="value: upmass"/>
-
-            <label>Downmass</label>
-            <input type="text" data-bind="value: downmass"/>
-
-            <label>ISS Berth</label>
-            <datetime params="value: iss_berth, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
-
-            <label>ISS Unberth</label>
-            <datetime params="value: iss_unberth, type: 'datetime', startYear: 2006, nullable: true, isNull: true"></datetime>
-
-            <fieldset>
-                <label>Astronauts</label>
-
-                <!-- ko with: $root.astronautActions -->
-                <select data-bind="value: selectedAstronaut, options: $root.dataLists.astronauts, optionsText: 'fullName', optionsCaption: 'New...'"></select>
-                <button data-bind="click: addAstronaut">Add Astronaut</button>
-                <!-- /ko -->
-
-                <!-- ko template: { name: 'astronaut-template', foreach: astronautFlights, as: 'astronautFlight' } -->
-                <!-- /ko -->
-            </fieldset>
-
-            <button data-bind="click: $root.spacecraftActions.removeSpacecraft">Remove Spacecraft</button>
-        </div>
-    </script>
-
     <script type="text/html" id="astronaut-template">
         <div>
             <h3 data-bind="text: astronaut.full_name"></h3>
@@ -167,71 +38,195 @@
     <div class="content-wrapper">
         <h1>Create A Mission</h1>
         <main>
-            <form>
-
+            <form name="createMission">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" ng-model="CSRFToken" />
 
                 <fieldset>
                     <legend>Mission</legend>
 
                     <label>Mission Name</label>
-                    <input type="text" ng-model="mission.name" />
+                    <input type="text" ng-model="mission.name" required />
 
                     <label>Mission Type</label>
                     <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
-                    <select data-bind="value: mission_type_id, options: $root.dataLists.missionTypes, optionsText: 'name', optionsValue: 'mission_type_id'"></select>
+                    <select ng-model="mission_type_id" ng-options="missionType.mission_type_id as missionType.name for missionType in data.missionTypes" required></select>
 
                     <label for="">Contractor</label>
-                    <input type="text" data-bind="value: contractor"/>
+                    <input type="text" ng-model="mission.contractor" required/>
 
                     <label for="">Launch Date Time</label>
-                    <input type="text" data-bind="value: launch_date_time"/>
+                    <span>Entering a text string is okay, but if a precise date is needed, please follow MySQL date format.</span>
+                    <input type="text" ng-model="mission.launchDateTime" required/>
 
                     <label>Vehicle</label>
-                    <select data-bind="value: vehicle_id, options: $root.dataLists.vehicles, optionsText: 'vehicle', optionsValue: 'vehicle_id'"></select>
+                    <select ng-model="mission.vehicle_id" ng-options="vehicle.vehicle_id as vehicle.vehicle for vehicle in data.vehicles" required></select>
 
                     <label for="">Destination</label>
-                    <select data-bind="value: destination_id, options: $root.dataLists.destinations, optionsText: 'destination', optionsValue: 'destination_id'"></select>
+                    <select ng-model="mission.destination_id" ng-options="destination.destination_id as destination.destination for destination in data.destinations" required></select>
 
                     <label for="">Launch Site</label>
-                    <select data-bind="value: launch_site_id, options: $root.dataLists.launchSites, optionsText: 'name', optionsValue: 'location_id'"></select>
+                    <select ng-model="mission.launch_site_id" ng-options="launchSite.launch_site_id as launchSite.name for launchSite in data.launchSites" required></select>
 
                     <label for="">Summary</label>
-                    <input type="text" data-bind="value: summary"/>
+                    <input type="text" ng-model="mission.summary" required />
                 </fieldset>
 
-                <fieldset data-bind="with: $root.partActions">
+                <fieldset>
                     <legend>Parts</legend>
                     <div class="add-parts">
-                        <div data-bind="click: filterByBoosters">Add a Booster</div>
-                        <div data-bind="click: filterByFirstStages">Add a First Stage</div>
-                        <div data-bind="click: filterByUpperStages">Add an Upper Stage</div>
+                        <button ng-click="filterByParts('Booster')">Add a Booster</button>
+                        <button ng-click="filterByParts('First Stage')">Add a First Stage</button>
+                        <button ng-click="filterByParts('Upper Stage')">Add an Upper Stage</button>
 
-                        <select data-bind="value: selectedPart, options: filteredParts, optionsText: 'name', optionsCaption: 'New...'"></select>
-                        <button data-bind="click: addPart">Add Part</button>
+                        <div ng-repeat="part in data.parts | filter:partFilter">
+                            <span>[[ part.name ]]</span>
+                            <button ng-click="mission.addPartFlight(part)">Reuse This Part</button>
+                        </div>
+
+                        <button ng-click="mission.addPartFlight()">Create A Part</button>
                     </div>
 
-                    <!-- ko template: { name: 'partFlight-template', foreach: $root.mission().partFlights, as: 'partFlight' } -->
-                    <!-- /ko -->
+                    <div ng-repeat="partFlight in mission.partFlights">
+                        <h3></h3>
+
+                        <label>Name</label>
+                        <input type="text" ng-model="partFlight.part.name" />
+
+                        <div ng-if="partFlight.part.type == 'Booster' || partFlightpart.type == 'First Stage'">
+                            <label>Landing Legs?</label>
+                            <input type="checkbox" ng-model="firststage_landing_legs" />
+
+                            <label>Grid Fins?</label>
+                            <input type="checkbox" ng-model="firststage_grid_fins" />
+
+                            <label>Engine</label>
+                            <select ng-model="firststage_engine" ng-options="firstStageEngine.first_stage_engine in firstStageEngines"></select>
+
+                            <label>Engine Failures</label>
+                            <input type="text" ng-model="firststage_engine_failures" />
+
+                            <label>MECO time</label>
+                            <input type="text" ng-model="firststage_meco" />
+
+                            <label>Landing Coords (lat)</label>
+                            <input type="text" ng-model="firststage_landing_coords_lat" />
+
+                            <label>Landing Coords (lng)</label>
+                            <input type="text" ng-model="firststage_landing_coords_lng" />
+
+                            <label>Baseplate Color</label>
+                            <input type="text" ng-model="baseplate_color" />
+                        </div>
+
+
+                        <div ng-if="part.type == 'Upper Stage'">
+                            <label>Engine</label>
+                            <select ng-model="upperstage_engine" ng-options="upperstageEngine in data.upperstageEngines"></select>
+
+                            <label>Status</label>
+                            <select data-bind="value: upperstage_status, options: $root.dataLists.upperStageStatuses, optionsCaption: 'null'"></select>
+
+                            <label>SECO time</label>
+                            <input type="text" ng-model="upperstage_seco"/>
+
+                            <label>Decay Date</label>
+                            <datetime type="date" ng-model="decay_date" startYear="2002" nullable="true"></datetime>
+
+                            <label>NORAD ID</label>
+                            <input type="text" ng-model="upperstage_norad_id" />
+
+                            <label>International Designator</label>
+                            <input type="text" ng-model="upperstage_intl_designator" />
+                        </div>
+
+                        <label>Landed?</label>
+                        <input type="checkbox" ng-model="landed"/>
+
+                        <label>Notes</label>
+                        <textarea ng-model="note"></textarea>
+                    </div>
                 </fieldset>
 
-                <fieldset data-bind="with: $root.payloadActions">
+                <fieldset>
                     <legend>Payloads</legend>
-                    <button data-bind="click: addPayload">Add Payload</button>
+                    <button ng-click="mission.addPayload()">Add Payload</button>
 
-                    <!-- ko template: { name: 'payload-template', foreach: $root.mission().payloads, as: 'payload' } -->
-                    <!-- /ko -->
+                    <div ng-repeat="payload in mission.payloads">
+                        <label>Payload Name</label>
+                        <input type="text" ng-model="payload.name" required />
+
+                        <label>Operator</label>
+                        <input type="text" ng-model="payload.operator" required />
+
+                        <label>Mass (KG)</label>
+                        <input type="text" ng-model="payload.mass" />
+
+                        <label>Is Payload Primary?</label>
+                        <input type="checkbox" ng-model="payload.primary" />
+
+                        <label>Gunter's Space Page Link</label>
+                        <input type="text" ng-model="payload.link" />
+
+                        <button ng-click="mission.removePayload(payload)">Remove This Payload</button>
+                    </div>
                 </fieldset>
 
-                <fieldset data-bind="with: $root.spacecraftActions">
+                <fieldset>
                     <legend>Spacecraft</legend>
-                    <button data-bind="click: addSpacecraft">Add Spacecraft</button>
 
-                    <!-- ko template: { name: 'spacecraftFlight-template', foreach: $root.mission().spacecraftFlight, as: 'spacecraftFlight' } -->
-                    <!-- /ko -->
+                    <div class="add-spacecraft">
+                        <div ng-repeat="spacecraft in data.spacrcraft">
+                            <span>[[ spacecraft.name ]]</span>
+                            <button ng-click="mission.addSpacecraftFlight(spacecraft)" ng-disabled="mission.spacecraftFlight != null">Reuse This Spacecraft</button>
+                        </div>
+
+                        <button ng-click="mission.addSpacecraftFlight()" ng-disabled="mission.spacecraftFlight != null">Create A Spacecraft</button>
+                    </div>
+
+                    <div ng-if="mission.spacecraftFlight != null">
+                        <h3>[[ mission.spacecraftFlight.spacecraft.name ]]</h3>
+
+                        <label>Name</label>
+                        <input type="text" ng-model="mission.spacecraftFlight.spacecraft.name" />
+
+                        <label>Type</label>
+                        <select ng-model="spacecraftFlight.spacecraft.type" ng-options="spacecraftType in data.spacecraftTypes"></select>
+
+                        <label>Flight Name</label>
+                        <input type="text" ng-model="spacecraftFlight.flight_name" required/>
+
+                        <label>End Of Mission</label>
+
+                        <label>Return Method</label>
+                        <select ng-model="spacecraftFlight.return_method" ng-options="returnMethod in data.returnMethods"></select>
+
+                        <label>Upmass</label>
+                        <input type="text" ng-model="upmass" />
+
+                        <label>Downmass</label>
+                        <input type="text" ng-model="downmass" />
+
+                        <label>ISS Berth</label>
+
+                        <label>ISS Unberth</label>
+
+                        <fieldset>
+                            <label>Astronauts</label>
+
+                            <!-- ko with: $root.astronautActions -->
+                            <select data-bind="value: selectedAstronaut, options: $root.dataLists.astronauts, optionsText: 'fullName', optionsCaption: 'New...'"></select>
+                            <button data-bind="click: addAstronaut">Add Astronaut</button>
+                            <!-- /ko -->
+
+                            <!-- ko template: { name: 'astronaut-template', foreach: astronautFlights, as: 'astronautFlight' } -->
+                            <!-- /ko -->
+                        </fieldset>
+
+                        <button ng-model="mission.removeSpacecraft()">Remove Spacecraft</button>
+                    </div>
                 </fieldset>
 
-                <input type="submit" data-bind="click: $root.submit" />
+                <input type="submit" ng-submit="submitMission()" ng-disabled="createMission.$invalid" />
             </form>
 
         </main>
