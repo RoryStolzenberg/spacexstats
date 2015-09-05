@@ -1,6 +1,6 @@
 <div class="header-wrapper">
 	<header class="text-center">
-			<i class="fa fa-navicon toggleMobileNavigation"></i>
+			<i class="fa fa-navicon toggleMobileNavigation gridle-show-small"></i>
 			<span id="logo"><a href="/">SpaceX Stats</a></span>
 			<nav>		
 				<ul>

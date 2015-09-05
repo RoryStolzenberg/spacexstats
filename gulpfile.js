@@ -4,8 +4,8 @@
 var gulp = require('gulp');
 var browserSync = require('browser-sync').create();
 
-function handleError() {
-    console.log('error');
+function handleError(error) {
+    console.log(error);
     this.emit('end');
 }
 

@@ -18,7 +18,8 @@
         height:50px;
 
         i {
-            @include hide-when-larger-than($small);
+            @include gridle_hide();
+            @include gridle_show("small");
             @include gridle(1);
             line-height:50px;
             cursor:pointer;

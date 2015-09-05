@@ -18,9 +18,9 @@ $brandonGrotesque: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grote
 $notoSans: "Noto Sans", sans-serif;
 $segoeWP: "Segoe WP", sans-serif;
 
-$large:18px;
-$medium:14px;
-$small:12px;
+$font-large:18px;
+$font-medium:14px;
+$font-small:12px;
 
 $content-large:18px;
 
@@ -87,54 +87,5 @@ $border-radius-large:8px;
 @each $align in left, right, center {
     .text-#{$align} {
         text-align:$align;
-    }
-}
-
-/* ----------------- BREAK POINTS ----------------- */
-$small: "(max-width: 640px)";
-$medium: "(min-width: 641px) and (max-width: 1024px)";
-$large: "(min-width: 1025px) and (max-width: 1440px)";
-$xlarge: "(min-width: 1441px) and (max-width: 1920px)";
-$xxlarge: "(min-width: 1921px)";
-
-$breakpoints: ($small, $medium, $large, $xlarge, $xxlarge);
-$breakpointsReversed: ($xxlarge, $xlarge, $large, $medium, $small);
-
-/* -------------- VISIBILITY MIXINS --------------- */
-@mixin hide-only-for($breakpoint) {
-    @media #{$breakpoint} {
-        display:none !important;
-    }
-}
-
-@mixin show-only-for($breakpoint) {
-    @media #{$breakpoint} {
-        display:inherit;
-    }
-}
-
-@mixin hide-when-larger-than($selectedBreakpoint) {
-    $seen: false;
-    @each $breakpoint in $breakpoints {
-        @if $seen {
-            @include hide-only-for($breakpoint);
-        }
-
-        @if $selectedBreakpoint == $breakpoint {
-            $seen: true;
-        }
-    }
-}
-
-@mixin hide-when-smaller-than($selectedBreakpoint) {
-    $seen: false;
-    @each $breakpoint in $breakpointsReversed {
-        @if $seen {
-            @include hide-only-for($breakpoint);
-        }
-
-        @if $selectedBreakpoint == $breakpoint {
-            $seen: true;
-        }
     }
 }
