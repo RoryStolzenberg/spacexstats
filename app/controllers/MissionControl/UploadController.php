@@ -20,7 +20,7 @@ class UploadController extends BaseController {
             $upload = Upload::check($files);
 
             if ($upload->hasErrors()) {
-                return Response::json(['errors' => $upload->getErrors()]);
+                return Response::json(['errors' => $upload->getErrors()], 400);
             }
 
             $objects = $upload->create();

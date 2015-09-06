@@ -140,7 +140,7 @@
                                     <li class="grid-8">
                                         <label>
                                             <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
@@ -154,7 +154,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" />
+                                            <input type="text" name="author" ng-model="file.author" placeholder="Who made this GIF?" required />
                                         </label>
                                     </li>
 
@@ -198,14 +198,14 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" />
+                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this audio clip" minlength="10" required />
                                         </label>
                                     </li>
 
                                     <li class="grid-8">
                                         <label>
                                             <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this audio clip" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
@@ -219,7 +219,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" />
+                                            <input type="text" name="author" ng-model="file.author" placeholder="Who authored this audio clip?" required />
                                         </label>
                                     </li>
 
@@ -263,14 +263,14 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" />
+                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this video" minlength="10" required />
                                         </label>
                                     </li>
 
                                     <li class="grid-8">
                                         <label>
                                             <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this video" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
@@ -292,7 +292,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" />
+                                            <input type="text" name="author" ng-model="file.author" placeholder="Who created this video?" required/>
                                         </label>
                                     </li>
 
@@ -345,14 +345,14 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" />
+                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this document" minlength="10" required />
                                         </label>
                                     </li>
 
                                     <li class="grid-8">
                                         <label>
                                             <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary"></textarea>
+                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this document" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
@@ -366,7 +366,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" />
+                                            <input type="text" name="author" ng-model="file.author" placeholder="Who produced this document?" required />
                                         </label>
                                     </li>
 

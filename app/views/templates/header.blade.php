@@ -38,6 +38,7 @@
 						<ul class="nav-second-tier">
 							@if (Auth::isSubscriber())
 								<li>{{ link_to_route('missionControl.create', 'Upload') }}</li>
+                                <li>Collections</li>
 								<li>Leaderboards</li>
 							@else 	
 							    <li>{{ link_to_route('missionControl.buy', 'Buy')}}</li>
