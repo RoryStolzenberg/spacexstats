@@ -108,7 +108,11 @@
                                     </li>
 
                                     <li class="grid-6">
-                                        <datetime params="value: originated_at, type: 'date'"></datetime>
+                                        <label>
+                                            <p>When was this created?</p>
+                                            <datetime type="date" ng-model="file.originated_at" is-nullable="false"></datetime>
+                                        </label>
+
                                     </li>
 
                                     <li class="grid-12">
@@ -161,7 +165,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                            <textarea name="attribution" ng-model="file.attribution"  placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
@@ -226,7 +230,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
@@ -299,7 +303,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
@@ -373,7 +377,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution"></textarea>
+                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 

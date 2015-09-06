@@ -133,7 +133,7 @@ angular.module("futureMissionApp", ["directives.countdown", "flashMessageService
 
 }]);
 
-angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV", "directives.datetime"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
@@ -1014,40 +1014,6 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
@@ -1170,6 +1136,40 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         restrict: 'E',

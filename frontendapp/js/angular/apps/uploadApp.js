@@ -1,4 +1,4 @@
-angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV", "directives.datetime"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
