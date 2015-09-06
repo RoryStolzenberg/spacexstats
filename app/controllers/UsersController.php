@@ -1,12 +1,11 @@
 <?php
 
-use SpaceXStats\Mail\Mailers\UserMailer;
 use SpaceXStats\Enums\UserRole;
 use SpaceXStats\Enums\NotificationType;
 
 class UsersController extends BaseController {
 
-	protected $user, $mailer;
+	protected $user;
 
     protected $flashMessages = [
         'accountCouldNotBeCreatedDatabaseError'     => array('type' => 'failure', 'contents' => 'Looks like your account couldn\'t be created. You can try again, or get in touch.'),
@@ -19,11 +18,11 @@ class UsersController extends BaseController {
         'somethingWentWrong'                        => array('type' => 'failure', 'contents' => 'Something went wrong. You can try again, or get in touch.'),
         'SMSNotificationSuccess'                    => array('type' => 'success', 'contents' => 'SMS Notification settings updated!'),
         'updateProfileSuccess'                      => array('type' => 'success', 'contents' => 'Profile settings updated!'),
+        'userDoesNotExist'                          => array('type' => 'failure', 'contents' => 'That user does not exist.'),
     ];
 
-	public function __construct(User $user, UserMailer $mailer) {
+	public function __construct(User $user) {
 		$this->user = $user;
-		$this->mailer = $mailer;
 	}
 
 	public function get($username) {
@@ -52,8 +51,7 @@ class UsersController extends BaseController {
 
 		// No user with that username was found
 		} else {
-			return Redirect::route('home');
-			// 404
+			return Redirect::route('home')->with('flashMessage', $this->flashMessages['userDoesNotExist']);
 		}
 	}
 

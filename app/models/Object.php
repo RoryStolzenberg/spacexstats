@@ -156,7 +156,7 @@ class Object extends Eloquent {
     }
 
     public function tags() {
-        return $this->belongsToMany('Tag', 'objects_tags_pivot');
+        return $this->morphToMany('Tag', 'taggable', 'taggable_pivot');
     }
 
     public function collections() {
@@ -214,7 +214,7 @@ class Object extends Eloquent {
                 'ResponseContentDisposition' => 'attachment; filename="' . $this->title . '.' . $this->filetype . '"'
             ));
         } else {
-            
+
         }
 
     }

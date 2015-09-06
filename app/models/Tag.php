@@ -22,6 +22,10 @@ class Tag extends Eloquent {
 
     // Relations
     public function objects() {
-        return $this->belongsToMany('Object', 'objects_tags_pivot');
+        return $this->morphedByMany('Object', 'taggable', 'taggables_pivot');
+    }
+
+    public function collections() {
+        return $this->morphedByMany('Collection', 'taggable', 'taggables_pivot');
     }
 }

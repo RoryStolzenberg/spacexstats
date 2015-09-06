@@ -50,15 +50,24 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        /*Schema::create('collections', function(Blueprint $table) {
+        Schema::create('collections', function(Blueprint $table) {
             $table->increments('collection_id');
-            $table->
+            $table->integer('user_id')->unsigned();
+            $table->integer('mission_id')->unsigned()->nullable();
+
+            $table->string('title', Varchar::small);
+            $table->string('summary', Varchar::large);
+
+            $table->timestamps();
         });
 
         // Pivot table
         Schema::create('collections_objects_pivot', function(Blueprint $table) {
-
-        });*/
+            $table->increments('collection_object_id');
+            $table->integer('collection_id')->unsigned();
+            $table->integer('object_id')->unsigned();
+            $table->timestamps();
+        });
 
         Schema::create('dataviews', function(Blueprint $table) {
             $table->increments('dataview_id');
@@ -224,11 +233,15 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('objects_tags_pivot', function(Blueprint $table) {
-            $table->increments('objects_tags_id');
+        Schema::create('object_histories', function(Blueprint $table) {
+            $table->increments('object_history_id');
             $table->integer('object_id')->unsigned();
-            $table->integer('tag_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->text('object');
+            $table->string('changelog', Varchar::xlarge)->nullable();
+            $table->timestamps();
         });
+
 
         Schema::create('orbital_parameters', function(Blueprint $table) {
             $table->increments('orbital_parameter_id');
@@ -371,6 +384,14 @@ class Spacexstats extends Migration {
             $table->string('name', Varchar::tiny);
         });
 
+        Schema::create('taggables_pivot', function(Blueprint $table) {
+            $table->increments('taggable_pivot_id');
+            $table->integer('tag_id')->unsigned();
+            $table->integer('taggable_id')->unsigned();
+            $table->string('taggable_type', Varchar::tiny);
+            $table->timestamps();
+        });
+
         Schema::create('tags', function(Blueprint $table) {
             $table->increments('tag_id');
             $table->string('name', Varchar::tiny);
@@ -423,6 +444,16 @@ class Spacexstats extends Migration {
             $table->foreign('spacecraft_flight_id')->references('spacecraft_flight_id')->on('spacecraft_flights_pivot');
         });
 
+        Schema::table('collections', function(Blueprint $table) {
+            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('mission_id')->references('mission_id')->on('missions');
+        });
+
+        Schema::table('collections_objects_pivot', function(Blueprint $table) {
+            $table->foreign('collection_id')->references('collection_id')->on('collections');
+            $table->foreign('object_id')->references('object_id')->on('objects');
+        });
+
         Schema::table('dataviews', function(Blueprint $table) {
             $table->foreign('banner_image')->references('object_id')->on('objects');
         });
@@ -465,8 +496,7 @@ class Spacexstats extends Migration {
             $table->foreign('tweeter_id')->references('tweeter_id')->on('tweeters');
         });
 
-        Schema::table('objects_tags_pivot', function(Blueprint $table) {
-            $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade');
+        Schema::table('taggables_pivot', function(Blueprint $table) {
             $table->foreign('tag_id')->references('tag_id')->on('tags')->onDelete('cascade');
         });
 

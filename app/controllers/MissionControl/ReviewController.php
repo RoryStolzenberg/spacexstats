@@ -1,12 +1,10 @@
 <?php
 
 class ReviewController extends BaseController {
+
     // GET
     public function index() {
-        return View::make('missionControl.review.index', array(
-            'title' => 'Review',
-            'currentPage' => 'review'
-        ));
+        return View::make('missionControl.review.index');
     }
 
     // AJAX GET

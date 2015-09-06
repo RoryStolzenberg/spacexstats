@@ -14,4 +14,8 @@ class Collection extends Eloquent {
     public function objects() {
         return $this->belongsToMany('Objects', 'collections_objects_pivot');
     }
+
+    public function tags() {
+        return $this->morphToMany('Tag', 'taggable', 'taggable_pivot');
+    }
 }
