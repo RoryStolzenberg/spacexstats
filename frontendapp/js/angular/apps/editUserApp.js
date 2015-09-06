@@ -8,6 +8,8 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
     $scope.missions = laravel.missions;
 
+    $scope.patches = laravel.patches;
+
     $scope.profile = {
         summary: laravel.user.profile.summary,
         twitter_account: laravel.user.profile.twitter_account,

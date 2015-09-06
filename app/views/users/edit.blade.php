@@ -44,6 +44,8 @@
                         <select-list options="missions" has-default-option="true" unique-key="mission_id" searchable="true" selected-option="profile.favorite_mission"></select-list>
 
                         <label>Favorite Mission Patch</label>
+                        <select-list options="patches" has-default-option="true" unique-key="mission_id" searchable="true" selected-option="profile.favorite_patch"></select-list>
+
 
                         <label>Favorite Elon Musk Quote</label>
                         <textarea ng-model="profile.favorite_quote"></textarea>

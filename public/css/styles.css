@@ -4106,17 +4106,7 @@ main {
   box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
   color: #181c1f;
   min-height: calc(100% - 120px);
-  display: block;
-  zoom: 1;
-  /* IE < 8 */ }
-  main:before,
-  main:after {
-    content: ".";
-    display: block;
-    height: 0;
-    overflow: hidden; }
-  main:after {
-    clear: both; }
+  display: block; }
   main nav {
     height: 30px;
     line-height: 30px; }
@@ -4151,6 +4141,18 @@ h3 {
   font-size: 18px;
   color: #33495E;
   margin: 20px 0 10px 0; }
+
+section {
+  zoom: 1;
+  /* IE < 8 */ }
+  section:before,
+  section:after {
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden; }
+  section:after {
+    clear: both; }
 
 .header-wrapper {
   width: 100%;

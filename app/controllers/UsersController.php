@@ -70,6 +70,7 @@ class UsersController extends BaseController {
 
         JavaScript::put([
             'missions' => Mission::with('featuredImage')->get(),
+            'patches' => Mission::whereNotNull('mission_patch')->with('missionPatch')->get(),
             'notifications' => $hasNotifications,
             'user' => $user
         ]);

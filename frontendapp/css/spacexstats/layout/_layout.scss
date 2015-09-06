@@ -68,16 +68,6 @@ main {
     min-height:calc(100% - 120px);
     display:block; // Make IE happy
 
-    &:before,
-    &:after {
-        content: ".";
-        display: block;
-        height: 0;
-        overflow: hidden;
-    }
-    &:after { clear: both; }
-    zoom: 1; /* IE < 8 */
-
     nav {
         height:30px; // Includes the 10px padding of the parent element
         line-height:30px;
@@ -119,4 +109,16 @@ h3 {
     font-size:18px;
     color:$october;
     margin:20px 0 10px 0;
+}
+
+section {
+    &:before,
+    &:after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+    }
+    &:after { clear: both; }
+    zoom: 1; /* IE < 8 */
 }

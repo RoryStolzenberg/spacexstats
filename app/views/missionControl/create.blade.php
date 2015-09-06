@@ -53,7 +53,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this image" minlength="10" required/>
+                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this image" minlength="10" required />
                                         </label>
                                     </li>
 
@@ -101,15 +101,8 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Type</p>
-                                            <select ng-init="file.subtype = options[0]" ng-model="file.subtype">
-                                                <option>None</option>
-                                                <option value="1">Mission Patch</option>
-                                                <option value="2">Photo</option>
-                                                <option value="5">Screenshot</option>
-                                                <option value="11">Infographic</option>
-                                                <option value="12">News Summary</option>
-                                                <option value="16">Hazard Map</option>
-                                                <optiom value="17">License</optiom>
+                                            <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.images">
+                                                <option value="">None</option>
                                             </select>
                                         </label>
                                     </li>
@@ -140,7 +133,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" />
+                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this GIF" minlength="10" required />
                                         </label>
                                     </li>
 
@@ -320,10 +313,8 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Type</p>
-                                            <select ng-init="file.subtype = options[0]" ng-model="file.subtype">
+                                            <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.video">
                                                 <option value="">None</option>
-                                                <option value="6">Launch Video</option>
-                                                <option value="7">Press Conference</option>
                                             </select>
                                         </label>
                                     </li>
@@ -396,12 +387,8 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Type</p>
-                                            <select ng-init="file.subtype = options[0]" ng-model="file.subtype">
-                                                <option>None</option>
-                                                <option value="6">Press Kit</option>
-                                                <option value="7">Cargo Manifest</option>
-                                                <option value="15">Weather Forecast</option>
-                                                <option value="17">License</option>
+                                            <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.documents">
+                                                <option value="">None</option>
                                             </select>
                                         </label>
                                     </li>

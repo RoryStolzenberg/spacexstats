@@ -7,7 +7,29 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
     $scope.data = {
         missions: laravel.missions,
-        tags: laravel.tags
+        tags: laravel.tags,
+        subtypes: {
+            images: [
+                {value: 1, display: 'Mission Patch' },
+                {value: 2, display: 'Photo' },
+                {value: 4, display: 'Chart' },
+                {value: 5, display: 'Screenshot' },
+                {value: 10, display: 'Infographic' },
+                {value: 11, display: 'News Summary' },
+                {value: 16, display: 'Hazard Map' },
+                {value: 17, display: 'License' },
+            ],
+            video: [
+                {value: 6, display: 'Launch Video' },
+                {value: 7, display: 'Press Conference' }
+            ],
+            documents: [
+                {value: 6, display: 'Press Kit' },
+                {value: 7, display: 'Cargo Manifest' },
+                {value: 15, display: 'Weather Forecast' },
+                {value: 17, display: 'License' }
+            ]
+        }
     };
 
     $scope.changeSection = function(section) {
