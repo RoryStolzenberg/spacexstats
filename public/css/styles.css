@@ -4106,7 +4106,17 @@ main {
   box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
   color: #181c1f;
   min-height: calc(100% - 120px);
-  display: block; }
+  display: block;
+  zoom: 1;
+  /* IE < 8 */ }
+  main:before,
+  main:after {
+    content: ".";
+    display: block;
+    height: 0;
+    overflow: hidden; }
+  main:after {
+    clear: both; }
   main nav {
     height: 30px;
     line-height: 30px; }
@@ -4153,7 +4163,6 @@ h3 {
     box-shadow: none; }
   .header-wrapper header {
     max-width: 1400px;
-    padding: 0 5px;
     width: 100%;
     margin: 0 auto;
     font-family: "Noto Sans", sans-serif;
@@ -4381,13 +4390,13 @@ form .prepended-input {
     margin: 0;
     width: calc(100% - 30px); }
 
-form button.icon-button {
+button.icon-button {
   width: 100px;
   height: 100px; }
-  form button.icon-button img {
+  button.icon-button img {
     text-align: center; }
 
-form input[type="submit"], form button {
+input[type="submit"], button {
   height: 32px;
   min-width: 150px;
   padding: 0 20px;
@@ -4400,10 +4409,10 @@ form input[type="submit"], form button {
   letter-spacing: 1px;
   cursor: pointer;
   box-shadow: 0; }
-  form input[type="submit"][type="submit"], form input[type="submit"].submit, form button[type="submit"], form button.submit {
+  input[type="submit"][type="submit"], input[type="submit"].submit, button[type="submit"], button.submit {
     background-color: #3569A4; }
-  form input[type="submit"][disabled], form input[type="submit"].disabled, form button[disabled], form button.disabled {
-    background-color: #888; }
+  input[type="submit"][disabled], input[type="submit"].disabled, button[disabled], button.disabled {
+    background-color: #CCC; }
 
 #statistics-navigation {
   position: fixed;

@@ -64,37 +64,37 @@ form {
             width:calc(100% - 30px);
         }
     }
+}
 
-    button.icon-button {
-        width:100px;
-        height:100px;
+button.icon-button {
+    width:100px;
+    height:100px;
 
-        img {
-            text-align:center;
-        }
+    img {
+        text-align:center;
+    }
+}
+
+input[type="submit"], button {
+    height:32px;
+    min-width:150px;
+    padding:0 20px;
+    width:auto;
+    border-radius:2px;
+    border:none;
+    color:$offwhite;
+    font-weight:bold;
+    text-transform: uppercase;
+    letter-spacing:1px;
+    cursor:pointer;
+    box-shadow:0;
+
+    &[type="submit"], &.submit {
+        background-color:$blue;
     }
 
-    input[type="submit"], button {
-        height:32px;
-        min-width:150px;
-        padding:0 20px;
-        width:auto;
-        border-radius:2px;
-        border:none;
-        color:$offwhite;
-        font-weight:bold;
-        text-transform: uppercase;
-        letter-spacing:1px;
-        cursor:pointer;
-        box-shadow:0;
-
-            &[type="submit"], &.submit {
-                background-color:$blue;
-            }
-
-        &[disabled], &.disabled {
-            background-color:$grey;
-        }
+    &[disabled], &.disabled {
+        background-color:$bordergrey;
     }
 }
 

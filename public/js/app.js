@@ -1,3 +1,17 @@
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+
 angular.module("missionsListApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -829,33 +843,6 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
         restrict: 'E',
@@ -914,6 +901,179 @@ angular.module("directives.selectList", []).directive("selectList", function() {
             $scope.dropdownIsVisible = false;
         },
         templateUrl: '/js/templates/selectList.html'
+    }
+});
+
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
+angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+    return {
+        require: 'ngModel',
+        restrict: 'E',
+        scope: {
+            availableTags: '=',
+            currentTags: '=ngModel'
+        },
+        link: function($scope, element, attributes, ctrl) {
+
+            console.log(ctrl);
+            ctrl.$options = {
+                allowInvalid: true
+            }
+
+            $scope.suggestions = [];
+            $scope.inputWidth = {};
+
+            $scope.createTag = function(createdTag) {
+                var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                    return tag.name == createdTag;
+                });
+
+                if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                    // check if tag is present in the available tags array
+                    var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (tagIsPresentInAvailableTags.length === 1) {
+                        // grab tag
+                        var newTag = tagIsPresentInAvailableTags[0];
+                    } else {
+                        // trim and convert the text to lowercase, then create!
+                        var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
+                    }
+
+                    $scope.currentTags.push(newTag);
+
+                    // reset the input field
+                    $scope.tagInput = "";
+
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                }
+            };
+
+            $scope.removeTag = function(removedTag) {
+                $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                $scope.updateSuggestionList();
+                $scope.updateInputLength();
+            };
+
+            $scope.tagInputKeydown = function(event) {
+                // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                // event.key == ' ' || event.key == 'Enter'
+                if (event.which == 32 || event.which == 13) {
+                    event.preventDefault();
+
+                    // Remove any rulebreaking chars
+                    var tag = $scope.tagInput;
+                    tag = tag.replace(/["']/g, "");
+                    // Remove whitespace if present
+                    tag = tag.trim();
+
+                    $scope.createTag(tag);
+
+                // event.key == 'Backspace'
+                } else if (event.which == 8 && $scope.tagInput == "") {
+                    event.preventDefault();
+
+                    // grab the last tag to be inserted (if any) and put it back in the input
+                    if ($scope.currentTags.length > 0) {
+                        $scope.tagInput = $scope.currentTags.pop().name;
+                    }
+                }
+            };
+
+            $scope.updateInputLength = function() {
+                $timeout(function() {
+                    $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                });
+            };
+
+            $scope.areSuggestionsVisible = false;
+            $scope.toggleSuggestionVisibility = function() {
+                $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+            };
+
+            $scope.updateSuggestionList = function() {
+                var search = new RegExp($scope.tagInput, "i");
+
+                $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                    if ($scope.currentTags.filter(function(currentTag) {
+                            return availableTag.name == currentTag.name;
+                        }).length == 0) {
+                        return search.test(availableTag.name);
+                    }
+                    return false;
+                }).slice(0,6);
+            };
+
+            ctrl.$validators.taglength = function(modelValue, viewValue) {
+                console.log(viewValue);
+                //return true;
+                return viewValue.length > 0 && viewValue.length < 6;
+            };
+
+            $scope.$watch('currentTags', function() {
+                ctrl.$validate();
+            }, true);
+
+        },
+        templateUrl: '/js/templates/tags.html'
+    }
+}]).factory("Tag", function() {
+    return function(tag) {
+        var self = tag;
+        return self;
     }
 });
 
@@ -1095,163 +1255,6 @@ angular.module('directives.datetime', []).directive('datetime', function() {
 });
 
 
-angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-    return {
-        require: 'ngModel',
-        restrict: 'E',
-        scope: {
-            availableTags: '=',
-            ngModel: '=',
-            placeholder: '@'
-        },
-        link: function($scope, element, attributes, ctrl) {
-
-            $scope.suggestions = [];
-            $scope.inputWidth = {};
-
-            $scope.createTag = function(createdTag) {
-                var tagIsPresentInCurrentTags = $scope.ngModel.filter(function(tag) {
-                    return tag.name == createdTag;
-                });
-
-                if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                    // check if tag is present in the available tags array
-                    var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (tagIsPresentInAvailableTags.length === 1) {
-                        // grab tag
-                        var newTag = tagIsPresentInAvailableTags[0];
-                    } else {
-                        // trim and convert the text to lowercase, then create!
-                        var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
-                    }
-
-                    $scope.ngModel.push(newTag);
-
-                    // reset the input field
-                    $scope.tagInput = "";
-
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                }
-            };
-
-            $scope.removeTag = function(removedTag) {
-                $scope.ngModel.splice($scope.ngModel.indexOf(removedTag), 1);
-                $scope.updateSuggestionList();
-                $scope.updateInputLength();
-            };
-
-            $scope.tagInputKeyPress = function(event) {
-                // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                // event.key == ' ' || event.key == 'Enter'
-                if (event.which == 32 || event.which == 13) {
-                    event.preventDefault();
-
-                    // Remove any rulebreaking chars
-                    var tag = $scope.tagInput;
-                    tag = tag.replace(/["']/g, "");
-                    // Remove whitespace if present
-                    tag = tag.trim();
-
-                    $scope.createTag(tag);
-
-                // event.key == 'Backspace'
-                } else if (event.which == 8 && $scope.tagInput == "") {
-                    event.preventDefault();
-
-                    // grab the last tag to be inserted (if any) and put it back in the input
-                    if ($scope.ngModel.length > 0) {
-                        $scope.tagInput = $scope.ngModel.pop().name;
-                    }
-                }
-            };
-
-            $scope.updateInputLength = function() {
-                $timeout(function() {
-                    $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                });
-            };
-
-            $scope.areSuggestionsVisible = false;
-            $scope.toggleSuggestionVisibility = function() {
-                $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-            };
-
-            $scope.updateSuggestionList = function() {
-                var search = new RegExp($scope.tagInput, "i");
-
-                $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                    if ($scope.ngModel.filter(function(currentTag) {
-                            return availableTag.name == currentTag.name;
-                        }).length == 0) {
-                        return search.test(availableTag.name);
-                    }
-                    return false;
-                }).slice(0,6);
-            };
-
-        },
-        templateUrl: '/js/templates/tags.html'
-    }
-}]).factory("Tag", function() {
-    return function(tag) {
-        var self = tag;
-        return self;
-    }
-}).directive('taglength', function() {
-    return {
-        require: 'ngModel',
-        restrict: 'A',
-        link: function(scope, element, attrs, ctrl) {
-
-            ctrl.$validators.taglength = function(mv, vv) {
-                return (mv.length > 0);
-            };
-        }
-    }
-});
-
-
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',

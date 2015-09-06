@@ -37,7 +37,7 @@ gulp.task('scripts', function() {
 
     // Move angular stuff
     gulp.src('frontendapp/js/angular/**/*.js')
-        .pipe(concat('app.js'))
+        .pipe(concat('app.js')).on('error', handleError)
         //.pipe(uglify()).on('error', handleError)
         .pipe(gulp.dest('public/js'))
         .pipe(browserSync.stream());
@@ -58,8 +58,7 @@ gulp.task('styles', function() {
     var sass = require('gulp-sass');
 
     gulp.src('frontendapp/css/styles.scss')
-        .pipe(sass())
-        .on('error', handleError)
+        .pipe(sass()).on('error', handleError)
         .pipe(autoprefixer())
         .pipe(gulp.dest('public/css'))
         .pipe(browserSync.stream());

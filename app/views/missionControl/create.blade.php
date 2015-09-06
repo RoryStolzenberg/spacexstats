@@ -94,7 +94,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="tags" ng-model="file.tags" ></tags>
+                                            <tags available-tags="data.tags" ng-model="file.tags" ></tags>
                                         </label>
                                     </li>
 
@@ -175,7 +175,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>Tags</p>
-                                            <tags available-tags="tags" ng-model="file.tags"></tags>
+                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
@@ -521,11 +521,13 @@
             <section class="upload-text" ng-controller="writeController" ng-show="activeSection == 'write'">
                 <form name="writeForm" novalidate>
 
+                    <p>Post a mission update, share some news, ask a question, discuss a topic!</p>
+
                     <label>Title</label>
                     <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" minlength="10" required/>
 
                     <label>Content</label>
-                    <textarea name="content" ng-model="text.content" placeholder="Write your post" minlength="100" required></textarea>
+                    <textarea name="content" ng-model="text.content" placeholder="Write your post" rows="10" minlength="100" required></textarea>
 
                     <label>Select related mission</label>
                     <select-list
@@ -541,8 +543,8 @@
                     <input type="checkbox" name="anonymous" ng-model="text.anonymous" />
 
                     <label>Tags</label>
-                    <tags available-tags="data.tags" name="tags" ng-model="text.tags" taglength></tags>
-                    <span ng-show="writeForm.tags.$error.taglength">Yay</span>
+                    <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>
+                    <span ng-show="writeForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
 
                     <input type="submit" value="Submit" name="submit" ng-disabled="writeForm.$invalid" ng-click="fileSubmitButtonFunction()" />
                 </form>

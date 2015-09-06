@@ -4,16 +4,20 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         restrict: 'E',
         scope: {
             availableTags: '=',
-            ngModel: '=',
-            placeholder: '@'
+            currentTags: '=ngModel'
         },
         link: function($scope, element, attributes, ctrl) {
+
+            console.log(ctrl);
+            ctrl.$options = {
+                allowInvalid: true
+            }
 
             $scope.suggestions = [];
             $scope.inputWidth = {};
 
             $scope.createTag = function(createdTag) {
-                var tagIsPresentInCurrentTags = $scope.ngModel.filter(function(tag) {
+                var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
                     return tag.name == createdTag;
                 });
 
@@ -32,7 +36,7 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                         var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
                     }
 
-                    $scope.ngModel.push(newTag);
+                    $scope.currentTags.push(newTag);
 
                     // reset the input field
                     $scope.tagInput = "";
@@ -43,12 +47,12 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
             };
 
             $scope.removeTag = function(removedTag) {
-                $scope.ngModel.splice($scope.ngModel.indexOf(removedTag), 1);
+                $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
                 $scope.updateSuggestionList();
                 $scope.updateInputLength();
             };
 
-            $scope.tagInputKeyPress = function(event) {
+            $scope.tagInputKeydown = function(event) {
                 // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
                 // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
 
@@ -69,8 +73,8 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                     event.preventDefault();
 
                     // grab the last tag to be inserted (if any) and put it back in the input
-                    if ($scope.ngModel.length > 0) {
-                        $scope.tagInput = $scope.ngModel.pop().name;
+                    if ($scope.currentTags.length > 0) {
+                        $scope.tagInput = $scope.currentTags.pop().name;
                     }
                 }
             };
@@ -90,7 +94,7 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                 var search = new RegExp($scope.tagInput, "i");
 
                 $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                    if ($scope.ngModel.filter(function(currentTag) {
+                    if ($scope.currentTags.filter(function(currentTag) {
                             return availableTag.name == currentTag.name;
                         }).length == 0) {
                         return search.test(availableTag.name);
@@ -99,6 +103,16 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
                 }).slice(0,6);
             };
 
+            ctrl.$validators.taglength = function(modelValue, viewValue) {
+                console.log(viewValue);
+                //return true;
+                return viewValue.length > 0 && viewValue.length < 6;
+            };
+
+            $scope.$watch('currentTags', function() {
+                ctrl.$validate();
+            }, true);
+
         },
         templateUrl: '/js/templates/tags.html'
     }
@@ -106,17 +120,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
     return function(tag) {
         var self = tag;
         return self;
-    }
-}).directive('taglength', function() {
-    return {
-        require: 'ngModel',
-        restrict: 'A',
-        link: function(scope, element, attrs, ctrl) {
-
-            ctrl.$validators.taglength = function(mv, vv) {
-                return (mv.length > 0);
-            };
-        }
     }
 });
 
