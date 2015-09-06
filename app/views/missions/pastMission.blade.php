@@ -110,9 +110,11 @@
             <h3>Postlaunch</h3>
 
             <h2>Images</h2>
-            <section class="images"></section>
+            <section class="images">
+            </section>
             <h2>Videos</h2>
-            <section class="videos"></section>
+            <section class="videos">
+            </section>
             <h2>Documents</h2>
             <section class="documents">
             </section>

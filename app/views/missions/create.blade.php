@@ -144,21 +144,28 @@
                     <button ng-click="mission.addPayload()">Add Payload</button>
 
                     <div ng-repeat="payload in mission.payloads" ng-form="[[ 'payloadForm' + $index ]]">
-                        <label>Payload Name</label>
-                        <input type="text" ng-model="payload.name" required />
-
-                        <label>Operator</label>
-                        <input type="text" ng-model="payload.operator" required />
-
-                        <label>Mass (KG)</label>
-                        <input type="number" ng-model="payload.mass" min="0" step="0.5" />
-
-                        <label>Is Payload Primary?</label>
-                        <input type="checkbox" ng-model="payload.primary" />
-
-                        <label>Gunter's Space Page Link</label>
-                        <input type="text" ng-model="payload.link" />
-
+                        <ul>
+                            <li class="grid-6">
+                                <label>Payload Name</label>
+                                <input type="text" ng-model="payload.name" required />
+                            </li>
+                            <li class="grid-6">
+                                <label>Operator</label>
+                                <input type="text" ng-model="payload.operator" required />
+                            </li>
+                            <li class="grid-4">
+                                <label>Mass (KG)</label>
+                                <input type="number" ng-model="payload.mass" min="0" step="0.5" />
+                            </li>
+                            <li class="grid-4">
+                                <label>Is Payload Primary?</label>
+                                <input type="checkbox" ng-model="payload.primary" />
+                            </li>
+                            <li class="grid-4">
+                                <label>Gunter's Space Page Link</label>
+                                <input type="text" ng-model="payload.link" />
+                            </li>
+                        </ul>
                         <button ng-click="mission.removePayload(payload)">Remove This Payload</button>
                     </div>
                 </fieldset>

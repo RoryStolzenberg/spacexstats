@@ -362,7 +362,7 @@ class Spacexstats extends Migration {
             $table->integer('spacecraft_id')->unsigned();
             $table->string('flight_name', Varchar::tiny);
             $table->datetime('end_of_mission')->nullable(); // Nonoptional Values
-            $table->enum('return_method', array('Splashdown', 'Landing'))->nullable();
+            $table->enum('return_method', array('Splashdown', 'Landing', 'Did Not Return'))->nullable();
             $table->smallInteger('upmass')->unsigned()->nullable();
             $table->smallInteger('downmass')->unsigned()->nullable();
             $table->datetime('iss_berth')->nullable(); // Nonoptional Values

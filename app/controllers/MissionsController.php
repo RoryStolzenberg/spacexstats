@@ -130,11 +130,6 @@ class MissionsController extends BaseController {
                 'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
                 'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
                 'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
-                'spacecraftTypes' => array('Dragon 1', 'Dragon 2'),
-                'returnMethods' => array('Splashdown', 'Landing'),
-                'firstStageEngines' => array('Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'),
-                'upperStageEngines' => array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'),
-                'upperStageStatuses' => array('Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'),
                 'parts' => Part::whereDoesntHave('partFlights', function($q) {
                     $q->where('landed', false);
                 })->get()->toArray(),
