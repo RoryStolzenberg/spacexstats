@@ -89,10 +89,19 @@ input[type="submit"], button {
     cursor:pointer;
     box-shadow:0;
 
+    // Other buttons
+    background-color:$spacesuitgreen;
+
+    // Submission buttons
     &[type="submit"], &.submit {
         background-color:$blue;
     }
 
+    &.delete {
+        background-color:$red;
+    }
+
+    // Disabled buttons
     &[disabled], &.disabled {
         background-color:$bordergrey;
     }

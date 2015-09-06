@@ -4142,7 +4142,7 @@ h1 {
 
 h2 {
   font-size: 24px;
-  margin: 10px 0;
+  margin: 20px 0 10px 0;
   padding: 5px 10px;
   border-bottom: 1px solid #CCC;
   clear: both; }
@@ -4411,9 +4411,12 @@ input[type="submit"], button {
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
-  box-shadow: 0; }
+  box-shadow: 0;
+  background-color: #1F6F70; }
   input[type="submit"][type="submit"], input[type="submit"].submit, button[type="submit"], button.submit {
     background-color: #3569A4; }
+  input[type="submit"].delete, button.delete {
+    background-color: #C05B40; }
   input[type="submit"][disabled], input[type="submit"].disabled, button[disabled], button.disabled {
     background-color: #CCC; }
 

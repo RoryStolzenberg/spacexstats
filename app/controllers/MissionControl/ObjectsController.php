@@ -18,35 +18,23 @@ class ObjectsController extends BaseController {
             ));
 
         // Object is visible to subscribers, is published, and the logged in user is also a subscriber
-        } elseif ($object->visibility == 'Default' && $object->status == 'Published' && Auth::isSubscriber()) {
-
-                // Inject dynamic data into page
-                JavaScript::put([
-                    'totalFavorites' => $object->favorites()->count(),
-                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first(),
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first(),
-                    'object' => $object
-                ]);
-
-                return View::make('missionControl.objects.get', array(
-                    'object' => $object
-                ));
-
         // Object is hidden and not published, and the logged in user is an admin
-        } elseif ($object->visibility == 'Hidden' || $object->status != "Published" && Auth::isAdmin()) {
+        } elseif (($object->visibility == 'Default' && $object->status == 'Published' && Auth::isSubscriber()) ||
+            ($object->visibility == 'Hidden' || $object->status != "Published" && Auth::isAdmin())) {
 
                 // Inject dynamic data into page
                 JavaScript::put([
                     'totalFavorites' => $object->favorites()->count(),
                     'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first(),
                     'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first(),
-                    'object' => $object,
+                    'object' => $object
                 ]);
 
                 return View::make('missionControl.objects.get', array(
                     'object' => $object
                 ));
         }
+
         return App::abort(401);
     }
 

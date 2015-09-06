@@ -63,7 +63,7 @@
                             <span>[[ favoritesText ]]</span>
                         </span>
                         <span class="grid-4">
-                            <a href="{{ $object->mediaDownload }}" target="_blank" download><i class="fa fa-download" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
+                            <a href="" target="_blank" download><i class="fa fa-download" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
                         </span>
                     </div>
                     <div class="more">
@@ -105,20 +105,21 @@
 
                 <h3>Your Note</h3>
                 @if (Auth::isSubscriber())
-                    <div ng-show="noteState === 'read'">
-                        <p>[[ noteReadText ]]</p>
-                        <button ng-click="changeNoteState()">[[ noteButtonText ]]</button>
-                    </div>
+                    <form>
+                        <div ng-show="noteState === 'read'">
+                            <p>[[ noteReadText ]]</p>
+                            <button ng-click="changeNoteState()">[[ noteButtonText ]]</button>
+                        </div>
 
-                    <div ng-show="noteState === 'write'">
-                        <textarea ng-model="note"></textarea>
-                        <button ng-click="saveNote()" data-bind="disable: note().length == 0">Save Note</button>
-                        <button ng-if="originalNote !== ''" ng-click="deleteNote()">Delete Note</button>
-                    </div>
+                        <div ng-show="noteState === 'write'">
+                            <textarea ng-model="note"></textarea>
+                            <button ng-click="saveNote()" data-bind="disable: note().length == 0">Save Note</button>
+                            <button class="delete" ng-if="originalNote !== ''" ng-click="deleteNote()">Delete Note</button>
+                        </div>
+                    </form>
                 @else
                     Sign up for Mission Control to leave personal notes about this.
                 @endif
-
             </section>
 
             <h2>Comments</h2>

@@ -8,20 +8,21 @@ abstract class MissionControlType extends Enum {
 	const Audio 		= 3;
 	const Video 		= 4;
 	const Document 		= 5;
+    const Model         = 6;
 
 	// Submission
-	const Tweet 		= 6;
-	const Article 		= 7;
-	const Transcript	= 8;
-	const Comment		= 9;
-    const Webpage       = 10;
+	const Tweet 		= 7;
+	const Article 		= 8;
+	const Transcript	= 9;
+	const Comment		= 10;
+    const Webpage       = 11;
 
 	// Writing
-	const Text		    = 11;
+	const Text		    = 12;
 
 	// Private 
-	const Pivot			= 12;
-	const Person 		= 13;
+	const Pivot			= 13;
+	const Person 		= 14;
 }
 
 abstract class MissionControlSubtype extends Enum {

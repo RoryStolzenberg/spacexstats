@@ -121,7 +121,7 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous" />
+                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous" />
                                         </label>
                                     </li>
                                 </ul>
@@ -186,7 +186,7 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous" />
+                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous" />
                                         </label>
                                     </li>
                                 </ul>
@@ -251,7 +251,7 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous" />
+                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous" />
                                         </label>
                                     </li>
                                 </ul>
@@ -335,7 +335,7 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous"/>
+                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous"/>
                                         </label>
                                     </li>
                                 </ul>
@@ -413,7 +413,7 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" ng-model="file.anonymous"/>
+                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous"/>
                                         </label>
                                     </li>
                                 </ul>
