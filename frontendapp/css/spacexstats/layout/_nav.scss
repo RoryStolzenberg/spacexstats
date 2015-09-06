@@ -38,6 +38,10 @@ li:hover > ul.nav-second-tier, li > ul.nav-second-tier:hover {
     box-shadow:10px 10px 15px rgba($lightblack, 0.2);
 }
 
+ul.nav-second-tier li:hover {
+    background-color:rgba($blue, 0.1);
+}
+
 .wide {
     width:250%;
 }

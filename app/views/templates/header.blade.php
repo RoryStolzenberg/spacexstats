@@ -64,8 +64,8 @@
 						@else
 							My Account
 							<ul class="nav-second-tier">
-								{{ link_to_route('users.login', 'Log In') }}
-								{{ link_to_route('users.signup', 'Sign Up') }}
+                                <li>{{ link_to_route('users.login', 'Log In') }}</li>
+                                <li>{{ link_to_route('users.signup', 'Sign Up') }}</li>
 							</ul>
 						@endif
 						</ul>

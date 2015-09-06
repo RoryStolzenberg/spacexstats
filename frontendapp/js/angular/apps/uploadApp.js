@@ -47,7 +47,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         $rootScope.postToMissionControl($scope.files, 'files');
     }
 
-}]).controller("postController", ["$scope", function($scope) {
+}]).controller("postController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
 }]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
@@ -55,11 +55,13 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         title: null,
         content: null,
         mission_id: null,
+        anonymous: null,
         tags: []
     };
 
-    $scope.fileSubmitButtonFunction = function() {
+    $scope.writeSubmitButtonFunction = function() {
         console.log($scope.text);
+        $rootScope.postToMissionControl($scope.text, 'text');
     }
 
 }]).run(['$rootScope', '$http', function($rootScope, $http) {

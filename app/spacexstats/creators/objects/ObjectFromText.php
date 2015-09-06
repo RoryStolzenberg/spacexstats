@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Creators\Objects;
 
-use SpaceXStats\Enums\Status;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\MissionControlSubtype;
 
@@ -27,7 +27,7 @@ class ObjectFromText extends ObjectCreator {
                 'thumb_filename'        => 'text.png',
                 'cryptographic_hash'    => hash('sha256', $this->input['content']),
                 'originated_at'         => \Carbon\Carbon::now(),
-                'status'                => Status::QueuedStatus
+                'status'                => ObjectPublicationStatus::QueuedStatus
             ]);
 
             $this->createMissionRelation();

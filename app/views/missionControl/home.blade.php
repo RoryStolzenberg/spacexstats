@@ -25,7 +25,7 @@
             <h2>Recent Comments</h2>
 
             <h2>Recent Favorites</h2>
-            <tags available-tags="tags" selected-tags="selectedTags"></tags>
+            <tags available-tags="tags" ng-model="selectedTags"></tags>
         </main>
     </div>
 </body>

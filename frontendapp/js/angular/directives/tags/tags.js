@@ -1,6 +1,7 @@
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
+        replace: true,
         restrict: 'E',
         scope: {
             availableTags: '=',
@@ -8,10 +9,9 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         },
         link: function($scope, element, attributes, ctrl) {
 
-            console.log(ctrl);
             ctrl.$options = {
                 allowInvalid: true
-            }
+            };
 
             $scope.suggestions = [];
             $scope.inputWidth = {};
@@ -104,8 +104,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
             };
 
             ctrl.$validators.taglength = function(modelValue, viewValue) {
-                console.log(viewValue);
-                //return true;
                 return viewValue.length > 0 && viewValue.length < 6;
             };
 
@@ -122,4 +120,3 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
-

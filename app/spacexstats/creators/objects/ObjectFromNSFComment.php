@@ -2,7 +2,7 @@
 
 namespace SpaceXStats\Creators\Objects;
 
-use SpaceXStats\Enums\Status;
+use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\MissionControlSubtype;
 
@@ -28,7 +28,7 @@ class ObjectFromNSFComment extends ObjectCreator {
                 'thumb_filename'        => 'comment.png',
                 'cryptographic_hash'    => hash('sha256', $this->input['comment']),
                 'originated_at'         => \Carbon\Carbon::now(),
-                'status'                => Status::QueuedStatus
+                'status'                => ObjectPublicationStatus::QueuedStatus
             ]);
 
             $this->createMissionRelation();

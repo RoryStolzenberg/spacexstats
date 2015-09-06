@@ -540,13 +540,13 @@
                     </select-list>
 
                     <p>Submit anonymously?</p>
-                    <input type="checkbox" name="anonymous" ng-model="text.anonymous" />
+                    <input type="checkbox" name="anonymous" value="true" ng-model="text.anonymous" />
 
                     <label>Tags</label>
                     <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>
                     <span ng-show="writeForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
 
-                    <input type="submit" value="Submit" name="submit" ng-disabled="writeForm.$invalid" ng-click="fileSubmitButtonFunction()" />
+                    <input type="submit" value="Submit" name="submit" ng-disabled="writeForm.$invalid" ng-click="writeSubmitButtonFunction()" />
                 </form>
             </section>
         </main>
