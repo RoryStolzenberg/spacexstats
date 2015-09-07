@@ -10,17 +10,13 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             isNull: '@'
         },
         link: function($scope) {
-            $scope.
-            $scope.generateDays = function() {
-                var days = [];
-                days.push({ value: '00', display: '-'});
 
-                for (i = 1; i <= 31; i++) {
-                    days.push({ value: ('0' + i).slice(-2), display: i });
-                }
+            $scope.days = [];
+            $scope.days.push({ value: '00', display: '-'});
 
-                return days;
-            };
+            for (i = 1; i <= 31; i++) {
+                $scope.days.push({ value: ('0' + i).slice(-2), display: i });
+            }
 
             $scope.months = [
                 { value: '00', display: '-'},
@@ -130,8 +126,8 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 } else {
                     $scope.datetime = {
                         year: moment().year(),
-                        month: 00,
-                        day: 00,
+                        month: '00',
+                        day: '00',
                         hour: null,
                         minute: null,
                         second: null
