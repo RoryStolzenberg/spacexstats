@@ -1,6 +1,7 @@
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         restrict: 'E',
+        replace: true,
         scope: {
             type: '@',
             datetimevalue: '=ngModel',
@@ -22,7 +23,6 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 };
 
             } else {
-
                 $scope.datetime = {
                     year: null,
                     month: null,

@@ -4732,6 +4732,24 @@ img#object {
   border-radius: 8px;
   height: 300px; }
 
+.object-card {
+  margin: 10px 0;
+  height: 100px; }
+  .object-card div {
+    display: inline-block; }
+  .object-card .thumb-holder {
+    width: 100px;
+    height: 100px;
+    background-color: #F5F5F5; }
+    .object-card .thumb-holder img.thumb {
+      max-width: 100px;
+      max-height: 100px;
+      display: block;
+      vertical-align: middle;
+      margin: 0 auto; }
+  .object-card .object-overview {
+    height: 100px; }
+
 /* Sticky Bar Nav */
 nav.sticky-bar {
   position: -webkit-sticky;

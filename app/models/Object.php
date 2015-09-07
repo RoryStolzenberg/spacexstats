@@ -226,7 +226,7 @@ class Object extends Eloquent {
             } else {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');
-                    return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
+                    return $s3->getObjectUrl(Credential::AWSS3BucketSmallThumbs, $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/small/' . $this->thumb_filename;
@@ -243,7 +243,7 @@ class Object extends Eloquent {
             } else {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');
-                    return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->thumb_filename, '+1 minute');
+                    return $s3->getObjectUrl(Credential::AWSS3BucketLargeThumbs, $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/large/' . $this->thumb_filename;

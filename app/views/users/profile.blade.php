@@ -62,7 +62,7 @@
                         </tr>
                         <tr>
                             <td>Comments</td>
-                            <td>{{ $user->favorites->count() }}</td>
+                            <td>{{ $user->comments->count() }}</td>
                         </tr>
                     </table>
                 </div>
@@ -91,35 +91,34 @@
 
                 </div>
             </section>
+
             <h2><a href="/users/{{ $user->username }}/favorites">Favorites</a></h2>
             <section id="favorites" class="favorites container">
-                @foreach ($favorites as $favorite)
-                    <div class="grid-4">
-                        {{ $favorite->object->title }}
-                    </div>
-                @endforeach
+                    @foreach ($favorites as $favorite)
+                        @include('templates.objectCard', ['bias' => 'favorite', 'object' => $favorite->object])
+                    @endforeach
             </section>
+
             @if (Auth::isAccessingSelf($user) || Auth::isAdmin())
                 <h2>Notes</h2>
                 <section id="notes" class="notes">
-                    <ul>
-                        @foreach ($notes as $note)
-                            <li>
-                                <h4>{{ $note->object->title }}</h4>
-                                {{ $note->note }}
-                            </li>
-                        @endforeach
-                    </ul>
+                    @foreach ($notes as $note)
+                        @include('templates.objectCard', ['bias' => 'note', 'object' => $note->object])
+                    @endforeach
                 </section>
             @endif
+
             <h2>Uploads</h2>
             <section id="uploads" class="uploads">
                 @foreach ($objects as $object)
-                    {{ link_to_route('missionControl.objects.get', $object->title, array($object->object_id)) }}
+                    @include('templates.objectCard', ['bias' => 'object', 'object' => $object])
                 @endforeach
             </section>
+
             <h2>Comments</h2>
-            <section id="comments" class="comments"></section>
+            <section id="comments" class="comments">
+
+            </section>
         </main>
     </div>
 </body>

@@ -52,8 +52,9 @@ class Exif {
     }
 
     public function datetime() {
-        if ($this->exif) {
-            return DateTime::createFromFormat('YYYY-MM-DD HH:MM:SS', $this->exif[ExifProperty::DateTime]);
+        if ($this->exif && array_key_exists(ExifProperty::DateTime, $this->exif)) {
+            $some = $this->exif[ExifProperty::DateTime];
+            return \DateTime::createFromFormat('Y:m:d H:i:s', $this->exif[ExifProperty::DateTime])->format('Y-m-d H:i:s');
         }
         return null;
     }

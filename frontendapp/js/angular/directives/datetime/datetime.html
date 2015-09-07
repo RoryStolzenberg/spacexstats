@@ -1,14 +1,11 @@
 <div class="datetime">
-    <input type="checkbox" ng-show="isNullable == 'true'" ng-model="isNull" ng-change="changeNull()"/>
+    <input type="checkbox" ng-if="isNullable == 'true'" ng-model="isNull"/>
 
-    <select ng-model="datetime.day" ng-options="day.value as day.display for day in days() track by value" ng-disabled="isNull == true">
-        <option value="">-</option>
+    <select ng-model="datetime.day" ng-options="day.value as day.display for day in days() track by display" ng-disabled="isNull == true">
     </select>
     <select ng-model="datetime.month" ng-options="month.value as month.display for month in months" ng-disabled="isNull == true">
-        <option value="">-</option>
     </select>
     <select ng-model="datetime.year" ng-options="year.value as year.display for year in years() track by value" ng-disabled="isNull == true">
-        <option value="">-</option>
     </select>
 
     <div ng-if="type == 'datetime'">

@@ -1,0 +1,26 @@
+.object-card {
+    margin:10px 0;
+    height:100px;
+
+    div {
+        display:inline-block;
+    }
+
+    .thumb-holder {
+        width:100px;
+        height:100px;
+        background-color:$offwhite;
+
+        img.thumb {
+            max-width: 100px;
+            max-height: 100px;
+            display: block;
+            vertical-align: middle;
+            margin:0 auto;
+        }
+    }
+
+    .object-overview {
+        height:100px;
+    }
+}
