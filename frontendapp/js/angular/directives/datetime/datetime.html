@@ -1,17 +1,17 @@
 <div class="datetime">
-    <input type="checkbox" ng-if="isNullable == 'true'" ng-model="isNull"/>
+    <input type="checkbox" ng-if="nullableToggle == 'true'" ng-model="isNull"/>
 
-    <select ng-model="datetime.day" ng-options="day.value as day.display for day in days() track by display" ng-disabled="isNull == true">
+    <select ng-model="datetime.day" ng-change="" ng-options="day.value as day.display for day in days() track by day.display" ng-disabled="isNull == 'true'">
     </select>
-    <select ng-model="datetime.month" ng-options="month.value as month.display for month in months" ng-disabled="isNull == true">
+    <select ng-model="datetime.month" ng-change="changeModel.month()" ng-options="month.value as month.display for month in months" ng-disabled="isNull == 'true'">
     </select>
-    <select ng-model="datetime.year" ng-options="year.value as year.display for year in years() track by value" ng-disabled="isNull == true">
+    <select ng-model="datetime.year" ng-change="" ng-options="year for year in years()" ng-disabled="isNull == 'true'">
     </select>
 
     <div ng-if="type == 'datetime'">
-        <input type="number" min="0" max="23" ng-model="datetime.hour" ng-disabled="isNull == true" />
-        <input type="number" min="0" max="59" ng-model="datetime.minute" ng-disabled="isNull == true" />
-        <input type="number" min="0" max="59" ng-model="datetime.second" ng-disabled="isNull == true" />
+        <input type="number" min="0" max="23" ng-model="datetime.hour" ng-disabled="isNull == 'true'" />:
+        <input type="number" min="0" max="59" ng-model="datetime.minute" ng-disabled="isNull == 'true'" />:
+        <input type="number" min="0" max="59" ng-model="datetime.second" ng-disabled="isNull == 'true'" />
     </div>
 
 </div>

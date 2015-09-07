@@ -117,7 +117,6 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         self.attribution = null;
         self.anonymous = null;
         self.tags = [];
-        self.originated_at = null;
 
         return self;
     }

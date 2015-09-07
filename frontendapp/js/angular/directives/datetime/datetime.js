@@ -6,34 +6,12 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             type: '@',
             datetimevalue: '=ngModel',
             startYear: '@',
-            isNullable: '@'
+            nullableToggle: '@',
+            isNull: '@'
         },
         link: function($scope) {
-
-            if ($scope.datetimevalue != null) {
-                var current = moment($scope.datetimevalue);
-
-                $scope.datetime = {
-                    year: current.year(),
-                    month: current.month(),
-                    day: current.month(),
-                    hour: current.hour(),
-                    minute: current.minute(),
-                    second: current.second()
-                };
-
-            } else {
-                $scope.datetime = {
-                    year: null,
-                    month: null,
-                    day: null,
-                    hour: null,
-                    minute: null,
-                    second: null
-                };
-            }
-
-            $scope.days = function() {
+            $scope.
+            $scope.generateDays = function() {
                 var days = [];
                 days.push({ value: '00', display: '-'});
 
@@ -72,32 +50,96 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 }
 
                 while (currentYear >= startYear) {
-                    years.push({ value: currentYear, display: currentYear });
+                    years.push(currentYear);
                     currentYear--;
                 }
 
                 return years;
             };
 
-            $scope.changeNull = function() {
-                console.log($scope.isNull);
-                $scope.datetime = {
-                    year: null,
-                    month: null,
-                    day: null,
-                    hour: null,
-                    minute: null,
-                    second: null
-                };
+            // Internal functions to change ngModel
+            $scope.changeModel = {
+                year: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                month: function() {
+                    console.log($scope.datetime.month);
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                date: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                hour: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                minute: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                second: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                }
             };
 
-            $scope.$watch('datetime', function() {
+            // Watch for external changes and rerun the original function
+            $scope.$watch('datetimevalue', function() {
                 if ($scope.type == 'datetime') {
-
+                    initialize();
                 } else if ($scope.type == 'date') {
-
+                    initialize();
                 }
-            });
+            }, true);
+
+            // Set the initial datetime values
+            var initialize = function() {
+                if ($scope.datetimevalue != null) {
+                    var current = moment($scope.datetimevalue);
+
+                    $scope.datetime = {
+                        year: current.year(),
+                        month: current.month(),
+                        day: current.month(),
+                        hour: current.hour(),
+                        minute: current.minute(),
+                        second: current.second()
+                    };
+
+                } else {
+                    $scope.datetime = {
+                        year: moment().year(),
+                        month: 00,
+                        day: 00,
+                        hour: null,
+                        minute: null,
+                        second: null
+                    };
+                }
+            };
+
+            initialize();
 
         },
         templateUrl: '/js/templates/datetime.html'

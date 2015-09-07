@@ -252,7 +252,6 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         self.attribution = null;
         self.anonymous = null;
         self.tags = [];
-        self.originated_at = null;
 
         return self;
     }
@@ -889,6 +888,68 @@ angular.module('flashMessageService', [])
         };
     });
 
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            selectedOption: '=ngModel',
+            uniqueKey: '@',
+            searchable: '@',
+            placeholder: '@'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
+
+            $scope.$watch("selectedOption", function(newValue) {
+                if (newValue !== null) {
+                    $scope.selectedOptionObj = $scope.optionsObj
+                        .filter(function(option) {
+                            return option['id'] == newValue;
+                        }).shift();
+                } else {
+                    $scope.selectedOptionObj = null;
+                }
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            };
+
+            $scope.selectDefault = function() {
+                $scope.selectedOption = null;
+                $scope.dropdownIsVisible = false;
+            };
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            };
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            };
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+
+
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -958,68 +1019,6 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
         templateUrl: '/js/templates/countdown.html'
     }
 }]);
-
-angular.module("directives.selectList", []).directive("selectList", function() {
-    return {
-        restrict: 'E',
-        scope: {
-            options: '=',
-            selectedOption: '=ngModel',
-            uniqueKey: '@',
-            searchable: '@',
-            placeholder: '@'
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                if (newValue !== null) {
-                    $scope.selectedOptionObj = $scope.optionsObj
-                        .filter(function(option) {
-                            return option['id'] == newValue;
-                        }).shift();
-                } else {
-                    $scope.selectedOptionObj = null;
-                }
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.selectDefault = function() {
-                $scope.selectedOption = null;
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            };
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            };
-
-            $scope.dropdownIsVisible = false;
-        },
-        templateUrl: '/js/templates/selectList.html'
-    }
-});
-
 
 angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {
@@ -1198,33 +1197,10 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             type: '@',
             datetimevalue: '=ngModel',
             startYear: '@',
-            isNullable: '@'
+            nullableToggle: '@',
+            isNull: '@'
         },
         link: function($scope) {
-
-            if ($scope.datetimevalue != null) {
-                var current = moment($scope.datetimevalue);
-
-                $scope.datetime = {
-                    year: current.year(),
-                    month: current.month(),
-                    day: current.month(),
-                    hour: current.hour(),
-                    minute: current.minute(),
-                    second: current.second()
-                };
-
-            } else {
-                $scope.datetime = {
-                    year: null,
-                    month: null,
-                    day: null,
-                    hour: null,
-                    minute: null,
-                    second: null
-                };
-            }
-
             $scope.days = function() {
                 var days = [];
                 days.push({ value: '00', display: '-'});
@@ -1264,32 +1240,96 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 }
 
                 while (currentYear >= startYear) {
-                    years.push({ value: currentYear, display: currentYear });
+                    years.push(currentYear);
                     currentYear--;
                 }
 
                 return years;
             };
 
-            $scope.changeNull = function() {
-                console.log($scope.isNull);
-                $scope.datetime = {
-                    year: null,
-                    month: null,
-                    day: null,
-                    hour: null,
-                    minute: null,
-                    second: null
-                };
+            // Internal functions to change ngModel
+            $scope.changeModel = {
+                year: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                month: function() {
+                    console.log($scope.datetime.month);
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                date: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                hour: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                minute: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                },
+                second: function() {
+                    if ($scope.type == 'datetime') {
+
+                    } else if ($scope.type == 'date') {
+
+                    }
+                }
             };
 
-            $scope.$watch('datetime', function() {
+            // Watch for external changes and rerun the original function
+            $scope.$watch('datetimevalue', function() {
                 if ($scope.type == 'datetime') {
-
+                    initialize();
                 } else if ($scope.type == 'date') {
-
+                    initialize();
                 }
-            });
+            }, true);
+
+            // Set the initial datetime values
+            var initialize = function() {
+                if ($scope.datetimevalue != null) {
+                    var current = moment($scope.datetimevalue);
+
+                    $scope.datetime = {
+                        year: current.year(),
+                        month: current.month(),
+                        day: current.month(),
+                        hour: current.hour(),
+                        minute: current.minute(),
+                        second: current.second()
+                    };
+
+                } else {
+                    $scope.datetime = {
+                        year: moment().year(),
+                        month: 00,
+                        day: 00,
+                        hour: null,
+                        minute: null,
+                        second: null
+                    };
+                }
+            };
+
+            initialize();
 
         },
         templateUrl: '/js/templates/datetime.html'

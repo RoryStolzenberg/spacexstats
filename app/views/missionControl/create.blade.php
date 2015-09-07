@@ -110,7 +110,10 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>When was this created?</p>
-                                            <datetime type="date" ng-model="file.originated_at" is-nullable="false"></datetime>
+                                            <datetime type="[[ file.originated_at == null ? 'date' : 'datetime' ]]"
+                                                      ng-model="file.originated_at"
+                                                      is-null="[[ file.originated_at == null ? 'false' : 'true' ]]"
+                                                      nullable-toggle="false"></datetime>
                                         </label>
 
                                     </li>
