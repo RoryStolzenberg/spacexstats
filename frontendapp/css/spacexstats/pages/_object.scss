@@ -1,4 +1,5 @@
 body.object {
+
     .content {
         margin-left:-10px;
         text-align:center;
@@ -8,11 +9,21 @@ body.object {
         margin-left:10px;
     }
 }
-img.object {
+
+img#object {
     max-width:100%;
 }
 
 .actions.container {
+    text-align:center;
+
+    i {
+        color:$october;
+        cursor:pointer;
+        display:block;
+        padding:5px;
+    }
+
     .is-favorited {
         color:$gold;
     }

@@ -122,3 +122,27 @@ section {
     &:after { clear: both; }
     zoom: 1; /* IE < 8 */
 }
+
+p {
+    line-height:1.2;
+}
+
+// Borders
+.border-bottom {
+    border-bottom:1px solid $bordergrey;
+}
+
+/// Text
+.lowvisibility {
+    &.color {
+        color:$bordergrey;
+    }
+    &.opacity {
+        opacity:0.75;
+    }
+}
+
+.subheading {
+    font-size:$font-large;
+    line-height:2;
+}

@@ -1,5 +1,6 @@
 <?php
 use SpaceXStats\Library\DeltaVCalculator;
+use \SpaceXStats\Enums\MissionControlType;
 
 class ObjectsController extends BaseController {
 
@@ -8,14 +9,16 @@ class ObjectsController extends BaseController {
     public function get($object_id) {
         $object = Object::find($object_id);
 
+        // Item has been viewed, increment!
         $object->incrementViewcounter();
+
+        // Determine what type of object it is to show the correct view
+        $viewType = strtolower(MissionControlType::getKey($object->type));
 
         // Object is visible to everyone and is published
         if ($object->visibility == 'Public' && $object->status == 'Published') {
 
-            return View::make('missionControl.objects.get', array(
-                'object' => $object
-            ));
+            return View::make('missionControl.objects.' . $viewType , ['object' => $object]);
 
         // Object is visible to subscribers, is published, and the logged in user is also a subscriber
         // Object is hidden and not published, and the logged in user is an admin
@@ -30,9 +33,7 @@ class ObjectsController extends BaseController {
                     'object' => $object
                 ]);
 
-                return View::make('missionControl.objects.get', array(
-                    'object' => $object
-                ));
+                return View::make('missionControl.objects.' . $viewType , ['object' => $object]);
         }
 
         return App::abort(401);

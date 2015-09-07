@@ -29,6 +29,7 @@
 							<li>News Summaries</li>
 							<li>{{ link_to_route('faq', 'FAQ') }}</li>
 							<li>RSS</li>
+                            <li>Community</li>
 							<li>About</li>
 							<li>Contact</li>
 						</ul>

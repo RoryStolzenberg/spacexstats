@@ -2,7 +2,7 @@
 @section('title', $object->title)
 
 @section('content')
-<body class="object" ng-app="objectApp" ng-controller="objectController" ng-strict-di>
+    <body class="object" ng-app="objectApp" ng-controller="objectController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')
@@ -24,54 +24,26 @@
 
             <section class="details">
                 <div class="grid-8 content">
-                    @if($object->type == \SpaceXStats\Enums\MissionControlType::Image)
-                        <img id="object" src="{{ $object->media }}" />
-                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::GIF)
-                        <img id="object" src="{{ $object->media }}" />
-                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Audio)
-                        <audio id="object" class="video-js vjs-default-skin" controls
-                               preload="none" data-setup="{}" width="100%">
-                            <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
-                        </audio>
-
-                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Video)
-                        @if ($object->external_url != null)
-                            <iframe width="100%" src="{{ $object->embed_url }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                        @else
-                            <video id="object" class="video-js vjs-default-skin" controls
-                                   preload="none" data-setup="{}" width="100%">
-                                <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
-                            </video>
-                        @endif
-
-                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Document)
-                        <object data="{{ $object->media }}" type="application/pdf" width="100%" height="100%">
-                            <p>Alternative text - include a link <a href="{{ $object->media }}">to the PDF!</a></p>
-                        </object>
-
-                    @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Text)
-                        <div>
-                            {{ $object->summary }}
-                        </div>
-                    @endif
+                    <img id="object" src="{{ $object->media }}" />
                 </div>
+
                 <aside class="grid-4 aside">
                     <div class="actions container">
                         <span class="grid-4">
-                            <i class="fa fa-eye"></i> {{ $object->views }} Views
+                            <i class="fa fa-eye fa-2x"></i> {{ $object->views }} Views
                         </span>
                         <span class="grid-4">
-                            <i class="fa fa-star" ng-click="toggleFavorite()" ng-class="{ 'is-favorited' : isFavorited === true }"></i>
+                            <i class="fa fa-star fa-2x" ng-click="toggleFavorite()" ng-class="{ 'is-favorited' : isFavorited === true }"></i>
                             <span>[[ favoritesText ]]</span>
                         </span>
                         <span class="grid-4">
-                            <a href="" target="_blank" download><i class="fa fa-download" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
+                            <a href="" target="_blank" download><i class="fa fa-download fa-2x" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
                         </span>
                     </div>
                     <div class="more">
                         @if ($object->anonymous == false || Auth::isAdmin())
-                            <p>Uploaded by {{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}<br/>
-                                On {{ $object->present()->created_at() }}</p>
+                            <p class="lowvisibility opacity">Uploaded by <span>{{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}</span><br/>
+                                On <span>{{ $object->present()->created_at() }}</span></p>
                         @elseif ($object->anonymous == true)
                             <p>Uploaded on {{ $object->present()->created_at() }}</p>
                         @endif
@@ -79,15 +51,25 @@
                             <li>{{ $object->present()->subtype() }}</li>
                         </ul>
                     </div>
+
                     <div class="legal">
-                        {{ $object->author }}
-                        {{ $object->attribution }}
+                        <p>Author: {{ $object->author }}</p>
+                        <p>Attribution: {{ $object->attribution }}</p>
                     </div>
-                    @if ($object->type == \SpaceXStats\Enums\MissionControlType::Image)
-                        <ul class="exif">
-                            <li>{{ $object->ISO }} ISO</li>
-                        </ul>
+
+                    @if ($object->collections()->count() > 0)
+                        <p>This image is part of {{ $object->collections()->count() }} collections</p>
+                        <div class="collections">
+
+                        </div>
                     @endif
+
+                    <p>Image Details</p>
+                    <ul class="exif">
+                        <li>{{ $object->ISO }} ISO</li>
+                    </ul>
+
+                    <p>File Details</p>
                     <div class="file-details">
                         {{ $object->present()->size() }}
                     </div>
@@ -138,5 +120,5 @@
 
     <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
     <script src="http://vjs.zencdn.net/4.12/video.js"></script>
-</body>
+    </body>
 @stop

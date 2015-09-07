@@ -4154,6 +4154,22 @@ section {
   section:after {
     clear: both; }
 
+p {
+  line-height: 1.2; }
+
+.border-bottom {
+  border-bottom: 1px solid #CCC; }
+
+.lowvisibility.color {
+  color: #CCC; }
+
+.lowvisibility.opacity {
+  opacity: 0.75; }
+
+.subheading {
+  font-size: 18px;
+  line-height: 2; }
+
 .header-wrapper {
   width: 100%;
   background-color: #3569A4;
@@ -4572,11 +4588,18 @@ body.object .content {
 body.object .aside {
   margin-left: 10px; }
 
-img.object {
+img#object {
   max-width: 100%; }
 
-.actions.container .is-favorited {
-  color: #CCAC55; }
+.actions.container {
+  text-align: center; }
+  .actions.container i {
+    color: #33495E;
+    cursor: pointer;
+    display: block;
+    padding: 5px; }
+  .actions.container .is-favorited {
+    color: #CCAC55; }
 
 .files-list li.uploaded-file {
   width: 300px;
