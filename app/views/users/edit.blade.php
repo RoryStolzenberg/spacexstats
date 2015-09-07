@@ -12,7 +12,7 @@
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-2">Profile</li>
+                    <li class="grid-2"><a href="/users/{{ $user->username }}">Profile</a></li>
                     <li class="grid-2">Account</li>
                     <li class="grid-2">Email Notifications</li>
                     <li class="grid-2">Text/SMS Notifications</li>

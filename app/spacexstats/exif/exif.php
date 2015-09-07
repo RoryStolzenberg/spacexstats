@@ -31,65 +31,39 @@ class Exif {
     public function longitude() {
         if ($this->exif && array_key_exists(ExifProperty::GPSLongitude, $this->exif)) {
             return $this->getCoordinate($this->exif[ExifProperty::GPSLongitude], $this->exif['GPSLongitudeRef']);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public function altitude() {
-        if ($this->exif) {
-            return null;
-        } else {
-            return null;
-        }
+        return array_get($this->exif, ExifProperty::GPSAltitude, null);
     }
 
     public function exposure() {
-        if ($this->exif) {
-           return null;
-        } else {
-            return null;
-        }
+        return array_get($this->exif, ExifProperty::Exposure, null);
     }
 
     public function aperture() {
-        if ($this->exif) {
-            return null;
-        } else {
-            return null;
-        }
+        return array_get($this->exif, ExifProperty::Aperture, null);
     }
 
     public function iso() {
-        if ($this->exif && array_key_exists(ExifProperty::ISO, $this->exif)) {
-            return $this->exif[ExifProperty::ISO];
-        } else {
-            return null;
-        }
+        return array_get($this->exif, ExifProperty::ISO, null);
     }
 
     public function datetime() {
         if ($this->exif) {
             return DateTime::createFromFormat('YYYY-MM-DD HH:MM:SS', $this->exif[ExifProperty::DateTime]);
-        } else {
-            return null;
         }
+        return null;
     }
 
     public function cameraMake() {
-        if ($this->exif && array_key_exists(ExifProperty::CameraManufacturer, $this->exif)) {
-            return $this->exif[ExifProperty::CameraManufacturer];
-        } else {
-            return null;
-        }
+        return array_get($this->exif, ExifProperty::CameraManufacturer, null);
     }
 
     public function cameraModel() {
-        if ($this->exif && array_key_exists(ExifProperty::CameraModel, $this->exif)) {
-            return $this->exif[ExifProperty::CameraModel];
-        } else {
-            return null;
-        }
+        return array_get($this->exif, ExifProperty::CameraModel, null);
     }
 
     private function hasExif() {

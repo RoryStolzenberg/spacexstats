@@ -156,7 +156,7 @@ class Object extends Eloquent {
     }
 
     public function tags() {
-        return $this->morphToMany('Tag', 'taggable', 'taggable_pivot');
+        return $this->morphToMany('Tag', 'taggable', 'taggables_pivot');
     }
 
     public function collections() {

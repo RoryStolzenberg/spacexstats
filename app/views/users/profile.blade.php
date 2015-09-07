@@ -12,8 +12,8 @@
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-1">Overview</li>
-                    <li class="grid-1">Favorites</li>
+                    <li class="grid-1"><a href="#overview">Overview</a></li>
+                    <li class="grid-1"><a href="#favorites">Favorites</a></li>
                     @if (Auth::check() && Auth::user()->username === $user->username)
                         <li class="grid-1">Notes</li>
                     @endif
@@ -24,7 +24,7 @@
                     @endif
                 </ul>
             </nav>
-            <section class="overview container">
+            <section id="overview" class="overview container">
                 <div class="grid-4">
                     <table>
                         <tr>
@@ -54,7 +54,7 @@
                         </tr>
                         <tr>
                             <td>Uploads</td>
-                            <td>{{ $objects->count() }}</td>
+                            <td>{{ $user->publishedObjects()->count() }}</td>
                         </tr>
                         <tr>
                             <td>Favorites</td>
@@ -92,7 +92,7 @@
                 </div>
             </section>
             <h2><a href="/users/{{ $user->username }}/favorites">Favorites</a></h2>
-            <section class="favorites container">
+            <section id="favorites" class="favorites container">
                 @foreach ($favorites as $favorite)
                     <div class="grid-4">
                         {{ $favorite->object->title }}
@@ -101,7 +101,7 @@
             </section>
             @if (Auth::isAccessingSelf($user) || Auth::isAdmin())
                 <h2>Notes</h2>
-                <section class="notes">
+                <section id="notes" class="notes">
                     <ul>
                         @foreach ($notes as $note)
                             <li>
@@ -113,13 +113,13 @@
                 </section>
             @endif
             <h2>Uploads</h2>
-            <section class="uploads">
+            <section id="uploads" class="uploads">
                 @foreach ($objects as $object)
                     {{ link_to_route('missionControl.objects.get', $object->title, array($object->object_id)) }}
                 @endforeach
             </section>
             <h2>Comments</h2>
-            <section class="comments"></section>
+            <section id="comments" class="comments"></section>
         </main>
     </div>
 </body>

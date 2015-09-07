@@ -63,6 +63,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     }
 
     // Conditional relations
+    public function publishedObjects() {
+        if (Auth::isAdmin()) {
+            return $this->hasMany('Object')->where('status', \SpaceXStats\Enums\ObjectPublicationStatus::PublishedStatus);
+        }
+        return $this->hasMany('Object')
+            ->where('status', \SpaceXStats\Enums\ObjectPublicationStatus::PublishedStatus)
+            ->where('visibility', \SpaceXStats\Enums\VisibilityStatus::DefaultStatus);
+    }
 
 	// Helpers
 	public function isValidForSignUp($input) {

@@ -242,7 +242,6 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-
         Schema::create('orbital_parameters', function(Blueprint $table) {
             $table->increments('orbital_parameter_id');
         });
