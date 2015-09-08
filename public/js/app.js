@@ -1,3 +1,17 @@
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+
 angular.module("missionsListApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -252,6 +266,8 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         self.attribution = null;
         self.anonymous = null;
         self.tags = [];
+
+        self.datetimeExtractedFromEXIF = self.originated_at !== null ? true : false;
 
         return self;
     }
@@ -874,19 +890,67 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
 
 }]);
 
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
+angular.module("directives.selectList", []).directive("selectList", function() {
+    return {
+        restrict: 'E',
+        scope: {
+            options: '=',
+            selectedOption: '=ngModel',
+            uniqueKey: '@',
+            searchable: '@',
+            placeholder: '@'
+        },
+        link: function($scope, element, attributes) {
 
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+            $scope.optionsObj = $scope.options.map(function(option) {
+                return {
+                    id: option[$scope.uniqueKey],
+                    name: option.name,
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                };
+            });
 
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
+            $scope.$watch("selectedOption", function(newValue) {
+                if (newValue !== null) {
+                    $scope.selectedOptionObj = $scope.optionsObj
+                        .filter(function(option) {
+                            return option['id'] == newValue;
+                        }).shift();
+                } else {
+                    $scope.selectedOptionObj = null;
+                }
+            });
+
+            $scope.selectOption = function(option) {
+                $scope.selectedOption = option['id'];
+                $scope.dropdownIsVisible = false;
+            };
+
+            $scope.selectDefault = function() {
+                $scope.selectedOption = null;
+                $scope.dropdownIsVisible = false;
+            };
+
+            $scope.toggleDropdown = function() {
+                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+            };
+
+            $scope.$watch("dropdownIsVisible", function(newValue) {
+                if (!newValue) {
+                    $scope.search = "";
+                }
+            });
+
+            $scope.isSelected = function(option) {
+                return option.id == $scope.selectedOption;
+            };
+
+            $scope.dropdownIsVisible = false;
+        },
+        templateUrl: '/js/templates/selectList.html'
+    }
+});
+
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -958,67 +1022,52 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
-angular.module("directives.selectList", []).directive("selectList", function() {
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
+angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {
         restrict: 'E',
         scope: {
-            options: '=',
-            selectedOption: '=ngModel',
-            uniqueKey: '@',
-            searchable: '@',
-            placeholder: '@'
+            size: '@',
+            mission: '='
         },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                return {
-                    id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
-                };
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                if (newValue !== null) {
-                    $scope.selectedOptionObj = $scope.optionsObj
-                        .filter(function(option) {
-                            return option['id'] == newValue;
-                        }).shift();
-                } else {
-                    $scope.selectedOptionObj = null;
-                }
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.selectDefault = function() {
-                $scope.selectedOption = null;
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            };
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            };
-
-            $scope.dropdownIsVisible = false;
+        link: function($scope) {
         },
-        templateUrl: '/js/templates/selectList.html'
+        templateUrl: '/js/templates/missionCard.html'
     }
 });
-
 
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
@@ -1142,19 +1191,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',
@@ -1218,6 +1254,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 console.log(viewvalue);
 
                 if (moment(viewvalue).isValid()) {
+
                     var value = moment({
                         year: viewvalue.year,
                         month: viewvalue.month - 1,
@@ -1227,17 +1264,24 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                         second: viewvalue.second
                     }).format('YYYY-MM-DD HH:mm:ss');
 
-                    console.log(value);
-                    return value;
                 } else {
-                    return null;
+
+                    var value = viewvalue.year + "-"
+                        + ("0" + viewvalue.month).slice(-2) + "-"
+                        + ("0" + viewvalue.date).slice(-2) + " "
+                        + ("0" + viewvalue.hour).slice(-2) + ":"
+                        + ("0" + viewvalue.minute).slice(-2) + ":"
+                        + ("0" + viewvalue.second).slice(-2)
                 }
+
+                console.log(value);
+                console.log($scope.isNull);
+                return value;
             });
 
             ctrl.$render = function() {
 
                 console.log("render");
-                console.log(ctrl.$viewValue);
 
                 $scope.year = ctrl.$viewValue.year;
                 $scope.month = ctrl.$viewValue.month;
@@ -1253,7 +1297,8 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 console.log("formatter");
                 console.log(data);
 
-                if (data != null) {
+                if (moment(data).isValid()) {
+
                     var dt = moment(data);
 
                     return {
@@ -1277,50 +1322,14 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             });
 
             $scope.$watch('year + month + date + hour + minute + second', function() {
-                console.log("watch");
                 ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
             });
-
         },
         templateUrl: '/js/templates/datetime.html'
     }
 });
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',

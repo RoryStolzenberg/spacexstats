@@ -110,9 +110,9 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>When was this created?</p>
-                                            <datetime type="[[::(file.originated_at == null ? 'date' : 'datetime') ]]"
+                                            <datetime type="[[ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') ]]"
                                                       ng-model="file.originated_at"
-                                                      is-null="[[::(file.originated_at == null ? 'false' : 'true') ]]"
+                                                      is-null="[[ ::file.datetimeExtractedFromEXIF ]]"
                                                       nullable-toggle="false"></datetime>
                                         </label>
 

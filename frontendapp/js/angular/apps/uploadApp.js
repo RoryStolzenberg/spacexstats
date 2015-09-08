@@ -118,6 +118,8 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         self.anonymous = null;
         self.tags = [];
 
+        self.datetimeExtractedFromEXIF = self.originated_at !== null ? true : false;
+
         return self;
     }
 

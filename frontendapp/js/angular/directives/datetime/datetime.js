@@ -61,6 +61,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 console.log(viewvalue);
 
                 if (moment(viewvalue).isValid()) {
+
                     var value = moment({
                         year: viewvalue.year,
                         month: viewvalue.month - 1,
@@ -70,17 +71,24 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                         second: viewvalue.second
                     }).format('YYYY-MM-DD HH:mm:ss');
 
-                    console.log(value);
-                    return value;
                 } else {
-                    return null;
+
+                    var value = viewvalue.year + "-"
+                        + ("0" + viewvalue.month).slice(-2) + "-"
+                        + ("0" + viewvalue.date).slice(-2) + " "
+                        + ("0" + viewvalue.hour).slice(-2) + ":"
+                        + ("0" + viewvalue.minute).slice(-2) + ":"
+                        + ("0" + viewvalue.second).slice(-2)
                 }
+
+                console.log(value);
+                console.log($scope.isNull);
+                return value;
             });
 
             ctrl.$render = function() {
 
                 console.log("render");
-                console.log(ctrl.$viewValue);
 
                 $scope.year = ctrl.$viewValue.year;
                 $scope.month = ctrl.$viewValue.month;
@@ -96,7 +104,8 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 console.log("formatter");
                 console.log(data);
 
-                if (data != null) {
+                if (moment(data).isValid()) {
+
                     var dt = moment(data);
 
                     return {
@@ -120,10 +129,8 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             });
 
             $scope.$watch('year + month + date + hour + minute + second', function() {
-                console.log("watch");
                 ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
             });
-
         },
         templateUrl: '/js/templates/datetime.html'
     }
