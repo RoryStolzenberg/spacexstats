@@ -47,7 +47,9 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
             });
     }
 
-    $scope.SMSNotification.mobile = laravel.user.mobile;
+    $scope.SMSNotification = {
+        mobile: laravel.user.mobile
+    };
 
     if (laravel.notifications.tMinus24HoursSMS === true) {
         $scope.SMSNotification.status = "tMinus24HoursSMS";
@@ -56,7 +58,7 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
     } else if (laravel.notifications.tMinus1HourSMS === true) {
         $scope.SMSNotification.status = "tMinus1HourSMS";
     } else {
-        $scope.SMSNotification.status = false;
+        $scope.SMSNotification.status = "false";
     }
 
     $scope.updateSMSNotifications = function() {

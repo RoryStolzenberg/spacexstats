@@ -127,7 +127,7 @@ class UsersController extends BaseController {
         }
 
         // If status is not false
-        if ($sms['status'] != false) {
+        if ($sms['status'] != 'false') {
 
             $client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
 
