@@ -14,10 +14,6 @@ class ObjectPresenter {
         return $this->entity->subtype ? \SpaceXStats\Enums\MissionControlSubtype::getKey($this->entity->subtype) : null;
     }
 
-    public function created_at() {
-        return $this->entity->created_at->toFormattedDateString();
-    }
-
     public function size() {
         $prefixes = ['B', 'KB', 'MB', 'GB'];
         $size = $this->entity->size;

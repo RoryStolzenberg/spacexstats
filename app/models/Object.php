@@ -193,6 +193,15 @@ class Object extends Eloquent {
     }
 
     // Attribute accessors
+    public function getFromAttribute() {
+        try {
+            return \Carbon\Carbon::parse($this->originated_at)->toFormattedDateString();
+        } catch (InvalidArgumentException $e) {
+
+        }
+
+    }
+
     public function getMediaAttribute() {
         if (!empty($this->filename)) {
             if ($this->status == 'Published') {
@@ -216,7 +225,6 @@ class Object extends Eloquent {
         } else {
 
         }
-
     }
 
     public function getMediaThumbSmallAttribute() {

@@ -11,10 +11,6 @@ class UserPresenter {
         return SpaceXStats\Enums\UserRole::getKey($this->entity->role_id);
     }
 
-    public function created_at() {
-        return $this->entity->created_at->toFormattedDateString();
-    }
-
     /**
      * @return null|string
      */

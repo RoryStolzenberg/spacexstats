@@ -42,7 +42,7 @@
                         <tr>
                             <td>Member Since</td>
                             <td>
-                                {{ $user->present()->created_at() }}
+                                {{ $user->created_at->toFormattedDateString() }}
                             </td>
                         </tr>
                         <tr>
@@ -62,7 +62,7 @@
                         </tr>
                         <tr>
                             <td>Comments</td>
-                            <td>{{ $user->comments->count() }}</td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>

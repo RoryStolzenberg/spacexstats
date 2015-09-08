@@ -23,11 +23,11 @@
             </nav>
 
             <section class="details">
-                <div class="grid-8 content">
+                <div class="grid-9 content">
                     <img id="object" src="{{ $object->media }}" />
                 </div>
 
-                <aside class="grid-4 aside">
+                <aside class="grid-3 aside">
                     <div class="actions container">
                         <span class="grid-4">
                             <i class="fa fa-eye fa-2x"></i> {{ $object->views }} Views
@@ -43,9 +43,9 @@
                     <div class="more">
                         @if ($object->anonymous == false || Auth::isAdmin())
                             <p class="lowvisibility opacity">Uploaded by <span>{{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}</span><br/>
-                                On <span>{{ $object->present()->created_at() }}</span></p>
+                                On <span>{{ $object->toFormattedDateString() }}</span></p>
                         @elseif ($object->anonymous == true)
-                            <p>Uploaded on {{ $object->present()->created_at() }}</p>
+                            <p>Uploaded on {{ $object->toFormattedDateString() }}</p>
                         @endif
                         <ul>
                             <li>{{ $object->present()->subtype() }}</li>
