@@ -36,7 +36,7 @@ class ObjectPresenter {
         if ($month == '00') {
             return $year;
         } else if ($day == '00') {
-            return jsmonthname($month, 0) . " " . $year;
+            return jdmonthname($month, 0) . " " . $year;
         }
         return \Carbon\Carbon::parse($this->entity->originated_at)->toFormattedDateString();
 

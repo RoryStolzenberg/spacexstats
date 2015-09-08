@@ -41,10 +41,10 @@
                     <div class="grid-6">
                         <h3>Favorites</h3>
                         <label>Favorite Mission</label>
-                        <select-list options="missions" has-default-option="true" unique-key="mission_id" searchable="true" selected-option="profile.favorite_mission"></select-list>
+                        <select-list options="missions" has-default-option="true" unique-key="mission_id" searchable="true" ng-model="profile.favorite_mission"></select-list>
 
                         <label>Favorite Mission Patch</label>
-                        <select-list options="patches" has-default-option="true" unique-key="mission_id" searchable="true" selected-option="profile.favorite_patch"></select-list>
+                        <select-list options="patches" has-default-option="true" unique-key="mission_id" searchable="true" ng-model="profile.favorite_patch"></select-list>
 
 
                         <label>Favorite Elon Musk Quote</label>
@@ -88,35 +88,37 @@
                         </ul>
                     </fieldset>
 
-                    <h3>Upcoming Launch Notifications</h3>
-                    <fieldset>
-                        <legend>Notify me by email when</legend>
-                    </fieldset>
-                    <ul>
-                        <li>
-                            <label for="tMinus24HoursEmail">There's a SpaceX launch in 24 hours</label>
-                            <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.tMinus24HoursEmail" />
-                        </li>
-                        <li>
-                            <label for="tMinus3HoursEmail">There's a SpaceX launch in 3 hours</label>
-                            <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.tMinus3HoursEmail" />
-                        </li>
-                        <li>
-                            <label for="tMinus1HourEmail">There's a SpaceX launch in 1 hour</label>
-                            <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.tMinus1HourEmail" />
-                        </li>
-                    </ul>
-
-                    <h3>Other stuff</h3>
-                    <fieldset>
-                        <legend>Send me</legend>
+                    @if(Auth::isSubscriber())
+                        <h3>Upcoming Launch Notifications</h3>
+                        <fieldset>
+                            <legend>Notify me by email when</legend>
+                        </fieldset>
                         <ul>
                             <li>
-                                <label for="newsSummaries">Monthly SpaceXStats News Summary Infographics</label>
-                                <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.newsSummaries" />
+                                <label for="tMinus24HoursEmail">There's a SpaceX launch in 24 hours</label>
+                                <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.tMinus24HoursEmail" />
+                            </li>
+                            <li>
+                                <label for="tMinus3HoursEmail">There's a SpaceX launch in 3 hours</label>
+                                <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.tMinus3HoursEmail" />
+                            </li>
+                            <li>
+                                <label for="tMinus1HourEmail">There's a SpaceX launch in 1 hour</label>
+                                <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.tMinus1HourEmail" />
                             </li>
                         </ul>
-                    </fieldset>
+
+                        <h3>Other stuff</h3>
+                        <fieldset>
+                            <legend>Send me</legend>
+                            <ul>
+                                <li>
+                                    <label for="newsSummaries">Monthly SpaceXStats News Summary Infographics</label>
+                                    <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.newsSummaries" />
+                                </li>
+                            </ul>
+                        </fieldset>
+                    @endif
                     <input type="submit" ng-click="updateEmailNotifications()" />
                 </form>
             </section>
@@ -124,6 +126,7 @@
             <h2>Text/SMS Notifications</h2>
             <section class="text-sms-notifications">
                 <p>Get upcoming launch notifications delivered directly to your mobile.</p>
+                @if (Auth::isSubscriber())
                 <form>
                     <label for="mobile">Enter your mobile number</label>
                     <input type="tel" id="mobile" ng-model="SMSNotification.mobile" />
@@ -143,6 +146,9 @@
 
                     <input type="submit" ng-click="updateSMSNotifications()" />
                 </form>
+                @else
+                    <p>Sign up for mission control to enable this feature!</p>
+                @endif
             </section>
 
             <h2>Reddit Notifications</h2>

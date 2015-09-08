@@ -49,12 +49,12 @@ Route::group(array('prefix' => 'users'), function() {
         Route::post('/{username}/edit/smsnotifications', array(
             'as' => 'users.edit.smsnotifications',
             'uses' => 'UsersController@editSMSNotifications'
-        ));
+        ))->before('mustBe:Subscriber');
 
         Route::post('/{username}/edit/redditnotifications', array(
             'as' => 'users.edit.redditnotifications',
             'uses' => 'UsersController@editRedditNotifications'
-        ));
+        ))->before('mustBe:Subscriber');
 
         Route::get('/{username}/notes', array(
             'as' => 'users.profile.notes',

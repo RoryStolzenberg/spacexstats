@@ -1,17 +1,3 @@
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-
 angular.module("missionsListApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -876,7 +862,7 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
     } else if (laravel.notifications.tMinus1HourSMS === true) {
         $scope.SMSNotification.status = "tMinus1HourSMS";
     } else {
-        $scope.SMSNotification.status = null;
+        $scope.SMSNotification.status = false;
     }
 
     $scope.updateSMSNotifications = function() {
@@ -889,6 +875,20 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
     }
 
 }]);
+
+angular.module('flashMessageService', [])
+    .service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                   $(this).remove();
+                });
+            }, 3000);
+        };
+    });
 
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
@@ -1056,19 +1056,6 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
@@ -1191,6 +1178,19 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',

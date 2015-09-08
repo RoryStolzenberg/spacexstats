@@ -17,8 +17,10 @@ class UsersController extends BaseController {
         'failedLoginNotActivated'                   => array('type' => 'failure', 'contents' => 'Your login attempt was unsuccessful. Please check your email and activate your account first.'),
         'somethingWentWrong'                        => array('type' => 'failure', 'contents' => 'Something went wrong. You can try again, or get in touch.'),
         'SMSNotificationSuccess'                    => array('type' => 'success', 'contents' => 'SMS Notification settings updated!'),
+        'SMSNotificationFailure'                    => array('type' => 'failure', 'contents' => 'Number does not exist. Be sure to include the country code if you are outside the U.S.'),
         'updateProfileSuccess'                      => array('type' => 'success', 'contents' => 'Profile settings updated!'),
         'userDoesNotExist'                          => array('type' => 'failure', 'contents' => 'That user does not exist.'),
+        'notASubscriber'                            => array('type' => 'failure', 'contents' => 'Subscribe to Mission Control to do that.'),
     ];
 
 	public function __construct(User $user) {
@@ -108,7 +110,6 @@ class UsersController extends BaseController {
 
     public function editSMSNotifications($username) {
         $user = User::where('username', $username)->with('notifications.notificationType')->firstOrFail();
-
         $sms = Input::get('SMSNotification');
 
         // Delete any previous SMS notification
@@ -118,33 +119,41 @@ class UsersController extends BaseController {
             ->orWhere('notification_type_id', NotificationType::tMinus1HourSMS)
             ->delete();
 
-        // Check if new status is not null
-        if ($sms['status'] != null) {
-
-            $client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
-            $number = $client->phone_numbers->get($sms['mobile']);
-
-            // Check for errors
-            if (!isset($number->status)) {
-
-                // Set user mobile details
-                $user->setMobileDetails($number);
-                $user->save();
-
-                // Insert new notification
-                Notification::create(array(
-                    'user_id' => Auth::user()->user_id,
-                    'notification_type_id' => NotificationType::fromString($sms['status'])
-                ));
-
-                return Response::json($this->flashMessages['SMSNotificationSuccess']);
-            }
-            return Response::json($this->flashMessages['SMSNotificationFailure']);
+        // If the number is blank, assume the user wants their SMS setup deleted
+        if ($sms['mobile'] == "") {
+            $user->resetMobileDetails();
+            $user->save();
+            return Response::json($this->flashMessages['SMSNotificationSuccess']);
         }
 
-        $user->resetMobileDetails();
-        $user->save();
+        // If status is not false
+        if ($sms['status'] != false) {
 
+            $client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
+
+            // Try to see if the number exists, if not, will throw exception
+            try {
+                $number = $client->phone_numbers->get($sms['mobile']);
+
+                // Check for errors
+                if (!isset($number->status)) {
+                    // Set user mobile details
+                    $user->setMobileDetails($number);
+                    $user->save();
+
+                    // Insert new notification
+                    Notification::create(array(
+                        'user_id' => Auth::user()->user_id,
+                        'notification_type_id' => NotificationType::fromString($sms['status'])
+                    ));
+                    return Response::json($this->flashMessages['SMSNotificationSuccess']);
+                }
+                return Response::json($this->flashMessages['somethingWentWrong']);
+
+            } catch (Services_Twilio_RestException $e) {
+                return Response::json($this->flashMessages['SMSNotificationFailure']);
+            }
+        }
         return Response::json($this->flashMessages['SMSNotificationSuccess']);
     }
 
