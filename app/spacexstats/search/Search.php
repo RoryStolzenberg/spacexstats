@@ -14,6 +14,7 @@ class Search {
     }
 
     public function index($object) {
+
         $paramBody = [
             'object_id' => $object->object_id,
             'user_id' => $object->user_id,
@@ -35,7 +36,7 @@ class Search {
             'summary' => $object->summary,
             'author' => $object->author,
             'attribution' => $object->attribution,
-            'originated_at' => $object->originated_at,
+            'originated_at' => $object->originDateAsString,
             'tweet_user_name' => $object->tweet_user_name,
             'tweet_text' => $object->tweet_text,
             'status' => $object->status,

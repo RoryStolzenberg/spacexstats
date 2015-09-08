@@ -193,13 +193,18 @@ class Object extends Eloquent {
     }
 
     // Attribute accessors
-    public function getFromAttribute() {
-        try {
-            return \Carbon\Carbon::parse($this->originated_at)->toFormattedDateString();
-        } catch (InvalidArgumentException $e) {
+    public function getOriginDateAsStringAttribute() {
+        // Y-m-d
+        $year = substr($this->originated_at, 0, 4);
+        $month = substr($this->originated_at, 5, 2);
+        $day = substr($this->originated_at, 8, 2);
 
+        if ($month == '00') {
+            return $year;
+        } else if ($day == '00') {
+            return $year . '-' . $month;
         }
-
+        return $this->originated_at;
     }
 
     public function getMediaAttribute() {

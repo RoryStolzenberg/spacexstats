@@ -26,4 +26,19 @@ class ObjectPresenter {
 
         return round($size, 1) . ' ' . $prefixes[$i];
     }
+
+    public function originDateAsString() {
+        // Y-m-d
+        $year = substr($this->entity->originated_at, 0, 4);
+        $month = substr($this->entity->originated_at, 5, 2);
+        $day = substr($this->entity->originated_at, 8, 2);
+
+        if ($month == '00') {
+            return $year;
+        } else if ($day == '00') {
+            return jsmonthname($month, 0) . " " . $year;
+        }
+        return \Carbon\Carbon::parse($this->entity->originated_at)->toFormattedDateString();
+
+    }
 }
