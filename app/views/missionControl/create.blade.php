@@ -110,9 +110,9 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>When was this created?</p>
-                                            <datetime type="[[ file.originated_at == null ? 'date' : 'datetime' ]]"
+                                            <datetime type="[[::(file.originated_at == null ? 'date' : 'datetime') ]]"
                                                       ng-model="file.originated_at"
-                                                      is-null="[[ file.originated_at == null ? 'false' : 'true' ]]"
+                                                      is-null="[[::(file.originated_at == null ? 'false' : 'true') ]]"
                                                       nullable-toggle="false"></datetime>
                                         </label>
 
@@ -180,7 +180,6 @@
                                     </li>
 
                                     <li class="grid-6">
-                                        <datetime params="value: originated_at, type: 'date'"></datetime>
                                     </li>
 
                                     <li class="grid-12">
@@ -245,7 +244,6 @@
                                     </li>
 
                                     <li class="grid-6">
-                                        <datetime params="value: originated_at, type: 'date'"></datetime>
                                     </li>
 
                                     <li class="grid-12">
@@ -327,7 +325,6 @@
                                     </li>
 
                                     <li class="grid-6">
-                                        <datetime params="value: originated_at, type: 'date'"></datetime>
                                     </li>
 
                                     <li class="grid-12">
@@ -401,7 +398,6 @@
                                     </li>
 
                                     <li class="grid-6">
-                                        <datetime params="value: originated_at, type: 'date'"></datetime>
                                     </li>
 
                                     <li class="grid-12">
@@ -439,7 +435,6 @@
                         <input type="url" name="article-url" id="article-url" data-bind="text: external_url" />
 
                         <label>Article Date</label>
-                        <datetime params="value: originated_at, type: 'date'"></datetime>
 
                         <label>Article News Source</label>
                         <input type="text" name="article-publisher" id="article-publisher" data-bind="text: publisher" />
@@ -461,7 +456,6 @@
                         <input type="url" name="article-url" id="article-url" data-bind="text: external_url" />
 
                         <label>Press Release Date</label>
-                        <datetime params="value: originated_at, type: 'date'"></datetime>
 
                         <label>Press Release Title</label>
                         <input type="text" name="article-author" id="article-author" data-bind="text: title" />
@@ -493,7 +487,6 @@
                         <input type="text" name="article-author" id="article-author" data-bind="value: title" />
 
                         <label>Comment Date</label>
-                        <datetime params="value: originated_at, type: 'date'"></datetime>
 
                         <label>Comment Author</label>
                         <input type="author" name="nsf-comment-author" id="article-author" data-bind="value: author" />

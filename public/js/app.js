@@ -1020,53 +1020,6 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 });
 
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
@@ -1189,8 +1142,22 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
+        require: 'ngModel',
         restrict: 'E',
         replace: true,
         scope: {
@@ -1200,29 +1167,29 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             nullableToggle: '@',
             isNull: '@'
         },
-        link: function($scope) {
+        link: function($scope, element, attrs, ctrl) {
 
             $scope.days = [];
-            $scope.days.push({ value: '00', display: '-'});
+            $scope.days.push({ value: 0, display: '-'});
 
             for (i = 1; i <= 31; i++) {
-                $scope.days.push({ value: ('0' + i).slice(-2), display: i });
+                $scope.days.push({ value: i, display: i });
             }
 
             $scope.months = [
-                { value: '00', display: '-'},
-                { value: '01', display: 'January'},
-                { value: '02', display: 'February'},
-                { value: '03', display: 'March'},
-                { value: '04', display: 'April'},
-                { value: '05', display: 'May'},
-                { value: '06', display: 'June'},
-                { value: '07', display: 'July'},
-                { value: '08', display: 'August'},
-                { value: '09', display: 'September'},
-                { value: '10', display: 'October'},
-                { value: '11', display: 'November'},
-                { value: '12', display: 'December'}
+                { value: 0, display: '-'},
+                { value: 1, display: 'January'},
+                { value: 2, display: 'February'},
+                { value: 3, display: 'March'},
+                { value: 4, display: 'April'},
+                { value: 5, display: 'May'},
+                { value: 6, display: 'June'},
+                { value: 7, display: 'July'},
+                { value: 8, display: 'August'},
+                { value: 9, display: 'September'},
+                { value: 10, display: 'October'},
+                { value: 11, display: 'November'},
+                { value: 12, display: 'December'}
             ];
 
             $scope.years = function() {
@@ -1244,89 +1211,75 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                 return years;
             };
 
-            // Internal functions to change ngModel
-            $scope.changeModel = {
-                year: function() {
-                    if ($scope.type == 'datetime') {
+            //convert data from view format to model format
+            ctrl.$parsers.push(function(viewvalue) {
 
-                    } else if ($scope.type == 'date') {
+                console.log("parser");
+                console.log(viewvalue);
 
-                    }
-                },
-                month: function() {
-                    console.log($scope.datetime.month);
-                    if ($scope.type == 'datetime') {
+                if (moment(viewvalue).isValid()) {
+                    var value = moment({
+                        year: viewvalue.year,
+                        month: viewvalue.month - 1,
+                        date: viewvalue.date,
+                        hour: viewvalue.hour,
+                        minute: viewvalue.minute,
+                        second: viewvalue.second
+                    }).format('YYYY-MM-DD HH:mm:ss');
 
-                    } else if ($scope.type == 'date') {
-
-                    }
-                },
-                date: function() {
-                    if ($scope.type == 'datetime') {
-
-                    } else if ($scope.type == 'date') {
-
-                    }
-                },
-                hour: function() {
-                    if ($scope.type == 'datetime') {
-
-                    } else if ($scope.type == 'date') {
-
-                    }
-                },
-                minute: function() {
-                    if ($scope.type == 'datetime') {
-
-                    } else if ($scope.type == 'date') {
-
-                    }
-                },
-                second: function() {
-                    if ($scope.type == 'datetime') {
-
-                    } else if ($scope.type == 'date') {
-
-                    }
-                }
-            };
-
-            // Watch for external changes and rerun the original function
-            $scope.$watch('datetimevalue', function() {
-                if ($scope.type == 'datetime') {
-                    initialize();
-                } else if ($scope.type == 'date') {
-                    initialize();
-                }
-            }, true);
-
-            // Set the initial datetime values
-            var initialize = function() {
-                if ($scope.datetimevalue != null) {
-                    var current = moment($scope.datetimevalue);
-
-                    $scope.datetime = {
-                        year: current.year(),
-                        month: current.month(),
-                        day: current.month(),
-                        hour: current.hour(),
-                        minute: current.minute(),
-                        second: current.second()
-                    };
-
+                    console.log(value);
+                    return value;
                 } else {
-                    $scope.datetime = {
-                        year: moment().year(),
-                        month: '00',
-                        day: '00',
-                        hour: null,
-                        minute: null,
-                        second: null
-                    };
+                    return null;
                 }
+            });
+
+            ctrl.$render = function() {
+
+                console.log("render");
+                console.log(ctrl.$viewValue);
+
+                $scope.year = ctrl.$viewValue.year;
+                $scope.month = ctrl.$viewValue.month;
+                $scope.date = ctrl.$viewValue.date;
+                $scope.hour = ctrl.$viewValue.hour;
+                $scope.minute = ctrl.$viewValue.minute;
+                $scope.second = ctrl.$viewValue.second;
             };
 
-            initialize();
+            //convert data from model format to view format
+            ctrl.$formatters.push(function(data) {
+
+                console.log("formatter");
+                console.log(data);
+
+                if (data != null) {
+                    var dt = moment(data);
+
+                    return {
+                        year: dt.year(),
+                        month: dt.month() + 1,
+                        date: dt.date(),
+                        hour: dt.hour(),
+                        minute: dt.minute(),
+                        second: dt.second()
+                    }
+                } else {
+                    return {
+                        year: moment().year(),
+                        month: 0,
+                        date: 0,
+                        hour: 0,
+                        minute: 0,
+                        second: 0
+                    }
+                }
+            });
+
+            $scope.$watch('year + month + date + hour + minute + second', function() {
+                console.log("watch");
+                ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
+            });
 
         },
         templateUrl: '/js/templates/datetime.html'
@@ -1334,6 +1287,40 @@ angular.module('directives.datetime', []).directive('datetime', function() {
 });
 
 
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',

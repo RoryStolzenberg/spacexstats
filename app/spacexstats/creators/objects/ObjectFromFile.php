@@ -45,6 +45,8 @@ class ObjectFromFile extends ObjectCreator {
             $this->object->attribution = array_get($this->input, 'attribution', null);
             $this->object->author = array_get($this->input, 'author', null);
             $this->object->external_url = array_get($this->input, 'external_url', null);
+            $this->object->originated_at = array_get($this->input, 'originated_at', null);
+
             $this->object->status = ObjectPublicationStatus::QueuedStatus;
 
             $this->createMissionRelation();
