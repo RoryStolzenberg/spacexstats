@@ -105,10 +105,10 @@ class MissionCreator {
 
             // Create the prelaunch event
             PrelaunchEvent::create(array(
-                'mission_id'                    => $this->mission->mission_id,
-                'event'                         => 'Announcement',
-                'occurred_at'                   => \Carbon\Carbon::now(),
-                'summary'                       => 'Mission Created'
+                'mission_id'    => $this->mission->mission_id,
+                'event'         => 'Announcement',
+                'occurred_at'   => \Carbon\Carbon::now(),
+                'summary'       => 'Mission Created'
             ));
         });
 

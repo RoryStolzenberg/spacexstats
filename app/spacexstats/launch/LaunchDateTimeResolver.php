@@ -14,9 +14,9 @@ abstract class LaunchDateTimeResolver {
             // Declare the clauses and their associated values if they need to be used
             $dateMappings = array(
                 'SubMonth' => array(
-                    'early' => '-10 23:59:59',
-                    'mid' => '-20 23:59:59',
-                    'late' => ' 23:59:59'
+                    'Early' => '-10 23:59:59',
+                    'Mid' => '-20 23:59:59',
+                    'Late' => ' 23:59:59'
                 ),
                 'Month' => array(
                     'January' => '-01-31 23:59:59',
@@ -39,9 +39,9 @@ abstract class LaunchDateTimeResolver {
                     'Q4' => '-12-31 23:59:59'
                 ),
                 'SubYear' => array(
-                    'early' => '-04-30 23:59:59',
-                    'mid' => '-08-31 23:59:59',
-                    'late' => '-12-31 23:59:59'
+                    'Early' => '-04-30 23:59:59',
+                    'Mid' => '-08-31 23:59:59',
+                    'Late' => '-12-31 23:59:59'
                 ),
                 'Half' => array(
                     'H1' => '-06-30 23:59:59',
