@@ -1,5 +1,5 @@
 @extends('templates.main')
-@section('title', 'Future Launches')
+@section('title', 'Create A Mission')
 
 @section('content')
 <body class="create-mission" ng-app="missionApp" ng-controller="missionController" ng-strict-di>
@@ -64,17 +64,17 @@
                 <fieldset>
                     <legend>Parts</legend>
                     <div class="add-parts">
-                        <button class="icon-button" ng-click="partFilter.type = 'Booster'">Add a Booster</button>
-                        <button class="icon-button" ng-click="partFilter.type = 'First Stage'">Add a First Stage</button>
-                        <button class="icon-button" ng-click="partFilter.type = 'Upper Stage'">Add an Upper Stage</button>
+                        <button class="icon-button" ng-click="filters.parts.type = 'Booster'">Add a Booster</button>
+                        <button class="icon-button" ng-click="filters.parts.type = 'First Stage'">Add a First Stage</button>
+                        <button class="icon-button" ng-click="filters.parts.type = 'Upper Stage'">Add an Upper Stage</button>
 
-                        <div ng-show="partFilter.type !== ''">
-                            <div ng-repeat="part in data.parts | filter:partFilter">
+                        <div ng-show="filters.parts.type !== ''">
+                            <div ng-repeat="part in data.parts | filter:filters.parts">
                                 <span>[[ part.name ]]</span>
-                                <button ng-click="mission.addPartFlight(part)">Reuse This [[ partFilter.type ]]</button>
+                                <button ng-click="mission.addPartFlight(filters.parts.type, part)">Reuse This [[ filters.parts.type ]]</button>
                             </div>
 
-                            <button ng-click="mission.addPartFlight()">Create A [[ partFilter.type ]]</button>
+                            <button ng-click="mission.addPartFlight(filters.parts.type)">Create A [[ filters.parts.type ]]</button>
                         </div>
                     </div>
 
@@ -86,56 +86,56 @@
 
                         <div ng-if="partFlight.part.type == 'Booster' || partFlight.part.type == 'First Stage'">
                             <label>Landing Legs?</label>
-                            <input type="checkbox" ng-model="firststage_landing_legs" />
+                            <input type="checkbox" ng-model="partFlight.firststage_landing_legs" />
 
                             <label>Grid Fins?</label>
-                            <input type="checkbox" ng-model="firststage_grid_fins" />
+                            <input type="checkbox" ng-model="partFlight.firststage_grid_fins" />
 
                             <label>Engine</label>
-                            <select ng-model="firststage_engine" ng-options="firstStageEngine.first_stage_engine in firstStageEngines"></select>
+                            <select ng-model="partFlight.firststage_engine" ng-options="firstStageEngine for firstStageEngine in data.firstStageEngines"></select>
 
                             <label>Engine Failures</label>
-                            <input type="text" ng-model="firststage_engine_failures" />
+                            <input type="text" ng-model="partFlight.firststage_engine_failures" />
 
                             <label>MECO time</label>
-                            <input type="text" ng-model="firststage_meco" />
+                            <input type="text" ng-model="partFlight.firststage_meco" />
 
                             <label>Landing Coords (lat)</label>
-                            <input type="text" ng-model="firststage_landing_coords_lat" />
+                            <input type="text" ng-model="partFlight.firststage_landing_coords_lat" />
 
                             <label>Landing Coords (lng)</label>
-                            <input type="text" ng-model="firststage_landing_coords_lng" />
+                            <input type="text" ng-model="partFlight.firststage_landing_coords_lng" />
 
                             <label>Baseplate Color</label>
-                            <input type="text" ng-model="baseplate_color" />
+                            <input type="text" ng-model="partFlight.baseplate_color" />
                         </div>
 
 
-                        <div ng-if="part.type == 'Upper Stage'">
+                        <div ng-if="partFlight.part.type == 'Upper Stage'">
                             <label>Engine</label>
-                            <select ng-model="upperstage_engine" ng-options="upperstageEngine in data.upperstageEngines"></select>
+                            <select ng-model="partFlight.upperstage_engine" ng-options="upperStageEngine for upperStageEngine in data.upperStageEngines"></select>
 
                             <label>Status</label>
-                            <select data-bind="value: upperstage_status, options: $root.dataLists.upperStageStatuses, optionsCaption: 'null'"></select>
 
                             <label>SECO time</label>
-                            <input type="text" ng-model="upperstage_seco"/>
+                            <input type="text" ng-model="partFlight.upperstage_seco"/>
 
                             <label>Decay Date</label>
-                            <datetime type="date" ng-model="decay_date" startYear="2002" nullable="true"></datetime>
 
                             <label>NORAD ID</label>
-                            <input type="text" ng-model="upperstage_norad_id" />
+                            <input type="text" ng-model="partFlight.upperstage_norad_id" />
 
                             <label>International Designator</label>
-                            <input type="text" ng-model="upperstage_intl_designator" />
+                            <input type="text" ng-model="partFlight.upperstage_intl_designator" />
                         </div>
 
                         <label>Landed?</label>
-                        <input type="checkbox" ng-model="landed"/>
+                        <input type="checkbox" value="true" ng-model="partFlight.landed"/>
 
                         <label>Notes</label>
-                        <textarea ng-model="note"></textarea>
+                        <textarea ng-model="partFlight.note"></textarea>
+
+                        <button ng-click="mission.removePartFlight(part)">Remove this part</button>
                     </div>
                 </fieldset>
 
@@ -173,8 +173,8 @@
                 <fieldset>
                     <legend>Spacecraft</legend>
 
-                    <div class="add-spacecraft">
-                        <div ng-repeat="spacecraft in data.spacrcraft">
+                    <div class="add-spacecraft" ng-if="mission.spacecraftFlight == null">
+                        <div ng-repeat="spacecraft in data.spacecraft">
                             <span>[[ spacecraft.name ]]</span>
                             <button ng-click="mission.addSpacecraftFlight(spacecraft)" ng-disabled="mission.spacecraftFlight != null">Reuse This Spacecraft</button>
                         </div>
@@ -195,7 +195,7 @@
                         <input type="text" ng-model="mission.spacecraftFlight.flight_name" />
 
                         <label>End Of Mission</label>
-                        <datetime type="datetime" ng-model="mission.spacecraftFlight.end_of_mission" is-nullable="true" start-year="2010"></datetime>
+                        <datetime type="datetime" ng-model="mission.spacecraftFlight.end_of_mission" is-null="true" nullable-toggle="true" start-year="2010"></datetime>
 
                         <label>Return Method</label>
                         <select ng-model="mission.spacecraftFlight.return_method" ng-options="returnMethod for returnMethod in data.returnMethods"></select>

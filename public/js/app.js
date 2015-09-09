@@ -624,15 +624,21 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         missionTypes: laravel.missionTypes,
         launchSites: laravel.launchSites,
         landingSites: laravel.landingSites,
-        vehicles: ['Dragon 1', 'Dragon 2'],
-        firststageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
-        upperstageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
+        vehicles: laravel.vehicles,
+        firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
+        upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
         upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
         astronauts: laravel.astronauts,
-        spacecraftTypes: laravel.spacecraftTypes,
-        returnMethods: laravel.returnMethods,
+        spacecraftTypes: ['Dragon 1', 'Dragon 2'],
+        returnMethods: ['Splashdown', 'Landing', 'Did Not Return'],
         eventTypes: ['Wet Dress Rehearsal', 'Static Fire']
     };
+
+    $scope.filters = {
+        parts: {
+            type: ''
+        }
+    }
 
     $scope.selected = {
         astronaut: null
@@ -701,22 +707,20 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
     }
 
 }).factory("PartFlight", ["Part", function(Part) {
-    return function(part) {
-        if (part == null) {
-            var self = this;
+    return function(type, part) {
+        var self = this;
 
-            self.part = new Part();
+        self.part = new Part(type, part);
 
-        } else {
-            var self = new Part(part);
-        }
         return self;
     }
 
 }]).factory("Part", function() {
-    return function(part) {
-        if (part == null) {
-            var self = this;
+    return function(type, part) {
+
+        if (typeof part === 'undefined') {
+            var self = this
+            self.type = type;
         } else {
             var self = part;
         }
@@ -890,19 +894,6 @@ angular.module('flashMessageService', [])
         };
     });
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module("directives.selectList", []).directive("selectList", function() {
     return {
         restrict: 'E',
@@ -1069,6 +1060,19 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',

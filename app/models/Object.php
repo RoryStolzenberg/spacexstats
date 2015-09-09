@@ -23,8 +23,8 @@ class Object extends Eloquent {
     protected $presenter = "ObjectPresenter";
 
 	protected $rules = array(
-        'user_id' => 'integer|exists:users,user_id',
-        'mission_id' => 'integer|exists:missions,mission_id',
+        'user_id' => ['integer', 'exists:users,user_id'],
+        'mission_id' => ['integer','exists:missions,mission_id'],
 
         'type' => 'integer',
         'subtype' => 'integer',

@@ -14,7 +14,7 @@ class Payload extends Eloquent {
 
     // Validation
     public $rules = array(
-        'mission_id'    => ['required', 'exists:missions,mission_id'],
+        'mission_id'    => ['required', 'integer', 'exists:missions,mission_id'],
         'name'          => ['required', 'varchar:tiny'],
         'operator'      => ['required', 'varchar:small'],
         'mass'          => ['min:0', 'numeric', 'digits_between:0,5'],
