@@ -10,28 +10,86 @@ class MissionCreator {
 
     public function __construct(\Mission $mission, \Payload $payload, \PartFlight $partFlight, \Part $part, \SpacecraftFlight $spacecraftFlight, \Spacecraft $spacecraft, \AstronautFlight $astronautFlight, \Astronaut $astronaut) {
         $this->mission              = $mission;
-        $this->payloads             = $payload;
-        $this->partFlights          = $partFlight;
+        $this->payload              = $payload;
+        $this->partFlight           = $partFlight;
         $this->part                 = $part;
         $this->spacecraftFlight     = $spacecraftFlight;
         $this->spacecraft           = $spacecraft;
-        $this->astronautFlights     = $astronautFlight;
+        $this->astronautFlight      = $astronautFlight;
         $this->astronaut            = $astronaut;
     }
 
     public function isValid() {
         // Get the input
         $this->input = \Input::all();
-        $validators = [];
 
         // Validate the mission model
-        $validators['mission'] = $this->mission->isValid($this->input['mission']);
+        $missionValidity = $this->mission->isValid($this->input['mission']);
+        if ($missionValidity !== true) {
+            $this->errors[] = $missionValidity;
+        }
 
-        foreach ($this->input['mission'] as $model)
+        // Validate any payload models
+        if (array_key_exists('payloads', $this->input['mission'])) {
 
-        // Walk through the array and check if any models are invalid
-        array_walk_recursive($this->input['mission'], function($element, $index) {
-        });
+            $payloads = $this->input['mission']['payloads'];
+
+            foreach ($payloads as $payload) {
+                $payloadValidity = $this->payload->isValid($payload);
+                if ($payloadValidity !== true) {
+                    $this->errors['payloads'][] = $payloadValidity;
+                }
+            }
+        }
+
+        // Validate any partFlight models
+        $partFlights = $this->input['mission']['partFlights'];
+        foreach ($partFlights as $partFlight) {
+
+            $partFlightValidity = $this->partFlight->isValid($partFlight);
+            if ($partFlightValidity !== true) {
+                $this->errors['partFlights'][] = $partFlightValidity;
+            }
+
+            // Validate the part model
+            $partValidity = $this->part->isValid($partFlight['part']);
+            if ($partValidity !== true) {
+                $this->errors['parts'][] = $partValidity;
+            }
+        }
+
+        // Validate the spacecraftFlight model
+        if (array_key_exists('spacecraftFlight', $this->input['mission'])) {
+            $spacecraftFlight = $this->input['mission']['spacecraftFlight'];
+
+            $spacecraftFlightValidity = $this->spacecraftFlight->isValid($spacecraftFlight);
+            if ($spacecraftFlightValidity !== true) {
+                $this->errors['spacecraftFlight'][] = $spacecraftFlightValidity;
+            }
+
+            // Validate the spacecraft model
+            $spacecraftValidity = $this->spacecraft->isValid($spacecraftFlight['spacecraft']);
+            if ($spacecraftValidity !== true) {
+                $this->errors['spacecraft'][] = $spacecraftValidity;
+            }
+
+            // Validate any astronaut flights model
+            if (array_key_exists('astronautFlights', $spacecraftFlight)) {
+                foreach ($spacecraftFlight['astronautFlights'] as $astronautFlight)
+                {
+                    $astronautFlightValidity = $this->astronautFlight->isValid($astronautFlight);
+                    if ($astronautFlightValidity !== true) {
+                        $this->errors['astronautFlights'][] = $astronautFlightValidity;
+                    }
+
+                    // Validate the astronaut model
+                    $astronautValidity = $this->astronaut->isValid($astronautFlight['astronaut']);
+                    if ($astronautValidity !== true) {
+                        $this->errors['astronauts'][] = $astronautValidity;
+                    }
+                }
+            }
+        }
 
         return empty($this->errors);
     }
@@ -60,8 +118,6 @@ class MissionCreator {
     private function createSpacecraftRelation() {
 
     }
-
-    private function
 
     public function getErrors() {
         return $this->errors;

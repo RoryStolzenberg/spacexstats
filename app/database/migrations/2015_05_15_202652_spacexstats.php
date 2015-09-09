@@ -350,8 +350,8 @@ class Spacexstats extends Migration {
 
         Schema::create('spacecraft', function(Blueprint $table) {
             $table->increments('spacecraft_id');
-            $table->enum('type', array('Dragon 1', 'Dragon 2'));
             $table->string('name', Varchar::tiny);
+            $table->enum('type', array('Dragon 1', 'Dragon 2'));
         });
 
         // Pivot table

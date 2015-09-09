@@ -1,6 +1,9 @@
 <?php
 
 class Part extends Eloquent {
+
+    use ValidatableTrait;
+
     protected $table = 'parts';
     protected $primaryKey = 'part_id';
     public $timestamps = true;
@@ -10,6 +13,15 @@ class Part extends Eloquent {
     protected $fillable = [];
     protected $guarded = [];
 
+    // Validation
+    public $rules = array(
+        'name'          => ['required', 'varchar:tiny'],
+        'type'          => ['required']
+    );
+
+    public $messages = array();
+
+    // Relations
     public function missions() {
         return $this->belongsToMany('Mission', 'part_flights_pivot');
     }

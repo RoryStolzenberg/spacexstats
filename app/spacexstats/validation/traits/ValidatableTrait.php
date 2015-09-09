@@ -2,7 +2,7 @@
 trait ValidatableTrait {
     public function isValid($input) {
 
-        if (!$this->rules || !$this->messages) {
+        if (is_null($this->rules) || is_null($this->messages)) {
             throw new Exception('Please set the $rules & $messages properties on classes using ValidatableTrait.');
         }
 

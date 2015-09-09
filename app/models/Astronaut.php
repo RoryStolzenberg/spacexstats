@@ -1,5 +1,8 @@
 <?php
 class Astronaut extends Eloquent {
+
+    use ValidatableTrait;
+
     protected $table = 'astronauts';
     protected $primaryKey = 'astronaut_id';
     public $timestamps = false;
@@ -12,6 +15,16 @@ class Astronaut extends Eloquent {
     public function getDates() {
         return ['date_of_birth'];
     }
+
+    // Validation
+    public $rules = array(
+        'first_name'    => ['required', 'varchar:tiny'],
+        'last_name'     => ['required', 'varchar:tiny'],
+        'nationality'   => ['required', 'varchar:tiny'],
+        'contracted_by' => ['required', 'varchar:tiny'],
+    );
+
+    public $messages = array();
 
     // Relations
     public function spacecraftFlights() {

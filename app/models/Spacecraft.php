@@ -2,6 +2,8 @@
 
 class Spacecraft extends Eloquent {
 
+    use ValidatableTrait;
+
 	protected $table = 'spacecraft';
 	protected $primaryKey = 'spacecraft_id';
     public $timestamps = false;
@@ -11,7 +13,15 @@ class Spacecraft extends Eloquent {
     protected $fillable = [];
     protected $guarded = [];
 
-	// Relations
+    // Validation
+    public $rules = array(
+        'name'  => ['required', 'varchar:tiny'],
+        'type'  => ['required']
+    );
+
+    public $messages = array();
+
+    // Relations
     public function spacecraftFlights() {
         return $this->hasOneOrMany('SpacecraftFlights');
     }
