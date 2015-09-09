@@ -38,7 +38,7 @@ class LaunchReorderer {
         // Update each mission's launch_order_id
         foreach ($arrayedMissions as $index => $arrayedMission) {
             // If the context is from the current mission, set the current mission properties
-            if (array_get($arrayedMission, 'context', false) == true) {
+            if (array_key_exists('context', $arrayedMission)) {
                 $this->setMissionProperties($index);
 
             // Else, update the mission properties if it needs updating

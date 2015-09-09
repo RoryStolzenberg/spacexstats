@@ -161,7 +161,7 @@ class Mission extends Eloquent {
     }
 
     public function setLaunchDateTimeAttribute($value) {
-        $launchReorderer = new SpaceXStats\Library\LaunchReorderer($this, $value);
+        $launchReorderer = new SpaceXStats\Launch\LaunchReorderer($this, $value);
         $launchReorderer->run();
     }
 

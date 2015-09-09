@@ -59,7 +59,7 @@ class MissionCreator {
         }
 
         // Validate the spacecraftFlight model
-        if (array_key_exists('spacecraftFlight', $this->input['mission'])) {
+        if (!is_null($this->input['mission']['spacecraftFlight'])) {
             $spacecraftFlight = $this->input['mission']['spacecraftFlight'];
 
             $spacecraftFlightValidity = $this->spacecraftFlight->isValid($spacecraftFlight);
@@ -102,6 +102,14 @@ class MissionCreator {
             $this->mission->save();
 
             $this->createPayloadRelations();
+
+            // Create the prelaunch event
+            PrelaunchEvent::create(array(
+                'mission_id'                    => $this->mission->mission_id,
+                'event'                         => 'Announcement',
+                'occurred_at'                   => \Carbon\Carbon::now(),
+                'summary'                       => 'Mission Created'
+            ));
         });
 
         return $this->mission;
@@ -112,6 +120,7 @@ class MissionCreator {
             $payload = new \Payload();
             $payload->fill($payloadInput);
             $payload->mission()->associate($this->mission);
+            $payload->save();
         }
     }
 
