@@ -180,7 +180,7 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
             mission: mission,
             _token: CSRF_TOKEN
         }).then(function(response) {
-            window.location = '/missioncontrol';
+            window.location = '/missions/' + response.data.mission.slug;
         });
     };
 

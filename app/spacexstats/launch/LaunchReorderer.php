@@ -54,7 +54,13 @@ class LaunchReorderer {
     }
 
     private function setMissionProperties($index) {
-        $this->mission->launchDateTime = $this->scheduledLaunch;
+        if ($this->currentMissionDt->getSpecificity() == LaunchSpecificity::Precise || $this->currentMissionDt->getSpecificity() == LaunchSpecificity::Day) {
+            $this->mission->launch_exact = $this->scheduledLaunch;
+            $this->mission->launch_approximate = null;
+        } else {
+            $this->mission->launch_approximate = $this->scheduledLaunch;
+            $this->mission->launch_exact = null;
+        }
         $this->mission->launch_order_id = $index+1;
         $this->mission->launch_specificity = $this->currentMissionDt->getSpecificity();
     }
