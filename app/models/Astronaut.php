@@ -27,12 +27,12 @@ class Astronaut extends Eloquent {
     public $messages = array();
 
     // Relations
-    public function spacecraftFlights() {
-        return $this->belongsToMany('SpaceraftFlight', 'astronauts_flights_pivot');
+    public function astronautFlights() {
+        return $this->belongsToMany('AstronautFlight', 'astronauts_flights_pivot');
     }
 
     public function spacecraft() {
-        return $this->hasManyThrough('Spacecraft', 'SpacecraftFlight');
+        return $this->hasManyThrough('Spacecraft', 'AstronautFlight');
     }
 
     //Attribute Accessors

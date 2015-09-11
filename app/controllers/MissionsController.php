@@ -150,7 +150,8 @@ class MissionsController extends BaseController {
 
                 // Tweet about it
 
-                return Redirect::route('missions.get', array('slug' => $mission->slug));
+                // Return no content, frontend to redirect to newly created page.
+                return Redirect::json(['mission' => $mission]);
             } else {
                 return Response::json(array(
                     'flashMessage' => array('contents' => 'The mission could not be created', 'type' => 'failure'),

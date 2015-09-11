@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Services;
 
+use Carbon\Carbon;
+
 class MissionCreator {
     private $input, $errors = [];
 
@@ -24,7 +26,7 @@ class MissionCreator {
         $this->input = \Input::all();
 
         // Validate the mission model
-        $missionValidity = $this->mission->isValid($this->input['mission']);
+        $missionValidity = $this->mission->isValid($this->input('mission'));
         if ($missionValidity !== true) {
             $this->errors[] = $missionValidity;
         }
@@ -32,7 +34,7 @@ class MissionCreator {
         // Validate any payload models
         if (array_key_exists('payloads', $this->input['mission'])) {
 
-            $payloads = $this->input['mission']['payloads'];
+            $payloads = $this->input('payloads');
 
             foreach ($payloads as $payload) {
                 $payloadValidity = $this->payload->isValid($payload);
@@ -97,35 +99,95 @@ class MissionCreator {
     public function create() {
         // Create the mission
         \DB::transaction(function() {
-            $this->mission->fill($this->input['mission']);
+
+            $this->mission->fill($this->input('mission'));
             $this->mission->status = 'Upcoming';
-            $this->mission->save();
 
             $this->createPayloadRelations();
+            $this->createPartFlightRelations();
+            $this->createSpacecraftFlightRelation();
+            $this->createPrelaunchEventRelation();
 
-            // Create the prelaunch event
-            PrelaunchEvent::create(array(
-                'mission_id'    => $this->mission->mission_id,
-                'event'         => 'Announcement',
-                'occurred_at'   => \Carbon\Carbon::now(),
-                'summary'       => 'Mission Created'
-            ));
+            $this->mission->push();
         });
 
         return $this->mission;
     }
 
-    private function createPayloadRelations() {
-        foreach ($this->input['payloads'] as $payloadInput) {
-            $payload = new \Payload();
-            $payload->fill($payloadInput);
-            $payload->mission()->associate($this->mission);
-            $payload->save();
+    private function input($filter) {
+        if ($filter == 'mission') {
+            $mission = $this->input['mission'];
+            unset($mission['payloads'], $mission['partFlights'], $mission['spacecraftFlight'], $mission['prelaunchEvents']);
+            return $mission;
+
+        } else if ($filter == 'payloads') {
+            return $this->input['mission']['payloads'];
+
+        } else if ($filter == 'partFlights') {
+            return $this->input['mission']['partFlights'];
+
         }
     }
 
-    private function createSpacecraftRelation() {
+    private function createPayloadRelations() {
+        foreach ($this->input('payloads') as $payloadInput) {
+            $payload = new \Payload();
+            $payload->fill($payloadInput);
+            $payload->mission()->associate($this->mission);
+        }
+    }
 
+    private function createPartFlightRelations() {
+        foreach ($this->input('partFlights') as $partFlightInput) {
+
+            $partFlight = new \PartFlight();
+
+            // Create part if it is not being reused or otherwise find it
+            $part = is_null($partFlightInput['part']['part_id']) ? new \Part() : \Part::find($partFlightInput['part']['part_id']);
+            $part->fill($partFlightInput['part']);
+
+            $part->partFlights()->save($partFlight);
+            $partFlight->mission()->associate($this->mission);
+        }
+    }
+
+    private function createSpacecraftFlightRelation() {
+        if (!is_null($this->input['mission']['spacecraftFlight'])) {
+            $spacecraftFlight = new \SpacecraftFlight();
+
+            $spacecraftInput = array_pull($spacecraftFlight, 'spacecraft');
+
+            // Create part if it is not being reused or otherwise find it
+            $spacecraft = is_null($spacecraftInput['spacecraft_id']) ? new \Spacecraft() : \Spacecraft::find($spacecraftInput['spacecraft_id']);
+            $spacecraft->fill($spacecraftInput);
+
+            $spacecraft->spacecraftFlights()->save($spacecraftFlight);
+            $spacecraftFlight->mission()->associate($this->mission);
+
+            if (array_key_exists('astronautFlights', $spacecraftFlight)) {
+                foreach ($spacecraftFlight['astronautFlights'] as $astronautFlightInput)
+                {
+                    $astronautFlight = new \AstronautFlight();
+
+                    $astronautId = $astronautFlightInput['astronaut']['astronaut_id'];
+                    $astronaut = is_null($astronautId) ? new \Astronaut() : \Astronaut::find($astronautId);
+
+                    $astronaut->fill($astronautFlightInput['astronaut']);
+
+                    $astronaut->astronautFlights()->save($astronautFlightInput);
+                    $astronautFlight->spacecraftFlight()->associate($spacecraftFlight);
+                }
+            }
+        }
+    }
+
+    private function createPrelaunchEventRelation() {
+
+        $prelaunchEvent = new \PrelaunchEvent();
+        $prelaunchEvent->event = 'Announcement';
+        $prelaunchEvent->occurred_at = Carbon::now();
+        $prelaunchEvent->summary = 'Mission Created';
+        $prelaunchEvent->mission()->associate($this->mission);
     }
 
     public function getErrors() {

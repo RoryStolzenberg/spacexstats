@@ -14,9 +14,17 @@ class AstronautFlight extends Eloquent {
 
     // Validation
     public $rules = array(
-        'astronaut_id'          => ['integer', 'exists:astronauts,astronaut_id'],
-        'spacecraft_flight_id'  => ['integer', 'exists:spacecraft_flights,spacecraft_flight_id'],
+        'astronaut_id'          => ['required', 'integer', 'exists:astronauts,astronaut_id'],
+        'spacecraft_flight_id'  => ['required', 'integer', 'exists:spacecraft_flights,spacecraft_flight_id'],
     );
 
     public $messages = array();
+
+    public function astronaut() {
+        return $this->belongsTo('Astronaut');
+    }
+
+    public function spacecraftFlight() {
+        return $this->belongsTo('SpacecraftFlight');
+    }
 }

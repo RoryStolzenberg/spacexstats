@@ -35,4 +35,8 @@ class SpacecraftFlight extends Eloquent {
     public function astronauts() {
         return $this->belongsToMany('Astronaut', 'astronauts_flights_pivot');
     }
+
+    public function astronautFlights() {
+        return $this->hasMany('AstronautFlight', 'astronaut_flights_pivot');
+    }
 }

@@ -28,7 +28,7 @@
                         <li class="grid-6">
                             <label>Mission Type</label>
                             <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
-                            <select ng-model="mission_type_id" ng-options="missionType.mission_type_id as missionType.name for missionType in data.missionTypes" required></select>
+                            <select ng-model="mission.mission_type_id" ng-options="missionType.mission_type_id as missionType.name for missionType in data.missionTypes" required></select>
                         </li>
 
                         <li class="grid-12">
