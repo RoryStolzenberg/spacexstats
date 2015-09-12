@@ -104,8 +104,8 @@ class MissionManager {
 
     public function create() {
         // Create the mission
-        \DB::transaction(function() {
-
+        DB::beginTransaction();
+        try {
             $this->mission->fill($this->input('mission'));
             $this->mission->status = 'Upcoming';
             $this->mission->save();
@@ -114,7 +114,11 @@ class MissionManager {
             $this->createPartFlightRelations();
             $this->createSpacecraftFlightRelation();
             $this->createPrelaunchEventRelation();
-        });
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollback();
+        }
 
         return $this->mission;
     }

@@ -23,8 +23,9 @@ class UsersController extends BaseController {
         'notASubscriber'                            => array('type' => 'failure', 'contents' => 'Subscribe to Mission Control to do that.'),
     ];
 
-	public function __construct(User $user) {
+	public function __construct(User $user, \SpaceXStats\Mail\Mailers\UserMailer $mailer) {
 		$this->user = $user;
+        $this->mailer = $mailer;
 	}
 
 	public function get($username) {
@@ -204,7 +205,7 @@ class UsersController extends BaseController {
 
 			$isValidForSignUp = $this->user->isValidForSignUp(Input::all());
 
-			if ($isValidForSignUp === true) {
+			if ($isValidForSignUp) {
 
                 DB::beginTransaction();
                 try {
@@ -225,7 +226,8 @@ class UsersController extends BaseController {
                 } catch (Exception $e) {
                     DB::rollback();
 
-                    return Redirect::back()->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedDatabaseError']);
+                    return Redirect::back()->withInput(Input::except(['password', 'password_confirmation']))
+                        ->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedDatabaseError']);
                 }
 
 				return Redirect::home()->with('flashMessage', $this->flashMessages['accountCreated']);

@@ -20,11 +20,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	protected $primaryKey = 'user_id';
     public $timestamps = true;
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
 	protected $hidden = ['password', 'remember_token'];
     protected $appends = [];
     protected $fillable = [];
@@ -75,10 +70,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	// Helpers
 	public function isValidForSignUp($input) {
 		$rules = array(
-			'username' => 'required|unique:users,username|min:3|varchar:tiny',
+			'username' => 'required|unique:users,username|min:3|alpha_dash|varchar:tiny',
 			'email' => 'required|unique:users,email|email|varchar:tiny',
 			'password' => 'required|confirmed|min:6',
-            'eula' => 'required'
+            'eula' => 'required|accepted'
 		);
 
         $messages = array(
@@ -99,7 +94,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $user = User::where('email', Input::get('email'))->first();
 
         if ($user !== null && $user->role_id >= UserRole::Member) {
-            return Auth::attempt(array('email' => Input::get('email', null), 'password' => Input::get('password', null)), Input::get('rememberMe', false));
+            return Auth::attempt(array(
+                'email' => Input::get('email', null),
+                'password' => Input::get('password', null)),
+                Input::get('rememberMe', false)
+            );
         } else {
             return false;
         }

@@ -1,4 +1,4 @@
-@extends(emails.template)
+@extends('emails.template')
 
 Welcome to SpaceXStats!
 
