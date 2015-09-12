@@ -51,62 +51,6 @@ nav.sticky-bar {
     position:relative;
 }
 
-.hero {
-    /* Calculated height: the viewport, subtracting the header (50px), the title (120px), the page nav (30px), highlights (40px), the summary (100px) */
-    height:calc(100vh - 340px);
-    text-align:center;
-    font-family:$brandonGrotesque;
-    text-transform:uppercase;
-
-    &:before {
-        content:'';
-        display: inline-block;
-        height:100%;
-        vertical-align: middle;
-        margin-right:-0.25em;
-    }
-
-    >* {
-        display: inline-block;
-        vertical-align: middle;
-        top:-5%;
-        position:relative;
-    }
-
-    table {
-        border-collapse:collapse;
-        position:relative;
-        text-align:center;
-
-        td {
-            min-width:260px;
-        }
-
-        .value {
-            font-size:180px;
-            font-weight:300;
-            line-height: 1;
-        }
-
-        .unit {
-            font-size:30px;
-            font-weight:300;
-        }
-    }
-
-    /* ------------- DISPLAY STATISTICS --------------- */
-    &.statistic {
-        height:calc(100% - 30px - 100px);
-
-        .description {
-            height:100px;
-        }
-    }
-}
-
-/* ------------------ NAV ------------------ */
-
-
 /* -------------- CONTENT ----------------- */
 p {
     padding-top:10px;

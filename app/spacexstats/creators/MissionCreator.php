@@ -2,6 +2,15 @@
 namespace SpaceXStats\Services;
 
 use Carbon\Carbon;
+use \Part;
+use \Spacecraft;
+use \PartFlight;
+use \SpacecraftFlight;
+use \Mission;
+use \Astronaut;
+use \AstronautFlight;
+use \Payload;
+use \PrelaunchEvent;
 
 class MissionCreator {
     private $input, $errors = [];
@@ -10,7 +19,7 @@ class MissionCreator {
 
     private $mission;
 
-    public function __construct(\Mission $mission, \Payload $payload, \PartFlight $partFlight, \Part $part, \SpacecraftFlight $spacecraftFlight, \Spacecraft $spacecraft, \AstronautFlight $astronautFlight, \Astronaut $astronaut) {
+    public function __construct(Mission $mission, Payload $payload, PartFlight $partFlight, Part $part, SpacecraftFlight $spacecraftFlight, Spacecraft $spacecraft, AstronautFlight $astronautFlight, Astronaut $astronaut) {
         $this->mission              = $mission;
         $this->payload              = $payload;
         $this->partFlight           = $partFlight;
@@ -130,7 +139,7 @@ class MissionCreator {
 
     private function createPayloadRelations() {
         foreach ($this->input('payloads') as $payloadInput) {
-            $payload = new \Payload();
+            $payload = new Payload();
             $payload->fill($payloadInput);
             $payload->mission()->associate($this->mission);
             $payload->save();
@@ -140,37 +149,40 @@ class MissionCreator {
     private function createPartFlightRelations() {
         foreach ($this->input('partFlights') as $partFlightInput) {
 
-            $partFlight = new \PartFlight();
+            $partFlight = new PartFlight();
 
             // Create part if it is not being reused or otherwise find it
-            $part = is_null($partFlightInput['part']['part_id']) ? new \Part() : \Part::find($partFlightInput['part']['part_id']);
+            $part = array_key_exists('part_id', $partFlightInput['part']) ? Part::find($partFlightInput['part']['part_id']) : new Part();
             $part->fill($partFlightInput['part']);
+            $part->save();
 
-            $part->partFlights()->save($partFlight);
+            $partFlight->part()->associate($part);
             $partFlight->mission()->associate($this->mission);
+            $partFlight->save();
         }
     }
 
     private function createSpacecraftFlightRelation() {
         if (!is_null($this->input['mission']['spacecraftFlight'])) {
-            $spacecraftFlight = new \SpacecraftFlight();
+            $spacecraftFlight = new SpacecraftFlight();
 
-            $spacecraftInput = array_pull($spacecraftFlight, 'spacecraft');
+            $spacecraftInput = array_pull($this->input['mission']['spacecraftFlight'], 'spacecraft');
 
             // Create part if it is not being reused or otherwise find it
-            $spacecraft = is_null($spacecraftInput['spacecraft_id']) ? new \Spacecraft() : \Spacecraft::find($spacecraftInput['spacecraft_id']);
+            $spacecraft = array_key_exists('spacecraft_id', $spacecraftInput) ? Spacecraft::find($spacecraftInput['spacecraft_id']) : new Spacecraft();
             $spacecraft->fill($spacecraftInput);
+            $spacecraft->save();
 
             $spacecraft->spacecraftFlights()->save($spacecraftFlight);
             $spacecraftFlight->mission()->associate($this->mission);
 
-            if (array_key_exists('astronautFlights', $spacecraftFlight)) {
+            if (array_key_exists($spacecraftFlight, 'astronautFlights')) {
                 foreach ($spacecraftFlight['astronautFlights'] as $astronautFlightInput)
                 {
-                    $astronautFlight = new \AstronautFlight();
+                    $astronautFlight = new AstronautFlight();
 
                     $astronautId = $astronautFlightInput['astronaut']['astronaut_id'];
-                    $astronaut = is_null($astronautId) ? new \Astronaut() : \Astronaut::find($astronautId);
+                    $astronaut = is_null($astronautId) ? new Astronaut() : Astronaut::find($astronautId);
 
                     $astronaut->fill($astronautFlightInput['astronaut']);
 
@@ -182,12 +194,12 @@ class MissionCreator {
     }
 
     private function createPrelaunchEventRelation() {
-
-        $prelaunchEvent = new \PrelaunchEvent();
+        $prelaunchEvent = new PrelaunchEvent();
         $prelaunchEvent->event = 'Announcement';
         $prelaunchEvent->occurred_at = Carbon::now();
         $prelaunchEvent->summary = 'Mission Created';
         $prelaunchEvent->mission()->associate($this->mission);
+        $prelaunchEvent->save();
     }
 
     public function getErrors() {

@@ -4170,6 +4170,49 @@ p {
   font-size: 18px;
   line-height: 2; }
 
+.hero {
+  height: calc(100vh - 340px);
+  text-align: center;
+  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
+  text-transform: uppercase; }
+  .hero:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em; }
+  .hero > * {
+    display: inline-block;
+    vertical-align: middle;
+    top: -5%;
+    position: relative; }
+  .hero table {
+    border-collapse: collapse;
+    position: relative;
+    text-align: center; }
+    .hero table td {
+      min-width: 260px; }
+    .hero table .value {
+      font-size: 150px;
+      font-weight: 300;
+      line-height: 1; }
+      @media (max-width: 640px) {
+        .hero table .value {
+          font-size: 80px; } }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table .value {
+          font-size: 80px; } }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table .value {
+          font-size: 120px; } }
+    .hero table .unit {
+      font-size: 30px;
+      font-weight: 300; }
+  .hero.statistic {
+    height: calc(100% - 30px - 100px); }
+    .hero.statistic .description {
+      height: 100px; }
+
 .header-wrapper {
   width: 100%;
   background-color: #3569A4;
@@ -4773,43 +4816,6 @@ nav.sticky-bar {
   width: 100%;
   position: relative; }
 
-.hero {
-  /* Calculated height: the viewport, subtracting the header (50px), the title (120px), the page nav (30px), highlights (40px), the summary (100px) */
-  height: calc(100vh - 340px);
-  text-align: center;
-  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
-  text-transform: uppercase;
-  /* ------------- DISPLAY STATISTICS --------------- */ }
-  .hero:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -0.25em; }
-  .hero > * {
-    display: inline-block;
-    vertical-align: middle;
-    top: -5%;
-    position: relative; }
-  .hero table {
-    border-collapse: collapse;
-    position: relative;
-    text-align: center; }
-    .hero table td {
-      min-width: 260px; }
-    .hero table .value {
-      font-size: 180px;
-      font-weight: 300;
-      line-height: 1; }
-    .hero table .unit {
-      font-size: 30px;
-      font-weight: 300; }
-  .hero.statistic {
-    height: calc(100% - 30px - 100px); }
-    .hero.statistic .description {
-      height: 100px; }
-
-/* ------------------ NAV ------------------ */
 /* -------------- CONTENT ----------------- */
 p {
   padding-top: 10px;

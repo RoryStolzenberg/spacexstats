@@ -17,7 +17,7 @@ class CalendarController extends BaseController {
 
 	private function returnCalendarOrRedirect($missions, $filename) {
 		if (!$missions->isEmpty()) {
-			$calendar = new CalendarBuilder($missions);
+			$calendar = new SpaceXStats\Library\CalendarBuilder($missions);
 
 			return Response::make($calendar->getContent(), 200, array(
 				'Content-type' => 'text/calendar',
