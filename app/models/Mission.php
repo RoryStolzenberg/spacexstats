@@ -17,6 +17,34 @@ class Mission extends Eloquent {
 
     protected $presenter = "MissionPresenter";
 
+    // Observers
+    public static function boot() {
+        parent::boot();
+
+        $missionMailQueuer = new \SpaceXStats\Mail\MailQueues\MissionMailQueue();
+
+        Mission::created(function($mission) use ($missionMailQueuer) {
+            // Add emails to queue
+            $missionMailQueuer->newMission($mission);
+
+            // Add to RSS
+
+            // Tweet about it
+        });
+
+        Mission::updating(function($mission) use ($missionMailQueuer) {
+            // If  the launch date time has changed
+            /*if ($) {
+                // Send out a new email
+                $missionMailQueuer->launchTimeChange($mission);
+
+                // Add to RSS
+
+                // Tweet about it
+            }*/
+        });
+    }
+
     // Validation
     public $rules = array(
         'name' => ['sometimes', 'required', 'string', 'varchar:tiny'],

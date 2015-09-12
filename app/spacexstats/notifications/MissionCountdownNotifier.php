@@ -6,7 +6,7 @@ use Carbon\Carbon;
 use SpaceXStats\Enums\LaunchSpecificity;
 use SpaceXStats\Enums\NotificationType;
 
-abstract class NotificationManager {
+abstract class MissionCountdownNotifier {
     protected $now, $lastRun, $nextMission, $notificationType, $timeRemaining;
 
     public function __construct() {

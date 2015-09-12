@@ -6,23 +6,21 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-use SpaceXStats\Notifications\NotificationManager;
-
-class SMSNotificationCommand extends ScheduledCommand {
+class MissionCountdownNotificationCommand extends ScheduledCommand {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'SMSNotificationService';
+	protected $name = 'MissionCountdownNotificationCommand';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Send SMS Notifications about upcoming launches';
+	protected $description = 'Send out SMS\'s and emails as mission countdowns progress';
 
 	/**
 	 * Create a new command instance.
@@ -42,7 +40,7 @@ class SMSNotificationCommand extends ScheduledCommand {
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
-		return $scheduler->everyMinutes(1);
+		return $scheduler->everyMinutes(1);;
 	}
 
 	/**
@@ -52,10 +50,16 @@ class SMSNotificationCommand extends ScheduledCommand {
 	 */
 	public function fire()
 	{
-        $notifier = new SMSNotificationManager();
+        $SMSnotifier = new SMSMissionCountdownNotifier();
 
-        if ($notifier->notificationIsNeeded()) {
-            $notifier->notify();
+        if ($SMSnotifier->notificationIsNeeded()) {
+            $SMSnotifier->notify();
+        }
+
+        $emailnotifier = new EmailMissionCountdownNotifier();
+
+        if ($emailnotifier->notificationIsNeeded()) {
+            $emailnotifier->notify();
         }
 	}
 }

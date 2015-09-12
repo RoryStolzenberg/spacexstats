@@ -134,7 +134,6 @@ class MissionManager {
 
         } else if ($filter == 'partFlights') {
             return $this->input['mission']['part_flights'];
-
         }
     }
 

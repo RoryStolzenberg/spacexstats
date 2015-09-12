@@ -281,7 +281,7 @@
                     <legend>Prelaunch Events</legend>
                 </fieldset>
 
-                <input type="submit" ng-click="submitMission()" ng-disabled="editMissionForm.$invalid" value="Save Mission"/>
+                <input type="submit" ng-click="editMission()" ng-disabled="editMissionForm.$invalid" value="Save Mission"/>
             </form>
         </main>
     </div>

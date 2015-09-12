@@ -2,10 +2,9 @@
 
 namespace SpaceXStats\Notifications;
 
-use SpaceXStats\Enums\NotificationType;
 use SpaceXStats\SMS\SMSSender;
 
-class SMSNotificationManager extends NotificationManager {
+class SMSMissionCountdownNotifier extends MissionCountdownNotifier {
 
     private $message = "SpaceX is launching %s aboard %s in %s at %s from %s. Watch live at webcast.spacex.com. More info at spacexstats.com/mission/%s.";
 

@@ -6,21 +6,21 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-class EmailNotificationCommand extends ScheduledCommand {
+class QueuedEmailSenderCommand extends ScheduledCommand {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'EmailNotificationService';
+	protected $name = 'command:name';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Send out emails that are time dependent (launch notifications, monthly summaries, etc)';
+	protected $description = 'Command description.';
 
 	/**
 	 * Create a new command instance.

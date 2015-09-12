@@ -1,14 +1,12 @@
 <?php
 use SpaceXStats\Managers\MissionManager;
-use SpaceXStats\Mail\MailQueues\MissionMailQueue;
 
 class MissionsController extends BaseController {
 
     protected $missionManager;
 
-    public function __construct(MissionManager $missionManager, MissionMailQueue $missionQueuer) {
-        $this->missionCreator = $missionManager;
-        $this->missionQueuer = $missionQueuer;
+    public function __construct(MissionManager $missionManager) {
+        $this->missionManager = $missionManager;
     }
 
     /**
@@ -80,14 +78,15 @@ class MissionsController extends BaseController {
 		return View::make('missions.past');
 	}
 
-    // GET & POST
-    // missions/{slug}/edit
     /**
+     * GET POST, /missions/{slug}/edit. Edit a mission.
+     *
      * @param $slug
      * @return \Illuminate\View\View
      */
     public function edit($slug) {
         if (Request::isMethod('get')) {
+
             JavaScript::put([
                 'mission' => Mission::whereSlug($slug)->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part')->first(),
                 'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
@@ -106,6 +105,18 @@ class MissionsController extends BaseController {
 
         } elseif (Request::isMethod('post')) {
 
+            if ($this->missionManager->isValid()) {
+                $mission = $this->missionManager->edit();
+
+                // Return, frontend to redirect.
+                return Response::json(['mission' => $mission]);
+
+            } else {
+                return Response::json(array(
+                    'flashMessage' => array('contents' => 'The mission could not be saved', 'type' => 'failure'),
+                    'errors' => $this->missionManager->getErrors()
+                ), 400);
+            }
         }
     }
 
@@ -138,14 +149,7 @@ class MissionsController extends BaseController {
                 // Create
                 $mission = $this->missionManager->create();
 
-                // Email it out to those with the new Mission notification
-                $this->missionQueuer->newMission($mission);
-
-                // Add to RSS
-
-                // Tweet about it
-
-                // Return no content, frontend to redirect to newly created page.
+                // Return, frontend to redirect to newly created page.
                 return Response::json(['mission' => $mission]);
             } else {
                 return Response::json(array(
@@ -178,9 +182,9 @@ class MissionsController extends BaseController {
         return Response::json(array('launchDateTime' => $mission->present()->launch_exact()));
     }
 
-    // GET
-    // /missions/{slug}/raw
     /**
+     * GET, /missions/{slug}/raw. Get raw mission data, used for a raw data download on a mission page.
+     *
      * @param $slug
      * @return \Illuminate\Http\Response
      */
