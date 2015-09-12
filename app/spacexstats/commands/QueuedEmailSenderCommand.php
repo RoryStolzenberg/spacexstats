@@ -6,6 +6,8 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
+use \SpaceXStats\Enums\EmailStatus;
+
 class QueuedEmailSenderCommand extends ScheduledCommand {
 
 	/**
@@ -13,14 +15,14 @@ class QueuedEmailSenderCommand extends ScheduledCommand {
 	 *
 	 * @var string
 	 */
-	protected $name = 'command:name';
+	protected $name = 'QueuedEmailSenderCommand';
 
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
-	protected $description = 'Command description.';
+	protected $description = 'Send all emails that are queued';
 
 	/**
 	 * Create a new command instance.
@@ -40,7 +42,7 @@ class QueuedEmailSenderCommand extends ScheduledCommand {
 	 */
 	public function schedule(Schedulable $scheduler)
 	{
-		return $scheduler;
+		return $scheduler->everyMinutes(5);
 	}
 
 	/**
@@ -50,31 +52,15 @@ class QueuedEmailSenderCommand extends ScheduledCommand {
 	 */
 	public function fire()
 	{
-		//
-	}
+		$emails = \Email::where('status', EmailStatus::Queued)->get();
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return array(
-			array('example', InputArgument::REQUIRED, 'An example argument.'),
-		);
-	}
+        foreach ($emails as $email) {
+            //Mail::send();
+        }
 
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		return array(
-			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
-		);
+        // Update all emails
+        \Email::where('status', EmailStatus::Queued)->update(array(
+            'status' => EmailStatus::Sent
+        ));
 	}
-
 }

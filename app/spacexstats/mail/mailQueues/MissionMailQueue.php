@@ -6,7 +6,7 @@ use SpaceXStats\Enums\NotificationType;
 
 class MissionMailQueue extends MailQueue {
     public function newMission(\Mission $mission) {
-        $subject = "New SpaceX Mission: {$mission->name} launching {$mission->launchDateTime}";
+        $subject = "New SpaceX Mission: {$mission->name} has been added to the launch manifest.";
         $body = "Body text";
         $this->queue($subject, $body, NotificationType::newMission, EmailStatus::Queued);
     }

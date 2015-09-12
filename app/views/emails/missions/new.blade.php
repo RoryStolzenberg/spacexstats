@@ -1,1 +1,0 @@
-{{ $mission->name }} has been added to SpaceX's launch manifest, yay!
