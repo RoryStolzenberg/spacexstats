@@ -246,9 +246,8 @@
                     </div>
                 </fieldset>
 
-                <input type="submit" ng-click="submitMission()" ng-disabled="createMissionForm.$invalid" value="Create Mission"/>
+                <input type="submit" ng-click="missionService.create(mission)" ng-disabled="createMissionForm.$invalid" value="Create Mission"/>
             </form>
-
         </main>
     </div>
 

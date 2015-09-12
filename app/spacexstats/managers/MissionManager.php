@@ -51,12 +51,12 @@ class MissionManager {
         }
 
         // Validate any partFlight models
-        $partFlights = $this->input['mission']['partFlights'];
+        $partFlights = $this->input['mission']['part_flights'];
         foreach ($partFlights as $partFlight) {
 
             $partFlightValidity = $this->partFlight->isValid($partFlight);
             if ($partFlightValidity !== true) {
-                $this->errors['partFlights'][] = $partFlightValidity;
+                $this->errors['part_flights'][] = $partFlightValidity;
             }
 
             // Validate the part model
@@ -67,12 +67,12 @@ class MissionManager {
         }
 
         // Validate the spacecraftFlight model
-        if (!is_null($this->input['mission']['spacecraftFlight'])) {
-            $spacecraftFlight = $this->input['mission']['spacecraftFlight'];
+        if (!is_null($this->input['mission']['spacecraft_flight'])) {
+            $spacecraftFlight = $this->input['mission']['spacecraft_flight'];
 
             $spacecraftFlightValidity = $this->spacecraftFlight->isValid($spacecraftFlight);
             if ($spacecraftFlightValidity !== true) {
-                $this->errors['spacecraftFlight'][] = $spacecraftFlightValidity;
+                $this->errors['spacecraft_flight'][] = $spacecraftFlightValidity;
             }
 
             // Validate the spacecraft model
@@ -82,12 +82,12 @@ class MissionManager {
             }
 
             // Validate any astronaut flights model
-            if (array_key_exists('astronautFlights', $spacecraftFlight)) {
-                foreach ($spacecraftFlight['astronautFlights'] as $astronautFlight)
+            if (array_key_exists('astronaut_flights', $spacecraftFlight)) {
+                foreach ($spacecraftFlight['astronaut_flights'] as $astronautFlight)
                 {
                     $astronautFlightValidity = $this->astronautFlight->isValid($astronautFlight);
                     if ($astronautFlightValidity !== true) {
-                        $this->errors['astronautFlights'][] = $astronautFlightValidity;
+                        $this->errors['astronaut_flights'][] = $astronautFlightValidity;
                     }
 
                     // Validate the astronaut model
@@ -126,14 +126,14 @@ class MissionManager {
     private function input($filter) {
         if ($filter == 'mission') {
             $mission = $this->input['mission'];
-            unset($mission['payloads'], $mission['partFlights'], $mission['spacecraftFlight'], $mission['prelaunchEvents']);
+            unset($mission['payloads'], $mission['part_flights'], $mission['spacecraft_flight'], $mission['prelaunch_events']);
             return $mission;
 
         } else if ($filter == 'payloads') {
             return $this->input['mission']['payloads'];
 
         } else if ($filter == 'partFlights') {
-            return $this->input['mission']['partFlights'];
+            return $this->input['mission']['part_flights'];
 
         }
     }
@@ -148,7 +148,7 @@ class MissionManager {
     }
 
     private function createPartFlightRelations() {
-        foreach ($this->input('partFlights') as $partFlightInput) {
+        foreach ($this->input('part_flights') as $partFlightInput) {
 
             $partFlight = new PartFlight();
 
@@ -164,10 +164,10 @@ class MissionManager {
     }
 
     private function createSpacecraftFlightRelation() {
-        if (!is_null($this->input['mission']['spacecraftFlight'])) {
+        if (!is_null($this->input['mission']['spacecraft_flight'])) {
             $spacecraftFlight = new SpacecraftFlight();
 
-            $spacecraftInput = array_pull($this->input['mission']['spacecraftFlight'], 'spacecraft');
+            $spacecraftInput = array_pull($this->input['mission']['spacecraft_flight'], 'spacecraft');
 
             // Create part if it is not being reused or otherwise find it
             $spacecraft = array_key_exists('spacecraft_id', $spacecraftInput) ? Spacecraft::find($spacecraftInput['spacecraft_id']) : new Spacecraft();
@@ -177,8 +177,8 @@ class MissionManager {
             $spacecraft->spacecraftFlights()->save($spacecraftFlight);
             $spacecraftFlight->mission()->associate($this->mission);
 
-            if (array_key_exists($spacecraftFlight, 'astronautFlights')) {
-                foreach ($spacecraftFlight['astronautFlights'] as $astronautFlightInput)
+            if (array_key_exists($spacecraftFlight, 'astronaut_flights')) {
+                foreach ($spacecraftFlight['astronaut_flights'] as $astronautFlightInput)
                 {
                     $astronautFlight = new AstronautFlight();
 

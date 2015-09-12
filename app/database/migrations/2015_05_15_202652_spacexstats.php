@@ -130,7 +130,7 @@ class Spacexstats extends Migration {
             $table->integer('vehicle_id')->unsigned();
             $table->integer('destination_id')->unsigned();
             $table->integer('launch_site_id')->unsigned();
-            $table->enum('launch_illumination', array('Day', 'Night', 'Twilight'));
+            $table->enum('launch_illumination', array('Day', 'Night', 'Twilight'))->nullable();
             $table->string('summary', Varchar::compact);
             $table->string('article', Varchar::large)->nullable();
 

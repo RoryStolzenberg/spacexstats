@@ -69,7 +69,6 @@ class MissionsTableSeeder extends Seeder {
             'article' => "Here's an article",
             'status' => 'Complete',
             'outcome' => 'Success'
-
         ));
 
         Mission::create(array(

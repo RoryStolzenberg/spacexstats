@@ -15,13 +15,16 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         launchSites: laravel.launchSites,
         landingSites: laravel.landingSites,
         vehicles: laravel.vehicles,
+        astronauts: laravel.astronauts,
         firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
         upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
         upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
-        astronauts: laravel.astronauts,
         spacecraftTypes: ['Dragon 1', 'Dragon 2'],
         returnMethods: ['Splashdown', 'Landing', 'Did Not Return'],
-        eventTypes: ['Wet Dress Rehearsal', 'Static Fire']
+        eventTypes: ['Wet Dress Rehearsal', 'Static Fire'],
+        launchIlluminations: ['Day', 'Night', 'Twilight'],
+        statuses: ['Upcoming', 'Complete', 'In Progress'],
+        outcomes: ['Failure', 'Success']
     };
 
     $scope.filters = {
@@ -34,31 +37,26 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         astronaut: null
     };
 
-    $scope.submitMission = function() {
-        console.log($scope.mission);
-        missionService.create($scope.mission);
-    }
-
 }]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", function(PartFlight, Payload, SpacecraftFlight) {
     return function (mission) {
         if (mission == null) {
             var self = this;
 
             self.payloads = [];
-            self.partFlights = [];
-            self.spacecraftFlight = null;
-            self.prelaunchEvents = [];
+            self.part_flights = [];
+            self.spacecraft_flight = null;
+            self.prelaunch_events = [];
 
         } else {
             var self = mission;
         }
 
         self.addPartFlight = function(part) {
-            self.partFlights.push(new PartFlight(part));
+            self.part_flights.push(new PartFlight(part));
         };
 
         self.removePartFlight = function(part) {
-            self.partFlights.splice(self.partFlights.indexOf(part), 1);
+            self.part_flights.splice(self.part_flights.indexOf(part), 1);
         }
 
         self.addPayload = function() {
@@ -70,19 +68,19 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         };
 
         self.addSpacecraftFlight = function(spacecraft) {
-            self.spacecraftFlight = new SpacecraftFlight(spacecraft);
+            self.spacecraft_flight = new SpacecraftFlight(spacecraft);
         };
 
         self.removeSpacecraftFlight = function() {
-            self.spacecraftFlight = null;
+            self.spacecraft_flight = null;
         };
 
         self.addPrelaunchEvent = function() {
-            self.prelaunchEvents.push(new PrelaunchEvent());
+            self.prelaunch_events.push(new PrelaunchEvent());
         };
 
         self.removePrelaunchEvent = function(prelaunchEvent) {
-            self.prelaunchEvents.splice(self.prelaunchEvents.indexOf(prelaunchEvent), 1);
+            self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
         }
 
         return self;
@@ -124,14 +122,14 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
 
         self.spacecraft = new Spacecraft(spacecraft);
 
-        self.astronautFlights = [];
+        self.astronaut_flights = [];
 
         self.addAstronautFlight = function(astronaut) {
-            self.astronautFlights.push(new AstronautFlight(astronaut));
+            self.astronaut_flights.push(new AstronautFlight(astronaut));
         };
 
         self.removeAstronautFlight = function(astronautFlight) {
-            self.astronautFlights.splice(self.astronautFlights.indexOf(astronautFlight), 1);
+            self.astronaut_flights.splice(self.astronaut_flights.indexOf(astronautFlight), 1);
         };
 
         return self;
