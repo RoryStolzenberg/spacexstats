@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Services;
+namespace SpaceXStats\Managers;
 
 use Carbon\Carbon;
 use \Part;
@@ -12,11 +12,8 @@ use \AstronautFlight;
 use \Payload;
 use \PrelaunchEvent;
 
-class MissionCreator {
+class MissionManager {
     private $input, $errors = [];
-
-    private $relatedModels = ['payloads', 'partFlights', 'spacecraftFlight'];
-
     private $mission;
 
     public function __construct(Mission $mission, Payload $payload, PartFlight $partFlight, Part $part, SpacecraftFlight $spacecraftFlight, Spacecraft $spacecraft, AstronautFlight $astronautFlight, Astronaut $astronaut) {
@@ -120,6 +117,10 @@ class MissionCreator {
         });
 
         return $this->mission;
+    }
+
+    public function update() {
+
     }
 
     private function input($filter) {

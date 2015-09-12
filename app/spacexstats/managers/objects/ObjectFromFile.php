@@ -1,9 +1,8 @@
 <?php
-namespace SpaceXStats\Creators\Objects;
+namespace SpaceXStats\Managers\Objects;
 
 use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\MissionControlSubtype;
 
 class ObjectFromFile extends ObjectCreator {
 

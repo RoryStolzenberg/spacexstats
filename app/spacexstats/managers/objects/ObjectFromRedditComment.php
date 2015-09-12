@@ -1,12 +1,13 @@
 <?php
 
-namespace SpaceXStats\Creators\Objects;
+namespace SpaceXStats\Managers\Objects;
 
 use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\MissionControlSubtype;
 
-class ObjectFromArticle extends ObjectCreator {
+class ObjectFromRedditComment extends ObjectCreator {
+
     public function isValid($input) {
         $this->input = $input;
 
@@ -16,14 +17,16 @@ class ObjectFromArticle extends ObjectCreator {
 
     public function create() {
         \DB::transaction(function() {
+
             $this->object = \Object::create([
                 'user_id'               => \Auth::user()->user_id,
-                'type'                  => MissionControlType::Article,
+                'type'                  => MissionControlType::Comment,
+                'subtype'               => MissionControlSubtype::RedditComment,
                 'title'                 => $this->input['title'],
-                'size'                  => strlen($this->input['content']),
-                'article'               => $this->input['article'],
-                'thumb_filename'        => 'text.png',
-                'cryptographic_hash'    => hash('sha256', $this->input['content']),
+                'size'                  => strlen($this->input['comment']),
+                'summary'               => $this->input['comment'],
+                'thumb_filename'        => 'comment.png',
+                'cryptographic_hash'    => hash('sha256', $this->input['comment']),
                 'originated_at'         => \Carbon\Carbon::now(),
                 'status'                => ObjectPublicationStatus::QueuedStatus
             ]);
@@ -31,7 +34,7 @@ class ObjectFromArticle extends ObjectCreator {
             $this->createMissionRelation();
             $this->createTagRelations();
 
-            $this->createPublisherRelation();
+            $this->object->push();
         });
     }
 }

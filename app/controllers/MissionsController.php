@@ -1,13 +1,13 @@
 <?php
-use SpaceXStats\Services\MissionCreator;
+use SpaceXStats\Managers\MissionManager;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
 
 class MissionsController extends BaseController {
 
-    protected $missionCreator;
+    protected $missionManager;
 
-    public function __construct(MissionCreator $missionCreator, MissionMailQueue $missionQueuer) {
-        $this->missionCreator = $missionCreator;
+    public function __construct(MissionManager $missionManager, MissionMailQueue $missionQueuer) {
+        $this->missionCreator = $missionManager;
         $this->missionQueuer = $missionQueuer;
     }
 
@@ -139,9 +139,9 @@ class MissionsController extends BaseController {
 
         } elseif (Request::isMethod('post')) {
 
-            if ($this->missionCreator->isValid()) {
+            if ($this->missionManager->isValid()) {
                 // Create
-                $mission = $this->missionCreator->create();
+                $mission = $this->missionManager->create();
 
                 // Email it out to those with the new Mission notification
                 $this->missionQueuer->newMission($mission);
@@ -155,7 +155,7 @@ class MissionsController extends BaseController {
             } else {
                 return Response::json(array(
                     'flashMessage' => array('contents' => 'The mission could not be created', 'type' => 'failure'),
-                    'errors' => $this->missionCreator->getErrors()
+                    'errors' => $this->missionManager->getErrors()
                 ), 400);
             }
         }

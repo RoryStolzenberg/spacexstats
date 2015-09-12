@@ -1,12 +1,12 @@
 <?php
 
-namespace SpaceXStats\Creators\Objects;
+namespace SpaceXStats\Managers\Objects;
 
 use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\MissionControlType;
 use SpaceXStats\Enums\MissionControlSubtype;
 
-class ObjectFromRedditComment extends ObjectCreator {
+class ObjectFromNSFComment extends ObjectCreator {
 
     public function isValid($input) {
         $this->input = $input;
@@ -21,7 +21,7 @@ class ObjectFromRedditComment extends ObjectCreator {
             $this->object = \Object::create([
                 'user_id'               => \Auth::user()->user_id,
                 'type'                  => MissionControlType::Comment,
-                'subtype'               => MissionControlSubtype::RedditComment,
+                'subtype'               => MissionControlSubtype::NSFComment,
                 'title'                 => $this->input['title'],
                 'size'                  => strlen($this->input['comment']),
                 'summary'               => $this->input['comment'],

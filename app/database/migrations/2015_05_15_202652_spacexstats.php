@@ -134,6 +134,7 @@ class Spacexstats extends Migration {
             $table->string('summary', Varchar::compact);
             $table->string('article', Varchar::large)->nullable();
 
+            // States
             $table->enum('status', array('Upcoming', 'Complete', 'In Progress'));
             $table->enum('outcome', array('Failure', 'Success'))->nullable();
 
@@ -148,6 +149,9 @@ class Spacexstats extends Migration {
             $table->integer('postlaunch_press_conference')->unsigned()->nullable();
             $table->integer('reddit_discussion')->unsigned()->nullable();
             $table->integer('featured_image')->unsigned()->nullable();
+
+            // FlightClub link
+            $table->string('flight_club', Varchar::small);
 
             $table->timestamps();
         });

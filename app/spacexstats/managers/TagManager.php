@@ -1,10 +1,9 @@
 <?php
-namespace SpaceXStats\Services;
+namespace SpaceXStats\Managers;
 
 use \Tag;
 
-class TagCreatorService
-{
+class TagManager {
     protected $tag, $errors;
 
     public function __construct(Tag $tag) {
