@@ -291,6 +291,8 @@ class Spacexstats extends Migration {
             $table->decimal('mass', 6, 1)->nullable();
             $table->boolean('primary');
             $table->string('link', Varchar::small)->nullable();
+
+            $table->timestamps();
         });
 
         Schema::create('payments', function(Blueprint $table) {

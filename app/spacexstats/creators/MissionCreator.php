@@ -102,13 +102,12 @@ class MissionCreator {
 
             $this->mission->fill($this->input('mission'));
             $this->mission->status = 'Upcoming';
+            $this->mission->save();
 
             $this->createPayloadRelations();
             $this->createPartFlightRelations();
             $this->createSpacecraftFlightRelation();
             $this->createPrelaunchEventRelation();
-
-            $this->mission->push();
         });
 
         return $this->mission;
@@ -134,6 +133,7 @@ class MissionCreator {
             $payload = new \Payload();
             $payload->fill($payloadInput);
             $payload->mission()->associate($this->mission);
+            $payload->save();
         }
     }
 
