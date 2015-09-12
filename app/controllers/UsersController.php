@@ -272,12 +272,13 @@ class UsersController extends BaseController {
 		}
 	}
 
-    public function requestChangePassword() {
+    public function forgotPassword() {
+        if (Request::isMethod('get')) {
+            return View::make('users.forgotpassword');
 
-    }
-
-    public function changePassword() {
-
+        } else if (Request::isMethod('post')) {
+            // Process forgot password
+        }
     }
 
 	public function logout() {

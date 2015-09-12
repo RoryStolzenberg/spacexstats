@@ -21,6 +21,11 @@ Route::group(array('prefix' => 'users'), function() {
             'as' => 'users.verify',
             'uses' => 'UsersController@verify'
         ));
+
+        Route::any('/forgotpassword', array(
+            'as' => 'users.forgotpassword',
+            'uses' => 'UsersController@forgotPassword'
+        ));
     });
 
     Route::group(array('before' => 'mustBeLoggedIn'), function() {
