@@ -608,7 +608,7 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
 }]);
 
 
-angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("missionApp", ["directives.datetime", "directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
@@ -626,6 +626,14 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         landingSites: laravel.landingSites,
         vehicles: laravel.vehicles,
         astronauts: laravel.astronauts,
+
+        launchVideos: laravel.launchVideos ? laravel.launchVideos : null,
+        missionPatches: laravel.missionPatches ? laravel.missionPatches : null,
+        pressKits: laravel.pressKits ? laravel.pressKits : null,
+        cargoManifests: laravel.cargoManifests ? laravel.cargoManifests : null,
+        pressConferences: laravel.pressConferences ? laravel.pressConferences : null,
+        featuredImages: laravel.featuredImages ? laravel.featuredImages: null,
+
         firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
         upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
         upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
@@ -646,6 +654,14 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
     $scope.selected = {
         astronaut: null
     };
+
+    $scope.createMission = function() {
+        missionService.create($scope.mission);
+    }
+
+    $scope.editMission = function() {
+        missionService.edit($scope.mission);
+    }
 
 }]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", function(PartFlight, Payload, SpacecraftFlight) {
     return function (mission) {
@@ -794,9 +810,10 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
 
     this.edit = function(mission) {
         $http.patch('/missions/' + mission.slug + '/edit', {
-
+            mission: mission,
+            _token: CSRF_TOKEN
         }).then(function(response) {
-
+            window.location = '/missions/' + response.data.mission.slug;
         });
     }
 }]);
@@ -954,19 +971,6 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 });
 
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -1037,6 +1041,53 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
@@ -1159,63 +1210,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
-angular.module('directives.deltaV', []).directive('deltaV', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            deltaV: '='
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.$watch("deltaV", function(files) {
-                if (typeof files !== 'undefined') {
-                    files.forEach(function(file) {
-                        console.log(Object.prototype.toString.call(file));
-                    });
-                }
-            });
-
-            $scope.calculatedValue = 0;
-        },
-        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
-    }
-});
-
-
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',
@@ -1351,6 +1345,29 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             });
         },
         templateUrl: '/js/templates/datetime.html'
+    }
+});
+
+
+angular.module('directives.deltaV', []).directive('deltaV', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            deltaV: '='
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.$watch("deltaV", function(files) {
+                if (typeof files !== 'undefined') {
+                    files.forEach(function(file) {
+                        console.log(Object.prototype.toString.call(file));
+                    });
+                }
+            });
+
+            $scope.calculatedValue = 0;
+        },
+        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
     }
 });
 

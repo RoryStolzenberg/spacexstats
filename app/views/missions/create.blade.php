@@ -78,7 +78,7 @@
                         </div>
                     </div>
 
-                    <div ng-repeat="partFlight in mission.partFlights">
+                    <div ng-repeat="partFlight in mission.part_flights">
                         <h3>[[ partFlight.part.name ]]</h3>
 
                         <label>Name</label>
@@ -155,7 +155,7 @@
                             </li>
                             <li class="grid-4">
                                 <label>Mass (KG)</label>
-                                <input type="number" ng-model="payload.mass" min="0" step="0.5" />
+                                <input type="text" ng-model="payload.mass" pattern="[0-9$,.]*" />
                             </li>
                             <li class="grid-4">
                                 <label>Is Payload Primary?</label>
@@ -173,38 +173,38 @@
                 <fieldset>
                     <legend>Spacecraft</legend>
 
-                    <div class="add-spacecraft" ng-if="mission.spacecraftFlight == null">
+                    <div class="add-spacecraft" ng-if="mission.spacecraft_flight == null">
                         <div ng-repeat="spacecraft in data.spacecraft">
                             <span>[[ spacecraft.name ]]</span>
-                            <button ng-click="mission.addSpacecraftFlight(spacecraft)" ng-disabled="mission.spacecraftFlight != null">Reuse This Spacecraft</button>
+                            <button ng-click="mission.addSpacecraftFlight(spacecraft)" ng-disabled="mission.spacecraft_flight != null">Reuse This Spacecraft</button>
                         </div>
 
-                        <button ng-click="mission.addSpacecraftFlight()" ng-disabled="mission.spacecraftFlight != null">Create A Spacecraft</button>
+                        <button ng-click="mission.addSpacecraftFlight()" ng-disabled="mission.spacecraft_flight != null">Add A Spacecraft</button>
                     </div>
 
-                    <div ng-if="mission.spacecraftFlight != null">
-                        <h3>[[ mission.spacecraftFlight.spacecraft.name ]]</h3>
+                    <div ng-if="mission.spacecraft_flight != null">
+                        <h3>[[ mission.spacecraft_flight.spacecraft.name ]]</h3>
 
                         <label>Name</label>
-                        <input type="text" ng-model="mission.spacecraftFlight.spacecraft.name" />
+                        <input type="text" ng-model="mission.spacecraft_flight.spacecraft.name" />
 
                         <label>Type</label>
-                        <select ng-model="mission.spacecraftFlight.spacecraft.type" ng-options="spacecraftType for spacecraftType in data.spacecraftTypes"></select>
+                        <select ng-model="mission.spacecraft_flight.spacecraft.type" ng-options="spacecraftType for spacecraftType in data.spacecraftTypes"></select>
 
                         <label>Flight Name</label>
-                        <input type="text" ng-model="mission.spacecraftFlight.flight_name" />
+                        <input type="text" ng-model="mission.spacecraft_flight.flight_name" />
 
                         <label>End Of Mission</label>
-                        <datetime type="datetime" ng-model="mission.spacecraftFlight.end_of_mission" is-null="true" nullable-toggle="true" start-year="2010"></datetime>
+                        <datetime type="datetime" ng-model="mission.spacecraft_flight.end_of_mission" is-null="true" nullable-toggle="true" start-year="2010"></datetime>
 
                         <label>Return Method</label>
-                        <select ng-model="mission.spacecraftFlight.return_method" ng-options="returnMethod for returnMethod in data.returnMethods"></select>
+                        <select ng-model="mission.spacecraft_flight.return_method" ng-options="returnMethod for returnMethod in data.returnMethods"></select>
 
                         <label>Upmass</label>
-                        <input type="text" ng-model="mission.spacecraftFlight.upmass" />
+                        <input type="text" ng-model="mission.spacecraft_flight.upmass" />
 
                         <label>Downmass</label>
-                        <input type="text" ng-model="mission.spacecraftFlight.downmass" />
+                        <input type="text" ng-model="mission.spacecraft_flight.downmass" />
 
                         <label>ISS Berth</label>
 
@@ -218,27 +218,27 @@
                             </select>
                             <button ng-click="mission.spacecraftFlight.addAstronautFlight(selected.astronaut)">Add Astronaut</button>
 
-                            <div ng-repeat="astronautFlight in mission.spacecraftFlight.astronautFlights">
-                                <h3>[[ astronautFlight.astronaut.full_name ]]</h3>
+                            <div ng-repeat="astronautFlight in mission.spacecraft_flight.astronaut_flights">
+                                <h3>[[ astronaut_flight.astronaut.full_name ]]</h3>
                                 <label>First Name</label>
-                                <input type="text" ng-model="astronautFlight.astronaut.first_name" />
+                                <input type="text" ng-model="astronaut_flight.astronaut.first_name" />
 
                                 <label>Last Name</label>
-                                <input type="text" ng-model="astronautFlight.astronaut.last_name" />
+                                <input type="text" ng-model="astronaut_flight.astronaut.last_name" />
 
                                 <label>Gender</label>
-                                <input type="radio" name="gender" value="Male" ng-model="astronautFlight.astronaut.gender" />Male
-                                <input type="radio" name="gender" value="Female" ng-model="astronautFlight.astronaut.gender" />Female
+                                <input type="radio" name="gender" value="Male" ng-model="astronaut_flight.astronaut.gender" />Male
+                                <input type="radio" name="gender" value="Female" ng-model="astronaut_flight.astronaut.gender" />Female
 
                                 <label>Deceased</label>
-                                <input type="checkbox" ng-model="astronautFlight.astronaut.deceased"  />
+                                <input type="checkbox" ng-model="astronaut_flight.astronaut.deceased"  />
 
                                 <label>Date of Birth</label>
 
                                 <label>Nationality</label>
-                                <input type="text" ng-model="astronautFlight.astronaut.nationality" />
+                                <input type="text" ng-model="astronaut_flight.astronaut.nationality" />
 
-                                <button ng-click="mission.spacecraftFlight.removeAstronautFlight(astronautFlight)">Remove Astronaut</button>
+                                <button ng-click="mission.spacecraft_flight.removeAstronautFlight(astronautFlight)">Remove Astronaut</button>
                             </div>
                         </fieldset>
 
@@ -246,7 +246,7 @@
                     </div>
                 </fieldset>
 
-                <input type="submit" ng-click="missionService.create(mission)" ng-disabled="createMissionForm.$invalid" value="Create Mission"/>
+                <input type="submit" ng-click="createMission(mission)" ng-disabled="createMissionForm.$invalid" value="Create Mission"/>
             </form>
         </main>
     </div>

@@ -5,7 +5,7 @@ class PartFlight extends Eloquent {
 
     protected $table = 'part_flights_pivot';
     protected $primaryKey = 'part_flight_id';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $hidden = [];
     protected $appends = [];

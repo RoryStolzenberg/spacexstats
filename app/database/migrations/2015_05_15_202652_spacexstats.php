@@ -147,11 +147,11 @@ class Spacexstats extends Migration {
             $table->integer('cargo_manifest')->unsigned()->nullable();
             $table->integer('prelaunch_press_conference')->unsigned()->nullable();
             $table->integer('postlaunch_press_conference')->unsigned()->nullable();
-            $table->integer('reddit_discussion')->unsigned()->nullable();
             $table->integer('featured_image')->unsigned()->nullable();
 
-            // FlightClub link
-            $table->string('flight_club', Varchar::small);
+            // Links to other pages
+            $table->string('reddit_discussion', Varchar::small)->nullable();
+            $table->string('flight_club', Varchar::small)->nullable();
 
             $table->timestamps();
         });

@@ -104,7 +104,7 @@ class MissionManager {
 
     public function create() {
         // Create the mission
-        DB::beginTransaction();
+        \DB::beginTransaction();
         try {
             $this->mission->fill($this->input('mission'));
             $this->mission->status = 'Upcoming';
@@ -115,16 +115,23 @@ class MissionManager {
             $this->createSpacecraftFlightRelation();
             $this->createPrelaunchEventRelation();
 
-            DB::commit();
+            \DB::commit();
         } catch (Exception $e) {
-            DB::rollback();
+            \DB::rollback();
         }
 
         return $this->mission;
     }
 
     public function update() {
+        \DB::beginTransaction();
+        try {
 
+
+            \DB::commit();
+        } catch (Exception $e) {
+            \DB::rollback();
+        }
     }
 
     private function input($filter) {
@@ -136,7 +143,7 @@ class MissionManager {
         } else if ($filter == 'payloads') {
             return $this->input['mission']['payloads'];
 
-        } else if ($filter == 'partFlights') {
+        } else if ($filter == 'part_flights') {
             return $this->input['mission']['part_flights'];
         }
     }
@@ -150,16 +157,21 @@ class MissionManager {
         }
     }
 
+    private function editPayloadRelations() {
+    }
+
     private function createPartFlightRelations() {
         foreach ($this->input('part_flights') as $partFlightInput) {
 
             $partFlight = new PartFlight();
 
             // Create part if it is not being reused or otherwise find it
-            $part = array_key_exists('part_id', $partFlightInput['part']) ? Part::find($partFlightInput['part']['part_id']) : new Part();
-            $part->fill($partFlightInput['part']);
+            $partInput = array_pull($partFlightInput, 'part');
+            $part = array_key_exists('part_id', $partInput) ? Part::find($partInput['part_id']) : new Part();
+            $part->fill($partInput);
             $part->save();
 
+            $partFlight->fill($partFlightInput);
             $partFlight->part()->associate($part);
             $partFlight->mission()->associate($this->mission);
             $partFlight->save();

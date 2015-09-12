@@ -1,4 +1,4 @@
-angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', function($interpolateProvider) {
+angular.module("missionApp", ["directives.datetime", "directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
@@ -16,6 +16,14 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
         landingSites: laravel.landingSites,
         vehicles: laravel.vehicles,
         astronauts: laravel.astronauts,
+
+        launchVideos: laravel.launchVideos ? laravel.launchVideos : null,
+        missionPatches: laravel.missionPatches ? laravel.missionPatches : null,
+        pressKits: laravel.pressKits ? laravel.pressKits : null,
+        cargoManifests: laravel.cargoManifests ? laravel.cargoManifests : null,
+        pressConferences: laravel.pressConferences ? laravel.pressConferences : null,
+        featuredImages: laravel.featuredImages ? laravel.featuredImages: null,
+
         firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
         upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
         upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
@@ -36,6 +44,14 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
     $scope.selected = {
         astronaut: null
     };
+
+    $scope.createMission = function() {
+        missionService.create($scope.mission);
+    }
+
+    $scope.editMission = function() {
+        missionService.edit($scope.mission);
+    }
 
 }]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", function(PartFlight, Payload, SpacecraftFlight) {
     return function (mission) {
@@ -184,9 +200,10 @@ angular.module("missionApp", ["directives.datetime"], ['$interpolateProvider', f
 
     this.edit = function(mission) {
         $http.patch('/missions/' + mission.slug + '/edit', {
-
+            mission: mission,
+            _token: CSRF_TOKEN
         }).then(function(response) {
-
+            window.location = '/missions/' + response.data.mission.slug;
         });
     }
 }]);

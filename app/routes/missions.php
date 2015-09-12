@@ -25,16 +25,16 @@ Route::group(array('prefix' => 'missions'), function() {
             'as' => 'missions.create',
             'uses' => 'MissionsController@create'
         ))->before('csrf');
+
+        Route::get('/{slug}/edit', array(
+            'as' => 'missions.edit',
+            'uses' => 'MissionsController@edit'
+        ))->before('doesMissionExist');
     });
 
     Route::get('/{slug}', array(
         'as' => 'missions.get',
         'uses' => 'MissionsController@get'
-    ))->before('doesMissionExist');
-
-    Route::get('/{slug}/edit', array(
-        'as' => 'missions.edit',
-        'uses' => 'MissionsController@edit'
     ))->before('doesMissionExist');
 
     Route::get('/{slug}/requestlaunchdatetime', array(

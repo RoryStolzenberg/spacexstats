@@ -4753,7 +4753,8 @@ img#object {
     width: 100%;
     max-height: 270px;
     /* 4 options + half of the next option to indicate scrolling */
-    overflow: auto; }
+    overflow: auto;
+    z-index: 100; }
   .select-list li {
     margin: 5px 0;
     padding: 0;

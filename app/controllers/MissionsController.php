@@ -1,5 +1,6 @@
 <?php
 use SpaceXStats\Managers\MissionManager;
+use SpaceXStats\Enums\MissionControlSubtype;
 
 class MissionsController extends BaseController {
 
@@ -98,7 +99,25 @@ class MissionsController extends BaseController {
                     $q->where('landed', false);
                 })->get()->toArray(),
                 'spacecraft' => Spacecraft::all()->toArray(),
-                'astronauts' => Astronaut::all()->toArray()
+                'astronauts' => Astronaut::all()->toArray(),
+                'launchVideos' => Object::where('subtype', MissionControlSubtype::LaunchVideo)->whereHas('mission', function($q) use ($slug) {
+                    $q->whereSlug($slug);
+                })->get(),
+                'missionPatches' => Object::where('subtype', MissionControlSubtype::MissionPatch)->whereHas('mission', function($q) use ($slug) {
+                    $q->whereSlug($slug);
+                })->get(),
+                'pressKits' => Object::where('subtype', MissionControlSubtype::PressKit)->whereHas('mission', function($q) use ($slug) {
+                    $q->whereSlug($slug);
+                })->get(),
+                'cargoManifests' => Object::where('subtype', MissionControlSubtype::CargoManifest)->whereHas('mission', function($q) use ($slug) {
+                    $q->whereSlug($slug);
+                })->get(),
+                'pressConferences' => Object::where('subtype', MissionControlSubtype::PressConference)->whereHas('mission', function($q) use ($slug) {
+                    $q->whereSlug($slug);
+                })->get(),
+                'featuredImages' => Object::where('subtype', MissionControlSubtype::Photo)->whereHas('mission', function($q) use ($slug) {
+                    $q->whereSlug($slug);
+                })->get(),
             ]);
 
             return View::make('missions.edit');
