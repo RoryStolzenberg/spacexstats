@@ -193,6 +193,7 @@ class Spacexstats extends Migration {
             $table->string('title', Varchar::small);
             $table->string('filename', Varchar::tiny)->nullable();
             $table->string('thumb_filename', Varchar::tiny)->nullable();
+            $table->string('local_file', Varchar::small)->nullable();
             $table->char('cryptographic_hash', 64)->nullable();
             $table->string('perceptual_hash')->nullable();
 

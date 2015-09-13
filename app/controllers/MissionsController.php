@@ -101,7 +101,7 @@ class MissionsController extends BaseController {
                 'spacecraft' => Spacecraft::all()->toArray(),
                 'astronauts' => Astronaut::all()->toArray(),
                 'launchVideos' => Object::where('subtype', MissionControlSubtype::LaunchVideo)->whereHas('mission', function($q) use ($slug) {
-                    $q->whereSlug($slug);
+                    $q->whereSlug($slug)->whereNotNull('external_video');
                 })->get(),
                 'missionPatches' => Object::where('subtype', MissionControlSubtype::MissionPatch)->whereHas('mission', function($q) use ($slug) {
                     $q->whereSlug($slug);

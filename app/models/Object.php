@@ -98,14 +98,50 @@ class Object extends Eloquent {
         }
     }
 
+    /**
+     * Checks whether the object has a file or not.
+     *
+     * This function does not care about the file's location, the object's status, or its visibility.
+     *
+     * @return bool
+     */
     public function hasFile() {
         return !is_null($this->filename);
     }
 
+    /**
+     * Checks whether the object has its own unique thumbnail or not.
+     *
+     * This function will return false if the object has a generic thumbnail or does not have a thumbnail. It does
+     * not care about the thumbnail's location, the object's status, or its visibility.
+     *
+     * @return bool
+     */
     public function hasThumbs() {
         return !is_null($this->thumb_filename) && $this->thumb_filename !== "audio.png" && $this->thumb_filename !== "document.png" && $this->thumb_filename !== "text.png";
     }
 
+    /**
+     *
+     */
+    public function hasS3File() {
+        // Check if a file exists in S3 for this object
+    }
+
+    /**
+     * Checks whether the object has a copy of the full file stored locally.
+     *
+     * This function does not care about thumbnails, the object's status or its visibility.
+     *
+     * @return bool
+     */
+    public function hasLocalFile() {
+        return !is_null($this->local_file);
+    }
+
+    /**
+     *  Uploads the objects file and thumbnails, if they exist, to Amazon S3, and then unsets the temporary file.
+     */
     public function putToS3() {
         $s3 = AWS::get('s3');
 
@@ -137,6 +173,59 @@ class Object extends Eloquent {
                 'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
             ]);
             unlink(public_path() . $this->media_thumb_small);
+        }
+    }
+
+    /**
+     * Deletes all files, including thumbnails, from S3, if they exist.
+     */
+    public function deleteFromS3() {
+        $s3 = AWS::get('s3');
+
+        if ($this->hasFile()) {
+            if ($this->status === ObjectPublicationStatus::PublishedStatus) {
+                $s3->deleteObject(Credential::AWSS3Bucket, $this->filename);
+            }
+        }
+
+        if ($this->hasThumbs()) {
+            if ($this->status === ObjectPublicationStatus::PublishedStatus) {
+                $s3->deleteObject(Credential::AWSS3BucketLargeThumbs, $this->filename);
+                $s3->deleteObject(Credential::AWSS3BucketSmallThumbs, $this->filename);
+            }
+        }
+    }
+
+    /**
+     * Makes a local copy of a file of an object from S3.
+     *
+     * The function does not currently support the creation of local files from temporary files.
+     * This function does not save the change to the database. Call the save() method to do so.
+     */
+    public function makeLocalFile() {
+
+        if (!$this->hasLocalFile()) {
+            if ($this->hasFile()) {
+                AWS::get('s3')->getObject(array(
+                    'Bucket'    => Credential::AWSS3Bucket,
+                    'Key'       => $this->filename,
+                    'SaveAs'    => '/local/' . $this->filename
+                ));
+
+                $this->local_file = $this->filename;
+            }
+        }
+    }
+
+    /**
+     * Deletes the current local file.
+     *
+     * This function does not save the change to the database. Call the save() method to do so.
+     */
+    public function deleteLocalFile() {
+        if ($this->hasLocalFile()) {
+            unlink(public_path() . $this->local_file);
+            $this->local_file = null;
         }
     }
 
@@ -209,8 +298,16 @@ class Object extends Eloquent {
         return $this->originated_at;
     }
 
+    /**
+     * @return mixed|null|string
+     */
     public function getMediaAttribute() {
-        if (!empty($this->filename)) {
+        if ($this->hasFile()) {
+
+            if ($this->hasLocalFile()) {
+                return '/local/' . $this->local_file;
+            }
+
             if ($this->status == 'Published') {
                 $s3 = AWS::get('s3');
                 return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes');
@@ -222,6 +319,9 @@ class Object extends Eloquent {
         return null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getMediaDownloadAttribute() {
         if ($this->hasFile()) {
             $s3 = AWS::get('s3');
@@ -234,11 +334,13 @@ class Object extends Eloquent {
         }
     }
 
+    /**
+     * @return null|string
+     */
     public function getMediaThumbSmallAttribute() {
         if (!empty($this->thumb_filename)) {
-            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png' || $this->thumb_filename == 'text.png') {
-                return '/media/small/' . $this->thumb_filename;
-            } else {
+
+            if ($this->hasThumbs()) {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');
                     return $s3->getObjectUrl(Credential::AWSS3BucketSmallThumbs, $this->thumb_filename, '+1 minute');
@@ -246,16 +348,21 @@ class Object extends Eloquent {
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/small/' . $this->thumb_filename;
                 }
+
+            } else {
+                return '/media/small/' . $this->thumb_filename;
             }
         }
         return null;
     }
 
+    /**
+     * @return null|string
+     */
     public function getMediaThumbLargeAttribute() {
         if (!empty($this->thumb_filename)) {
-            if ($this->thumb_filename == 'audio.png' || $this->thumb_filename == 'document.png' || $this->thumb_filename == 'text.png') {
-                return '/media/large/' . $this->thumb_filename;
-            } else {
+
+            if ($this->hasThumbs()) {
                 if ($this->status == 'Published') {
                     $s3 = AWS::get('s3');
                     return $s3->getObjectUrl(Credential::AWSS3BucketLargeThumbs, $this->thumb_filename, '+1 minute');
@@ -263,6 +370,9 @@ class Object extends Eloquent {
                 } elseif ($this->status == 'Queued' || $this->status == 'New') {
                     return '/media/large/' . $this->thumb_filename;
                 }
+
+            } else {
+                return '/media/large/' . $this->thumb_filename;
             }
         }
         return null;

@@ -193,6 +193,10 @@ class Mission extends Eloquent {
         $launchReorderer->run();
     }
 
+    public function setFeaturedImageAttribute($value) {
+        // Copy to local folder, delete any image in local folder
+    }
+
 	// Slug helper
 	public function scopeWhereSlug($query, $slug) {
 		return $query->where('slug', $slug);
