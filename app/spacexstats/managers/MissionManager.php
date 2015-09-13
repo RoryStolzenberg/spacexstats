@@ -144,6 +144,8 @@ class MissionManager {
         } catch (Exception $e) {
             \DB::rollback();
         }
+
+        return $this->mission;
     }
 
     private function input($filter) {
@@ -169,7 +171,7 @@ class MissionManager {
     }
 
     private function updatePayloadRelations() {
-        $currentPayloads = $this->mission->payloads;
+        $currentPayloads = $this->mission->payloads->keyBy('payload_id');
 
         foreach ($this->input('payloads') as $payloadInput) {
 
@@ -182,6 +184,8 @@ class MissionManager {
                 $payload = new Payload($payloadInput);
                 $payload->mission()->associate($this->mission);
             }
+
+            $payload->save();
         }
 
         // Delete any remaining payloads
@@ -206,6 +210,10 @@ class MissionManager {
             $partFlight->mission()->associate($this->mission);
             $partFlight->save();
         }
+    }
+
+    private function updatePartFlightRelations() {
+
     }
 
     private function createSpacecraftFlightRelation() {
@@ -237,6 +245,10 @@ class MissionManager {
                 }
             }
         }
+    }
+
+    private function updateSpacecraftFlightRelation() {
+
     }
 
     private function createPrelaunchEventRelation() {
