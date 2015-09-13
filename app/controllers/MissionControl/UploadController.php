@@ -40,8 +40,8 @@ class UploadController extends BaseController {
             // Find each object from file
             for ($i = 0; $i < count($files); $i++) {
 
-                $objectCreators[$i] = App::make('SpaceXStats\Creators\Objects\ObjectFromFile');
-                $objectValidities[$i] = $objectCreators[$i]->isValid($files[$i]) ? true : $objectCreators[$i]->getErrors();
+                $objectManagers[$i] = App::make('SpaceXStats\Managers\Objects\ObjectFromFile');
+                $objectValidities[$i] = $objectManagers[$i]->isValid($files[$i]) ? true : $objectManagers[$i]->getErrors();
 
                 if ($objectValidities[$i] !== true) {
                     $doesNotContainErrors = false;
@@ -52,7 +52,7 @@ class UploadController extends BaseController {
             if ($doesNotContainErrors) {
                 // add all objects to db
                 for ($i = 0; $i < count($files); $i++) {
-                    $objectCreators[$i]->create();
+                    $objectManagers[$i]->create();
                 }
             } else {
                 return Response::json($objectValidities, 400);
@@ -63,23 +63,23 @@ class UploadController extends BaseController {
             switch (Request::header('Submission-Type')) {
 
                 case 'article':
-                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromArticle');
+                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromArticle');
                     break;
 
                 case 'pressRelease':
-                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromPressRelease');
+                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromPressRelease');
                     break;
 
                 case 'redditComment':
-                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromRedditComment');
+                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromRedditComment');
                     break;
 
                 case 'NSFComment':
-                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromNSFComment');
+                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromNSFComment');
                     break;
 
                 case 'text':
-                    $objectCreator = App::make('SpaceXStats\Creators\Objects\ObjectFromText');
+                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromText');
                     break;
             }
 

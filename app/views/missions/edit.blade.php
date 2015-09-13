@@ -95,31 +95,31 @@
                     <ul>
                         <li class="grid-4">
                             <label>Launch Video</label>
-                            <select-list options="data.launchVideos" ng-model="mission.launch_video" unique-key="object_id" searchable="true"></select-list>
+                            <select-list options="data.launchVideos" ng-model="mission.launch_video" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
                         <li class="grid-4">
                             <label for=""">Mission Patch</label>
-                            <select-list options="data.missionPatches" ng-model="mission.mission_patch" unique-key="object_id" searchable="true"></select-list>
+                            <select-list options="data.missionPatches" ng-model="mission.mission_patch" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
                         <li class="grid-4">
                             <label for="">Press Kit</label>
-                            <select-list options="data.pressKits" ng-model="mission.press_kit" unique-key="object_id" searchable="true"></select-list>
+                            <select-list options="data.pressKits" ng-model="mission.press_kit" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
                         <li class="grid-4">
                             <label>Cargo Manifest</label>
-                            <select-list options="data.cargoManifests" ng-model="mission.cargo_manifest" unique-key="object_id" searchable="true"></select-list>
+                            <select-list options="data.cargoManifests" ng-model="mission.cargo_manifest" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
                         <li class="grid-4">
                             <label>Prelaunch Press Conference</label>
-                            <select-list options="data.pressConferences" ng-model="mission.prelaunch_press_conference" unique-key="object_id" searchable="true"></select-list>
+                            <select-list options="data.pressConferences" ng-model="mission.prelaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
                         <li class="grid-4">
                             <label>Postlaunch Press Conference</label>
-                            <select-list options="data.pressConferences" ng-model="mission.postlaunch_press_conference" unique-key="object_id" searchable="true"></select-list>
+                            <select-list options="data.pressConferences" ng-model="mission.postlaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
                         <li class="grid-4">
                             <label>Featured Image</label>
-                            <select-list options="data.featuredImages" ng-model="mission.featured_image" unique-key="object_id" searchable="true"></select-list>
+                            <select-list options="data.featuredImages" ng-model="mission.featured_image" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
                         <li class="grid-4">
                             <label>Reddit Discussion</label>
@@ -168,7 +168,7 @@
                             <label>Engine Failures</label>
                             <input type="text" ng-model="partFlight.firststage_engine_failures" />
 
-                            <label>MECO time</label>
+                            <label>MECO time (seconds)</label>
                             <input type="text" ng-model="partFlight.firststage_meco" />
 
                             <label>Landing Coords (lat)</label>
@@ -184,11 +184,14 @@
 
                         <div ng-if="partFlight.part.type == 'Upper Stage'">
                             <label>Engine</label>
-                            <select ng-model="partFlight.upperstage_engine" ng-options="upperStageEngine for upperStageEngine in data.upperStageEngines"></select>
+                            <select ng-model="partFlight.upperstage_engine" ng-options="upperstageEngine for upperstageEngine in data.upperStageEngines"></select>
 
                             <label>Status</label>
+                            <select ng-model="partFlight.upperstage_status" ng-options="upperstageStatus for upperstageStatus in data.upperStageStatuses">
+                                <option value=""></option>
+                            </select>
 
-                            <label>SECO time</label>
+                            <label>SECO time (seconds)</label>
                             <input type="text" ng-model="partFlight.upperstage_seco"/>
 
                             <label>Decay Date</label>
@@ -279,8 +282,10 @@
                         <input type="text" ng-model="mission.spacecraft_flight.downmass" />
 
                         <label>ISS Berth</label>
+                        <datetime type="datetime" ng-model="mission.spacecraft_flight.iss_berth" is-null="true" nullable-toggle="true" start-year="2010"></datetime>
 
                         <label>ISS Unberth</label>
+                        <datetime type="datetime" ng-model="mission.spacecraft_flight.iss_berth" is-null="true" nullable-toggle="true" start-year="2010"></datetime>
 
                         <fieldset>
                             <label>Astronauts</label>
@@ -306,6 +311,7 @@
                                 <input type="checkbox" ng-model="astronautFlight.astronaut.deceased"  />
 
                                 <label>Date of Birth</label>
+                                <datetime type="date" ng-model="astronautFlight.astronaut.date_of_birth" is-null="true" nullable-toggle="true" start-year="2010"></datetime>
 
                                 <label>Nationality</label>
                                 <input type="text" ng-model="astronautFlight.astronaut.nationality" />

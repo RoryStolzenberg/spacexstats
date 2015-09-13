@@ -72,6 +72,8 @@ class Object extends Eloquent {
                     unlink(public_path() . $object->media_thumb_small);
                 }
             }
+
+            return true;
         });
     }
 
@@ -176,19 +178,19 @@ class Object extends Eloquent {
     }
 
     // Scoped Queries
-    public function scopeQueued($query) {
+    public function scopeWhereQueued($query) {
         return $query->where('status','queued')->orderBy('created_at', 'ASC');
     }
 
-    public function scopePublished($query) {
+    public function scopeWherePublished($query) {
         return $query->where('status','published');
     }
 
-    public function scopePublic($query) {
+    public function scopeWherePublic($query) {
         return $query->where('visibility', 'public');
     }
 
-    public function scopeDefault($query) {
+    public function scopeWhereDefault($query) {
         return $query->where('visiblility', 'default');
     }
 

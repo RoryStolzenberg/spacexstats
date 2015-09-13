@@ -85,52 +85,15 @@
                         <input type="text" ng-model="partFlight.part.name" />
 
                         <div ng-if="partFlight.part.type == 'Booster' || partFlight.part.type == 'First Stage'">
-                            <label>Landing Legs?</label>
-                            <input type="checkbox" ng-model="partFlight.firststage_landing_legs" />
-
-                            <label>Grid Fins?</label>
-                            <input type="checkbox" ng-model="partFlight.firststage_grid_fins" />
-
                             <label>Engine</label>
                             <select ng-model="partFlight.firststage_engine" ng-options="firstStageEngine for firstStageEngine in data.firstStageEngines"></select>
-
-                            <label>Engine Failures</label>
-                            <input type="text" ng-model="partFlight.firststage_engine_failures" />
-
-                            <label>MECO time</label>
-                            <input type="text" ng-model="partFlight.firststage_meco" />
-
-                            <label>Landing Coords (lat)</label>
-                            <input type="text" ng-model="partFlight.firststage_landing_coords_lat" />
-
-                            <label>Landing Coords (lng)</label>
-                            <input type="text" ng-model="partFlight.firststage_landing_coords_lng" />
-
-                            <label>Baseplate Color</label>
-                            <input type="text" ng-model="partFlight.baseplate_color" />
                         </div>
 
 
                         <div ng-if="partFlight.part.type == 'Upper Stage'">
                             <label>Engine</label>
                             <select ng-model="partFlight.upperstage_engine" ng-options="upperStageEngine for upperStageEngine in data.upperStageEngines"></select>
-
-                            <label>Status</label>
-
-                            <label>SECO time</label>
-                            <input type="text" ng-model="partFlight.upperstage_seco"/>
-
-                            <label>Decay Date</label>
-
-                            <label>NORAD ID</label>
-                            <input type="text" ng-model="partFlight.upperstage_norad_id" />
-
-                            <label>International Designator</label>
-                            <input type="text" ng-model="partFlight.upperstage_intl_designator" />
                         </div>
-
-                        <label>Landed?</label>
-                        <input type="checkbox" value="true" ng-model="partFlight.landed"/>
 
                         <label>Notes</label>
                         <textarea ng-model="partFlight.note"></textarea>
@@ -194,21 +157,8 @@
                         <label>Flight Name</label>
                         <input type="text" ng-model="mission.spacecraft_flight.flight_name" />
 
-                        <label>End Of Mission</label>
-                        <datetime type="datetime" ng-model="mission.spacecraft_flight.end_of_mission" is-null="true" nullable-toggle="true" start-year="2010"></datetime>
-
                         <label>Return Method</label>
                         <select ng-model="mission.spacecraft_flight.return_method" ng-options="returnMethod for returnMethod in data.returnMethods"></select>
-
-                        <label>Upmass</label>
-                        <input type="text" ng-model="mission.spacecraft_flight.upmass" />
-
-                        <label>Downmass</label>
-                        <input type="text" ng-model="mission.spacecraft_flight.downmass" />
-
-                        <label>ISS Berth</label>
-
-                        <label>ISS Unberth</label>
 
                         <fieldset>
                             <label>Astronauts</label>

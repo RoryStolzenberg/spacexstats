@@ -9,7 +9,7 @@ class ReviewController extends BaseController {
 
     // AJAX GET
     public function get() {
-        $objectsToReview = Object::queued()->with('user', 'tags')->get();
+        $objectsToReview = Object::whereQueued()->with('user', 'tags')->get();
         return Response::json($objectsToReview, 200);
     }
 

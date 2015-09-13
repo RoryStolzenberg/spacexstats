@@ -5,17 +5,26 @@ angular.module("directives.selectList", []).directive("selectList", function() {
             options: '=',
             selectedOption: '=ngModel',
             uniqueKey: '@',
+            titleKey: '@',
+            imageKey: '@?',
+            descriptionKey: '@?',
             searchable: '@',
             placeholder: '@'
         },
         link: function($scope, element, attributes) {
 
             $scope.optionsObj = $scope.options.map(function(option) {
-                return {
+                var props = {
                     id: option[$scope.uniqueKey],
-                    name: option.name,
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : null
+                    name: option[$scope.titleKey],
+                    image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
                 };
+
+                if (typeof $scope.descriptionKey !== 'undefined') {
+                    props.description = option[$scope.descriptionKey];
+                }
+
+                return props;
             });
 
             $scope.$watch("selectedOption", function(newValue) {

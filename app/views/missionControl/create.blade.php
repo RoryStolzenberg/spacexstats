@@ -72,6 +72,7 @@
                                                     options="data.missions"
                                                     ng-model="file.mission_id"
                                                     unique-key="mission_id"
+                                                    title-key="name"
                                                     searchable="true">
                                             </select-list>
                                         </label>
@@ -112,7 +113,7 @@
                                             <p>When was this created?</p>
                                             <datetime type="[[ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') ]]"
                                                       ng-model="file.originated_at"
-                                                      is-null="[[ ::file.datetimeExtractedFromEXIF ]]"
+                                                      is-null="::file.datetimeExtractedFromEXIF"
                                                       nullable-toggle="false"></datetime>
                                         </label>
 
@@ -154,7 +155,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -218,7 +219,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -290,7 +291,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -363,7 +364,7 @@
                                     <li class="grid-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" searchable="true"></select-list>
+                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
@@ -522,6 +523,7 @@
                             options="data.missions"
                             ng-model="text.mission_id"
                             unique-key="mission_id"
+                            title-key="name"
                             searchable="true"
                             placeholder="Select a related mission...">
                     </select-list>

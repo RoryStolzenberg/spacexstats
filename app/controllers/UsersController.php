@@ -47,7 +47,7 @@ class UsersController extends BaseController {
                 return View::make('users.profile', array(
                     'user' => $user,
                     'favoriteMission' => $user->profile->favoriteMission,
-                    'objects' => $user->objects()->where('status', 'Published')->take(10),
+                    'objects' => $user->objects()->wherePublished()->take(10),
                     'favorites' => $user->favorites->take(10),
                 ));
 			}
