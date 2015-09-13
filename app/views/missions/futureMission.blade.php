@@ -35,11 +35,26 @@
                         <li class="grid-1">Status</li>
                     </ul>
                 </nav>
-                <section class="highlights" ng-if="isLaunchExact == true">
-                    <div class="webcast-status" ng-class="webcast.status" ng-show="webcast.status != 'webcast-inactive'">
+
+                <section class="highlights">
+                    <div class="webcast-status" ng-class="webcast.status" ng-if="isLaunchExact == true" ng-show="webcast.status != 'webcast-inactive'">
                         <span>[[ webcast.publicStatus ]]</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">[[ webcast.publicViewers ]]</span>
                     </div>
-                    <div class="display-date-time">
+
+                    @if(isset($pastMission))
+                        <div class="past-mission-link">
+                            {{ link_to_route('missions.get', $pastMission->name, $pastMission->slug) }}
+                            <span>Previous Mission</span>
+                        </div>
+                    @endif
+                    @if(isset($futureMission))
+                        <div class="future-mission-link">
+                            {{ link_to_route('missions.get', $futureMission->name, $futureMission->slug) }}
+                            <span>Next Mission</span>
+                        </div>
+                    @endif
+
+                    <div ng-if="isLaunchExact == true" class="display-date-time">
                         <div class="launch">[[ launchDateTime ]]</div>
                         <div class="timezone">
                             <span class="timezone-current">UTC</span>
@@ -52,6 +67,7 @@
                         </div>
                     </div>
                 </section>
+
                 <section class="hero" id="countdown">
                     <countdown specificity="launchSpecificity" countdown-to="launchDateTime" callback="requestFrequencyMananger"></countdown>
                 </section>

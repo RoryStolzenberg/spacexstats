@@ -26,6 +26,7 @@
                     <li class="grid-1">Status</li>
                 </ul>
             </nav>
+
             <section class="highlights">
                 @if(isset($pastMission))
                     <div class="past-mission-link">
@@ -41,8 +42,8 @@
                 @endif
             </section>
 
-
             {{ $mission->present()->article() }}
+
             <h2>Details</h2>
             @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
             <div class="grid-8">

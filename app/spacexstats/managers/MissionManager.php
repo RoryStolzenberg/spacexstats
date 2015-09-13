@@ -127,7 +127,7 @@ class MissionManager {
 
     public function update() {
 
-        $this->mission = Mission::with('payloads')->find($this->input('mission')['mission_id']);
+        $this->mission = Mission::with('payloads', 'partFlights', 'spacecraftFlight')->find($this->input('mission')['mission_id']);
 
         \DB::beginTransaction();
         try {
@@ -162,11 +162,15 @@ class MissionManager {
         }
     }
 
+    private function createPayload($input) {
+        $payload = new Payload($input);
+        $payload->mission()->associate($this->mission);
+        $payload->save();
+    }
+
     private function createPayloadRelations() {
         foreach ($this->input('payloads') as $payloadInput) {
-            $payload = new Payload($payloadInput);
-            $payload->mission()->associate($this->mission);
-            $payload->save();
+            $this->createPayload($payloadInput);
         }
     }
 
@@ -179,13 +183,13 @@ class MissionManager {
             if (array_key_exists('payload_id', $payloadInput)) {
                 $payload = $currentPayloads->pull($payloadInput['payload_id']);
                 $payload->fill($payloadInput);
+                $payload->save();
 
             } else {
-                $payload = new Payload($payloadInput);
-                $payload->mission()->associate($this->mission);
+                $this->createPayload($payloadInput);
             }
 
-            $payload->save();
+
         }
 
         // Delete any remaining payloads
@@ -213,7 +217,27 @@ class MissionManager {
     }
 
     private function updatePartFlightRelations() {
+        $currentPartFlights = $this->mission->partFlights->keyBy('part_flight_id');
 
+        foreach ($this->input('partFlights') as $partFlightInput) {
+
+            // If the partFlight exists, update it, otherwise, create it
+            if (array_key_exists('part_flight_id', $partFlightInput)) {
+                $payload = $currentPayloads->pull($payloadInput['payload_id']);
+                $payload->fill($payloadInput);
+
+            } else {
+                $payload = new Payload($payloadInput);
+                $payload->mission()->associate($this->mission);
+            }
+
+            $payload->save();
+        }
+
+        // Delete any remaining payloads
+        if (!$currentPayloads->isEmpty()) {
+            Payload::whereIn('payload_id', $currentPayloads->keys())->delete();
+        }
     }
 
     private function createSpacecraftFlightRelation() {

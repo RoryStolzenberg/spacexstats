@@ -229,7 +229,7 @@ class Mission extends Eloquent {
 	// Get 1 or more previous launches relative to a current launch_order_id
 	public function scopePrevious($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
 		return $query->where('launch_order_id', '<', $currentLaunchOrderId)
-						->orderBy('launch_order_id')
+						->orderBy('launch_order_id', 'DESC')
 						->take($numberOfMissionsToGet);
 	}
 
