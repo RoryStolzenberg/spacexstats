@@ -162,8 +162,7 @@ class MissionManager {
 
     private function createPayloadRelations() {
         foreach ($this->input('payloads') as $payloadInput) {
-            $payload = new Payload();
-            $payload->fill($payloadInput);
+            $payload = new Payload($payloadInput);
             $payload->mission()->associate($this->mission);
             $payload->save();
         }
@@ -176,13 +175,18 @@ class MissionManager {
 
             // If the payload exists, update it, otherwise, create it
             if (array_key_exists('payload_id', $payloadInput)) {
-                //$payload = array_pull($currentPayloads->find($payloadInput['payload_id']));
-                //unset($currentPayloads);
-                //$payload->fill($payloadInput);
+                $payload = $currentPayloads->pull($payloadInput['payload_id']);
+                $payload->fill($payloadInput);
 
             } else {
-
+                $payload = new Payload($payloadInput);
+                $payload->mission()->associate($this->mission);
             }
+        }
+
+        // Delete any remaining payloads
+        if (!$currentPayloads->isEmpty()) {
+            Payload::whereIn('payload_id', $currentPayloads->keys())->delete();
         }
     }
 
