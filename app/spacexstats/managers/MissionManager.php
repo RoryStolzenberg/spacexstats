@@ -106,6 +106,8 @@ class MissionManager {
         // Create the mission
         \DB::beginTransaction();
         try {
+
+            // Fill mission
             $this->mission->fill($this->input('mission'));
             $this->mission->status = 'Upcoming';
             $this->mission->save();
@@ -124,8 +126,15 @@ class MissionManager {
     }
 
     public function update() {
+
+        $this->mission = Mission::find($this->input('mission')['mission_id']);
+
         \DB::beginTransaction();
         try {
+
+            // Fill mission
+            $this->mission->fill($this->input('mission'));
+            $this->mission->save();
 
 
             \DB::commit();

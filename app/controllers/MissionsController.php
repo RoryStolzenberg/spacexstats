@@ -122,10 +122,11 @@ class MissionsController extends BaseController {
 
             return View::make('missions.edit');
 
-        } elseif (Request::isMethod('post')) {
+        } elseif (Request::isMethod('patch')) {
 
             if ($this->missionManager->isValid()) {
-                $mission = $this->missionManager->edit();
+
+                $mission = $this->missionManager->update();
 
                 // Return, frontend to redirect.
                 return Response::json(['mission' => $mission]);

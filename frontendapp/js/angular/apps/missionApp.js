@@ -49,8 +49,8 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
         missionService.create($scope.mission);
     }
 
-    $scope.editMission = function() {
-        missionService.edit($scope.mission);
+    $scope.updateMission = function() {
+        missionService.update($scope.mission);
     }
 
 }]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", function(PartFlight, Payload, SpacecraftFlight) {
@@ -189,24 +189,25 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
 
 }).service("missionService", ["$http", "CSRF_TOKEN",
     function($http, CSRF_TOKEN) {
-    this.create = function(mission) {
-        $http.post('/missions/create', {
-            mission: mission,
-            _token: CSRF_TOKEN
-        }).then(function(response) {
-            window.location = '/missions/' + response.data.mission.slug;
-        });
-    };
+        this.create = function (mission) {
+            $http.post('/missions/create', {
+                mission: mission,
+                _token: CSRF_TOKEN
+            }).then(function (response) {
+                window.location = '/missions/' + response.data.mission.slug;
+            });
+        };
 
-    this.edit = function(mission) {
-        $http.patch('/missions/' + mission.slug + '/edit', {
-            mission: mission,
-            _token: CSRF_TOKEN
-        }).then(function(response) {
-            window.location = '/missions/' + response.data.mission.slug;
-        });
+        this.update = function (mission) {
+            $http.patch('/missions/' + mission.slug + '/edit', {
+                mission: mission,
+                _token: CSRF_TOKEN
+            }).then(function (response) {
+                window.location = '/missions/' + response.data.mission.slug;
+            });
+        };
     }
-}]);
+]);
 
 
 

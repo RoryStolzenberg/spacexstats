@@ -337,7 +337,7 @@
 
                 </fieldset>
 
-                <input type="submit" ng-click="editMission(mission)" ng-disabled="editMissionForm.$invalid" value="Save Mission"/>
+                <input type="submit" ng-click="updateMission(mission)" ng-disabled="editMissionForm.$invalid" value="Save Mission"/>
             </form>
         </main>
     </div>

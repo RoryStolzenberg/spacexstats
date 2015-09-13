@@ -26,7 +26,7 @@ Route::group(array('prefix' => 'missions'), function() {
             'uses' => 'MissionsController@create'
         ))->before('csrf');
 
-        Route::get('/{slug}/edit', array(
+        Route::any('/{slug}/edit', array(
             'as' => 'missions.edit',
             'uses' => 'MissionsController@edit'
         ))->before('doesMissionExist');
