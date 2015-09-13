@@ -127,7 +127,7 @@ class MissionManager {
 
     public function update() {
 
-        $this->mission = Mission::find($this->input('mission')['mission_id']);
+        $this->mission = Mission::with('payloads')->find($this->input('mission')['mission_id']);
 
         \DB::beginTransaction();
         try {
@@ -135,6 +135,9 @@ class MissionManager {
             // Fill mission
             $this->mission->fill($this->input('mission'));
             $this->mission->save();
+
+            // Update any payloads. Delete any payloads which have been removed.
+            $this->updatePayloadRelations();
 
 
             \DB::commit();
@@ -166,7 +169,21 @@ class MissionManager {
         }
     }
 
-    private function editPayloadRelations() {
+    private function updatePayloadRelations() {
+        $currentPayloads = $this->mission->payloads;
+
+        foreach ($this->input('payloads') as $payloadInput) {
+
+            // If the payload exists, update it, otherwise, create it
+            if (array_key_exists('payload_id', $payloadInput)) {
+                //$payload = array_pull($currentPayloads->find($payloadInput['payload_id']));
+                //unset($currentPayloads);
+                //$payload->fill($payloadInput);
+
+            } else {
+
+            }
+        }
     }
 
     private function createPartFlightRelations() {

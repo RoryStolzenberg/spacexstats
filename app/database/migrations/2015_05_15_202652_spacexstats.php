@@ -484,7 +484,6 @@ class Spacexstats extends Migration {
             $table->foreign('cargo_manifest')->references('object_id')->on('objects');
             $table->foreign('prelaunch_press_conference')->references('object_id')->on('objects');
             $table->foreign('postlaunch_press_conference')->references('object_id')->on('objects');
-            $table->foreign('reddit_discussion')->references('object_id')->on('objects');
             $table->foreign('featured_image')->references('object_id')->on('objects');
         });
 
