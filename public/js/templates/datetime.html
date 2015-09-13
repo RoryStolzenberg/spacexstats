@@ -8,11 +8,11 @@
     <select ng-model="year" ng-options="year for year in years()" ng-disabled="isNull == true">
     </select>
 
-    <div ng-if="type == 'datetime'">
-        <input type="number" min="0" max="23" ng-model="hour" ng-disabled="isNull == true" />:
-        <input type="number" min="0" max="59" ng-model="minute" ng-disabled="isNull == true" />:
-        <input type="number" min="0" max="59" ng-model="second" ng-disabled="isNull == true" />
-    </div>
+    <input type="number" min="0" max="23" ng-model="$parent.hour" ng-if="type == 'datetime'" ng-disabled="isNull == true" />
+    <span class="time-separator" ng-if="type == 'datetime'">:</span>
+    <input type="number" min="0" max="59" ng-model="$parent.minute" ng-if="type == 'datetime'" ng-disabled="isNull == true" />
+    <span class="time-separator" ng-if="type == 'datetime'">:</span>
+    <input type="number" min="0" max="59" ng-model="$parent.second" ng-if="type == 'datetime'" ng-disabled="isNull == true" />
 
     <span ng-show="isNull == true">No date selected.</span>
 

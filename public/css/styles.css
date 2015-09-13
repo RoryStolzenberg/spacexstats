@@ -4779,6 +4779,10 @@ img#object {
   border-radius: 8px;
   height: 300px; }
 
+.datetime input[type="number"] {
+  width: 60px;
+  margin: 0 2px; }
+
 .object-card {
   margin: 10px 0;
   height: 100px; }
