@@ -192,6 +192,7 @@
                             <input type="text" ng-model="partFlight.upperstage_seco"/>
 
                             <label>Decay Date</label>
+                            <datetime ng-model="partFlight.decay_date" type="date" start-year="2002" is-null="true" nullable-toggle="true"></datetime>
 
                             <label>NORAD ID</label>
                             <input type="text" ng-model="partFlight.upperstage_norad_id" />

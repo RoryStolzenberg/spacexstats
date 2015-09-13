@@ -8,7 +8,7 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             datetimevalue: '=ngModel',
             startYear: '@',
             nullableToggle: '@',
-            isNull: '@'
+            isNull: '='
         },
         link: function($scope, element, attrs, ctrl) {
 
@@ -50,85 +50,118 @@ angular.module('directives.datetime', []).directive('datetime', function() {
                     years.push(currentYear);
                     currentYear--;
                 }
-
                 return years;
             };
 
             //convert data from view format to model format
             ctrl.$parsers.push(function(viewvalue) {
 
-                console.log("parser");
-                console.log(viewvalue);
-
-                if (moment(viewvalue).isValid()) {
-
-                    var value = moment({
-                        year: viewvalue.year,
-                        month: viewvalue.month - 1,
-                        date: viewvalue.date,
-                        hour: viewvalue.hour,
-                        minute: viewvalue.minute,
-                        second: viewvalue.second
-                    }).format('YYYY-MM-DD HH:mm:ss');
-
-                } else {
-
-                    var value = viewvalue.year + "-"
-                        + ("0" + viewvalue.month).slice(-2) + "-"
-                        + ("0" + viewvalue.date).slice(-2) + " "
-                        + ("0" + viewvalue.hour).slice(-2) + ":"
-                        + ("0" + viewvalue.minute).slice(-2) + ":"
-                        + ("0" + viewvalue.second).slice(-2)
+                if ($scope.isNull == true) {
+                    return null;
                 }
 
-                console.log(value);
-                console.log($scope.isNull);
+                if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
+
+                    if ($scope.type == 'datetime') {
+                        var value = moment({
+                            year: viewvalue.year,
+                            month: viewvalue.month - 1,
+                            date: viewvalue.date,
+                            hour: viewvalue.hour,
+                            minute: viewvalue.minute,
+                            second: viewvalue.second
+                        }).format('YYYY-MM-DD HH:mm:ss');
+
+                    } else if ($scope.type == 'date') {
+                        var value = moment({
+                            year: viewvalue.year,
+                            month: viewvalue.month - 1,
+                            date: viewvalue.date
+                        }).format('YYYY-MM-DD');
+                    }
+                } else {
+
+                    if ($scope.type == 'datetime') {
+                        var value = viewvalue.year + "-"
+                            + ("0" + viewvalue.month).slice(-2) + "-"
+                            + ("0" + viewvalue.date).slice(-2) + " "
+                            + ("0" + viewvalue.hour).slice(-2) + ":"
+                            + ("0" + viewvalue.minute).slice(-2) + ":"
+                            + ("0" + viewvalue.second).slice(-2);
+
+                    } else {
+                        var value = viewvalue.year + "-"
+                            + ("0" + viewvalue.month).slice(-2) + "-"
+                            + ("0" + viewvalue.date).slice(-2);
+                    }
+                }
                 return value;
             });
 
             ctrl.$render = function() {
-
-                console.log("render");
-
                 $scope.year = ctrl.$viewValue.year;
                 $scope.month = ctrl.$viewValue.month;
-                $scope.date = ctrl.$viewValue.date;
-                $scope.hour = ctrl.$viewValue.hour;
-                $scope.minute = ctrl.$viewValue.minute;
-                $scope.second = ctrl.$viewValue.second;
+                $scope.date = ctrl.$viewValue.date
+
+                if ($scope.type == 'datetime') {
+                    $scope.hour = ctrl.$viewValue.hour;
+                    $scope.minute = ctrl.$viewValue.minute;
+                    $scope.second = ctrl.$viewValue.second;
+                }
             };
 
             //convert data from model format to view format
             ctrl.$formatters.push(function(data) {
 
-                console.log("formatter");
-                console.log(data);
-
-                if (moment(data).isValid()) {
+                // If the value is not undefined and the value is valid,
+                if (typeof data !== 'undefined' && moment(data).isValid()) {
 
                     var dt = moment(data);
 
-                    return {
-                        year: dt.year(),
-                        month: dt.month() + 1,
-                        date: dt.date(),
-                        hour: dt.hour(),
-                        minute: dt.minute(),
-                        second: dt.second()
+                    if ($scope.type == 'datetime') {
+                        return {
+                            year: dt.year(),
+                            month: dt.month() + 1,
+                            date: dt.date(),
+                            hour: dt.hour(),
+                            minute: dt.minute(),
+                            second: dt.second()
+                        }
+                    } else if ($scope.type == 'date') {
+                        return {
+                            year: dt.year(),
+                            month: dt.month() + 1,
+                            date: dt.date()
+                        }
                     }
                 } else {
-                    return {
-                        year: moment().year(),
-                        month: 0,
-                        date: 0,
-                        hour: 0,
-                        minute: 0,
-                        second: 0
+
+                    if ($scope.type == 'datetime') {
+                        return {
+                            year: moment().year(),
+                            month: 0,
+                            date: 0,
+                            hour: 0,
+                            minute: 0,
+                            second: 0
+                        }
+                    } else if ($scope.type == 'date') {
+                        return {
+                            year: moment().year(),
+                            month: 0,
+                            date: 0
+                        }
                     }
                 }
             });
 
-            $scope.$watch('year + month + date + hour + minute + second', function() {
+            $scope.$watch('datetimevalue', function(value) {
+                if (typeof value === null) {
+                    $scope.isNull = true;
+                }
+            });
+
+            $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
                 ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
             });
         },
