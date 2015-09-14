@@ -53,7 +53,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
         missionService.update($scope.mission);
     }
 
-}]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", function(PartFlight, Payload, SpacecraftFlight) {
+}]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", "PrelaunchEvent", "Telemetry", function(PartFlight, Payload, SpacecraftFlight, PrelaunchEvent, Telemetry) {
     return function (mission) {
         if (mission == null) {
             var self = this;
@@ -62,6 +62,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
             self.part_flights = [];
             self.spacecraft_flight = null;
             self.prelaunch_events = [];
+            self.telemetries = [];
 
         } else {
             var self = mission;
@@ -97,7 +98,15 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
 
         self.removePrelaunchEvent = function(prelaunchEvent) {
             self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
-        }
+        };
+
+        self.addTelemetry = function() {
+            self.telemetries.push(new Telemetry());
+        };
+
+        self.removeTelemetry = function(telemetry) {
+            self.telemetries.splice(self.telemetries.indexOf(telemetry), 1);
+        };
 
         return self;
     }
@@ -183,6 +192,14 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
     return function (prelaunchEvent) {
 
         var self = prelaunchEvent;
+
+        return self;
+    }
+
+}).factory("Telemetry", function() {
+    return function (telemetry) {
+
+        var self = telemetry;
 
         return self;
     }

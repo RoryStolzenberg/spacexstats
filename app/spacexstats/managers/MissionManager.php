@@ -189,8 +189,6 @@ class MissionManager {
             } else {
                 $this->createPayload($payloadInput);
             }
-
-
         }
 
         // Delete any remaining payloads
@@ -317,6 +315,30 @@ class MissionManager {
         $prelaunchEvent->summary = 'Mission Created';
         $prelaunchEvent->mission()->associate($this->mission);
         $prelaunchEvent->save();
+    }
+
+    private function manageTelemetryRelations() {
+        $currentTelemetries = $this->mission->telemetries->keyBy('telemetry_id');
+
+        foreach ($this->input['mission']['telemetries'] as $telemetryInput) {
+
+            // If the telemetry exists, update it, otherwise, create it
+            if (array_key_exists('telemetry_id', $telemetryInput)) {
+                $telemetry = $currentTelemetries->pull($telemetryInput['telemetry_id']);
+                $telemetry->fill($telemetryInput);
+                $telemetry->save();
+
+            } else {
+                $telemetry = new Payload($telemetryInput);
+                $telemetry->mission()->associate($this->mission);
+                $telemetry->save();
+            }
+        }
+
+        // Delete any telemetry payloads
+        if (!$currentTelemetries->isEmpty()) {
+            Telemetry::whereIn('telemetry_id', $currentTelemetries->keys())->delete();
+        }
     }
 
     public function getErrors() {

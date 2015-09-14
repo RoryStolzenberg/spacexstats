@@ -328,12 +328,39 @@
                     <legend>Prelaunch Events</legend>
                     <span>Launch announcements and datetime changes are added automatically.</span>
 
-                    <!-- Prelaunch event stuff here -->
-                    <button ng-click="mission.addPrelaunchEvent()">Add Prelaunch Event</button>
-
                     <div ng-repeat="prelaunchEvent in mission.prelaunch_events">
                         [[ prelaunchEvent.eventType ]]
                     </div>
+
+                    <!-- Prelaunch event stuff here -->
+                    <button ng-click="mission.addPrelaunchEvent()">Add Prelaunch Event</button>
+
+                </fieldset>
+
+                <fieldset>
+                    <legend>Telemetry</legend>
+                    <span>Add readouts and live statistics of the launch here.</span>
+
+                    <table>
+                        <th>
+                            <td>Timestamp (T+ s)</td>
+                            <td>Readout</td>
+                            <td>Altitude (m)</td>
+                            <td>Velocity (m/s)</td>
+                            <td>Downrange (m)</td>
+                            <td></td>
+                        </th>
+                        <tr ng-repeat="telemetry in mission.telemetries">
+                            <td><input type="number" ng-model="telemetry.timestamp" required /></td>
+                            <td><input type="text" ng-model="telemetry.readout" /></td>
+                            <td><input type="number" ng-model="telemetry.altitude" /></td>
+                            <td><input type="number" ng-model="telemetry.velocity" /></td>
+                            <td><input type="number" ng-model="telemetry.downrange" /></td>
+                            <td><button ng-click="mission.removeTelemetry(telemetry)">Remove This Readout</button></td>
+                        </tr>
+                    </table>
+
+                    <button ng-click="mission.addTelemetry()">Add Readout</button>
 
                 </fieldset>
 
