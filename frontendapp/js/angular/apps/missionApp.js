@@ -211,7 +211,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
                 mission: mission,
                 _token: CSRF_TOKEN
             }).then(function (response) {
-                window.location = '/missions/' + response.data.mission.slug;
+                window.location = '/missions/' + response.data.slug;
             });
         };
 
@@ -220,7 +220,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
                 mission: mission,
                 _token: CSRF_TOKEN
             }).then(function (response) {
-                window.location = '/missions/' + response.data.mission.slug;
+                window.location = '/missions/' + response.data.slug;
             });
         };
     }

@@ -11,12 +11,13 @@ use \Astronaut;
 use \AstronautFlight;
 use \Payload;
 use \PrelaunchEvent;
+use \Telemetry;
 
 class MissionManager {
     private $input, $errors = [];
     private $mission;
 
-    public function __construct(Mission $mission, Payload $payload, PartFlight $partFlight, Part $part, SpacecraftFlight $spacecraftFlight, Spacecraft $spacecraft, AstronautFlight $astronautFlight, Astronaut $astronaut) {
+    public function __construct(Mission $mission, Payload $payload, PartFlight $partFlight, Part $part, SpacecraftFlight $spacecraftFlight, Spacecraft $spacecraft, AstronautFlight $astronautFlight, Astronaut $astronaut, PrelaunchEvent $prelaunchEvent, Telemetry $telemetry) {
         $this->mission              = $mission;
         $this->payload              = $payload;
         $this->partFlight           = $partFlight;
@@ -25,6 +26,7 @@ class MissionManager {
         $this->spacecraft           = $spacecraft;
         $this->astronautFlight      = $astronautFlight;
         $this->astronaut            = $astronaut;
+        $this->telemetry            = $telemetry;
     }
 
     public function isValid() {
@@ -39,7 +41,6 @@ class MissionManager {
 
         // Validate any payload models
         if (array_key_exists('payloads', $this->input['mission'])) {
-
             $payloads = $this->input('payloads');
 
             foreach ($payloads as $payload) {
@@ -99,6 +100,18 @@ class MissionManager {
             }
         }
 
+        // Validate any prelaunch event models
+
+        // Validate any telemetry models
+        if (array_key_exists('telemetries', $this->input['mission'])) {
+            foreach ($this->input['mission']['telemetries'] as $telemetry) {
+                $telemetryValidity = $this->telemetry->isValid($telemetry);
+                if ($telemetryValidity !== true) {
+                    $this->errors['telemetries'][] = $telemetryValidity;
+                }
+            }
+        }
+
         return empty($this->errors);
     }
 
@@ -113,7 +126,7 @@ class MissionManager {
             $this->mission->save();
 
             $this->createPayloadRelations();
-            $this->createPartFlightRelations();
+            $this->managePartFlightRelations();
             $this->createSpacecraftFlightRelation();
             $this->createPrelaunchEventRelation();
 
@@ -127,7 +140,7 @@ class MissionManager {
 
     public function update() {
 
-        $this->mission = Mission::with('payloads', 'partFlights', 'spacecraftFlight')->find($this->input('mission')['mission_id']);
+        $this->mission = Mission::with('payloads', 'partFlights', 'spacecraftFlight', 'telemetries')->find($this->input('mission')['mission_id']);
 
         \DB::beginTransaction();
         try {
@@ -136,10 +149,10 @@ class MissionManager {
             $this->mission->fill($this->input('mission'));
             $this->mission->save();
 
-            // Update any relations. Delete any relations which have been removed.
+            // Update any relations, create new relations, delete any relations which have been removed.
             $this->updatePayloadRelations();
-            $this->updatePartFlightRelations();
-
+            $this->managePartFlightRelations();
+            $this->manageTelemetryRelations();
 
             \DB::commit();
         } catch (Exception $e) {
@@ -152,14 +165,12 @@ class MissionManager {
     private function input($filter) {
         if ($filter == 'mission') {
             $mission = $this->input['mission'];
-            unset($mission['payloads'], $mission['part_flights'], $mission['spacecraft_flight'], $mission['prelaunch_events']);
+            unset($mission['payloads'], $mission['part_flights'], $mission['spacecraft_flight'], $mission['prelaunch_events'], $mission['telemetries']);
             return $mission;
 
         } else if ($filter == 'payloads') {
             return $this->input['mission']['payloads'];
 
-        } else if ($filter == 'part_flights') {
-            return $this->input['mission']['part_flights'];
         }
     }
 
@@ -197,10 +208,17 @@ class MissionManager {
         }
     }
 
-    private function createPartFlightRelations() {
-        foreach ($this->input('part_flights') as $partFlightInput) {
+    private function managePartFlightRelations() {
+        $currentPartFlights = $this->mission->partFlights->keyBy('part_flight_id');
 
-            $partFlight = new PartFlight();
+        foreach ($this->input['mission']['part_flights'] as $partFlightInput) {
+
+            // If the partFlight exists, update it, otherwise, create it
+            if (array_key_exists('part_flight_id', $partFlightInput)) {
+                $partFlight = $currentPartFlights->pull($partFlightInput['part_flight_id']);
+            } else {
+                $partFlight = new PartFlight();
+            }
 
             // Create part if it is not being reused or otherwise find it
             $partInput = array_pull($partFlightInput, 'part');
@@ -208,27 +226,8 @@ class MissionManager {
             $part->fill($partInput);
             $part->save();
 
-            $partFlight->fill($partFlightInput);
-            $partFlight->part()->associate($part);
+            $partFlight->part()->associate($partFlight['part']);
             $partFlight->mission()->associate($this->mission);
-            $partFlight->save();
-        }
-    }
-
-    private function updatePartFlightRelations() {
-        $currentPartFlights = $this->mission->partFlights->keyBy('part_flight_id');
-
-        foreach ($this->input('partFlights') as $partFlightInput) {
-
-            // If the partFlight exists, update it, otherwise, create it
-            if (array_key_exists('part_flight_id', $partFlightInput)) {
-                $partFlight = $currentPartFlights->pull($partFlightInput['part_flight_id']);
-                $partFlight->fill($partFlightInput);
-
-            } else {
-                $partFlight = new Payload($partFlightInput);
-                $partFlight->mission()->associate($this->mission);
-            }
             $partFlight->save();
         }
 
@@ -329,7 +328,7 @@ class MissionManager {
                 $telemetry->save();
 
             } else {
-                $telemetry = new Payload($telemetryInput);
+                $telemetry = new Telemetry($telemetryInput);
                 $telemetry->mission()->associate($this->mission);
                 $telemetry->save();
             }

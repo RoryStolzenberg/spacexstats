@@ -1,5 +1,8 @@
 <?php
 class Telemetry extends Eloquent {
+
+    use ValidatableTrait;
+
     protected $table = 'telemetries';
     protected $primaryKey = 'telemetry_id';
     public $timestamps = true;
@@ -8,6 +11,18 @@ class Telemetry extends Eloquent {
     protected $appends = [];
     protected $fillable = [];
     protected $guarded = [];
+
+    // Validation
+    public $rules = array(
+        'mission_id'    => ['integer', 'exists:missions,mission_id'],
+        'timestamp'     => ['integer'],
+        'readout'       => ['varchar:small'],
+        'altitude'      => ['integer'],
+        'velocity'      => ['integer'],
+        'downrange'     => ['integer']
+    );
+
+    public $messages = array();
 
     // Relations
     public function mission() {

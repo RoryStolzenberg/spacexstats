@@ -663,7 +663,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
         missionService.update($scope.mission);
     }
 
-}]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", function(PartFlight, Payload, SpacecraftFlight) {
+}]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", "PrelaunchEvent", "Telemetry", function(PartFlight, Payload, SpacecraftFlight, PrelaunchEvent, Telemetry) {
     return function (mission) {
         if (mission == null) {
             var self = this;
@@ -672,6 +672,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
             self.part_flights = [];
             self.spacecraft_flight = null;
             self.prelaunch_events = [];
+            self.telemetries = [];
 
         } else {
             var self = mission;
@@ -707,7 +708,15 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
 
         self.removePrelaunchEvent = function(prelaunchEvent) {
             self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
-        }
+        };
+
+        self.addTelemetry = function() {
+            self.telemetries.push(new Telemetry());
+        };
+
+        self.removeTelemetry = function(telemetry) {
+            self.telemetries.splice(self.telemetries.indexOf(telemetry), 1);
+        };
 
         return self;
     }
@@ -797,6 +806,14 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
         return self;
     }
 
+}).factory("Telemetry", function() {
+    return function (telemetry) {
+
+        var self = telemetry;
+
+        return self;
+    }
+
 }).service("missionService", ["$http", "CSRF_TOKEN",
     function($http, CSRF_TOKEN) {
         this.create = function (mission) {
@@ -804,7 +821,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
                 mission: mission,
                 _token: CSRF_TOKEN
             }).then(function (response) {
-                window.location = '/missions/' + response.data.mission.slug;
+                window.location = '/missions/' + response.data.slug;
             });
         };
 
@@ -813,7 +830,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
                 mission: mission,
                 _token: CSRF_TOKEN
             }).then(function (response) {
-                window.location = '/missions/' + response.data.mission.slug;
+                window.location = '/missions/' + response.data.slug;
             });
         };
     }
@@ -1051,19 +1068,6 @@ angular.module("directives.selectList", []).directive("selectList", function() {
 });
 
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {
         restrict: 'A',
@@ -1098,6 +1102,19 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
         }
     }
 }]);
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',

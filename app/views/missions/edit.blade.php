@@ -10,7 +10,7 @@
     <div class="content-wrapper">
         <h1>Editing Mission [[ mission.name ]]</h1>
         <main>
-            <form name="editMissionForm">
+            <form name="editMissionForm" novalidate>
                 <fieldset>
                     <legend>[[ mission.name ]] Mission</legend>
 
@@ -341,15 +341,15 @@
                     <legend>Telemetry</legend>
                     <span>Add readouts and live statistics of the launch here.</span>
 
-                    <table>
-                        <th>
-                            <td>Timestamp (T+ s)</td>
-                            <td>Readout</td>
-                            <td>Altitude (m)</td>
-                            <td>Velocity (m/s)</td>
-                            <td>Downrange (m)</td>
-                            <td></td>
-                        </th>
+                    <table ng-if="mission.telemetries.length > 0">
+                        <tr>
+                            <th>Timestamp (T+ s)</th>
+                            <th>Readout</th>
+                            <th>Altitude (m)</th>
+                            <th>Velocity (m/s)</th>
+                            <th>Downrange (m)</th>
+                            <th></th>
+                        </tr>
                         <tr ng-repeat="telemetry in mission.telemetries">
                             <td><input type="number" ng-model="telemetry.timestamp" required /></td>
                             <td><input type="text" ng-model="telemetry.readout" /></td>

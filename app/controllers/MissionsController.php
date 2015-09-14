@@ -89,7 +89,8 @@ class MissionsController extends BaseController {
         if (Request::isMethod('get')) {
 
             JavaScript::put([
-                'mission' => Mission::whereSlug($slug)->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part')->first(),
+                'mission' => Mission::whereSlug($slug)
+                    ->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part', 'prelaunchEvents', 'telemetries')->first(),
                 'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
                 'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
                 'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
@@ -125,11 +126,10 @@ class MissionsController extends BaseController {
         } elseif (Request::isMethod('patch')) {
 
             if ($this->missionManager->isValid()) {
-
                 $mission = $this->missionManager->update();
 
                 // Return, frontend to redirect.
-                return Response::json(['mission' => $mission]);
+                return Response::json(['slug' => $mission->slug]);
 
             } else {
                 return Response::json(array(
@@ -166,11 +166,10 @@ class MissionsController extends BaseController {
         } elseif (Request::isMethod('post')) {
 
             if ($this->missionManager->isValid()) {
-                // Create
                 $mission = $this->missionManager->create();
 
                 // Return, frontend to redirect to newly created page.
-                return Response::json(['mission' => $mission]);
+                return Response::json(['slug' => $mission->slug]);
             } else {
                 return Response::json(array(
                     'flashMessage' => array('contents' => 'The mission could not be created', 'type' => 'failure'),
