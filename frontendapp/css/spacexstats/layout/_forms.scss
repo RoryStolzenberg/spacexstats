@@ -107,3 +107,12 @@ input[type="submit"], button {
     }
 }
 
+input[value="logout"], input[value="logout"]:focus {
+    background-color:transparent;
+    outline:none;
+    cursor:pointer;
+    border:none;
+    font-family: "Noto Sans";
+    font-size: 100%;
+}
+

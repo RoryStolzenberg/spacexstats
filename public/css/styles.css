@@ -4481,6 +4481,14 @@ input[type="submit"], button {
   input[type="submit"][disabled], input[type="submit"].disabled, button[disabled], button.disabled {
     background-color: #CCC; }
 
+input[value="logout"], input[value="logout"]:focus {
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  font-family: "Noto Sans";
+  font-size: 100%; }
+
 #statistics-navigation {
   position: fixed;
   top: 50%; }
