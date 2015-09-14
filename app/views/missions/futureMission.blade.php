@@ -32,7 +32,7 @@
                             <a href="http://www.google.com/calendar/render?cid={{ Request::url() }}"><i class="fa fa-google"></i></a>
                             <i class="fa fa-rss"></i>
                         </li>
-                        <li class="grid-1">Status</li>
+                        <li class="grid-1">{{ $mission->status }}</li>
                     </ul>
                 </nav>
 

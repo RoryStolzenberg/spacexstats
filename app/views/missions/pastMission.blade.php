@@ -23,7 +23,7 @@
                         <i class="fa fa-twitter"></i>
                         <i class="fa fa-rss"></i>
                     </li>
-                    <li class="grid-1">Status</li>
+                    <li class="grid-2">{{ $mission->status }} - {{ $mission->outcome }}</li>
                 </ul>
             </nav>
 

@@ -102,6 +102,10 @@ class Mission extends Eloquent {
         return $this->hasMany('Payload');
     }
 
+    public function telemetries() {
+        return $this->hasMany('Telemetry');
+    }
+
     // Conditional Relationships
     public function articles() {
         return $this->hasMany('Object')->where('type', \SpaceXStats\Enums\MissionControlType::Article);

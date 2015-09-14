@@ -180,6 +180,11 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('notification_types', function(Blueprint $table) {
+            $table->increments('notification_type_id');
+            $table->string('name', Varchar::tiny);
+        });
+
         Schema::create('objects', function(Blueprint $table) {
             $table->increments('object_id');
             $table->integer('user_id')->unsigned()->nullable();
@@ -384,11 +389,6 @@ class Spacexstats extends Migration {
             $table->enum('display', array('single', 'double', 'count', 'time', 'piechart', 'barchart'));
         });
 
-        Schema::create('notification_types', function(Blueprint $table) {
-            $table->increments('notification_type_id');
-            $table->string('name', Varchar::tiny);
-        });
-
         Schema::create('taggables_pivot', function(Blueprint $table) {
             $table->increments('taggable_pivot_id');
             $table->integer('tag_id')->unsigned();
@@ -401,6 +401,17 @@ class Spacexstats extends Migration {
             $table->increments('tag_id');
             $table->string('name', Varchar::tiny);
             $table->string('description', Varchar::compact)->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('telemetries', function(Blueprint $table) {
+            $table->increments('telemetry_id');
+            $table->integer('mission_id')->unsigned();
+            $table->smallInteger('timestamp')->unsigned();
+            $table->string('readout', Varchar::small)->nullable();
+            $table->smallInteger('altitude')->unsigned();
+            $table->smallInteger('velocity')->unsigned();
+            $table->smallInteger('downrange')->unsigned();
             $table->timestamps();
         });
 
