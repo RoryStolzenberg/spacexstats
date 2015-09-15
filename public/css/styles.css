@@ -4474,20 +4474,27 @@ input[type="submit"], button {
   cursor: pointer;
   box-shadow: 0;
   background-color: #1F6F70; }
-  input[type="submit"][type="submit"], input[type="submit"].submit, button[type="submit"], button.submit {
+  input[type="submit"].submit, button.submit {
     background-color: #3569A4; }
   input[type="submit"].delete, button.delete {
     background-color: #C05B40; }
   input[type="submit"][disabled], input[type="submit"].disabled, button[disabled], button.disabled {
     background-color: #CCC; }
 
-input[value="logout"], input[value="logout"]:focus {
+input[value="Logout"], input[value="Logout"]:focus {
   background-color: transparent;
   outline: none;
   cursor: pointer;
-  border: none;
+  border: none !important;
   font-family: "Noto Sans";
-  font-size: 100%; }
+  font-size: 100%;
+  letter-spacing: normal;
+  text-transform: none;
+  color: #181c1f;
+  margin: 0;
+  padding: 0;
+  font-weight: normal;
+  box-shadow: none; }
 
 #statistics-navigation {
   position: fixed;

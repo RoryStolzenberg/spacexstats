@@ -93,7 +93,7 @@ input[type="submit"], button {
     background-color:$spacesuitgreen;
 
     // Submission buttons
-    &[type="submit"], &.submit {
+    &.submit {
         background-color:$blue;
     }
 
@@ -107,12 +107,19 @@ input[type="submit"], button {
     }
 }
 
-input[value="logout"], input[value="logout"]:focus {
+input[value="Logout"], input[value="Logout"]:focus {
     background-color:transparent;
     outline:none;
     cursor:pointer;
-    border:none;
+    border:none !important;
     font-family: "Noto Sans";
     font-size: 100%;
+    letter-spacing:normal;
+    text-transform:none;
+    color:$slateblack;
+    margin:0;
+    padding:0;
+    font-weight:normal;
+    box-shadow:none;
 }
 

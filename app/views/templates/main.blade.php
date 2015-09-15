@@ -37,7 +37,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 
-    <script src="/js/dropzone.js" type="text/javascript"></script>
+    <script src="/js/dropzone.js"></script>
     <script src="/js/sticky.js"></script>
 
     <script src="/js/app.js"></script>
