@@ -117,6 +117,14 @@ class Spacexstats extends Migration {
             $table->enum('status', array('No longer used', 'Active', 'Planned'));
         });
 
+        Schema::create('messages', function(Blueprint $table) {
+            $table->increments('message_id');
+            $table->integer('user_id')->unsigned();
+            $table->string('message', Varchar::medium);
+            $table->boolean('hasBeenRead');
+            $table->timestamps();
+        });
+
         Schema::create('missions', function(Blueprint $table) {
             $table->increments('mission_id');
             $table->integer('mission_type_id')->unsigned();

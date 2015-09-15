@@ -57,6 +57,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->hasManyThrough('Email', 'Notification');
     }
 
+    public function messages() {
+        return $this->hasMany('Message');
+    }
+
     // Conditional relations
     public function publishedObjects() {
         if (Auth::isAdmin()) {
@@ -65,6 +69,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->hasMany('Object')
             ->where('status', \SpaceXStats\Enums\ObjectPublicationStatus::PublishedStatus)
             ->where('visibility', \SpaceXStats\Enums\VisibilityStatus::DefaultStatus);
+    }
+
+    public function unreadMessages() {
+        return $this->hasMany('Message')->where('hasBeenRead', false);
     }
 
 	// Helpers
