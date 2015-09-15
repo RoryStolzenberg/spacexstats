@@ -4822,6 +4822,7 @@ nav.sticky-bar {
   position: sticky;
   top: 0;
   width: inherit;
+  max-width: 1400px;
   font-size: 14px;
   -webkit-transition: background-color ease 0.5s, color ease 0.5s;
           transition: background-color ease 0.5s, color ease 0.5s; }

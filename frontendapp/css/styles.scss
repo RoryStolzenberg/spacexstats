@@ -30,6 +30,7 @@ nav.sticky-bar {
     position:sticky;
     top:0; // tell the element where to stick
     width:inherit;
+    max-width:1400px;
     font-size:14px;
     @include transitionMed((background-color, color));
 
