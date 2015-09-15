@@ -453,77 +453,113 @@
 
                     <fieldset class="post-type article" ng-if="postType == 'article'">
                         <label>Article URL</label>
-                        <input type="url" name="article-url" id="article-url" ng-model="article.external_url" />
+                        <input type="url" name="article-url" id="article-url" ng-model="article.external_url" required />
 
                         <label>Article Date</label>
 
                         <label>Article News Source</label>
-                        <input type="text" name="article-publisher" id="article-publisher" ng-model="article.publisher" />
+                        <input type="text" name="article-publisher" id="article-publisher" ng-model="article.publisher" required />
 
                         <label>Article Author</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="article.author" />
+                        <input type="text" name="article-author" id="article-author" ng-model="article.author" required />
 
                         <label>Article Title</label>
-                        <input type="text" name="article-title" id="article-title" ng-model="article.title" />
+                        <input type="text" name="article-title" id="article-title" ng-model="article.title" required />
 
                         <label>Article Text</label>
-                        <textarea ng-model="article.article"></textarea>
+                        <textarea ng-model="article.article" required></textarea>
 
                         <label>Select Mission</label>
+                        <select-list
+                                name="mission"
+                                options="data.missions"
+                                ng-model="article.mission_id"
+                                unique-key="mission_id"
+                                title-key="name"
+                                searchable="true"
+                                placeholder="Select a related mission...">
+                        </select-list>
 
                         <label>Tags</label>
                     </fieldset>
 
                     <fieldset class="post-type pressrelease" ng-if="postType == 'pressrelease'">
                         <label>Press Release URL</label>
-                        <input type="url" name="article-url" id="article-url" ng-model="pressrelease.external_url" />
+                        <input type="url" name="article-url" id="article-url" ng-model="pressrelease.external_url" required />
 
                         <label>Press Release Date</label>
 
                         <label>Press Release Title</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="pressrelease.title" />
+                        <input type="text" name="article-author" id="article-author" ng-model="pressrelease.title" required />
 
                         <label>Press Release Text</label>
-                        <textarea ng-model="pressrelease.article"></textarea>
+                        <textarea ng-model="pressrelease.article" required></textarea>
 
                         <label>Select Mission</label>
+                        <select-list
+                                name="mission"
+                                options="data.missions"
+                                ng-model="pressrelease.mission_id"
+                                unique-key="mission_id"
+                                title-key="name"
+                                searchable="true"
+                                placeholder="Select a related mission...">
+                        </select-list>
 
                         <label>Tags</label>
                     </fieldset>
 
-                    <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'">
+                    <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'" required>
                         <label>Permalink URL</label>
-                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment" data-bind="text: external_url">
+                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" required>
 
                         <label>Comment Title</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment" data-bind="text: title" />
+                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required />
 
                         <label>Select Mission</label>
+                        <select-list
+                                name="mission"
+                                options="data.missions"
+                                ng-model="redditcomment.mission_id"
+                                unique-key="mission_id"
+                                title-key="name"
+                                searchable="true"
+                                placeholder="Select a related mission...">
+                        </select-list>
+
                         <label>Tags</label>
                     </fieldset>
 
                     <fieldset class="post-type nsf-comment" ng-if="postType == 'NSFcomment'">
                         <label>Comment URL</label>
-                        <input type="url" name="nsfcomment-url" id="article-url" data-bind="value: external_url"/>
+                        <input type="url" name="nsfcomment-url" id="article-url" ng-model="NSFcomment.external_url" required />
 
                         <label>Comment Title</label>
-                        <input type="text" name="article-author" id="article-author" data-bind="value: title" />
+                        <input type="text" name="article-author" id="article-author" ng-model="NSFcomment.title" required />
 
                         <label>Comment Date</label>
 
                         <label>Comment Author</label>
-                        <input type="author" name="nsf-comment-author" id="article-author" data-bind="value: author" />
+                        <input type="author" name="nsf-comment-author" id="article-author" ng-model="NSFcomment.author" required />
 
                         <label>Comment</label>
-                        <textarea data-bind="value: comment"></textarea>
+                        <textarea ng-model="NSFcomment.comment" required></textarea>
 
                         <label>Select Mission</label>
-                        <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
+                        <select-list
+                                name="mission"
+                                options="data.missions"
+                                ng-model="NSFcomment.mission_id"
+                                unique-key="mission_id"
+                                title-key="name"
+                                searchable="true"
+                                placeholder="Select a related mission...">
+                        </select-list>
 
                         <label>Tags</label>
                     </fieldset>
 
-                    <input type="submit" value="Submit" name="submit" id="post-submit" data-bind="click: submitPost" />
+                    <input type="submit" value="Submit" name="submit" id="post-submit" ng-click="" data-bind="click: submitPost" />
                 </form>
             </section>
 
