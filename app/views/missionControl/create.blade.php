@@ -122,7 +122,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous" />
+                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous" />
+                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -132,7 +133,7 @@
                         <!-- GIF FILE TEMPLATE -->
                         <div ng-if="file.type == 2" ng-show="isVisibleFile(file)">
                             <h2>[[ file.original_name ]]</h2>
-                            <form>
+                            <form name="[['fileForm' + $index]]" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
                                         <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
@@ -186,7 +187,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous" />
+                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous" />
+                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -196,7 +198,7 @@
                         <!-- AUDIO FILE TEMPLATE -->
                         <div ng-if="file.type == 3" ng-show="isVisibleFile(file)">
                             <h2>[[ file.original_name ]]</h2>
-                            <form>
+                            <form name="[['fileForm' + $index]]" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
                                         <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
@@ -250,7 +252,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous" />
+                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous" />
+                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -282,7 +285,8 @@
 
                                     <li class="grid-4">
                                         <label>
-                                            <p>Youtube Link</p>
+                                            <p>Youtube/Vimeo Link</p>
+                                            <span>Adding a link to this video gains you extra deltaV and keeps site costs down.</span>
                                             <input type="text" name="external_url" ng-model="file.external_url" />
                                         </label>
 
@@ -331,7 +335,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous"/>
+                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous"/>
+                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -404,7 +409,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" value="true" ng-model="file.anonymous"/>
+                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous"/>
+                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -529,7 +535,8 @@
                     </select-list>
 
                     <p>Submit anonymously?</p>
-                    <input type="checkbox" name="anonymous" value="true" ng-model="text.anonymous" />
+                    <input type="checkbox" name="anonymous" id="anonymous-text" value="true" ng-model="text.anonymous" />
+                    <label for="anonymous-text"></label>
 
                     <label>Tags</label>
                     <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>

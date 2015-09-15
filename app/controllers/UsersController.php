@@ -126,9 +126,9 @@ class UsersController extends BaseController {
 
         // Delete any previous SMS notification
         $oldSMSNotification = Notification::where('user_id', $user->user_id)
-            ->where('notification_type_id', NotificationType::tMinus24HoursSMS)
-            ->orWhere('notification_type_id', NotificationType::tMinus3HoursSMS)
-            ->orWhere('notification_type_id', NotificationType::tMinus1HourSMS)
+            ->where('notification_type_id', SpaceXStats\Enums\NotificationType::tMinus24HoursSMS)
+            ->orWhere('notification_type_id', SpaceXStats\Enums\NotificationType::tMinus3HoursSMS)
+            ->orWhere('notification_type_id', SpaceXStats\Enums\NotificationType::tMinus1HourSMS)
             ->delete();
 
         // If the number is blank, assume the user wants their SMS setup deleted
@@ -156,7 +156,7 @@ class UsersController extends BaseController {
                     // Insert new notification
                     Notification::create(array(
                         'user_id' => Auth::user()->user_id,
-                        'notification_type_id' => NotificationType::fromString($sms['status'])
+                        'notification_type_id' => SpaceXStats\Enums\NotificationType::fromString($sms['status'])
                     ));
                     return Response::json($this->flashMessages['SMSNotificationSuccess']);
                 }

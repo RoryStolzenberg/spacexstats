@@ -49,7 +49,7 @@ form {
         display:none;
         margin:10px;
 
-        ~ label {
+        + label {
             position: relative;
             display: block;
             height: 20px;
@@ -82,7 +82,7 @@ form {
             }
         }
 
-        &:checked ~ label {
+        &:checked + label {
             background:$blue;
 
             &:after {
@@ -91,7 +91,7 @@ form {
             }
         }
 
-        &:disabled ~ label {
+        &:disabled + label {
             background:#D5D5D5;
             pointer-events:none;
 
