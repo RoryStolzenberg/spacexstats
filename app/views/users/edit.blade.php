@@ -74,15 +74,17 @@
                 <form>
                     <h3>Launch Change Notifications</h3>
                     <fieldset>
-                        <legend>Notify me by email when</legend>
-                        <ul>
-                            <li>
-                                <label for="launchTimeChange">A launch time has changed</label>
+                        <legend>Notify me by email when...</legend>
+                        <ul class="container">
+                            <li class="grid-2">
+                                <span>A launch time has changed</span>
                                 <input type="checkbox" id="launchTimeChange" value="true" ng-model="emailNotifications.launchTimeChange" />
+                                <label for="launchTimeChange"></label>
                             </li>
-                            <li>
-                                <label for="newMission">When a new mission exists</label>
+                            <li class="grid-2">
+                                <span>When a new mission exists</span>
                                 <input type="checkbox" id="newMission" value="true" ng-model="emailNotifications.newMission" />
+                                <label for="newMission"></label>
                             </li>
                         </ul>
                     </fieldset>
@@ -90,35 +92,40 @@
                     @if(Auth::isSubscriber())
                         <h3>Upcoming Launch Notifications</h3>
                         <fieldset>
-                            <legend>Notify me by email when</legend>
+                            <legend>Notify me by email when...</legend>
                         </fieldset>
-                        <ul>
-                            <li>
-                                <label for="tMinus24HoursEmail">There's a SpaceX launch in 24 hours</label>
+                        <ul class="container">
+                            <li class="grid-2">
+                                <span>There's a SpaceX launch in 24 hours</span>
                                 <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.tMinus24HoursEmail" />
+                                <label for="tMinus24HoursEmail"></label>
+
                             </li>
-                            <li>
-                                <label for="tMinus3HoursEmail">There's a SpaceX launch in 3 hours</label>
+                            <li class="grid-2">
+                                <span>There's a SpaceX launch in 3 hours</span>
                                 <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.tMinus3HoursEmail" />
+                                <label for="tMinus3HoursEmail"></label>
                             </li>
-                            <li>
-                                <label for="tMinus1HourEmail">There's a SpaceX launch in 1 hour</label>
+                            <li class="grid-2">
+                                <span>There's a SpaceX launch in 1 hour</span>
                                 <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.tMinus1HourEmail" />
+                                <label for="tMinus1HourEmail"></label>
                             </li>
                         </ul>
 
                         <h3>Other stuff</h3>
                         <fieldset>
-                            <legend>Send me</legend>
-                            <ul>
-                                <li>
-                                    <label for="newsSummaries">Monthly SpaceXStats News Summary Infographics</label>
+                            <legend>Send me...</legend>
+                            <ul class="container">
+                                <li class="grid-2">
+                                    <span>Monthly SpaceXStats News Summaries</span>
                                     <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.newsSummaries" />
+                                    <label for="newsSummaries"></label>
                                 </li>
                             </ul>
                         </fieldset>
                     @endif
-                    <input type="submit" ng-click="updateEmailNotifications()" />
+                    <input type="submit" ng-click="updateEmailNotifications()" value="Update Email Notifications" />
                 </form>
             </section>
 
@@ -143,7 +150,7 @@
                     <label for="tMinus1HourSMS">1 Hour Before</label>
                     <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus1HourSMS" />
 
-                    <input type="submit" ng-click="updateSMSNotifications()" />
+                    <input type="submit" ng-click="updateSMSNotifications()" value="Update SMS Notifications" />
                 </form>
                 @else
                     <p>Sign up for mission control to enable this feature!</p>
