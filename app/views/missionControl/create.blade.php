@@ -424,7 +424,7 @@
 
             <!-- Post -->
             <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
-                <form ng-form="postForm">
+                <form name="postForm">
                     <fieldset class="post-type-selection">
                         <span ng-click="postType = 'tweet'">Tweet</span>
                         <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" />
@@ -559,7 +559,7 @@
                         <label>Tags</label>
                     </fieldset>
 
-                    <input type="submit" value="Submit" name="submit" id="post-submit" ng-disabled="postForm.$invalid" ng-click="postSubmitButtonFunction()" />
+                    <input type="submit" value="Submit" name="submit" id="post-submit" ng-click="postSubmitButtonFunction()" ng-disabled="postForm.$invalid" />
                 </form>
             </section>
 
