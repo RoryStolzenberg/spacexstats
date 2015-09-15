@@ -43,7 +43,7 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"], 
             { 'emailNotifications': $scope.emailNotifications }
         )
             .then(function(response) {
-                console.log(response);
+                flashMessage.add(response.data);
             });
     }
 

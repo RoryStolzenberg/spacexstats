@@ -1,7 +1,6 @@
 <?php
 
 use SpaceXStats\Enums\UserRole;
-use SpaceXStats\Enums\NotificationType;
 
 class UsersController extends BaseController {
 
@@ -18,6 +17,7 @@ class UsersController extends BaseController {
         'somethingWentWrong'                        => array('type' => 'failure', 'contents' => 'Something went wrong. You can try again, or get in touch.'),
         'SMSNotificationSuccess'                    => array('type' => 'success', 'contents' => 'SMS Notification settings updated!'),
         'SMSNotificationFailure'                    => array('type' => 'failure', 'contents' => 'Number does not exist. Be sure to include the country code if you are outside the U.S.'),
+        'EmailNotificationSuccess'                  => array('type' => 'success', 'contents' => 'Email notification settings updated!'),
         'updateProfileSuccess'                      => array('type' => 'success', 'contents' => 'Profile settings updated!'),
         'userDoesNotExist'                          => array('type' => 'failure', 'contents' => 'That user does not exist.'),
         'notASubscriber'                            => array('type' => 'failure', 'contents' => 'Subscribe to Mission Control to do that.'),
@@ -92,21 +92,32 @@ class UsersController extends BaseController {
 	}
 
     public function editEmailNotifications($username) {
-        $user = User::where('username', $username)->with('notifications')->firstOrFail();
+        $user = User::where('username', $username)->with('notifications.notificationType')->firstOrFail();
+        $currentNotificationsForUser = $user->notifications->keyBy('notification_type_id');
 
         $emailNotifications = Input::get('emailNotifications');
 
         foreach ($emailNotifications as $notificationType => $notificationValue) {
             if ($notificationValue === true) {
-                // Check if that notification type exists for that user
-                    // If yes, do nothing
-                    // If no, create notification
+
+                // Check if that notification type does not exist for that user, create notification
+                if (!$currentNotificationsForUser->has(SpaceXStats\Enums\NotificationType::fromString($notificationType))) {
+                    $notification = new Notification();
+                    $notification->user()->associate($user);
+                    $notification->notification_type_id = SpaceXStats\Enums\NotificationType::fromString($notificationType);
+                    $notification->save();
+                }
+
             } else {
-                // Check if that notification type exists for that user
-                    // If yes, delete (soft delete)
-                    // If no, do nothing
+
+                // Check if that notification type exists for that user, if yes, (soft) delete
+                if ($currentNotificationsForUser->has(SpaceXStats\Enums\NotificationType::fromString($notificationType))) {
+                    $currentNotificationsForUser->get(SpaceXStats\Enums\NotificationType::fromString($notificationType))->first()->delete();
+                }
             }
         }
+
+        return Response::json($this->flashMessages['SMSNotificationSuccess']);
     }
 
     public function editSMSNotifications($username) {
