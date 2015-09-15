@@ -426,67 +426,83 @@
             <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
                 <form>
                     <fieldset class="post-type-selection">
-                        <label><input type="radio" name="type" value="tweet" data-bind="checked: postType" />Tweet</label>
-                        <label><input type="radio" name="type" value="article" data-bind="checked: postType" />News Article</label>
-                        <label><input type="radio" name="type" value="pressrelease" data-bind="checked: postType" />SpaceX press release</label>
-                        <label><input type="radio" name="type" value="redditcomment" data-bind="checked: postType" />Reddit comment</label>
-                        <label><input type="radio" name="type" value="NSFComment" data-bind="checked: postType" />NSF comment</label>
+                        <span ng-click="postType = 'tweet'">Tweet</span>
+                        <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" />
+                        <label for="tweet"></label>
+
+                        <span ng-click="postType = 'article'">News Article</span>
+                        <input type="radio" name="type" id="article" value="article" ng-model="postType" />
+                        <label for="article"></label>
+
+                        <span ng-click="postType = 'pressrelease'">SpaceX Press Release</span>
+                        <input type="radio" name="type" id="pressrelease" value="pressrelease" ng-model="postType" />
+                        <label for="pressrelease"></label>
+
+                        <span ng-click="postType = 'redditcomment'">Reddit Comment</span>
+                        <input type="radio" name="type" id="redditcomment" value="redditcomment" ng-model="postType" />
+                        <label for="redditcomment"></label>
+
+                        <span ng-click="postType = 'NSFcomment'">NSF Comment</span>
+                        <input type="radio" name="type" id="NSFcomment" value="NSFcomment" ng-model="postType" />
+                        <label for="NSFcomment"></label>
                     </fieldset>
 
-                    <fieldset class="post-type tweet" data-bind="visible: postType() == 'tweet'">
-                        <tweet params="action: 'write', tweet: tweet"></tweet>
+                    <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
+                        <!--<tweet params="action: 'write', tweet: tweet"></tweet>-->
                     </fieldset>
 
-                    <fieldset class="post-type article" data-bind="visible: postType() == 'article', with: article">
+                    <fieldset class="post-type article" ng-if="postType == 'article'">
                         <label>Article URL</label>
-                        <input type="url" name="article-url" id="article-url" data-bind="text: external_url" />
+                        <input type="url" name="article-url" id="article-url" ng-model="article.external_url" />
 
                         <label>Article Date</label>
 
                         <label>Article News Source</label>
-                        <input type="text" name="article-publisher" id="article-publisher" data-bind="text: publisher" />
+                        <input type="text" name="article-publisher" id="article-publisher" ng-model="article.publisher" />
 
                         <label>Article Author</label>
-                        <input type="text" name="article-author" id="article-author" data-bind="text: author" />
+                        <input type="text" name="article-author" id="article-author" ng-model="article.author" />
 
                         <label>Article Title</label>
-                        <input type="text" name="article-title" id="article-title" data-bind="text: title" />
+                        <input type="text" name="article-title" id="article-title" ng-model="article.title" />
 
                         <label>Article Text</label>
-                        <textarea data-bind="text: article"></textarea>
+                        <textarea ng-model="article.article"></textarea>
+
+                        <label>Select Mission</label>
 
                         <label>Tags</label>
                     </fieldset>
 
-                    <fieldset class="post-type pressrelease" data-bind="visible: postType() == 'pressrelease', with: pressRelease">
+                    <fieldset class="post-type pressrelease" ng-if="postType == 'pressrelease'">
                         <label>Press Release URL</label>
-                        <input type="url" name="article-url" id="article-url" data-bind="text: external_url" />
+                        <input type="url" name="article-url" id="article-url" ng-model="pressrelease.external_url" />
 
                         <label>Press Release Date</label>
 
                         <label>Press Release Title</label>
-                        <input type="text" name="article-author" id="article-author" data-bind="text: title" />
+                        <input type="text" name="article-author" id="article-author" ng-model="pressrelease.title" />
 
                         <label>Press Release Text</label>
-                        <textarea data-bind="text: article"></textarea>
+                        <textarea ng-model="pressrelease.article"></textarea>
+
+                        <label>Select Mission</label>
 
                         <label>Tags</label>
                     </fieldset>
 
-                    <fieldset class="post-type redditcomment" data-bind="visible: postType() == 'redditcomment', with: redditComment">
+                    <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'">
                         <label>Permalink URL</label>
-                        <input type="url" name="redditcomment-url" id="redditcomment-url" data-bind="text: external_url">
+                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment" data-bind="text: external_url">
 
                         <label>Comment Title</label>
-                        <input type="text" name="article-author" id="article-author" data-bind="text: title" />
+                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment" data-bind="text: title" />
 
-                        <label>Select Related Mission</label>
-                        <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
-
+                        <label>Select Mission</label>
                         <label>Tags</label>
                     </fieldset>
 
-                    <fieldset class="post-type nsf-comment" data-bind="visible: postType() == 'NSFComment', with: NSFComment">
+                    <fieldset class="post-type nsf-comment" ng-if="postType == 'NSFcomment'">
                         <label>Comment URL</label>
                         <input type="url" name="nsfcomment-url" id="article-url" data-bind="value: external_url"/>
 
@@ -501,7 +517,7 @@
                         <label>Comment</label>
                         <textarea data-bind="value: comment"></textarea>
 
-                        <label>Select Related Mission</label>
+                        <label>Select Mission</label>
                         <rich-select params="data: $root.missionData, hasDefaultOption: true, value: mission_id, uniqueKey: 'mission_id', searchable: true"></rich-select>
 
                         <label>Tags</label>

@@ -4482,6 +4482,39 @@ form input[type="checkbox"] {
     form input[type="checkbox"]:disabled + label:after {
       background: #BCBDBC; }
 
+form input[type="radio"] {
+  display: none; }
+  form input[type="radio"] + label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    border: 2px solid #CCC;
+    border-radius: 50%;
+    cursor: pointer;
+    -webkit-transition: all 0.3s ease;
+            transition: all 0.3s ease;
+    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05); }
+  form input[type="radio"]:checked + label {
+    border-color: #3569A4; }
+    form input[type="radio"]:checked + label:after {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      background-color: #33495E;
+      -webkit-transition: all 0.3s ease;
+              transition: all 0.3s ease;
+      box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05); }
+  form input[type="radio"]:disabled + label {
+    border-color: #CCC; }
+  form input[type="radio"]:checked:disabled + label {
+    border-color: #CCC; }
+
 form legend {
   font-size: 18px;
   line-height: 2; }
