@@ -38,7 +38,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 
     <script src="/js/dropzone.js"></script>
-    <script src="/js/sticky.js"></script>
+    <script src="//cdn.jsdelivr.net/stickynavbar.js/1.1.2/jquery.stickyNavbar.min.js"></script>
+    <script>
+        $(function () {
+            $('nav.sticky-bar').stickyNavbar();
+        });
+    </script>
 
     <script src="/js/app.js"></script>
 

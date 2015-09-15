@@ -33,14 +33,14 @@ nav.sticky-bar {
     font-size:14px;
     @include transitionMed((background-color, color));
 
-  &.stuck {
+  &.sticky {
       background-color:$blue;
       color:$white;
       z-index:1000;
   }
 }
 
-.stuck ~ * {
+.sticky ~ * {
     top:30px;
     position:relative;
 }

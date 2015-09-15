@@ -4825,12 +4825,12 @@ nav.sticky-bar {
   font-size: 14px;
   -webkit-transition: background-color ease 0.5s, color ease 0.5s;
           transition: background-color ease 0.5s, color ease 0.5s; }
-  nav.sticky-bar.stuck {
+  nav.sticky-bar.sticky {
     background-color: #3569A4;
     color: #FFF;
     z-index: 1000; }
 
-.stuck ~ * {
+.sticky ~ * {
   top: 30px;
   position: relative; }
 
