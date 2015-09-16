@@ -4574,6 +4574,39 @@ input[value="Logout"], input[value="Logout"]:focus {
   font-weight: normal;
   box-shadow: none; }
 
+.comment-depth-0 {
+  margin-left: 20px; }
+
+.comment-depth-1 {
+  margin-left: 20px; }
+
+.comment-depth-2 {
+  margin-left: 20px; }
+
+.comment-depth-3 {
+  margin-left: 20px; }
+
+.comment-depth-4 {
+  margin-left: 20px; }
+
+.comment-depth-5 {
+  margin-left: 20px; }
+
+.comment-depth-6 {
+  margin-left: 20px; }
+
+.comment-depth-7 {
+  margin-left: 20px; }
+
+.comment-depth-8 {
+  margin-left: 20px; }
+
+.comment-depth-9 {
+  margin-left: 20px; }
+
+.comment-depth-10 {
+  margin-left: 20px; }
+
 #statistics-navigation {
   position: fixed;
   top: 50%; }

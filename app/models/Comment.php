@@ -1,7 +1,7 @@
 <?php
 class Comment extends Eloquent {
 
-    use ValidatableTrait;
+    use ValidatableTrait, SoftDeletingTrait;
 
     protected $table = 'comments';
     protected $primaryKey = 'comment_id';
@@ -29,5 +29,13 @@ class Comment extends Eloquent {
 
     public function user() {
         return $this->belongsTo('User')->select(array('user_id', 'username'));
+    }
+
+    // Attribute Accessors
+    public function getCommentAttribute() {
+        if ($this->isHidden || $this->trashed()) {
+            return null;
+        }
+        return $this->comment;
     }
 }

@@ -1,4 +1,4 @@
-angular.module('objectApp', [], ['$interpolateProvider', function($interpolateProvider) {
+angular.module('objectApp', ['directives.comment'], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
 
@@ -91,9 +91,23 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
     $scope.incrementDownloads = function() {
         $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
     }
-}]).controller('commentsController', ["$scope", function($scope) {
+
+}]).controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
+    $scope.object = laravel.object;
+
     (function() {
-        $.ajax('/missioncontrol/objects/1/comments');
+        commentService.get($scope.object).then(function(response) {
+            $scope.comments = response.data;
+        });
+        console.log($scope.comments);
     })();
-}]);
+
+}]).service("commentService", ["$http",
+    function($http) {
+
+        this.get = function (object) {
+            return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
+        };
+    }
+]);
 

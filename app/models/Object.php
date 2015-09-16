@@ -391,7 +391,7 @@ class Object extends Eloquent {
     }
 
     public function getCommentTreeAttribute() {
-        return $this->buildTree($this->comments()->with('user')->get()->toArray(), 0);
+        return $this->buildTree($this->comments()->withTrashed()->with('user')->get()->toArray(), 0);
     }
 
     private function buildTree($array, $parent, $currentDepth = 0) {

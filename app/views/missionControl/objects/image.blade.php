@@ -106,10 +106,18 @@
                 @endif
             </section>
 
-            <h2>Comments</h2>
+            <h2>{{ $object->comments->count() }} Comments</h2>
             <section class="comments" ng-controller="commentsController" ng-strict-di>
                 @if (Auth::isSubscriber())
-                    <p>Comments coming soon!</p>
+                    <form>
+                        <textarea ng-model="newComment" minlength="10"></textarea>
+                        <input type="submit" ng-click="addNewComment()" value="Add comment" />
+                    </form>
+                    <ul>
+                        <li ng-repeat="child in comments">
+                            <comment comment="child"></comment>
+                        </li>
+                    </ul>
                 @else
                     <p>You need to be a Mission Control subscriber to comment. Sign up today!</p>
                 @endif

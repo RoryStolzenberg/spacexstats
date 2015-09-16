@@ -55,6 +55,9 @@ class Spacexstats extends Migration {
             $table->integer('user_id')->unsigned();
             $table->string('comment', Varchar::large);
             $table->integer('parent')->unsigned();
+
+            $table->boolean('isHidden');
+            $table->softDeletes();
             $table->timestamps();
         });
 
