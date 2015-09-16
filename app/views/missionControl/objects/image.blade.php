@@ -107,7 +107,7 @@
             </section>
 
             <h2>Comments</h2>
-            <section class="comments">
+            <section class="comments" ng-controller="commentsController" ng-strict-di>
                 @if (Auth::isSubscriber())
                     <p>Comments coming soon!</p>
                 @else

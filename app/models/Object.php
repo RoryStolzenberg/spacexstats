@@ -390,6 +390,28 @@ class Object extends Eloquent {
         return Redis::hget('object:' . $this->object_id, 'views') !== null ? Redis::hget('object:' . $this->object_id, 'views') : 0;
     }
 
+    public function getCommentTreeAttribute() {
+        return $this->buildTree($this->comments()->toArray(), 0);
+    }
+
+    private function buildTree($array, $parent) {
+        $branch = [];
+
+        // http://stackoverflow.com/questions/8587341/recursive-function-to-generate-multidimensional-array-from-database-result
+        foreach ($array as $model) {
+            if ($model['parent'] == $parent) {
+                $children = $this->buildTree($array, $model['parent']);
+
+                if ($children) {
+                    $element['children'] = $children;
+                }
+
+                $branch[] = $model;
+            }
+        }
+        return $branch;
+    }
+
     // Attribute mutators
     public function setAnonymousAttribute($value) {
         $this->attributes['anonymous'] = filter_var($value, FILTER_VALIDATE_BOOLEAN);

@@ -91,5 +91,7 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
     $scope.incrementDownloads = function() {
         $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
     }
+}]).controller('commentsController', ["$scope", function($scope) {
+
 }]);
 
