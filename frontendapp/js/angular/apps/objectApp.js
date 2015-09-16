@@ -92,6 +92,8 @@ angular.module('objectApp', [], ['$interpolateProvider', function($interpolatePr
         $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
     }
 }]).controller('commentsController', ["$scope", function($scope) {
-
+    (function() {
+        $.ajax('/missioncontrol/objects/1/comments');
+    })();
 }]);
 

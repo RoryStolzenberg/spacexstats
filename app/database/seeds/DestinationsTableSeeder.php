@@ -1,11 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Luke
- * Date: 17/05/2015
- * Time: 9:23 AM
- */
-
 class DestinationsTableSeeder extends Seeder {
     public function run() {
         Destination::create(array('destination' => 'Low Earth Orbit'));

@@ -1,5 +1,5 @@
 <?php
-class CommentsTableSeeder {
+class CommentsTableSeeder extends Seeder {
     public function run() {
         Comment::create(array(
             'object_id' => 1,

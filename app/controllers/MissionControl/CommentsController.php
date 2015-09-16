@@ -5,9 +5,6 @@ class CommentsController extends BaseController {
     // /{$object_id}/comments
     public function comments($object_id) {
         $object = Object::find($object_id);
-
-        $commentsTree = $object->getCommentTree();
-
-        return Response::json($commentsTree);
+        return Response::json($object->commentTree);
     }
 }
