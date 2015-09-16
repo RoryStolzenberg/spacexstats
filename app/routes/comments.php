@@ -23,5 +23,4 @@ Route::group(array('prefix' => 'missioncontrol/objects'), function() {
             'uses' => 'CommentsController@editComment'
         ));
     });
-
 });

@@ -96,18 +96,29 @@ angular.module('objectApp', ['directives.comment'], ['$interpolateProvider', fun
     $scope.object = laravel.object;
 
     (function() {
-        commentService.get($scope.object).then(function(response) {
+        commentService.getComments($scope.object).then(function(response) {
             $scope.comments = response.data;
         });
-        console.log($scope.comments);
     })();
 
 }]).service("commentService", ["$http",
     function($http) {
 
-        this.get = function (object) {
+        this.getComments = function (object) {
             return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
         };
+
+        this.addComment = function(comment) {
+
+        };
+
+        this.deleteComment = function(comment) {
+
+        }
+
+        this.editComment = function(comment) {
+
+        }
     }
 ]);
 
