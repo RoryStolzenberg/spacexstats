@@ -49,6 +49,15 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('comments', function(Blueprint $table) {
+            $table->increments('comment_id');
+            $table->integer('object_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->string('comment', Varchar::large);
+            $table->integer('parent')->unsigned();
+            $table->timestamps();
+        });
+
         Schema::create('collections', function(Blueprint $table) {
             $table->increments('collection_id');
             $table->integer('user_id')->unsigned();

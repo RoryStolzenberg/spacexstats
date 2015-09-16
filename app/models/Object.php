@@ -266,6 +266,10 @@ class Object extends Eloquent {
         return $this->hasMany('Download');
     }
 
+    public function comments() {
+        return $this->hasMany('Comment');
+    }
+
     // Scoped Queries
     public function scopeWhereQueued($query) {
         return $query->where('status','queued')->orderBy('created_at', 'ASC');
