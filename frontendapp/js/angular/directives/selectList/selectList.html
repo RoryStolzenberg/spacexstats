@@ -13,7 +13,7 @@
         <li ng-click="selectDefault()" ng-show="search.name == '' || search == ''">
             <span class="name">Select...</span>
         </li>
-        <li ng-repeat="option in optionsObj | filter: search" ng-class="{'selected': isSelected(option) }" ng-click="$parent.selectOption(option)">
+        <li ng-repeat="option in optionsObj | filter: search" ng-class="{'selected': isSelected(option), 'hover': hover }" ng-mouseover="hover = true" ng-mouseleave="hover = false" ng-click="$parent.selectOption(option)">
             <img ng-attr-src="[[ option.image ]]" />
             <span class="name">[[ option.name ]]</span>
         </li>

@@ -1,7 +1,37 @@
+section.comments {
+    margin:0 auto;
+    max-width:800px;
+}
+
 @for $i from 0 through 10 {
     $width: 20px * $i;
 
     .comment-depth-#{$i} {
         margin-left: 20px;
+        margin-top:20px;
+        margin-bottom:20px;
+        border-left:1px solid $bordergrey;
+        padding-left:10px;
+    }
+}
+
+.comment-owner {
+    font-size:small;
+    text-decoration: underline;
+    color:$blue;
+}
+
+.comment-body {
+    padding:20px 0;
+}
+
+.comment-actions {
+    font-size:smaller;
+    font-weight:bold;
+
+    li {
+        display:inline-block;
+        cursor:pointer;
+        margin-right:5px;
     }
 }

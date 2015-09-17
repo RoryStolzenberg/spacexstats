@@ -4574,38 +4574,102 @@ input[value="Logout"], input[value="Logout"]:focus {
   font-weight: normal;
   box-shadow: none; }
 
+section.comments {
+  margin: 0 auto;
+  max-width: 800px; }
+
 .comment-depth-0 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-1 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-2 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-3 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-4 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-5 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-6 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-7 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-8 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-9 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
 
 .comment-depth-10 {
-  margin-left: 20px; }
+  margin-left: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-left: 1px solid #CCC;
+  padding-left: 10px; }
+
+.comment-owner {
+  font-size: small;
+  text-decoration: underline;
+  color: #3569A4; }
+
+.comment-body {
+  padding: 20px 0; }
+
+.comment-actions {
+  font-size: smaller;
+  font-weight: bold; }
+  .comment-actions li {
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 5px; }
 
 #statistics-navigation {
   position: fixed;
@@ -4885,6 +4949,8 @@ img#object {
     margin: 5px 0;
     padding: 0;
     height: 50px; }
+    .select-list li.hover {
+      background-color: #CCC; }
     .select-list li.selected {
       background-color: #3569A4; }
   .select-list .selected-option img {

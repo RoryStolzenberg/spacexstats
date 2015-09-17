@@ -425,26 +425,36 @@
             <!-- Post -->
             <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
                 <form name="postForm">
-                    <fieldset class="post-type-selection">
-                        <span ng-click="postType = 'tweet'">Tweet</span>
-                        <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" />
-                        <label for="tweet"></label>
+                    <fieldset class="post-type-selection container">
+                        <div class="grid-2">
+                            <span ng-click="postType = 'tweet'">Tweet</span>
+                            <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" />
+                            <label for="tweet"></label>
+                        </div>
 
-                        <span ng-click="postType = 'article'">News Article</span>
-                        <input type="radio" name="type" id="article" value="article" ng-model="postType" />
-                        <label for="article"></label>
+                        <div class="grid-2">
+                            <span ng-click="postType = 'article'">News Article</span>
+                            <input type="radio" name="type" id="article" value="article" ng-model="postType" />
+                            <label for="article"></label>
+                        </div>
 
-                        <span ng-click="postType = 'pressrelease'">SpaceX Press Release</span>
-                        <input type="radio" name="type" id="pressrelease" value="pressrelease" ng-model="postType" />
-                        <label for="pressrelease"></label>
+                        <div class="grid-2">
+                            <span ng-click="postType = 'pressrelease'">SpaceX Press Release</span>
+                            <input type="radio" name="type" id="pressrelease" value="pressrelease" ng-model="postType" />
+                            <label for="pressrelease"></label>
+                        </div>
 
-                        <span ng-click="postType = 'redditcomment'">Reddit Comment</span>
-                        <input type="radio" name="type" id="redditcomment" value="redditcomment" ng-model="postType" />
-                        <label for="redditcomment"></label>
+                        <div class="grid-2">
+                            <span ng-click="postType = 'redditcomment'">Reddit Comment</span>
+                            <input type="radio" name="type" id="redditcomment" value="redditcomment" ng-model="postType" />
+                            <label for="redditcomment"></label>
+                        </div>
 
-                        <span ng-click="postType = 'NSFcomment'">NSF Comment</span>
-                        <input type="radio" name="type" id="NSFcomment" value="NSFcomment" ng-model="postType" />
-                        <label for="NSFcomment"></label>
+                        <div class="grid-2">
+                            <span ng-click="postType = 'NSFcomment'">NSF Comment</span>
+                            <input type="radio" name="type" id="NSFcomment" value="NSFcomment" ng-model="postType" />
+                            <label for="NSFcomment"></label>
+                        </div>
                     </fieldset>
 
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet">

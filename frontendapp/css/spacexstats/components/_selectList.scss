@@ -26,6 +26,10 @@
         padding:0;
         height:50px;
 
+        &.hover {
+            background-color:$bordergrey;
+        }
+
         &.selected {
             background-color:$blue;
         }
