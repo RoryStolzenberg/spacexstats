@@ -36,6 +36,6 @@ class Comment extends Eloquent {
         if ($this->isHidden || $this->trashed()) {
             return null;
         }
-        return $this->comment;
+        return $this->attributes['comment'];
     }
 }
