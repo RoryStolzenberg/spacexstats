@@ -27,6 +27,7 @@ class ObjectFromNSFComment extends ObjectCreator {
                 'summary'               => $this->input['comment'],
                 'thumb_filename'        => 'comment.png',
                 'cryptographic_hash'    => hash('sha256', $this->input['comment']),
+                'external_url'          =>$this->input['external_url'],
                 'originated_at'         => \Carbon\Carbon::now(),
                 'status'                => ObjectPublicationStatus::QueuedStatus
             ]);

@@ -57,8 +57,6 @@ class UploadController extends BaseController {
             } else {
                 return Response::json($objectValidities, 400);
             }
-
-        // NSF Comment
         } else {
             switch (Request::header('Submission-Type')) {
 
@@ -74,7 +72,7 @@ class UploadController extends BaseController {
                     $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromRedditComment');
                     break;
 
-                case 'NSFComment':
+                case 'NSFcomment':
                     $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromNSFComment');
                     break;
 

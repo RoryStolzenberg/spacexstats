@@ -544,10 +544,11 @@
                         <label>Comment URL</label>
                         <input type="url" name="nsfcomment-url" id="article-url" ng-model="NSFcomment.external_url" required />
 
-                        <label>Comment Title</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="NSFcomment.title" required />
+                        <label>Title Describing The Comment</label>
+                        <input type="text" name="article-author" id="article-author" ng-model="NSFcomment.title" required minlength="10" />
 
                         <label>Comment Date</label>
+                        <datetime ng-model="NSFcomment.originated_at" type="datetime" start-year="2000" is-null="false"></datetime>
 
                         <label>Comment Author</label>
                         <input type="author" name="nsf-comment-author" id="article-author" ng-model="NSFcomment.author" required />
@@ -567,6 +568,8 @@
                         </select-list>
 
                         <label>Tags</label>
+                        <tags available-tags="data.tags" name="tags" ng-model="NSFcomment.tags"></tags>
+                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
                     <input type="submit" value="Submit" name="submit" id="post-submit" ng-click="postSubmitButtonFunction()" ng-disabled="postForm.$invalid" />

@@ -9,6 +9,12 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         },
         link: function($scope, element, attributes, ctrl) {
 
+            (function() {
+                if (typeof $scope.currentTags === 'undefined') {
+                    $scope.currentTags = [];
+                }
+            })();
+
             ctrl.$options = {
                 allowInvalid: true
             };

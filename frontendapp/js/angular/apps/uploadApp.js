@@ -71,6 +71,15 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 
 }]).controller("postController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
+    $scope.NSFcomment = {};
+
+    $scope.postSubmitButtonFunction = function() {
+        switch ($scope.postType) {
+            case 'NSFcomment' : $rootScope.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
+        }
+
+    }
+
 }]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
     $scope.text = {
