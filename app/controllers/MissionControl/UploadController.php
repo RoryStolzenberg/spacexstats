@@ -64,11 +64,11 @@ class UploadController extends BaseController {
                     $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromArticle');
                     break;
 
-                case 'pressRelease':
+                case 'pressrelease':
                     $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromPressRelease');
                     break;
 
-                case 'redditComment':
+                case 'redditcomment':
                     $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromRedditComment');
                     break;
 
@@ -113,6 +113,11 @@ class UploadController extends BaseController {
         }
 
         return Response::json($tweet);
+    }
+
+    // AJAX GET
+    public function retrieveComment($comment_id) {
+
     }
 }
  

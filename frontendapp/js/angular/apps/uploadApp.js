@@ -72,11 +72,18 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
 }]).controller("postController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
     $scope.NSFcomment = {};
+    $scope.redditcomment = {};
+    $scope.pressrelease = {};
 
     $scope.postSubmitButtonFunction = function() {
         switch ($scope.postType) {
-            case 'NSFcomment' : $rootScope.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
+            case 'NSFcomment' :     $rootScope.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
+            case 'redditcomment' :  $rootScope.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
+            case 'pressrelease' :  $rootScope.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
         }
+    }
+
+    $scope.retrieveRedditComment = function() {
 
     }
 

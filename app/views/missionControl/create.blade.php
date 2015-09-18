@@ -430,6 +430,8 @@
                             <span ng-click="postType = 'tweet'">Tweet</span>
                             <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" />
                             <label for="tweet"></label>
+
+                            <span>Icons should become in colored when selected</span>
                         </div>
 
                         <div class="grid-2">
@@ -495,12 +497,13 @@
 
                     <fieldset class="post-type pressrelease" ng-if="postType == 'pressrelease'">
                         <label>Press Release URL</label>
-                        <input type="url" name="article-url" id="article-url" ng-model="pressrelease.external_url" required />
+                        <input type="url" name="pressrelease-url" id="pressrelease-url" ng-model="pressrelease.external_url" required />
 
                         <label>Press Release Date</label>
+                        <datetime ng-model="pressrelease.originated_at" type="date" start-year="2002" is-null="false"></datetime>
 
                         <label>Press Release Title</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="pressrelease.title" required />
+                        <input type="text" name="pressrelease-author" id="pressrelease-author" ng-model="pressrelease.title" required />
 
                         <label>Press Release Text</label>
                         <textarea ng-model="pressrelease.article" required></textarea>
@@ -517,13 +520,15 @@
                         </select-list>
 
                         <label>Tags</label>
+                        <tags available-tags="data.tags" name="tags" ng-model="pressrelease.tags"></tags>
+                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
                     <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'" required>
                         <label>Permalink URL</label>
-                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" required>
+                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment()" required placeholder="Please ensure this is a Reddit permalink">
 
-                        <label>Comment Title</label>
+                        <label>Title Describing The Comment</label>
                         <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required />
 
                         <label>Select Mission</label>
@@ -538,6 +543,8 @@
                         </select-list>
 
                         <label>Tags</label>
+                        <tags available-tags="data.tags" name="tags" ng-model="redditcomment.tags"></tags>
+                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
                     <fieldset class="post-type nsf-comment" ng-if="postType == 'NSFcomment'">
