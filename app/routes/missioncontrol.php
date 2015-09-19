@@ -1,12 +1,18 @@
 <?php
 Route::group(array('prefix' => 'missioncontrol'), function() {
 
-    Route::get('/create/retrievetweet/{id}', array(
-        'as' => 'missionControl.create.retrieveTweet',
-        'uses' => 'UploadController@retrieveTweet'
-    ));
-
     Route::group(array('before' => 'mustBeLoggedIn'), function() {
+
+        Route::get('/create/retrievetweet/{id}', array(
+            'as' => 'missionControl.create.retrieveTweet',
+            'uses' => 'UploadController@retrieveTweet'
+        ));
+
+        Route::get('/create/retrieveredditcomment', array(
+            'as' => 'missionControl.create.retrieveRedditComment',
+            'uses' => 'UploadController@retrieveRedditComment'
+        ));
+
         Route::get('/buy', array('as' => 'missionControl.buy', function() {
             return View::make('missionControl.buy', array(
                 'title' => 'Misson Control',

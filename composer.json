@@ -4,18 +4,6 @@
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
 	"type": "project",
-    "repositories" : [{
-        "type": "package",
-        "package": {
-            "name": "jcleblanc/reddit-php-sdk",
-            "version": "dev-master",
-            "source": {
-                "url": "https://github.com/jcleblanc/reddit-php-sdk",
-                "type": "git",
-                "reference": "origin/master"
-            }
-        }
-    }],
 	"require": {
 		"laravel/framework": "4.2.*",
 		 "omnipay/common": "~2.3.0",
@@ -26,12 +14,12 @@
         "php-ffmpeg/php-ffmpeg": "~0.5",
         "sybio/gif-frame-extractor": "dev-master",
         "abraham/twitteroauth": "0.5.2",
-		"guzzlehttp/guzzle": "~4.0",
+		"guzzlehttp/guzzle": "~6.0",
 		"jenssegers/imagehash": "^0.2.3",
 		"laracasts/utilities": "~1.0",
 		"twilio/sdk": "^4.2",
         "elasticsearch/elasticsearch": "~1.0",
-        "jcleblanc/reddit-php-sdk": "dev-master"
+        "luke-nz/phpreddit": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
@@ -64,5 +52,5 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "stable"
+	"minimum-stability": "dev"
 }

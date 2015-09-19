@@ -69,7 +69,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
         $rootScope.postToMissionControl($scope.files, 'files');
     }
 
-}]).controller("postController", ["$rootScope", "$scope", function($rootScope, $scope) {
+}]).controller("postController", ["$rootScope", "$scope", "$http", function($rootScope, $scope, $http) {
 
     $scope.NSFcomment = {};
     $scope.redditcomment = {};
@@ -84,7 +84,7 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
     }
 
     $scope.retrieveRedditComment = function() {
-
+        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditcomment.external_url));
     }
 
 }]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
