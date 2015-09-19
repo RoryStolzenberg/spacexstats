@@ -116,8 +116,11 @@ class UploadController extends BaseController {
     }
 
     // AJAX GET
-    public function retrieveComment($comment_id) {
-
+    public function retrieveRedditComment() {
+        $reddit = new Reddit('ElongatedMuskrat', '', Credential::RedditID, Credential::RedditSecret);
+        $test = $reddit->me();
     }
+
+
 }
  
