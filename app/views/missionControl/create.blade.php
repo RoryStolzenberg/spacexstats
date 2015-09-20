@@ -37,7 +37,7 @@
                         </li>
                     </ul>
 
-                    <div class="delta-v" delta-v="files"></div>
+                    <delta-v ng-model="files"></delta-v>
 
                     <div class="files-details" ng-repeat="file in files">
 
@@ -460,10 +460,13 @@
                     </fieldset>
 
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
+                        <delta-v ng-model="tweet"></delta-v>
                         <!--<tweet params="action: 'write', tweet: tweet"></tweet>-->
                     </fieldset>
 
                     <fieldset class="post-type article" ng-if="postType == 'article'">
+                        <delta-v ng-model="article"></delta-v>
+
                         <label>Article URL</label>
                         <input type="url" name="article-url" id="article-url" ng-model="article.external_url" required />
 
@@ -496,6 +499,8 @@
                     </fieldset>
 
                     <fieldset class="post-type pressrelease" ng-if="postType == 'pressrelease'">
+                        <delta-v ng-model="pressrelease"></delta-v>
+
                         <label>Press Release URL</label>
                         <input type="url" name="pressrelease-url" id="pressrelease-url" ng-model="pressrelease.external_url" required />
 
@@ -525,6 +530,8 @@
                     </fieldset>
 
                     <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'" required>
+                        <delta-v ng-model="redditcomment"></delta-v>
+
                         <label>Permalink URL</label>
                         <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment()" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
 
@@ -550,6 +557,8 @@
                     </fieldset>
 
                     <fieldset class="post-type nsf-comment" ng-if="postType == 'NSFcomment'">
+                        <delta-v ng-model="NSFcomment"></delta-v>
+
                         <label>Comment URL</label>
                         <input type="url" name="nsfcomment-url" id="article-url" ng-model="NSFcomment.external_url" required />
 
@@ -590,6 +599,8 @@
                 <form name="writeForm" novalidate>
 
                     <p>Post a mission update, share some news, ask a question, discuss a topic!</p>
+
+                    <delta-v ng-model="text"></delta-v>
 
                     <label>Title</label>
                     <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" minlength="10" required/>
