@@ -2,7 +2,7 @@
     <div class="wrapper" ng-class="{ 'active': areSuggestionsVisible }">
         <div class="tag-wrapper">
             <div class="tag" ng-repeat="tag in currentTags">
-                [[ tag.name ]]
+                {{ tag.name }}
                 <span class="remove" ng-click="removeTag(tag)"></span>
             </div>
         </div>
@@ -15,6 +15,6 @@
                ng-blur="toggleSuggestionVisibility()" />
     </div>
     <div class="suggestions" ng-show="areSuggestionsVisible">
-        <div class="suggestion" ng-repeat="tag in suggestions" ng-mousedown="createTag(tag.name)">[[ tag.name ]] </div>
+        <div class="suggestion" ng-repeat="tag in suggestions" ng-mousedown="createTag(tag.name)">{{ tag.name }} </div>
     </div>
 </div>

@@ -1,9 +1,9 @@
 <div class="select-list" tabindex="0">
     <div class="selected-option default" ng-click="toggleDropdown()">
-        <img ng-show="selectedOption != null" ng-attr-src="[[ selectedOptionObj.image ]]" />
-        <span ng-show="selectedOption != null" class="name">[[ selectedOptionObj.name ]]</span>
+        <img ng-show="selectedOption != null" ng-attr-src="{{ selectedOptionObj.image }}" />
+        <span ng-show="selectedOption != null" class="name">{{ selectedOptionObj.name }}</span>
 
-        <span ng-show="selectedOption == null" class="name">[[ placeholder || 'Select...' ]]</span>
+        <span ng-show="selectedOption == null" class="name">{{ placeholder || 'Select...' }}</span>
     </div>
 
     <ul ng-show="dropdownIsVisible" class="options">
@@ -14,8 +14,8 @@
             <span class="name">Select...</span>
         </li>
         <li ng-repeat="option in optionsObj | filter: search" ng-class="{'selected': isSelected(option), 'hover': hover }" ng-mouseover="hover = true" ng-mouseleave="hover = false" ng-click="$parent.selectOption(option)">
-            <img ng-attr-src="[[ option.image ]]" />
-            <span class="name">[[ option.name ]]</span>
+            <img ng-attr-src="{{ option.image }}" />
+            <span class="name">{{ option.name }}</span>
         </li>
     </ul>
 </div>

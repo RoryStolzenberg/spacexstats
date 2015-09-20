@@ -1,9 +1,9 @@
-<div class="[[ 'comment-depth-' + comment.depth ]]">
+<div class="{{ 'comment-depth-' + comment.depth }}">
     <div>
         <span class="comment-owner">
-            <a href="[[ '/users/' + comment.user.username ]]">[[ comment.user.username ]]</a>
+            <a href="{{ '/users/' + comment.user.username }}">{{ comment.user.username }}</a>
         </span>
-        <p class="comment-body">[[ comment.comment ]]</p>
+        <p class="comment-body">{{ comment.comment }}</p>
 
         <ul class="comment-actions">
             <li ng-click="toggleReplyState()">Reply</li>

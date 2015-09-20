@@ -1,8 +1,4 @@
-angular.module("missionsListApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("missionsListController", ['$scope', function($scope) {
+angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
     $scope.missions = laravel.missions;
 
     // Cheap way to get the next launch (only use on future mission page)
@@ -33,6 +29,44 @@ angular.module("missionControlApp", ["directives.tags"], ['$interpolateProvider'
     $scope.tags = [];
     $scope.selectedTags = [];
 }]);
+/**
+ * Workaround to make defining and retrieving angular modules easier and more intuitive.
+ */
+//(function (angular) {
+//    var origMethod = angular.module;
+//
+//    var alreadyRegistered = {};
+//
+//    /**
+//     * Register/fetch a module.
+//     *
+//     * @param name {string} module name.
+//     * @param reqs {array} list of modules this module depends upon.
+//     * @param configFn {function} config function to run when module loads (only applied for the first call to create this module).
+//     * @returns {*} the created/existing module.
+//     */
+//    angular.module = function (name, reqs, configFn) {
+//        reqs = reqs || [];
+//        var module = null;
+//
+//        if (alreadyRegistered[name]) {
+//            module = origMethod(name);
+//            module.requires.push.apply(module.requires, reqs);
+//        } else {
+//            module = origMethod(name, reqs, configFn);
+//            alreadyRegistered[name] = module;
+//        }
+//
+//        return module;
+//    };
+//
+//    $interpolateProvider.startSymbol('[[');
+//    $interpolateProvider.endSymbol(']]');
+//
+//})(angular);
+//
+
+
 angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('[[');
     $interpolateProvider.endSymbol(']]');
@@ -216,10 +250,6 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
             case 'redditcomment' :  $rootScope.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
             case 'pressrelease' :  $rootScope.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
         }
-    }
-
-    $scope.retrieveRedditComment = function() {
-        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditcomment.external_url));
     }
 
 }]).controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
@@ -884,11 +914,7 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"], [
 
 
 
-angular.module("editUserApp", ["directives.selectList", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+angular.module("editUserApp", ["directives.selectList", "flashMessageService"]).controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
     $scope.username = laravel.user.username;
 
@@ -1158,6 +1184,53 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
     return {
         require: 'ngModel',
@@ -1286,53 +1359,22 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
-angular.module('directives.missionCard', []).directive('missionCard', function() {
+angular.module('directives.tweet', []).directive('tweet', function() {
     return {
         restrict: 'E',
         scope: {
-            size: '@',
-            mission: '='
+            state: '@',
+            tweet: '='
         },
-        link: function($scope) {
+        link: function($scope, element, attributes, ngModelCtrl) {
+
         },
-        templateUrl: '/js/templates/missionCard.html'
+        templateUrl: '/js/templates/tweet.html'
     }
 });
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
 
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
 
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',
@@ -1505,22 +1547,6 @@ angular.module('directives.datetime', []).directive('datetime', function() {
 });
 
 
-angular.module('directives.tweet', []).directive('tweet', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            state: '@',
-            tweet: '='
-        },
-        link: function($scope, element, attributes, ngModelCtrl) {
-
-        },
-        templateUrl: '/js/templates/tweet.html'
-    }
-});
-
-
-
 angular.module('directives.deltaV', []).directive('deltaV', function() {
     return {
         restrict: 'A',
@@ -1569,3 +1595,21 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
         templateUrl: '/js/templates/comment.html'
     }
 }]);
+angular.module('directives.redditComment', []).directive('redditComment', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            redditComment: '=ngModel'
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.retrieveRedditComment = function() {
+                $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditcomment.external_url));
+            }
+
+        },
+        templateUrl: '/js/templates/redditComment.html'
+    }
+});
+
+

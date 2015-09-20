@@ -1,8 +1,4 @@
-angular.module("missionsListApp", ["directives.missionCard"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("missionsListController", ['$scope', function($scope) {
+angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
     $scope.missions = laravel.missions;
 
     // Cheap way to get the next launch (only use on future mission page)

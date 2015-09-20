@@ -10,7 +10,7 @@
     <div class="content-wrapper">
         <h1>Future Launches</h1>
         <main>
-            <p>Browse all upcoming SpaceX launches &amp; missions here! The next launch is [[ nextLaunch().name ]]. SpaceX has [[ missionsInYear(currentYear(), "Upcoming") ]] launches remaining in [[ currentYear() ]], and is scheduled to launch [[ missionsInYear(currentYear() + 1, "Upcoming") ]] missions in [[ currentYear() + 1 ]].</p>
+            <p>Browse all upcoming SpaceX launches &amp; missions here! The next launch is @{{ nextLaunch().name }}. SpaceX has @{{ missionsInYear(currentYear(), "Upcoming") }} launches remaining in @{{ currentYear() }}, and is scheduled to launch @{{ missionsInYear(currentYear() + 1, "Upcoming") }} missions in @{{ currentYear() + 1 }}.</p>
 
             <p>Filter a launch: <input type="text" ng-model="x.name" placeholder="Type a launch name here" /></p>
 
