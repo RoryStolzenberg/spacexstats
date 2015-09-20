@@ -12,7 +12,7 @@
         <main>
             <form name="createMissionForm">
                 <fieldset>
-                    <legend>[[ mission.name ]] Mission</legend>
+                    <legend>@{{ mission.name }} Mission</legend>
 
                     <ul>
                         <li class="grid-12">
@@ -70,16 +70,16 @@
 
                         <div ng-show="filters.parts.type !== ''">
                             <div ng-repeat="part in data.parts | filter:filters.parts">
-                                <span>[[ part.name ]]</span>
-                                <button ng-click="mission.addPartFlight(filters.parts.type, part)">Reuse This [[ filters.parts.type ]]</button>
+                                <span>@{{ part.name }}</span>
+                                <button ng-click="mission.addPartFlight(filters.parts.type, part)">Reuse This @{{ filters.parts.type }}</button>
                             </div>
 
-                            <button ng-click="mission.addPartFlight(filters.parts.type)">Create A [[ filters.parts.type ]]</button>
+                            <button ng-click="mission.addPartFlight(filters.parts.type)">Create A @{{ filters.parts.type }}</button>
                         </div>
                     </div>
 
                     <div ng-repeat="partFlight in mission.part_flights">
-                        <h3>[[ partFlight.part.name ]]</h3>
+                        <h3>@{{ partFlight.part.name }}</h3>
 
                         <label>Name</label>
                         <input type="text" ng-model="partFlight.part.name" />
@@ -106,7 +106,7 @@
                     <legend>Payloads</legend>
                     <button ng-click="mission.addPayload()">Add Payload</button>
 
-                    <div ng-repeat="payload in mission.payloads" ng-form="[[ 'payloadForm' + $index ]]">
+                    <div ng-repeat="payload in mission.payloads" ng-form="@{{ 'payloadForm' + $index }}">
                         <ul>
                             <li class="grid-6">
                                 <label>Payload Name</label>
@@ -138,7 +138,7 @@
 
                     <div class="add-spacecraft" ng-if="mission.spacecraft_flight == null">
                         <div ng-repeat="spacecraft in data.spacecraft">
-                            <span>[[ spacecraft.name ]]</span>
+                            <span>@{{ spacecraft.name }}</span>
                             <button ng-click="mission.addSpacecraftFlight(spacecraft)" ng-disabled="mission.spacecraft_flight != null">Reuse This Spacecraft</button>
                         </div>
 
@@ -146,7 +146,7 @@
                     </div>
 
                     <div ng-if="mission.spacecraft_flight != null">
-                        <h3>[[ mission.spacecraft_flight.spacecraft.name ]]</h3>
+                        <h3>@{{ mission.spacecraft_flight.spacecraft.name }}</h3>
 
                         <label>Name</label>
                         <input type="text" ng-model="mission.spacecraft_flight.spacecraft.name" />
@@ -169,7 +169,7 @@
                             <button ng-click="mission.spacecraftFlight.addAstronautFlight(selected.astronaut)">Add Astronaut</button>
 
                             <div ng-repeat="astronautFlight in mission.spacecraft_flight.astronaut_flights">
-                                <h3>[[ astronaut_flight.astronaut.full_name ]]</h3>
+                                <h3>@{{ astronaut_flight.astronaut.full_name }}</h3>
                                 <label>First Name</label>
                                 <input type="text" ng-model="astronaut_flight.astronaut.first_name" />
 

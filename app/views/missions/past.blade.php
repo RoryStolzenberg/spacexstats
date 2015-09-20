@@ -17,21 +17,21 @@
             <h2>Past Launches</h2>
             <p>Every other launch</p>
 
-            <p>Browse all the previous SpaceX launches &amp; missions here! The last launch was [[ lastLaunch().name ]]. SpaceX has completed
+            <p>Browse all the previous SpaceX launches &amp; missions here! The last launch was @{{ lastLaunch().name }}. SpaceX has completed
                 <ng-pluralize
                         count="missionsInYear(currentYear(), 'Complete')"
                         when="{
                         'one': '1 mission',
                         'other': '{} missions'
                      }">
-                </ng-pluralize> in [[ currentYear() ]] so far, and  completed
+                </ng-pluralize> in @{{ currentYear() }} so far, and  completed
                 <ng-pluralize
                         count="missionsInYear(currentYear() - 1, 'Complete')"
                         when="{
                         'one': '1 mission',
                         'other': '{} missions'
                      }">
-                </ng-pluralize> in [[ currentYear() - 1 ]].</p>
+                </ng-pluralize> in @{{ currentYear() - 1 }}.</p>
 
             <p>Filter a launch: <input type="text" ng-model="x.name" placeholder="Type a launch name here" /></p>
 

@@ -32,8 +32,8 @@
                 <div ng-show="activeUploadSection == 'data'" ng-form="uploadForm">
                     <ul class="files-list">
                         <li class="uploaded-file" ng-repeat="file in files" ng-class="{ valid: uploadForm['fileForm' + $index].$valid, invalid: uploadForm['fileForm' + $index].$invalid }"  ng-click="setVisibleFile(file)">
-                            <img ng-attr-src="[[file.media_thumb_small]]"/><br/>
-                            <span>[[ file.original_name ]]</span>
+                            <img ng-attr-src="@{{file.media_thumb_small}}"/><br/>
+                            <span>@{{ file.original_name }}</span>
                         </li>
                     </ul>
 
@@ -43,11 +43,11 @@
 
                         <!-- IMAGE FILE TEMPLATE -->
                         <div ng-if="file.type == 1" ng-show="isVisibleFile(file)">
-                            <h2>[[ file.original_name ]]</h2>
-                            <form name="[['fileForm' + $index]]" novalidate>
+                            <h2>@{{ file.original_name }}</h2>
+                            <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
-                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
                                     <li class="grid-4">
@@ -111,7 +111,7 @@
                                     <li class="grid-6">
                                         <label>
                                             <p>When was this created?</p>
-                                            <datetime type="[[ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') ]]"
+                                            <datetime type="@{{ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') }}"
                                                       ng-model="file.originated_at"
                                                       is-null="::file.datetimeExtractedFromEXIF"
                                                       nullable-toggle="false"></datetime>
@@ -122,8 +122,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous" />
-                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
+                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -132,11 +132,11 @@
 
                         <!-- GIF FILE TEMPLATE -->
                         <div ng-if="file.type == 2" ng-show="isVisibleFile(file)">
-                            <h2>[[ file.original_name ]]</h2>
-                            <form name="[['fileForm' + $index]]" novalidate>
+                            <h2>@{{ file.original_name }}</h2>
+                            <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
-                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
                                     <li class="grid-4">
@@ -187,8 +187,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous" />
-                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
+                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -197,11 +197,11 @@
 
                         <!-- AUDIO FILE TEMPLATE -->
                         <div ng-if="file.type == 3" ng-show="isVisibleFile(file)">
-                            <h2>[[ file.original_name ]]</h2>
-                            <form name="[['fileForm' + $index]]" novalidate>
+                            <h2>@{{ file.original_name }}</h2>
+                            <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
-                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
                                     <li class="grid-4">
@@ -252,8 +252,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous" />
-                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
+                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -262,11 +262,11 @@
 
                         <!-- VIDEO FILE TEMPLATE -->
                         <div ng-if="file.type == 4" ng-show="isVisibleFile(file)">
-                            <h2>[[ file.original_name ]]</h2>
-                            <form name="[['fileForm' + $index]]" novalidate>
+                            <h2>@{{ file.original_name }}</h2>
+                            <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
-                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
                                     <li class="grid-4">
@@ -335,8 +335,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous"/>
-                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous"/>
+                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
                                         </label>
                                     </li>
                                 </ul>
@@ -345,11 +345,11 @@
 
                         <!-- DOCUMENT FILE TEMPLATE -->
                         <div ng-if="file.type == 5" ng-show="isVisibleFile(file)">
-                            <h2>[[ file.original_name ]]</h2>
-                            <form name="[['fileForm' + $index]]" novalidate>
+                            <h2>@{{ file.original_name }}</h2>
+                            <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
                                     <li class="grid-4">
-                                        <img ng-attr-src="[[file.media_thumb_small]]" ng-attr-alt="[[file.media_thumb_small]]" />
+                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
                                     <li class="grid-4">
@@ -409,8 +409,8 @@
                                     <li class="grid-12">
                                         <label>
                                             <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="[[ 'anonymous-file' + $index ]]" value="true" ng-model="file.anonymous"/>
-                                            <label for="[[ 'anonymous-file' + $index ]]"></label>
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous"/>
+                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
                                         </label>
                                     </li>
                                 </ul>

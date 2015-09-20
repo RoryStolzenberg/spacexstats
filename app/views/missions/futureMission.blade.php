@@ -38,7 +38,7 @@
 
                 <section class="highlights">
                     <div class="webcast-status" ng-class="webcast.status" ng-if="isLaunchExact == true" ng-show="webcast.status != 'webcast-inactive'">
-                        <span>[[ webcast.publicStatus ]]</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">[[ webcast.publicViewers ]]</span>
+                        <span>@{{ webcast.publicStatus }}</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">@{{ webcast.publicViewers }}</span>
                     </div>
 
                     @if(isset($pastMission))
@@ -55,7 +55,7 @@
                     @endif
 
                     <div ng-if="isLaunchExact == true" class="display-date-time">
-                        <div class="launch">[[ launchDateTime ]]</div>
+                        <div class="launch">@{{ launchDateTime }}</div>
                         <div class="timezone">
                             <span class="timezone-current">UTC</span>
                             <ul class="timezone-list">

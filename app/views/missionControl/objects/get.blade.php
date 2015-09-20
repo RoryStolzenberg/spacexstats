@@ -62,7 +62,7 @@
                         </span>
                         <span class="grid-4">
                             <i class="fa fa-star" ng-click="toggleFavorite()" ng-class="{ 'is-favorited' : isFavorited === true }"></i>
-                            <span>[[ favoritesText ]]</span>
+                            <span>@{{ favoritesText }}</span>
                         </span>
                         <span class="grid-4">
                             <a href="" target="_blank" download><i class="fa fa-download" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
@@ -109,8 +109,8 @@
                 @if (Auth::isSubscriber())
                     <form>
                         <div ng-show="noteState === 'read'">
-                            <p>[[ noteReadText ]]</p>
-                            <button ng-click="changeNoteState()">[[ noteButtonText ]]</button>
+                            <p>@{{ noteReadText }}</p>
+                            <button ng-click="changeNoteState()">@{{ noteButtonText }}</button>
                         </div>
 
                         <div ng-show="noteState === 'write'">
