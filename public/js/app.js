@@ -28,41 +28,34 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
 /**
  * Workaround to make defining and retrieving angular modules easier and more intuitive.
  */
-//(function (angular) {
-//    var origMethod = angular.module;
-//
-//    var alreadyRegistered = {};
-//
-//    /**
-//     * Register/fetch a module.
-//     *
-//     * @param name {string} module name.
-//     * @param reqs {array} list of modules this module depends upon.
-//     * @param configFn {function} config function to run when module loads (only applied for the first call to create this module).
-//     * @returns {*} the created/existing module.
-//     */
-//    angular.module = function (name, reqs, configFn) {
-//        reqs = reqs || [];
-//        var module = null;
-//
-//        if (alreadyRegistered[name]) {
-//            module = origMethod(name);
-//            module.requires.push.apply(module.requires, reqs);
-//        } else {
-//            module = origMethod(name, reqs, configFn);
-//            alreadyRegistered[name] = module;
-//        }
-//
-//        return module;
-//    };
-//
-//    $interpolateProvider.startSymbol('[[');
-//    $interpolateProvider.endSymbol(']]');
-//
-//})(angular);
-//
+(function (angular) {
+    var origMethod = angular.module;
 
+    var alreadyRegistered = {};
 
+    /**
+     * Register/fetch a module.
+     *
+     * @param name {string} module name.
+     * @param reqs {array} list of modules this module depends upon.
+     * @param configFn {function} config function to run when module loads (only applied for the first call to create this module).
+     * @returns {*} the created/existing module.
+     */
+    angular.module = function (name, reqs, configFn) {
+        reqs = reqs || [];
+        var module = null;
+
+        if (alreadyRegistered[name]) {
+            module = origMethod(name);
+            module.requires.push.apply(module.requires, reqs);
+        } else {
+            module = origMethod(name, reqs, configFn);
+            alreadyRegistered[name] = module;
+        }
+
+        return module;
+    };
+})(angular);
 angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"]).controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
     $scope.missionSlug = laravel.slug;
@@ -820,76 +813,80 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"]).c
 
 
 
-angular.module("editUserApp", ["directives.selectList", "flashMessageService"]).controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+(function() {
+    var app = angular.module('app', []);
 
-    $scope.username = laravel.user.username;
+    app.controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
-    $scope.missions = laravel.missions;
+        $scope.username = laravel.user.username;
 
-    $scope.patches = laravel.patches;
+        $scope.missions = laravel.missions;
 
-    $scope.profile = {
-        summary: laravel.user.profile.summary,
-        twitter_account: laravel.user.profile.twitter_account,
-        reddit_account: laravel.user.profile.reddit_account,
-        favorite_quote: laravel.user.profile.favorite_quote,
-        favorite_mission: laravel.user.profile.favorite_mission,
-        favorite_patch: laravel.user.profile.favorite_patch
-    };
+        $scope.patches = laravel.patches;
 
-    $scope.updateProfile = function() {
-        $http.post('/users/' + $scope.username + '/edit/profile', $scope.profile)
-            .then(function(response) {
-                flashMessage.add(response.data);
-            });
-    }
+        $scope.profile = {
+            summary: laravel.user.profile.summary,
+            twitter_account: laravel.user.profile.twitter_account,
+            reddit_account: laravel.user.profile.reddit_account,
+            favorite_quote: laravel.user.profile.favorite_quote,
+            favorite_mission: laravel.user.profile.favorite_mission,
+            favorite_patch: laravel.user.profile.favorite_patch
+        };
 
-    $scope.emailNotifications = {
-        launchTimeChange: laravel.notifications.launchTimeChange,
-        newMission: laravel.notifications.newMission,
-        tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
-        tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
-        tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
-        newsSummaries: laravel.notifications.newsSummaries
-    }
+        $scope.updateProfile = function() {
+            $http.post('/users/' + $scope.username + '/edit/profile', $scope.profile)
+                .then(function(response) {
+                    flashMessage.add(response.data);
+                });
+        }
 
-    $scope.updateEmailNotifications = function() {
-        console.log(laravel);
-        console.log($scope.emailNotifications);
+        $scope.emailNotifications = {
+            launchTimeChange: laravel.notifications.launchTimeChange,
+            newMission: laravel.notifications.newMission,
+            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
+            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
+            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+            newsSummaries: laravel.notifications.newsSummaries
+        }
 
-        $http.post('/users/' + $scope.username + '/edit/emailnotifications',
-            { 'emailNotifications': $scope.emailNotifications }
-        )
-            .then(function(response) {
-                flashMessage.add(response.data);
-            });
-    }
+        $scope.updateEmailNotifications = function() {
+            console.log(laravel);
+            console.log($scope.emailNotifications);
 
-    $scope.SMSNotification = {
-        mobile: laravel.user.mobile
-    };
+            $http.post('/users/' + $scope.username + '/edit/emailnotifications',
+                { 'emailNotifications': $scope.emailNotifications }
+            )
+                .then(function(response) {
+                    flashMessage.add(response.data);
+                });
+        }
 
-    if (laravel.notifications.tMinus24HoursSMS === true) {
-        $scope.SMSNotification.status = "tMinus24HoursSMS";
-    } else if (laravel.notifications.tMinus3HoursSMS === true) {
-        $scope.SMSNotification.status = "tMinus3HoursSMS";
-    } else if (laravel.notifications.tMinus1HourSMS === true) {
-        $scope.SMSNotification.status = "tMinus1HourSMS";
-    } else {
-        $scope.SMSNotification.status = "false";
-    }
+        $scope.SMSNotification = {
+            mobile: laravel.user.mobile
+        };
 
-    $scope.updateSMSNotifications = function() {
-        $http.post('/users/' + $scope.username + '/edit/smsnotifications',
-            { 'SMSNotification': $scope.SMSNotification }
-        )
-            .then(function(response) {
-                flashMessage.add(response.data);
-            });
-    }
+        if (laravel.notifications.tMinus24HoursSMS === true) {
+            $scope.SMSNotification.status = "tMinus24HoursSMS";
+        } else if (laravel.notifications.tMinus3HoursSMS === true) {
+            $scope.SMSNotification.status = "tMinus3HoursSMS";
+        } else if (laravel.notifications.tMinus1HourSMS === true) {
+            $scope.SMSNotification.status = "tMinus1HourSMS";
+        } else {
+            $scope.SMSNotification.status = "false";
+        }
 
-}]);
+        $scope.updateSMSNotifications = function() {
+            $http.post('/users/' + $scope.username + '/edit/smsnotifications',
+                { 'SMSNotification': $scope.SMSNotification }
+            )
+                .then(function(response) {
+                    flashMessage.add(response.data);
+                });
+        }
 
+    }]);
+
+})();
 angular.module("homePageApp", ["directives.countdown"]).controller("homePageController", ['$scope', 'Statistic', function($scope, Statistic) {
     $scope.statistics = [];
 
@@ -997,90 +994,110 @@ angular.module('RecursionHelper', [])
         };
     }
 ]);
-angular.module('flashMessageService', [])
-    .service('flashMessage', function() {
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
         this.add = function(data) {
 
             $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
 
             setTimeout(function() {
                 $('.flash-message').slideUp(300, function() {
-                   $(this).remove();
+                    $(this).remove();
                 });
             }, 3000);
         };
     });
+})();
 
-angular.module("directives.selectList", []).directive("selectList", function() {
+
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("selectList", function() {
+        return {
+            restrict: 'E',
+            scope: {
+                options: '=',
+                selectedOption: '=ngModel',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.optionsObj = $scope.options.map(function(option) {
+                    var props = {
+                        id: option[$scope.uniqueKey],
+                        name: option[$scope.titleKey],
+                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                    };
+
+                    if (typeof $scope.descriptionKey !== 'undefined') {
+                        props.description = option[$scope.descriptionKey];
+                    }
+
+                    return props;
+                });
+
+                $scope.$watch("selectedOption", function(newValue) {
+                    if (newValue !== null) {
+                        $scope.selectedOptionObj = $scope.optionsObj
+                            .filter(function(option) {
+                                return option['id'] == newValue;
+                            }).shift();
+                    } else {
+                        $scope.selectedOptionObj = null;
+                    }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option['id'];
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.selectDefault = function() {
+                    $scope.selectedOption = null;
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                };
+
+                $scope.$watch("dropdownIsVisible", function(newValue) {
+                    if (!newValue) {
+                        $scope.search = "";
+                    }
+                });
+
+                $scope.isSelected = function(option) {
+                    return option.id == $scope.selectedOption;
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/selectList.html'
+        }
+    });
+})();
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {
         restrict: 'E',
         scope: {
-            options: '=',
-            selectedOption: '=ngModel',
-            uniqueKey: '@',
-            titleKey: '@',
-            imageKey: '@?',
-            descriptionKey: '@?',
-            searchable: '@',
-            placeholder: '@'
+            size: '@',
+            mission: '='
         },
-        link: function($scope, element, attributes) {
-
-            $scope.optionsObj = $scope.options.map(function(option) {
-                var props = {
-                    id: option[$scope.uniqueKey],
-                    name: option[$scope.titleKey],
-                    image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                };
-
-                if (typeof $scope.descriptionKey !== 'undefined') {
-                    props.description = option[$scope.descriptionKey];
-                }
-
-                return props;
-            });
-
-            $scope.$watch("selectedOption", function(newValue) {
-                if (newValue !== null) {
-                    $scope.selectedOptionObj = $scope.optionsObj
-                        .filter(function(option) {
-                            return option['id'] == newValue;
-                        }).shift();
-                } else {
-                    $scope.selectedOptionObj = null;
-                }
-            });
-
-            $scope.selectOption = function(option) {
-                $scope.selectedOption = option['id'];
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.selectDefault = function() {
-                $scope.selectedOption = null;
-                $scope.dropdownIsVisible = false;
-            };
-
-            $scope.toggleDropdown = function() {
-                $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-            };
-
-            $scope.$watch("dropdownIsVisible", function(newValue) {
-                if (!newValue) {
-                    $scope.search = "";
-                }
-            });
-
-            $scope.isSelected = function(option) {
-                return option.id == $scope.selectedOption;
-            };
-
-            $scope.dropdownIsVisible = false;
+        link: function($scope) {
         },
-        templateUrl: '/js/templates/selectList.html'
+        templateUrl: '/js/templates/missionCard.html'
     }
 });
-
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -1314,58 +1331,6 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
-angular.module('directives.tweet', []).directive('tweet', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            state: '@',
-            tweet: '='
-        },
-        link: function($scope, element, attributes, ngModelCtrl) {
-
-        },
-        templateUrl: '/js/templates/tweet.html'
-    }
-});
-
-
-
-angular.module('directives.deltaV', []).directive('deltaV', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            deltaV: '='
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.$watch("deltaV", function(files) {
-                if (typeof files !== 'undefined') {
-                    files.forEach(function(file) {
-                        console.log(Object.prototype.toString.call(file));
-                    });
-                }
-            });
-
-            $scope.calculatedValue = 0;
-        },
-        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
-    }
-});
-
-
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',
@@ -1534,6 +1499,45 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             });
         },
         templateUrl: '/js/templates/datetime.html'
+    }
+});
+
+
+angular.module('directives.tweet', []).directive('tweet', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            state: '@',
+            tweet: '='
+        },
+        link: function($scope, element, attributes, ngModelCtrl) {
+
+        },
+        templateUrl: '/js/templates/tweet.html'
+    }
+});
+
+
+
+angular.module('directives.deltaV', []).directive('deltaV', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            deltaV: '='
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.$watch("deltaV", function(files) {
+                if (typeof files !== 'undefined') {
+                    files.forEach(function(file) {
+                        console.log(Object.prototype.toString.call(file));
+                    });
+                }
+            });
+
+            $scope.calculatedValue = 0;
+        },
+        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
     }
 });
 

@@ -7,7 +7,7 @@
     @include('templates.flashMessage')
     @include('templates.header')
 
-    <div class="content-wrapper" ng-app="editUserApp" ng-controller="editUserController" ng-strict-di>
+    <div class="content-wrapper" ng-controller="editUserController" ng-strict-di>
         <h1>Editing Your Profile</h1>
         <main>
             <nav class="sticky-bar">
@@ -170,8 +170,6 @@
             </section>
         </main>
     </div>
-
-    <script src="/js/app.js"></script>
 </body>
 @stop
 

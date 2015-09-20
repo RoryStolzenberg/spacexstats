@@ -1,69 +1,74 @@
-angular.module("editUserApp", ["directives.selectList", "flashMessageService"]).controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+(function() {
+    var app = angular.module('app', []);
 
-    $scope.username = laravel.user.username;
+    app.controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
-    $scope.missions = laravel.missions;
+        $scope.username = laravel.user.username;
 
-    $scope.patches = laravel.patches;
+        $scope.missions = laravel.missions;
 
-    $scope.profile = {
-        summary: laravel.user.profile.summary,
-        twitter_account: laravel.user.profile.twitter_account,
-        reddit_account: laravel.user.profile.reddit_account,
-        favorite_quote: laravel.user.profile.favorite_quote,
-        favorite_mission: laravel.user.profile.favorite_mission,
-        favorite_patch: laravel.user.profile.favorite_patch
-    };
+        $scope.patches = laravel.patches;
 
-    $scope.updateProfile = function() {
-        $http.post('/users/' + $scope.username + '/edit/profile', $scope.profile)
-            .then(function(response) {
-                flashMessage.add(response.data);
-            });
-    }
+        $scope.profile = {
+            summary: laravel.user.profile.summary,
+            twitter_account: laravel.user.profile.twitter_account,
+            reddit_account: laravel.user.profile.reddit_account,
+            favorite_quote: laravel.user.profile.favorite_quote,
+            favorite_mission: laravel.user.profile.favorite_mission,
+            favorite_patch: laravel.user.profile.favorite_patch
+        };
 
-    $scope.emailNotifications = {
-        launchTimeChange: laravel.notifications.launchTimeChange,
-        newMission: laravel.notifications.newMission,
-        tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
-        tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
-        tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
-        newsSummaries: laravel.notifications.newsSummaries
-    }
+        $scope.updateProfile = function() {
+            $http.post('/users/' + $scope.username + '/edit/profile', $scope.profile)
+                .then(function(response) {
+                    flashMessage.add(response.data);
+                });
+        }
 
-    $scope.updateEmailNotifications = function() {
-        console.log(laravel);
-        console.log($scope.emailNotifications);
+        $scope.emailNotifications = {
+            launchTimeChange: laravel.notifications.launchTimeChange,
+            newMission: laravel.notifications.newMission,
+            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
+            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
+            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+            newsSummaries: laravel.notifications.newsSummaries
+        }
 
-        $http.post('/users/' + $scope.username + '/edit/emailnotifications',
-            { 'emailNotifications': $scope.emailNotifications }
-        )
-            .then(function(response) {
-                flashMessage.add(response.data);
-            });
-    }
+        $scope.updateEmailNotifications = function() {
+            console.log(laravel);
+            console.log($scope.emailNotifications);
 
-    $scope.SMSNotification = {
-        mobile: laravel.user.mobile
-    };
+            $http.post('/users/' + $scope.username + '/edit/emailnotifications',
+                { 'emailNotifications': $scope.emailNotifications }
+            )
+                .then(function(response) {
+                    flashMessage.add(response.data);
+                });
+        }
 
-    if (laravel.notifications.tMinus24HoursSMS === true) {
-        $scope.SMSNotification.status = "tMinus24HoursSMS";
-    } else if (laravel.notifications.tMinus3HoursSMS === true) {
-        $scope.SMSNotification.status = "tMinus3HoursSMS";
-    } else if (laravel.notifications.tMinus1HourSMS === true) {
-        $scope.SMSNotification.status = "tMinus1HourSMS";
-    } else {
-        $scope.SMSNotification.status = "false";
-    }
+        $scope.SMSNotification = {
+            mobile: laravel.user.mobile
+        };
 
-    $scope.updateSMSNotifications = function() {
-        $http.post('/users/' + $scope.username + '/edit/smsnotifications',
-            { 'SMSNotification': $scope.SMSNotification }
-        )
-            .then(function(response) {
-                flashMessage.add(response.data);
-            });
-    }
+        if (laravel.notifications.tMinus24HoursSMS === true) {
+            $scope.SMSNotification.status = "tMinus24HoursSMS";
+        } else if (laravel.notifications.tMinus3HoursSMS === true) {
+            $scope.SMSNotification.status = "tMinus3HoursSMS";
+        } else if (laravel.notifications.tMinus1HourSMS === true) {
+            $scope.SMSNotification.status = "tMinus1HourSMS";
+        } else {
+            $scope.SMSNotification.status = "false";
+        }
 
-}]);
+        $scope.updateSMSNotifications = function() {
+            $http.post('/users/' + $scope.username + '/edit/smsnotifications',
+                { 'SMSNotification': $scope.SMSNotification }
+            )
+                .then(function(response) {
+                    flashMessage.add(response.data);
+                });
+        }
+
+    }]);
+
+})();
