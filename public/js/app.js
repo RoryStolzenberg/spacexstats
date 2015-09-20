@@ -21,11 +21,7 @@ angular.module("missionsListApp", ["directives.missionCard"]).controller("missio
         }).length;
     }
 }]);
-angular.module("missionControlApp", ["directives.tags"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("missionControlController", ["$scope", function($scope) {
+angular.module("missionControlApp", ["directives.tags"]).controller("missionControlController", ["$scope", function($scope) {
     $scope.tags = [];
     $scope.selectedTags = [];
 }]);
@@ -67,11 +63,7 @@ angular.module("missionControlApp", ["directives.tags"], ['$interpolateProvider'
 //
 
 
-angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"]).controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
     $scope.missionSlug = laravel.slug;
     $scope.launchDateTime = laravel.launchDateTime;
@@ -167,11 +159,7 @@ angular.module("futureMissionApp", ["directives.countdown", "flashMessageService
 
 }]);
 
-angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV", "directives.datetime"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("uploadAppController", ["$scope", function($scope) {
+angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV", "directives.datetime"]).controller("uploadAppController", ["$scope", function($scope) {
     $scope.activeSection = "upload";
 
     $scope.data = {
@@ -393,85 +381,11 @@ angular.module("uploadApp", ["directives.upload", "directives.selectList", "dire
     }
 }]);
 
-angular.module('questionsApp', [], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("questionsController", ["$scope", function($scope) {
+angular.module('questionsApp', []).controller("questionsController", ["$scope", function($scope) {
     $scope
 }]);
 
-angular.module("homePageApp", ["directives.countdown"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("homePageController", ['$scope', 'Statistic', function($scope, Statistic) {
-    $scope.statistics = [];
-
-    $scope.activeStatistic = false;
-
-    laravel.statistics.forEach(function(statistic) {
-        $scope.statistics.push(new Statistic(statistic));
-    });
-
-    $scope.goToClickedStatistic = function(statisticType) {
-        $scope.activeStatistic = statisticType;
-    }
-
-    $scope.goToPreviousStatistic = function() {
-
-    }
-
-    $scope.goToNextStatistic = function() {
-
-    }
-
-    $scope.$watch("activeStatistic", function(newValue, oldValue) {
-
-    });
-}])
-
-.factory('Statistic', ['Substatistic', function(Substatistic) {
-    return function(statistic) {
-
-        var self = {};
-
-        statistic.forEach(function(substatistic) {
-
-            var substatisticObject = new Substatistic(substatistic);
-
-            if (!self.substatistics) {
-
-                self.substatistics = [];
-                self.activeSubstatistic = substatisticObject;
-                self.type = substatisticObject.type;
-            }
-
-            self.substatistics.push(substatisticObject);
-        });
-
-        self.changeSubstatistic = function(newSubstatistic) {
-            self.activeSubstatistic = newSubstatistic;
-        };
-
-        return self;
-    }
-}])
-
-.factory('Substatistic', function() {
-    return function(substatistic) {
-
-        var self = substatistic;
-
-        return self;
-    }
-});
-
-angular.module('reviewApp', [], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
+angular.module('reviewApp', []).controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
 
     $scope.visibilities = ['Default', 'Public', 'Hidden'];
 
@@ -558,11 +472,7 @@ angular.module('reviewApp', [], ['$interpolateProvider', function($interpolatePr
 });
 
 
-angular.module('objectApp', ['directives.comment'], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("objectController", ["$scope", "$http", function($scope, $http) {
+angular.module('objectApp', ['directives.comment']).controller("objectController", ["$scope", "$http", function($scope, $http) {
 
     $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
     $scope.object = laravel.object;
@@ -683,11 +593,7 @@ angular.module('objectApp', ['directives.comment'], ['$interpolateProvider', fun
 ]);
 
 
-angular.module("missionApp", ["directives.datetime", "directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
+angular.module("missionApp", ["directives.datetime", "directives.selectList"]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
     // Set the current mission being edited/created
     $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
 
@@ -984,6 +890,68 @@ angular.module("editUserApp", ["directives.selectList", "flashMessageService"]).
 
 }]);
 
+angular.module("homePageApp", ["directives.countdown"]).controller("homePageController", ['$scope', 'Statistic', function($scope, Statistic) {
+    $scope.statistics = [];
+
+    $scope.activeStatistic = false;
+
+    laravel.statistics.forEach(function(statistic) {
+        $scope.statistics.push(new Statistic(statistic));
+    });
+
+    $scope.goToClickedStatistic = function(statisticType) {
+        $scope.activeStatistic = statisticType;
+    }
+
+    $scope.goToPreviousStatistic = function() {
+
+    }
+
+    $scope.goToNextStatistic = function() {
+
+    }
+
+    $scope.$watch("activeStatistic", function(newValue, oldValue) {
+
+    });
+}])
+
+.factory('Statistic', ['Substatistic', function(Substatistic) {
+    return function(statistic) {
+
+        var self = {};
+
+        statistic.forEach(function(substatistic) {
+
+            var substatisticObject = new Substatistic(substatistic);
+
+            if (!self.substatistics) {
+
+                self.substatistics = [];
+                self.activeSubstatistic = substatisticObject;
+                self.type = substatisticObject.type;
+            }
+
+            self.substatistics.push(substatisticObject);
+        });
+
+        self.changeSubstatistic = function(newSubstatistic) {
+            self.activeSubstatistic = newSubstatistic;
+        };
+
+        return self;
+    }
+}])
+
+.factory('Substatistic', function() {
+    return function(substatistic) {
+
+        var self = substatistic;
+
+        return self;
+    }
+});
+
 // Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
 // https://github.com/marklagendijk/angular-recursion
 angular.module('RecursionHelper', [])
@@ -1184,19 +1152,6 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {
         restrict: 'A',
@@ -1359,6 +1314,19 @@ angular.module("directives.tags", []).directive("tags", ["Tag", "$timeout", func
         return self;
     }
 });
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
 angular.module('directives.tweet', []).directive('tweet', function() {
     return {
         restrict: 'E',
@@ -1373,6 +1341,29 @@ angular.module('directives.tweet', []).directive('tweet', function() {
     }
 });
 
+
+
+angular.module('directives.deltaV', []).directive('deltaV', function() {
+    return {
+        restrict: 'A',
+        scope: {
+            deltaV: '='
+        },
+        link: function($scope, element, attributes) {
+
+            $scope.$watch("deltaV", function(files) {
+                if (typeof files !== 'undefined') {
+                    files.forEach(function(file) {
+                        console.log(Object.prototype.toString.call(file));
+                    });
+                }
+            });
+
+            $scope.calculatedValue = 0;
+        },
+        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
+    }
+});
 
 
 angular.module('directives.datetime', []).directive('datetime', function() {
@@ -1543,29 +1534,6 @@ angular.module('directives.datetime', []).directive('datetime', function() {
             });
         },
         templateUrl: '/js/templates/datetime.html'
-    }
-});
-
-
-angular.module('directives.deltaV', []).directive('deltaV', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            deltaV: '='
-        },
-        link: function($scope, element, attributes) {
-
-            $scope.$watch("deltaV", function(files) {
-                if (typeof files !== 'undefined') {
-                    files.forEach(function(file) {
-                        console.log(Object.prototype.toString.call(file));
-                    });
-                }
-            });
-
-            $scope.calculatedValue = 0;
-        },
-        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
     }
 });
 

@@ -1,7 +1,7 @@
 <div class="card mission-card" ng-class="size">
     <div class="top">
         <div class="thumb" style="background-image:url(/media/1454e6bb28540a77.93511822.jpeg);"></div>
-        <p><span><a ng-attr-href="[[mission.slug]]">[[ mission.name ]]</a></span> for <span>[[ mission.contractor ]]</span></p>
+        <p><span><a ng-attr-href="{{mission.slug}}">{{ mission.name }}</a></span> for <span>{{ mission.contractor }}</span></p>
     </div>
     <div class="bottom" ng-if="size == 'small'">
         <div class="container">
@@ -37,6 +37,6 @@
             <div class="grid-1on9 smallcaps">Launch Site</div>
             <div class="grid-1on9 smallcaps" ng-if="mission.status == 'Upcoming'">Where to watch</div>
         </div>
-        <p><em>[[ mission.summary]] </em></p>
+        <p><em>{{ mission.summary }}</em></p>
     </div>
 </div>
