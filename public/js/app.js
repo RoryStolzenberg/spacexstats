@@ -1043,53 +1043,6 @@ angular.module('RecursionHelper', [])
 })();
 
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 (function() {
     var app = angular.module('app', []);
 
@@ -1234,6 +1187,53 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
+
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 (function() {
     var app = angular.module('app', []);
 
@@ -1588,8 +1588,10 @@ angular.module('directives.tweet', []).directive('tweet', function() {
                 $scope.calculate = function(object) {
                     var internalValue = 0;
                     Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'tags') {
-                            internalValue += object[key].length;
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
                         }
                     });
                     return internalValue;

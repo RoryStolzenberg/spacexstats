@@ -138,12 +138,19 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $this->attributes['mobile_carrier'] = null;
     }
 
-	public function setPasswordAttribute($value) {
-		$this->attributes['password'] = Hash::make($value);
-	}
+    /**
+     * Increment the subscription length of the user by a certain length of time
+     */
+    public function incrementSubscription() {
+    }
 
     // Attribute accessors
 	public function getDaysUntilSubscriptionExpiresAttribute() {
 		return Carbon::now()->diffInDays($this->subscription_expiry);
 	}
+
+    // Attribute mutators
+    public function setPasswordAttribute($value) {
+        $this->attributes['password'] = Hash::make($value);
+    }
 }

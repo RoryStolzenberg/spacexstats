@@ -28,8 +28,10 @@
                 $scope.calculate = function(object) {
                     var internalValue = 0;
                     Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'tags') {
-                            internalValue += object[key].length;
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
                         }
                     });
                     return internalValue;
