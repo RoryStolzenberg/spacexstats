@@ -56,102 +56,105 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         return module;
     };
 })(angular);
-angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"]).controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+(function() {
+    var app = angular.module('app', []);
 
-    $scope.missionSlug = laravel.slug;
-    $scope.launchDateTime = laravel.launchDateTime;
-    $scope.launchSpecificity = laravel.launchSpecificity;
+    app.controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
-    $scope.$watch("launchSpecificity", function(newValue) {
-        $scope.isLaunchExact =  (newValue == 6 || newValue == 7);
-    });
+        $scope.missionSlug = laravel.slug;
+        $scope.launchDateTime = laravel.launchDateTime;
+        $scope.launchSpecificity = laravel.launchSpecificity;
 
-    $scope.$watchCollection('[isLaunchExact, launchDateTime]', function(newValues) {
-        if (newValues[0] === true) {
-            $scope.launchUnixSeconds =  (moment(newValues[1]).unix());
+        $scope.$watch("launchSpecificity", function(newValue) {
+            $scope.isLaunchExact =  (newValue == 6 || newValue == 7);
+        });
+
+        $scope.$watchCollection('[isLaunchExact, launchDateTime]', function(newValues) {
+            if (newValues[0] === true) {
+                $scope.launchUnixSeconds =  (moment(newValues[1]).unix());
+            }
+            $scope.launchUnixSeconds =  null;
+        });
+
+        $scope.lastRequest = moment().unix();
+        $scope.secondsSinceLastRequest = 0;
+
+        $scope.secondsToLaunch;
+
+        $scope.requestFrequencyManager = function() {
+            $scope.secondsSinceLastRequest = Math.floor($.now() / 1000) - $scope.lastRequest;
+            $scope.secondsToLaunch = $scope.launchUnixSeconds - Math.floor($.now() / 1000);
+
+            /*
+             Make requests to the server for launchdatetime and webcast updates at the following frequencies:
+             >24hrs to launch    =   1hr / request
+             1hr-24hrs           =   15min / request
+             20min-1hr           =   5 min / request
+             <20min              =   30sec / request
+             */
+            var aRequestNeedsToBeMade = ($scope.secondsToLaunch >= 86400 && $scope.secondsSinceLastRequest >= 3600) ||
+                ($scope.secondsToLaunch >= 3600 && $scope.secondsToLaunch < 86400 && $scope.secondsSinceLastRequest >= 900) ||
+                ($scope.secondsToLaunch >= 1200 && $scope.secondsToLaunch < 3600 && $scope.secondsSinceLastRequest >= 300) ||
+                ($scope.secondsToLaunch < 1200 && $scope.secondsSinceLastRequest >= 30);
+
+            if (aRequestNeedsToBeMade === true) {
+                // Make both requests then update the time since last request
+                $scope.requestLaunchDateTime();
+                $scope.requestWebcastStatus();
+                $scope.lastRequest = moment().unix();
+            }
         }
-        $scope.launchUnixSeconds =  null;
-    });
 
-    $scope.lastRequest = moment().unix();
-    $scope.secondsSinceLastRequest = 0;
+        $scope.requestLaunchDateTime = function() {
+            $http.get('/missions/' + $scope.missionSlug + '/requestlaunchdatetime')
+                .then(function(response) {
+                    // If there has been a change in the launch datetime, update
+                    if ($scope.launchDateTime !== response.data.launchDateTime) {
+                        $scope.launchDateTime = response.data.launchDateTime;
+                        $scope.launchSpecificity = response.data.launchSpecificity;
 
-    $scope.secondsToLaunch;
-
-    $scope.requestFrequencyManager = function() {
-        $scope.secondsSinceLastRequest = Math.floor($.now() / 1000) - $scope.lastRequest;
-        $scope.secondsToLaunch = $scope.launchUnixSeconds - Math.floor($.now() / 1000);
-
-        /*
-         Make requests to the server for launchdatetime and webcast updates at the following frequencies:
-         >24hrs to launch    =   1hr / request
-         1hr-24hrs           =   15min / request
-         20min-1hr           =   5 min / request
-         <20min              =   30sec / request
-         */
-        var aRequestNeedsToBeMade = ($scope.secondsToLaunch >= 86400 && $scope.secondsSinceLastRequest >= 3600) ||
-            ($scope.secondsToLaunch >= 3600 && $scope.secondsToLaunch < 86400 && $scope.secondsSinceLastRequest >= 900) ||
-            ($scope.secondsToLaunch >= 1200 && $scope.secondsToLaunch < 3600 && $scope.secondsSinceLastRequest >= 300) ||
-            ($scope.secondsToLaunch < 1200 && $scope.secondsSinceLastRequest >= 30);
-
-        if (aRequestNeedsToBeMade === true) {
-            // Make both requests then update the time since last request
-            $scope.requestLaunchDateTime();
-            $scope.requestWebcastStatus();
-            $scope.lastRequest = moment().unix();
+                        flashMessage.add({ type: 'success', contents: 'Launch time updated!' });
+                    }
+                });
         }
-    }
 
-    $scope.requestLaunchDateTime = function() {
-        $http.get('/missions/' + $scope.missionSlug + '/requestlaunchdatetime')
-            .then(function(response) {
-                // If there has been a change in the launch datetime, update
-                if ($scope.launchDateTime !== response.data.launchDateTime) {
-                    $scope.launchDateTime = response.data.launchDateTime;
-                    $scope.launchSpecificity = response.data.launchSpecificity;
-
-                    flashMessage.add({ type: 'success', contents: 'Launch time updated!' });
-                }
-            });
-    }
-
-    $scope.requestWebcastStatus = function() {
-        $http.get('/webcast/getstatus')
-            .then(function(response) {
-                $scope.webcast.isLive = response.data.isLive;
-                $scope.webcast.viewers = response.data.viewers;
-            });
-    }
-
-    $scope.webcast = {
-        isLive: laravel.webcast.isLive,
-        viewers: laravel.webcast.viewers
-    }
-
-    $scope.$watchCollection('[webcast.isLive, secondsToLaunch]', function(newValues) {
-        if (newValues[1] < (60 * 60 * 24) && newValues[0] == 'true') {
-            $scope.webcast.status = 'webcast-live';
-        } else if (newValues[1] < (60 * 60 * 24) && newValues[0] == 'false') {
-            $scope.webcast.status = 'webcast-updates';
-        } else {
-            $scope.webcast.status = 'webcast-inactive';
+        $scope.requestWebcastStatus = function() {
+            $http.get('/webcast/getstatus')
+                .then(function(response) {
+                    $scope.webcast.isLive = response.data.isLive;
+                    $scope.webcast.viewers = response.data.viewers;
+                });
         }
-    });
 
-    $scope.$watch('webcast.status', function(newValue) {
-        if (newValue === 'webcast-live') {
-            $scope.webcast.publicStatus = 'Live Webcast'
-        } else if (newValue === 'webcast-updates') {
-            $scope.webcast.publicStatus = 'Launch Updates'
+        $scope.webcast = {
+            isLive: laravel.webcast.isLive,
+            viewers: laravel.webcast.viewers
         }
-    }),
 
-    $scope.$watch('webcast.viewers', function(newValue) {
-        $scope.webcast.publicViewers = ' (' + newValue + ' viewers)';
-    })
+        $scope.$watchCollection('[webcast.isLive, secondsToLaunch]', function(newValues) {
+            if (newValues[1] < (60 * 60 * 24) && newValues[0] == 'true') {
+                $scope.webcast.status = 'webcast-live';
+            } else if (newValues[1] < (60 * 60 * 24) && newValues[0] == 'false') {
+                $scope.webcast.status = 'webcast-updates';
+            } else {
+                $scope.webcast.status = 'webcast-inactive';
+            }
+        });
 
-}]);
+        $scope.$watch('webcast.status', function(newValue) {
+            if (newValue === 'webcast-live') {
+                $scope.webcast.publicStatus = 'Live Webcast'
+            } else if (newValue === 'webcast-updates') {
+                $scope.webcast.publicStatus = 'Launch Updates'
+            }
+        }),
 
+            $scope.$watch('webcast.viewers', function(newValue) {
+                $scope.webcast.publicViewers = ' (' + newValue + ' viewers)';
+            })
+
+    }]);
+})();
 angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV", "directives.datetime"]).controller("uploadAppController", ["$scope", function($scope) {
     $scope.activeSection = "upload";
 
@@ -586,233 +589,246 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
 ]);
 
 
-angular.module("missionApp", ["directives.datetime", "directives.selectList"]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
-    // Set the current mission being edited/created
-    $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
+(function() {
+    var app = angular.module('app', []);
 
-    // Scope the possible form data info
-    $scope.data = {
-        parts: laravel.parts,
-        spacecraft: laravel.spacecraft,
-        destinations: laravel.destinations,
-        missionTypes: laravel.missionTypes,
-        launchSites: laravel.launchSites,
-        landingSites: laravel.landingSites,
-        vehicles: laravel.vehicles,
-        astronauts: laravel.astronauts,
+    app.controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
+        // Set the current mission being edited/created
+        $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
 
-        launchVideos: laravel.launchVideos ? laravel.launchVideos : null,
-        missionPatches: laravel.missionPatches ? laravel.missionPatches : null,
-        pressKits: laravel.pressKits ? laravel.pressKits : null,
-        cargoManifests: laravel.cargoManifests ? laravel.cargoManifests : null,
-        pressConferences: laravel.pressConferences ? laravel.pressConferences : null,
-        featuredImages: laravel.featuredImages ? laravel.featuredImages: null,
+        // Scope the possible form data info
+        $scope.data = {
+            parts: laravel.parts,
+            spacecraft: laravel.spacecraft,
+            destinations: laravel.destinations,
+            missionTypes: laravel.missionTypes,
+            launchSites: laravel.launchSites,
+            landingSites: laravel.landingSites,
+            vehicles: laravel.vehicles,
+            astronauts: laravel.astronauts,
 
-        firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
-        upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
-        upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
-        spacecraftTypes: ['Dragon 1', 'Dragon 2'],
-        returnMethods: ['Splashdown', 'Landing', 'Did Not Return'],
-        eventTypes: ['Wet Dress Rehearsal', 'Static Fire'],
-        launchIlluminations: ['Day', 'Night', 'Twilight'],
-        statuses: ['Upcoming', 'Complete', 'In Progress'],
-        outcomes: ['Failure', 'Success']
-    };
+            launchVideos: laravel.launchVideos ? laravel.launchVideos : null,
+            missionPatches: laravel.missionPatches ? laravel.missionPatches : null,
+            pressKits: laravel.pressKits ? laravel.pressKits : null,
+            cargoManifests: laravel.cargoManifests ? laravel.cargoManifests : null,
+            pressConferences: laravel.pressConferences ? laravel.pressConferences : null,
+            featuredImages: laravel.featuredImages ? laravel.featuredImages: null,
 
-    $scope.filters = {
-        parts: {
-            type: ''
+            firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
+            upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
+            upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
+            spacecraftTypes: ['Dragon 1', 'Dragon 2'],
+            returnMethods: ['Splashdown', 'Landing', 'Did Not Return'],
+            eventTypes: ['Wet Dress Rehearsal', 'Static Fire'],
+            launchIlluminations: ['Day', 'Night', 'Twilight'],
+            statuses: ['Upcoming', 'Complete', 'In Progress'],
+            outcomes: ['Failure', 'Success']
+        };
+
+        $scope.filters = {
+            parts: {
+                type: ''
+            }
         }
-    }
 
-    $scope.selected = {
-        astronaut: null
-    };
+        $scope.selected = {
+            astronaut: null
+        };
 
-    $scope.createMission = function() {
-        missionService.create($scope.mission);
-    }
+        $scope.createMission = function() {
+            missionService.create($scope.mission);
+        }
 
-    $scope.updateMission = function() {
-        missionService.update($scope.mission);
-    }
+        $scope.updateMission = function() {
+            missionService.update($scope.mission);
+        }
 
-}]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", "PrelaunchEvent", "Telemetry", function(PartFlight, Payload, SpacecraftFlight, PrelaunchEvent, Telemetry) {
-    return function (mission) {
-        if (mission == null) {
+    }]);
+
+    app.factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", "PrelaunchEvent", "Telemetry", function(PartFlight, Payload, SpacecraftFlight, PrelaunchEvent, Telemetry) {
+        return function (mission) {
+            if (mission == null) {
+                var self = this;
+
+                self.payloads = [];
+                self.part_flights = [];
+                self.spacecraft_flight = null;
+                self.prelaunch_events = [];
+                self.telemetries = [];
+
+            } else {
+                var self = mission;
+            }
+
+            self.addPartFlight = function(part) {
+                self.part_flights.push(new PartFlight(part));
+            };
+
+            self.removePartFlight = function(part) {
+                self.part_flights.splice(self.part_flights.indexOf(part), 1);
+            }
+
+            self.addPayload = function() {
+                self.payloads.push(new Payload());
+            };
+
+            self.removePayload = function(payload) {
+                self.payloads.splice(self.payloads.indexOf(payload), 1);
+            };
+
+            self.addSpacecraftFlight = function(spacecraft) {
+                self.spacecraft_flight = new SpacecraftFlight(spacecraft);
+            };
+
+            self.removeSpacecraftFlight = function() {
+                self.spacecraft_flight = null;
+            };
+
+            self.addPrelaunchEvent = function() {
+                self.prelaunch_events.push(new PrelaunchEvent());
+            };
+
+            self.removePrelaunchEvent = function(prelaunchEvent) {
+                self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
+            };
+
+            self.addTelemetry = function() {
+                self.telemetries.push(new Telemetry());
+            };
+
+            self.removeTelemetry = function(telemetry) {
+                self.telemetries.splice(self.telemetries.indexOf(telemetry), 1);
+            };
+
+            return self;
+        }
+    }]);
+
+    app.factory("Payload", function() {
+        return function() {
+            var self = {
+
+            };
+            return self;
+        }
+    });
+
+    app.factory("PartFlight", ["Part", function(Part) {
+        return function(type, part) {
             var self = this;
 
-            self.payloads = [];
-            self.part_flights = [];
-            self.spacecraft_flight = null;
-            self.prelaunch_events = [];
-            self.telemetries = [];
+            self.part = new Part(type, part);
 
-        } else {
-            var self = mission;
+            return self;
         }
+    }]);
 
-        self.addPartFlight = function(part) {
-            self.part_flights.push(new PartFlight(part));
-        };
+    app.factory("Part", function() {
+        return function(type, part) {
 
-        self.removePartFlight = function(part) {
-            self.part_flights.splice(self.part_flights.indexOf(part), 1);
+            if (typeof part === 'undefined') {
+                var self = this
+                self.type = type;
+            } else {
+                var self = part;
+            }
+
+            return self;
         }
+    });
 
-        self.addPayload = function() {
-            self.payloads.push(new Payload());
-        };
-
-        self.removePayload = function(payload) {
-            self.payloads.splice(self.payloads.indexOf(payload), 1);
-        };
-
-        self.addSpacecraftFlight = function(spacecraft) {
-            self.spacecraft_flight = new SpacecraftFlight(spacecraft);
-        };
-
-        self.removeSpacecraftFlight = function() {
-            self.spacecraft_flight = null;
-        };
-
-        self.addPrelaunchEvent = function() {
-            self.prelaunch_events.push(new PrelaunchEvent());
-        };
-
-        self.removePrelaunchEvent = function(prelaunchEvent) {
-            self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
-        };
-
-        self.addTelemetry = function() {
-            self.telemetries.push(new Telemetry());
-        };
-
-        self.removeTelemetry = function(telemetry) {
-            self.telemetries.splice(self.telemetries.indexOf(telemetry), 1);
-        };
-
-        return self;
-    }
-
-}]).factory("Payload", function() {
-    return function() {
-        var self = {
-
-        };
-        return self;
-    }
-
-}).factory("PartFlight", ["Part", function(Part) {
-    return function(type, part) {
-        var self = this;
-
-        self.part = new Part(type, part);
-
-        return self;
-    }
-
-}]).factory("Part", function() {
-    return function(type, part) {
-
-        if (typeof part === 'undefined') {
-            var self = this
-            self.type = type;
-        } else {
-            var self = part;
-        }
-
-        return self;
-    }
-
-}).factory("SpacecraftFlight", ["Spacecraft", "AstronautFlight", function(Spacecraft, AstronautFlight) {
-    return function(spacecraft) {
-        var self = this;
-
-        self.spacecraft = new Spacecraft(spacecraft);
-
-        self.astronaut_flights = [];
-
-        self.addAstronautFlight = function(astronaut) {
-            self.astronaut_flights.push(new AstronautFlight(astronaut));
-        };
-
-        self.removeAstronautFlight = function(astronautFlight) {
-            self.astronaut_flights.splice(self.astronaut_flights.indexOf(astronautFlight), 1);
-        };
-
-        return self;
-    }
-
-}]).factory("Spacecraft", function() {
-    return function(spacecraft) {
-        if (spacecraft == null) {
+    app.factory("SpacecraftFlight", ["Spacecraft", "AstronautFlight", function(Spacecraft, AstronautFlight) {
+        return function(spacecraft) {
             var self = this;
-        } else {
-            var self = spacecraft;
+
+            self.spacecraft = new Spacecraft(spacecraft);
+
+            self.astronaut_flights = [];
+
+            self.addAstronautFlight = function(astronaut) {
+                self.astronaut_flights.push(new AstronautFlight(astronaut));
+            };
+
+            self.removeAstronautFlight = function(astronautFlight) {
+                self.astronaut_flights.splice(self.astronaut_flights.indexOf(astronautFlight), 1);
+            };
+
+            return self;
         }
-        return self;
-    }
+    }]);
 
-}).factory("AstronautFlight", ["Astronaut", function(Astronaut) {
-    return function(astronaut) {
-        var self = this;
+    app.factory("Spacecraft", function() {
+        return function(spacecraft) {
+            if (spacecraft == null) {
+                var self = this;
+            } else {
+                var self = spacecraft;
+            }
+            return self;
+        }
+    });
 
-        self.astronaut = new Astronaut(astronaut);
-
-        return self;
-    }
-
-}]).factory("Astronaut", function() {
-    return function (astronaut) {
-        if (astronaut == null) {
+    app.factory("AstronautFlight", ["Astronaut", function(Astronaut) {
+        return function(astronaut) {
             var self = this;
-        } else {
-            var self = astronaut;
+
+            self.astronaut = new Astronaut(astronaut);
+
+            return self;
         }
-        return self;
-    }
-}).factory("PrelaunchEvent", function() {
-    return function (prelaunchEvent) {
+    }]);
 
-        var self = prelaunchEvent;
+    app.factory("Astronaut", function() {
+        return function (astronaut) {
+            if (astronaut == null) {
+                var self = this;
+            } else {
+                var self = astronaut;
+            }
+            return self;
+        }
+    });
 
-        return self;
-    }
+    app.factory("PrelaunchEvent", function() {
+        return function (prelaunchEvent) {
 
-}).factory("Telemetry", function() {
-    return function (telemetry) {
+            var self = prelaunchEvent;
 
-        var self = telemetry;
+            return self;
+        }
+    });
 
-        return self;
-    }
+    app.factory("Telemetry", function() {
+        return function (telemetry) {
 
-}).service("missionService", ["$http", "CSRF_TOKEN",
-    function($http, CSRF_TOKEN) {
-        this.create = function (mission) {
-            $http.post('/missions/create', {
-                mission: mission,
-                _token: CSRF_TOKEN
-            }).then(function (response) {
-                window.location = '/missions/' + response.data.slug;
-            });
-        };
+            var self = telemetry;
 
-        this.update = function (mission) {
-            $http.patch('/missions/' + mission.slug + '/edit', {
-                mission: mission,
-                _token: CSRF_TOKEN
-            }).then(function (response) {
-                window.location = '/missions/' + response.data.slug;
-            });
-        };
-    }
-]);
+            return self;
+        }
+    });
 
+    app.service("missionService", ["$http", "CSRF_TOKEN",
+        function($http, CSRF_TOKEN) {
+            this.create = function (mission) {
+                $http.post('/missions/create', {
+                    mission: mission,
+                    _token: CSRF_TOKEN
+                }).then(function (response) {
+                    window.location = '/missions/' + response.data.slug;
+                });
+            };
 
-
-
+            this.update = function (mission) {
+                $http.patch('/missions/' + mission.slug + '/edit', {
+                    mission: mission,
+                    _token: CSRF_TOKEN
+                }).then(function (response) {
+                    window.location = '/missions/' + response.data.slug;
+                });
+            };
+        }
+    ]);
+})();
 (function() {
     var app = angular.module('app', []);
 
@@ -887,68 +903,70 @@ angular.module("missionApp", ["directives.datetime", "directives.selectList"]).c
     }]);
 
 })();
-angular.module("homePageApp", ["directives.countdown"]).controller("homePageController", ['$scope', 'Statistic', function($scope, Statistic) {
-    $scope.statistics = [];
+(function() {
+    var app = angular.module('app', []);
 
-    $scope.activeStatistic = false;
+    app.controller("homePageController", ['$scope', 'Statistic', function($scope, Statistic) {
+        $scope.statistics = [];
 
-    laravel.statistics.forEach(function(statistic) {
-        $scope.statistics.push(new Statistic(statistic));
-    });
+        $scope.activeStatistic = false;
 
-    $scope.goToClickedStatistic = function(statisticType) {
-        $scope.activeStatistic = statisticType;
-    }
-
-    $scope.goToPreviousStatistic = function() {
-
-    }
-
-    $scope.goToNextStatistic = function() {
-
-    }
-
-    $scope.$watch("activeStatistic", function(newValue, oldValue) {
-
-    });
-}])
-
-.factory('Statistic', ['Substatistic', function(Substatistic) {
-    return function(statistic) {
-
-        var self = {};
-
-        statistic.forEach(function(substatistic) {
-
-            var substatisticObject = new Substatistic(substatistic);
-
-            if (!self.substatistics) {
-
-                self.substatistics = [];
-                self.activeSubstatistic = substatisticObject;
-                self.type = substatisticObject.type;
-            }
-
-            self.substatistics.push(substatisticObject);
+        laravel.statistics.forEach(function(statistic) {
+            $scope.statistics.push(new Statistic(statistic));
         });
 
-        self.changeSubstatistic = function(newSubstatistic) {
-            self.activeSubstatistic = newSubstatistic;
-        };
+        $scope.goToClickedStatistic = function(statisticType) {
+            $scope.activeStatistic = statisticType;
+        }
 
-        return self;
-    }
-}])
+        $scope.goToPreviousStatistic = function() {
 
-.factory('Substatistic', function() {
-    return function(substatistic) {
+        }
 
-        var self = substatistic;
+        $scope.goToNextStatistic = function() {
 
-        return self;
-    }
-});
+        }
 
+        $scope.$watch("activeStatistic", function(newValue, oldValue) {
+
+        });
+    }]);
+
+    app.factory('Statistic', ['Substatistic', function(Substatistic) {
+        return function(statistic) {
+
+            var self = {};
+
+            statistic.forEach(function(substatistic) {
+
+                var substatisticObject = new Substatistic(substatistic);
+
+                if (!self.substatistics) {
+
+                    self.substatistics = [];
+                    self.activeSubstatistic = substatisticObject;
+                    self.type = substatisticObject.type;
+                }
+
+                self.substatistics.push(substatisticObject);
+            });
+
+            self.changeSubstatistic = function(newSubstatistic) {
+                self.activeSubstatistic = newSubstatistic;
+            };
+
+            return self;
+        }
+    }]);
+
+    app.factory('Substatistic', function() {
+        return function(substatistic) {
+
+            var self = substatistic;
+            return self;
+        }
+    });
+})();
 // Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
 // https://github.com/marklagendijk/angular-recursion
 angular.module('RecursionHelper', [])
@@ -1086,19 +1104,6 @@ angular.module('RecursionHelper', [])
     });
 })();
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
@@ -1168,6 +1173,19 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
         templateUrl: '/js/templates/countdown.html'
     }
 }]);
+
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
+    }
+});
 
 angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {

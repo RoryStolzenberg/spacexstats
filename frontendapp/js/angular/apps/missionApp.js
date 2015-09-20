@@ -1,226 +1,240 @@
-angular.module("missionApp", ["directives.datetime", "directives.selectList"]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
-    // Set the current mission being edited/created
-    $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
+(function() {
+    var app = angular.module('app', []);
 
-    // Scope the possible form data info
-    $scope.data = {
-        parts: laravel.parts,
-        spacecraft: laravel.spacecraft,
-        destinations: laravel.destinations,
-        missionTypes: laravel.missionTypes,
-        launchSites: laravel.launchSites,
-        landingSites: laravel.landingSites,
-        vehicles: laravel.vehicles,
-        astronauts: laravel.astronauts,
+    app.controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
+        // Set the current mission being edited/created
+        $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
 
-        launchVideos: laravel.launchVideos ? laravel.launchVideos : null,
-        missionPatches: laravel.missionPatches ? laravel.missionPatches : null,
-        pressKits: laravel.pressKits ? laravel.pressKits : null,
-        cargoManifests: laravel.cargoManifests ? laravel.cargoManifests : null,
-        pressConferences: laravel.pressConferences ? laravel.pressConferences : null,
-        featuredImages: laravel.featuredImages ? laravel.featuredImages: null,
+        // Scope the possible form data info
+        $scope.data = {
+            parts: laravel.parts,
+            spacecraft: laravel.spacecraft,
+            destinations: laravel.destinations,
+            missionTypes: laravel.missionTypes,
+            launchSites: laravel.launchSites,
+            landingSites: laravel.landingSites,
+            vehicles: laravel.vehicles,
+            astronauts: laravel.astronauts,
 
-        firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
-        upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
-        upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
-        spacecraftTypes: ['Dragon 1', 'Dragon 2'],
-        returnMethods: ['Splashdown', 'Landing', 'Did Not Return'],
-        eventTypes: ['Wet Dress Rehearsal', 'Static Fire'],
-        launchIlluminations: ['Day', 'Night', 'Twilight'],
-        statuses: ['Upcoming', 'Complete', 'In Progress'],
-        outcomes: ['Failure', 'Success']
-    };
+            launchVideos: laravel.launchVideos ? laravel.launchVideos : null,
+            missionPatches: laravel.missionPatches ? laravel.missionPatches : null,
+            pressKits: laravel.pressKits ? laravel.pressKits : null,
+            cargoManifests: laravel.cargoManifests ? laravel.cargoManifests : null,
+            pressConferences: laravel.pressConferences ? laravel.pressConferences : null,
+            featuredImages: laravel.featuredImages ? laravel.featuredImages: null,
 
-    $scope.filters = {
-        parts: {
-            type: ''
+            firstStageEngines: ['Merlin 1A', 'Merlin 1B', 'Merlin 1C', 'Merlin 1D'],
+            upperStageEngines: ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac'],
+            upperStageStatuses: ['Did not reach orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'],
+            spacecraftTypes: ['Dragon 1', 'Dragon 2'],
+            returnMethods: ['Splashdown', 'Landing', 'Did Not Return'],
+            eventTypes: ['Wet Dress Rehearsal', 'Static Fire'],
+            launchIlluminations: ['Day', 'Night', 'Twilight'],
+            statuses: ['Upcoming', 'Complete', 'In Progress'],
+            outcomes: ['Failure', 'Success']
+        };
+
+        $scope.filters = {
+            parts: {
+                type: ''
+            }
         }
-    }
 
-    $scope.selected = {
-        astronaut: null
-    };
+        $scope.selected = {
+            astronaut: null
+        };
 
-    $scope.createMission = function() {
-        missionService.create($scope.mission);
-    }
+        $scope.createMission = function() {
+            missionService.create($scope.mission);
+        }
 
-    $scope.updateMission = function() {
-        missionService.update($scope.mission);
-    }
+        $scope.updateMission = function() {
+            missionService.update($scope.mission);
+        }
 
-}]).factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", "PrelaunchEvent", "Telemetry", function(PartFlight, Payload, SpacecraftFlight, PrelaunchEvent, Telemetry) {
-    return function (mission) {
-        if (mission == null) {
+    }]);
+
+    app.factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", "PrelaunchEvent", "Telemetry", function(PartFlight, Payload, SpacecraftFlight, PrelaunchEvent, Telemetry) {
+        return function (mission) {
+            if (mission == null) {
+                var self = this;
+
+                self.payloads = [];
+                self.part_flights = [];
+                self.spacecraft_flight = null;
+                self.prelaunch_events = [];
+                self.telemetries = [];
+
+            } else {
+                var self = mission;
+            }
+
+            self.addPartFlight = function(part) {
+                self.part_flights.push(new PartFlight(part));
+            };
+
+            self.removePartFlight = function(part) {
+                self.part_flights.splice(self.part_flights.indexOf(part), 1);
+            }
+
+            self.addPayload = function() {
+                self.payloads.push(new Payload());
+            };
+
+            self.removePayload = function(payload) {
+                self.payloads.splice(self.payloads.indexOf(payload), 1);
+            };
+
+            self.addSpacecraftFlight = function(spacecraft) {
+                self.spacecraft_flight = new SpacecraftFlight(spacecraft);
+            };
+
+            self.removeSpacecraftFlight = function() {
+                self.spacecraft_flight = null;
+            };
+
+            self.addPrelaunchEvent = function() {
+                self.prelaunch_events.push(new PrelaunchEvent());
+            };
+
+            self.removePrelaunchEvent = function(prelaunchEvent) {
+                self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
+            };
+
+            self.addTelemetry = function() {
+                self.telemetries.push(new Telemetry());
+            };
+
+            self.removeTelemetry = function(telemetry) {
+                self.telemetries.splice(self.telemetries.indexOf(telemetry), 1);
+            };
+
+            return self;
+        }
+    }]);
+
+    app.factory("Payload", function() {
+        return function() {
+            var self = {
+
+            };
+            return self;
+        }
+    });
+
+    app.factory("PartFlight", ["Part", function(Part) {
+        return function(type, part) {
             var self = this;
 
-            self.payloads = [];
-            self.part_flights = [];
-            self.spacecraft_flight = null;
-            self.prelaunch_events = [];
-            self.telemetries = [];
+            self.part = new Part(type, part);
 
-        } else {
-            var self = mission;
+            return self;
         }
+    }]);
 
-        self.addPartFlight = function(part) {
-            self.part_flights.push(new PartFlight(part));
-        };
+    app.factory("Part", function() {
+        return function(type, part) {
 
-        self.removePartFlight = function(part) {
-            self.part_flights.splice(self.part_flights.indexOf(part), 1);
+            if (typeof part === 'undefined') {
+                var self = this
+                self.type = type;
+            } else {
+                var self = part;
+            }
+
+            return self;
         }
+    });
 
-        self.addPayload = function() {
-            self.payloads.push(new Payload());
-        };
-
-        self.removePayload = function(payload) {
-            self.payloads.splice(self.payloads.indexOf(payload), 1);
-        };
-
-        self.addSpacecraftFlight = function(spacecraft) {
-            self.spacecraft_flight = new SpacecraftFlight(spacecraft);
-        };
-
-        self.removeSpacecraftFlight = function() {
-            self.spacecraft_flight = null;
-        };
-
-        self.addPrelaunchEvent = function() {
-            self.prelaunch_events.push(new PrelaunchEvent());
-        };
-
-        self.removePrelaunchEvent = function(prelaunchEvent) {
-            self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
-        };
-
-        self.addTelemetry = function() {
-            self.telemetries.push(new Telemetry());
-        };
-
-        self.removeTelemetry = function(telemetry) {
-            self.telemetries.splice(self.telemetries.indexOf(telemetry), 1);
-        };
-
-        return self;
-    }
-
-}]).factory("Payload", function() {
-    return function() {
-        var self = {
-
-        };
-        return self;
-    }
-
-}).factory("PartFlight", ["Part", function(Part) {
-    return function(type, part) {
-        var self = this;
-
-        self.part = new Part(type, part);
-
-        return self;
-    }
-
-}]).factory("Part", function() {
-    return function(type, part) {
-
-        if (typeof part === 'undefined') {
-            var self = this
-            self.type = type;
-        } else {
-            var self = part;
-        }
-
-        return self;
-    }
-
-}).factory("SpacecraftFlight", ["Spacecraft", "AstronautFlight", function(Spacecraft, AstronautFlight) {
-    return function(spacecraft) {
-        var self = this;
-
-        self.spacecraft = new Spacecraft(spacecraft);
-
-        self.astronaut_flights = [];
-
-        self.addAstronautFlight = function(astronaut) {
-            self.astronaut_flights.push(new AstronautFlight(astronaut));
-        };
-
-        self.removeAstronautFlight = function(astronautFlight) {
-            self.astronaut_flights.splice(self.astronaut_flights.indexOf(astronautFlight), 1);
-        };
-
-        return self;
-    }
-
-}]).factory("Spacecraft", function() {
-    return function(spacecraft) {
-        if (spacecraft == null) {
+    app.factory("SpacecraftFlight", ["Spacecraft", "AstronautFlight", function(Spacecraft, AstronautFlight) {
+        return function(spacecraft) {
             var self = this;
-        } else {
-            var self = spacecraft;
+
+            self.spacecraft = new Spacecraft(spacecraft);
+
+            self.astronaut_flights = [];
+
+            self.addAstronautFlight = function(astronaut) {
+                self.astronaut_flights.push(new AstronautFlight(astronaut));
+            };
+
+            self.removeAstronautFlight = function(astronautFlight) {
+                self.astronaut_flights.splice(self.astronaut_flights.indexOf(astronautFlight), 1);
+            };
+
+            return self;
         }
-        return self;
-    }
+    }]);
 
-}).factory("AstronautFlight", ["Astronaut", function(Astronaut) {
-    return function(astronaut) {
-        var self = this;
+    app.factory("Spacecraft", function() {
+        return function(spacecraft) {
+            if (spacecraft == null) {
+                var self = this;
+            } else {
+                var self = spacecraft;
+            }
+            return self;
+        }
+    });
 
-        self.astronaut = new Astronaut(astronaut);
-
-        return self;
-    }
-
-}]).factory("Astronaut", function() {
-    return function (astronaut) {
-        if (astronaut == null) {
+    app.factory("AstronautFlight", ["Astronaut", function(Astronaut) {
+        return function(astronaut) {
             var self = this;
-        } else {
-            var self = astronaut;
+
+            self.astronaut = new Astronaut(astronaut);
+
+            return self;
         }
-        return self;
-    }
-}).factory("PrelaunchEvent", function() {
-    return function (prelaunchEvent) {
+    }]);
 
-        var self = prelaunchEvent;
+    app.factory("Astronaut", function() {
+        return function (astronaut) {
+            if (astronaut == null) {
+                var self = this;
+            } else {
+                var self = astronaut;
+            }
+            return self;
+        }
+    });
 
-        return self;
-    }
+    app.factory("PrelaunchEvent", function() {
+        return function (prelaunchEvent) {
 
-}).factory("Telemetry", function() {
-    return function (telemetry) {
+            var self = prelaunchEvent;
 
-        var self = telemetry;
+            return self;
+        }
+    });
 
-        return self;
-    }
+    app.factory("Telemetry", function() {
+        return function (telemetry) {
 
-}).service("missionService", ["$http", "CSRF_TOKEN",
-    function($http, CSRF_TOKEN) {
-        this.create = function (mission) {
-            $http.post('/missions/create', {
-                mission: mission,
-                _token: CSRF_TOKEN
-            }).then(function (response) {
-                window.location = '/missions/' + response.data.slug;
-            });
-        };
+            var self = telemetry;
 
-        this.update = function (mission) {
-            $http.patch('/missions/' + mission.slug + '/edit', {
-                mission: mission,
-                _token: CSRF_TOKEN
-            }).then(function (response) {
-                window.location = '/missions/' + response.data.slug;
-            });
-        };
-    }
-]);
+            return self;
+        }
+    });
 
+    app.service("missionService", ["$http", "CSRF_TOKEN",
+        function($http, CSRF_TOKEN) {
+            this.create = function (mission) {
+                $http.post('/missions/create', {
+                    mission: mission,
+                    _token: CSRF_TOKEN
+                }).then(function (response) {
+                    window.location = '/missions/' + response.data.slug;
+                });
+            };
 
-
+            this.update = function (mission) {
+                $http.patch('/missions/' + mission.slug + '/edit', {
+                    mission: mission,
+                    _token: CSRF_TOKEN
+                }).then(function (response) {
+                    window.location = '/missions/' + response.data.slug;
+                });
+            };
+        }
+    ]);
+})();
