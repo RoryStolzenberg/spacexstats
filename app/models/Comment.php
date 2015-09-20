@@ -8,7 +8,7 @@ class Comment extends Eloquent {
     public $timestamps = true;
 
     protected $hidden = [];
-    protected $appends = [];
+    protected $appends = ['ownership'];
     protected $fillable = [];
     protected $guarded = [];
 
@@ -37,5 +37,9 @@ class Comment extends Eloquent {
             return null;
         }
         return $this->attributes['comment'];
+    }
+
+    public function getOwnershipAttribute() {
+        return Auth::user()->user_id == $this->attributes['user_id'];
     }
 }

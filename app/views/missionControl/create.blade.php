@@ -468,9 +468,7 @@
                         <input type="url" name="article-url" id="article-url" ng-model="article.external_url" required />
 
                         <label>Article Date</label>
-
-                        <label>Article News Source</label>
-                        <input type="text" name="article-publisher" id="article-publisher" ng-model="article.publisher" required />
+                        <datetime ng-model="article.originated_at" type="date" is-null="false"></datetime>
 
                         <label>Article Author</label>
                         <input type="text" name="article-author" id="article-author" ng-model="article.author" required />
@@ -478,7 +476,7 @@
                         <label>Article Title</label>
                         <input type="text" name="article-title" id="article-title" ng-model="article.title" required />
 
-                        <label>Article Text</label>
+                        <label>Article</label>
                         <textarea ng-model="article.article" required></textarea>
 
                         <label>Select Mission</label>
@@ -493,6 +491,8 @@
                         </select-list>
 
                         <label>Tags</label>
+                        <tags available-tags="data.tags" name="tags" ng-model="article.tags"></tags>
+                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
                     <fieldset class="post-type pressrelease" ng-if="postType == 'pressrelease'">
@@ -529,7 +529,7 @@
                         <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment()" required placeholder="Please ensure this is a Reddit permalink">
 
                         <label>Title Describing The Comment</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required />
+                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required ng-pattern="/reddit.com\//" />
 
                         <label>Select Mission</label>
                         <select-list

@@ -19,7 +19,7 @@
 		"laracasts/utilities": "~1.0",
 		"twilio/sdk": "^4.2",
         "elasticsearch/elasticsearch": "~1.0",
-        "luke-nz/phpreddit": "dev-master"
+        "luke-nz/phpreddit": "dev-master@dev"
 	},
 	"autoload": {
 		"classmap": [
@@ -52,5 +52,5 @@
 	"config": {
 		"preferred-install": "dist"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }

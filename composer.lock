@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b6ce30524df047066a2d912bd144f21e",
-    "content-hash": "f14e86733cf4c8e8f191ad5c0ab84363",
+    "hash": "2fd3a5b0e7ae6ebcdcc9737f21dd69c3",
+    "content-hash": "565600fb1cd475bbb9026869dd4fb3e2",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -102,13 +102,13 @@
                     "homepage": "http://www.lickmychip.com/"
                 },
                 {
-                    "name": "nlegoff",
-                    "email": "legoff.n@gmail.com"
-                },
-                {
                     "name": "Phraseanet Team",
                     "email": "info@alchemy.fr",
                     "homepage": "http://www.phraseanet.com/"
+                },
+                {
+                    "name": "Nicolas Le Goff",
+                    "email": "legoff.n@gmail.com"
                 }
             ],
             "description": "A set of tools to build binary drivers",
@@ -1211,12 +1211,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LukeNZ/phpreddit.git",
-                "reference": "d039ccbb37667aaff65c6c79e2f93e45a726131d"
+                "reference": "e0db11a2f98864d456b72b5d1fc5917df38199ae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LukeNZ/phpreddit/zipball/d039ccbb37667aaff65c6c79e2f93e45a726131d",
-                "reference": "d039ccbb37667aaff65c6c79e2f93e45a726131d",
+                "url": "https://api.github.com/repos/LukeNZ/phpreddit/zipball/e0db11a2f98864d456b72b5d1fc5917df38199ae",
+                "reference": "e0db11a2f98864d456b72b5d1fc5917df38199ae",
                 "shasum": ""
             },
             "require": {
@@ -1226,7 +1226,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Reddit\\": "src/"
+                    "LukeNZ\\Reddit\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1244,7 +1244,7 @@
                 "api",
                 "reddit"
             ],
-            "time": "2015-09-19 08:26:44"
+            "time": "2015-09-20 02:44:32"
         },
         {
             "name": "monolog/monolog",
@@ -3115,7 +3115,7 @@
     ],
     "packages-dev": [],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {
         "sybio/gif-frame-extractor": 20,
         "luke-nz/phpreddit": 20

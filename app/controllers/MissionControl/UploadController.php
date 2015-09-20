@@ -117,10 +117,10 @@ class UploadController extends BaseController {
 
     // AJAX GET
     public function retrieveRedditComment() {
-        $reddit = new Reddit('ElongatedMuskrat', '', Credential::RedditID, Credential::RedditSecret);
-        $test = $reddit->me();
-    }
+        $reddit = new LukeNZ\Reddit\Reddit(Credential::RedditUsername, Credential::RedditPassword, Credential::RedditID, Credential::RedditSecret);
 
+        $test = $reddit->getComment('https://www.reddit.com/r/redditdev/comments/3ligwq/how_does_a_reddit_bot_differ_from_an_application/cv6sskz');
+    }
 
 }
  
