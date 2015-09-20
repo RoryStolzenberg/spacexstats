@@ -526,10 +526,12 @@
 
                     <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'" required>
                         <label>Permalink URL</label>
-                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment()" required placeholder="Please ensure this is a Reddit permalink">
+                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment()" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
 
                         <label>Title Describing The Comment</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required ng-pattern="/reddit.com\//" />
+                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required minlength="10"  />
+
+                        <reddit-comment ng-model="redditcomment"></reddit-comment>
 
                         <label>Select Mission</label>
                         <select-list
