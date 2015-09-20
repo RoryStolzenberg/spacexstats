@@ -2,7 +2,7 @@
 @section('title', 'Upload to Mission Control')
 
 @section('content')
-<body class="missioncontrol-upload" ng-app="uploadApp" ng-controller="uploadAppController" ng-strict-di>
+<body class="missioncontrol-upload" ng-controller="uploadAppController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')

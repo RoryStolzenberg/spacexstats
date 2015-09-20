@@ -1,22 +1,25 @@
-angular.module('directives.deltaV', []).directive('deltaV', function() {
-    return {
-        restrict: 'A',
-        scope: {
-            deltaV: '='
-        },
-        link: function($scope, element, attributes) {
+(function() {
+    var app = angular.module('app');
 
-            $scope.$watch("deltaV", function(files) {
-                if (typeof files !== 'undefined') {
-                    files.forEach(function(file) {
-                        console.log(Object.prototype.toString.call(file));
-                    });
-                }
-            });
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'A',
+            scope: {
+                deltaV: '='
+            },
+            link: function($scope, element, attributes) {
 
-            $scope.calculatedValue = 0;
-        },
-        template: '<span>[[ calculatedValue ]] m/s of dV</span>'
-    }
-});
+                $scope.$watch("deltaV", function(files) {
+                    if (typeof files !== 'undefined') {
+                        files.forEach(function(file) {
+                            console.log(Object.prototype.toString.call(file));
+                        });
+                    }
+                });
 
+                $scope.calculatedValue = 0;
+            },
+            template: '<span>{{ calculatedValue }} m/s of dV</span>'
+        }
+    });
+})();
