@@ -65,7 +65,6 @@
         };
 
         $scope.fileSubmitButtonFunction = function() {
-            console.log($scope.files);
             $rootScope.postToMissionControl($scope.files, 'files');
         }
     }]);
@@ -96,7 +95,6 @@
         };
 
         $scope.writeSubmitButtonFunction = function() {
-            console.log($scope.text);
             $rootScope.postToMissionControl($scope.text, 'text');
         }
     }]);

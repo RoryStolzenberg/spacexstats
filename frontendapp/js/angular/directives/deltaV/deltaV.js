@@ -3,9 +3,9 @@
 
     app.directive('deltaV', function() {
         return {
-            restrict: 'A',
+            restrict: 'E',
             scope: {
-                deltaV: '='
+                deltaV: '=ngModel'
             },
             link: function($scope, element, attributes) {
 
@@ -19,7 +19,7 @@
 
                 $scope.calculatedValue = 0;
             },
-            template: '<span>{{ calculatedValue }} m/s of dV</span>'
+            templateUrl: '/js/templates/deltaV.html'
         }
     });
 })();
