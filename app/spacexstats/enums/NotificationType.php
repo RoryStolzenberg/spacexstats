@@ -11,4 +11,6 @@ abstract class NotificationType extends Enum {
     const tMinus24HoursSMS = 7;
     const tMinus3HoursSMS = 8;
     const tMinus1HourSMS = 9;
+
+    const deorbit = 10;
 }

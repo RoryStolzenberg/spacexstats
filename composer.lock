@@ -1211,12 +1211,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LukeNZ/phpreddit.git",
-                "reference": "e0db11a2f98864d456b72b5d1fc5917df38199ae"
+                "reference": "89867840e871114b8dc1ffa315099189ba97c65b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LukeNZ/phpreddit/zipball/e0db11a2f98864d456b72b5d1fc5917df38199ae",
-                "reference": "e0db11a2f98864d456b72b5d1fc5917df38199ae",
+                "url": "https://api.github.com/repos/LukeNZ/phpreddit/zipball/89867840e871114b8dc1ffa315099189ba97c65b",
+                "reference": "89867840e871114b8dc1ffa315099189ba97c65b",
                 "shasum": ""
             },
             "require": {
@@ -1244,7 +1244,7 @@
                 "api",
                 "reddit"
             ],
-            "time": "2015-09-20 02:44:32"
+            "time": "2015-09-20 03:46:01"
         },
         {
             "name": "monolog/monolog",

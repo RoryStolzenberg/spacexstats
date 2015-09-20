@@ -119,7 +119,8 @@ class UploadController extends BaseController {
     public function retrieveRedditComment() {
         $reddit = new LukeNZ\Reddit\Reddit(Credential::RedditUsername, Credential::RedditPassword, Credential::RedditID, Credential::RedditSecret);
 
-        $test = $reddit->getComment('https://www.reddit.com/r/redditdev/comments/3ligwq/how_does_a_reddit_bot_differ_from_an_application/cv6sskz');
+        $comment = $reddit->getComment(Input::get('url'));
+        return Response::json($comment);
     }
 
 }
