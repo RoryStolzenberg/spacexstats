@@ -1,8 +1,4 @@
-angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+angular.module("futureMissionApp", ["directives.countdown", "flashMessageService"]).controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
     $scope.missionSlug = laravel.slug;
     $scope.launchDateTime = laravel.launchDateTime;

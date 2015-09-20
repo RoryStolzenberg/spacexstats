@@ -1,8 +1,4 @@
-angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV", "directives.datetime"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("uploadAppController", ["$scope", function($scope) {
+angular.module("uploadApp", ["directives.upload", "directives.selectList", "directives.tags", "directives.deltaV", "directives.datetime"]).controller("uploadAppController", ["$scope", function($scope) {
     $scope.activeSection = "upload";
 
     $scope.data = {

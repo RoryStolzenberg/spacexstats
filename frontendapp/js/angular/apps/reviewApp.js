@@ -1,8 +1,4 @@
-angular.module('reviewApp', [], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
+angular.module('reviewApp', []).controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
 
     $scope.visibilities = ['Default', 'Public', 'Hidden'];
 

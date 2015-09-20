@@ -1,8 +1,4 @@
-angular.module('objectApp', ['directives.comment'], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("objectController", ["$scope", "$http", function($scope, $http) {
+angular.module('objectApp', ['directives.comment']).controller("objectController", ["$scope", "$http", function($scope, $http) {
 
     $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
     $scope.object = laravel.object;

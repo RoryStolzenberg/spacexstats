@@ -1,8 +1,4 @@
-angular.module("missionApp", ["directives.datetime", "directives.selectList"], ['$interpolateProvider', function($interpolateProvider) {
-    $interpolateProvider.startSymbol('[[');
-    $interpolateProvider.endSymbol(']]');
-
-}]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
+angular.module("missionApp", ["directives.datetime", "directives.selectList"]).controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
     // Set the current mission being edited/created
     $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
 
