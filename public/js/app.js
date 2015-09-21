@@ -1,3 +1,66 @@
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
+        return {
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
+
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
+
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
+                    }
+                };
+            }
+        };
+    }
+]);
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+})();
+
+
 angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
     $scope.missions = laravel.missions;
 
@@ -156,9 +219,9 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
     }]);
 })();
 (function() {
-    var app = angular.module('app', []);
+    var uploadApp = angular.module('app', []);
 
-    app.controller("uploadAppController", ["$scope", function($scope) {
+    uploadApp.controller("uploadAppController", ["$scope", function($scope) {
         $scope.activeSection = "upload";
 
         $scope.data = {
@@ -193,7 +256,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     }]);
 
-    app.controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
+    uploadApp.controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
         $scope.activeUploadSection = "dropzone";
 
         $scope.currentVisibleFile = null;
@@ -226,7 +289,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     }]);
 
-    app.controller("postController", ["$rootScope", "$scope", "$http", function($rootScope, $scope, $http) {
+    uploadApp.controller("postController", ["$rootScope", "$scope", "$http", function($rootScope, $scope, $http) {
 
         $scope.NSFcomment = {};
         $scope.redditcomment = {};
@@ -241,7 +304,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     }]);
 
-    app.controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
+    uploadApp.controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
         $scope.text = {
             title: null,
@@ -256,7 +319,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     }]);
 
-    app.run(['$rootScope', '$http', function($rootScope, $http) {
+    uploadApp.run(['$rootScope', '$http', function($rootScope, $http) {
         $rootScope.postToMissionControl = function(dataToUpload, submissionHeader) {
             var req = {
                 method: 'POST',
@@ -275,7 +338,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     }]);
 
-    app.factory("Image", function() {
+    uploadApp.factory("Image", function() {
         return function (image, index) {
             var self = image;
 
@@ -296,7 +359,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     });
 
-    app.factory("GIF", function() {
+    uploadApp.factory("GIF", function() {
         return function(gif, index) {
             var self = gif;
 
@@ -316,7 +379,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     });
 
-    app.factory("Audio", function() {
+    uploadApp.factory("Audio", function() {
         return function(audio, index) {
             var self = audio;
 
@@ -336,7 +399,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     });
 
-    app.factory("Video", function() {
+    uploadApp.factory("Video", function() {
         return function(video, index) {
             var self = video;
 
@@ -357,7 +420,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     });
 
-    app.factory("Document", function() {
+    uploadApp.factory("Document", function() {
         return function(document, index) {
             var self = document;
 
@@ -377,7 +440,7 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
         }
     });
 
-    app.service("objectFromFile", ["Image", "GIF", "Audio", "Video", "Document", function(Image, GIF, Audio, Video, Document) {
+    uploadApp.service("objectFromFile", ["Image", "GIF", "Audio", "Video", "Document", function(Image, GIF, Audio, Video, Document) {
         this.create = function(file, index) {
             switch(file.type) {
                 case 1: return new Image(file, index);
@@ -394,93 +457,96 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
     $scope
 }]);
 
-angular.module('reviewApp', []).controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
+(function() {
+    var reviewApp = angular.module('app', []);
 
-    $scope.visibilities = ['Default', 'Public', 'Hidden'];
+    reviewApp.controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
 
-    $scope.objectsToReview = [];
+        $scope.visibilities = ['Default', 'Public', 'Hidden'];
 
-    $scope.action = function(object, newStatus) {
+        $scope.objectsToReview = [];
 
-        object.status = newStatus;
+        $scope.action = function(object, newStatus) {
 
-        $http.post('/missioncontrol/review/update/' + object.object_id, {
+            object.status = newStatus;
+
+            $http.post('/missioncontrol/review/update/' + object.object_id, {
                 visibility: object.visibility, status: object.status
-        }).then(function() {
-            $scope.objectsToReview.splice($scope.objectsToReview.indexOf(object), 1);
+            }).then(function() {
+                $scope.objectsToReview.splice($scope.objectsToReview.indexOf(object), 1);
 
-        }, function(response) {
-            alert('An error occured');
-        });
-    };
-
-    (function() {
-        $http.get('/missioncontrol/review/get').then(function(response) {
-            response.data.forEach(function(objectToReview) {
-                 $scope.objectsToReview.push(new ObjectToReview(objectToReview));
+            }, function(response) {
+                alert('An error occured');
             });
-            console.log($scope.objectsToReview);
-        });
-    })();
-
-}]).factory("ObjectToReview", function() {
-    return function (object) {
-        var self = object;
-
-        self.visibility = "Default";
-
-        self.linkToObject = '/missioncontrol/object/' + self.object_id;
-
-        self.linkToUser = 'users/' + self.user.username;
-
-        self.textType = function() {
-            switch(self.type) {
-                case 1:
-                    return 'Image';
-                case 2:
-                    return 'GIF';
-                case 3:
-                    return 'Audio';
-                case 4:
-                    return 'Video';
-                case 5:
-                    return 'Document';
-            }
         };
 
-        self.textSubtype = function() {
-            switch(self.subtype) {
-                case 1:
-                    return 'MissionPatch';
-                case 2:
-                    return 'Photo';
-                case 3:
-                    return 'Telemetry';
-                case 4:
-                    return 'Chart';
-                case 5:
-                    return 'Screenshot';
-                case 6:
-                    return 'LaunchVideo';
-                case 7:
-                    return 'PressConference';
-                case 8:
-                    return 'PressKit';
-                case 9:
-                    return 'CargoManifest';
-                default:
-                    return null;
-            }
-        };
+        (function() {
+            $http.get('/missioncontrol/review/get').then(function(response) {
+                response.data.forEach(function(objectToReview) {
+                    $scope.objectsToReview.push(new ObjectToReview(objectToReview));
+                });
+                console.log($scope.objectsToReview);
+            });
+        })();
 
-        self.createdAtRelative = moment.utc(self.created_at).fromNow();
+    }]);
 
-        return self;
-    }
+    reviewApp.factory("ObjectToReview", function() {
+        return function (object) {
+            var self = object;
 
-});
+            self.visibility = "Default";
 
+            self.linkToObject = '/missioncontrol/object/' + self.object_id;
 
+            self.linkToUser = 'users/' + self.user.username;
+
+            self.textType = function() {
+                switch(self.type) {
+                    case 1:
+                        return 'Image';
+                    case 2:
+                        return 'GIF';
+                    case 3:
+                        return 'Audio';
+                    case 4:
+                        return 'Video';
+                    case 5:
+                        return 'Document';
+                }
+            };
+
+            self.textSubtype = function() {
+                switch(self.subtype) {
+                    case 1:
+                        return 'MissionPatch';
+                    case 2:
+                        return 'Photo';
+                    case 3:
+                        return 'Telemetry';
+                    case 4:
+                        return 'Chart';
+                    case 5:
+                        return 'Screenshot';
+                    case 6:
+                        return 'LaunchVideo';
+                    case 7:
+                        return 'PressConference';
+                    case 8:
+                        return 'PressKit';
+                    case 9:
+                        return 'CargoManifest';
+                    default:
+                        return null;
+                }
+            };
+
+            self.createdAtRelative = moment.utc(self.created_at).fromNow();
+
+            return self;
+        }
+    });
+})();
 angular.module('objectApp', ['directives.comment']).controller("objectController", ["$scope", "$http", function($scope, $http) {
 
     $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
@@ -980,68 +1046,18 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
+angular.module('directives.missionCard', []).directive('missionCard', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            size: '@',
+            mission: '='
+        },
+        link: function($scope) {
+        },
+        templateUrl: '/js/templates/missionCard.html'
     }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
+});
 
 (function() {
     var app = angular.module('app', []);
@@ -1187,53 +1203,6 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
     }
 }]);
 
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 (function() {
     var app = angular.module('app', []);
 
@@ -1370,6 +1339,40 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
 })();
 
 
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',
@@ -1628,21 +1631,31 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
         templateUrl: '/js/templates/comment.html'
     }
 }]);
-angular.module('directives.redditComment', []).directive('redditComment', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            redditComment: '=ngModel'
-        },
-        link: function($scope, element, attributes) {
+(function() {
+    var app = angular.module('app');
 
-            $scope.retrieveRedditComment = function() {
-                $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditcomment.external_url));
-            }
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
-        },
-        templateUrl: '/js/templates/redditComment.html'
-    }
-});
+                $scope.$watch('redditComment.external_url', function() {
+                    $scope.retrieveRedditComment();
+                });
 
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                            console.log(response);
+                        });
+                    }
+                }
 
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();

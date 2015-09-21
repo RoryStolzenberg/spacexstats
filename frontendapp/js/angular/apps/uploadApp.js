@@ -1,7 +1,7 @@
 (function() {
-    var app = angular.module('app', []);
+    var uploadApp = angular.module('app', []);
 
-    app.controller("uploadAppController", ["$scope", function($scope) {
+    uploadApp.controller("uploadAppController", ["$scope", function($scope) {
         $scope.activeSection = "upload";
 
         $scope.data = {
@@ -36,7 +36,7 @@
         }
     }]);
 
-    app.controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
+    uploadApp.controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
         $scope.activeUploadSection = "dropzone";
 
         $scope.currentVisibleFile = null;
@@ -69,7 +69,7 @@
         }
     }]);
 
-    app.controller("postController", ["$rootScope", "$scope", "$http", function($rootScope, $scope, $http) {
+    uploadApp.controller("postController", ["$rootScope", "$scope", "$http", function($rootScope, $scope, $http) {
 
         $scope.NSFcomment = {};
         $scope.redditcomment = {};
@@ -84,7 +84,7 @@
         }
     }]);
 
-    app.controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
+    uploadApp.controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
 
         $scope.text = {
             title: null,
@@ -99,7 +99,7 @@
         }
     }]);
 
-    app.run(['$rootScope', '$http', function($rootScope, $http) {
+    uploadApp.run(['$rootScope', '$http', function($rootScope, $http) {
         $rootScope.postToMissionControl = function(dataToUpload, submissionHeader) {
             var req = {
                 method: 'POST',
@@ -118,7 +118,7 @@
         }
     }]);
 
-    app.factory("Image", function() {
+    uploadApp.factory("Image", function() {
         return function (image, index) {
             var self = image;
 
@@ -139,7 +139,7 @@
         }
     });
 
-    app.factory("GIF", function() {
+    uploadApp.factory("GIF", function() {
         return function(gif, index) {
             var self = gif;
 
@@ -159,7 +159,7 @@
         }
     });
 
-    app.factory("Audio", function() {
+    uploadApp.factory("Audio", function() {
         return function(audio, index) {
             var self = audio;
 
@@ -179,7 +179,7 @@
         }
     });
 
-    app.factory("Video", function() {
+    uploadApp.factory("Video", function() {
         return function(video, index) {
             var self = video;
 
@@ -200,7 +200,7 @@
         }
     });
 
-    app.factory("Document", function() {
+    uploadApp.factory("Document", function() {
         return function(document, index) {
             var self = document;
 
@@ -220,7 +220,7 @@
         }
     });
 
-    app.service("objectFromFile", ["Image", "GIF", "Audio", "Video", "Document", function(Image, GIF, Audio, Video, Document) {
+    uploadApp.service("objectFromFile", ["Image", "GIF", "Audio", "Video", "Document", function(Image, GIF, Audio, Video, Document) {
         this.create = function(file, index) {
             switch(file.type) {
                 case 1: return new Image(file, index);

@@ -118,7 +118,8 @@ class Object extends Eloquent {
      * @return bool
      */
     public function hasThumbs() {
-        return !is_null($this->thumb_filename) && $this->thumb_filename !== "audio.png" && $this->thumb_filename !== "document.png" && $this->thumb_filename !== "text.png";
+        $defaultThumbs = array("audio.png", "document.png", "text.png", "comment.png");
+        return !is_null($this->thumb_filename) && !in_array($this->thumb_filename, $defaultThumbs);
     }
 
     /**

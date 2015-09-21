@@ -533,7 +533,7 @@
                         <delta-v ng-model="redditcomment"></delta-v>
 
                         <label>Permalink URL</label>
-                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment()" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
+                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
 
                         <label>Title Describing The Comment</label>
                         <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required minlength="10"  />
@@ -560,7 +560,7 @@
                         <delta-v ng-model="NSFcomment"></delta-v>
 
                         <label>Comment URL</label>
-                        <input type="url" name="nsfcomment-url" id="article-url" ng-model="NSFcomment.external_url" required />
+                        <input type="url" name="nsfcomment-url" id="article-url" ng-model="NSFcomment.external_url" required ng-pattern="/nasaspaceflight.com\//" />
 
                         <label>Title Describing The Comment</label>
                         <input type="text" name="article-author" id="article-author" ng-model="NSFcomment.title" required minlength="10" />
