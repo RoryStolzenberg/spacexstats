@@ -16,7 +16,7 @@ class Award extends Eloquent {
 
         Award::created(function($award) {
 
-            $award->user()->incrementSubscription(DeltaV::toDateInterval());
+            $award->user()->incrementSubscription(DeltaV::toSeconds($award->value));
         });
     }
 

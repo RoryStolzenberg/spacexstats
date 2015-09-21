@@ -1,5 +1,7 @@
 <?php
 
+use SpaceXStats\Library\DeltaV;
+
 class ReviewController extends BaseController {
 
     // GET
@@ -33,6 +35,14 @@ class ReviewController extends BaseController {
 
                 // Save the object if there's no errors
                 $object->save();
+
+                // Finally, give out some deltaV
+                Award::create(array(
+                    'user_id'   => $object->user_id,
+                    'object_id' => $object->object_id,
+                    'type'      => 'Created',
+                    'value'     => DeltaV::calculate($object)
+                ));
 
             } elseif (Input::get('status') == "Deleted") {
                 $object->delete();

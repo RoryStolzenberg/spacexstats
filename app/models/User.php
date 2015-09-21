@@ -139,9 +139,15 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     }
 
     /**
-     * Increment the subscription length of the user by a certain length of time
+     * Increment the user's Mission Control subscription by the given number of seconds if they are a
+     * Mission Control subscriber.
+     *
+     * @param $secondsToIncrement   integer     The number of seconds to increment a user subscription by.
      */
-    public function incrementSubscription() {
+    public function incrementSubscription($secondsToIncrement) {
+        if ($this->role_id == UserRole::Subscriber) {
+            $this->subscription_expiry->addSeconds($secondsToIncrement);
+        }
     }
 
     // Attribute accessors
