@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder {
         $this->call('AstronautsTableSeeder');
         $this->call('MissionTypesTableSeeder');
         $this->call('CommentsTableSeeder');
+        $this->call('PublishersTableSeeder');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 	}

@@ -476,11 +476,19 @@
                         <datetime ng-model="article.originated_at" type="date" is-null="false"></datetime>
 
                         <label>Publication</label>
-                        <select-list name="publisher" options="data.publishers" ng-model="article.publisher_id" unique-key="publisher_id" title-key="name" searchable="true" placeholder="Select the publisher of the article"></select-list>
-                        <p>Can't find the article publisher? <a href="/publishers/create">Create them</a>.</p>
+                        <select-list
+                                name="publisher"
+                                options="data.publishers"
+                                ng-model="article.publisher_id"
+                                unique-key="publisher_id"
+                                title-key="name"
+                                searchable="true"
+                                placeholder="Select the publisher of the article">
+                        </select-list>
+                        <p>Can't find the article publisher? <a href="/publishers/create">Create them first</a>.</p>
 
                         <label>Article Author</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="article.author" required />
+                        <input type="text" name="article-author" id="article-author" ng-model="article.author" />
 
                         <label>Article Title</label>
                         <input type="text" name="article-title" id="article-title" ng-model="article.title" required />
