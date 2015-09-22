@@ -4,7 +4,7 @@
 
     <div class="write" ng-if="action == 'write'" ng-form="tweetForm">
         <label>Tweet URL</label>
-        <input type="url" name="tweet_url" id="tweet_url" ng-model="tweet.external_url" />
+        <input type="url" name="tweet_url" id="tweet_url" ng-model="tweet.external_url" ng-change="retrieveTweet()" />
 
         <hr/>
         <p>Alternatively, if the tweet is no longer available, enter the tweet information below</p>

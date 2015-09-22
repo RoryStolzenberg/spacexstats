@@ -1051,79 +1051,6 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                callback: '&'
-            },
-            link: function($scope) {
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                (function() {
-                    if ($scope.isLaunchExact) {
-
-                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                        $scope.countdownProcessor = function() {
-
-                            var launchUnixSeconds = $scope.launchUnixSeconds;
-                            var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                            if (launchUnixSeconds >= currentUnixSeconds) {
-                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                                var secondsBetween = $scope.secondsAwayFromLaunch;
-                                // Calculate the number of days, hours, minutes, seconds
-                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                                secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                                secondsBetween -= $scope.hours * 60 * 60;
-
-                                $scope.minutes = Math.floor(secondsBetween / 60);
-                                secondsBetween -= $scope.minutes * 60;
-
-                                $scope.seconds = secondsBetween;
-
-                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                                // Stop the countdown, count up!
-                            } else {
-                            }
-
-                            if ($scope.callback && typeof $scope.callback === 'function') {
-                                $scope.callback();
-                            }
-                        };
-
-                        $interval($scope.countdownProcessor, 1000);
-                    } else {
-                        $scope.countdownText = $scope.countdownTo;
-                    }
-                })();
-
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app', []);
 
@@ -1198,6 +1125,79 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
     });
 })();
 
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                callback: '&'
+            },
+            link: function($scope) {
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
+
+                (function() {
+                    if ($scope.isLaunchExact) {
+
+                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+
+
+                        $scope.countdownProcessor = function() {
+
+                            var launchUnixSeconds = $scope.launchUnixSeconds;
+                            var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                            if (launchUnixSeconds >= currentUnixSeconds) {
+                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                                var secondsBetween = $scope.secondsAwayFromLaunch;
+                                // Calculate the number of days, hours, minutes, seconds
+                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                                secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                                secondsBetween -= $scope.hours * 60 * 60;
+
+                                $scope.minutes = Math.floor(secondsBetween / 60);
+                                secondsBetween -= $scope.minutes * 60;
+
+                                $scope.seconds = secondsBetween;
+
+                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                                // Stop the countdown, count up!
+                            } else {
+                            }
+
+                            if ($scope.callback && typeof $scope.callback === 'function') {
+                                $scope.callback();
+                            }
+                        };
+
+                        $interval($scope.countdownProcessor, 1000);
+                    } else {
+                        $scope.countdownText = $scope.countdownTo;
+                    }
+                })();
+
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -1214,40 +1214,6 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 (function() {
     var app = angular.module('app', []);
 
@@ -1384,6 +1350,40 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
 })();
 
 
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 (function() {
     var app = angular.module('app');
 
@@ -1562,28 +1562,6 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-                    $http.get('/missioncontrol/retrievetweet').then(function(response) {
-
-                    });
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('deltaV', function() {
         return {
             restrict: 'E',
@@ -1625,6 +1603,43 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
             templateUrl: '/js/templates/deltaV.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if ($scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/retrievetweet').then(function(response) {
+                            // Set parameters
+                            self.tweet.tweet_text(response.text);
+                            self.tweet.tweet_user_profile_image_url(response.user.profile_image_url.replace("_normal", ""));
+                            self.tweet.tweet_user_screen_name(response.user.screen_name);
+                            self.tweet.tweet_user_name(response.user.name);
+                            self.tweet.tweet_created_at(moment(response.created_at).format());
+
+                        });
+                    }
+                    // Toggle disabled state somewhere around here
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
 })();
 angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
     return {
