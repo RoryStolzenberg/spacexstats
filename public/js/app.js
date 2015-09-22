@@ -1,66 +1,3 @@
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
-    }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
-
 angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
     $scope.missions = laravel.missions;
 
@@ -1046,6 +983,139 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
+        return {
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
+
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
+
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
+                    }
+                };
+            }
+        };
+    }
+]);
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+})();
+
+
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
+    return {
+        restrict: 'E',
+        scope: {
+            specificity: '=',
+            countdownTo: '=',
+            callback: '&'
+        },
+        link: function($scope) {
+
+            $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+            $scope.$watch('specificity', function(newValue) {
+                $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+            });
+
+            (function() {
+                if ($scope.isLaunchExact) {
+
+                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+
+
+                    $scope.countdownProcessor = function() {
+
+                        var launchUnixSeconds = $scope.launchUnixSeconds;
+                        var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                        if (launchUnixSeconds >= currentUnixSeconds) {
+                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                            var secondsBetween = $scope.secondsAwayFromLaunch;
+                            // Calculate the number of days, hours, minutes, seconds
+                            $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                            secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                            $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                            secondsBetween -= $scope.hours * 60 * 60;
+
+                            $scope.minutes = Math.floor(secondsBetween / 60);
+                            secondsBetween -= $scope.minutes * 60;
+
+                            $scope.seconds = secondsBetween;
+
+                            $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                            $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                            $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                            $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                            // Stop the countdown, count up!
+                        } else {
+                        }
+
+                        if ($scope.callback && typeof $scope.callback === 'function') {
+                            $scope.callback();
+                        }
+                    };
+
+                    $interval($scope.countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            })();
+
+        },
+        templateUrl: '/js/templates/countdown.html'
+    }
+}]);
+
 angular.module('directives.missionCard', []).directive('missionCard', function() {
     return {
         restrict: 'E',
@@ -1133,76 +1203,40 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
     });
 })();
 
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {
-        restrict: 'E',
-        scope: {
-            specificity: '=',
-            countdownTo: '=',
-            callback: '&'
-        },
-        link: function($scope) {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
 
-            $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
 
-            $scope.$watch('specificity', function(newValue) {
-                $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
             });
 
-            (function() {
-                if ($scope.isLaunchExact) {
-
-                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                    $scope.countdownProcessor = function() {
-
-                        var launchUnixSeconds = $scope.launchUnixSeconds;
-                        var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                        if (launchUnixSeconds >= currentUnixSeconds) {
-                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                            var secondsBetween = $scope.secondsAwayFromLaunch;
-                            // Calculate the number of days, hours, minutes, seconds
-                            $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                            secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                            $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                            secondsBetween -= $scope.hours * 60 * 60;
-
-                            $scope.minutes = Math.floor(secondsBetween / 60);
-                            secondsBetween -= $scope.minutes * 60;
-
-                            $scope.seconds = secondsBetween;
-
-                            $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                            $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                            $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                            $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                            // Stop the countdown, count up!
-                        } else {
-                        }
-
-                        if ($scope.callback && typeof $scope.callback === 'function') {
-                            $scope.callback();
-                        }
-                    };
-
-                    $interval($scope.countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            })();
-
-        },
-        templateUrl: '/js/templates/countdown.html'
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
     }
 }]);
-
 (function() {
     var app = angular.module('app', []);
 
@@ -1339,40 +1373,6 @@ angular.module('directives.countdown', []).directive('countdown', ['$interval', 
 })();
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 angular.module('directives.datetime', []).directive('datetime', function() {
     return {
         require: 'ngModel',
@@ -1636,6 +1636,7 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 
     app.directive('redditComment', ["$http", function($http) {
         return {
+            replace: true,
             restrict: 'E',
             scope: {
                 redditComment: '=ngModel'
@@ -1649,7 +1650,14 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
                 $scope.retrieveRedditComment = function() {
                     if (typeof $scope.redditComment.external_url !== "undefined") {
                         $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-                            console.log(response);
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
                         });
                     }
                 }
