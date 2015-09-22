@@ -20,10 +20,10 @@ class ObjectFromArticle extends ObjectCreator {
                 'user_id'               => \Auth::user()->user_id,
                 'type'                  => MissionControlType::Article,
                 'title'                 => $this->input['title'],
-                'size'                  => strlen($this->input['content']),
+                'size'                  => strlen($this->input['article']),
                 'article'               => $this->input['article'],
-                'thumb_filename'        => 'text.png',
-                'cryptographic_hash'    => hash('sha256', $this->input['content']),
+                'thumb_filename'        => 'article.png',
+                'cryptographic_hash'    => hash('sha256', $this->input['article']),
                 'originated_at'         => \Carbon\Carbon::now(),
                 'status'                => ObjectPublicationStatus::QueuedStatus
             ]);

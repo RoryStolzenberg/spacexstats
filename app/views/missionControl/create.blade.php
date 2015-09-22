@@ -459,11 +459,13 @@
                         </div>
                     </fieldset>
 
+                    <!-- Tweet -->
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
                         <delta-v ng-model="tweet"></delta-v>
                         <!--<tweet params="action: 'write', tweet: tweet"></tweet>-->
                     </fieldset>
 
+                    <!-- Article -->
                     <fieldset class="post-type article" ng-if="postType == 'article'">
                         <delta-v ng-model="article"></delta-v>
 
@@ -498,6 +500,7 @@
                         <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
+                    <!-- Press Release -->
                     <fieldset class="post-type pressrelease" ng-if="postType == 'pressrelease'">
                         <delta-v ng-model="pressrelease"></delta-v>
 
@@ -529,6 +532,7 @@
                         <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
+                    <!-- Reddit Comment -->
                     <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'" required>
                         <delta-v ng-model="redditcomment"></delta-v>
 
@@ -536,7 +540,7 @@
                         <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
 
                         <label>Title Describing The Comment</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="redditcomment.title" required minlength="10"  />
+                        <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" required minlength="10"  />
 
                         <reddit-comment ng-model="redditcomment"></reddit-comment>
 
@@ -556,20 +560,21 @@
                         <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
+                    <!-- NSF Comment -->
                     <fieldset class="post-type nsf-comment" ng-if="postType == 'NSFcomment'">
                         <delta-v ng-model="NSFcomment"></delta-v>
 
                         <label>Comment URL</label>
-                        <input type="url" name="nsfcomment-url" id="article-url" ng-model="NSFcomment.external_url" required ng-pattern="/nasaspaceflight.com\//" />
+                        <input type="url" name="NSFcomment-url" id="article-url" ng-model="NSFcomment.external_url" required ng-pattern="/nasaspaceflight.com\//" />
 
                         <label>Title Describing The Comment</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="NSFcomment.title" required minlength="10" />
+                        <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" required minlength="10" />
 
                         <label>Comment Date</label>
                         <datetime ng-model="NSFcomment.originated_at" type="datetime" start-year="2000" is-null="false"></datetime>
 
                         <label>Comment Author</label>
-                        <input type="author" name="nsf-comment-author" id="article-author" ng-model="NSFcomment.author" required />
+                        <input type="author" name="NSFcomment-author" id="article-author" ng-model="NSFcomment.author" required />
 
                         <label>Comment</label>
                         <textarea ng-model="NSFcomment.comment" required></textarea>

@@ -21,10 +21,10 @@ class ObjectFromPressRelease extends ObjectCreator {
                 'type'                  => MissionControlType::Article,
                 'subtype'               => MissionControlSubtype::PressRelease,
                 'title'                 => $this->input['title'],
-                'size'                  => strlen($this->input['content']),
+                'size'                  => strlen($this->input['article']),
                 'article'               => $this->input['article'],
-                'thumb_filename'        => 'text.png',
-                'cryptographic_hash'    => hash('sha256', $this->input['content']),
+                'thumb_filename'        => 'pressrelease.png',
+                'cryptographic_hash'    => hash('sha256', $this->input['article']),
                 'originated_at'         => \Carbon\Carbon::now(),
                 'status'                => ObjectPublicationStatus::QueuedStatus
             ]);

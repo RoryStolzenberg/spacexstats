@@ -1,15 +1,17 @@
-angular.module('directives.tweet', []).directive('tweet', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            state: '@',
-            tweet: '='
-        },
-        link: function($scope, element, attributes, ngModelCtrl) {
+(function() {
+    var app = angular.module('app');
 
-        },
-        templateUrl: '/js/templates/tweet.html'
-    }
-});
+    app.directive('tweet', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                state: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    });
+})();

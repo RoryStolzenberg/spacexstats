@@ -1,3 +1,66 @@
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
+        return {
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
+
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
+
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
+                    }
+                };
+            }
+        };
+    }
+]);
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+})();
+
+
 angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
     $scope.missions = laravel.missions;
 
@@ -983,152 +1046,6 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
-    }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
-
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-angular.module('directives.countdown', []).directive('countdown', ['$interval', function($interval) {
-    return {
-        restrict: 'E',
-        scope: {
-            specificity: '=',
-            countdownTo: '=',
-            callback: '&'
-        },
-        link: function($scope) {
-
-            $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-            $scope.$watch('specificity', function(newValue) {
-                $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-            });
-
-            (function() {
-                if ($scope.isLaunchExact) {
-
-                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                    $scope.countdownProcessor = function() {
-
-                        var launchUnixSeconds = $scope.launchUnixSeconds;
-                        var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                        if (launchUnixSeconds >= currentUnixSeconds) {
-                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                            var secondsBetween = $scope.secondsAwayFromLaunch;
-                            // Calculate the number of days, hours, minutes, seconds
-                            $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                            secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                            $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                            secondsBetween -= $scope.hours * 60 * 60;
-
-                            $scope.minutes = Math.floor(secondsBetween / 60);
-                            secondsBetween -= $scope.minutes * 60;
-
-                            $scope.seconds = secondsBetween;
-
-                            $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                            $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                            $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                            $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                            // Stop the countdown, count up!
-                        } else {
-                        }
-
-                        if ($scope.callback && typeof $scope.callback === 'function') {
-                            $scope.callback();
-                        }
-                    };
-
-                    $interval($scope.countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            })();
-
-        },
-        templateUrl: '/js/templates/countdown.html'
-    }
-}]);
-
-angular.module('directives.missionCard', []).directive('missionCard', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            size: '@',
-            mission: '='
-        },
-        link: function($scope) {
-        },
-        templateUrl: '/js/templates/missionCard.html'
-    }
-});
-
 (function() {
     var app = angular.module('app', []);
 
@@ -1203,40 +1120,95 @@ angular.module('directives.missionCard', []).directive('missionCard', function()
     });
 })();
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
 
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                callback: '&'
+            },
+            link: function($scope) {
 
-                    $scope.files = files.objects;
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
 
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
+
+                (function() {
+                    if ($scope.isLaunchExact) {
+
+                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+
+
+                        $scope.countdownProcessor = function() {
+
+                            var launchUnixSeconds = $scope.launchUnixSeconds;
+                            var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                            if (launchUnixSeconds >= currentUnixSeconds) {
+                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                                var secondsBetween = $scope.secondsAwayFromLaunch;
+                                // Calculate the number of days, hours, minutes, seconds
+                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                                secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                                secondsBetween -= $scope.hours * 60 * 60;
+
+                                $scope.minutes = Math.floor(secondsBetween / 60);
+                                secondsBetween -= $scope.minutes * 60;
+
+                                $scope.seconds = secondsBetween;
+
+                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                                // Stop the countdown, count up!
+                            } else {
+                            }
+
+                            if ($scope.callback && typeof $scope.callback === 'function') {
+                                $scope.callback();
+                            }
+                        };
+
+                        $interval($scope.countdownProcessor, 1000);
+                    } else {
+                        $scope.countdownText = $scope.countdownTo;
                     }
-                }
-            });
+                })();
 
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
+            },
+            templateUrl: '/js/templates/countdown.html'
         }
-    }
-}]);
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app', []);
 
@@ -1373,194 +1345,231 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
 })();
 
 
-angular.module('directives.datetime', []).directive('datetime', function() {
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
     return {
-        require: 'ngModel',
-        restrict: 'E',
-        replace: true,
-        scope: {
-            type: '@',
-            datetimevalue: '=ngModel',
-            startYear: '@',
-            nullableToggle: '@',
-            isNull: '='
-        },
-        link: function($scope, element, attrs, ctrl) {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
 
-            $scope.days = [];
-            $scope.days.push({ value: 0, display: '-'});
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
 
-            for (i = 1; i <= 31; i++) {
-                $scope.days.push({ value: i, display: i });
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
             }
+        }
+    }
+}]);
+(function() {
+    var app = angular.module('app');
 
-            $scope.months = [
-                { value: 0, display: '-'},
-                { value: 1, display: 'January'},
-                { value: 2, display: 'February'},
-                { value: 3, display: 'March'},
-                { value: 4, display: 'April'},
-                { value: 5, display: 'May'},
-                { value: 6, display: 'June'},
-                { value: 7, display: 'July'},
-                { value: 8, display: 'August'},
-                { value: 9, display: 'September'},
-                { value: 10, display: 'October'},
-                { value: 11, display: 'November'},
-                { value: 12, display: 'December'}
-            ];
+    app.directive('datetime', function() {
+        return {
+            require: 'ngModel',
+            restrict: 'E',
+            replace: true,
+            scope: {
+                type: '@',
+                datetimevalue: '=ngModel',
+                startYear: '@',
+                nullableToggle: '@?',
+                isNull: '='
+            },
+            link: function($scope, element, attrs, ctrl) {
 
-            $scope.years = function() {
-                var years = [];
+                $scope.days = [];
+                $scope.days.push({ value: 0, display: '-'});
 
-                var currentYear = moment().year();
-
-                if (typeof $scope.startYear !== 'undefined') {
-                    var startYear = $scope.startYear;
-                } else {
-                    var startYear = 1950;
+                for (i = 1; i <= 31; i++) {
+                    $scope.days.push({ value: i, display: i });
                 }
 
-                while (currentYear >= startYear) {
-                    years.push(currentYear);
-                    currentYear--;
-                }
-                return years;
-            };
+                $scope.months = [
+                    { value: 0, display: '-'},
+                    { value: 1, display: 'January'},
+                    { value: 2, display: 'February'},
+                    { value: 3, display: 'March'},
+                    { value: 4, display: 'April'},
+                    { value: 5, display: 'May'},
+                    { value: 6, display: 'June'},
+                    { value: 7, display: 'July'},
+                    { value: 8, display: 'August'},
+                    { value: 9, display: 'September'},
+                    { value: 10, display: 'October'},
+                    { value: 11, display: 'November'},
+                    { value: 12, display: 'December'}
+                ];
 
-            //convert data from view format to model format
-            ctrl.$parsers.push(function(viewvalue) {
+                $scope.years = function() {
+                    var years = [];
 
-                if ($scope.isNull == true) {
-                    return null;
-                }
+                    var currentYear = moment().year();
 
-                if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
-
-                    if ($scope.type == 'datetime') {
-                        var value = moment({
-                            year: viewvalue.year,
-                            month: viewvalue.month - 1,
-                            date: viewvalue.date,
-                            hour: viewvalue.hour,
-                            minute: viewvalue.minute,
-                            second: viewvalue.second
-                        }).format('YYYY-MM-DD HH:mm:ss');
-
-                    } else if ($scope.type == 'date') {
-                        var value = moment({
-                            year: viewvalue.year,
-                            month: viewvalue.month - 1,
-                            date: viewvalue.date
-                        }).format('YYYY-MM-DD');
-                    }
-                } else {
-
-                    if ($scope.type == 'datetime') {
-                        var value = viewvalue.year + "-"
-                            + ("0" + viewvalue.month).slice(-2) + "-"
-                            + ("0" + viewvalue.date).slice(-2) + " "
-                            + ("0" + viewvalue.hour).slice(-2) + ":"
-                            + ("0" + viewvalue.minute).slice(-2) + ":"
-                            + ("0" + viewvalue.second).slice(-2);
-
+                    if (typeof $scope.startYear !== 'undefined') {
+                        var startYear = $scope.startYear;
                     } else {
-                        var value = viewvalue.year + "-"
-                            + ("0" + viewvalue.month).slice(-2) + "-"
-                            + ("0" + viewvalue.date).slice(-2);
+                        var startYear = 1950;
                     }
-                }
-                return value;
-            });
 
-            ctrl.$render = function() {
-                $scope.year = ctrl.$viewValue.year;
-                $scope.month = ctrl.$viewValue.month;
-                $scope.date = ctrl.$viewValue.date
+                    while (currentYear >= startYear) {
+                        years.push(currentYear);
+                        currentYear--;
+                    }
+                    return years;
+                };
 
-                if ($scope.type == 'datetime') {
-                    $scope.hour = ctrl.$viewValue.hour;
-                    $scope.minute = ctrl.$viewValue.minute;
-                    $scope.second = ctrl.$viewValue.second;
-                }
-            };
+                //convert data from view format to model format
+                ctrl.$parsers.push(function(viewvalue) {
 
-            //convert data from model format to view format
-            ctrl.$formatters.push(function(data) {
+                    if ($scope.isNull == true) {
+                        return null;
+                    }
 
-                // If the value is not undefined and the value is valid,
-                if (typeof data !== 'undefined' && moment(data).isValid()) {
+                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
 
-                    var dt = moment(data);
+                        if ($scope.type == 'datetime') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date,
+                                hour: viewvalue.hour,
+                                minute: viewvalue.minute,
+                                second: viewvalue.second
+                            }).format('YYYY-MM-DD HH:mm:ss');
+
+                        } else if ($scope.type == 'date') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date
+                            }).format('YYYY-MM-DD');
+                        }
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2) + " "
+                                + ("0" + viewvalue.hour).slice(-2) + ":"
+                                + ("0" + viewvalue.minute).slice(-2) + ":"
+                                + ("0" + viewvalue.second).slice(-2);
+
+                        } else {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2);
+                        }
+                    }
+                    return value;
+                });
+
+                ctrl.$render = function() {
+                    $scope.year = ctrl.$viewValue.year;
+                    $scope.month = ctrl.$viewValue.month;
+                    $scope.date = ctrl.$viewValue.date
 
                     if ($scope.type == 'datetime') {
-                        return {
-                            year: dt.year(),
-                            month: dt.month() + 1,
-                            date: dt.date(),
-                            hour: dt.hour(),
-                            minute: dt.minute(),
-                            second: dt.second()
+                        $scope.hour = ctrl.$viewValue.hour;
+                        $scope.minute = ctrl.$viewValue.minute;
+                        $scope.second = ctrl.$viewValue.second;
+                    }
+                };
+
+                //convert data from model format to view format
+                ctrl.$formatters.push(function(data) {
+
+                    // If the value is not undefined and the value is valid,
+                    if (typeof data !== 'undefined' && moment(data).isValid()) {
+
+                        var dt = moment(data);
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date(),
+                                hour: dt.hour(),
+                                minute: dt.minute(),
+                                second: dt.second()
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date()
+                            }
                         }
-                    } else if ($scope.type == 'date') {
-                        return {
-                            year: dt.year(),
-                            month: dt.month() + 1,
-                            date: dt.date()
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0,
+                                hour: 0,
+                                minute: 0,
+                                second: 0
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0
+                            }
                         }
                     }
-                } else {
+                });
 
-                    if ($scope.type == 'datetime') {
-                        return {
-                            year: moment().year(),
-                            month: 0,
-                            date: 0,
-                            hour: 0,
-                            minute: 0,
-                            second: 0
-                        }
-                    } else if ($scope.type == 'date') {
-                        return {
-                            year: moment().year(),
-                            month: 0,
-                            date: 0
-                        }
+                $scope.$watch('datetimevalue', function(value) {
+                    if (typeof value === null) {
+                        $scope.isNull = true;
                     }
-                }
-            });
+                });
 
-            $scope.$watch('datetimevalue', function(value) {
-                if (typeof value === null) {
-                    $scope.isNull = true;
-                }
-            });
+                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
+                    ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
+                });
+            },
+            templateUrl: '/js/templates/datetime.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
 
-            $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
-                ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
-            });
-        },
-        templateUrl: '/js/templates/datetime.html'
-    }
-});
+    app.directive('tweet', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                state: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-
-angular.module('directives.tweet', []).directive('tweet', function() {
-    return {
-        restrict: 'E',
-        scope: {
-            state: '@',
-            tweet: '='
-        },
-        link: function($scope, element, attributes, ngModelCtrl) {
-
-        },
-        templateUrl: '/js/templates/tweet.html'
-    }
-});
-
-
-
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
