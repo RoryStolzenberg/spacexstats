@@ -252,6 +252,11 @@ class Spacexstats extends Migration {
             $table->integer('publisher_id')->unsigned()->nullable();
             $table->mediumText('article')->nullable();
 
+            // Reddit-related properties
+            $table->string('reddit_comment_id', Varchar::tiny)->nullable();
+            $table->string('reddit_parent_id', Varchar::tiny)->nullable();
+            $table->string('reddit_subreddit', Varchar::tiny)->nullable();
+
             // Third-party-related properties
             $table->string('external_url', Varchar::small)->nullable();
 
