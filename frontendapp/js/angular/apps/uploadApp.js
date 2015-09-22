@@ -75,12 +75,16 @@
         $scope.NSFcomment = {};
         $scope.redditcomment = {};
         $scope.pressrelease = {};
+        $scope.article = {};
+        $scope.tweet = {};
 
         $scope.postSubmitButtonFunction = function() {
             switch ($scope.postType) {
-                case 'NSFcomment' :     $rootScope.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
-                case 'redditcomment' :  $rootScope.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
-                case 'pressrelease' :  $rootScope.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
+                case 'NSFcomment': $rootScope.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
+                case 'redditcomment': $rootScope.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
+                case 'pressrelease' : $rootScope.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
+                case 'article': $rootScope.postToMissionControl($scope.article, 'article'); break;
+                case 'tweet': $rootScope.postToMissionControl($scope.tweet, 'tweet'); break;
             }
         }
     }]);

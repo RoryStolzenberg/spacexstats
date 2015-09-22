@@ -462,7 +462,7 @@
                     <!-- Tweet -->
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
                         <delta-v ng-model="tweet"></delta-v>
-                        <!--<tweet params="action: 'write', tweet: tweet"></tweet>-->
+                        <tweet action="write" tweet="tweet"></tweet>
                     </fieldset>
 
                     <!-- Article -->

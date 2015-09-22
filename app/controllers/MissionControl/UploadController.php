@@ -1,4 +1,7 @@
 <?php
+use Abraham\TwitterOAuth\TwitterOAuth;
+use LukeNZ\Reddit\Reddit;
+
 class UploadController extends BaseController {
 
 	public function show() {
@@ -100,25 +103,16 @@ class UploadController extends BaseController {
 	}
 
     // AJAX GET
-    public function retrieveTweet($id) {
-        $connection = new Abraham\TwitterOAuth\TwitterOAuth(Credential::TwitterConsumerKey, Credential::TwitterConsumerSecret, Credential::TwitterAccessToken, Credential::TwitterAccessSecret);
-        $tweet = $connection->get('statuses/show', array('id' => $id));
-
-        // Store in session for addition to db later
-        Session::put('tweet', $tweet);
-        if (isset($tweet->entities->media)) {
-            foreach($tweet->entities->media as $image) {
-                $filename = basename($image->media_url);
-                file_put_contents('media/twitter/'.$filename, file_get_contents($image->media_url . ':orig'));
-            }
-        }
+    public function retrieveTweet() {
+        $twitter = new TwitterOAuth(Credential::TwitterConsumerKey, Credential::TwitterConsumerSecret, Credential::TwitterAccessToken, Credential::TwitterAccessSecret);
+        $tweet = $twitter->get('statuses/show', array('id' => Input::get('id')));
 
         return Response::json($tweet);
     }
 
     // AJAX GET
     public function retrieveRedditComment() {
-        $reddit = new LukeNZ\Reddit\Reddit(Credential::RedditUsername, Credential::RedditPassword, Credential::RedditID, Credential::RedditSecret);
+        $reddit = new Reddit(Credential::RedditUsername, Credential::RedditPassword, Credential::RedditID, Credential::RedditSecret);
 
         $comment = $reddit->getComment(Input::get('url'));
         return Response::json($comment);

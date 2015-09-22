@@ -11,7 +11,8 @@
                 datetimevalue: '=ngModel',
                 startYear: '@',
                 nullableToggle: '@?',
-                isNull: '='
+                isNull: '=',
+                disabled: '@?'
             },
             link: function($scope, element, attrs, ctrl) {
 

@@ -4,21 +4,21 @@
 
     <div class="write" ng-if="action == 'write'" ng-form="tweetForm">
         <label>Tweet URL</label>
-        <input type="url" name="tweet_url" id="tweet_url" data-bind="textInput: tweetUrl" />
+        <input type="url" name="tweet_url" id="tweet_url" ng-model="tweet.external_url" />
 
         <hr/>
         <p>Alternatively, if the tweet is no longer available, enter the tweet information below</p>
 
         <div class="tweeter-details">
-            <img data-bind="attr: { src: tweet.tweet_user_profile_image_url }" />
-            <span class="tweeter-name" data-bind="text: tweet.tweet_user_name"></span>
+            <img ng-attr-src="{{ tweet.tweet_user_profile_image_url }}" />
+            <span class="tweeter-name" ng-model="tweet.tweet_user_name"></span>
             <label>Username</label>
             <input type="text" class="tweeter-screen-name" data-bind="value: tweet.tweet_user_screen_name" />
         </div>
 
-        <textarea class="tweet-text" data-bind="value: tweet.tweet_text"></textarea>
+        <textarea class="tweet-text" ng-model="tweet.tweet_text"></textarea>
 
-        <datetime params="value: tweet.tweet_created_at, type: 'datetime', startYear: 2006"></datetime>
+        <datetime ng-model="tweet.originated_at" type="datetime" start-year="2006" is-null="false" nullable-toggle="false"></datetime>
 
         <tags available-tags="data.tags" name="tags" ng-model="tweet.tags"></tags>
         <span ng-show="tweetForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
