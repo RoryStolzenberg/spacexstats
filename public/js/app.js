@@ -1,66 +1,3 @@
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
-    }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
-
 angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
     $scope.missions = laravel.missions;
 
@@ -248,7 +185,8 @@ angular.module("missionControlApp", ["directives.tags"]).controller("missionCont
                     {value: 15, display: 'Weather Forecast' },
                     {value: 17, display: 'License' }
                 ]
-            }
+            },
+            publishers: laravel.publishers
         };
 
         $scope.changeSection = function(section) {
@@ -1046,79 +984,68 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
+        return {
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
+
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
+
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
+                    }
+                };
+            }
+        };
+    }
+]);
 (function() {
     var app = angular.module('app', []);
 
-    app.directive("selectList", function() {
-        return {
-            restrict: 'E',
-            scope: {
-                options: '=',
-                selectedOption: '=ngModel',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@'
-            },
-            link: function($scope, element, attributes) {
+    app.service('flashMessage', function() {
+        this.add = function(data) {
 
-                $scope.optionsObj = $scope.options.map(function(option) {
-                    var props = {
-                        id: option[$scope.uniqueKey],
-                        name: option[$scope.titleKey],
-                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                    };
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
 
-                    if (typeof $scope.descriptionKey !== 'undefined') {
-                        props.description = option[$scope.descriptionKey];
-                    }
-
-                    return props;
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
                 });
-
-                $scope.$watch("selectedOption", function(newValue) {
-                    if (newValue !== null) {
-                        $scope.selectedOptionObj = $scope.optionsObj
-                            .filter(function(option) {
-                                return option['id'] == newValue;
-                            }).shift();
-                    } else {
-                        $scope.selectedOptionObj = null;
-                    }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option['id'];
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.selectDefault = function() {
-                    $scope.selectedOption = null;
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                };
-
-                $scope.$watch("dropdownIsVisible", function(newValue) {
-                    if (!newValue) {
-                        $scope.search = "";
-                    }
-                });
-
-                $scope.isSelected = function(option) {
-                    return option.id == $scope.selectedOption;
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/selectList.html'
-        }
+            }, 3000);
+        };
     });
 })();
+
 
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -1193,6 +1120,114 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     }]);
 })();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("selectList", function() {
+        return {
+            restrict: 'E',
+            scope: {
+                options: '=',
+                selectedOption: '=ngModel',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.optionsObj = $scope.options.map(function(option) {
+                    var props = {
+                        id: option[$scope.uniqueKey],
+                        name: option[$scope.titleKey],
+                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                    };
+
+                    if (typeof $scope.descriptionKey !== 'undefined') {
+                        props.description = option[$scope.descriptionKey];
+                    }
+
+                    return props;
+                });
+
+                $scope.$watch("selectedOption", function(newValue) {
+                    if (newValue !== null) {
+                        $scope.selectedOptionObj = $scope.optionsObj
+                            .filter(function(option) {
+                                return option['id'] == newValue;
+                            }).shift();
+                    } else {
+                        $scope.selectedOptionObj = null;
+                    }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option['id'];
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.selectDefault = function() {
+                    $scope.selectedOption = null;
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                };
+
+                $scope.$watch("dropdownIsVisible", function(newValue) {
+                    if (!newValue) {
+                        $scope.search = "";
+                    }
+                });
+
+                $scope.isSelected = function(option) {
+                    return option.id == $scope.selectedOption;
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/selectList.html'
+        }
+    });
+})();
+
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 (function() {
     var app = angular.module('app');
 
@@ -1345,40 +1380,51 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
 })();
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
+(function() {
+    var app = angular.module('app');
 
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
-                    $scope.files = files.objects;
+                $scope.$watch("deltaV", function(objects) {
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
 
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
+
+                        $scope.calculatedValue = $scope.newValue;
                     }
-                }
-            });
+                }, true);
 
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.calculatedValue = 0;
+            },
+            templateUrl: '/js/templates/deltaV.html'
         }
-    }
-}]);
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -1567,51 +1613,6 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
 
             },
             templateUrl: '/js/templates/tweet.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.$watch("deltaV", function(objects) {
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
-
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
-                        }
-
-                        $scope.calculatedValue = $scope.newValue;
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.calculatedValue = 0;
-            },
-            templateUrl: '/js/templates/deltaV.html'
         }
     });
 })();

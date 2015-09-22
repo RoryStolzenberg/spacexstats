@@ -26,6 +26,7 @@ class ObjectFromPressRelease extends ObjectCreator {
                 'thumb_filename'        => 'pressrelease.png',
                 'cryptographic_hash'    => hash('sha256', $this->input['article']),
                 'originated_at'         => \Carbon\Carbon::now(),
+                'publisher_id'          => Publisher::where('name', 'SpaceX')->first()->publisher_id,
                 'status'                => ObjectPublicationStatus::QueuedStatus
             ]);
 

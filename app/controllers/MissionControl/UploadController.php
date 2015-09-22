@@ -5,7 +5,8 @@ class UploadController extends BaseController {
 
         JavaScript::put([
             'tags' => Tag::all(),
-            'missions' => Mission::with('featuredImage')->get()
+            'missions' => Mission::with('featuredImage')->get(),
+            'publishers' => Publisher::all()
         ]);
 
 		return View::make('missionControl.create');

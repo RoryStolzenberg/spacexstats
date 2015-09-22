@@ -364,7 +364,7 @@ class Spacexstats extends Migration {
         Schema::create('publishers', function(Blueprint $table) {
             $table->increments('publisher_id');
             $table->string('name', Varchar::tiny);
-            $table->string('icon', Varchar::small);
+            $table->string('icon', Varchar::small)->nullable();
         });
 
         Schema::create('questions', function(Blueprint $table) {

@@ -28,7 +28,8 @@
                     {value: 15, display: 'Weather Forecast' },
                     {value: 17, display: 'License' }
                 ]
-            }
+            },
+            publishers: laravel.publishers
         };
 
         $scope.changeSection = function(section) {
