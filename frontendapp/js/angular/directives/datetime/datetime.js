@@ -12,7 +12,7 @@
                 startYear: '@',
                 nullableToggle: '@?',
                 isNull: '=',
-                disabled: '@?'
+                disabled: '=?ngDisabled'
             },
             link: function($scope, element, attrs, ctrl) {
 

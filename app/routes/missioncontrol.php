@@ -3,7 +3,7 @@ Route::group(array('prefix' => 'missioncontrol'), function() {
 
     Route::group(array('before' => 'mustBeLoggedIn'), function() {
 
-        Route::get('/create/retrievetweet/{id}', array(
+        Route::get('/create/retrievetweet', array(
             'as' => 'missionControl.create.retrieveTweet',
             'uses' => 'UploadController@retrieveTweet'
         ));

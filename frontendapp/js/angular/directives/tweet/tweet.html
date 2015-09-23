@@ -13,12 +13,12 @@
             <img ng-attr-src="{{ tweet.tweet_user_profile_image_url }}" />
             <span class="tweeter-name" ng-model="tweet.tweet_user_name"></span>
             <label>Username</label>
-            <input type="text" class="tweeter-screen-name" data-bind="value: tweet.tweet_user_screen_name" />
+            <input type="text" class="tweeter-screen-name" ng-model="tweet.tweet_user_screen_name" ng-disabled="tweetRetrievedFromUrl" />
         </div>
 
-        <textarea class="tweet-text" ng-model="tweet.tweet_text"></textarea>
+        <textarea class="tweet-text" ng-model="tweet.tweet_text" ng-disabled="tweetRetrievedFromUrl"></textarea>
 
-        <datetime ng-model="tweet.originated_at" type="datetime" start-year="2006" is-null="false" nullable-toggle="false"></datetime>
+        <datetime ng-model="tweet.originated_at" type="datetime" start-year="2006" is-null="false" nullable-toggle="false" ng-disabled="tweetRetrievedFromUrl"></datetime>
 
         <tags available-tags="data.tags" name="tags" ng-model="tweet.tags"></tags>
         <span ng-show="tweetForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>

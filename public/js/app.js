@@ -1051,80 +1051,6 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("selectList", function() {
-        return {
-            restrict: 'E',
-            scope: {
-                options: '=',
-                selectedOption: '=ngModel',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.optionsObj = $scope.options.map(function(option) {
-                    var props = {
-                        id: option[$scope.uniqueKey],
-                        name: option[$scope.titleKey],
-                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                    };
-
-                    if (typeof $scope.descriptionKey !== 'undefined') {
-                        props.description = option[$scope.descriptionKey];
-                    }
-
-                    return props;
-                });
-
-                $scope.$watch("selectedOption", function(newValue) {
-                    if (newValue !== null) {
-                        $scope.selectedOptionObj = $scope.optionsObj
-                            .filter(function(option) {
-                                return option['id'] == newValue;
-                            }).shift();
-                    } else {
-                        $scope.selectedOptionObj = null;
-                    }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option['id'];
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.selectDefault = function() {
-                    $scope.selectedOption = null;
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                };
-
-                $scope.$watch("dropdownIsVisible", function(newValue) {
-                    if (!newValue) {
-                        $scope.search = "";
-                    }
-                });
-
-                $scope.isSelected = function(option) {
-                    return option.id == $scope.selectedOption;
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/selectList.html'
-        }
-    });
-})();
-
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -1199,6 +1125,80 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
     }]);
 })();
 (function() {
+    var app = angular.module('app', []);
+
+    app.directive("selectList", function() {
+        return {
+            restrict: 'E',
+            scope: {
+                options: '=',
+                selectedOption: '=ngModel',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.optionsObj = $scope.options.map(function(option) {
+                    var props = {
+                        id: option[$scope.uniqueKey],
+                        name: option[$scope.titleKey],
+                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                    };
+
+                    if (typeof $scope.descriptionKey !== 'undefined') {
+                        props.description = option[$scope.descriptionKey];
+                    }
+
+                    return props;
+                });
+
+                $scope.$watch("selectedOption", function(newValue) {
+                    if (newValue !== null) {
+                        $scope.selectedOptionObj = $scope.optionsObj
+                            .filter(function(option) {
+                                return option['id'] == newValue;
+                            }).shift();
+                    } else {
+                        $scope.selectedOptionObj = null;
+                    }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option['id'];
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.selectDefault = function() {
+                    $scope.selectedOption = null;
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                };
+
+                $scope.$watch("dropdownIsVisible", function(newValue) {
+                    if (!newValue) {
+                        $scope.search = "";
+                    }
+                });
+
+                $scope.isSelected = function(option) {
+                    return option.id == $scope.selectedOption;
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/selectList.html'
+        }
+    });
+})();
+
+(function() {
     var app = angular.module('app');
 
     app.directive('missionCard', function() {
@@ -1214,6 +1214,40 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
         }
     });
 })();
+angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function($scope, element, attrs) {
+
+            // Initialize the dropzone
+            var dropzone = new Dropzone(element[0], {
+                url: attrs.action,
+                autoProcessQueue: false,
+                dictDefaultMessage: "Upload files here!",
+                maxFilesize: 1024, // MB
+                addRemoveLinks: true,
+                uploadMultiple: attrs.multiUpload,
+                parallelUploads: 5,
+                maxFiles: 5,
+                successmultiple: function(dropzoneStatus, files) {
+
+                    $scope.files = files.objects;
+
+                    // Run a callback function with the files passed through as a parameter
+                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                        var func = $parse(attrs.callback);
+                        func($scope, { files: files });
+                    }
+                }
+            });
+
+            // upload the files
+            $scope.uploadFiles = function() {
+                dropzone.processQueue();
+            }
+        }
+    }
+}]);
 (function() {
     var app = angular.module('app', []);
 
@@ -1350,40 +1384,91 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
 })();
 
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
+(function() {
+    var app = angular.module('app');
 
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-                    $scope.files = files.objects;
+                $scope.retrieveTweet = function() {
 
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
                     }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
                 }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
+            },
+            templateUrl: '/js/templates/tweet.html'
         }
-    }
-}]);
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch("deltaV", function(objects) {
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
+
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
+
+                        $scope.calculatedValue = $scope.newValue;
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.calculatedValue = 0;
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -1398,7 +1483,7 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
                 startYear: '@',
                 nullableToggle: '@?',
                 isNull: '=',
-                disabled: '@?'
+                disabled: '=?ngDisabled'
             },
             link: function($scope, element, attrs, ctrl) {
 
@@ -1558,88 +1643,6 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
             templateUrl: '/js/templates/datetime.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.$watch("deltaV", function(objects) {
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
-
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
-                        }
-
-                        $scope.calculatedValue = $scope.newValue;
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.calculatedValue = 0;
-            },
-            templateUrl: '/js/templates/deltaV.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if ($scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/retrievetweet').then(function(response) {
-                            // Set parameters
-                            self.tweet.tweet_text(response.text);
-                            self.tweet.tweet_user_profile_image_url(response.user.profile_image_url.replace("_normal", ""));
-                            self.tweet.tweet_user_screen_name(response.user.screen_name);
-                            self.tweet.tweet_user_name(response.user.name);
-                            self.tweet.tweet_created_at(moment(response.created_at).format());
-
-                        });
-                    }
-                    // Toggle disabled state somewhere around here
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
 })();
 angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
     return {

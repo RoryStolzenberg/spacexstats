@@ -1,18 +1,18 @@
 <div class="datetime">
     <input type="checkbox" ng-if="nullableToggle == 'true'" ng-model="$parent.isNull" ng-change="toggleChecked()"/>
 
-    <select ng-model="date" ng-options="day.value as day.display for day in days" ng-disabled="isNull == true">
+    <select ng-model="date" ng-options="day.value as day.display for day in days" ng-disabled="isNull == true || disabled == true">
     </select>
-    <select ng-model="month" ng-options="month.value as month.display for month in months" ng-disabled="isNull == true">
+    <select ng-model="month" ng-options="month.value as month.display for month in months" ng-disabled="isNull == true || disabled == true">
     </select>
-    <select ng-model="year" ng-options="year for year in years()" ng-disabled="isNull == true">
+    <select ng-model="year" ng-options="year for year in years()" ng-disabled="isNull == true || disabled == true">
     </select>
 
-    <input type="number" min="0" max="23" ng-model="$parent.hour" ng-if="type == 'datetime'" ng-disabled="isNull == true" />
+    <input type="number" min="0" max="23" ng-model="$parent.hour" ng-if="type == 'datetime'" ng-disabled="isNull == true || disabled == true" />
     <span class="time-separator" ng-if="type == 'datetime'">:</span>
-    <input type="number" min="0" max="59" ng-model="$parent.minute" ng-if="type == 'datetime'" ng-disabled="isNull == true" />
+    <input type="number" min="0" max="59" ng-model="$parent.minute" ng-if="type == 'datetime'" ng-disabled="isNull == true || disabled == true" />
     <span class="time-separator" ng-if="type == 'datetime'">:</span>
-    <input type="number" min="0" max="59" ng-model="$parent.second" ng-if="type == 'datetime'" ng-disabled="isNull == true" />
+    <input type="number" min="0" max="59" ng-model="$parent.second" ng-if="type == 'datetime'" ng-disabled="isNull == true || disabled == true" />
 
     <span ng-show="isNull == true">No date selected.</span>
 
