@@ -85,6 +85,8 @@ class Spacexstats extends Migration {
             $table->string('name', Varchar::small);
             $table->string('first_column_title', Varchar::small);
             $table->string('second_column_title', Varchar::small);
+            $table->string('third_column_title', Varchar::small)->nullable();
+            $table->string('query', Varchar::medium);
             $table->string('summary', Varchar::medium);
             $table->integer('banner_image')->unsigned();
         });
