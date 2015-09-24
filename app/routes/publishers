@@ -1,7 +1,7 @@
 <?php
 Route::group(array('prefix' => 'missioncontrol/publishers'), function() {
 
-    Route::group(array('before' => 'mustBeLoggedIn'), function() {
+    Route::group(array('before' => 'mustBe:Subscriber'), function() {
 
         Route::get('/{publisherId}', array(
             'as' => 'missionControl.publishers.get',
