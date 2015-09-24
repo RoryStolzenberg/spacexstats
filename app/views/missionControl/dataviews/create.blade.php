@@ -16,7 +16,7 @@
 
                 <ul>
                     <li ng-repeat="title in dataview.titles">
-                        <input type="text" name="{{ 'title' + $i }}" ng-model="dataview.titles[$i]" />
+                        <input type="text" name="@{{ 'title' + $i }}" ng-model="dataview.titles[$i]" />
                     </li>
                 </ul>
 

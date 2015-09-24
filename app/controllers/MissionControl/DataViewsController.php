@@ -8,7 +8,7 @@ class DataViewsController extends BaseController {
     public function create() {
         if (Request::isMethod('get')) {
 
-            return View::make('missionControl.dataviews.create');
+            return View::make('missioncontrol.dataviews.create');
 
         } else if (Request::isMethod('post')) {
 
