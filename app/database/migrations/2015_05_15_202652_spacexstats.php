@@ -366,6 +366,8 @@ class Spacexstats extends Migration {
         Schema::create('publishers', function(Blueprint $table) {
             $table->increments('publisher_id');
             $table->string('name', Varchar::tiny);
+            $table->string('publisher', Varhcar::medium);
+            // Create rating system for publishers in the future
             $table->string('icon', Varchar::small)->nullable();
         });
 
