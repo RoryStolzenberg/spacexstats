@@ -17,6 +17,9 @@
         		<label for="url">The URL of the publisher's webpage></label>
         		<input type="text" ng-model="publisher.url" placeholder="http://nytimes.com/" required /> 
 
+        		<label for="description">Description of this publisher</label>
+        		<textarea ng-model="publisher.description" required></textarea>
+
         		<input type="submit" value="Create Publisher" ng-disabled="createPublisherForm.$invalid" />
         	</form>
         </main>
