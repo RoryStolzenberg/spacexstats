@@ -1,19 +1,19 @@
 @extends('templates.main')
-@section('title', 'Change Your Password')
+@section('title', 'Forgot Password')
 
 @section('content')
-    <body class="change-password">
+    <body class="forgot-password">
 
     @include('templates.flashMessage')
     @include('templates.header')
 
     <div class="content-wrapper">
-        <h1>Change Your Password</h1>
+        <h1>Forgot Your Password?</h1>
         <main>
-            <form method="post" action="/users/changepassword">
+            <form method="post" action="/users/forgotpassword">
                 <ul>
                     <li>
-                        <label for="">Email</label>
+                        <label for="email">Email</label>
                         <input type="text" name="email" id="email" />
                     </li>
                     <li>
