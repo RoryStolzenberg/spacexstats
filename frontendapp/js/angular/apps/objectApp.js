@@ -1,120 +1,123 @@
-angular.module('objectApp', ['directives.comment']).controller("objectController", ["$scope", "$http", function($scope, $http) {
+(function() {
+    var objectApp = angular.module('app', []);
 
-    $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
-    $scope.object = laravel.object;
+    objectApp.controller("objectController", ["$scope", "$http", function($scope, $http) {
 
-    $scope.$watch("note", function(noteValue) {
-        if (noteValue === "" || noteValue === null) {
-            $scope.noteButtonText = "Create Note";
-            $scope.noteReadText = "Create a Note!";
-        } else {
-            $scope.noteButtonText = "Edit Note";
-            $scope.noteReadText = noteValue;
-        }
-    });
+        $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
+        $scope.object = laravel.object;
 
-    $scope.noteState = "read";
-    $scope.changeNoteState = function() {
-
-        $scope.originalNote = $scope.note;
-
-        if ($scope.noteState == "read") {
-            $scope.noteState = "write";
-        } else {
-            $scope.noteState = "read";
-        }
-    };
-
-    $scope.saveNote = function() {
-        if ($scope.originalNote === "") {
-
-            $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
-                note: $scope.note
-            }).then(function() {
-                $scope.changeNoteState();
-            });
-
-        } else {
-
-            $http.patch('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
-                note: $scope.note
-            }).then(function() {
-                $scope.changeNoteState();
-            });
-        }
-    };
-
-    $scope.deleteNote = function() {
-        $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/note')
-            .then(function() {
-                $scope.note = "";
-                $scope.changeNoteState();
-            });
-    };
-
-    /* FAVORITES */
-    $scope.favorites = laravel.totalFavorites;
-
-    $scope.$watch("favorites", function(newFavoritesValue) {
-        if (newFavoritesValue == 1) {
-            $scope.favoritesText = "1 Favorite";
-        }  else {
-            $scope.favoritesText = $scope.favorites + " Favorites";
-        }
-    });
-
-    $scope.isFavorited = laravel.isFavorited !== null;
-    $scope.toggleFavorite = function() {
-
-        $scope.isFavorited = !$scope.isFavorited;
-
-        if ($scope.isFavorited === true) {
-
-            var requestType = 'POST';
-            $scope.favorites++;
-            $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
-
-        } else if ($scope.isFavorited === false) {
-
-            var requestType = 'DELETE';
-            $scope.favorites--;
-            $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
-
-        }
-    };
-
-    /* DOWNLOAD */
-    $scope.incrementDownloads = function() {
-        $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
-    }
-
-}]).controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
-    $scope.object = laravel.object;
-
-    (function() {
-        commentService.getComments($scope.object).then(function(response) {
-            $scope.comments = response.data;
+        $scope.$watch("note", function(noteValue) {
+            if (noteValue === "" || noteValue === null) {
+                $scope.noteButtonText = "Create Note";
+                $scope.noteReadText = "Create a Note!";
+            } else {
+                $scope.noteButtonText = "Edit Note";
+                $scope.noteReadText = noteValue;
+            }
         });
-    })();
 
-}]).service("commentService", ["$http",
-    function($http) {
+        $scope.noteState = "read";
+        $scope.changeNoteState = function() {
 
-        this.getComments = function (object) {
-            return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
+            $scope.originalNote = $scope.note;
+
+            if ($scope.noteState == "read") {
+                $scope.noteState = "write";
+            } else {
+                $scope.noteState = "read";
+            }
         };
 
-        this.addComment = function(comment) {
+        $scope.saveNote = function() {
+            if ($scope.originalNote === "") {
 
+                $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
+                    note: $scope.note
+                }).then(function() {
+                    $scope.changeNoteState();
+                });
+
+            } else {
+
+                $http.patch('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
+                    note: $scope.note
+                }).then(function() {
+                    $scope.changeNoteState();
+                });
+            }
         };
 
-        this.deleteComment = function(comment) {
+        $scope.deleteNote = function() {
+            $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/note')
+                .then(function() {
+                    $scope.note = "";
+                    $scope.changeNoteState();
+                });
+        };
 
+        /* FAVORITES */
+        $scope.favorites = laravel.totalFavorites;
+
+        $scope.$watch("favorites", function(newFavoritesValue) {
+            if (newFavoritesValue == 1) {
+                $scope.favoritesText = "1 Favorite";
+            }  else {
+                $scope.favoritesText = $scope.favorites + " Favorites";
+            }
+        });
+
+        $scope.isFavorited = laravel.isFavorited !== null;
+        $scope.toggleFavorite = function() {
+
+            $scope.isFavorited = !$scope.isFavorited;
+
+            if ($scope.isFavorited === true) {
+
+                var requestType = 'POST';
+                $scope.favorites++;
+                $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
+
+            } else if ($scope.isFavorited === false) {
+
+                var requestType = 'DELETE';
+                $scope.favorites--;
+                $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
+
+            }
+        };
+
+        /* DOWNLOAD */
+        $scope.incrementDownloads = function() {
+            $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
         }
 
-        this.editComment = function(comment) {
+    }]).controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
+        $scope.object = laravel.object;
 
+        (function() {
+            commentService.getComments($scope.object).then(function(response) {
+                $scope.comments = response.data;
+            });
+        })();
+
+    }]).service("commentService", ["$http",
+        function($http) {
+
+            this.getComments = function (object) {
+                return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
+            };
+
+            this.addComment = function(comment) {
+
+            };
+
+            this.deleteComment = function(comment) {
+
+            }
+
+            this.editComment = function(comment) {
+
+            }
         }
-    }
-]);
-
+    ]);
+})();

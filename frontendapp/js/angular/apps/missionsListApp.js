@@ -1,23 +1,27 @@
-angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
-    $scope.missions = laravel.missions;
+(function() {
+    var missionsListApp = angular.module('app', []);
 
-    // Cheap way to get the next launch (only use on future mission page)
-    $scope.nextLaunch = function() {
-        return $scope.missions[0];
-    };
+    missionsListApp.controller("missionsListController", ['$scope', function($scope) {
+        $scope.missions = laravel.missions;
 
-    // Cheap way to get the previous launch (only use on past mission page)
-    $scope.lastLaunch = function() {
-        return $scope.missions[$scope.missions.length - 1];
-    };
+        // Cheap way to get the next launch (only use on future mission page)
+        $scope.nextLaunch = function() {
+            return $scope.missions[0];
+        };
 
-    $scope.currentYear = function() {
-        return moment().year();
-    };
+        // Cheap way to get the previous launch (only use on past mission page)
+        $scope.lastLaunch = function() {
+            return $scope.missions[$scope.missions.length - 1];
+        };
 
-    $scope.missionsInYear = function(year, completeness) {
-        return $scope.missions.filter(function(mission) {
-            return moment(mission.launchDateTime).year() == year && mission.status == completeness;
-        }).length;
-    }
-}]);
+        $scope.currentYear = function() {
+            return moment().year();
+        };
+
+        $scope.missionsInYear = function(year, completeness) {
+            return $scope.missions.filter(function(mission) {
+                return moment(mission.launchDateTime).year() == year && mission.status == completeness;
+            }).length;
+        }
+    }]);
+})();

@@ -1,26 +1,30 @@
-angular.module("missionsListApp", ["directives.missionCard"]).controller("missionsListController", ['$scope', function($scope) {
-    $scope.missions = laravel.missions;
+(function() {
+    var missionsListApp = angular.module('app', []);
 
-    // Cheap way to get the next launch (only use on future mission page)
-    $scope.nextLaunch = function() {
-        return $scope.missions[0];
-    };
+    missionsListApp.controller("missionsListController", ['$scope', function($scope) {
+        $scope.missions = laravel.missions;
 
-    // Cheap way to get the previous launch (only use on past mission page)
-    $scope.lastLaunch = function() {
-        return $scope.missions[$scope.missions.length - 1];
-    };
+        // Cheap way to get the next launch (only use on future mission page)
+        $scope.nextLaunch = function() {
+            return $scope.missions[0];
+        };
 
-    $scope.currentYear = function() {
-        return moment().year();
-    };
+        // Cheap way to get the previous launch (only use on past mission page)
+        $scope.lastLaunch = function() {
+            return $scope.missions[$scope.missions.length - 1];
+        };
 
-    $scope.missionsInYear = function(year, completeness) {
-        return $scope.missions.filter(function(mission) {
-            return moment(mission.launchDateTime).year() == year && mission.status == completeness;
-        }).length;
-    }
-}]);
+        $scope.currentYear = function() {
+            return moment().year();
+        };
+
+        $scope.missionsInYear = function(year, completeness) {
+            return $scope.missions.filter(function(mission) {
+                return moment(mission.launchDateTime).year() == year && mission.status == completeness;
+            }).length;
+        }
+    }]);
+})();
 angular.module("missionControlApp", ["directives.tags"]).controller("missionControlController", ["$scope", function($scope) {
     $scope.tags = [];
     $scope.selectedTags = [];
@@ -502,127 +506,129 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         }
     });
 })();
-angular.module('objectApp', ['directives.comment']).controller("objectController", ["$scope", "$http", function($scope, $http) {
+(function() {
+    var objectApp = angular.module('app', []);
 
-    $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
-    $scope.object = laravel.object;
+    objectApp.controller("objectController", ["$scope", "$http", function($scope, $http) {
 
-    $scope.$watch("note", function(noteValue) {
-        if (noteValue === "" || noteValue === null) {
-            $scope.noteButtonText = "Create Note";
-            $scope.noteReadText = "Create a Note!";
-        } else {
-            $scope.noteButtonText = "Edit Note";
-            $scope.noteReadText = noteValue;
-        }
-    });
+        $scope.note = laravel.userNote !== null ? laravel.userNote.note : "";
+        $scope.object = laravel.object;
 
-    $scope.noteState = "read";
-    $scope.changeNoteState = function() {
-
-        $scope.originalNote = $scope.note;
-
-        if ($scope.noteState == "read") {
-            $scope.noteState = "write";
-        } else {
-            $scope.noteState = "read";
-        }
-    };
-
-    $scope.saveNote = function() {
-        if ($scope.originalNote === "") {
-
-            $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
-                note: $scope.note
-            }).then(function() {
-                $scope.changeNoteState();
-            });
-
-        } else {
-
-            $http.patch('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
-                note: $scope.note
-            }).then(function() {
-                $scope.changeNoteState();
-            });
-        }
-    };
-
-    $scope.deleteNote = function() {
-        $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/note')
-            .then(function() {
-                $scope.note = "";
-                $scope.changeNoteState();
-            });
-    };
-
-    /* FAVORITES */
-    $scope.favorites = laravel.totalFavorites;
-
-    $scope.$watch("favorites", function(newFavoritesValue) {
-        if (newFavoritesValue == 1) {
-            $scope.favoritesText = "1 Favorite";
-        }  else {
-            $scope.favoritesText = $scope.favorites + " Favorites";
-        }
-    });
-
-    $scope.isFavorited = laravel.isFavorited !== null;
-    $scope.toggleFavorite = function() {
-
-        $scope.isFavorited = !$scope.isFavorited;
-
-        if ($scope.isFavorited === true) {
-
-            var requestType = 'POST';
-            $scope.favorites++;
-            $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
-
-        } else if ($scope.isFavorited === false) {
-
-            var requestType = 'DELETE';
-            $scope.favorites--;
-            $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
-
-        }
-    };
-
-    /* DOWNLOAD */
-    $scope.incrementDownloads = function() {
-        $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
-    }
-
-}]).controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
-    $scope.object = laravel.object;
-
-    (function() {
-        commentService.getComments($scope.object).then(function(response) {
-            $scope.comments = response.data;
+        $scope.$watch("note", function(noteValue) {
+            if (noteValue === "" || noteValue === null) {
+                $scope.noteButtonText = "Create Note";
+                $scope.noteReadText = "Create a Note!";
+            } else {
+                $scope.noteButtonText = "Edit Note";
+                $scope.noteReadText = noteValue;
+            }
         });
-    })();
 
-}]).service("commentService", ["$http",
-    function($http) {
+        $scope.noteState = "read";
+        $scope.changeNoteState = function() {
 
-        this.getComments = function (object) {
-            return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
+            $scope.originalNote = $scope.note;
+
+            if ($scope.noteState == "read") {
+                $scope.noteState = "write";
+            } else {
+                $scope.noteState = "read";
+            }
         };
 
-        this.addComment = function(comment) {
+        $scope.saveNote = function() {
+            if ($scope.originalNote === "") {
 
+                $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
+                    note: $scope.note
+                }).then(function() {
+                    $scope.changeNoteState();
+                });
+
+            } else {
+
+                $http.patch('/missioncontrol/objects/' + $scope.object.object_id + '/note', {
+                    note: $scope.note
+                }).then(function() {
+                    $scope.changeNoteState();
+                });
+            }
         };
 
-        this.deleteComment = function(comment) {
+        $scope.deleteNote = function() {
+            $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/note')
+                .then(function() {
+                    $scope.note = "";
+                    $scope.changeNoteState();
+                });
+        };
 
+        /* FAVORITES */
+        $scope.favorites = laravel.totalFavorites;
+
+        $scope.$watch("favorites", function(newFavoritesValue) {
+            if (newFavoritesValue == 1) {
+                $scope.favoritesText = "1 Favorite";
+            }  else {
+                $scope.favoritesText = $scope.favorites + " Favorites";
+            }
+        });
+
+        $scope.isFavorited = laravel.isFavorited !== null;
+        $scope.toggleFavorite = function() {
+
+            $scope.isFavorited = !$scope.isFavorited;
+
+            if ($scope.isFavorited === true) {
+
+                var requestType = 'POST';
+                $scope.favorites++;
+                $http.post('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
+
+            } else if ($scope.isFavorited === false) {
+
+                var requestType = 'DELETE';
+                $scope.favorites--;
+                $http.delete('/missioncontrol/objects/' + $scope.object.object_id + '/favorite');
+
+            }
+        };
+
+        /* DOWNLOAD */
+        $scope.incrementDownloads = function() {
+            $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
         }
 
-        this.editComment = function(comment) {
+    }]).controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
+        $scope.object = laravel.object;
 
+        (function() {
+            commentService.getComments($scope.object).then(function(response) {
+                $scope.comments = response.data;
+            });
+        })();
+
+    }]).service("commentService", ["$http",
+        function($http) {
+
+            this.getComments = function (object) {
+                return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
+            };
+
+            this.addComment = function(comment) {
+
+            };
+
+            this.deleteComment = function(comment) {
+
+            }
+
+            this.editComment = function(comment) {
+
+            }
         }
-    }
-]);
-
-
+    ]);
+})();
 (function() {
     var app = angular.module('app', []);
 
@@ -1137,79 +1143,6 @@ angular.module('RecursionHelper', [])
 })();
 
 
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                callback: '&'
-            },
-            link: function($scope) {
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                (function() {
-                    if ($scope.isLaunchExact) {
-
-                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                        $scope.countdownProcessor = function() {
-
-                            var launchUnixSeconds = $scope.launchUnixSeconds;
-                            var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                            if (launchUnixSeconds >= currentUnixSeconds) {
-                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                                var secondsBetween = $scope.secondsAwayFromLaunch;
-                                // Calculate the number of days, hours, minutes, seconds
-                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                                secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                                secondsBetween -= $scope.hours * 60 * 60;
-
-                                $scope.minutes = Math.floor(secondsBetween / 60);
-                                secondsBetween -= $scope.minutes * 60;
-
-                                $scope.seconds = secondsBetween;
-
-                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                                // Stop the countdown, count up!
-                            } else {
-                            }
-
-                            if ($scope.callback && typeof $scope.callback === 'function') {
-                                $scope.callback();
-                            }
-                        };
-
-                        $interval($scope.countdownProcessor, 1000);
-                    } else {
-                        $scope.countdownText = $scope.countdownTo;
-                    }
-                })();
-
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app', []);
 
@@ -1284,40 +1217,6 @@ angular.module('RecursionHelper', [])
     });
 })();
 
-angular.module('directives.upload', []).directive('upload', ['$parse', function($parse) {
-    return {
-        restrict: 'A',
-        link: function($scope, element, attrs) {
-
-            // Initialize the dropzone
-            var dropzone = new Dropzone(element[0], {
-                url: attrs.action,
-                autoProcessQueue: false,
-                dictDefaultMessage: "Upload files here!",
-                maxFilesize: 1024, // MB
-                addRemoveLinks: true,
-                uploadMultiple: attrs.multiUpload,
-                parallelUploads: 5,
-                maxFiles: 5,
-                successmultiple: function(dropzoneStatus, files) {
-
-                    $scope.files = files.objects;
-
-                    // Run a callback function with the files passed through as a parameter
-                    if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                        var func = $parse(attrs.callback);
-                        func($scope, { files: files });
-                    }
-                }
-            });
-
-            // upload the files
-            $scope.uploadFiles = function() {
-                dropzone.processQueue();
-            }
-        }
-    }
-}]);
 (function() {
     var app = angular.module('app');
 
@@ -1473,40 +1372,111 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
+})();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
         return {
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                specificity: '=',
+                countdownTo: '=',
+                callback: '&'
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
+            link: function($scope) {
 
-                $scope.retrieveTweet = function() {
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
 
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
 
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
+                (function() {
+                    if ($scope.isLaunchExact) {
 
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
 
-                        });
+
+                        $scope.countdownProcessor = function() {
+
+                            var launchUnixSeconds = $scope.launchUnixSeconds;
+                            var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                            if (launchUnixSeconds >= currentUnixSeconds) {
+                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                                var secondsBetween = $scope.secondsAwayFromLaunch;
+                                // Calculate the number of days, hours, minutes, seconds
+                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                                secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                                secondsBetween -= $scope.hours * 60 * 60;
+
+                                $scope.minutes = Math.floor(secondsBetween / 60);
+                                secondsBetween -= $scope.minutes * 60;
+
+                                $scope.seconds = secondsBetween;
+
+                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                                // Stop the countdown, count up!
+                            } else {
+                            }
+
+                            if ($scope.callback && typeof $scope.callback === 'function') {
+                                $scope.callback();
+                            }
+                        };
+
+                        $interval($scope.countdownProcessor, 1000);
                     } else {
-                        $scope.tweet = {};
+                        $scope.countdownText = $scope.countdownTo;
                     }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+                })();
+
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/countdown.html'
         }
     }]);
 })();
@@ -1733,6 +1703,46 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -1926,4 +1936,16 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 		};
 
 	});
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();

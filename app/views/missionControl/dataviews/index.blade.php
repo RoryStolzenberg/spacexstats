@@ -43,7 +43,12 @@
                     </li>
 
                     <li class="grid-6">
-                        @{{ newDataView.testQueryOutput }}
+                        <label>Query Output</label>
+                        <pre class="testquery">
+                            <code class="code json">
+                                @{{ newDataView.testQueryOutput | jsonPrettify }}
+                            </code>
+                        </pre>
                     </li>
 
                     <li class="grid-12">

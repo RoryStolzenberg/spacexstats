@@ -4886,6 +4886,10 @@ img#object {
       padding-left: 0;
       padding-right: 0; } }
 
+.testquery {
+  height: 300px;
+  overflow: auto; }
+
 .tagger-container .wrapper {
   border: 1px solid #CCC;
   font-size: 0;
