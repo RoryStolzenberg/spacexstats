@@ -1,7 +1,7 @@
 (function() {
 	var app = angular.module('app');
 
-	var app.directive('search', ['constraintsReader', function(constraintsReader) {
+	app.directive('search', ['constraintsReader', function(constraintsReader) {
 		return {
 			restrict: 'E',
 			scope: {
@@ -69,7 +69,7 @@
 					noted: null,
 					downloaded: null,
 				}
-			}:
+			};
 
 			// parse out tags https://regex101.com/r/uL9jN5/1
 			currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
@@ -106,7 +106,7 @@
 
 		}
 
-	}).factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
+	}]).factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
 		// Holds a Constraint object which consists of a property and a value
 		return function(constraint) {
 

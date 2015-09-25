@@ -13,27 +13,48 @@
             <nav></nav>
             <h2>Create a DataView</h2>
             <form name="createDataViewForm" novalidate>
-                <label for="name">DataView Name</label>
-                <input type="text" name="name" ng-model="newDataview.name" required />
-
-                <label>Column Titles</label>
                 <ul>
-                    <li ng-repeat="title in dataview.titles">
-                        <input type="text" name="@{{ 'title' + $index }}" ng-model="newDataview.titles[$index]" />
+                    <li class="grid-6">
+                        <label for="name">DataView Name</label>
+                        <input type="text" name="name" ng-model="newDataView.name" required />
+                    </li>
+
+                    <li class="grid-6">
+                        <label>Select a banner image</label>
+                        <select-list options="data.bannerImages" has-default-option="false" unique-key="object_id" title-key="title" searchable="true" ng-model="newDataView.banner_image"></select-list>
+                    </li>
+
+                    <li class="grid-4 suffix-8">
+                        <label>Column Titles</label>
+                        <ul>
+                            <li ng-repeat="title in newDataView.titles">
+                                <input type="text" name="title" ng-model="title" />
+                            </li>
+                            <li>
+                                <input type="text" ng-blur="newDataView.addTitle(newDataView.newTitle)" ng-model="newDataView.newTitle" />
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="grid-6">
+                        <label for="query">Query</label>
+                        <textarea class="code" name="query" ng-model="newDataView.query" required></textarea>
+                        <button ng-click="testQuery(dataview.query)">Test Query</button>
+                    </li>
+
+                    <li class="grid-6">
+                        @{{ newDataView.results }}
+                    </li>
+
+                    <li class="grid-12">
+                        <label for="summary">Summary</label>
+                        <textarea name="summary" ng-model="newDataView.summary" required></textarea>
+                    </li>
+
+                    <li class="grid-12">
+                        <input type="submit" ng-disabled="createDataViewForm.$invalid" />
                     </li>
                 </ul>
-
-                <label>Select a banner image</label>
-                <select-list options="data.bannerImages" has-default-option="false" unique-key="object_id" title-key="title" searchable="true" ng-model="newDataview.banner_image"></select-list>
-
-                <label for="query">Query</label>
-                <textarea name="query" ng-model="newDataview.query" required></textarea>
-                <button ng-click="testQuery(dataview.query)">Test Query</button>
-
-                <label for="summary">Summary</label>
-                <textarea name="summary" ng-model="newDataview.summary" required></textarea>
-
-                <input type="submit" ng-disabled="createDataViewForm.$invalid" />
             </form>
 
             <h2>Current DataViews</h2>

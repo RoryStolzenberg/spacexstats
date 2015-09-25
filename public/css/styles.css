@@ -4170,6 +4170,9 @@ p {
   font-size: 18px;
   line-height: 2; }
 
+.code {
+  font-family: "Source Code Pro"; }
+
 .hero {
   height: calc(100vh - 340px);
   text-align: center;

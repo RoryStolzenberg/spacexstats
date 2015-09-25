@@ -400,6 +400,19 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 }]);
 
 (function() {
+	var publisherApp = angular.module('app', []);
+
+	publisherApp.controller(["$scope", "$http", function($scope, $http) {
+
+		// Init
+		(function() {
+			if (typeof laravel.publisher !== 'undefined') {
+				$scope.publisher = laravel.publisher;
+			}
+		})();
+	}]);
+})();
+(function() {
     var reviewApp = angular.module('app', []);
 
     reviewApp.controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
@@ -991,8 +1004,8 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
 (function() {
     var dataViewApp = angular.module('app', []);
 
-    dataViewApp.controller('dataViewController', ['$scope', '$http', function($scope, $http) {
-        $scope.newDataview = {};
+    dataViewApp.controller('dataViewController', ['DataView', '$scope', '$http', function(DataView, $scope, $http) {
+        $scope.newDataView = new DataView();
 
         (function() {
 
@@ -1000,21 +1013,49 @@ angular.module('objectApp', ['directives.comment']).controller("objectController
                 bannerImages: laravel.bannerImages
             };
 
-            $scope.dataViews = laravel.dataViews;
+            laravel.dataViews.forEach(function(dataView) {
+                $scope.dataViews.push(new DataView(dataView));
+            });
         })();
     }]);
 
     dataViewApp.service('dataViewService', ["$http", function($http) {
         this.testQuery = function(query) {
-            $http.get('/missioncontrol/dataviews/testquery')
-        }
+            return $http.get('/missioncontrol/dataviews/testquery?q=' + query);
+        };
 
         this.create = function(data) {
 
-        }
+        };
 
         this.edit = function(data) {
 
+        };
+    }]);
+
+    dataViewApp.factory('DataView', [function() {
+        return function(dataView) {
+
+            var self = this;
+
+            if (typeof dataView === 'undefined') {
+                self.titles = [];
+            }
+
+            self.addTitle = function(newTitle) {
+                if (typeof newTitle !== 'undefined' && newTitle != "") {
+                    self.titles.push(newTitle);
+                    self.newTitle = undefined;
+                }
+            };
+
+            self.deleteTitle = function() {
+
+            };
+
+            self.testQuery = function() {
+
+            }
         }
     }]);
 
@@ -1156,22 +1197,6 @@ angular.module('RecursionHelper', [])
     }]);
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("selectList", function() {
@@ -1280,141 +1305,61 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
     }
 }]);
 (function() {
-    var app = angular.module('app', []);
+    var app = angular.module('app');
 
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+    app.directive('missionCard', function() {
         return {
-            require: 'ngModel',
-            replace: true,
             restrict: 'E',
             scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
+                size: '@',
+                mission: '='
             },
-            link: function($scope, element, attributes, ctrl) {
-
-                (function() {
-                    if (typeof $scope.currentTags === 'undefined') {
-                        $scope.currentTags = [];
-                    }
-                })();
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-
-                $scope.createTag = function(createdTag) {
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
-                        }
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        // Remove any rulebreaking chars
-                        var tag = $scope.tagInput;
-                        tag = tag.replace(/["']/g, "");
-                        // Remove whitespace if present
-                        tag = tag.trim();
-
-                        $scope.createTag(tag);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-            return self;
+            templateUrl: '/js/templates/missionCard.html'
         }
     });
 })();
+(function() {
+    var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
 
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -1591,45 +1536,141 @@ angular.module('directives.upload', []).directive('upload', ['$parse', function(
     });
 })();
 (function() {
-    var app = angular.module('app');
+    var app = angular.module('app', []);
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
+            require: 'ngModel',
+            replace: true,
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                availableTags: '=',
+                currentTags: '=ngModel'
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
+            link: function($scope, element, attributes, ctrl) {
 
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
+                (function() {
+                    if (typeof $scope.currentTags === 'undefined') {
+                        $scope.currentTags = [];
                     }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+                })();
+
+                ctrl.$options = {
+                    allowInvalid: true
+                };
+
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+
+                $scope.createTag = function(createdTag) {
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
+                        });
+
+                        if (tagIsPresentInAvailableTags.length === 1) {
+                            // grab tag
+                            var newTag = tagIsPresentInAvailableTags[0];
+                        } else {
+                            // trim and convert the text to lowercase, then create!
+                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
+                        }
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
+                    }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        // Remove any rulebreaking chars
+                        var tag = $scope.tagInput;
+                        tag = tag.replace(/["']/g, "");
+                        // Remove whitespace if present
+                        tag = tag.trim();
+
+                        $scope.createTag(tag);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
+
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/tags.html'
         }
     }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+            return self;
+        }
+    });
 })();
+
+
 (function() {
     var app = angular.module('app');
 
@@ -1735,4 +1776,140 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
             templateUrl: '/js/templates/redditComment.html'
         }
     }]);
+})();
+(function() {
+	var app = angular.module('app');
+
+	app.directive('search', ['constraintsReader', function(constraintsReader) {
+		return {
+			restrict: 'E',
+			scope: {
+
+			},
+			link: function($scope, element, attributes) {
+
+				$scope.currentSearch = {
+					searchTerm: null,
+					tags: {
+						tags: []
+					},
+					constraints: {
+						mission: null,
+						type: null,
+						before: null,
+						after: null,
+						year: null,
+						uploadedBy: null,
+						favorited: null,
+						noted: null,
+						downloaded: null,
+					}
+				}
+
+				$scope.stagingConstraints = {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null,
+				}
+
+				$scope.data = {
+					missions: null,
+					types: null
+				}
+
+				$scope.onSearchKeyPress = function(event) {
+					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
+				}
+			},
+			templateUrl: 'search.html'
+		}
+	}]).service('constraintsReader', ['Constraint', 'kebabToCamelCase', function(Constaint, kebabToCamelCase) {
+		this.fromSearch = function(rawSearchTerm) {
+
+			var currentSearch = {
+				searchTerm: null,
+				tags: {
+					tags: []
+				},
+				constraints: {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null,
+				}
+			};
+
+			// parse out tags https://regex101.com/r/uL9jN5/1
+			currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
+
+			// constraints https://regex101.com/r/iT2zH5/2
+			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
+			var rawConstraint;
+			var rawConstraintsArray = [];
+			var touchedConstraintsArray = [];
+
+			// Pull out all the raw constraints 
+			do {
+			    rawConstraint = re.exec(rawSearchTerm);
+			    if (rawConstraint) {
+			        rawConstraintsArray.push(new Constraint(rawConstraint));
+			        touchedConstraintsArray.push(kebabToCamelCase.convert(rawConstraint[1]));
+			    }
+			} while (rawConstraint);
+
+			// reset the constraints present in the current search
+			for (var propertyName in currentSearch.constraints) {
+
+				// If the constraint exists
+				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
+					var index = touchedConstraintsArray.indexOf(propertyName);
+					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
+				}
+			}
+
+			return currentSearch;
+		}
+
+		this.fromConstraints = function() {
+
+		}
+
+	}]).factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
+		// Holds a Constraint object which consists of a property and a value
+		return function(constraint) {
+
+			var self = this;
+
+			self.property = kebabToCamelCase.convert(constraint[1]);
+			self.value = typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3];
+
+			return self;
+		}
+
+	}]).service('kebabToCamelCase', function() {
+		// Converts a search-constraint into a searchConstraint
+		this.convert = function(string) {
+
+			for(var i = 0; i < string.length; i++) {
+
+				if (string[i] === "-") {
+					string = string.replace(string.substr(i, 1), "");
+					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
+				}
+			}
+			return string;
+		};
+
+	});
 })();

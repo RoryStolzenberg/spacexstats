@@ -64,6 +64,18 @@ return array(
 			'prefix'    => '',
 		),
 
+        # Our secondary database connection
+        'readOnlyMysql' => array(
+            'driver'    => 'mysql',
+            'host'      => Credential::dbHost,
+            'database'  => Credential::db,
+            'username'  => Credential::dbReadOnlyUsername,
+            'password'  => Credential::dbReadOnlyPassword,
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+        ),
+
 		'pgsql' => array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',

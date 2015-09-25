@@ -25,4 +25,12 @@ class DataView extends Eloquent {
     public function setColumnTitlesAttribute($value) {
         $this->attributes['column_titles'] = json_encode($value);
     }
+
+    public function getDarkColorAttribute() {
+
+    }
+
+    public function getLightColorAttribute() {
+        
+    }
 }

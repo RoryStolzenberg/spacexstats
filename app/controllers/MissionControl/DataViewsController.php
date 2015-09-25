@@ -31,7 +31,8 @@ class DataViewsController extends BaseController {
         return Response::json();
     }
 
-    public function testsql($query) {
-
+    public function testQuery($query) {
+        $response = DB::connection('readOnlyMysql')->raw($query)->getValue();
+        return Response::json($response);
     }
 }
