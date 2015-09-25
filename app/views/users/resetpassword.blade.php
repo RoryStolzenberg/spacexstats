@@ -8,7 +8,7 @@
     @include('templates.header')
 
     <div class="content-wrapper">
-        <h1>Change Your Password</h1>
+        <h1>Reset Your Password</h1>
         <main>
             <form method="post" action="/users/resetpassword">
                 <ul>
