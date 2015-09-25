@@ -29,7 +29,8 @@
 
     dataViewApp.service('dataViewService', ["$http", function($http) {
         this.testQuery = function(query) {
-            return $http.get('/missioncontrol/dataviews/testquery?q=' + query);
+            var encodedQuery = encodeURIComponent(query);
+            return $http.get('/missioncontrol/dataviews/testquery?q=' + encodedQuery);
         };
 
         this.create = function(data) {

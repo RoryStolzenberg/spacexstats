@@ -39,7 +39,7 @@
                     <li class="grid-6">
                         <label for="query">Query</label>
                         <textarea class="code" name="query" ng-model="newDataView.query" required></textarea>
-                        <button ng-click="testQuery(dataview.query)">Test Query</button>
+                        <button ng-click="newDataView.testQuery(dataview.query)">Test Query</button>
                     </li>
 
                     <li class="grid-6">

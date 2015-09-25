@@ -6,7 +6,7 @@ Route::group(array('prefix' => 'missioncontrol/dataviews'), function() {
         'uses' => 'DataViewsController@create'
     ))->before('mustBe:Administrator');
 
-    Route::get('/testsql', array(
+    Route::get('/testquery', array(
         'as' => 'missionControl.dataviews.testquery',
         'uses' => 'DataViewsController@testQuery'
     ))->before('mustBe:Administrator');
