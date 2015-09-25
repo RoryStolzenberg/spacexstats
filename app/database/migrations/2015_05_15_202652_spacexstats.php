@@ -87,6 +87,8 @@ class Spacexstats extends Migration {
             $table->string('query', Varchar::medium);
             $table->string('summary', Varchar::medium);
             $table->integer('banner_image')->unsigned();
+            $table->string('darkColor', Varchar::tiny);
+            $table->string('lightColor', Varchar::tiny);
         });
 
         Schema::create('destinations', function(Blueprint $table) {

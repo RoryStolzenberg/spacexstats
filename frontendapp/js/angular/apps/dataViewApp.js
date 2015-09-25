@@ -1,11 +1,22 @@
 (function() {
     var dataViewApp = angular.module('app', []);
 
-    dataViewApp.controller('dataViewController', ['DataView', '$scope', '$http', function(DataView, $scope, $http) {
+    dataViewApp.controller('dataViewController', ['DataView', 'dataViewService', '$scope', '$http', function(DataView, dataViewService, $scope, $http) {
         $scope.newDataView = new DataView();
 
-        (function() {
+        $scope.create = function(dataViewToCreate) {
+            dataViewService.create(dataViewToCreate).then(function(response) {
 
+            });
+        };
+
+        $scope.edit = function(dataViewToEdit) {
+            dataViewService.edit(dataViewToEdit).then(function(response) {
+
+            });
+        };
+
+        (function() {
             $scope.data = {
                 bannerImages: laravel.bannerImages
             };
@@ -30,7 +41,7 @@
         };
     }]);
 
-    dataViewApp.factory('DataView', [function() {
+    dataViewApp.factory('DataView', ['dataViewService', function(dataViewService) {
         return function(dataView) {
 
             var self = this;
@@ -51,7 +62,9 @@
             };
 
             self.testQuery = function() {
-
+                dataViewService.testQuery(self.query).then(function(response) {
+                    self.testQueryOutput = response.data;
+                });
             }
         }
     }]);

@@ -43,7 +43,7 @@
                     </li>
 
                     <li class="grid-6">
-                        @{{ newDataView.results }}
+                        @{{ newDataView.testQueryOutput }}
                     </li>
 
                     <li class="grid-12">
