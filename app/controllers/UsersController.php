@@ -292,6 +292,15 @@ class UsersController extends BaseController {
         }
     }
 
+    public function resetPassword() {
+        if (Request::isMethod('get')) {
+            return View::make('users.resetpassword');
+
+        } else if (Request::isMethod('post')) {
+            // Process forgot password
+        }
+    }
+
 	public function logout() {
 		Auth::logout();
 		return Redirect::route('home');

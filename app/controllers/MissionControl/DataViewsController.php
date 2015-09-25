@@ -3,8 +3,8 @@
 use \SpaceXStats\Enums\MissionControlType;
 
 class DataViewsController extends BaseController {
-    public function get($dataview_id) {
-        $dataview = DataView::find($dataview_id);
+    public function get($dataviewId) {
+        $dataview = DataView::find($dataviewId);
         return View::make('missionControl.dataviews.get', array('dataview' => $dataview));
     }
 

@@ -26,6 +26,11 @@ Route::group(array('prefix' => 'users'), function() {
             'as' => 'users.forgotpassword',
             'uses' => 'UsersController@forgotPassword'
         ));
+
+        Route::any('/resetpassword/{username}/{key}', array(
+            'as' => 'users.resetpassword',
+            'uses' => 'UsersController@resetPassword'
+        ));
     });
 
     Route::group(array('before' => 'mustBeLoggedIn'), function() {

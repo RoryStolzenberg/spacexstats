@@ -2,6 +2,8 @@
 
 class Publisher extends Eloquent {
 
+    use ValidatableTrait;
+
     protected $table = 'publishers';
     protected $primaryKey = 'publisher_id';
     public $timestamps = false;
@@ -10,6 +12,10 @@ class Publisher extends Eloquent {
     protected $appends = [];
     protected $fillable = [];
     protected $guarded = [];
+
+    // Validation
+    public $rules = array();
+    public $messages = array();
 
     // Relations
     public function objects() {

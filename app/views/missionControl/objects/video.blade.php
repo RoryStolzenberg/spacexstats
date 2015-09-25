@@ -82,6 +82,10 @@
 
             <h2>Summary</h2>
             <section class="summary">
+                @if ($object->type != \SpaceXStats\Enums\MissionControlType::Text)
+                    <p>{{ $object->summary }}</p>
+                @endif
+
                 <h3>Tags</h3>
                 @foreach ($object->tags as $tag)
                     <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
@@ -125,5 +129,8 @@
 
         </main>
     </div>
+
+    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
 </body>
 @stop

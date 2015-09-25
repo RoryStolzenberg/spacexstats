@@ -1,0 +1,10 @@
+<div class="search">
+
+	<input class="search" type="search" ng-model="rawSearchTerm" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" />
+
+	<div class="constraints">
+		<!-- TYPE -->
+		<select-list options="data.allMissions" has-default-option="false" selected-option="currentSearch."></select-list>
+	</div>
+
+</div>
