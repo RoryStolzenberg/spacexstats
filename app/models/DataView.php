@@ -17,4 +17,12 @@ class DataView extends Eloquent {
 
     public function getDataAttribute() {
     }
+
+    public function getColumnTitlesAttribute() {
+        return json_decode($this->column_titles);
+    }
+
+    public function setColumnTitlesAttribute($value) {
+        $this->attributes['column_titles'] = json_encode($value);
+    }
 }
