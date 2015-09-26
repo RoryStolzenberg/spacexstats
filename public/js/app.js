@@ -25,10 +25,14 @@
         }
     }]);
 })();
-angular.module("missionControlApp", ["directives.tags"]).controller("missionControlController", ["$scope", function($scope) {
-    $scope.tags = [];
-    $scope.selectedTags = [];
-}]);
+(function() {
+    var missionControlApp = angular.module("app", []);
+
+    missionControlApp.controller("missionControlController", ["$scope", function($scope) {
+        $scope.tags = [];
+        $scope.selectedTags = [];
+    }]);
+})();
 /**
  * Workaround to make defining and retrieving angular modules easier and more intuitive.
  */
@@ -1012,10 +1016,11 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 
     dataViewApp.controller('dataViewController', ['DataView', 'dataViewService', '$scope', '$http', function(DataView, dataViewService, $scope, $http) {
         $scope.newDataView = new DataView();
+        $scope.dataViews = [];
 
         $scope.create = function(dataViewToCreate) {
             dataViewService.create(dataViewToCreate).then(function(response) {
-
+                $scope.newDataView = new DataView();
             });
         };
 
@@ -1043,26 +1048,30 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         };
 
         this.create = function(data) {
-
+            return $http.post('/missioncontrol/dataviews/create',{ dataView: data });
         };
 
         this.edit = function(data) {
-
+            return $http.post('/missioncontrol/dataviews/' + data.dataview_id + '/edit', { dataView: data });
         };
     }]);
 
     dataViewApp.factory('DataView', ['dataViewService', function(dataViewService) {
         return function(dataView) {
 
-            var self = this;
+            if (typeof dataView === 'undefined') {
+                var self = this
+            } else {
+                var self = dataView;
+            }
 
             if (typeof dataView === 'undefined') {
-                self.titles = [];
+                self.column_titles = [];
             }
 
             self.addTitle = function(newTitle) {
                 if (typeof newTitle !== 'undefined' && newTitle != "") {
-                    self.titles.push(newTitle);
+                    self.column_titles.push(newTitle);
                     self.newTitle = undefined;
                 }
             };
@@ -1143,6 +1152,79 @@ angular.module('RecursionHelper', [])
 })();
 
 
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                callback: '&'
+            },
+            link: function($scope) {
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
+
+                (function() {
+                    if ($scope.isLaunchExact) {
+
+                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+
+
+                        $scope.countdownProcessor = function() {
+
+                            var launchUnixSeconds = $scope.launchUnixSeconds;
+                            var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                            if (launchUnixSeconds >= currentUnixSeconds) {
+                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                                var secondsBetween = $scope.secondsAwayFromLaunch;
+                                // Calculate the number of days, hours, minutes, seconds
+                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                                secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                                secondsBetween -= $scope.hours * 60 * 60;
+
+                                $scope.minutes = Math.floor(secondsBetween / 60);
+                                secondsBetween -= $scope.minutes * 60;
+
+                                $scope.seconds = secondsBetween;
+
+                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                                // Stop the countdown, count up!
+                            } else {
+                            }
+
+                            if ($scope.callback && typeof $scope.callback === 'function') {
+                                $scope.callback();
+                            }
+                        };
+
+                        $interval($scope.countdownProcessor, 1000);
+                    } else {
+                        $scope.countdownText = $scope.countdownTo;
+                    }
+                })();
+
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app', []);
 
@@ -1232,6 +1314,44 @@ angular.module('RecursionHelper', [])
             templateUrl: '/js/templates/missionCard.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -1369,117 +1489,6 @@ angular.module('RecursionHelper', [])
 })();
 
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                callback: '&'
-            },
-            link: function($scope) {
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                (function() {
-                    if ($scope.isLaunchExact) {
-
-                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                        $scope.countdownProcessor = function() {
-
-                            var launchUnixSeconds = $scope.launchUnixSeconds;
-                            var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                            if (launchUnixSeconds >= currentUnixSeconds) {
-                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                                var secondsBetween = $scope.secondsAwayFromLaunch;
-                                // Calculate the number of days, hours, minutes, seconds
-                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                                secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                                secondsBetween -= $scope.hours * 60 * 60;
-
-                                $scope.minutes = Math.floor(secondsBetween / 60);
-                                secondsBetween -= $scope.minutes * 60;
-
-                                $scope.seconds = secondsBetween;
-
-                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                                // Stop the countdown, count up!
-                            } else {
-                            }
-
-                            if ($scope.callback && typeof $scope.callback === 'function') {
-                                $scope.callback();
-                            }
-                        };
-
-                        $interval($scope.countdownProcessor, 1000);
-                    } else {
-                        $scope.countdownText = $scope.countdownTo;
-                    }
-                })();
-
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -1740,6 +1749,31 @@ angular.module('RecursionHelper', [])
         }
     }]);
 })();
+angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            comment: '='
+        },
+        compile: function(element) {
+            // Use the compile function from the RecursionHelper,
+            // And return the linking function(s) which it returns
+            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+
+                $scope.toggleReplyState = function() {
+                    if (typeof $scope.reply !== 'undefined') {
+                        $scope.reply = !$scope.reply;
+                    } else {
+                        $scope.reply = true;
+                    }
+
+                }
+            });
+        },
+        templateUrl: '/js/templates/comment.html'
+    }
+}]);
 (function() {
     var app = angular.module('app');
 
@@ -1776,31 +1810,6 @@ angular.module('RecursionHelper', [])
         }
     }]);
 })();
-angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            comment: '='
-        },
-        compile: function(element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
-
-                $scope.toggleReplyState = function() {
-                    if (typeof $scope.reply !== 'undefined') {
-                        $scope.reply = !$scope.reply;
-                    } else {
-                        $scope.reply = true;
-                    }
-
-                }
-            });
-        },
-        templateUrl: '/js/templates/comment.html'
-    }
-}]);
 (function() {
 	var app = angular.module('app');
 

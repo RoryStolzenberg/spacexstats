@@ -1,4 +1,6 @@
 <?php
+use SpaceXStats\Library\DeltaV;
+
 class Award extends Eloquent {
 
     protected $table = 'awards';

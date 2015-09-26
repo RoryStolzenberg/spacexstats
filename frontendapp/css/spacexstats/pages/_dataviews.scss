@@ -2,3 +2,22 @@
     height:300px;
     overflow:auto;
 }
+
+.dataview {
+    width:80%;
+    margin:0 auto;
+    padding:0;
+
+    .head {
+        height:200px;
+        line-height:200px;
+        background-size: cover;
+        background-position: 50% 50%;
+        font-family: $brandonGrotesque;
+        font-weight: lighter;
+        font-size:60px;
+        color:$white;
+        text-align:center;
+        text-shadow: 0 0 10px $slateblack;
+    }
+}

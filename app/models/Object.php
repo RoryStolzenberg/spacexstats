@@ -110,19 +110,6 @@ class Object extends Eloquent {
     }
 
     /**
-     * Checks whether the object has its own unique thumbnail or not.
-     *
-     * This function will return false if the object has a generic thumbnail or does not have a thumbnail. It does
-     * not care about the thumbnail's location, the object's status, or its visibility.
-     *
-     * @return bool
-     */
-    public function hasThumbs() {
-        $defaultThumbs = array("audio.png", "document.png", "text.png", "comment.png", "article.png", "pressrelease.png");
-        return !is_null($this->thumb_filename) && !in_array($this->thumb_filename, $defaultThumbs);
-    }
-
-    /**
      *
      */
     public function hasS3File() {
@@ -138,6 +125,23 @@ class Object extends Eloquent {
      */
     public function hasLocalFile() {
         return !is_null($this->local_file);
+    }
+
+    /**
+     * Checks whether the object has its own unique thumbnail or not.
+     *
+     * This function will return false if the object has a generic thumbnail or does not have a thumbnail. It does
+     * not care about the thumbnail's location, the object's status, or its visibility.
+     *
+     * @return bool
+     */
+    public function hasThumbs() {
+        $defaultThumbs = array("audio.png", "document.png", "text.png", "comment.png", "article.png", "pressrelease.png");
+        return !is_null($this->thumb_filename) && !in_array($this->thumb_filename, $defaultThumbs);
+    }
+
+    public function hasS3Thumbs() {
+
     }
 
     /**

@@ -27,8 +27,8 @@
                     <li class="grid-4 suffix-8">
                         <label>Column Titles</label>
                         <ul>
-                            <li ng-repeat="title in newDataView.titles">
-                                <input type="text" name="title" ng-model="title" />
+                            <li ng-repeat="column_title in newDataView.column_titles">
+                                <input type="text" name="title" ng-model="column_title" />
                             </li>
                             <li>
                                 <input type="text" ng-blur="newDataView.addTitle(newDataView.newTitle)" ng-model="newDataView.newTitle" />
@@ -57,7 +57,7 @@
                     </li>
 
                     <li class="grid-12">
-                        <input type="submit" ng-disabled="createDataViewForm.$invalid" />
+                        <input type="submit" ng-disabled="createDataViewForm.$invalid" ng-click="create(newDataView)" />
                     </li>
                 </ul>
             </form>

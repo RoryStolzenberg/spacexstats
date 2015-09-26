@@ -19,7 +19,9 @@
 		"laracasts/utilities": "~1.0",
 		"twilio/sdk": "^4.2",
         "elasticsearch/elasticsearch": "~1.0",
-        "luke-nz/phpreddit": "dev-master@dev"
+        "luke-nz/phpreddit": "dev-master@dev",
+        "ksubileau/color-thief-php": "~1.1",
+		"mexitek/phpcolors": "dev-master"
 	},
 	"autoload": {
 		"classmap": [

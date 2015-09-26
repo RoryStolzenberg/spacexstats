@@ -3,10 +3,11 @@
 
     dataViewApp.controller('dataViewController', ['DataView', 'dataViewService', '$scope', '$http', function(DataView, dataViewService, $scope, $http) {
         $scope.newDataView = new DataView();
+        $scope.dataViews = [];
 
         $scope.create = function(dataViewToCreate) {
             dataViewService.create(dataViewToCreate).then(function(response) {
-
+                $scope.newDataView = new DataView();
             });
         };
 
@@ -34,26 +35,30 @@
         };
 
         this.create = function(data) {
-
+            return $http.post('/missioncontrol/dataviews/create',{ dataView: data });
         };
 
         this.edit = function(data) {
-
+            return $http.post('/missioncontrol/dataviews/' + data.dataview_id + '/edit', { dataView: data });
         };
     }]);
 
     dataViewApp.factory('DataView', ['dataViewService', function(dataViewService) {
         return function(dataView) {
 
-            var self = this;
+            if (typeof dataView === 'undefined') {
+                var self = this
+            } else {
+                var self = dataView;
+            }
 
             if (typeof dataView === 'undefined') {
-                self.titles = [];
+                self.column_titles = [];
             }
 
             self.addTitle = function(newTitle) {
                 if (typeof newTitle !== 'undefined' && newTitle != "") {
-                    self.titles.push(newTitle);
+                    self.column_titles.push(newTitle);
                     self.newTitle = undefined;
                 }
             };

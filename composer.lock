@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2fd3a5b0e7ae6ebcdcc9737f21dd69c3",
-    "content-hash": "565600fb1cd475bbb9026869dd4fb3e2",
+    "hash": "11ba4bc567fe21e5c46aa370fd1eb2c3",
+    "content-hash": "8f223a4664e8299050e03d724e501529",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -1047,6 +1047,58 @@
             "time": "2015-01-10 01:09:28"
         },
         {
+            "name": "ksubileau/color-thief-php",
+            "version": "v1.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ksubileau/color-thief-php.git",
+                "reference": "a5bb45b18f590c745c350d005ca4c5992bd83d7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ksubileau/color-thief-php/zipball/a5bb45b18f590c745c350d005ca4c5992bd83d7b",
+                "reference": "a5bb45b18f590c745c350d005ca4c5992bd83d7b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.3",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD image adapter.",
+                "ext-imagick": "to use the Imagick image adapter."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ColorThief": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "CC-BY-2.5"
+            ],
+            "authors": [
+                {
+                    "name": "Kevin Subileau",
+                    "homepage": "http://www.kevinsubileau.fr"
+                }
+            ],
+            "description": "Grabs the dominant color or a representative color palette from an image.",
+            "homepage": "http://www.kevinsubileau.fr/projets/color-thief-php",
+            "keywords": [
+                "color",
+                "dominant",
+                "palette",
+                "php",
+                "thief"
+            ],
+            "time": "2014-10-30 10:49:52"
+        },
+        {
             "name": "laracasts/utilities",
             "version": "1.0.1",
             "source": {
@@ -1245,6 +1297,51 @@
                 "reddit"
             ],
             "time": "2015-09-20 07:09:22"
+        },
+        {
+            "name": "mexitek/phpcolors",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mexitek/phpColors.git",
+                "reference": "89bf30473a68dc8845e46e9db3e536b969e18c11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mexitek/phpColors/zipball/89bf30473a68dc8845e46e9db3e536b969e18c11",
+                "reference": "89bf30473a68dc8845e46e9db3e536b969e18c11",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arlo Carreon",
+                    "homepage": "http://arlocarreon.com",
+                    "role": "creator"
+                }
+            ],
+            "description": "A series of methods that let you manipulate colors. Just incase you ever need different shades of one color on the fly.",
+            "homepage": "http://mexitek.github.com/phpColors/",
+            "keywords": [
+                "color",
+                "css",
+                "design",
+                "frontend",
+                "ui"
+            ],
+            "time": "2015-09-09 15:43:06"
         },
         {
             "name": "monolog/monolog",
@@ -2235,12 +2332,12 @@
             "target-dir": "Symfony/Component/BrowserKit",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/BrowserKit.git",
+                "url": "https://github.com/symfony/browser-kit.git",
                 "reference": "b2b78b850a32251cbbd9915ab61453302e7ecd72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/BrowserKit/zipball/b2b78b850a32251cbbd9915ab61453302e7ecd72",
+                "url": "https://api.github.com/repos/symfony/browser-kit/zipball/b2b78b850a32251cbbd9915ab61453302e7ecd72",
                 "reference": "b2b78b850a32251cbbd9915ab61453302e7ecd72",
                 "shasum": ""
             },
@@ -2290,12 +2387,12 @@
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Console.git",
+                "url": "https://github.com/symfony/console.git",
                 "reference": "a43e750b4c74f3bdfca77c79c343033d35a6cd6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/a43e750b4c74f3bdfca77c79c343033d35a6cd6e",
+                "url": "https://api.github.com/repos/symfony/console/zipball/a43e750b4c74f3bdfca77c79c343033d35a6cd6e",
                 "reference": "a43e750b4c74f3bdfca77c79c343033d35a6cd6e",
                 "shasum": ""
             },
@@ -2345,12 +2442,12 @@
             "target-dir": "Symfony/Component/CssSelector",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/CssSelector.git",
+                "url": "https://github.com/symfony/css-selector.git",
                 "reference": "d45b306421462295e76b94bcf76b963867450327"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/CssSelector/zipball/d45b306421462295e76b94bcf76b963867450327",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/d45b306421462295e76b94bcf76b963867450327",
                 "reference": "d45b306421462295e76b94bcf76b963867450327",
                 "shasum": ""
             },
@@ -2396,12 +2493,12 @@
             "target-dir": "Symfony/Component/Debug",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Debug.git",
+                "url": "https://github.com/symfony/debug.git",
                 "reference": "ed3019589cdadf32c521d1e181f9d72955645c67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Debug/zipball/ed3019589cdadf32c521d1e181f9d72955645c67",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/ed3019589cdadf32c521d1e181f9d72955645c67",
                 "reference": "ed3019589cdadf32c521d1e181f9d72955645c67",
                 "shasum": ""
             },
@@ -2455,12 +2552,12 @@
             "target-dir": "Symfony/Component/DomCrawler",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/DomCrawler.git",
+                "url": "https://github.com/symfony/dom-crawler.git",
                 "reference": "3860edcf7ff7e173cfe2151f0d425e610e77cc35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/DomCrawler/zipball/3860edcf7ff7e173cfe2151f0d425e610e77cc35",
+                "url": "https://api.github.com/repos/symfony/dom-crawler/zipball/3860edcf7ff7e173cfe2151f0d425e610e77cc35",
                 "reference": "3860edcf7ff7e173cfe2151f0d425e610e77cc35",
                 "shasum": ""
             },
@@ -2504,16 +2601,16 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.7.4",
+            "version": "v2.7.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher.git",
-                "reference": "b58c916f1db03a611b72dd702564f30ad8fe83fa"
+                "url": "https://github.com/symfony/event-dispatcher.git",
+                "reference": "ae4dcc2a8d3de98bd794167a3ccda1311597c5d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/b58c916f1db03a611b72dd702564f30ad8fe83fa",
-                "reference": "b58c916f1db03a611b72dd702564f30ad8fe83fa",
+                "url": "https://api.github.com/repos/symfony/event-dispatcher/zipball/ae4dcc2a8d3de98bd794167a3ccda1311597c5d9",
+                "reference": "ae4dcc2a8d3de98bd794167a3ccda1311597c5d9",
                 "shasum": ""
             },
             "require": {
@@ -2558,20 +2655,20 @@
             ],
             "description": "Symfony EventDispatcher Component",
             "homepage": "https://symfony.com",
-            "time": "2015-08-24 07:13:45"
+            "time": "2015-09-22 13:49:29"
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.7.4",
+            "version": "v2.7.5",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/Filesystem.git",
-                "reference": "f079e9933799929584200b9a926f72f29e291654"
+                "url": "https://github.com/symfony/filesystem.git",
+                "reference": "a17f8a17c20e8614c15b8e116e2f4bcde102cfab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Filesystem/zipball/f079e9933799929584200b9a926f72f29e291654",
-                "reference": "f079e9933799929584200b9a926f72f29e291654",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/a17f8a17c20e8614c15b8e116e2f4bcde102cfab",
+                "reference": "a17f8a17c20e8614c15b8e116e2f4bcde102cfab",
                 "shasum": ""
             },
             "require": {
@@ -2607,7 +2704,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2015-08-27 07:03:44"
+            "time": "2015-09-09 17:42:36"
         },
         {
             "name": "symfony/finder",
@@ -2662,12 +2759,12 @@
             "target-dir": "Symfony/Component/HttpFoundation",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/HttpFoundation.git",
+                "url": "https://github.com/symfony/http-foundation.git",
                 "reference": "08e783861dd9579bac4092814bbfb0cae6666b65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpFoundation/zipball/08e783861dd9579bac4092814bbfb0cae6666b65",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/08e783861dd9579bac4092814bbfb0cae6666b65",
                 "reference": "08e783861dd9579bac4092814bbfb0cae6666b65",
                 "shasum": ""
             },
@@ -2715,12 +2812,12 @@
             "target-dir": "Symfony/Component/HttpKernel",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/HttpKernel.git",
+                "url": "https://github.com/symfony/http-kernel.git",
                 "reference": "31652385d94eafc2103a98435d6d5bd7eea61736"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/HttpKernel/zipball/31652385d94eafc2103a98435d6d5bd7eea61736",
+                "url": "https://api.github.com/repos/symfony/http-kernel/zipball/31652385d94eafc2103a98435d6d5bd7eea61736",
                 "reference": "31652385d94eafc2103a98435d6d5bd7eea61736",
                 "shasum": ""
             },
@@ -3118,7 +3215,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "sybio/gif-frame-extractor": 20,
-        "luke-nz/phpreddit": 20
+        "luke-nz/phpreddit": 20,
+        "mexitek/phpcolors": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

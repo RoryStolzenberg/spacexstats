@@ -1,4 +1,8 @@
-angular.module("missionControlApp", ["directives.tags"]).controller("missionControlController", ["$scope", function($scope) {
-    $scope.tags = [];
-    $scope.selectedTags = [];
-}]);
+(function() {
+    var missionControlApp = angular.module("app", []);
+
+    missionControlApp.controller("missionControlController", ["$scope", function($scope) {
+        $scope.tags = [];
+        $scope.selectedTags = [];
+    }]);
+})();
