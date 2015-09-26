@@ -17,7 +17,7 @@ class Payload extends Eloquent {
         'mission_id'    => ['integer', 'exists:missions,mission_id'],
         'name'          => ['required', 'varchar:tiny'],
         'operator'      => ['required', 'varchar:small'],
-        'mass'          => ['min:0', 'numeric', 'digits_between:0,5'],
+        'mass'          => ['min:0', 'numeric'],
         'primary'       => ['boolean'],
         'link'          => ['varchar:small']
     );

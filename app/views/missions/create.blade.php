@@ -202,7 +202,10 @@
     </div>
 
     <script type="text/javascript">
-        angular.module("missionApp").constant("CSRF_TOKEN", '{{ csrf_token() }}');
+        (function() {
+            var app = angular.module("app");
+            app.constant("CSRF_TOKEN", '{{ csrf_token() }}');
+        })();
     </script>
 </body>
 @stop

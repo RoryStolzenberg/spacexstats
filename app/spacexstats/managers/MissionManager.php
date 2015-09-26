@@ -226,12 +226,12 @@ class MissionManager {
             $part->fill($partInput);
             $part->save();
 
-            $partFlight->part()->associate($partFlight['part']);
+            $partFlight->part()->associate($part);
             $partFlight->mission()->associate($this->mission);
             $partFlight->save();
         }
 
-        // Delete any remaining payloads
+        // Delete any remaining partflights
         if (!$currentPartFlights->isEmpty()) {
             PartFlight::whereIn('part_flight_id', $currentPartFlights->keys())->delete();
         }
