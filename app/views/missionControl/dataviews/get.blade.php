@@ -1,5 +1,5 @@
 @extends('templates.main')
-@section('title', $dataview->name . 'DataView')
+@section('title', $dataview->name . ' DataView')
 
 @section('content')
     <body class="">
@@ -17,6 +17,8 @@
                 </div>
                 {{ $dataview->summary }}
             </div>
+
+            <h2>Other DataViews</h2>
         </main>
     </div>
     </body>

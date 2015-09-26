@@ -4,6 +4,9 @@
 			<span id="logo"><a href="/">SpaceX Stats</a></span>
 			<nav>		
 				<ul>
+                    <li class="grid-1on8 grid-small-12">
+                        Live
+                    </li>
 					<li class="grid-1on8 grid-small-12">
 						{{ link_to_route('missions.past', 'Past Missions') }}
 						<ul class="nav-second-tier wide">
@@ -20,15 +23,13 @@
 							@endforeach
 						</ul>
 					</li>
-                    <li class="grid-1on8 grid-small-12">
-                        {{ link_to_route('locations', 'Locations') }}
-                    </li>
 					<li class="grid-1on8 grid-small-12">
 						More...
 						<ul class="nav-second-tier wide">
+                            <li>{{ link_to_route('locations', 'Locations') }}</li>
 							<li>News Summaries</li>
-							<li>{{ link_to_route('faq', 'FAQ') }}</li>
-							<li>RSS</li>
+							<li>{{ link_to_route('faq', 'Frequently Asked Questions') }}</li>
+							<li>RSS Updates</li>
                             <li>Community</li>
 							<li>About</li>
 							<li>Contact</li>
