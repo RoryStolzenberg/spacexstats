@@ -17,8 +17,7 @@ class Award extends Eloquent {
         parent::boot();
 
         Award::created(function($award) {
-
-            $award->user()->incrementSubscription(DeltaV::toSeconds($award->value));
+            $award->user->incrementSubscription(DeltaV::toSeconds($award->value));
         });
     }
 
