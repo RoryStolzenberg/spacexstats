@@ -31,6 +31,7 @@ class MissionsController extends BaseController {
 
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
             JavaScript::put([
+                'mission' => $mission,
                 'slug' => $mission->slug,
                 'launchDateTime' => $mission->present()->launchDateTime(DateTime::ISO8601),
                 'launchSpecificity' => $mission->launch_specificity,

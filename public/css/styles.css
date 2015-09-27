@@ -4187,7 +4187,7 @@ p {
   .hero > * {
     display: inline-block;
     vertical-align: middle;
-    top: -5%;
+    top: -10%;
     position: relative; }
   .hero table {
     border-collapse: collapse;
@@ -4722,7 +4722,7 @@ section.comments {
   position: absolute;
   right: 0;
   top: 0;
-  width: 200px; }
+  width: 225px; }
   .display-date-time .launch {
     display: inline-block;
     text-align: right;
@@ -4731,7 +4731,7 @@ section.comments {
     height: 40px;
     line-height: 40px;
     width: 100%;
-    padding: 0 20px;
+    padding: 0 10px;
     position: relative;
     right: -10px; }
     .display-date-time .launch:after {
@@ -4750,49 +4750,15 @@ section.comments {
     text-transform: uppercase;
     font-weight: 600;
     font-family: "Segoe WP", sans-serif;
-    text-align: right;
-    padding: 0 10px; }
-    .display-date-time .timezone .timezone-current {
-      cursor: pointer;
-      line-height: 2; }
-    .display-date-time .timezone .timezone-current:after {
-      width: 0;
-      height: 0;
-      border-bottom: 6px solid transparent;
-      border-top: 6px solid transparent;
-      border-left: 8px solid #CCC;
-      display: inline-block;
-      content: "";
-      margin-left: 10px;
-      vertical-align: -5%;
-      -webkit-transition: -webkit-transform ease 0.5s;
-              transition: transform ease 0.5s;
-      -webkit-transform: rotate(0deg);
-          -ms-transform: rotate(0deg);
-              transform: rotate(0deg); }
-    .display-date-time .timezone .timezone-list {
-      border: 1px solid #CCC;
-      padding: 0 10px;
-      -webkit-transform: scale(0.5);
-          -ms-transform: scale(0.5);
-              transform: scale(0.5);
-      opacity: 0;
-      -webkit-transition: opacity ease 0.5s;
-              transition: opacity ease 0.5s;
-      -webkit-transition: -webkit-transform ease 0.5s;
-              transition: transform ease 0.5s; }
-    .display-date-time .timezone.active .timezone-current:after {
-      -webkit-transform: rotate(90deg);
-          -ms-transform: rotate(90deg);
-              transform: rotate(90deg); }
-    .display-date-time .timezone.active .timezone-list {
-      height: auto;
-      opacity: 1;
-      -webkit-transform: scale(1);
-          -ms-transform: scale(1);
-              transform: scale(1); }
-    .display-date-time .timezone .timezone-option {
-      margin: 5px 0; }
+    text-align: center;
+    margin-left: 10px;
+    padding: 0;
+    -webkit-transition: background-color ease 0.5s;
+            transition: background-color ease 0.5s; }
+    .display-date-time .timezone:hover {
+      -webkit-transition: background-color ease 0.5s;
+              transition: background-color ease 0.5s;
+      background-color: #CCAC55; }
 
 section.details #live-tweets {
   float: left;

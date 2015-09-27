@@ -55,21 +55,21 @@
                     @endif
 
                     <div ng-if="isLaunchExact == true" class="display-date-time">
-                        <div class="launch">@{{ launchDateTime }}</div>
+                        <div class="launch">@{{ launchDateTime | date:currentFormat:currentTimezone}}</div>
                         <div class="timezone">
-                            <span class="timezone-current">UTC</span>
+                            <span class="timezone-current">@{{ currentTimezoneFormatted }}</span>
                             <ul class="timezone-list">
-                                <li class="timezone-option">Local</li>
-                                <li class="timezone-option">ET</li>
-                                <li class="timezone-option">PT</li>
-                                <li class="timezone-option active">UTC</li>
+                                <li class="timezone-option" ng-click="setTimezone('local')">Local (@{{ localTimezone }})</li>
+                                <li class="timezone-option" ng-click="setTimezone('ET')">ET</li>
+                                <li class="timezone-option" ng-click="setTimezone('PT')">PT</li>
+                                <li class="timezone-option" ng-click="setTimezone('UTC')">UTC</li>
                             </ul>
                         </div>
                     </div>
                 </section>
 
                 <section class="hero" id="countdown">
-                    <countdown specificity="launchSpecificity" countdown-to="launchDateTime" callback="requestFrequencyMananger"></countdown>
+                    <countdown specificity="launchSpecificity" countdown-to="launchDateTime" callback="requestFrequencyManager"></countdown>
                 </section>
                 <p>{{ $mission->summary }}</p>
                 <h2>Details</h2>

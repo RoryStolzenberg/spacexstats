@@ -89,11 +89,34 @@
             } else if (newValue === 'webcast-updates') {
                 $scope.webcast.publicStatus = 'Launch Updates'
             }
-        }),
+        });
 
-            $scope.$watch('webcast.viewers', function(newValue) {
-                $scope.webcast.publicViewers = ' (' + newValue + ' viewers)';
-            })
+        $scope.$watch('webcast.viewers', function(newValue) {
+            $scope.webcast.publicViewers = ' (' + newValue + ' viewers)';
+        });
 
+        /*
+        *   Timezone stuff.
+         */
+        // Get the IANA Timezone identifier and format it into a 3 letter timezone.
+        $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
+        $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
+        $scope.currentTimezone;
+        $scope.currentTimezoneFormatted;
+
+        $scope.setTimezone = function(timezoneToSet) {
+            if (timezoneToSet === 'local') {
+                $scope.currentTimezone = null;
+                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+            } else if (timezoneToSet === 'ET') {
+                $scope.currentTimezone = moment().tz("America/New_York").format('z');
+                $scope.currentTimezoneFormatted = 'ET';
+            } else if (timezoneToSet === 'PT') {
+                $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
+                $scope.currentTimezoneFormatted = 'PT';
+            } else {
+                $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
+            }
+        };
     }]);
 })();
