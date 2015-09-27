@@ -37,7 +37,7 @@
                             <span>@{{ favoritesText }}</span>
                         </span>
                         <span class="grid-4">
-                            <a href="" target="_blank" download><i class="fa fa-download fa-2x" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
+                            <a href="{{ $object->media_download }}" target="_blank" download><i class="fa fa-download fa-2x" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
                         </span>
                     </div>
                     <div class="more">

@@ -317,7 +317,7 @@ class Object extends Eloquent {
         if ($this->hasFile()) {
 
             if ($this->hasLocalFile()) {
-                return '/media/local/' . $this->local_file;
+                return $this->local_file;
             }
 
             if ($this->status == 'Published') {

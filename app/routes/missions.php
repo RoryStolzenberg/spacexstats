@@ -37,13 +37,18 @@ Route::group(array('prefix' => 'missions'), function() {
         'uses' => 'MissionsController@get'
     ))->before('doesMissionExist');
 
-    Route::get('/{slug}/requestlaunchdatetime', array(
-        'as' => 'missions.requestLaunchDateTime',
-        'uses' => 'MissionsController@requestLaunchDateTime'
+    Route::get('/{slug}/launchdatetime', array(
+        'as' => 'missions.launchDateTime',
+        'uses' => 'MissionsController@launchDateTime'
     ))->before('doesMissionExist');
+
+    Route::get('/{slug}/telemetry', array(
+        'as' => 'missions.telemetry',
+        'uses' => 'MissionsController@telemetry'
+    ))->before(['mustBe:Subscriber', 'doesMissionExist']);
 
     Route::get('/{slug}/raw', array(
         'as' => 'missions.raw',
         'uses' => 'MissionsController@raw'
-    ))->before('mustBe:Subscriber|doesMissionExist');
+    ))->before(['mustBe:Subscriber', 'doesMissionExist']);
 });

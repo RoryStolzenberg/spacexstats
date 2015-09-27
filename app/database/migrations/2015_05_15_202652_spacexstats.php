@@ -573,6 +573,10 @@ class Spacexstats extends Migration {
             $table->foreign('spacecraft_id')->references('spacecraft_id')->on('spacecraft');
         });
 
+        Schema::table('telemetries', function(Blueprint $table) {
+            $table->foreign('mission_id')->references('mission_id')->on('missions');
+        });
+
         Schema::table('users', function(Blueprint $table) {
             $table->foreign('role_id')->references('role_id')->on('roles')->onUpdate('cascade')->onDelete('restrict');
         });

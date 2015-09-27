@@ -2,7 +2,7 @@
 @section('title', $mission->name)
 
 @section('content')
-<body class="past-mission">
+<body class="past-mission" ng-controller="pastMissionController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')
@@ -17,9 +17,11 @@
                     <li class="grid-1">Timeline</li>
                     <li class="grid-1">Images</li>
                     <li class="grid-1">Videos</li>
+                    <li class="grid-1">Documents</li>
                     <li class="grid-1">Articles</li>
+                    <li class="grid-1">Analytics</li>
                     <li class="grid-3 actions">
-                        <a href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
+                        <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
                         <i class="fa fa-twitter"></i>
                         <i class="fa fa-rss"></i>
                     </li>
@@ -121,6 +123,17 @@
             </section>
             <h2>Articles</h2>
             <section class="articles">
+            </section>
+
+            <h2>Analytics</h2>
+            <section class="analytics">
+                <ul>
+                    <li>Data plots</li>
+                    <li>Upper Stage Tracking</li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
             </section>
         </main>
     </div>

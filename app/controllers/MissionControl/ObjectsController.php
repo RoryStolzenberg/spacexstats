@@ -114,7 +114,7 @@ class ObjectsController extends BaseController {
         // Only increment the downloads table if the same user has not downloaded it in the last hour (just like views)
         $mostRecentDownload = Download::where('user_id', Auth::user()->user_id)->where('object_id', $object_id)->first();
 
-        if ($mostRecentDownload === null || $mostRecentDownload->created_at->diffInSeconds(Carbon::now()) > 3600) {
+        if ($mostRecentDownload === null || $mostRecentDownload->created_at->diffInSeconds(Carbon\Carbon::now()) > 3600) {
             Download::create(array(
                 'user_id' => Auth::user()->user_id,
                 'object_id' => $object_id

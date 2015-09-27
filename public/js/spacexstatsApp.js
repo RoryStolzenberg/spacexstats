@@ -1,66 +1,3 @@
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
-    }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
-
 (function() {
     var missionsListApp = angular.module('app', []);
 
@@ -1147,6 +1084,94 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 (function() {
     var app = angular.module('app', []);
 
+    app.controller('pastMissionController', ["$scope", function($scope) {
+        (function() {
+
+        })();
+    }]);
+
+    app.service('pastMissionService', ["$http", function($http) {
+        $http.get()
+    }]);
+})();
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
+        return {
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
+
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
+
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
+                    }
+                };
+            }
+        };
+    }
+]);
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+})();
+
+
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
+(function() {
+    var app = angular.module('app', []);
+
     app.directive("selectList", function() {
         return {
             restrict: 'E',
@@ -1292,60 +1317,6 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
     }]);
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
@@ -1481,6 +1452,60 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 })();
 
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -1659,46 +1684,6 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('deltaV', function() {
         return {
             restrict: 'E',
@@ -1744,6 +1729,71 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            comment: '='
+        },
+        compile: function(element) {
+            // Use the compile function from the RecursionHelper,
+            // And return the linking function(s) which it returns
+            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+
+                $scope.toggleReplyState = function() {
+                    if (typeof $scope.reply !== 'undefined') {
+                        $scope.reply = !$scope.reply;
+                    } else {
+                        $scope.reply = true;
+                    }
+
+                }
+            });
+        },
+        templateUrl: '/js/templates/comment.html'
+    }
+}]);
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -1777,31 +1827,6 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         }
     }]);
 })();
-angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            comment: '='
-        },
-        compile: function(element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
-
-                $scope.toggleReplyState = function() {
-                    if (typeof $scope.reply !== 'undefined') {
-                        $scope.reply = !$scope.reply;
-                    } else {
-                        $scope.reply = true;
-                    }
-
-                }
-            });
-        },
-        templateUrl: '/js/templates/comment.html'
-    }
-}]);
 (function() {
 	var app = angular.module('app');
 
@@ -1941,12 +1966,18 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 (function() {
     var app = angular.module('app');
 
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
+    app.directive('chart', [function() {
+        return {
+            restrict: 'E',
+            scope: {
+                chartData: '=',
+                xAxisKey: '@',
+                yAxisKey: '@'
+            },
+            link: function($scope, attr, elem) {
+
+            },
+            templateUrl: '/js/templates/chart.html'
+        }
+    }]);
 })();

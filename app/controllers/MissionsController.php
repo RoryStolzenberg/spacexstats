@@ -39,8 +39,10 @@ class MissionsController extends BaseController {
             ]);
 
 			return View::make('missions.futureMission', $data);
-		}
-		return View::make('missions.pastMission', $data);
+		} else {
+            return View::make('missions.pastMission', $data);
+        }
+
 
 	}
 
@@ -190,16 +192,31 @@ class MissionsController extends BaseController {
         return Response::json($allMissions);
     }
 
-    // AJAX POST
-    // /missions/{slug}/requestlaunchdatetime
     /**
+     * GET (AJAX), /missions/{slug}/launchdatetime. Get the launch datetime of the current mission.
+     *
      * @param $slug
      * @return \Illuminate\Http\JsonResponse
      */
-    public function requestLaunchDateTime($slug) {
+    public function launchDateTime($slug) {
         $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
         return Response::json(array('launchDateTime' => $mission->present()->launch_exact()));
+    }
+
+    /**
+     * GET (AJAX), /missions/{$slug}/telemetry. Fetches all mission telemetries for a specified mission,
+     * ordered by the telemetry timestamp.
+     *
+     * @param $slug
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function telemetry($slug) {
+        $telemetries = Telemetry::whereHas('mission', function($q) use ($slug) {
+            $q->whereSlug($slug);
+        })->orderBy('timestamp', 'ASC')->get();
+
+        return Response::json($telemetries);
     }
 
     /**
