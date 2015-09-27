@@ -35,9 +35,13 @@ gulp.task('scripts', function() {
     var concat = require('gulp-concat');
     var rename = require('gulp-rename');
 
+    // Move angular module definition
+    gulp.src('frontendapp/js/angular/apps/app.js')
+        .pipe(gulp.dest('public/js'));
+
     // Move angular stuff
-    gulp.src('frontendapp/js/angular/**/*.js')
-        .pipe(concat('app.js')).on('error', handleError)
+    gulp.src(['frontendapp/js/angular/**/*.js', '!frontendapp/js/angular/apps/app.js'])
+        .pipe(concat('spacexstatsApp.js')).on('error', handleError)
         //.pipe(uglify()).on('error', handleError)
         .pipe(gulp.dest('public/js'))
         .pipe(browserSync.stream());

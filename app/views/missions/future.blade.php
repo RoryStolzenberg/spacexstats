@@ -2,7 +2,7 @@
 @section('title', 'Future Launches')
 
 @section('content')
-<body class="future-launches" ng-app="missionsListApp" ng-controller="missionsListController" ng-strict-di>
+<body class="future-launches" ng-controller="missionsListController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')

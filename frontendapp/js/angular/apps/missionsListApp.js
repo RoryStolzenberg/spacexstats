@@ -22,6 +22,6 @@
             return $scope.missions.filter(function(mission) {
                 return moment(mission.launchDateTime).year() == year && mission.status == completeness;
             }).length;
-        }
+        };
     }]);
 })();

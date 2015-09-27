@@ -44,6 +44,7 @@
     <script src="/js/jstz-1.0.4.min.js"></script>
     <script src="/js/dropzone.js"></script>
     <script src="/js/app.js"></script>
+    <script src="/js/spacexstatsApp.js"></script>
 
     <script>
         $(function () {
@@ -51,10 +52,6 @@
             $('nav.sticky-bar .link').unbind('click').click();
         });
     </script>
-
-    <script
-
-
 
 	<script>
         // Mobile left hand side drawer
