@@ -4,7 +4,7 @@
 @section('content')
     <body class="future-mission">
         @include('templates.flashMessage')
-        @include('templates.header', array('backgroundImage' => $mission->featuredImage->local_file))
+        @include('templates.header', array('backgroundImage' => !is_null($mission->featuredImage) ? $mission->featuredImage->local_file : ''))
 
         <div class="content-wrapper" ng-app="futureMissionApp" ng-controller="futureMissionController" ng-strict-di>
             <h1>{{ $mission->name }}</h1>
@@ -14,23 +14,29 @@
                         <li class="grid-1">Countdown</li>
                         <li class="grid-1">Details</li>
                         <li class="grid-1">Timeline</li>
-                        @if (Auth::isSubscriber())
-                            <li class="grid-1">Articles</li>
-                        @endif
+                        <li class="grid-1">Articles</li>
 
                         <li class="grid-2 prefix-3 actions">
                             @if (Auth::isAdmin())
-                                <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
+                                <a class="link" href="/missions/{{ $mission->slug }}/edit">
+                                    <i class="fa fa-pencil"></i>
+                                </a>
                             @endif
                             <i class="fa fa-twitter"></i>
                             @if (Auth::isMember())
-                                <a href="/users/{{Auth::user()->username}}/edit#email-notifications"><i class="fa fa-envelope-o"></i></a>
+                                <a class="link" href="/users/{{Auth::user()->username}}/edit#email-notifications"><i class="fa fa-envelope-o"></i></a>
                             @else
-                                <a href="/docs#email-notifications"><i class="fa fa-envelope-o"></i></a>
+                                <a class="link" href="/docs#email-notifications"><i class="fa fa-envelope-o"></i></a>
                             @endif
-                            <i class="fa fa-calendar"></i>
-                            <a href="http://www.google.com/calendar/render?cid={{ Request::url() }}"><i class="fa fa-google"></i></a>
-                            <i class="fa fa-rss"></i>
+                            <a class="link" href="/calendars/{{ $mission->slug }}">
+                                <i class="fa fa-calendar"></i>
+                            </a>
+                            <a href="http://www.google.com/calendar/render?cid={{ Request::url() }}">
+                                <i class="fa fa-google"></i>
+                            </a>
+                            <a href="">
+                                <i class="fa fa-rss"></i>
+                            </a>
                         </li>
                         <li class="grid-1">{{ $mission->status }}</li>
                     </ul>
@@ -82,13 +88,11 @@
                 <section class="timeline">
                     <canvas></canvas>
                 </section>
-                @if (Auth::isSubscriber())
-                    <h2>Articles</h2>
-                    <section class="articles">
-                        @foreach ($mission->articles() as $article)
-                        @endforeach
-                    </section>
-                @endif
+                <h2>Articles</h2>
+                <section class="articles">
+                    @foreach ($mission->articles() as $article)
+                    @endforeach
+                </section>
             </main>
         </div>
     </body>

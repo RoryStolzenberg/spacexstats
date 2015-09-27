@@ -39,13 +39,13 @@ END:VEVENT\r\n";
 	}
 
 	private function eventStart($mission) {
-		$temp = DateTime::createFromFormat('Y-m-d H:i:s', $mission->launch_exact);
+		$temp = \DateTime::createFromFormat('Y-m-d H:i:s', $mission->launch_exact);
 		return $temp->format('Ymd\THis\Z');
 	}
 
 	private function eventEnd($mission) {
-		$temp = DateTime::createFromFormat('Y-m-d H:i:s', $mission->launch_exact);
-		$temp->add(DateInterval::createFromDateString('1 hour'));
+		$temp = \DateTime::createFromFormat('Y-m-d H:i:s', $mission->launch_exact);
+		$temp->add(\DateInterval::createFromDateString('1 hour'));
 		return $temp->format('Ymd\THis\Z');
 	}
 
