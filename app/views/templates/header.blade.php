@@ -1,4 +1,4 @@
-<div class="header-wrapper {{ $class or '' }}">
+<div class="header-wrapper {{ $class or null }}" style="background-image:url({{ $backgroundImage or null }})">
 	<header class="text-center">
 			<i class="fa fa-navicon toggleMobileNavigation gridle-show-small"></i>
 			<span id="logo"><a href="/">SpaceX Stats</a></span>

@@ -12,6 +12,7 @@ use \AstronautFlight;
 use \Payload;
 use \PrelaunchEvent;
 use \Telemetry;
+use \Object;
 
 class MissionManager {
     private $input, $errors = [];
@@ -123,7 +124,7 @@ class MissionManager {
             // Fill mission
             $this->mission->fill($this->input('mission'));
             $this->mission->status = 'Upcoming';
-            $this->mission->save();
+            $this->mission->push();
 
             $this->createPayloadRelations();
             $this->managePartFlightRelations();
@@ -148,6 +149,7 @@ class MissionManager {
             // Fill mission
             $this->mission->fill($this->input('mission'));
             $this->mission->save();
+            $this->mission->push();
 
             // Update any relations, create new relations, delete any relations which have been removed.
             $this->updatePayloadRelations();

@@ -4,7 +4,7 @@
 @section('content')
     <body class="future-mission">
         @include('templates.flashMessage')
-        @include('templates.header')
+        @include('templates.header', array('backgroundImage' => $mission->featuredImage->local_file))
 
         <div class="content-wrapper" ng-app="futureMissionApp" ng-controller="futureMissionController" ng-strict-di>
             <h1>{{ $mission->name }}</h1>
@@ -20,7 +20,7 @@
 
                         <li class="grid-2 prefix-3 actions">
                             @if (Auth::isAdmin())
-                                <a href="/missions/{{$mission->slug}}/edit"><i class="fa fa-pencil"></i></a>
+                                <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
                             @endif
                             <i class="fa fa-twitter"></i>
                             @if (Auth::isMember())

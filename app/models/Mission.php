@@ -42,6 +42,15 @@ class Mission extends Eloquent {
 
                 // Tweet about it
             }*/
+
+            // If the mission's featured image has changed, delete the old image and set a new one.
+            if ($mission->featuredImage !== null) {
+                if ($mission->getOriginal()['featured_image'] !== null) {
+                    Object::find($mission->getOriginal()['featured_image'])->deleteLocalFile();
+                }
+                $mission->featuredImage->makeLocalFile();
+            }
+            return true;
         });
     }
 
@@ -135,12 +144,8 @@ class Mission extends Eloquent {
         return $this->belongsTo('Object', 'postlaunch_press_conference');
     }
 
-    public function redditDiscussion() {
-        return $this->belongsTo('Object', 'reddit_discussion');
-    }
-
     public function featuredImage() {
-        return $this->belongsTo('Object', 'featured_image')->select(['object_id', 'filename']);
+        return $this->belongsTo('Object', 'featured_image');
     }
 
 	// Attribute Accessors
@@ -195,10 +200,6 @@ class Mission extends Eloquent {
     public function setLaunchDateTimeAttribute($value) {
         $launchReorderer = new SpaceXStats\Launch\LaunchReorderer($this, $value);
         $launchReorderer->run();
-    }
-
-    public function setFeaturedImageAttribute($value) {
-        // Copy to local folder, delete any image in local folder
     }
 
 	// Slug helper

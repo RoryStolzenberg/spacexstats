@@ -205,32 +205,30 @@ class Object extends Eloquent {
      * Makes a local copy of a file of an object from S3.
      *
      * The function does not currently support the creation of local files from temporary files.
-     * This function does not save the change to the database. Call the save() method to do so.
      */
     public function makeLocalFile() {
-
         if (!$this->hasLocalFile()) {
             if ($this->hasFile()) {
                 AWS::get('s3')->getObject(array(
                     'Bucket'    => Credential::AWSS3Bucket,
                     'Key'       => $this->filename,
-                    'SaveAs'    => '/local/' . $this->filename
+                    'SaveAs'    => public_path() . '/media/local/' . $this->filename
                 ));
 
-                $this->local_file = $this->filename;
+                $this->local_file = '/media/local/' . $this->filename;
+                $this->save();
             }
         }
     }
 
     /**
      * Deletes the current local file.
-     *
-     * This function does not save the change to the database. Call the save() method to do so.
      */
     public function deleteLocalFile() {
         if ($this->hasLocalFile()) {
             unlink(public_path() . $this->local_file);
             $this->local_file = null;
+            $this->save();
         }
     }
 
@@ -275,6 +273,11 @@ class Object extends Eloquent {
         return $this->hasMany('Comment');
     }
 
+    // Custom relations
+    public function featuredImageOf() {
+        return $this->hasMany('Mission', 'featured_image', 'object_id');
+    }
+
     // Scoped Queries
     public function scopeWhereQueued($query) {
         return $query->where('status','queued')->orderBy('created_at', 'ASC');
@@ -314,7 +317,7 @@ class Object extends Eloquent {
         if ($this->hasFile()) {
 
             if ($this->hasLocalFile()) {
-                return '/local/' . $this->local_file;
+                return '/media/local/' . $this->local_file;
             }
 
             if ($this->status == 'Published') {

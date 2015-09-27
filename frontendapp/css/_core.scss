@@ -28,6 +28,8 @@ $content-large:18px;
 $border-radius-small:3px;
 $border-radius-large:8px;
 
+$h1-height: 150px;
+
 /* ------------------ GENERAL MIXINS ----------------- */
 @mixin transition($property) {
     transition:$property;

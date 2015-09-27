@@ -44,6 +44,7 @@
     <script>
         $(function () {
             $('nav.sticky-bar').stickyNavbar();
+            $('nav.sticky-bar .link').unbind('click').click();
         });
     </script>
 
