@@ -11,16 +11,7 @@
         <h1>{{ $object->title }}</h1>
         <main>
 
-            <nav class="sticky-bar">
-                <ul class="container">
-                    <li class="grid-2">{{ $object->present()->type() }}</li>
-                    <li class="grid-2">Summary</li>
-                    <li class="grid-2">Comments</li>
-                    @if (Auth::isSubscriber())
-                        <li class="grid-2">Edit</li>
-                    @endif
-                </ul>
-            </nav>
+            @include('templates.objects.navigation')
 
             <section class="details">
                 <div class="grid-9 content">

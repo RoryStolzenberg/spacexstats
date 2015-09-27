@@ -10,7 +10,7 @@ class ObjectsController extends BaseController {
         $object = Object::find($object_id);
 
         // Item has been viewed, increment!
-        $object->incrementViewcounter();
+        $object->incrementViewCounter();
 
         // Determine what type of object it is to show the correct view
         $viewType = strtolower(MissionControlType::getKey($object->type));
@@ -39,9 +39,25 @@ class ObjectsController extends BaseController {
         return App::abort(401);
     }
 
-    // GET
-    // missioncontrol/objects/{object_id}/edit
-    public function edit($object_id) {
+    /**
+     * GET/POST, /missioncontrol/objects/{objectId}/edit. Allows for the editing of objects by mission
+     * control subscribers and admins.
+     *
+     * @param $object_id    The object to edit.
+     */
+    public function edit($objectId) {
+        $object = Object::find($objectId);
+
+
+    }
+
+    /**
+     * POST, /missioncontrol/objects/{objectId}/revert/{objectRevisionId}.
+     *
+     * @param $objectId
+     * @param $objectRevisionId
+     */
+    public function revert($objectId, $objectRevisionId) {
 
     }
 
@@ -60,23 +76,18 @@ class ObjectsController extends BaseController {
                 $usernote->note = Input::get('note', null);
                 $usernote->save();
 
-                return Response::json(null, 204);
-
             // Edit
             } elseif (Request::isMethod('patch')) {
                 $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->note = Input::get('note', null);
                 Auth::user()->notes()->save($usernote);
 
-                return Response::json(null, 204);
-
             // Delete
             } elseif (Request::isMethod('delete')) {
                 $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->delete();
-
-                return Response::json(null, 204);
             }
+            return Response::json(null, 204);
         }
         return Response::json(false, 401);
     }

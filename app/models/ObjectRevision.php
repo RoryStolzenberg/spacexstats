@@ -1,8 +1,8 @@
 <?php
 
-class ObjectHistory extends Eloquent {
-    protected $table = 'object_histories';
-    protected $primaryKey = 'object_history_id';
+class ObjectRevision extends Eloquent {
+    protected $table = 'object_revisions';
+    protected $primaryKey = 'object_revision_id';
     public $timestamps = true;
 
     protected $hidden = [];
