@@ -438,9 +438,9 @@ class Spacexstats extends Migration {
             $table->integer('mission_id')->unsigned();
             $table->smallInteger('timestamp')->unsigned();
             $table->string('readout', Varchar::small)->nullable();
-            $table->smallInteger('altitude')->unsigned();
+            $table->integer('altitude')->unsigned();
             $table->smallInteger('velocity')->unsigned();
-            $table->smallInteger('downrange')->unsigned();
+            $table->integer('downrange')->unsigned();
             $table->timestamps();
         });
 

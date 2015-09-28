@@ -1,66 +1,3 @@
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
-    }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
-
 (function() {
     var missionsListApp = angular.module('app', []);
 
@@ -1163,22 +1100,69 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 (function() {
     var editObjectApp = angular.module('app', []);
 })();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
         return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
+
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
+
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
+                    }
+                };
+            }
+        };
+    }
+]);
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
     });
 })();
+
+
 (function() {
     var app = angular.module('app', []);
 
@@ -1253,6 +1237,133 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
     });
 })();
 
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                callback: '&'
+            },
+            link: function($scope) {
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
+
+                (function() {
+                    if ($scope.isLaunchExact) {
+
+                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+
+
+                        $scope.countdownProcessor = function() {
+
+                            var launchUnixSeconds = $scope.launchUnixSeconds;
+                            var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                            if (launchUnixSeconds >= currentUnixSeconds) {
+                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                                var secondsBetween = $scope.secondsAwayFromLaunch;
+                                // Calculate the number of days, hours, minutes, seconds
+                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                                secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                                secondsBetween -= $scope.hours * 60 * 60;
+
+                                $scope.minutes = Math.floor(secondsBetween / 60);
+                                secondsBetween -= $scope.minutes * 60;
+
+                                $scope.seconds = secondsBetween;
+
+                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                                // Stop the countdown, count up!
+                            } else {
+                            }
+
+                            if ($scope.callback && typeof $scope.callback === 'function') {
+                                $scope.callback();
+                            }
+                        };
+
+                        $interval($scope.countdownProcessor, 1000);
+                    } else {
+                        $scope.countdownText = $scope.countdownTo;
+                    }
+                })();
+
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app', []);
 
@@ -1389,79 +1500,6 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 })();
 
 
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                callback: '&'
-            },
-            link: function($scope) {
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                (function() {
-                    if ($scope.isLaunchExact) {
-
-                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                        $scope.countdownProcessor = function() {
-
-                            var launchUnixSeconds = $scope.launchUnixSeconds;
-                            var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                            if (launchUnixSeconds >= currentUnixSeconds) {
-                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                                var secondsBetween = $scope.secondsAwayFromLaunch;
-                                // Calculate the number of days, hours, minutes, seconds
-                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                                secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                                secondsBetween -= $scope.hours * 60 * 60;
-
-                                $scope.minutes = Math.floor(secondsBetween / 60);
-                                secondsBetween -= $scope.minutes * 60;
-
-                                $scope.seconds = secondsBetween;
-
-                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                                // Stop the countdown, count up!
-                            } else {
-                            }
-
-                            if ($scope.callback && typeof $scope.callback === 'function') {
-                                $scope.callback();
-                            }
-                        };
-
-                        $interval($scope.countdownProcessor, 1000);
-                    } else {
-                        $scope.countdownText = $scope.countdownTo;
-                    }
-                })();
-
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -1677,6 +1715,31 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         }
     }]);
 })();
+angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            comment: '='
+        },
+        compile: function(element) {
+            // Use the compile function from the RecursionHelper,
+            // And return the linking function(s) which it returns
+            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+
+                $scope.toggleReplyState = function() {
+                    if (typeof $scope.reply !== 'undefined') {
+                        $scope.reply = !$scope.reply;
+                    } else {
+                        $scope.reply = true;
+                    }
+
+                }
+            });
+        },
+        templateUrl: '/js/templates/comment.html'
+    }
+}]);
 (function() {
     var app = angular.module('app');
 
@@ -1725,66 +1788,69 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
+    app.directive('chart', ["$window", function($window) {
         return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                chartData: '=',
+                axisKey: '@',
+                yAxisKey: '@'
+            },
+            link: function($scope, elem, attrs) {
+                var d3 = $window.d3;
 
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
+                console.log(attrs.axisKey);
+                var svg = d3.select(elem[0]);
 
-                        $scope.files = files.objects;
+                // draw
+                var drawLineChart = (function() {
+                    var xScale = d3.scale.linear()
+                        .domain([$scope.chartData[0][$scope.axisKey], $scope.chartData[$scope.chartData.length-1][$scope.axisKey]])
+                        .range([0, elem.width()]);
 
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    }
-                });
+                    var yScale = d3.scale.linear()
+                        .domain([d3.max($scope.chartData, function(d) {
+                            return d[$scope.yAxisKey];
+                        }), 0])
+                        .range([0, elem.height()])
 
-                // upload the files
-                $scope.uploadFiles = function() {
-                    dropzone.processQueue();
-                }
-            }
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks($scope.chartData.length - 1);
+                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+
+                    var lineFunction = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d[$scope.axisKey]);
+                        })
+                        .y(function(d) {
+                            return yScale(d[$scope.yAxisKey]);
+                        })
+                        .interpolate("basis");
+
+                    svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + (elem.height() - 50) + ")")
+                        .call(xAxisGenerator);
+
+                    svg.append("svg:g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(50,0)")
+                        .call(yAxisGenerator);
+
+                    svg.append("svg:path")
+                        .attr({
+                            d: lineFunction($scope.chartData),
+                            "stroke": "blue",
+                            "stroke-width": 2,
+                            "fill": "none",
+                            "class": "path"
+                        });
+                })();
+            },
+            templateUrl: '/js/templates/chart.html'
         }
     }]);
 })();
-angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            comment: '='
-        },
-        compile: function(element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
-
-                $scope.toggleReplyState = function() {
-                    if (typeof $scope.reply !== 'undefined') {
-                        $scope.reply = !$scope.reply;
-                    } else {
-                        $scope.reply = true;
-                    }
-
-                }
-            });
-        },
-        templateUrl: '/js/templates/comment.html'
-    }
-}]);
 (function() {
     var app = angular.module('app');
 
@@ -1818,72 +1884,6 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 
             },
             templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('chart', ["$window", function($window) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                chartData: '=',
-                axisKey: '@',
-                yAxisKey: '@'
-            },
-            link: function($scope, elem, attrs) {
-                var d3 = $window.d3;
-
-                console.log(attrs.axisKey);
-                var svg = d3.select(elem[0]);
-
-                // draw
-                var drawLineChart = (function() {
-                    var xScale = d3.scale.linear()
-                        .domain([$scope.chartData[0][$scope.axisKey], $scope.chartData[$scope.chartData.length-1][$scope.axisKey]])
-                        .range([0, elem.width()]);
-
-                    var yScale = d3.scale.linear()
-                        .domain([0, d3.max($scope.chartData, function(d) {
-                            return d[$scope.axisKey];
-                        })])
-                        .range([0, elem.height()])
-
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks($scope.chartData.length - 1);
-                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5);
-
-                    var lineFunction = d3.svg.line()
-                        .x(function(d) {
-                            return xScale(d[$scope.axisKey]);
-                        })
-                        .y(function(d) {
-                            return yScale(d[$scope.yAxisKey]);
-                        })
-                        .interpolate("basis");
-
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0,100)")
-                        .call(xAxisGenerator);
-
-                    svg.append("svg:g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(50,0)")
-                        .call(yAxisGenerator);
-
-                    svg.append("svg:path")
-                        .attr({
-                            d: lineFunction($scope.chartData),
-                            "stroke": "blue",
-                            "stroke-width": 2,
-                            "fill": "none",
-                            "class": "path"
-                        });
-                })();
-            },
-            templateUrl: '/js/templates/chart.html'
         }
     }]);
 })();

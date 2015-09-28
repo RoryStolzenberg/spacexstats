@@ -23,9 +23,9 @@
                         .range([0, elem.width()]);
 
                     var yScale = d3.scale.linear()
-                        .domain([0, d3.max($scope.chartData, function(d) {
-                            return d[$scope.axisKey];
-                        })])
+                        .domain([d3.max($scope.chartData, function(d) {
+                            return d[$scope.yAxisKey];
+                        }), 0])
                         .range([0, elem.height()])
 
                     var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks($scope.chartData.length - 1);
@@ -42,7 +42,7 @@
 
                     svg.append("svg:g")
                         .attr("class", "x axis")
-                        .attr("transform", "translate(0,100)")
+                        .attr("transform", "translate(0," + (elem.height() - 50) + ")")
                         .call(xAxisGenerator);
 
                     svg.append("svg:g")
