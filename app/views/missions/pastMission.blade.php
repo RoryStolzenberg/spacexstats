@@ -127,11 +127,11 @@
 
             <h2>Analytics</h2>
             <section class="analytics">
-                <chart chart-data="altitudeVsTime" axis-key="timestamp" y-axis-key="altitude" width="400px" height="400px"></chart>
+                <chart class="dataplot" chart-data="altitudeVsTime" axis-key="timestamp" y-axis-key="altitude" width="400px" height="400px"></chart>
                 <ul>
                     <li>Data plots</li>
                     <li>Upper Stage Tracking</li>
-                    <li></li>
+                    <li>Estimators for Data plots</li>
                     <li></li>
                     <li></li>
                 </ul>

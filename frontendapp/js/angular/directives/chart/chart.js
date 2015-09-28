@@ -12,9 +12,9 @@
             },
             link: function($scope, elem, attrs) {
                 var d3 = $window.d3;
-
-                console.log(attrs.axisKey);
                 var svg = d3.select(elem[0]);
+
+                var padding = 20;
 
                 // draw
                 var drawLineChart = (function() {
@@ -28,7 +28,7 @@
                         }), 0])
                         .range([0, elem.height()])
 
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks($scope.chartData.length - 1);
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5);
                     var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5);
 
                     var lineFunction = d3.svg.line()
@@ -42,12 +42,13 @@
 
                     svg.append("svg:g")
                         .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (elem.height() - 50) + ")")
+                        .attr("transform", "translate(0," + elem.height() + ")")
                         .call(xAxisGenerator);
 
                     svg.append("svg:g")
                         .attr("class", "y axis")
-                        .attr("transform", "translate(50,0)")
+                        .attr("transform", "translate(0,0)")
+                        .attr("stroke-width", 2)
                         .call(yAxisGenerator);
 
                     svg.append("svg:path")

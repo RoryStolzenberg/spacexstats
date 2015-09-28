@@ -4678,6 +4678,16 @@ section.comments {
     cursor: pointer;
     margin-right: 5px; }
 
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges; }
+
+.axis text {
+  font-family: sans-serif;
+  font-size: 11px; }
+
 #statistics-navigation {
   position: fixed;
   top: 50%; }
