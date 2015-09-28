@@ -45,7 +45,7 @@ Route::group(array('prefix' => 'missions'), function() {
     Route::get('/{slug}/telemetry', array(
         'as' => 'missions.telemetry',
         'uses' => 'MissionsController@telemetry'
-    ))->before(['mustBe:Subscriber', 'doesMissionExist']);
+    ))->before(['doesMissionExist']);
 
     Route::get('/{slug}/raw', array(
         'as' => 'missions.raw',

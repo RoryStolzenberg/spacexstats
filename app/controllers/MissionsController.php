@@ -30,20 +30,23 @@ class MissionsController extends BaseController {
         );
 
 		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
+
             JavaScript::put([
                 'mission' => $mission,
-                'slug' => $mission->slug,
-                'launchDateTime' => $mission->present()->launchDateTime(DateTime::ISO8601),
-                'launchSpecificity' => $mission->launch_specificity,
                 'webcast' => Redis::hgetall('webcast')
             ]);
-
 			return View::make('missions.futureMission', $data);
 		} else {
+
+            $js['mission'] = $mission;
+
+            if (Auth::isSubscriber()) {
+                $js['telemetry'] = $mission->telemetries()->orderBy('timestamp', 'ASC')->get();
+            }
+
+            JavaScript::put($js);
             return View::make('missions.pastMission', $data);
         }
-
-
 	}
 
     /**
