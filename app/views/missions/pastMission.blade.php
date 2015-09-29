@@ -127,7 +127,7 @@
 
             <h2>Analytics</h2>
             <section class="analytics">
-                <chart class="dataplot" chart-data="altitudeVsTime" axis-key="timestamp" y-axis-key="altitude" width="400px" height="400px"></chart>
+                <chart class="dataplot" data="altitudeVsTime" axis-key="timestamp" y-axis-key="altitude" title="Altitude vs. Time" width="500px" height="500px" padding="50"></chart>
                 <ul>
                     <li>Data plots</li>
                     <li>Upper Stage Tracking</li>

@@ -1,11 +1,12 @@
 .dataplot {
+    outline:1px solid grey;
 }
 
 .axis path,
 .axis line {
     fill: none;
     stroke: black;
-    stroke-width:2px;
+    shape-rendering: auto;
 }
 
 .axis text {

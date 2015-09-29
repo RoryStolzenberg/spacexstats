@@ -6,31 +6,39 @@
             replace: true,
             restrict: 'E',
             scope: {
-                chartData: '=',
+                chartData: '=data',
                 axisKey: '@',
-                yAxisKey: '@'
+                yAxisKey: '@',
+                chartTitle: '@title',
+                padding: "@"
             },
             link: function($scope, elem, attrs) {
                 var d3 = $window.d3;
                 var svg = d3.select(elem[0]);
-
-                var padding = 50;
-
+                var padding = parseInt($scope.padding);
+                var width = elem.width();
+                var height = elem.height();
                 // draw
                 var drawLineChart = (function() {
+
+                    // Setup scales
                     var xScale = d3.scale.linear()
-                        .domain([$scope.chartData[0][$scope.axisKey], $scope.chartData[$scope.chartData.length-1][$scope.axisKey]])
-                        .range([0, elem.width()]);
+                        .domain([0, $scope.chartData[$scope.chartData.length-1][$scope.axisKey]])
+                        .range([padding, width - padding]);
 
                     var yScale = d3.scale.linear()
                         .domain([d3.max($scope.chartData, function(d) {
                             return d[$scope.yAxisKey];
                         }), 0])
-                        .range([padding, elem.height() - padding]);
+                        .range([padding, height - padding]);
 
+                    // Generators
                     var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5);
-                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5);
+                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
+                        return d / 1000;
+                    });
 
+                    // Line function
                     var lineFunction = d3.svg.line()
                         .x(function(d) {
                             return xScale(d[$scope.axisKey]);
@@ -40,9 +48,10 @@
                         })
                         .interpolate("basis");
 
+                    // Element manipulation
                     svg.append("svg:g")
                         .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (elem.height() - padding) + ")")
+                        .attr("transform", "translate(0," + (height - padding) + ")")
                         .call(xAxisGenerator);
 
                     svg.append("svg:g")
@@ -59,6 +68,13 @@
                             "fill": "none",
                             "class": "path"
                         });
+
+                    svg.append("text")
+                        .attr("class", "chart-title")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", padding)
+                        .text($scope.chartTitle);
                 })();
             },
             templateUrl: '/js/templates/chart.html'
