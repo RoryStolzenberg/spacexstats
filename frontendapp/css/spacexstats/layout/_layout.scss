@@ -67,6 +67,7 @@ main {
     color:$slateblack;
     min-height:calc(100% - #{$h1-height}); // Substract h1 height
     display:block; // Make IE happy
+    padding-bottom:30px; // undo the effects of a position:sticky bar causing the sibling element to have a top of 30px
 
     nav {
         height:30px; // Includes the 10px padding of the parent element

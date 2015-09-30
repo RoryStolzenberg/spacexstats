@@ -4106,7 +4106,8 @@ main {
   box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
   color: #181c1f;
   min-height: calc(100% - 150px);
-  display: block; }
+  display: block;
+  padding-bottom: 30px; }
   main nav {
     height: 30px;
     line-height: 30px; }

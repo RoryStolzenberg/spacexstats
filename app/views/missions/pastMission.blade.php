@@ -126,8 +126,11 @@
             </section>
 
             <h2>Analytics</h2>
-            <section class="analytics">
-                <chart class="dataplot" data="altitudeVsTime" axis-key="timestamp" y-axis-key="altitude" title="Altitude vs. Time" width="500px" height="500px" padding="50"></chart>
+            <section class="analytics container">
+                <div class="grid-4">
+                    <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
+                </div>
+
                 <ul>
                     <li>Data plots</li>
                     <li>Upper Stage Tracking</li>
@@ -135,7 +138,7 @@
                     <li></li>
                     <li></li>
                 </ul>
-            </section>
+            </section>S
         </main>
     </div>
 </body>

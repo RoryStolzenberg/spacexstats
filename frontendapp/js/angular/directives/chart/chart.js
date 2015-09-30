@@ -7,30 +7,39 @@
             restrict: 'E',
             scope: {
                 chartData: '=data',
-                axisKey: '@',
-                yAxisKey: '@',
-                chartTitle: '@title',
-                padding: "@"
+                settings: "="
             },
             link: function($scope, elem, attrs) {
+
                 var d3 = $window.d3;
                 var svg = d3.select(elem[0]);
-                var padding = parseInt($scope.padding);
                 var width = elem.width();
                 var height = elem.height();
+
+                var settings = $scope.settings;
+
+                // extrapolate data
+                if (settings.extrapolate === true) {
+                    var originDatapoint = {};
+                    originDatapoint[settings.xAxisKey] = 0;
+                    originDatapoint[settings.yAxisKey] = 0;
+
+                    $scope.chartData.unshift(originDatapoint);
+                }
+
                 // draw
                 var drawLineChart = (function() {
 
                     // Setup scales
                     var xScale = d3.scale.linear()
-                        .domain([0, $scope.chartData[$scope.chartData.length-1][$scope.axisKey]])
-                        .range([padding, width - padding]);
+                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
+                        .range([settings.padding, width - settings.padding]);
 
                     var yScale = d3.scale.linear()
                         .domain([d3.max($scope.chartData, function(d) {
-                            return d[$scope.yAxisKey];
+                            return d[settings.yAxisKey];
                         }), 0])
-                        .range([padding, height - padding]);
+                        .range([settings.padding, height - settings.padding]);
 
                     // Generators
                     var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5);
@@ -41,22 +50,22 @@
                     // Line function
                     var lineFunction = d3.svg.line()
                         .x(function(d) {
-                            return xScale(d[$scope.axisKey]);
+                            return xScale(d[settings.xAxisKey]);
                         })
                         .y(function(d) {
-                            return yScale(d[$scope.yAxisKey]);
+                            return yScale(d[settings.yAxisKey]);
                         })
                         .interpolate("basis");
 
                     // Element manipulation
                     svg.append("svg:g")
                         .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - padding) + ")")
+                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
                         .call(xAxisGenerator);
 
                     svg.append("svg:g")
                         .attr("class", "y axis")
-                        .attr("transform", "translate(" + padding + ",0)")
+                        .attr("transform", "translate(" + settings.padding + ",0)")
                         .attr("stroke-width", 2)
                         .call(yAxisGenerator);
 
@@ -73,8 +82,23 @@
                         .attr("class", "chart-title")
                         .attr("text-anchor", "middle")
                         .attr("x", width / 2)
-                        .attr("y", padding)
-                        .text($scope.chartTitle);
+                        .attr("y", settings.padding - 10)
+                        .text(settings.chartTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis x-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", height - (settings.padding / 2))
+                        .text(settings.xAxisTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis y-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("transform", "rotate(-90)")
+                        .attr("x", - (height / 2))
+                        .attr("y", settings.padding / 2)
+                        .text(settings.yAxisTitle);
                 })();
             },
             templateUrl: '/js/templates/chart.html'
