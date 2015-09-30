@@ -18,6 +18,11 @@
 
                 var settings = $scope.settings;
 
+                // check padding and set default
+                if (typeof settings.padding === 'undefined') {
+                    settings.padding = 50;
+                }
+
                 // extrapolate data
                 if (settings.extrapolate === true) {
                     var originDatapoint = {};
@@ -42,9 +47,11 @@
                         .range([settings.padding, height - settings.padding]);
 
                     // Generators
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5);
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
+                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
+                    });
                     var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
-                        return d / 1000;
+                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
                     });
 
                     // Line function
@@ -72,7 +79,6 @@
                     svg.append("svg:path")
                         .attr({
                             d: lineFunction($scope.chartData),
-                            "stroke": "blue",
                             "stroke-width": 2,
                             "fill": "none",
                             "class": "path"
@@ -82,7 +88,7 @@
                         .attr("class", "chart-title")
                         .attr("text-anchor", "middle")
                         .attr("x", width / 2)
-                        .attr("y", settings.padding - 10)
+                        .attr("y", settings.padding / 2)
                         .text(settings.chartTitle);
 
                     svg.append("text")

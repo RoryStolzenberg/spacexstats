@@ -4679,8 +4679,8 @@ section.comments {
     cursor: pointer;
     margin-right: 5px; }
 
-.dataplot {
-  outline: 1px solid grey; }
+.dataplot path {
+  stroke: #3569A4; }
 
 .axis path,
 .axis line {

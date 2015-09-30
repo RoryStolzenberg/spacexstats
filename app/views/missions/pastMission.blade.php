@@ -130,15 +130,20 @@
                 <div class="grid-4">
                     <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
                 </div>
-
+                <div class="grid-4">
+                    <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
+                </div>
+                <div class="grid-4">
+                    <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
+                </div>
+                <div class="grid-4">
+                    <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
+                </div>
                 <ul>
-                    <li>Data plots</li>
                     <li>Upper Stage Tracking</li>
                     <li>Estimators for Data plots</li>
-                    <li></li>
-                    <li></li>
                 </ul>
-            </section>S
+            </section>
         </main>
     </div>
 </body>
