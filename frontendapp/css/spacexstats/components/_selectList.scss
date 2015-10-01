@@ -1,10 +1,12 @@
+$selectListSize: 40px;
+
 .select-list {
     margin:0 10px;
     position: relative;
 
     >.default {
         border:1px solid $bordergrey;
-        height:50px;
+        height:$selectListSize;
         overflow:hidden;
     }
 
@@ -24,7 +26,7 @@
     li {
         margin:5px 0;
         padding:0;
-        height:50px;
+        height:$selectListSize;
 
         &.hover {
             background-color:$bordergrey;
@@ -37,21 +39,21 @@
 
     .selected-option {
         img {
-            width:48px;
-            height:48px;
+            width:#{$selectListSize} - 2px;
+            height:#{$selectListSize} - 2px;
         }
     }
 
     img {
-        width:50px;
-        height:50px;
+        width:$selectListSize;
+        height:$selectListSize;
         position:absolute;
     }
 
     .name {
         font-weight:bold;
-        line-height: 50px;
+        line-height:$selectListSize;
         vertical-align: top;
-        margin-left:60px;
+        margin-left:$selectListSize + 10px;
     }
 }

@@ -11,7 +11,7 @@
         <h1>Search results for</h1>
         <main>
             <form method="GET" action="/missioncontrol/search">
-                <input type="search" placeholder="Search..." />
+                <search></search>
                 <input type="submit" value="Search" />
             </form>
         </main>

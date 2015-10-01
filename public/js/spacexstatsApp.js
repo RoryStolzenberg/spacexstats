@@ -1,66 +1,3 @@
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
-    }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
-
 (function() {
     var missionsListApp = angular.module('app', []);
 
@@ -1234,79 +1171,69 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 (function() {
     var editObjectApp = angular.module('app', []);
 })();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
         return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                callback: '&'
-            },
-            link: function($scope) {
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
 
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
 
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                (function() {
-                    if ($scope.isLaunchExact) {
-
-                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-
-
-                        $scope.countdownProcessor = function() {
-
-                            var launchUnixSeconds = $scope.launchUnixSeconds;
-                            var currentUnixSeconds = Math.floor($.now() / 1000);
-
-                            if (launchUnixSeconds >= currentUnixSeconds) {
-                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                                var secondsBetween = $scope.secondsAwayFromLaunch;
-                                // Calculate the number of days, hours, minutes, seconds
-                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                                secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                                secondsBetween -= $scope.hours * 60 * 60;
-
-                                $scope.minutes = Math.floor(secondsBetween / 60);
-                                secondsBetween -= $scope.minutes * 60;
-
-                                $scope.seconds = secondsBetween;
-
-                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                                // Stop the countdown, count up!
-                            } else {
-                            }
-
-                            if ($scope.callback && typeof $scope.callback === 'function') {
-                                $scope.callback();
-                            }
-                        };
-
-                        $interval($scope.countdownProcessor, 1000);
-                    } else {
-                        $scope.countdownText = $scope.countdownTo;
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
                     }
-                })();
+                };
+            }
+        };
+    }
+]);
+(function() {
+    var app = angular.module('app', []);
 
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
+    app.service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+    });
 })();
+
+
 (function() {
     var app = angular.module('app', []);
 
@@ -1397,43 +1324,76 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         }
     });
 })();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('countdown', ['$interval', function($interval) {
         return {
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                specificity: '=',
+                countdownTo: '=',
+                callback: '&'
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
+            link: function($scope) {
 
-                $scope.retrieveTweet = function() {
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
 
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
 
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
+                (function() {
+                    if ($scope.isLaunchExact) {
 
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+                        $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
 
-                        });
+
+                        $scope.countdownProcessor = function() {
+
+                            var launchUnixSeconds = $scope.launchUnixSeconds;
+                            var currentUnixSeconds = Math.floor($.now() / 1000);
+
+                            if (launchUnixSeconds >= currentUnixSeconds) {
+                                $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                                var secondsBetween = $scope.secondsAwayFromLaunch;
+                                // Calculate the number of days, hours, minutes, seconds
+                                $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                                secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                                $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                                secondsBetween -= $scope.hours * 60 * 60;
+
+                                $scope.minutes = Math.floor(secondsBetween / 60);
+                                secondsBetween -= $scope.minutes * 60;
+
+                                $scope.seconds = secondsBetween;
+
+                                $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                                $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                                $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                                $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                                // Stop the countdown, count up!
+                            } else {
+                            }
+
+                            if ($scope.callback && typeof $scope.callback === 'function') {
+                                $scope.callback();
+                            }
+                        };
+
+                        $interval($scope.countdownProcessor, 1000);
                     } else {
-                        $scope.tweet = {};
+                        $scope.countdownText = $scope.countdownTo;
                     }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+                })();
+
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/countdown.html'
         }
     }]);
 })();
@@ -1474,51 +1434,6 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
             }
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.$watch("deltaV", function(objects) {
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
-
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
-                        }
-
-                        $scope.calculatedValue = $scope.newValue;
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.calculatedValue = 0;
-            },
-            templateUrl: '/js/templates/deltaV.html'
-        }
-    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -1656,6 +1571,91 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
 })();
 
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch("deltaV", function(objects) {
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
+
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
+
+                        $scope.calculatedValue = $scope.newValue;
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.calculatedValue = 0;
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -1831,167 +1831,6 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         }
     });
 })();
-angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            comment: '='
-        },
-        compile: function(element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
-
-                $scope.toggleReplyState = function() {
-                    if (typeof $scope.reply !== 'undefined') {
-                        $scope.reply = !$scope.reply;
-                    } else {
-                        $scope.reply = true;
-                    }
-
-                }
-            });
-        },
-        templateUrl: '/js/templates/comment.html'
-    }
-}]);
-(function() {
-	var app = angular.module('app');
-
-	app.directive('search', ['constraintsReader', function(constraintsReader) {
-		return {
-			restrict: 'E',
-			scope: {
-
-			},
-			link: function($scope, element, attributes) {
-
-				$scope.currentSearch = {
-					searchTerm: null,
-					tags: {
-						tags: []
-					},
-					constraints: {
-						mission: null,
-						type: null,
-						before: null,
-						after: null,
-						year: null,
-						uploadedBy: null,
-						favorited: null,
-						noted: null,
-						downloaded: null,
-					}
-				}
-
-				$scope.stagingConstraints = {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null,
-				}
-
-				$scope.data = {
-					missions: null,
-					types: null
-				}
-
-				$scope.onSearchKeyPress = function(event) {
-					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
-				}
-			},
-			templateUrl: 'search.html'
-		}
-	}]).service('constraintsReader', ['Constraint', 'kebabToCamelCase', function(Constaint, kebabToCamelCase) {
-		this.fromSearch = function(rawSearchTerm) {
-
-			var currentSearch = {
-				searchTerm: null,
-				tags: {
-					tags: []
-				},
-				constraints: {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null,
-				}
-			};
-
-			// parse out tags https://regex101.com/r/uL9jN5/1
-			currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
-
-			// constraints https://regex101.com/r/iT2zH5/2
-			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
-			var rawConstraint;
-			var rawConstraintsArray = [];
-			var touchedConstraintsArray = [];
-
-			// Pull out all the raw constraints 
-			do {
-			    rawConstraint = re.exec(rawSearchTerm);
-			    if (rawConstraint) {
-			        rawConstraintsArray.push(new Constraint(rawConstraint));
-			        touchedConstraintsArray.push(kebabToCamelCase.convert(rawConstraint[1]));
-			    }
-			} while (rawConstraint);
-
-			// reset the constraints present in the current search
-			for (var propertyName in currentSearch.constraints) {
-
-				// If the constraint exists
-				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
-					var index = touchedConstraintsArray.indexOf(propertyName);
-					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
-				}
-			}
-
-			return currentSearch;
-		}
-
-		this.fromConstraints = function() {
-
-		}
-
-	}]).factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
-		// Holds a Constraint object which consists of a property and a value
-		return function(constraint) {
-
-			var self = this;
-
-			self.property = kebabToCamelCase.convert(constraint[1]);
-			self.value = typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3];
-
-			return self;
-		}
-
-	}]).service('kebabToCamelCase', function() {
-		// Converts a search-constraint into a searchConstraint
-		this.convert = function(string) {
-
-			for(var i = 0; i < string.length; i++) {
-
-				if (string[i] === "-") {
-					string = string.replace(string.substr(i, 1), "");
-					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
-				}
-			}
-			return string;
-		};
-
-	});
-})();
 (function() {
     var app = angular.module('app');
 
@@ -2028,6 +1867,31 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
         }
     }]);
 })();
+angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            comment: '='
+        },
+        compile: function(element) {
+            // Use the compile function from the RecursionHelper,
+            // And return the linking function(s) which it returns
+            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+
+                $scope.toggleReplyState = function() {
+                    if (typeof $scope.reply !== 'undefined') {
+                        $scope.reply = !$scope.reply;
+                    } else {
+                        $scope.reply = true;
+                    }
+
+                }
+            });
+        },
+        templateUrl: '/js/templates/comment.html'
+    }
+}]);
 (function() {
     var app = angular.module('app');
 
@@ -2152,4 +2016,139 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
            return null;
        }
     });
+})();
+(function() {
+	var app = angular.module('app');
+
+	app.directive('search', ['constraintsReader', function(constraintsReader) {
+		return {
+			restrict: 'E',
+			scope: {
+			},
+			link: function($scope, element, attributes) {
+
+				$scope.stagingConstraints = {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+
+				$scope.data = {
+					missions: laravel.missions,
+					types: null,
+                    tags: laravel.tags
+				}
+
+                console.log(laravel.missions);
+                console.log($scope.data.missions);
+
+				$scope.onSearchKeyPress = function(event) {
+					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
+				}
+			},
+			templateUrl: '/js/templates/search.html'
+		}
+	}]);
+
+    app.service('constraintsReader', ['Constraint', 'kebabToCamelCase', function(Constaint, kebabToCamelCase) {
+		this.fromSearch = function(rawSearchTerm) {
+
+			var currentSearch = {
+				searchTerm: null,
+				tags: {
+					tags: []
+				},
+				constraints: {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+			};
+
+			// parse out tags https://regex101.com/r/uL9jN5/1
+			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
+            var re = /\[([^)]+?)\]/gi;
+            while (match = re.exec(rawSearchTerm)) {
+                currentSearch.tags.tags.push(match[1]);
+            }
+            rawSearchTerm = rawSearchTerm.replace(re, "");
+
+			// constraints https://regex101.com/r/iT2zH5/2
+			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
+			var rawConstraint;
+			var rawConstraintsArray = [];
+			var touchedConstraintsArray = [];
+
+			// Pull out all the raw constraints 
+			do {
+			    rawConstraint = re.exec(rawSearchTerm);
+			    if (rawConstraint) {
+			        rawConstraintsArray.push(new Constraint(rawConstraint));
+			        touchedConstraintsArray.push(kebabToCamelCase.convert(rawConstraint[1]));
+			    }
+			} while (rawConstraint);
+
+			// reset the constraints present in the current search
+			for (var propertyName in currentSearch.constraints) {
+
+				// If the constraint exists
+				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
+					var index = touchedConstraintsArray.indexOf(propertyName);
+					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
+				}
+			}
+
+            // Send the search term through
+            currentSearch.searchTerm = rawSearchTerm;
+
+			return currentSearch;
+		}
+
+		this.fromConstraints = function() {
+
+		}
+
+	}]);
+
+    app.factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
+		// Holds a Constraint object which consists of a property and a value
+		return function(constraint) {
+
+			var self = this;
+
+			self.property = kebabToCamelCase.convert(constraint[1]);
+			self.value = typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3];
+
+			return self;
+		}
+
+	}]);
+
+    app.service('kebabToCamelCase', function() {
+		// Converts a search-constraint into a searchConstraint
+		this.convert = function(string) {
+
+			for(var i = 0; i < string.length; i++) {
+
+				if (string[i] === "-") {
+					string = string.replace(string.substr(i, 1), "");
+					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
+				}
+			}
+			return string;
+		};
+
+	});
 })();
