@@ -171,6 +171,10 @@ class Spacexstats extends Migration {
             $table->integer('postlaunch_press_conference')->unsigned()->nullable();
             $table->integer('featured_image')->unsigned()->nullable();
 
+            // Background position
+            $table->string('background_position_x', Varchar::tiny)->nullable();
+            $table->string('background_position_y', Varchar::tiny)->nullable();
+
             // Links to other pages
             $table->string('reddit_discussion', Varchar::small)->nullable();
             $table->string('flight_club', Varchar::small)->nullable();

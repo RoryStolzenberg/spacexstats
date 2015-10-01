@@ -1308,22 +1308,6 @@ angular.module('RecursionHelper', [])
     });
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -1434,6 +1418,22 @@ angular.module('RecursionHelper', [])
             }
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -1614,51 +1614,6 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app');
 
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.$watch("deltaV", function(objects) {
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
-
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
-                        }
-
-                        $scope.calculatedValue = $scope.newValue;
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.calculatedValue = 0;
-            },
-            templateUrl: '/js/templates/deltaV.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('datetime', function() {
         return {
             require: 'ngModel',
@@ -1834,6 +1789,76 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app');
 
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch("deltaV", function(objects) {
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
+
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
+
+                        $scope.calculatedValue = $scope.newValue;
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.calculatedValue = 0;
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            comment: '='
+        },
+        compile: function(element) {
+            // Use the compile function from the RecursionHelper,
+            // And return the linking function(s) which it returns
+            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+
+                $scope.toggleReplyState = function() {
+                    if (typeof $scope.reply !== 'undefined') {
+                        $scope.reply = !$scope.reply;
+                    } else {
+                        $scope.reply = true;
+                    }
+
+                }
+            });
+        },
+        templateUrl: '/js/templates/comment.html'
+    }
+}]);
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -1867,31 +1892,158 @@ angular.module('RecursionHelper', [])
         }
     }]);
 })();
-angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            comment: '='
-        },
-        compile: function(element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+(function() {
+	var app = angular.module('app');
 
-                $scope.toggleReplyState = function() {
-                    if (typeof $scope.reply !== 'undefined') {
-                        $scope.reply = !$scope.reply;
-                    } else {
-                        $scope.reply = true;
-                    }
+	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
+		return {
+			restrict: 'E',
+			scope: {
+			},
+			link: function($scope, element, attributes) {
 
+				$scope.stagingConstraints = {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+
+				$scope.data = {
+					missions: laravel.missions,
+					types: null,
+                    tags: laravel.tags
+				}
+
+                console.log(laravel.missions);
+                console.log($scope.data.missions);
+
+				$scope.onSearchKeyPress = function(event) {
+					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
+				}
+
+                $scope.search = function() {
+                    var encodedQuery = encodeURIComponent(currentSearch.searchTerm);
+                    $http.get('/missioncontrol/search?q=' + encodedQuery)
                 }
-            });
-        },
-        templateUrl: '/js/templates/comment.html'
-    }
-}]);
+			},
+			templateUrl: '/js/templates/search.html'
+		}
+	}]);
+
+    app.service('constraintsReader', ['Constraint', 'kebabToCamelCase', function(Constaint, kebabToCamelCase) {
+		this.fromSearch = function(rawSearchTerm) {
+
+			var currentSearch = {
+				searchTerm: null,
+				tags: {
+					tags: []
+				},
+				constraints: {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+			};
+
+			// parse out tags https://regex101.com/r/uL9jN5/1
+			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
+            var re = /\[([^)]+?)\]/gi;
+            while (match = re.exec(rawSearchTerm)) {
+                currentSearch.tags.tags.push(match[1]);
+            }
+            rawSearchTerm = rawSearchTerm.replace(re, "");
+
+			// constraints https://regex101.com/r/iT2zH5/2
+			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
+			var rawConstraint;
+			var rawConstraintsArray = [];
+			var touchedConstraintsArray = [];
+
+			// Pull out all the raw constraints 
+			do {
+			    rawConstraint = re.exec(rawSearchTerm);
+			    if (rawConstraint) {
+			        rawConstraintsArray.push(new Constraint(rawConstraint));
+			        touchedConstraintsArray.push(kebabToCamelCase.convert(rawConstraint[1]));
+			    }
+			} while (rawConstraint);
+
+			// reset the constraints present in the current search
+			for (var propertyName in currentSearch.constraints) {
+
+				// If the constraint exists
+				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
+					var index = touchedConstraintsArray.indexOf(propertyName);
+					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
+				}
+			}
+
+            // Send the search term through
+            currentSearch.searchTerm = rawSearchTerm;
+
+			return currentSearch;
+		}
+
+		this.fromConstraints = function() {
+
+		}
+
+	}]);
+
+    app.factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
+		// Holds a Constraint object which consists of a property and a value
+		return function(constraint) {
+
+			var self = this;
+
+			self.property = kebabToCamelCase.convert(constraint[1]);
+			self.value = typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3];
+
+			return self;
+		}
+
+	}]);
+
+    app.service('kebabToCamelCase', function() {
+		// Converts a search-constraint into a searchConstraint
+		this.convert = function(string) {
+
+			for(var i = 0; i < string.length; i++) {
+
+				if (string[i] === "-") {
+					string = string.replace(string.substr(i, 1), "");
+					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
+				}
+			}
+			return string;
+		};
+
+	});
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -2004,151 +2156,4 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
             templateUrl: '/js/templates/chart.html'
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
-})();
-(function() {
-	var app = angular.module('app');
-
-	app.directive('search', ['constraintsReader', function(constraintsReader) {
-		return {
-			restrict: 'E',
-			scope: {
-			},
-			link: function($scope, element, attributes) {
-
-				$scope.stagingConstraints = {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
-
-				$scope.data = {
-					missions: laravel.missions,
-					types: null,
-                    tags: laravel.tags
-				}
-
-                console.log(laravel.missions);
-                console.log($scope.data.missions);
-
-				$scope.onSearchKeyPress = function(event) {
-					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
-				}
-			},
-			templateUrl: '/js/templates/search.html'
-		}
-	}]);
-
-    app.service('constraintsReader', ['Constraint', 'kebabToCamelCase', function(Constaint, kebabToCamelCase) {
-		this.fromSearch = function(rawSearchTerm) {
-
-			var currentSearch = {
-				searchTerm: null,
-				tags: {
-					tags: []
-				},
-				constraints: {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
-			};
-
-			// parse out tags https://regex101.com/r/uL9jN5/1
-			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
-            var re = /\[([^)]+?)\]/gi;
-            while (match = re.exec(rawSearchTerm)) {
-                currentSearch.tags.tags.push(match[1]);
-            }
-            rawSearchTerm = rawSearchTerm.replace(re, "");
-
-			// constraints https://regex101.com/r/iT2zH5/2
-			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
-			var rawConstraint;
-			var rawConstraintsArray = [];
-			var touchedConstraintsArray = [];
-
-			// Pull out all the raw constraints 
-			do {
-			    rawConstraint = re.exec(rawSearchTerm);
-			    if (rawConstraint) {
-			        rawConstraintsArray.push(new Constraint(rawConstraint));
-			        touchedConstraintsArray.push(kebabToCamelCase.convert(rawConstraint[1]));
-			    }
-			} while (rawConstraint);
-
-			// reset the constraints present in the current search
-			for (var propertyName in currentSearch.constraints) {
-
-				// If the constraint exists
-				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
-					var index = touchedConstraintsArray.indexOf(propertyName);
-					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
-				}
-			}
-
-            // Send the search term through
-            currentSearch.searchTerm = rawSearchTerm;
-
-			return currentSearch;
-		}
-
-		this.fromConstraints = function() {
-
-		}
-
-	}]);
-
-    app.factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
-		// Holds a Constraint object which consists of a property and a value
-		return function(constraint) {
-
-			var self = this;
-
-			self.property = kebabToCamelCase.convert(constraint[1]);
-			self.value = typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3];
-
-			return self;
-		}
-
-	}]);
-
-    app.service('kebabToCamelCase', function() {
-		// Converts a search-constraint into a searchConstraint
-		this.convert = function(string) {
-
-			for(var i = 0; i < string.length; i++) {
-
-				if (string[i] === "-") {
-					string = string.replace(string.substr(i, 1), "");
-					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
-				}
-			}
-			return string;
-		};
-
-	});
 })();

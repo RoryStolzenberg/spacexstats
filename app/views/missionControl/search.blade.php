@@ -12,7 +12,6 @@
         <main>
             <form method="GET" action="/missioncontrol/search">
                 <search></search>
-                <input type="submit" value="Search" />
             </form>
         </main>
     </div>

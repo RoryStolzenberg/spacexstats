@@ -3,9 +3,8 @@ use SpaceXStats\Enums\MissionControlSubtype;
 use SpaceXStats\Enums\MissionControlType;
 
 class SearchController extends BaseController {
-    // GET
+    // POST
     public function search() {
-
         // Grab the input
         $query = Input::get('q');
 

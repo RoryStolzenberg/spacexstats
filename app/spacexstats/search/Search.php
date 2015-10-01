@@ -5,16 +5,25 @@ use Elasticsearch\Client;
 use Credential;
 
 class Search {
+
+    const INDEX = 'spacexstats';
+
     private $elasticSearchClient;
 
+    /**
+     *
+     */
     public function __construct() {
         $this->elasticSearchClient = new Client(array(
             'hosts' => [Credential::ElasticSearchHost]
         ));
     }
 
+    /**
+     * @param $object
+     * @return array
+     */
     public function index($object) {
-
         $paramBody = [
             'object_id' => $object->object_id,
             'user_id' => $object->user_id,
@@ -59,7 +68,7 @@ class Search {
         }
 
         $params = [
-            'index' => 'spacexstats',
+            'index' => INDEX,
             'type' => 'objects',
             'id' => $object->object_id,
             'body' => $paramBody
@@ -68,10 +77,39 @@ class Search {
         return $this->elasticSearchClient->index($params);
     }
 
+    /**
+     * @param $search
+     * @param null $limitTypesTo
+     */
+    public function search($search, $limitTypesToThese = null) {
+        if ($limitTypesToThese == null) {
+            $limitTypesToThese = 'objects,collections';
+        }
+
+        $this->elasticSearchClient->search(array(
+            'index' => INDEX,
+            'type' => $limitTypesToThese,
+            'body' => array(
+                'query' => array(
+                    'multi_match' => array(
+                        'query'     => $search['searchTerm'],
+                        'fields'    => array('title^2', 'summary', 'tweet_text', 'article')
+                    )
+                )
+            )
+        ));
+    }
+
+    /**
+     *
+     */
     public function moreLikeThis() {
 
     }
 
+    /**
+     * @return Client
+     */
     public function get() {
         return $this->$elasticSearchClient;
     }

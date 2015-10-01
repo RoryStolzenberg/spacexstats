@@ -1,7 +1,7 @@
 (function() {
 	var app = angular.module('app');
 
-	app.directive('search', ['constraintsReader', function(constraintsReader) {
+	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
 		return {
 			restrict: 'E',
 			scope: {
@@ -32,6 +32,11 @@
 				$scope.onSearchKeyPress = function(event) {
 					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
 				}
+
+                $scope.search = function() {
+                    var encodedQuery = encodeURIComponent(currentSearch.searchTerm);
+                    $http.get('/missioncontrol/search?q=' + encodedQuery)
+                }
 			},
 			templateUrl: '/js/templates/search.html'
 		}
