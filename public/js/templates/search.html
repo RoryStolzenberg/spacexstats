@@ -2,8 +2,6 @@
 	<input class="search" type="search" ng-model="rawSearchTerm" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" />
 
 	<div class="constraints">
-		<select-list options="data.missions" has-default-option="false" selected-option="stagingConstraints.mission"></select-list>
+		<select-list options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" selected-option="stagingConstraints.mission"></select-list>
 	</div>
-
-    <input type="submit" class="search" value="Search" ng-click="search()" />
 </div>

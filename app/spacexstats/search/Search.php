@@ -68,7 +68,7 @@ class Search {
         }
 
         $params = [
-            'index' => INDEX,
+            'index' => Search::INDEX,
             'type' => 'objects',
             'id' => $object->object_id,
             'body' => $paramBody
@@ -86,17 +86,19 @@ class Search {
             $limitTypesToThese = 'objects,collections';
         }
 
-        $this->elasticSearchClient->search(array(
-            'index' => INDEX,
-            'type' => $limitTypesToThese,
-            'body' => array(
-                'query' => array(
-                    'multi_match' => array(
-                        'query'     => $search['searchTerm'],
-                        'fields'    => array('title^2', 'summary', 'tweet_text', 'article')
-                    )
+        $searchQuery = array(
+            'query' => array(
+                'multi_match' => array(
+                    'query'     => $search['searchTerm'],
+                    'fields'    => array('title^2', 'summary', 'tweet_text', 'article')
                 )
             )
+        );
+
+        return $this->elasticSearchClient->search(array(
+            'index' => Search::INDEX,
+            'type' => $limitTypesToThese,
+            'body' => $searchQuery
         ));
     }
 

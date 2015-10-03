@@ -1,4 +1,7 @@
 <?php
+use SpaceXStats\Enums\MissionControlSubtype;
+use SpaceXStats\Enums\MissionControlType;
+
 class MissionControlController extends BaseController {
 	/*
 	GET
@@ -7,6 +10,13 @@ class MissionControlController extends BaseController {
 	*/
 	public function home() {
 		if (Auth::isSubscriber()) {
+
+            JavaScript::put([
+                'missions' => Mission::all(),
+                'tags' => Tag::all(),
+                'types' => array_merge(MissionControlType::toArray(), MissionControlSubtype::toArray())
+            ]);
+
             return View::make('missionControl.home', array(
                 'title' => 'Misson Control',
                 'currentPage' => 'mission-control'

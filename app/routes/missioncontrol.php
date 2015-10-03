@@ -57,7 +57,7 @@ Route::group(array('prefix' => 'missioncontrol'), function() {
 
     Route::group(array('before' => 'mustBe:Subscriber'), function() {
 
-        Route::get('/search', array(
+        Route::post('/search', array(
             'as' => 'missionControl.search',
             'uses' => 'SearchController@search'
         ));

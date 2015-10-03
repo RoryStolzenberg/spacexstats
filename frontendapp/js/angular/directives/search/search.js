@@ -4,8 +4,6 @@
 	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
 		return {
 			restrict: 'E',
-			scope: {
-			},
 			link: function($scope, element, attributes) {
 
 				$scope.stagingConstraints = {
@@ -26,16 +24,8 @@
                     tags: laravel.tags
 				}
 
-                console.log(laravel.missions);
-                console.log($scope.data.missions);
-
-				$scope.onSearchKeyPress = function(event) {
-					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
-				}
-
-                $scope.search = function() {
-                    var encodedQuery = encodeURIComponent(currentSearch.searchTerm);
-                    $http.get('/missioncontrol/search?q=' + encodedQuery)
+                $scope.onSearchKeyPress = function(event) {
+                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
                 }
 			},
 			templateUrl: '/js/templates/search.html'
@@ -98,14 +88,8 @@
 
             // Send the search term through
             currentSearch.searchTerm = rawSearchTerm;
-
-			return currentSearch;
+			return currentSearch;gg
 		}
-
-		this.fromConstraints = function() {
-
-		}
-
 	}]);
 
     app.factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {

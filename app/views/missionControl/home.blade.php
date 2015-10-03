@@ -7,25 +7,31 @@
     @include('templates.header')
 
     <div class="content-wrapper">
-        <h1>Mission Control</h1>
+        <h1>@{{ pageTitle }}</h1>
         <main>
-            <form method="GET" action="/missioncontrol/search">
-                <input type="search" placeholder="Search..." />
-                <input type="submit" value="Search" />
+            <form>
+                <search></search>
+                <input type="submit" class="search" value="Search" ng-click="search()" ng-disabled="currentSearch.searchTerm == ''" />
+                <input type="reset" value="Reset" ng-click="reset()" />
             </form>
 
-            <div class="grid-8">
-                <h2>Uploads - New | Hot | Top</h2>
-            </div>
+            <section ng-show="activeSection == 'searchResults'">
 
-            <div class="grid-4">
-                <h2>Community Leaderboards</h2>
-            </div>
+            </section>
 
-            <h2>Recent Comments</h2>
+            <section ng-show="activeSection == 'missionControl'">
+                <div class="grid-8">
+                    <h2>Uploads - New | Hot | Top</h2>
+                </div>
 
-            <h2>Recent Favorites</h2>
-            <tags available-tags="tags" ng-model="selectedTags"></tags>
+                <div class="grid-4">
+                    <h2>Community Leaderboards</h2>
+                </div>
+
+                <h2>Recent Comments</h2>
+
+                <h2>Recent Favorites</h2>
+            </section>
         </main>
     </div>
 </body>

@@ -4544,7 +4544,7 @@ button.icon-button {
   button.icon-button img {
     text-align: center; }
 
-input[type="submit"], button {
+input[type="submit"], input[type="reset"], button {
   height: 32px;
   min-width: 150px;
   padding: 0 20px;
@@ -4558,11 +4558,11 @@ input[type="submit"], button {
   cursor: pointer;
   box-shadow: 0;
   background-color: #1F6F70; }
-  input[type="submit"].submit, button.submit {
+  input[type="submit"].submit, input[type="reset"].submit, button.submit {
     background-color: #3569A4; }
-  input[type="submit"].delete, button.delete {
+  input[type="submit"].delete, input[type="reset"].delete, button.delete {
     background-color: #C05B40; }
-  input[type="submit"][disabled], input[type="submit"].disabled, button[disabled], button.disabled {
+  input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled {
     background-color: #CCC; }
 
 input[value="Logout"], input[value="Logout"]:focus {

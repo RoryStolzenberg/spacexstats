@@ -12,6 +12,7 @@ function handleError(error) {
 // Refresh browser on changes
 gulp.task('browsersync', function(gulpCallback) {
     browserSync.init({
+        open: false,
         proxy: "spacexstats.dev"
     }, function callback() {
 
@@ -43,7 +44,7 @@ gulp.task('scripts', function() {
     gulp.src(['frontendapp/js/angular/**/*.js', '!frontendapp/js/angular/apps/app.js'])
         .pipe(concat('spacexstatsApp.js')).on('error', handleError)
         //.pipe(uglify()).on('error', handleError)
-        .pipe(gulp.dest('public/js'))
+        .pipe(gulp.dest('public/js')).on('error', handleError)
         .pipe(browserSync.stream());
 
     // Move templates

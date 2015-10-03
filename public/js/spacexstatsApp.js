@@ -28,9 +28,24 @@
 (function() {
     var missionControlApp = angular.module("app", []);
 
-    missionControlApp.controller("missionControlController", ["$scope", function($scope) {
-        $scope.tags = [];
-        $scope.selectedTags = [];
+    missionControlApp.controller("missionControlController", ["$scope", "missionControlService", function($scope, missionControlService) {
+        $scope.activeSection = 'missionControl';
+        $scope.pageTitle = "Mission Control";
+
+        $scope.search = function() {
+            missionControlService.search($scope.currentSearch);
+            $scope.activeSection = 'searchResults';
+        }
+
+        $scope.reset = function() {
+            $scope.activeSection = 'missionControl';
+        }
+    }]);
+
+    missionControlApp.service("missionControlService", ["$http", function($http) {
+        this.search = function(currentSearch) {
+            return $http.post('/missioncontrol/search', { search: currentSearch });
+        }
     }]);
 })();
 (function() {
@@ -1235,6 +1250,22 @@ angular.module('RecursionHelper', [])
 
 
 (function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
     var app = angular.module('app', []);
 
     app.directive("selectList", function() {
@@ -1420,22 +1451,6 @@ angular.module('RecursionHelper', [])
     }]);
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
@@ -1571,46 +1586,6 @@ angular.module('RecursionHelper', [])
 })();
 
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -1859,36 +1834,40 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive('tweet', ["$http", function($http) {
         return {
-            replace: true,
             restrict: 'E',
             scope: {
-                redditComment: '=ngModel'
+                action: '@',
+                tweet: '='
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-                $scope.$watch('redditComment.external_url', function() {
-                    $scope.retrieveRedditComment();
-                });
+                $scope.retrieveTweet = function() {
 
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
 
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
                         });
+                    } else {
+                        $scope.tweet = {};
                     }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
                 }
-
             },
-            templateUrl: '/js/templates/redditComment.html'
+            templateUrl: '/js/templates/tweet.html'
         }
     }]);
 })();
@@ -1898,8 +1877,6 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
 		return {
 			restrict: 'E',
-			scope: {
-			},
 			link: function($scope, element, attributes) {
 
 				$scope.stagingConstraints = {
@@ -1920,16 +1897,8 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
                     tags: laravel.tags
 				}
 
-                console.log(laravel.missions);
-                console.log($scope.data.missions);
-
-				$scope.onSearchKeyPress = function(event) {
-					$scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
-				}
-
-                $scope.search = function() {
-                    var encodedQuery = encodeURIComponent(currentSearch.searchTerm);
-                    $http.get('/missioncontrol/search?q=' + encodedQuery)
+                $scope.onSearchKeyPress = function(event) {
+                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
                 }
 			},
 			templateUrl: '/js/templates/search.html'
@@ -2031,18 +2000,6 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 		};
 
 	});
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
 })();
 (function() {
     var app = angular.module('app');
@@ -2156,4 +2113,52 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
             templateUrl: '/js/templates/chart.html'
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch('redditComment.external_url', function() {
+                    $scope.retrieveRedditComment();
+                });
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();
