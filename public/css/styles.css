@@ -4557,13 +4557,16 @@ input[type="submit"], input[type="reset"], button {
   letter-spacing: 1px;
   cursor: pointer;
   box-shadow: 0;
-  background-color: #1F6F70; }
+  background-color: #1FA67A; }
   input[type="submit"].submit, input[type="reset"].submit, button.submit {
     background-color: #3569A4; }
   input[type="submit"].delete, input[type="reset"].delete, button.delete {
     background-color: #C05B40; }
   input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled {
     background-color: #CCC; }
+
+input[type="reset"] {
+  min-width: 50px; }
 
 input[value="Logout"], input[value="Logout"]:focus {
   background-color: transparent;
@@ -4691,6 +4694,14 @@ section.comments {
 .axis text {
   font-family: sans-serif;
   font-size: 11px; }
+
+#search {
+  padding-top: 20px; }
+  #search .constraints {
+    padding-top: 10px; }
+  #search button.search {
+    width: 100px;
+    background-color: #3569A4; }
 
 #statistics-navigation {
   position: fixed;

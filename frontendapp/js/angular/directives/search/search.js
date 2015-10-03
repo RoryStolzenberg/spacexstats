@@ -4,6 +4,7 @@
 	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
 		return {
 			restrict: 'E',
+            transclude: true,
 			link: function($scope, element, attributes) {
 
 				$scope.stagingConstraints = {

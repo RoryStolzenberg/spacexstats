@@ -280,19 +280,36 @@ class Object extends Eloquent {
 
     // Scoped Queries
     public function scopeWhereQueued($query) {
-        return $query->where('status','queued')->orderBy('created_at', 'ASC');
+        return $query->where('status', ObjectPublicationStatus::QueuedStatus)->orderBy('created_at', 'ASC');
     }
 
     public function scopeWherePublished($query) {
-        return $query->where('status','published');
+        return $query->where('status', ObjectPublicationStatus::PublishedStatus);
+    }
+
+    public function scopeAuthedStatus($query) {
+        if (!Auth::isAdmin()) {
+            return $query->where('status', ObjectPublicationStatus::PublishedStatus);
+        }
+        return $query;
     }
 
     public function scopeWherePublic($query) {
-        return $query->where('visibility', 'public');
+        return $query->where('visibility', VisibilityStatus::PublicStatus);
     }
 
     public function scopeWhereDefault($query) {
-        return $query->where('visiblility', 'default');
+        return $query->where('visiblility', VisibilityStatus::DefaultStatus);
+    }
+
+    public function scopeAuthedVisibility($query) {
+        if (Auth::isAdmin()) {
+            return $query;
+        } else if (Auth::isSubscriber()) {
+            return $query->where('visibility', '!=', VisibilityStatus::HiddenStatus);
+        } else {
+            return $query->where('visibility', VisibilityStatus::PublicStatus);
+        }
     }
 
     // Attribute accessors

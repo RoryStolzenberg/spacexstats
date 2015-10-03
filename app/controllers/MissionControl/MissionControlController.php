@@ -13,7 +13,6 @@ class MissionControlController extends BaseController {
 
             JavaScript::put([
                 'missions' => Mission::all(),
-                'tags' => Tag::all(),
                 'types' => array_merge(MissionControlType::toArray(), MissionControlSubtype::toArray())
             ]);
 
@@ -25,4 +24,9 @@ class MissionControlController extends BaseController {
             return Redirect::route('missionControl.about');
 		}
 	}
+
+    // AJAX GET
+    public function fetch() {
+        $uploads['latest'] = Object::wherePublished()
+    }
 }

@@ -1,7 +1,15 @@
 <div class="search">
-	<input class="search" type="search" ng-model="rawSearchTerm" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" />
+    <div class="search-controls container">
+        <div class="grid-8">
+            <input class="search" type="search" ng-model="rawSearchTerm" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="grid-8" />
+        </div>
+        <div class="grid-4">
+            <button class="search" ng-click="search()" ng-disabled="currentSearch == null || currentSearch.searchTerm == ''"><i class="fa fa-search"></i></button>
+            <input type="reset" value="Reset" ng-click="reset()" />
+        </div>
+    </div>
 
-	<div class="constraints">
-		<select-list options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" selected-option="stagingConstraints.mission"></select-list>
+	<div class="constraints container">
+		<select-list class="grid-2" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" selected-option="stagingConstraints.mission" placeholder="Filter by mission"></select-list>
 	</div>
 </div>

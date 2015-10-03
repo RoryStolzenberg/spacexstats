@@ -9,10 +9,8 @@
     <div class="content-wrapper">
         <h1>@{{ pageTitle }}</h1>
         <main>
-            <form>
+            <form id="search">
                 <search></search>
-                <input type="submit" class="search" value="Search" ng-click="search()" ng-disabled="currentSearch == null || currentSearch.searchTerm == ''" />
-                <input type="reset" value="Reset" ng-click="reset()" />
             </form>
 
             <section ng-show="activeSection == 'searchResults'">
@@ -21,16 +19,35 @@
 
             <section ng-show="activeSection == 'missionControl'">
                 <div class="grid-8">
-                    <h2>Uploads - New | Hot | Top</h2>
+                    <h2>Uploads</h2>
+                    <ul>
+                        <li>Latest</li>
+                        <li>Hot</li>
+                        <li></li>
+                    </ul>
                 </div>
 
                 <div class="grid-4">
                     <h2>Community Leaderboards</h2>
+                    <ul>
+                        <li>Last Week</li>
+                        <li>Last Month</li>
+                        <li>Last Year</li>
+                        <li>All Time</li>
+                    </ul>
                 </div>
 
-                <h2>Recent Comments</h2>
+                <div class="grid-4">
+                    <h2>Recent Comments</h2>
+                </div>
 
-                <h2>Recent Favorites</h2>
+                <div class="grid-4">
+                    <h2>Recent Favorites</h2>
+                </div>
+
+                <div class="grid-4">
+                    <h2>Recent Downloads</h2>
+                </div>
             </section>
         </main>
     </div>
