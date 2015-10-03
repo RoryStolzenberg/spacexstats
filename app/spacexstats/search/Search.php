@@ -97,7 +97,7 @@ class Search {
 
         // Filters
         if ($search['constraints']['mission'] != null) {
-            $requestBody['filter']['bool']['must']['term']['mission_id'] = $search['constraints']['mission'];
+            $requestBody['filter']['bool']['must']['term']['mission.name'] = strtolower($search['constraints']['mission']);
         }
 
         return $this->elasticSearchClient->search(array(
