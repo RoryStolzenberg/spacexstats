@@ -11,7 +11,7 @@
         <main>
             <form>
                 <search></search>
-                <input type="submit" class="search" value="Search" ng-click="search()" ng-disabled="currentSearch.searchTerm == ''" />
+                <input type="submit" class="search" value="Search" ng-click="search()" ng-disabled="currentSearch == null || currentSearch.searchTerm == ''" />
                 <input type="reset" value="Reset" ng-click="reset()" />
             </form>
 

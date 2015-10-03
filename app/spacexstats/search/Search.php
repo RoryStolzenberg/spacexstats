@@ -86,19 +86,24 @@ class Search {
             $limitTypesToThese = 'objects,collections';
         }
 
-        $searchQuery = array(
-            'query' => array(
-                'multi_match' => array(
-                    'query'     => $search['searchTerm'],
-                    'fields'    => array('title^2', 'summary', 'tweet_text', 'article')
-                )
+        $query = array(
+            'multi_match' => array(
+                'query'     => $search['searchTerm'],
+                'fields'    => array('title^2', 'summary', 'tweet_text', 'article')
             )
         );
+
+        // Add in mission
+        if ($search['constraints']['mission'] != null) {
+            $query['bool']['must']['term']['mission_id'] = $search['constraints']['mission'];
+        }
 
         return $this->elasticSearchClient->search(array(
             'index' => Search::INDEX,
             'type' => $limitTypesToThese,
-            'body' => $searchQuery
+            'body' => array(
+                'query' => $query
+            )
         ));
     }
 

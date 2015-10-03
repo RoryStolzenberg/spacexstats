@@ -32,7 +32,7 @@
 		}
 	}]);
 
-    app.service('constraintsReader', ['Constraint', 'kebabToCamelCase', function(Constaint, kebabToCamelCase) {
+    app.service('constraintsReader', ['kebabToCamelCase', function(kebabToCamelCase) {
 		this.fromSearch = function(rawSearchTerm) {
 
 			var currentSearch = {
@@ -63,18 +63,19 @@
 
 			// constraints https://regex101.com/r/iT2zH5/2
 			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
-			var rawConstraint;
+			var constraint;
 			var rawConstraintsArray = [];
 			var touchedConstraintsArray = [];
 
 			// Pull out all the raw constraints 
 			do {
-			    rawConstraint = re.exec(rawSearchTerm);
-			    if (rawConstraint) {
-			        rawConstraintsArray.push(new Constraint(rawConstraint));
-			        touchedConstraintsArray.push(kebabToCamelCase.convert(rawConstraint[1]));
+			    constraint = re.exec(rawSearchTerm);
+			    if (constraint) {
+			        rawConstraintsArray.push(typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3]);
+			        touchedConstraintsArray.push(kebabToCamelCase.convert(constraint[1]));
 			    }
-			} while (rawConstraint);
+			} while (constraint);
+            rawSearchTerm = rawSearchTerm.replace(re, "");
 
 			// reset the constraints present in the current search
 			for (var propertyName in currentSearch.constraints) {
@@ -88,22 +89,8 @@
 
             // Send the search term through
             currentSearch.searchTerm = rawSearchTerm;
-			return currentSearch;gg
+			return currentSearch;
 		}
-	}]);
-
-    app.factory('Constraint', ['kebabToCamelCase', function(kebabToCamelCase) {
-		// Holds a Constraint object which consists of a property and a value
-		return function(constraint) {
-
-			var self = this;
-
-			self.property = kebabToCamelCase.convert(constraint[1]);
-			self.value = typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3];
-
-			return self;
-		}
-
 	}]);
 
     app.service('kebabToCamelCase', function() {
