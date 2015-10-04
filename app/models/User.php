@@ -65,6 +65,10 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->hasMany('Comment');
     }
 
+    public function awards() {
+        return $this->hasMany('Award');
+    }
+
     // Conditional relations
     public function publishedObjects() {
         if (Auth::isAdmin()) {

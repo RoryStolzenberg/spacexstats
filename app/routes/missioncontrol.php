@@ -59,7 +59,7 @@ Route::group(array('prefix' => 'missioncontrol'), function() {
 
         Route::get('/fetch', array(
             'as' => 'missionControl.fetch',
-            'uses' => 'SearchController@fetch'
+            'uses' => 'MissionControlController@fetch'
         ));
 
         Route::post('/search', array(

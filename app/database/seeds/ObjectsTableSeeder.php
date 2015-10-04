@@ -15,6 +15,7 @@ class ObjectsTableSeeder extends Seeder {
             'title' => 'DSQU Launch',
             'filename' => 'dsqu.jpg',
             'status' => 'Published',
+            'actioned_at' => \Carbon\Carbon::now(),
             'visibility' => 'Default'
         ));
 
@@ -29,6 +30,7 @@ class ObjectsTableSeeder extends Seeder {
             'title' => 'F1F1 mission patch',
             'filename' => 'f1f1.jpg',
             'status' => 'Published',
+            'actioned_at' => \Carbon\Carbon::now(),
             'visibility' => 'Default'
         ));
     }

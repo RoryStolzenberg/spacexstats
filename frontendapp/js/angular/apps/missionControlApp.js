@@ -10,13 +10,17 @@
                 $scope.pageTitle = "Search Results for \"" + $scope.currentSearch.searchTerm + "\"";
             });
             $scope.activeSection = 'searchResults';
-        }
+        };
 
         $scope.reset = function() {
             $scope.pageTitle = "Mission Control";
             $scope.currentSearch = "";
             $scope.activeSection = 'missionControl';
-        }
+        };
+
+        (function() {
+            missionControlService.fetch();
+        })();
     }]);
 
     missionControlApp.service("missionControlService", ["$http", function($http) {
@@ -24,8 +28,8 @@
             return $http.post('/missioncontrol/search', { search: currentSearch });
         }
 
-        this.fetch = function(fetch) {
-            return $http.post('/missioncontrol/fetch');
+        this.fetch = function() {
+            return $http.get('/missioncontrol/fetch');
         }
     }]);
 })();
