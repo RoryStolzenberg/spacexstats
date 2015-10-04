@@ -273,8 +273,8 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('object_histories', function(Blueprint $table) {
-            $table->increments('object_history_id');
+        Schema::create('object_revisions', function(Blueprint $table) {
+            $table->increments('object_revision_id');
             $table->integer('object_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->text('object');
@@ -468,7 +468,7 @@ class Spacexstats extends Migration {
             $table->string('mobile_carrier', Varchar::small)->nullable();
 
             $table->char('password', 60);
-            $table->datetime('subscription_expiry')->nullable(); // Nonoptional Values
+            $table->datetime('subscription_expires_at')->nullable(); // Nonoptional Values
 
             // Specific roles
             $table->boolean('launchCentralFlag');

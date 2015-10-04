@@ -18,12 +18,20 @@ class ObjectsController extends BaseController {
         // Object is visible to everyone and is published
         if ($object->visibility == 'Public' && $object->status == 'Published') {
 
+            if (Auth::isSubscriber()) {
+                JavaScript::put([
+                    'totalFavorites' => $object->favorites()->count(),
+                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first(),
+                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first(),
+                    'object' => $object
+                ]);
+            }
+
             return View::make('missionControl.objects.' . $viewType , ['object' => $object]);
 
         // Object is visible to subscribers, is published, and the logged in user is also a subscriber
-        // Object is hidden and not published, and the logged in user is an admin
-        } elseif (($object->visibility == 'Default' && $object->status == 'Published' && Auth::isSubscriber()) ||
-            ($object->visibility == 'Hidden' || $object->status != "Published" && Auth::isAdmin())) {
+        // or the user is an admin
+        } elseif (($object->visibility == 'Default' && $object->status == 'Published' && Auth::isSubscriber()) || Auth::isAdmin()) {
 
                 // Inject dynamic data into page
                 JavaScript::put([
@@ -48,7 +56,11 @@ class ObjectsController extends BaseController {
     public function edit($objectId) {
         $object = Object::find($objectId);
 
+        if (Request::isMethod('get')) {
 
+        } else if (Request::isMethod('post')) {
+
+        }
     }
 
     /**

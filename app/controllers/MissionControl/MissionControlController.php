@@ -30,46 +30,68 @@ class MissionControlController extends BaseController {
     public function fetch() {
         // Uploads
         $uploads['latest'] = Object::authedVisibility()->wherePublished()->orderBy('actioned_at')->take(10)->get();
+
         $uploads['hot'] = Object::authedVisibility()->wherePublished()
             ->selectRaw('objects.*, LOG10(greatest(1, count(comments.object_id)) + greatest(1, count(favorites.object_id))) / TIMESTAMPDIFF(HOUR, objects.actioned_at, NOW()) as score')
             ->leftJoin('comments', 'comments.object_id', '=', 'objects.object_id')
             ->leftJoin('favorites', 'favorites.object_id', '=', 'objects.object_id')
-            ->groupBy(DB::raw('objects.object_id'))
+            ->groupBy('objects.object_id')
             ->orderBy(DB::raw('score'))
             ->take(10)->get();
 
         // Leaderboards
         $leaderboards['week'] = User::join('awards', 'awards.user_id', '=', 'users.user_id')
-            ->selectRaw('users.*, sum(awards.value) as totalDeltaV')
+            ->selectRaw('users.user_id, users.username, sum(awards.value) as totalDeltaV')
             ->where('awards.created_at', '>=', Carbon::now()->subWeek())
             ->groupBy('users.user_id')
             ->take(10)->get();
 
         $leaderboards['month'] = User::join('awards', 'awards.user_id', '=', 'users.user_id')
-            ->selectRaw('users.*, sum(awards.value) as totalDeltaV')
+            ->selectRaw('users.user_id, users.username, sum(awards.value) as totalDeltaV')
             ->where('awards.created_at', '>=', Carbon::now()->subMonth())
             ->groupBy('users.user_id')
             ->take(10)->get();
 
         $leaderboards['year'] = User::join('awards', 'awards.user_id', '=', 'users.user_id')
-            ->selectRaw('users.*, sum(awards.value) as totalDeltaV')
+            ->selectRaw('users.user_id, users.username, sum(awards.value) as totalDeltaV')
             ->where('awards.created_at', '>=', Carbon::now()->subYear())
             ->groupBy('users.user_id')
             ->take(10)->get();
 
         $leaderboards['alltime'] = User::join('awards', 'awards.user_id', '=', 'users.user_id')
-            ->selectRaw('users.*, sum(awards.value) as totalDeltaV')
+            ->selectRaw('users.user_id, users.username, sum(awards.value) as totalDeltaV')
             ->groupBy('users.user_id')
             ->take(10)->get();
 
         // Comments
-        $comments = Comment::orderBy('created_at')->take(10)->get();
+        $comments = Comment::with(['object' => function($query) {
+            $query->select('object_id', 'title');
+        }])
+            ->with(['user' => function($query) {
+            $query->select('user_id', 'username');
+        }])
+            ->orderBy('created_at','DESC')
+            ->take(10)->get();
 
         // Favorites
-        $favorites = Favorite::orderBy('created_at')->take(10)->get();
+        $favorites = Favorite::with(['object' => function($query) {
+            $query->select('object_id', 'title');
+        }])
+            ->with(['user' => function($query) {
+            $query->select('user_id', 'username');
+        }])
+            ->orderBy('created_at','DESC')
+            ->take(10)->get();
 
         // Downloads
-        $downloads = Download::orderBy('created_at')->take(10)->get();
+        $downloads = Download::with(['object' => function($query) {
+            $query->select('object_id', 'title');
+        }])
+            ->with(['user' => function($query) {
+                $query->select('user_id', 'username');
+            }])
+            ->orderBy('created_at','DESC')
+            ->take(10)->get();
 
         return Response::json(array(
             'leaderboards' => $leaderboards,
