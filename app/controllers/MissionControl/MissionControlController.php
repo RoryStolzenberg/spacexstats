@@ -101,4 +101,8 @@ class MissionControlController extends BaseController {
             'downloads' => $downloads
         ));
     }
+
+    public function leaderboards() {
+        
+    }
 }

@@ -2,7 +2,7 @@
 @section('title', 'Review Queue')
 
 @section('content')
-<body class="review" ng-app="reviewApp" ng-controller="reviewController" ng-strict-di>
+<body class="review" ng-controller="reviewController" ng-strict-di>
 
     @include('templates.flashMessage')
     @include('templates.header')

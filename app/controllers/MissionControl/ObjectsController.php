@@ -48,17 +48,23 @@ class ObjectsController extends BaseController {
     }
 
     /**
-     * GET/POST, /missioncontrol/objects/{objectId}/edit. Allows for the editing of objects by mission
+     * GET/PATCH, /missioncontrol/objects/{objectId}/edit. Allows for the editing of objects by mission
      * control subscribers and admins.
      *
      * @param $object_id    The object to edit.
      */
-    public function edit($objectId) {
-        $object = Object::find($objectId);
+    public function edit($object_id) {
+        $object = Object::find($object_id);
 
         if (Request::isMethod('get')) {
 
-        } else if (Request::isMethod('post')) {
+            JavaScript::put([
+               'object' => $object
+            ]);
+
+            return View::make('missionControl.objects.edit.edit', ['object' => $object]);
+
+        } else if (Request::isMethod('patch')) {
 
         }
     }
