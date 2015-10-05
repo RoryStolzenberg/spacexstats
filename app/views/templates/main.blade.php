@@ -31,41 +31,56 @@
     <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 
     <!-- JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.4.0/moment-timezone-with-data.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
-    <script src="//cdn.jsdelivr.net/stickynavbar.js/1.1.2/jquery.stickyNavbar.min.js"></script>
+        <!-- jQuery& jQuery plugins -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="//cdn.jsdelivr.net/stickynavbar.js/1.1.2/jquery.stickyNavbar.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-fracs/0.15.1/jquery.fracs.js"></script>
+
+        <!-- Angular -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.3/angular-scroll.js"></script>
+
+        <!-- Moment.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.4.0/moment-timezone-with-data.js"></script>
+
+        <!-- d3.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
 
     <script src="/js/jstz-1.0.4.min.js"></script>
     <script src="/js/dropzone.js"></script>
-    <script src="/js/app.js"></script>
-    <script src="/js/spacexstatsApp.js"></script>
 
-    <script>
-        $(function () {
-            $('nav.sticky-bar').stickyNavbar();
-            $('nav.sticky-bar .link').unbind('click').click();
-        });
-    </script>
+        <!-- Frontend App -->
+        <script src="/js/app.js"></script>
+        <script src="/js/spacexstatsApp.js"></script>
 
-	<script>
-        // Mobile left hand side drawer
-		$(document).ready(function() {
-			var mobileNavigation = $('.nav-mobile');
-			var contentToPush = $('body');
+        <!-- Fix for relative URLs due to problem wih stickyNavbar -->
+        <script>
+            $(function () {
+                $('nav.sticky-bar').stickyNavbar();
+                $('nav.sticky-bar .link').unbind('click').click();
+            });
+        </script>
 
-			$('i.toggleMobileNavigation').on('click', function() {
-				console.log('click');
-				contentToPush.toggleClass('nav-open');
-			});
-		});
-	</script>
+        <script>
+            // Mobile left hand side drawer
+            $(document).ready(function() {
+                var mobileNavigation = $('.nav-mobile');
+                var contentToPush = $('body');
 
+                $('i.toggleMobileNavigation').on('click', function() {
+                    console.log('click');
+                    contentToPush.toggleClass('nav-open');
+                });
+            });
+        </script>
+
+    <!-- Fonts -->
 	<link href='https://fonts.googleapis.com/css?family=Noto+Sans' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro' rel='stylesheet' type='text/css'>
 </head>

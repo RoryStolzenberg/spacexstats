@@ -5,7 +5,7 @@
 
         $scope.missionSlug = laravel.mission.slug;
         $scope.launchDateTime = laravel.mission.launchDateTime;
-        $scope.launchSpecificity = laravel.mission.launchSpecificity;
+        $scope.launchSpecificity = laravel.mission.launch_specificity;
 
         $scope.$watch("launchSpecificity", function(newValue) {
             $scope.isLaunchExact =  (newValue == 6 || newValue == 7);

@@ -44,6 +44,10 @@
     }
 }
 
+#countdown > * {
+    top:-10%;
+}
+
 section.details {
     @include gridle_container();
 

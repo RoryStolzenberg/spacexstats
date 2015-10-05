@@ -4174,49 +4174,6 @@ p {
 .code {
   font-family: "Source Code Pro"; }
 
-.hero {
-  height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
-  text-align: center;
-  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
-  text-transform: uppercase; }
-  .hero:before {
-    content: '';
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-    margin-right: -0.25em; }
-  .hero > * {
-    display: inline-block;
-    vertical-align: middle;
-    top: -10%;
-    position: relative; }
-  .hero table {
-    border-collapse: collapse;
-    position: relative;
-    text-align: center; }
-    .hero table td {
-      min-width: 260px; }
-    .hero table .value {
-      font-size: 150px;
-      font-weight: 300;
-      line-height: 1; }
-      @media (max-width: 640px) {
-        .hero table .value {
-          font-size: 80px; } }
-      @media (min-width: 641px) and (max-width: 1024px) {
-        .hero table .value {
-          font-size: 80px; } }
-      @media (min-width: 1025px) and (max-width: 1440px) {
-        .hero table .value {
-          font-size: 120px; } }
-    .hero table .unit {
-      font-size: 30px;
-      font-weight: 300; }
-  .hero.statistic {
-    height: calc(100% - 30px - 100px); }
-    .hero.statistic .description {
-      height: 100px; }
-
 .header-wrapper {
   width: 100%;
   background-color: #3569A4;
@@ -4703,6 +4660,48 @@ section.comments {
     width: 100px;
     background-color: #3569A4; }
 
+.hero {
+  height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
+  text-align: center;
+  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
+  text-transform: uppercase; }
+  .hero:before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+    margin-right: -0.25em; }
+  .hero > * {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative; }
+  .hero table {
+    border-collapse: collapse;
+    position: relative;
+    text-align: center; }
+    .hero table td {
+      min-width: 260px; }
+    .hero table .value {
+      font-size: 150px;
+      font-weight: 300;
+      line-height: 1; }
+      @media (max-width: 640px) {
+        .hero table .value {
+          font-size: 80px; } }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table .value {
+          font-size: 80px; } }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table .value {
+          font-size: 120px; } }
+    .hero table .unit {
+      font-size: 30px;
+      font-weight: 300; }
+  .hero.statistic {
+    height: calc(100% - 30px - 100px); }
+    .hero.statistic .description {
+      height: 100px; }
+
 #statistics-navigation {
   position: fixed;
   top: 50%; }
@@ -4720,9 +4719,9 @@ section.comments {
       border-radius: 50%;
       content: "";
       display: block;
+      background-color: rgba(255, 255, 255, 0.5); }
+    #statistics-navigation .statistic-link.active:before {
       background-color: #FFF; }
-      #statistics-navigation .statistic-link:before.active {
-        background-color: #FFF; }
 
 .previous-stat, .next-stat {
   position: absolute;
@@ -4784,6 +4783,9 @@ section.comments {
       -webkit-transition: background-color ease 0.5s;
               transition: background-color ease 0.5s;
       background-color: #CCAC55; }
+
+#countdown > * {
+  top: -10%; }
 
 section.details #live-tweets {
   float: left;

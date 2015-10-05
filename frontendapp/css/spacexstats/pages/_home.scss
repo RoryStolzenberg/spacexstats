@@ -1,3 +1,62 @@
+// Display
+.hero {
+    // Calculated height: the viewport, subtracting the header (50px), the title (150px), the page nav (30px), highlights (40px), the summary (100px)
+    height:calc(100vh - 50px - #{$h1-height} - 30px - 40px - 100px);
+    text-align:center;
+    font-family:$brandonGrotesque;
+    text-transform:uppercase;
+
+    &:before {
+        content:'';
+        display: inline-block;
+        height:100%;
+        vertical-align: middle;
+        margin-right:-0.25em;
+    }
+
+    >* {
+        display: inline-block;
+        vertical-align: middle;
+        position:relative;
+    }
+
+    table {
+        border-collapse:collapse;
+        position:relative;
+        text-align:center;
+
+        td {
+            min-width:260px;
+        }
+
+        .value {
+            @include gridle_state("small" "medium") {
+                font-size:80px;
+            }
+            @include gridle_state("large") {
+                font-size:120px;
+            }
+            font-size:150px;
+            font-weight:300;
+            line-height: 1;
+        }
+
+        .unit {
+            font-size:30px;
+            font-weight:300;
+        }
+    }
+
+    // Display statistics
+    &.statistic {
+        height:calc(100% - 30px - 100px);
+
+        .description {
+            height:100px;
+        }
+    }
+}
+
 #statistics-navigation {
     position: fixed;
     top:50%;
@@ -17,11 +76,11 @@
             border-radius:50%;
             content: "";
             display: block;
-            background-color:$white;
+            background-color:rgba($white, 0.5);
+        }
 
-            &.active {
-                background-color:$white;
-            }
+        &.active:before {
+            background-color:$white;
         }
     }
 }
