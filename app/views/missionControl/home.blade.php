@@ -18,7 +18,7 @@
             </section>
 
             <section ng-show="activeSection == 'missionControl'">
-                <div class="grid-8">
+                <div class="gr-8">
                     <h2>Uploads</h2>
                     <ul>
                         <li>Latest</li>
@@ -27,7 +27,7 @@
                     </ul>
                 </div>
 
-                <div class="grid-4">
+                <div class="gr-4">
                     <h2>Community Leaderboards</h2>
                     <ul>
                         <li>Last Week</li>
@@ -37,15 +37,15 @@
                     </ul>
                 </div>
 
-                <div class="grid-4">
+                <div class="gr-4">
                     <h2>Recent Comments</h2>
                 </div>
 
-                <div class="grid-4">
+                <div class="gr-4">
                     <h2>Recent Favorites</h2>
                 </div>
 
-                <div class="grid-4">
+                <div class="gr-4">
                     <h2>Recent Downloads</h2>
                 </div>
             </section>

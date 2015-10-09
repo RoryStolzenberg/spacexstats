@@ -14,17 +14,17 @@
             <h2>Create a DataView</h2>
             <form name="createDataViewForm" novalidate>
                 <ul>
-                    <li class="grid-6">
+                    <li class="gr-6">
                         <label for="name">DataView Name</label>
                         <input type="text" name="name" ng-model="newDataView.name" required />
                     </li>
 
-                    <li class="grid-6">
+                    <li class="gr-6">
                         <label>Select a banner image</label>
                         <select-list options="data.bannerImages" has-default-option="false" unique-key="object_id" title-key="title" searchable="true" ng-model="newDataView.banner_image"></select-list>
                     </li>
 
-                    <li class="grid-4 suffix-8">
+                    <li class="gr-4 suffix-8">
                         <label>Column Titles</label>
                         <ul>
                             <li ng-repeat="column_title in newDataView.column_titles">
@@ -36,13 +36,13 @@
                         </ul>
                     </li>
 
-                    <li class="grid-6">
+                    <li class="gr-6">
                         <label for="query">Query</label>
                         <textarea class="code" name="query" ng-model="newDataView.query" required></textarea>
                         <button ng-click="newDataView.testQuery(dataview.query)">Test Query</button>
                     </li>
 
-                    <li class="grid-6">
+                    <li class="gr-6">
                         <label>Query Output</label>
                         <pre class="testquery">
                             <code class="code json">
@@ -51,12 +51,12 @@
                         </pre>
                     </li>
 
-                    <li class="grid-12">
+                    <li class="gr-12">
                         <label for="summary">Summary</label>
                         <textarea name="summary" ng-model="newDataView.summary" required></textarea>
                     </li>
 
-                    <li class="grid-12">
+                    <li class="gr-12">
                         <input type="submit" ng-disabled="createDataViewForm.$invalid" ng-click="create(newDataView)" />
                     </li>
                 </ul>

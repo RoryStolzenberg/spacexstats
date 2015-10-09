@@ -12,17 +12,17 @@
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-2"><a href="/users/{{ $user->username }}">Profile</a></li>
-                    <li class="grid-2">Account</li>
-                    <li class="grid-2">Email Notifications</li>
-                    <li class="grid-2">Text/SMS Notifications</li>
-                    <li class="grid-2">Reddit Notifications</li>
+                    <li class="gr-2"><a href="/users/{{ $user->username }}">Profile</a></li>
+                    <li class="gr-2">Account</li>
+                    <li class="gr-2">Email Notifications</li>
+                    <li class="gr-2">Text/SMS Notifications</li>
+                    <li class="gr-2">Reddit Notifications</li>
                 </ul>
             </nav>
             <h2>Profile</h2>
             <section class="profile">
                 <form>
-                    <div class="grid-6">
+                    <div class="gr-6">
                         <h3>You</h3>
                         <label for="summary">Write about yourself</label>
                         <textarea ng-model="profile.summary"></textarea>
@@ -38,7 +38,7 @@
                         </div>
                     </div>
 
-                    <div class="grid-6">
+                    <div class="gr-6">
                         <h3>Favorites</h3>
                         <label>Favorite Mission</label>
                         <select-list options="missions" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_mission"></select-list>
@@ -51,7 +51,7 @@
                         <p>- Elon Musk.</p>
                     </div>
 
-                    <!--<div class="grid-12">
+                    <!--<div class="gr-12">
                         <h3>Change Your Banner</h3>
 
                         <p>If you're a Mission Control subscriber, you can change your banner from the default blue to a custom image.</p>
@@ -76,12 +76,12 @@
                     <fieldset>
                         <legend>Notify me by email when...</legend>
                         <ul class="container">
-                            <li class="grid-2">
+                            <li class="gr-2">
                                 <span>A launch time has changed</span>
                                 <input type="checkbox" id="launchTimeChange" value="true" ng-model="emailNotifications.launchTimeChange" />
                                 <label for="launchTimeChange"></label>
                             </li>
-                            <li class="grid-2">
+                            <li class="gr-2">
                                 <span>When a new mission exists</span>
                                 <input type="checkbox" id="newMission" value="true" ng-model="emailNotifications.newMission" />
                                 <label for="newMission"></label>
@@ -95,18 +95,18 @@
                             <legend>Notify me by email when...</legend>
                         </fieldset>
                         <ul class="container">
-                            <li class="grid-2">
+                            <li class="gr-2">
                                 <span>There's a SpaceX launch in 24 hours</span>
                                 <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.tMinus24HoursEmail" />
                                 <label for="tMinus24HoursEmail"></label>
 
                             </li>
-                            <li class="grid-2">
+                            <li class="gr-2">
                                 <span>There's a SpaceX launch in 3 hours</span>
                                 <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.tMinus3HoursEmail" />
                                 <label for="tMinus3HoursEmail"></label>
                             </li>
-                            <li class="grid-2">
+                            <li class="gr-2">
                                 <span>There's a SpaceX launch in 1 hour</span>
                                 <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.tMinus1HourEmail" />
                                 <label for="tMinus1HourEmail"></label>
@@ -117,7 +117,7 @@
                         <fieldset>
                             <legend>Send me...</legend>
                             <ul class="container">
-                                <li class="grid-2">
+                                <li class="gr-2">
                                     <span>Monthly SpaceXStats News Summaries</span>
                                     <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.newsSummaries" />
                                     <label for="newsSummaries"></label>
@@ -159,11 +159,11 @@
 
             <h2>Reddit Notifications</h2>
             <section class="reddit-notifications container">
-                <div class="grid-6">
+                <div class="gr-6">
                     <h3>/r/SpaceX Notifications</h3>
                     <p>/r/SpaceX notifications allow you to automatically receive Reddit notifications about comments and posts with certain words made within the /r/SpaceX community via Personal Messages. Simply enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
                 </div>
-                <div class="grid-6">
+                <div class="gr-6">
                     <h3>Redditwide Notifications</h3>
                     <p>Get notified by Reddit private message when threads are created across all of Reddit with certain keywords. Enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
                 </div>

@@ -1,14 +1,15 @@
 @extends('templates.main')
-@section('title', 'Admin')
+@section('title', 'Live')
 
 @section('content')
-<body class="admin">
+    <body class="live">
 
     @include('templates.flashMessage')
-    @include('templates.header')
+    <!-- Custom Header -->
+
 
     <div class="content-wrapper">
-        <h1>Admin</h1>
+        <h1>SpaceX Stats Live</h1>
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
@@ -18,13 +19,8 @@
             <section class="highlights">
             </section>
             <section>
-                <ul>
-                    <li>{{ link_to_route('missions.create', "Create A Mission") }}</li>
-                    <li>Review Queue</li>
-                    <li>Meta Stats</li>
-                </ul>
             </section>
         </main>
     </div>
-</body>
+    </body>
 @stop

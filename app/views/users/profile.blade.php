@@ -12,20 +12,20 @@
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-1"><a href="#overview">Overview</a></li>
-                    <li class="grid-1"><a href="#favorites">Favorites</a></li>
+                    <li class="gr-1"><a href="#overview">Overview</a></li>
+                    <li class="gr-1"><a href="#favorites">Favorites</a></li>
                     @if (Auth::check() && Auth::user()->username === $user->username)
-                        <li class="grid-1">Notes</li>
+                        <li class="gr-1">Notes</li>
                     @endif
-                    <li class="grid-1">Uploads</li>
-                    <li class="grid-1">Comments</li>
+                    <li class="gr-1">Uploads</li>
+                    <li class="gr-1">Comments</li>
                     @if (Auth::check() && Auth::user()->username === $user->username)
-                        <li class="grid-1"><a href="/users/{{ $user->username }}/edit"><i class="fa fa-pencil"></i></a></li>
+                        <li class="gr-1"><a href="/users/{{ $user->username }}/edit"><i class="fa fa-pencil"></i></a></li>
                     @endif
                 </ul>
             </nav>
             <section id="overview" class="overview container">
-                <div class="grid-4">
+                <div class="gr-4">
                     <table>
                         <tr>
                             <td>Bio</td>
@@ -66,7 +66,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="grid-8">
+                <div class="gr-8">
                     <table>
                         <tr>
                             <td>Favorite Mission</td>

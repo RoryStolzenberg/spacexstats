@@ -12,7 +12,7 @@
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-2">{{ $tag->name }}</li>
+                    <li class="gr-2">{{ $tag->name }}</li>
                 </ul>
             </nav>
 

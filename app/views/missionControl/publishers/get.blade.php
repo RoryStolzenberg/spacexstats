@@ -12,7 +12,7 @@
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-2">{{ $publisher->name }}</li>
+                    <li class="gr-2">{{ $publisher->name }}</li>
                 </ul>
             </nav>
 

@@ -15,63 +15,63 @@
                     <legend>@{{ mission.name }} Mission</legend>
 
                     <ul>
-                        <li class="grid-12">
+                        <li class="gr-12">
                             <label>Mission Name</label>
                             <input type="text" name="mission-name" ng-model="mission.name" placeholder="Enter a unique mission name here" required />
                         </li>
 
-                        <li class="grid-6">
+                        <li class="gr-6">
                             <label>Contractor</label>
                             <input type="text" ng-model="mission.contractor" required/>
                         </li>
 
-                        <li class="grid-6">
+                        <li class="gr-6">
                             <label>Mission Type</label>
                             <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
                             <select ng-model="mission.mission_type_id" ng-options="missionType.mission_type_id as missionType.name for missionType in data.missionTypes" required></select>
                         </li>
 
-                        <li class="grid-12">
+                        <li class="gr-12">
                             <label>Launch Date Time</label>
                             <input type="text" ng-model="mission.launchDateTime" placeholder="Entering a text string is okay, but if a precise date is needed, please follow MySQL date format" required/>
                         </li>
 
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Vehicle</label>
                             <select ng-model="mission.vehicle_id" ng-options="vehicle.vehicle_id as vehicle.vehicle for vehicle in data.vehicles" required></select>
 
                         </li>
 
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label for="">Launch Site</label>
                             <select ng-model="mission.launch_site_id" ng-options="launchSite.location_id as launchSite.fullLocation for launchSite in data.launchSites" required></select>
 
                         </li>
 
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label for="">Destination</label>
                             <select ng-model="mission.destination_id" ng-options="destination.destination_id as destination.destination for destination in data.destinations" required></select>
 
                         </li>
 
-                        <li class="grid-12">
+                        <li class="gr-12">
                             <label for="">Summary</label>
                             <textarea ng-model="mission.summary" placeholder="Short mission summary goes here. Please keep it less than 500 characters." required maxlength="500"></textarea>
                         </li>
 
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label for="">Launch Illumination</label>
                             <select ng-model="mission.launch_illumination" ng-options="launchIllumination for launchIllumination in data.launchIlluminations">
                                 <option value="">Unknown</option>
                             </select>
                         </li>
 
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label for="">Status</label>
                             <select ng-model="mission.status" ng-options="status for status in data.statuses"></select>
                         </li>
 
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label for="">Outcome</label>
                             <select ng-model="mission.outcome" ng-options="outcome for outcome in data.outcomes">
                                 <option value="">Unknown</option>
@@ -83,7 +83,7 @@
                 <fieldset>
                     <legend>Article</legend>
                     <ul>
-                        <li class="grid-12">
+                        <li class="gr-12">
                             <label for="">Article</label>
                             <textarea ng-model="mission.article" placeholder="Mission article" maxlength="5000"></textarea>
                         </li>
@@ -93,39 +93,39 @@
                 <fieldset>
                     <legend>Media</legend>
                     <ul>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Launch Video</label>
                             <select-list options="data.launchVideos" ng-model="mission.launch_video" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label for=""">Mission Patch</label>
                             <select-list options="data.missionPatches" ng-model="mission.mission_patch" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label for="">Press Kit</label>
                             <select-list options="data.pressKits" ng-model="mission.press_kit" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Cargo Manifest</label>
                             <select-list options="data.cargoManifests" ng-model="mission.cargo_manifest" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Prelaunch Press Conference</label>
                             <select-list options="data.pressConferences" ng-model="mission.prelaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Postlaunch Press Conference</label>
                             <select-list options="data.pressConferences" ng-model="mission.postlaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Featured Image</label>
                             <select-list options="data.featuredImages" ng-model="mission.featured_image" unique-key="object_id" title-key="title" searchable="true"></select-list>
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Reddit Discussion</label>
                             <input type="text" ng-model="mission.reddit_discussion" />
                         </li>
-                        <li class="grid-4">
+                        <li class="gr-4">
                             <label>Flight Club</label>
                             <input type="text" ng-model="mission.flight_club" />
                         </li>
@@ -220,23 +220,23 @@
 
                     <div ng-repeat="payload in mission.payloads" ng-form="@{{ 'payloadForm' + $index }}">
                         <ul>
-                            <li class="grid-6">
+                            <li class="gr-6">
                                 <label>Payload Name</label>
                                 <input type="text" ng-model="payload.name" required />
                             </li>
-                            <li class="grid-6">
+                            <li class="gr-6">
                                 <label>Operator</label>
                                 <input type="text" ng-model="payload.operator" required />
                             </li>
-                            <li class="grid-4">
+                            <li class="gr-4">
                                 <label>Mass (KG)</label>
                                 <input type="text" ng-model="payload.mass" pattern="[0-9$,.]*" />
                             </li>
-                            <li class="grid-4">
+                            <li class="gr-4">
                                 <label>Is Payload Primary?</label>
                                 <input type="checkbox" ng-model="payload.primary" />
                             </li>
-                            <li class="grid-4">
+                            <li class="gr-4">
                                 <label>Gunter's Space Page Link</label>
                                 <input type="text" ng-model="payload.link" />
                             </li>

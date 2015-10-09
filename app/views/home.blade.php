@@ -35,7 +35,7 @@
 
             <nav>
                 <ul class="container">
-                    <li class="grid-2" ng-repeat="substatistic in statistic.substatistics" ng-click="statistic.changeSubstatistic(substatistic)">@{{ substatistic.name }}</li>
+                    <li class="gr-2" ng-repeat="substatistic in statistic.substatistics" ng-click="statistic.changeSubstatistic(substatistic)">@{{ substatistic.name }}</li>
                 </ul>
             </nav>
 

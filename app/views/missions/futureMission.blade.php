@@ -11,12 +11,12 @@
             <main>
                 <nav class="sticky-bar">
                     <ul class="container">
-                        <li class="grid-1">Countdown</li>
-                        <li class="grid-1">Details</li>
-                        <li class="grid-1">Timeline</li>
-                        <li class="grid-1">Articles</li>
+                        <li class="gr-1">Countdown</li>
+                        <li class="gr-1">Details</li>
+                        <li class="gr-1">Timeline</li>
+                        <li class="gr-1">Articles</li>
 
-                        <li class="grid-2 prefix-3 actions">
+                        <li class="gr-2 prefix-3 actions">
                             @if (Auth::isAdmin())
                                 <a class="link" href="/missions/{{ $mission->slug }}/edit">
                                     <i class="fa fa-pencil"></i>
@@ -38,7 +38,7 @@
                                 <i class="fa fa-rss"></i>
                             </a>
                         </li>
-                        <li class="grid-1">{{ $mission->status }}</li>
+                        <li class="gr-1">{{ $mission->status }}</li>
                     </ul>
                 </nav>
 

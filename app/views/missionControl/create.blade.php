@@ -46,25 +46,25 @@
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Title</p>
                                             <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this image" minlength="10" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-8">
+                                    <li class="gr-8">
                                         <label>
                                             <p>Summary</p>
                                             <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
                                             <select-list
@@ -78,28 +78,28 @@
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Author</p>
                                             <input type="text" name="author" ng-model="file.author" placeholder="Who took this image?" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
                                             <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Tags</p>
                                             <tags available-tags="data.tags" ng-model="file.tags" ></tags>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Type</p>
                                             <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.images">
@@ -108,7 +108,7 @@
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>When was this created?</p>
                                             <datetime type="@{{ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') }}"
@@ -119,7 +119,7 @@
 
                                     </li>
 
-                                    <li class="grid-12">
+                                    <li class="gr-12">
                                         <label>
                                             <p>Submit anonymously?</p>
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
@@ -135,56 +135,56 @@
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Title</p>
                                             <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this GIF" minlength="10" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-8">
+                                    <li class="gr-8">
                                         <label>
                                             <p>Summary</p>
                                             <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
                                             <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Author</p>
                                             <input type="text" name="author" ng-model="file.author" placeholder="Who made this GIF?" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
                                             <textarea name="attribution" ng-model="file.attribution"  placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Tags</p>
                                             <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                     </li>
 
-                                    <li class="grid-12">
+                                    <li class="gr-12">
                                         <label>
                                             <p>Submit anonymously?</p>
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
@@ -200,56 +200,56 @@
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Title</p>
                                             <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this audio clip" minlength="10" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-8">
+                                    <li class="gr-8">
                                         <label>
                                             <p>Summary</p>
                                             <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this audio clip" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
                                             <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Author</p>
                                             <input type="text" name="author" ng-model="file.author" placeholder="Who authored this audio clip?" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
                                             <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Tags</p>
                                             <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                     </li>
 
-                                    <li class="grid-12">
+                                    <li class="gr-12">
                                         <label>
                                             <p>Submit anonymously?</p>
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
@@ -265,25 +265,25 @@
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Title</p>
                                             <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this video" minlength="10" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-8">
+                                    <li class="gr-8">
                                         <label>
                                             <p>Summary</p>
                                             <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this video" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Youtube/Vimeo Link</p>
                                             <span>Adding a link to this video gains you extra deltaV and keeps site costs down.</span>
@@ -292,35 +292,35 @@
 
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
                                             <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Author</p>
                                             <input type="text" name="author" ng-model="file.author" placeholder="Who created this video?" required/>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
                                             <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Tags</p>
                                             <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Type</p>
                                             <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.video">
@@ -329,10 +329,10 @@
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                     </li>
 
-                                    <li class="grid-12">
+                                    <li class="gr-12">
                                         <label>
                                             <p>Submit anonymously?</p>
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous"/>
@@ -348,53 +348,53 @@
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Title</p>
                                             <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this document" minlength="10" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-8">
+                                    <li class="gr-8">
                                         <label>
                                             <p>Summary</p>
                                             <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this document" minlength="100" required></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-4">
+                                    <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
                                             <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Author</p>
                                             <input type="text" name="author" ng-model="file.author" placeholder="Who produced this document?" required />
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Attribution/Copyright</p>
                                             <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Tags</p>
                                             <tags available-tags="data.tags" ng-model="file.tags"></tags>
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                         <label>
                                             <p>Type</p>
                                             <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.documents">
@@ -403,10 +403,10 @@
                                         </label>
                                     </li>
 
-                                    <li class="grid-6">
+                                    <li class="gr-6">
                                     </li>
 
-                                    <li class="grid-12">
+                                    <li class="gr-12">
                                         <label>
                                             <p>Submit anonymously?</p>
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous"/>
@@ -426,7 +426,7 @@
             <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
                 <form name="postForm">
                     <fieldset class="post-type-selection container">
-                        <div class="grid-2">
+                        <div class="gr-2">
                             <span ng-click="postType = 'tweet'">Tweet</span>
                             <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" />
                             <label for="tweet"></label>
@@ -434,25 +434,25 @@
                             <span>Icons should become in colored when selected</span>
                         </div>
 
-                        <div class="grid-2">
+                        <div class="gr-2">
                             <span ng-click="postType = 'article'">News Article</span>
                             <input type="radio" name="type" id="article" value="article" ng-model="postType" />
                             <label for="article"></label>
                         </div>
 
-                        <div class="grid-2">
+                        <div class="gr-2">
                             <span ng-click="postType = 'pressrelease'">SpaceX Press Release</span>
                             <input type="radio" name="type" id="pressrelease" value="pressrelease" ng-model="postType" />
                             <label for="pressrelease"></label>
                         </div>
 
-                        <div class="grid-2">
+                        <div class="gr-2">
                             <span ng-click="postType = 'redditcomment'">Reddit Comment</span>
                             <input type="radio" name="type" id="redditcomment" value="redditcomment" ng-model="postType" />
                             <label for="redditcomment"></label>
                         </div>
 
-                        <div class="grid-2">
+                        <div class="gr-2">
                             <span ng-click="postType = 'NSFcomment'">NSF Comment</span>
                             <input type="radio" name="type" id="NSFcomment" value="NSFcomment" ng-model="postType" />
                             <label for="NSFcomment"></label>

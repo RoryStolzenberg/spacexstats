@@ -13,17 +13,17 @@
 
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-2">{{ $object->present()->type() }}</li>
-                    <li class="grid-2">Summary</li>
-                    <li class="grid-2">Comments</li>
+                    <li class="gr-2">{{ $object->present()->type() }}</li>
+                    <li class="gr-2">Summary</li>
+                    <li class="gr-2">Comments</li>
                     @if (Auth::isSubscriber())
-                        <li class="grid-2">Edit</li>
+                        <li class="gr-2">Edit</li>
                     @endif
                 </ul>
             </nav>
 
             <section class="details">
-                <div class="grid-8 content">
+                <div class="gr-8 content">
                     @if($object->type == \SpaceXStats\Enums\MissionControlType::Image)
                         <img id="object" src="{{ $object->media }}" />
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::GIF)
@@ -55,16 +55,16 @@
                         </div>
                     @endif
                 </div>
-                <aside class="grid-4 aside">
+                <aside class="gr-4 aside">
                     <div class="actions container">
-                        <span class="grid-4">
+                        <span class="gr-4">
                             <i class="fa fa-eye"></i> {{ $object->views }} Views
                         </span>
-                        <span class="grid-4">
+                        <span class="gr-4">
                             <i class="fa fa-star" ng-click="toggleFavorite()" ng-class="{ 'is-favorited' : isFavorited === true }"></i>
                             <span>@{{ favoritesText }}</span>
                         </span>
-                        <span class="grid-4">
+                        <span class="gr-4">
                             <a href="" target="_blank" download><i class="fa fa-download" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
                         </span>
                     </div>

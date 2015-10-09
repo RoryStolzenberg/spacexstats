@@ -16,6 +16,11 @@ function routesInDirectory($app = '') {
 
 routesInDirectory();
 
+Route::get('live', array(
+    'as' => 'live',
+    'uses' => 'LiveController@live'
+));
+
 Route::get('webcast/getstatus', array(
     'as' => 'webcast.getStatus',
     'uses' => 'WebcastStatusController@getStatus'

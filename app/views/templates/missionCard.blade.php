@@ -6,46 +6,46 @@
 	<div class="bottom">
 		@if ($size == 'small')
 			<div class="container">
-				<div class="grid-4"><span class="launch-count">{{ $mission->present()->genericVehicleCount() }}</span></div>
-				<div class="grid-4">{{ $mission->present()->launchDateTime() }}</div>
-				<div class="grid-4">{{ $mission->launch_site->fullLocation }}</div>
+				<div class="gr-4"><span class="launch-count">{{ $mission->present()->genericVehicleCount() }}</span></div>
+				<div class="gr-4">{{ $mission->present()->launchDateTime() }}</div>
+				<div class="gr-4">{{ $mission->launch_site->fullLocation }}</div>
 			</div>
 			<div class="container">
-				<div class="grid-4 smallcaps">{{ $mission->vehicle->genericVehicle }}<br/>Launch</div>
-				<div class="grid-4 smallcaps">Launch (UTC)</div>
-				<div class="grid-4 smallcaps">Launch Site</div>
+				<div class="gr-4 smallcaps">{{ $mission->vehicle->genericVehicle }}<br/>Launch</div>
+				<div class="gr-4 smallcaps">Launch (UTC)</div>
+				<div class="gr-4 smallcaps">Launch Site</div>
 			</div>
 		@elseif ($size == 'large')
 			<div class="container">
-				<div class="grid-1on9"><span class="launch-count">{{ $mission->present()->genericVehicleCount() }}</span></div>
-				<div class="grid-1on9">{{ $mission->present()->launchDateTime() }}</div>
+				<div class="gr-1on9"><span class="launch-count">{{ $mission->present()->genericVehicleCount() }}</span></div>
+				<div class="gr-1on9">{{ $mission->present()->launchDateTime() }}</div>
                 @if ($mission->status !== 'Upcoming')
-                    <div class="grid-1on9 smallcaps">{{ $mission->present()->launchOfYear() }}</div>
+                    <div class="gr-1on9 smallcaps">{{ $mission->present()->launchOfYear() }}</div>
                 @endif
 				@if ($mission->status == 'Upcoming')
-					<div class="grid-1on9">42%</div>
+					<div class="gr-1on9">42%</div>
 				@endif
-				<div class="grid-1on9">{{ $mission->vehicle->specificVehicle }}</div>
-				<div class="grid-1on9">{{ $mission->destination->destination }}</div>
-				<div class="grid-1on9">{{ $mission->launch_site->fullLocation }}</div>
+				<div class="gr-1on9">{{ $mission->vehicle->specificVehicle }}</div>
+				<div class="gr-1on9">{{ $mission->destination->destination }}</div>
+				<div class="gr-1on9">{{ $mission->launch_site->fullLocation }}</div>
 				@if ($mission->status == 'Upcoming')
-					<div class="grid-1on9"></div>
+					<div class="gr-1on9"></div>
 				@endif
 			</div>
 			<div class="container">
-				<div class="grid-1on9 smallcaps">{{ $mission->vehicle->genericVehicle }}<br/>Launch</div>
-				<div class="grid-1on9 smallcaps">Launch (UTC)</div>
+				<div class="gr-1on9 smallcaps">{{ $mission->vehicle->genericVehicle }}<br/>Launch</div>
+				<div class="gr-1on9 smallcaps">Launch (UTC)</div>
                 @if ($mission->status !== 'Upcoming')
-                    <div class="grid-1on9 smallcaps">Launch of the Year</div>
+                    <div class="gr-1on9 smallcaps">Launch of the Year</div>
                 @endif
                 @if ($mission->status == 'Upcoming')
-				    <div class="grid-1on9 smallcaps">Probability</div>
+				    <div class="gr-1on9 smallcaps">Probability</div>
                 @endif
-				<div class="grid-1on9 smallcaps">Vehicle</div>
-				<div class="grid-1on9 smallcaps">Destination</div>
-				<div class="grid-1on9 smallcaps">Launch Site</div>
+				<div class="gr-1on9 smallcaps">Vehicle</div>
+				<div class="gr-1on9 smallcaps">Destination</div>
+				<div class="gr-1on9 smallcaps">Launch Site</div>
 				@if ($mission->status == 'Upcoming')
-					<div class="grid-1on9 smallcaps">Where to watch</div>
+					<div class="gr-1on9 smallcaps">Where to watch</div>
 				@endif
 			</div>
 		@endif

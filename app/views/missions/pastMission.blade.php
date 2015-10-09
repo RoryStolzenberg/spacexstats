@@ -12,20 +12,20 @@
         <main>
             <nav class="sticky-bar">
                 <ul class="container">
-                    <li class="grid-1">Article</li>
-                    <li class="grid-1">Details</li>
-                    <li class="grid-1">Timeline</li>
-                    <li class="grid-1">Images</li>
-                    <li class="grid-1">Videos</li>
-                    <li class="grid-1">Documents</li>
-                    <li class="grid-1">Articles</li>
-                    <li class="grid-1">Analytics</li>
-                    <li class="grid-3 actions">
+                    <li class="gr-1">Article</li>
+                    <li class="gr-1">Details</li>
+                    <li class="gr-1">Timeline</li>
+                    <li class="gr-1">Images</li>
+                    <li class="gr-1">Videos</li>
+                    <li class="gr-1">Documents</li>
+                    <li class="gr-1">Articles</li>
+                    <li class="gr-1">Analytics</li>
+                    <li class="gr-3 actions">
                         <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
                         <i class="fa fa-twitter"></i>
                         <i class="fa fa-rss"></i>
                     </li>
-                    <li class="grid-2">{{ $mission->status }} - {{ $mission->outcome }}</li>
+                    <li class="gr-2">{{ $mission->status }} - {{ $mission->outcome }}</li>
                 </ul>
             </nav>
 
@@ -48,7 +48,7 @@
 
             <h2>Details</h2>
             @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
-            <div class="grid-8">
+            <div class="gr-8">
                 <h3>Flight Details</h3>
                 @if(count($mission->spaceflightFlight))
                     <h3>Dragon</h3>
@@ -56,7 +56,7 @@
                 <h3>Satellites</h3>
                 <h3>Upper Stage</h3>
             </div>
-            <div class="grid-4">
+            <div class="gr-4">
                 <h3>Library</h3>
                 <ul class="library">
 
@@ -127,16 +127,16 @@
 
             <h2>Analytics</h2>
             <section class="analytics container">
-                <div class="grid-4">
+                <div class="gr-4">
                     <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
                 </div>
-                <div class="grid-4">
+                <div class="gr-4">
                     <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
                 </div>
-                <div class="grid-4">
+                <div class="gr-4">
                     <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
                 </div>
-                <div class="grid-4">
+                <div class="gr-4">
                     <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
                 </div>
                 <ul>
