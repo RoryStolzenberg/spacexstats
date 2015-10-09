@@ -25,9 +25,11 @@
         height:50px;
 
         i {
-            @include gridle_hide();
-            @include gridle_show("small");
             @include gridle(1);
+            @include gridle_hide();
+            @include gridle_state('small') {
+                @include gridle_show();
+            }
             line-height:50px;
             cursor:pointer;
         }

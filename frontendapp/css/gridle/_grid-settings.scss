@@ -5,7 +5,7 @@
 // setup the grid (required)
 @include gridle_setup((
 	context : 12,
-	gutter-width : 20px,
+	gutter-width : 0px,
 	// gutter-left : 20px,
 	// direction : rtl,
 	states-classes : true,
@@ -14,7 +14,6 @@
 
 
 // register special columns
-@include gridle_register_column("1on5", 1, 5);
 @include gridle_register_column("1on5", 1, 5);
 @include gridle_register_column("1on8", 1, 8);
 @include gridle_register_column("1on9", 1, 9);
@@ -27,7 +26,7 @@
 
 
 // register states
-@include gridle_register_default_states();
+//@include gridle_register_default_states();
 @include gridle_register_state(small, (
         query : "(max-width: 640px)",
         gutter-width : 0
