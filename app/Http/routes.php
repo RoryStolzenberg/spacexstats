@@ -65,6 +65,6 @@ Route::get('admin', array(
 
 /* CONTROLLERS */
 Route::controllers([
-	'auth' => 'Auth\AuthController',
-	'password' => 'Auth\PasswordController',
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
 ]);
