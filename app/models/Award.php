@@ -1,7 +1,8 @@
 <?php
+namespace App\Models;
 use SpaceXStats\Library\DeltaV;
 
-class Award extends Eloquent {
+class Award extends Model {
 
     protected $table = 'awards';
     protected $primaryKey = 'award_id';

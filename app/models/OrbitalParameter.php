@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class OrbitalElement extends Eloquent {
+class OrbitalElement extends Model {
     protected $table = 'orbital_elements';
     protected $primaryKey = 'orbital_element_id';
     public $timestamps = true;

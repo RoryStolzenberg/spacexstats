@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Favorite extends Eloquent {
+class Favorite extends Model {
 
 	protected $table = 'favorites';
 	protected $primaryKey = 'favorite_id';

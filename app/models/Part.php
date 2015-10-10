@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Part extends Eloquent {
+class Part extends Model {
 
     use ValidatableTrait;
 

@@ -1,5 +1,6 @@
 <?php
-class PartFlight extends Eloquent {
+namespace App\Models;
+class PartFlight extends Model {
 
     use ValidatableTrait;
 

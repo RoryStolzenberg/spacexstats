@@ -1,5 +1,6 @@
 <?php
-class SMS extends Eloquent {
+namespace App\Models;
+class SMS extends Model {
     protected $table = 'smses';
     protected $primaryKey = 'sms_id';
     public $timestamps = true;

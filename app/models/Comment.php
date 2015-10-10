@@ -1,5 +1,9 @@
 <?php
-class Comment extends Eloquent {
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\SoftDeletes;
+
+class Comment extends Model {
 
     use ValidatableTrait, SoftDeletingTrait;
 

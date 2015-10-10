@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Profile extends Eloquent {
+class Profile extends Model {
 
 	protected $table = 'profiles';
 	protected $primaryKey = 'user_id';

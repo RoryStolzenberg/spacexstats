@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class WebcastStatus extends Eloquent {
+class WebcastStatus extends Model {
 
 	protected $table = 'webcast_statuses';
 	protected $primaryKey = 'webcast_status_id';

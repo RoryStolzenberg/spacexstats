@@ -1,5 +1,6 @@
 <?php
-class Destination extends Eloquent {
+namespace App\Models;
+class Destination extends Model {
     protected $table = 'destinations';
     protected $primaryKey = 'destination_id';
     public $timestamps = false;

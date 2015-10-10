@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Vehicle extends Eloquent {
+class Vehicle extends Model {
 	protected $table = 'vehicles';
 	protected $primaryKey = 'vehicle_id';
     public $timestamps = false;

@@ -1,5 +1,6 @@
 <?php
-class Telemetry extends Eloquent {
+namespace App\Models;
+class Telemetry extends Model {
 
     use ValidatableTrait;
 

@@ -1,5 +1,6 @@
 <?php
-class Note extends Eloquent {
+namespace App\Models;
+class Note extends Model {
     protected $table = 'notes';
     protected $primaryKey = 'note_id';
     public $timestamps = true;

@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class ObjectRevision extends Eloquent {
+class ObjectRevision extends Model {
     protected $table = 'object_revisions';
     protected $primaryKey = 'object_revision_id';
     public $timestamps = true;

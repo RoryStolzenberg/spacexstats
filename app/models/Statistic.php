@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Statistic extends Eloquent {
+class Statistic extends Model {
 
 	protected $table = 'statistics';
 	protected $primaryKey = 'statistic_id';

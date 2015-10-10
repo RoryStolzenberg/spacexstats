@@ -1,5 +1,6 @@
 <?php
-class MissionType extends Eloquent {
+namespace App\Models;
+class MissionType extends Model {
     protected $table = 'mission_types';
     protected $primaryKey = 'mission_type_id';
     public $timestamps = false;

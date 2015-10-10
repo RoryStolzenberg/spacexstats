@@ -1,5 +1,6 @@
-<?php 
-class PrelaunchEvent extends Eloquent {
+<?php
+namespace App\Models;
+class PrelaunchEvent extends Model {
 
     use ValidatableTrait;
 

@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Tag extends Eloquent {
+class Tag extends Model {
     protected $table = 'tags';
     protected $primaryKey = 'tag_id';
     public $timestamps = true;

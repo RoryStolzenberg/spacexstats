@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class CalendarDownload extends Eloquent {
+class CalendarDownload extends Model {
 
 	protected $table = 'calendar_downloads';
 	protected $primaryKey = 'calendar_download_id';

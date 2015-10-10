@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Tweeter extends Eloquent {
+class Tweeter extends Model {
 
     protected $table = 'tweeters';
     protected $primaryKey = 'tweeter_id';

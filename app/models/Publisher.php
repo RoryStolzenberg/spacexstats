@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Publisher extends Eloquent {
+class Publisher extends Model {
 
     use ValidatableTrait;
 

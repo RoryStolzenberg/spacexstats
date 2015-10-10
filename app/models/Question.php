@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Question extends Eloquent {
+class Question extends Model {
 
 	protected $table = 'questions';
 	protected $primaryKey = 'question_id';

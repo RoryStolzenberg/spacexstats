@@ -1,5 +1,6 @@
 <?php
-class Message extends Eloquent {
+namespace App\Models;
+class Message extends Model {
 
     protected $table = 'messages';
     protected $primaryKey = 'message_id';

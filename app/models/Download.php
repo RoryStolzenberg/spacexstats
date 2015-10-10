@@ -1,5 +1,6 @@
 <?php
-class Download extends Eloquent {
+namespace App\Models;
+class Download extends Model {
 
     protected $table = 'downloads';
     protected $primaryKey = 'download_id';

@@ -1,9 +1,10 @@
 <?php
+namespace App\Models;
 
 use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\VisibilityStatus;
 
-class Object extends Eloquent {
+class Object extends Model {
 
     use PresentableTrait;
 

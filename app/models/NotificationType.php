@@ -1,5 +1,6 @@
 <?php
-class NotificationType extends Eloquent {
+namespace App\Models;
+class NotificationType extends Model {
     protected $table = 'notification_types';
     protected $primaryKey = 'notification_type_id';
     public $timestamps = false;

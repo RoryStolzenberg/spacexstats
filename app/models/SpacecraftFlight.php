@@ -1,5 +1,6 @@
 <?php
-class SpacecraftFlight extends Eloquent {
+namespace App\Models;
+class SpacecraftFlight extends Model {
 
     use ValidatableTrait;
 

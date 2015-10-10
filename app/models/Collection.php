@@ -1,6 +1,7 @@
 <?php
+namespace App\Models;
 
-class Collection extends Eloquent {
+class Collection extends Model {
     protected $table = 'collections';
     protected $primaryKey = 'collection_id';
     public $timestamps = true;

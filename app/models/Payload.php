@@ -1,5 +1,6 @@
 <?php
-class Payload extends Eloquent {
+namespace App\Models;
+class Payload extends Model {
 
     use ValidatableTrait;
 

@@ -1,8 +1,9 @@
 <?php
+namespace App\Models;
 use ColorThief\ColorThief;
 use \Mexitek\PHPColors\Color;
 
-class DataView extends Eloquent {
+class DataView extends Model {
 
     use ValidatableTrait;
     

@@ -1,8 +1,9 @@
 <?php
+namespace App\Models;
 
 use \SpaceXStats\Enums\LaunchSpecificity;
 
-class Mission extends Eloquent {
+class Mission extends Model {
 
 	use PresentableTrait, ValidatableTrait;
 
