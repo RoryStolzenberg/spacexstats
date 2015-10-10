@@ -148,16 +148,16 @@ return [
 		/*
 		 * Third Party Service Providers...
 		 */
-        'Aws\Laravel\AwsServiceProvider',
-        'Laracasts\Utilities\UtilitiesServiceProvider',
+        //'Aws\Laravel\AwsServiceProvider',
+		'Laracasts\Utilities\JavaScript\JavaScriptServiceProvider',
 
         /*
          * Application-specific Service Providers...
          */
-        'SpaceXStats\Composers\ComposerServiceProvider',
-        'SpaceXStats\Validation\ValidationServiceProvider',
-        'SpaceXStats\Search\SearchServiceProvider',
-        'SpaceXStats\Uploads\UploadServiceProvider'
+        //'SpaceXStats\Composers\ComposerServiceProvider',
+        //'SpaceXStats\Validation\ValidationServiceProvider',
+        //'SpaceXStats\Search\SearchServiceProvider',
+        //'SpaceXStats\Uploads\UploadServiceProvider'
 
 	],
 
@@ -207,11 +207,10 @@ return [
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
 
-        'Upload'    => 'SpaceXStats\Facades\Upload',
-        'Search'    => 'SpaceXStats\Facades\Search',
+        //'Upload'    => 'SpaceXStats\Facades\Upload',
+        //'Search'    => 'SpaceXStats\Facades\Search',
 
-        'AWS'		=> 'Aws\Laravel\AwsFacade',
-        'Omnipay' 	=> 'Ignited\LaravelOmnipay\Facades\OmnipayFacade'
+        //'AWS'		=> 'Aws\Laravel\AwsFacade',
 	],
 
 ];

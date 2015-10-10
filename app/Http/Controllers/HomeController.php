@@ -1,37 +1,17 @@
 <?php
- namespace AppHttpControllers; namespace App\Http\Controllers;
+namespace App\Http\Controllers;
 
 class HomeController extends Controller {
 
-	/*
-	|--------------------------------------------------------------------------
-	| Home Controller
-	|--------------------------------------------------------------------------
-	|
-	| This controller renders your application's "dashboard" for users that
-	| are authenticated. Of course, you are free to change or remove the
-	| controller as you wish. It is just here to get your app started!
-	|
-	*/
+	public function home()	{
 
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->middleware('auth');
-	}
+        JavaScript::put([
+            'statistics' => array_values(Statistic::orderBy('order')->get
+            ()->groupBy('type')->toArray())
+        ]);
 
-	/**
-	 * Show the application dashboard to the user.
-	 *
-	 * @return Response
-	 */
-	public function index()
-	{
-		return view('home');
+		return View::make('home');
 	}
 
 }
+ 

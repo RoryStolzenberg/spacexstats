@@ -1,5 +1,5 @@
 <?php
-namespace AppHttpControllers;
+namespace App\Http\Controllers;
 
 class CalendarController extends Controller {
 	// GET All Calendars for mission

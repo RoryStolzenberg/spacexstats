@@ -1,5 +1,5 @@
 <?php
- namespace AppHttpControllers;
+ namespace App\Http\Controllers;
 class TagsController extends Controller {
     // AJAX GET
     // /tags/all

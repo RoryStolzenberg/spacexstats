@@ -1,5 +1,5 @@
 <?php 
- namespace AppHttpControllers;
+ namespace App\Http\Controllers;
 use SpaceXStats\Managers\MissionManager;
 use SpaceXStats\Enums\MissionControlSubtype;
 

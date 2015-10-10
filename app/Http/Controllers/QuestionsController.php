@@ -1,5 +1,5 @@
 <?php
- namespace AppHttpControllers;
+ namespace App\Http\Controllers;
 
 class QuestionsController extends Controller {
 

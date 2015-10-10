@@ -1,5 +1,5 @@
 <?php
- namespace AppHttpControllers;
+ namespace App\Http\Controllers;
 use Omnipay\Omnipay;
 
 class PaymentController extends Controller {

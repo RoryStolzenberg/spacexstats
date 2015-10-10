@@ -1,5 +1,5 @@
 <?php
- namespace AppHttpControllers;
+ namespace App\Http\Controllers;
 use SpaceXStats\Library\DeltaVCalculator;
 use \SpaceXStats\Enums\MissionControlType;
 

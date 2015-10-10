@@ -12,7 +12,7 @@
 */
 
 function routesInDirectory($app = '') {
-    $routeDir = app_path('routes/' . $app . ($app !== '' ? '/' : NULL));
+    $routeDir = app_path('Http/Routes/' . $app . ($app !== '' ? '/' : NULL));
     $iterator = new RecursiveDirectoryIterator($routeDir);
     $iterator->setFlags(RecursiveDirectoryIterator::SKIP_DOTS);
 
