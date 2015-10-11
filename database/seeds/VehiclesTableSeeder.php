@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Vehicle;
+
 class VehiclesTableSeeder extends Seeder {
     public function run() {
         Vehicle::create(array(

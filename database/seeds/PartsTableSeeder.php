@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Part;
+
 class PartsTableSeeder extends Seeder {
     public function run() {
         Part::create(array(

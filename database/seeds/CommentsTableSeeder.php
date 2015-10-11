@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Comment;
+
 class CommentsTableSeeder extends Seeder {
     public function run() {
         Comment::create(array(

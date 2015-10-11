@@ -1,6 +1,9 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
+use SpaceXStats\Validators\ValidatableTrait;
+
 class SpacecraftFlight extends Model {
 
     use ValidatableTrait;

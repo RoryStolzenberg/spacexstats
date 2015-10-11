@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
+
 class Destination extends Model {
     protected $table = 'destinations';
     protected $primaryKey = 'destination_id';
@@ -13,6 +15,6 @@ class Destination extends Model {
 
     // Relationships
     public function missions() {
-        return $this->hasOneOrMany('missions');
+        return $this->hasOneOrMany('SpaceXStats\Model\Mission');
     }
 }

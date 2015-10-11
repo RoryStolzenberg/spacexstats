@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
+
 class NotificationType extends Model {
     protected $table = 'notification_types';
     protected $primaryKey = 'notification_type_id';
@@ -12,6 +14,6 @@ class NotificationType extends Model {
     protected $guarded = ['*'];
 
     public function notifications() {
-        return $this->hasMany('Notification');
+        return $this->hasMany('SpaceXStats\Models\Notification');
     }
 }

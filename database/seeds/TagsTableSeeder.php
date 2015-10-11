@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Tag;
+
 class TagsTableSeeder extends Seeder {
     public function run() {
         Tag::create(array('name' => 'elon-musk'));

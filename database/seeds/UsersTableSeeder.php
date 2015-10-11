@@ -1,5 +1,7 @@
 <?php
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\User;
 
 class UsersTableSeeder extends Seeder {
     public function run() {
@@ -8,7 +10,7 @@ class UsersTableSeeder extends Seeder {
             'username' => 'elonmusk',
             'email' => 'elonmusk@spacexstats.com',
             'password' => 'password',
-            'subscription_expiry' => Carbon::now()->addYear(),
+            'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32)
         ));
 
@@ -17,7 +19,7 @@ class UsersTableSeeder extends Seeder {
             'username' => 'gwynne',
             'email' => 'gwynne.shotwell@spacexstats.com',
             'password' => 'password',
-            'subscription_expiry' => Carbon::now()->addYear(),
+            'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32)
         ));
 
@@ -26,7 +28,7 @@ class UsersTableSeeder extends Seeder {
             'username' => 'TomMueller',
             'email' => 'tmueller@spacexstats.com',
             'password' => 'password',
-            'subscription_expiry' => Carbon::now()->addYear(),
+            'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32)
         ));
     }

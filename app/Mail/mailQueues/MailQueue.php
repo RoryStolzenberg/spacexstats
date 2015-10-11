@@ -2,14 +2,16 @@
 namespace SpaceXStats\Mail\MailQueues;
 
 use SpaceXStats\Library\Enums\EmailStatus;
+use SpaceXStats\Models\Email;
+use SpaceXStats\Models\Notification;
 
 abstract class MailQueue {
 
     public function queue($subject, $body, $notificationType, $action) {
-        $notificationsToQueueEmailsFor = \Notification::where('notification_type_id', $notificationType)->get();
+        $notificationsToQueueEmailsFor = Notification::where('notification_type_id', $notificationType)->get();
 
         foreach ($notificationsToQueueEmailsFor as $notification) {
-            $email = new \Email();
+            $email = new Email();
             $email->notification()->associate($notification);
             $email->subject = $subject;
             $email->body = $body;
@@ -32,7 +34,7 @@ abstract class MailQueue {
             ));
 
         // Get the email subscriptions which do not have a corresponding email and create them
-        $notificationsWithNoCorrespondingHeldEmail = \Notification::whereHas('notificationType', function($q) use($notificationType) {
+        $notificationsWithNoCorrespondingHeldEmail = Notification::whereHas('notificationType', function($q) use($notificationType) {
             $q->where('name', $notificationType);
         })->whereDoesntHave('emails', function($q) {
             $q->where('status', '=', EmailStatus::Held);

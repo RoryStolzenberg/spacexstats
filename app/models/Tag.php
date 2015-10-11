@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
+use Validator;
 
 class Tag extends Model {
     protected $table = 'tags';
@@ -24,10 +26,10 @@ class Tag extends Model {
 
     // Relations
     public function objects() {
-        return $this->morphedByMany('Object', 'taggable', 'taggables_pivot');
+        return $this->morphedByMany('SpaceXStats\Models\Object', 'taggable', 'taggables_pivot');
     }
 
     public function collections() {
-        return $this->morphedByMany('Collection', 'taggable', 'taggables_pivot');
+        return $this->morphedByMany('SpaceXStats\Models\Collection', 'taggable', 'taggables_pivot');
     }
 }

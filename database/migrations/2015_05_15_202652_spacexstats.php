@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use SpaceXStats\Enums\Varchar;
+use SpaceXStats\Library\Enums\Varchar;
 
 class Spacexstats extends Migration {
 

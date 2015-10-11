@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\PartFlight;
+
 class PartFlightsTableSeeder extends Seeder {
     public function run() {
         PartFlight::create(array(

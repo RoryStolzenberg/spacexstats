@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Statistic;
+
 class StatisticsTableSeeder extends Seeder {
     public function run() {
         Statistic::create(array(

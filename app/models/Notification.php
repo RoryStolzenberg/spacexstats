@@ -1,7 +1,8 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes as SoftDeletingTrait;
 
 class Notification extends Model {
 
@@ -26,10 +27,10 @@ class Notification extends Model {
     }
 
     public function notificationType() {
-        return $this->belongsTo('NotificationType');
+        return $this->belongsTo('SpaceXStats\Models\NotificationType');
     }
 
     public function user() {
-        return $this->belongsTo('User');
+        return $this->belongsTo('SpaceXStats\Models\User');
     }
 }

@@ -1,5 +1,7 @@
 <?php
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Astronaut;
 
 class AstronautsTableSeeder extends Seeder {
     public function run() {

@@ -1,9 +1,13 @@
 <?php
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Destination;
+use SpaceXStats\Models\Location;
+use SpaceXStats\Models\Mission;
 
 class MissionsTableSeeder extends Seeder {
     public function run() {
-        Mission::create(array(
+        Mission::create([
             'mission_type_id' => 6,
             'launch_order_id' => 1,
             'launch_exact' => Carbon::now()->subYear(),
@@ -19,7 +23,7 @@ class MissionsTableSeeder extends Seeder {
             'featured_image' => 1,
             'status' => 'Complete',
             'outcome' => 'Failure'
-        ));
+        ]);
 
 
         Mission::create(array(

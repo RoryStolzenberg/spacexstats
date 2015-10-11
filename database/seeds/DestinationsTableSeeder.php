@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Destination;
+
 class DestinationsTableSeeder extends Seeder {
     public function run() {
         Destination::create(array('destination' => 'Low Earth Orbit'));

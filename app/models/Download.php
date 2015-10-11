@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
+
 class Download extends Model {
 
     protected $table = 'downloads';
@@ -14,10 +16,10 @@ class Download extends Model {
 
     // Relations
     public function user() {
-        return $this->belongsTo('User');
+        return $this->belongsTo('SpaceXStats\Models\User');
     }
 
     public function object() {
-        return $this->belongsTo('Object');
+        return $this->belongsTo('SpaceXStats\Models\Object');
     }
 }

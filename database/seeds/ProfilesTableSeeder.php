@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Profile;
+
 class ProfilesTableSeeder extends Seeder {
     public function run() {
         Profile::create(array(

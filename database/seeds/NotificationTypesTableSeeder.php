@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\NotificationType;
+
 class NotificationTypesTableSeeder extends Seeder {
     public function run() {
         NotificationType::insert(array(

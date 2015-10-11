@@ -4,6 +4,7 @@ use Illuminate\Database\Eloquent\Model;
 
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
+use SpaceXStats\Presenters\PresentableTrait;
 
 class Object extends Model {
 

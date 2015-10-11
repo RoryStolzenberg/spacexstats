@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Location;
+
 class LocationsTableSeeder extends Seeder {
     public function run() {
         Location::create(array(

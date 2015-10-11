@@ -1,4 +1,7 @@
 <?php
+use Illuminate\Database\Seeder;
+use SpaceXStats\Models\MissionType;
+
 class MissionTypesTableSeeder extends Seeder {
     public function run() {
         MissionType::insert(array(

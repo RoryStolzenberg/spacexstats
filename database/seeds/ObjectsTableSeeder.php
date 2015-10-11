@@ -1,7 +1,9 @@
 <?php
 
-use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\MissionControlSubtype;
+use Illuminate\Database\Seeder;
+use SpaceXStats\Library\Enums\MissionControlSubtype;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Models\Object;
 
 class ObjectsTableSeeder extends Seeder {
     public function run() {
