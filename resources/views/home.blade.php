@@ -4,7 +4,7 @@
 @section('content')
 <body class="home" ng-controller="homeController" ng-strict-di>
 
-    @include('templates.flashMessage')
+
     @include('templates.header', ['class' => 'no-background'])
 
     <!-- Main content -->

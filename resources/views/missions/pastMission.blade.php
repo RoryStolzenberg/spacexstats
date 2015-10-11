@@ -4,7 +4,7 @@
 @section('content')
 <body class="past-mission" ng-controller="pastMissionController" ng-strict-di>
 
-    @include('templates.flashMessage')
+
     @include('templates.header', array('backgroundImage' => !is_null($mission->featuredImage) ? $mission->featuredImage->local_file : ''))
 
     <div class="content-wrapper">

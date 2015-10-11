@@ -4,7 +4,7 @@
 @section('content')
 <body class="profile">
 
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper">

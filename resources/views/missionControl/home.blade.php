@@ -3,7 +3,7 @@
 
 @section('content')
 <body class="missioncontrol" ng-app="missionControlApp" ng-controller="missionControlController">
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper">

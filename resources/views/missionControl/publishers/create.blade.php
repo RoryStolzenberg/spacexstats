@@ -4,7 +4,7 @@
 @section('content')
     <body class="publisher-create" ng-controller="publisherController">
 
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper">

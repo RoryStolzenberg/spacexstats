@@ -3,7 +3,7 @@
 
 @section('content')
     <body class="future-mission">
-        @include('templates.flashMessage')
+
         @include('templates.header', array('backgroundImage' => !is_null($mission->featuredImage) ? $mission->featuredImage->local_file : ''))
 
         <div class="content-wrapper" ng-controller="futureMissionController" ng-strict-di>

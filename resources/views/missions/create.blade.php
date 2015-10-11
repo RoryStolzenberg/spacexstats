@@ -4,7 +4,7 @@
 @section('content')
 <body class="create-mission" ng-app="missionApp" ng-controller="missionController" ng-strict-di>
 
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper">

@@ -4,7 +4,7 @@
 @section('content')
 <body class="edit-user">
 
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper" ng-controller="editUserController" ng-strict-di>

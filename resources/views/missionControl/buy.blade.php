@@ -4,7 +4,7 @@
 @section('content')
 <body class="missioncontrol-buy">
 
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper single-page background">

@@ -4,7 +4,7 @@
 @section('content')
 <body class="review" ng-controller="reviewController" ng-strict-di>
 
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper">

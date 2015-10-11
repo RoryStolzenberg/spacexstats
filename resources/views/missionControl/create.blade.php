@@ -4,7 +4,7 @@
 @section('content')
 <body class="missioncontrol-upload" ng-controller="uploadAppController" ng-strict-di>
 
-    @include('templates.flashMessage')
+
     @include('templates.header')
 
     <div class="content-wrapper">

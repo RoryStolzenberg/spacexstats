@@ -4,7 +4,6 @@
 @section('content')
 <body class="login">
 
-    @include('templates.flashMessage')
     @include('templates.header')
 
     <div class="content-wrapper single-page">
@@ -12,7 +11,7 @@
         <main>
 
             <form>
-                {!! csrf_token() !!}
+                {!! csrf_field() !!}
 
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" />

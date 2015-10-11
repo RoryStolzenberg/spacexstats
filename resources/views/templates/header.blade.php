@@ -1,3 +1,9 @@
+<div id="flash-message-container">
+    @if (Session::has('flashMessage'))
+        <p class="flash-message {{ Session::get('flashMessage.type') }}">{{ Session::get('flashMessage.contents') }}</p>
+    @endif
+</div>
+
 <div class="header-wrapper {{ $class or null }}" style="background-image:url({{ $backgroundImage or null }})">
 	<header class="text-center">
 			<i class="fa fa-navicon toggleMobileNavigation gridle-show-small"></i>

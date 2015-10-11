@@ -4,7 +4,7 @@
 @section('content')
     <body class="live">
 
-    @include('templates.flashMessage')
+
     <!-- Custom Header -->
 
 
