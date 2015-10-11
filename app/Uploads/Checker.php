@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Uploads;
 
-use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionControlType;
 
 class Checker {
     protected $file;

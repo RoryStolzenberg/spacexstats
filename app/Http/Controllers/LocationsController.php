@@ -4,7 +4,7 @@ class LocationsController extends Controller {
 
     // GET
     public function home() {
-        return View::make('locations', array(
+        return view('locations', array(
 
         ));
     }

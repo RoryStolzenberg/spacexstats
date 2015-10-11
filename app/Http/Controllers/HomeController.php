@@ -13,7 +13,7 @@ class HomeController extends Controller {
             ()->groupBy('type')->toArray())
         ]);
 
-		return View::make('home');
+		return view('home');
 	}
 
 }

@@ -7,7 +7,7 @@ class QuestionsController extends Controller {
 	public function index() {
 		$questions = Question::all();
 
-		return View::make('questions.faq', array(
+		return view('questions.faq', array(
 			'questionCount' => $questions->count(),
 			'questions' => $questions
 		));

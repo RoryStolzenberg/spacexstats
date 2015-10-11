@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Enums;
+namespace SpaceXStats\Library\Enums;
 
 abstract class Varchar extends Enum {
 

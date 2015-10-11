@@ -1,7 +1,7 @@
 <?php
  namespace SpaceXStats\Http\Controllers;
-use SpaceXStats\Enums\MissionControlSubtype;
-use SpaceXStats\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionControlSubtype;
+use SpaceXStats\Library\Enums\MissionControlType;
 use Carbon\Carbon;
 
 class MissionControlController extends Controller {
@@ -18,7 +18,7 @@ class MissionControlController extends Controller {
                 'types' => array_merge(MissionControlType::toArray(), MissionControlSubtype::toArray())
             ]);
 
-            return View::make('missionControl.home', array(
+            return view('missionControl.home', array(
                 'title' => 'Misson Control',
                 'currentPage' => 'mission-control'
             ));

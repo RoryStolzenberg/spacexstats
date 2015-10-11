@@ -1,4 +1,5 @@
 <?php
+namespace SpaceXStats\Presenters;
 
 class MissionPresenter {
 

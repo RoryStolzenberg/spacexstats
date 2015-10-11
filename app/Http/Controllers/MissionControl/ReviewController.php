@@ -7,7 +7,7 @@ class ReviewController extends Controller {
 
     // GET
     public function index() {
-        return View::make('missionControl.review.index');
+        return view('missionControl.review.index');
     }
 
     // AJAX GET

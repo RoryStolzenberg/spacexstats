@@ -13,7 +13,7 @@ class UploadController extends Controller {
             'publishers' => Publisher::all()
         ]);
 
-		return View::make('missionControl.create');
+		return view('missionControl.create');
 	}	
 
 	// AJAX POST

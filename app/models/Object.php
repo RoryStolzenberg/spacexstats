@@ -2,8 +2,8 @@
 namespace SpaceXStats\Models;
 use Illuminate\Database\Eloquent\Model;
 
-use SpaceXStats\Enums\ObjectPublicationStatus;
-use SpaceXStats\Enums\VisibilityStatus;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\VisibilityStatus;
 
 class Object extends Model {
 

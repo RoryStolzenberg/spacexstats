@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Launch;
 
-use SpaceXStats\Enums\LaunchSpecificity;
+use SpaceXStats\Library\Enums\LaunchSpecificity;
 
 class LaunchReorderer {
 	protected $mission, $scheduledLaunch, $currentLaunchOrderId;

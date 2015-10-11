@@ -2,7 +2,7 @@
 
 namespace SpaceXStats\Exif;
 
-use SpaceXStats\Enums\ExifProperty;
+use SpaceXStats\Library\Enums\ExifProperty;
 
 class Exif {
     protected $image, $exif;

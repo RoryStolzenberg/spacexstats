@@ -1,7 +1,7 @@
 <?php 
  namespace SpaceXStats\Http\Controllers;
 
-use \SpaceXStats\Enums\MissionControlType;
+use \SpaceXStats\Library\Enums\MissionControlType;
 
 class DataViewsController extends Controller {
 
@@ -11,7 +11,7 @@ class DataViewsController extends Controller {
 
     public function get($dataviewId) {
         $dataview = DataView::find($dataviewId);
-        return View::make('missionControl.dataviews.get', array('dataview' => $dataview));
+        return view('missionControl.dataviews.get', array('dataview' => $dataview));
     }
 
     public function index() {
@@ -20,7 +20,7 @@ class DataViewsController extends Controller {
             'dataViews' => DataView::all()->toArray()
         ]);
 
-        return View::make('missionControl.dataviews.index');
+        return view('missionControl.dataviews.index');
     }
 
     public function create() {

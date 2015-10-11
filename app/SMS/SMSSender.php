@@ -2,7 +2,7 @@
 
 namespace SpaceXStats\SMS;
 
-use SpaceXStats\Enums\NotificationType;
+use SpaceXStats\Library\Enums\NotificationType;
 
 class SMSSender {
     private $client, $sentCount = 0, $errorCount = 0;

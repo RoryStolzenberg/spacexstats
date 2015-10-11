@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Enums;
+namespace SpaceXStats\Library\Enums;
 
 abstract class LaunchSpecificity extends Enum {
     const Precise       = 7; // Launch date time down to HH:MM:SS (use countdown)

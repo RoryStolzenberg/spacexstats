@@ -1,8 +1,12 @@
 <?php
 namespace SpaceXStats\Models;
-use Illuminate\Database\Eloquent\Model;
 
-use \SpaceXStats\Enums\LaunchSpecificity;
+use Illuminate\Database\Eloquent\Model;
+use SpaceXStats\Library\Enums\LaunchSpecificity;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Mail\MailQueues\MissionMailQueue;
+use SpaceXStats\Presenters\PresentableTrait;
+use SpaceXStats\Validators\ValidatableTrait;
 
 class Mission extends Model {
 
@@ -23,7 +27,7 @@ class Mission extends Model {
     public static function boot() {
         parent::boot();
 
-        $missionMailQueuer = new \SpaceXStats\Mail\MailQueues\MissionMailQueue();
+        $missionMailQueuer = new MissionMailQueue();
 
         Mission::created(function($mission) use ($missionMailQueuer) {
             // Add emails to queue
@@ -70,7 +74,7 @@ class Mission extends Model {
 
 	// Relations
 	public function vehicle() {
-		return $this->belongsTo('Vehicle');
+		return $this->belongsTo('SpaceXStats\Models\Vehicle');
 	}
 
     public function parts() {
@@ -119,7 +123,7 @@ class Mission extends Model {
 
     // Conditional Relationships
     public function articles() {
-        return $this->hasMany('Object')->where('type', \SpaceXStats\Enums\MissionControlType::Article);
+        return $this->hasMany('Object')->where('type', MissionControlType::Article);
     }
 
     public function launchVideo() {

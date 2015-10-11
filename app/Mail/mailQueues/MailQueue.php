@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Mail\MailQueues;
 
-use SpaceXStats\Enums\EmailStatus;
+use SpaceXStats\Library\Enums\EmailStatus;
 
 abstract class MailQueue {
 

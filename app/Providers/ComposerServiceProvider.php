@@ -3,6 +3,7 @@
 namespace SpaceXStats\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use SpaceXStats\Composers\HeaderComposer;
 
 class ComposerServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('templates.header', SpaceXStats\Composers\HeaderComposer::class);
+        view()->composer('templates.header', HeaderComposer::class);
     }
 
     /**

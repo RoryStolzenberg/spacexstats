@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceXStats\Enums;
+namespace SpaceXStats\Library\Enums;
 
 abstract class VisibilityStatus extends Enum {
     const PublicStatus = "Public";

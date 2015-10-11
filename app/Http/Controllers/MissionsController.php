@@ -1,7 +1,7 @@
 <?php 
  namespace SpaceXStats\Http\Controllers;
 use SpaceXStats\Managers\MissionManager;
-use SpaceXStats\Enums\MissionControlSubtype;
+use SpaceXStats\Library\Enums\MissionControlSubtype;
 
 class MissionsController extends Controller {
 
@@ -36,7 +36,7 @@ class MissionsController extends Controller {
                 'mission' => $mission,
                 'webcast' => Redis::hgetall('webcast')
             ]);
-			return View::make('missions.futureMission', $data);
+			return view('missions.futureMission', $data);
 		} else {
 
             $js['mission'] = $mission;
@@ -46,7 +46,7 @@ class MissionsController extends Controller {
             }
 
             JavaScript::put($js);
-            return View::make('missions.pastMission', $data);
+            return view('missions.pastMission', $data);
         }
 	}
 
@@ -65,7 +65,7 @@ class MissionsController extends Controller {
             'missions' => $futureMissions
         ]);
 
-		return View::make('missions.future');
+		return view('missions.future');
 	}
 
     /**
@@ -83,7 +83,7 @@ class MissionsController extends Controller {
             'missions' => $pastMissions
         ]);
 
-		return View::make('missions.past');
+		return view('missions.past');
 	}
 
     /**
@@ -128,7 +128,7 @@ class MissionsController extends Controller {
                 })->get(),
             ]);
 
-            return View::make('missions.edit');
+            return view('missions.edit');
 
         } elseif (Request::isMethod('patch')) {
 
@@ -168,7 +168,7 @@ class MissionsController extends Controller {
                 'astronauts' => Astronaut::all()->toArray()
             ]);
 
-            return View::make('missions.create');
+            return view('missions.create');
 
         } elseif (Request::isMethod('post')) {
 

@@ -10,7 +10,7 @@ class TagsController extends Controller {
     // GET
     // /tags/{tag}
     public function get($tag) {
-        return View::make('missionControl.tags.get', array(
+        return view('missionControl.tags.get', array(
             'tag' => Tag::where('name', $tag)->with('objects')->firstOrFail()
         ));
     }
@@ -18,7 +18,7 @@ class TagsController extends Controller {
     // GET
     // /tags/{tag}/edit
     public function edit($tag) {
-        return View::make('missionControl.tags.edit', array(
+        return view('missionControl.tags.edit', array(
             'tag' => Tag::where('name', $tag)->firstOrFail()
         ));
     }

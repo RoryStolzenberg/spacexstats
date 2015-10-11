@@ -29,7 +29,7 @@ class MustBeMiddleware {
             return $next($request);
         }
 
-        $role = constant('SpaceXStats\Enums\UserRole::'.$role);
+        $role = constant('SpaceXStats\Library\Enums\UserRole::'.$role);
 
         if (Auth::guest()) {
             return redirect()->guest('users/login');

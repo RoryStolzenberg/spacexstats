@@ -1,9 +1,9 @@
 <?php
 namespace SpaceXStats\Managers\Objects;
 
-use SpaceXStats\Enums\Status;
-use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\MissionControlSubtype;
+use SpaceXStats\Library\Enums\Status;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionControlSubtype;
 
 class ObjectFromTweet extends ObjectCreator {
 

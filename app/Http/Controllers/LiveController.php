@@ -5,6 +5,6 @@ class LiveController extends Controller {
 
     // live, GET.
     public function live() {
-        return View::make('live');
+        return view('live');
     }
 }

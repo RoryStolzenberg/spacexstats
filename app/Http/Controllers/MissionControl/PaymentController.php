@@ -57,7 +57,7 @@ class PaymentController extends Controller {
 		} else {
 			//Failed transaction
 		}
-		return View::make('missionControl.buy.success', array(
+		return view('missionControl.buy.success', array(
 			'var' => 'someVar',
 			'paypalResponse' => $paypalResponse
 		));

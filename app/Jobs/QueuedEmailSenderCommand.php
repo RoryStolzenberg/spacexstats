@@ -6,7 +6,7 @@ use Indatus\Dispatcher\Drivers\Cron\Scheduler;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
-use \SpaceXStats\Enums\EmailStatus;
+use \SpaceXStats\Library\Enums\EmailStatus;
 
 class QueuedEmailSenderCommand extends ScheduledCommand {
 

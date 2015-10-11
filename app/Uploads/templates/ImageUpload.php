@@ -1,8 +1,8 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
-use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Exif\Exif;
 
 class ImageUpload extends GenericUpload implements UploadInterface {

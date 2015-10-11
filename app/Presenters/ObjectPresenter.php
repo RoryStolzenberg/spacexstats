@@ -1,4 +1,6 @@
 <?php
+namespace SpaceXStats\Presenters;
+
 class ObjectPresenter {
     protected $entity;
 
@@ -7,11 +9,11 @@ class ObjectPresenter {
     }
 
     public function type() {
-        return \SpaceXStats\Enums\MissionControlType::getKey($this->entity->type);
+        return \SpaceXStats\Library\Enums\MissionControlType::getKey($this->entity->type);
     }
 
     public function subtype() {
-        return $this->entity->subtype ? \SpaceXStats\Enums\MissionControlSubtype::getKey($this->entity->subtype) : null;
+        return $this->entity->subtype ? \SpaceXStats\Library\Enums\MissionControlSubtype::getKey($this->entity->subtype) : null;
     }
 
     public function size() {

@@ -1,4 +1,5 @@
 <?php
+namespace SpaceXStats\Presenters;
 
 class UserPresenter {
     protected $entity;
@@ -8,7 +9,7 @@ class UserPresenter {
     }
 
     public function role_id() {
-        return SpaceXStats\Enums\UserRole::getKey($this->entity->role_id);
+        return SpaceXStats\Library\Enums\UserRole::getKey($this->entity->role_id);
     }
 
     /**

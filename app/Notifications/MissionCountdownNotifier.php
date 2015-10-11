@@ -3,8 +3,8 @@
 namespace SpaceXStats\Notifications;
 
 use Carbon\Carbon;
-use SpaceXStats\Enums\LaunchSpecificity;
-use SpaceXStats\Enums\NotificationType;
+use SpaceXStats\Library\Enums\LaunchSpecificity;
+use SpaceXStats\Library\Enums\NotificationType;
 
 abstract class MissionCountdownNotifier {
     protected $now, $lastRun, $nextMission, $notificationType, $timeRemaining;

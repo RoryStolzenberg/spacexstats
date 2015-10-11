@@ -3,6 +3,8 @@
 namespace SpaceXStats\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use SpaceXStats\Extensions\ExtendedGuard;
+use Illuminate\Auth\EloquentUserProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +15,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Auth::extend('roles', function() {
+            return new ExtendedGuard(
+                new EloquentUserProvider(\App::make('hash'), \Config::get('auth.model')),
+                \App::make('session.store')
+            );
+        });
     }
 
     /**

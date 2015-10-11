@@ -1,7 +1,7 @@
 <?php
  namespace SpaceXStats\Http\Controllers;
 use SpaceXStats\Library\DeltaVCalculator;
-use \SpaceXStats\Enums\MissionControlType;
+use \SpaceXStats\Library\Enums\MissionControlType;
 
 class ObjectsController extends Controller {
 
@@ -28,7 +28,7 @@ class ObjectsController extends Controller {
                 ]);
             }
 
-            return View::make('missionControl.objects.' . $viewType , ['object' => $object]);
+            return view('missionControl.objects.' . $viewType , ['object' => $object]);
 
         // Object is visible to subscribers, is published, and the logged in user is also a subscriber
         // or the user is an admin
@@ -42,7 +42,7 @@ class ObjectsController extends Controller {
                     'object' => $object
                 ]);
 
-                return View::make('missionControl.objects.' . $viewType , ['object' => $object]);
+                return view('missionControl.objects.' . $viewType , ['object' => $object]);
         }
 
         return App::abort(401);
@@ -63,7 +63,7 @@ class ObjectsController extends Controller {
                'object' => $object
             ]);
 
-            return View::make('missionControl.objects.edit.edit', ['object' => $object]);
+            return view('missionControl.objects.edit.edit', ['object' => $object]);
 
         } else if (Request::isMethod('patch')) {
 

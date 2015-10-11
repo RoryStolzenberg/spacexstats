@@ -1,8 +1,8 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
-use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 
 class DocumentUpload extends GenericUpload implements UploadInterface {
     public function __construct($file) {

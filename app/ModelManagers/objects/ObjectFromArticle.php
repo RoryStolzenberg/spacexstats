@@ -2,9 +2,9 @@
 
 namespace SpaceXStats\Managers\Objects;
 
-use SpaceXStats\Enums\ObjectPublicationStatus;
-use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\MissionControlSubtype;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionControlSubtype;
 
 class ObjectFromArticle extends ObjectCreator {
     public function isValid($input) {

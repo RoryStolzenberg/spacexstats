@@ -1,7 +1,7 @@
 <?php 
  namespace SpaceXStats\Http\Controllers;
 
-use SpaceXStats\Enums\UserRole;
+use SpaceXStats\Library\Enums\UserRole;
 
 class UsersController extends Controller {
 
@@ -37,7 +37,7 @@ class UsersController extends Controller {
 
 			//If the current user is logged in & If the current user is requesting themselves
 			if (Auth::isAccessingSelf($user)) {
-                return View::make('users.profile', array(
+                return view('users.profile', array(
                     'user' => $user,
                     'favoriteMission' => $user->profile->favoriteMission,
                     'objects' => $user->objects->take(10),
@@ -45,7 +45,7 @@ class UsersController extends Controller {
                     'notes' => $user->notes
                 ));
 			} else {
-                return View::make('users.profile', array(
+                return view('users.profile', array(
                     'user' => $user,
                     'favoriteMission' => $user->profile->favoriteMission,
                     'objects' => $user->objects()->wherePublished()->take(10),
@@ -62,7 +62,7 @@ class UsersController extends Controller {
     public function edit($username) {
         $user = User::where('username', $username)->with(['notifications.notificationType', 'profile'])->firstOrFail();
 
-        $notificationTypes = SpaceXStats\Enums\NotificationType::toArray();
+        $notificationTypes = SpaceXStats\Library\Enums\NotificationType::toArray();
         $userNotifications = $user->notifications->keyBy('notification_type_id');
 
         $hasNotifications = [];
@@ -77,7 +77,7 @@ class UsersController extends Controller {
             'user' => $user
         ]);
 
-        return View::make('users.edit', array(
+        return view('users.edit', array(
             'user' => $user,
         ));
     }
@@ -102,18 +102,18 @@ class UsersController extends Controller {
             if ($notificationValue === true) {
 
                 // Check if that notification type does not exist for that user, create notification
-                if (!$currentNotificationsForUser->has(SpaceXStats\Enums\NotificationType::fromString($notificationType))) {
+                if (!$currentNotificationsForUser->has(SpaceXStats\Library\Enums\NotificationType::fromString($notificationType))) {
                     $notification = new Notification();
                     $notification->user()->associate($user);
-                    $notification->notification_type_id = SpaceXStats\Enums\NotificationType::fromString($notificationType);
+                    $notification->notification_type_id = SpaceXStats\Library\Enums\NotificationType::fromString($notificationType);
                     $notification->save();
                 }
 
             } else {
 
                 // Check if that notification type exists for that user, if yes, (soft) delete
-                if ($currentNotificationsForUser->has(SpaceXStats\Enums\NotificationType::fromString($notificationType))) {
-                    $currentNotificationsForUser->get(SpaceXStats\Enums\NotificationType::fromString($notificationType))->first()->delete();
+                if ($currentNotificationsForUser->has(SpaceXStats\Library\Enums\NotificationType::fromString($notificationType))) {
+                    $currentNotificationsForUser->get(SpaceXStats\Library\Enums\NotificationType::fromString($notificationType))->first()->delete();
                 }
             }
         }
@@ -127,9 +127,9 @@ class UsersController extends Controller {
 
         // Delete any previous SMS notification
         $oldSMSNotification = Notification::where('user_id', $user->user_id)
-            ->where('notification_type_id', SpaceXStats\Enums\NotificationType::tMinus24HoursSMS)
-            ->orWhere('notification_type_id', SpaceXStats\Enums\NotificationType::tMinus3HoursSMS)
-            ->orWhere('notification_type_id', SpaceXStats\Enums\NotificationType::tMinus1HourSMS)
+            ->where('notification_type_id', SpaceXStats\Library\Enums\NotificationType::tMinus24HoursSMS)
+            ->orWhere('notification_type_id', SpaceXStats\Library\Enums\NotificationType::tMinus3HoursSMS)
+            ->orWhere('notification_type_id', SpaceXStats\Library\Enums\NotificationType::tMinus1HourSMS)
             ->delete();
 
         // If the number is blank, assume the user wants their SMS setup deleted
@@ -157,7 +157,7 @@ class UsersController extends Controller {
                     // Insert new notification
                     Notification::create(array(
                         'user_id' => Auth::user()->user_id,
-                        'notification_type_id' => SpaceXStats\Enums\NotificationType::fromString($sms['status'])
+                        'notification_type_id' => SpaceXStats\Library\Enums\NotificationType::fromString($sms['status'])
                     ));
                     return Response::json($this->flashMessages['SMSNotificationSuccess']);
                 }
@@ -178,7 +178,7 @@ class UsersController extends Controller {
     public function favorites($username) {
         $user = User::where('username', $username)->first();
 
-        return View::make('users.profile.favorites', array(
+        return view('users.profile.favorites', array(
             'user' => $user,
             'favorites' => Favorite::where('user_id', $user)->with('object')->get()
         ));
@@ -188,7 +188,7 @@ class UsersController extends Controller {
     public function notes($username) {
         $user = User::where('username', $username)->first();
 
-        return View::make('users.profile.notes', array(
+        return view('users.profile.notes', array(
             'user' => $user,
             'favorites' => Note::where('user_id', $user)->with('object')->get()
         ));
@@ -203,7 +203,7 @@ class UsersController extends Controller {
     public function comments($username) {
         $user = User::where('username', $username)->first();
 
-        return View::make('users.profile.comments', array(
+        return view('users.profile.comments', array(
             'user' => $user,
             'favorites' => Comment::where('user_id', $user)->with('object')->get()
         ));
@@ -211,7 +211,7 @@ class UsersController extends Controller {
 
 	public function create() {
 		if (Request::isMethod('get')) {
-			return View::make('users.signup');
+			return view('users.signup');
 
 		} elseif (Request::isMethod('post')) {
 
@@ -262,7 +262,7 @@ class UsersController extends Controller {
 
 	public function login() {
 		if (Request::isMethod('get')) {
-			return View::make('users.login');
+			return view('users.login');
 
 		} elseif (Request::isMethod('post')) {
 
@@ -286,7 +286,7 @@ class UsersController extends Controller {
 
     public function forgotPassword() {
         if (Request::isMethod('get')) {
-            return View::make('users.forgotpassword');
+            return view('users.forgotpassword');
 
         } else if (Request::isMethod('post')) {
             // Process forgot password
@@ -295,7 +295,7 @@ class UsersController extends Controller {
 
     public function resetPassword() {
         if (Request::isMethod('get')) {
-            return View::make('users.resetpassword');
+            return view('users.resetpassword');
 
         } else if (Request::isMethod('post')) {
             // Process forgot password

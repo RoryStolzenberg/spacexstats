@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Enums;
+namespace SpaceXStats\Library\Enums;
 
 abstract class ExifProperty extends Enum {
 	const DateTime 				= 'DateTimeOriginal';

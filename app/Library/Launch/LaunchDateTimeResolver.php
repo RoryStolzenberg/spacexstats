@@ -1,7 +1,7 @@
 <?php
 namespace SpaceXStats\Launch;
 
-use SpaceXStats\Enums\LaunchSpecificity;
+use SpaceXStats\Library\Enums\LaunchSpecificity;
 
 abstract class LaunchDateTimeResolver {
     public static function parseString($dateToBeParsed) {

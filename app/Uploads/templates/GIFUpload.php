@@ -2,8 +2,8 @@
 namespace SpaceXStats\Uploads\Templates;
 
 use GifFrameExtractor\GifFrameExtractor as GifFrameExtractor;
-use SpaceXStats\Enums\MissionControlType;
-use SpaceXStats\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 
 class GIFUpload extends GenericUpload implements UploadInterface {
 	protected

@@ -8,27 +8,27 @@
                         <a href="/live">Live</a>
                     </li>
 					<li class="gr-1on8 gr-small-12">
-						{{ link_to_route('missions.past', 'Past Missions') }}
+                        <a href="/missions/past">Past Missions</a>
 						<ul class="nav-second-tier wide">
 							@foreach ($nearbyMissions['past'] as $pastMission)
-							<li>{{ link_to_route('missions.get', $pastMission->name, $pastMission->slug) }}</li>
+							<li><a href="/missions/{{ $pastMission->slug }}">{{ $pastMission->name }}</a></li>
 							@endforeach
 						</ul>
 					</li>
 					<li class="gr-1on8 gr-small-12">
-						{{ link_to_route('missions.future', 'Future Missions') }}
+                        <a href="/missions/future">Future Missions</a>
 						<ul class="nav-second-tier wide">
 							@foreach ($nearbyMissions['future'] as $futureMission)
-							<li>{{ link_to_route('missions.get', $futureMission->name, $futureMission->slug) }}</li>
+							<li><a href="/missions/{{ $futureMission->slug }}">{{ $futureMission->name }}</a></li>
 							@endforeach
 						</ul>
 					</li>
 					<li class="gr-1on8 gr-small-12">
 						More...
 						<ul class="nav-second-tier wide">
-                            <li>{{ link_to_route('locations', 'Locations') }}</li>
+                            <li><a href="/locations">Locations</a></li>
 							<li>News Summaries</li>
-							<li>{{ link_to_route('faq', 'Frequently Asked Questions') }}</li>
+							<li><a href="/faq">Frequently Asked Questions</a></li>
 							<li>RSS Updates</li>
                             <li>Community</li>
 							<li>About</li>
@@ -36,27 +36,27 @@
 						</ul>
 					</li>
 					<li class="gr-1on8 gr-small-12 push-3">
-						{{ link_to_route('missionControl', 'Mission Control') }}
+                        <a href="/missioncontrol">Mission Control</a>
 						<ul class="nav-second-tier">
 							@if (Auth::isSubscriber())
-								<li>{{ link_to_route('missionControl.create', 'Upload') }}</li>
+								<li><a href="/missioncontrol/create">Upload</a></li>
                                 <li>Collections</li>
 								<li>Leaderboards</li>
 							@else 	
-							    <li>{{ link_to_route('missionControl.buy', 'Buy')}}</li>
+							    <li><a href="/missioncontrol/buy">Buy</a></li>
 							@endif
 							<li><a href="/docs#missioncontrol">Docs</a></li>
                             @if (Auth::isAdmin())
-                                <li>{{ link_to_route('missionControl.review.index', 'Review') }}</li>
+                                <li><a href="/missioncontrol/review">Review</a></li>
                             @endif
 						</ul>
 					</li>
 					<li class="gr-1on8 gr-small-12 push-3">
 						@if (Auth::check())
-							{{ link_to_route('users.get', Auth::user()->username, array(Auth::user()->username)) }}
+                            <a href="/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a>
 							<ul class="nav-second-tier">
                                 @if (Auth::isAdmin())
-                                    <li>{{ link_to_route('admin', 'Admin') }}</li>
+                                    <li><a href="/admin">Admin</a></li>
                                 @endif
 								<li>
 									<form method="post" action="/users/logout">
@@ -67,8 +67,8 @@
 						@else
 							My Account
 							<ul class="nav-second-tier">
-                                <li>{{ link_to_route('users.login', 'Log In') }}</li>
-                                <li>{{ link_to_route('users.signup', 'Sign Up') }}</li>
+                                <li><a href="/users/login">Log In</a></li>
+                                <li><a href="/users/signup">Sign Up</a></li>
 							</ul>
 						@endif
 						</ul>

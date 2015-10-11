@@ -1,8 +1,8 @@
 <?php
 namespace SpaceXStats\Mail\MailQueues;
 
-use SpaceXStats\Enums\EmailStatus;
-use SpaceXStats\Enums\NotificationType;
+use SpaceXStats\Library\Enums\EmailStatus;
+use SpaceXStats\Library\Enums\NotificationType;
 
 class MissionMailQueue extends MailQueue {
     public function newMission(\Mission $mission) {

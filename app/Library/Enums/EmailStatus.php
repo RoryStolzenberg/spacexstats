@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceXStats\Enums;
+namespace SpaceXStats\Library\Enums;
 
 abstract class EmailStatus extends Enum {
     const Held = "Held";

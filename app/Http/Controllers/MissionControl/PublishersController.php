@@ -9,7 +9,7 @@ class PublishersController extends Controller {
 	public function get($publisherId) {
 		$publisher = Publisher::find($publisherId);
 
-		return View::make('missionControl.publishers.get', array(
+		return view('missionControl.publishers.get', array(
 			'publisher' => $publisher
 		));
 	}
@@ -17,7 +17,7 @@ class PublishersController extends Controller {
 	public function create() {
 		if (Request::isMethod('get')) {
 
-			return View::make('missionControl.publishers.create');
+			return view('missionControl.publishers.create');
 
 		} elseif (Request::isMethod('post')) {
 
@@ -42,7 +42,7 @@ class PublishersController extends Controller {
 			JavaScript::put([
 				'publisher' => $this->publisher
 			]);
-			return View::make('missionControl.publishers.edit');
+			return view('missionControl.publishers.edit');
 
 		} elseif (Request::isMethod('post')) {
 
