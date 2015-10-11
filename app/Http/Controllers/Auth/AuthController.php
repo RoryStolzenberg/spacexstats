@@ -2,26 +2,34 @@
 
 namespace SpaceXStats\Http\Controllers\Auth;
 
-use SpaceXStats\User;
+use SpaceXStats\Extensions\Auth\AuthenticatesUsers;
+use SpaceXStats\Extensions\Auth\SignsUpUsers;
+use SpaceXStats\Library\Enums\UserRole;
+use SpaceXStats\Mail\Mailers\UserMailer;
+use SpaceXStats\Models\Profile;
+use SpaceXStats\Models\User;
 use Validator;
 use SpaceXStats\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
+
+/**
+ * Class AuthController
+ *
+ * Some modifications have been made to the default Laravel AuthController. This class normally extends
+ * Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers, but I have a need to override some of the
+ * default methods included in both the AuthenticatesUsers & RegistersUsers traits, so I have extended these
+ * traits at SpaceXStats\Extensions\Auth\AuthenticatesUsers & SpaceXStats\Extensions\Auth\SignsUpUsers, which replaces
+ * the former traits, respectively.
+ *
+ * @package SpaceXStats\Http\Controllers\Auth
+ */
 class AuthController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Registration & Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users, as well as the
-    | authentication of existing users. By default, this controller uses
-    | a simple trait to add these behaviors. Why don't you explore it?
-    |
-    */
-
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
+    use AuthenticatesUsers, SignsUpUsers {
+        AuthenticatesUsers::redirectPath insteadof SignsUpUsers;
+    }
+    use ThrottlesLogins;
 
     /**
      * Create a new authentication controller instance.
@@ -42,24 +50,77 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'username' => 'required|varchar:small',
+            'email' => 'required|email|varchar:small|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Create a new user instance after a valid registration, also send them a
      *
-     * @param  array  $data
+     * @param UserMailer $mailer
+     * @param  array $data
      * @return User
      */
-    protected function create(array $data)
+    protected function create(UserMailer $mailer, array $data)
     {
-        return User::create([
-            'name' => $data['name'],
+        $user = User::create([
+            'username' => $data['username'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => $data['password'], // Hashed as a mutator on the User model
+            'key' => str_random(32),
+            'role_id' => UserRole::Unauthenticated
         ]);
+
+        // Associate a profile
+        $profile = new Profile();
+        $profile->user()->associate($user)->save();
+
+        // Send a welcome email
+        $mailer->welcome($user);
+
+        return $user;
     }
+
+    /*public function create() {
+                return Redirect::back()->withInput(Input::except(['password', 'password_confirmation']))
+                    ->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedDatabaseError']);
+
+            return Redirect::home()->with('flashMessage', $this->flashMessages['accountCreated']);
+            return Redirect::back()->withErrors($isValidForSignUp)->withInput(Input::except(['password', 'password_confirmation']))
+                ->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedValidationError']);
+
+    }*/
+
+    public function verify($email, $key) {
+        if ($this->user->isValidKey($email, $key)) {
+            return Redirect::route('users.login')
+                ->with('flashMessage', $this->flashMessages['accountActivated']);
+        } else {
+            return Redirect::route('home')
+                ->with('flashMessage', $this->flashMessages['accountCouldNotBeActivated']);
+        }
+    }
+
+    /*public function login() {
+        (Request::isMethod('post')) {
+
+            $isValidForLogin = $this->user->isValidForLogin();
+
+            if ($isValidForLogin === true) {
+                return Redirect::intended("/users/".Auth::user()->username);
+
+            } elseif ($isValidForLogin === false) {
+                return Redirect::back()
+                    ->with('flashMessage', $this->flashMessages['failedLoginCredentials'])
+                    ->withInput()
+                    ->withErrors($isValidForLogin);
+
+            } elseif ($isValidForLogin === 'authenticate') {
+                return Redirect::back()
+                    ->with('flashMessage', $this->flashMessages['failedLoginNotActivated']);
+            }
+        }
+    }*/
 }

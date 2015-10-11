@@ -29,4 +29,22 @@ class PasswordController extends Controller
     {
         $this->middleware('guest');
     }
+
+    public function forgotPassword() {
+        if (Request::isMethod('get')) {
+            return view('users.forgotpassword');
+
+        } else if (Request::isMethod('post')) {
+            // Process forgot password
+        }
+    }
+
+    public function resetPassword() {
+        if (Request::isMethod('get')) {
+            return view('users.resetpassword');
+
+        } else if (Request::isMethod('post')) {
+            // Process forgot password
+        }
+    }
 }

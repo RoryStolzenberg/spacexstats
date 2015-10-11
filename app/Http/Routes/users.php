@@ -2,16 +2,6 @@
 Route::group(array('prefix' => 'users'), function() {
 
     Route::group(array('middleware' => 'mustBeLoggedOut'), function() {
-        Route::get('/signup', array(
-            'as' => 'users.signup',
-            'uses' => 'UsersController@create'
-        ));
-
-        Route::post('/signup', array(
-            'as' => 'users.signup',
-            'uses' => 'UsersController@create'
-        ))->before('csrf');
-
         Route::any('/login', array(
             'as' => 'users.login',
             'uses' => 'UsersController@login'
@@ -20,23 +10,6 @@ Route::group(array('prefix' => 'users'), function() {
         Route::get('/verify/{email}/{key}', array(
             'as' => 'users.verify',
             'uses' => 'UsersController@verify'
-        ));
-
-        Route::any('/forgotpassword', array(
-            'as' => 'users.forgotpassword',
-            'uses' => 'UsersController@forgotPassword'
-        ));
-
-        Route::any('/resetpassword/{username}/{key}', array(
-            'as' => 'users.resetpassword',
-            'uses' => 'UsersController@resetPassword'
-        ));
-    });
-
-    Route::group(array('middleware' => 'mustBeLoggedIn'), function() {
-        Route::post('/logout', array(
-            'as' => 'users.logout',
-            'uses' => 'UsersController@logout'
         ));
     });
 

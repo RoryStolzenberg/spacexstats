@@ -10,11 +10,11 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 use Carbon\Carbon;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\UserRole;
+use SpaceXStats\Library\Enums\VisibilityStatus;
 
-class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -37,49 +37,49 @@ class User extends Model implements AuthenticatableContract,
 
     // Relations
     public function profile() {
-        return $this->hasOne('Profile');
+        return $this->hasOne('SpaceXStats\Model\Profile');
     }
 
     public function objects() {
-        return $this->hasMany('Object');
+        return $this->hasMany('SpaceXStats\Model\Object');
     }
 
     public function favorites() {
-        return $this->hasMany('Favorite');
+        return $this->hasMany('SpaceXStats\Model\Favorite');
     }
 
     public function notes() {
-        return $this->hasMany('Note');
+        return $this->hasMany('SpaceXStats\Model\Note');
     }
 
     public function role() {
-        return $this->belongsTo('Role');
+        return $this->belongsTo('SpaceXStats\Model\Role');
     }
 
     public function notifications() {
-        return $this->hasMany('Notification');
+        return $this->hasMany('SpaceXStats\Model\Notification');
     }
 
     public function emails() {
-        return $this->hasManyThrough('Email', 'Notification');
+        return $this->hasManyThrough('SpaceXStats\Model\Email', 'SpaceXStats\Model\Notification');
     }
 
     public function messages() {
-        return $this->hasMany('Message');
+        return $this->hasMany('SpaceXStats\Model\Message');
     }
 
     public function comments() {
-        return $this->hasMany('Comment');
+        return $this->hasMany('SpaceXStats\Model\Comment');
     }
 
     public function awards() {
-        return $this->hasMany('Award');
+        return $this->hasMany('SpaceXStats\Model\Award');
     }
 
     // Conditional relations
     public function publishedObjects() {
         if (Auth::isAdmin()) {
-            return $this->hasMany('Object')->where('status', ObjectPublicationStatus::PublishedStatus);
+            return $this->hasMany('SpaceXStats\Model\Object')->where('status', ObjectPublicationStatus::PublishedStatus);
         }
         return $this->hasMany('Object')
             ->where('status', ObjectPublicationStatus::PublishedStatus)
@@ -87,7 +87,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     public function unreadMessages() {
-        return $this->hasMany('Message')->where('hasBeenRead', false);
+        return $this->hasMany('SpaceXStats\Model\Message')->where('hasBeenRead', false);
     }
 
     // Helpers

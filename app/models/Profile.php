@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Profile extends Model {
@@ -15,14 +16,14 @@ class Profile extends Model {
 
 	// Relations
 	public function user() {
-		return $this->belongsTo('User');
+		return $this->belongsTo('SpaceXStats\Models\User');
 	}
 
     public function favoriteMission() {
-        return $this->belongsTo('Mission', 'favorite_mission');
+        return $this->belongsTo('SpaceXStats\Models\Mission', 'favorite_mission');
     }
 
     public function favoritePatch() {
-        return $this->belongsTo('Object', 'favorite_mission_patch');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'favorite_mission_patch');
     }
 }
