@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class Note extends Model {
     protected $table = 'notes';
     protected $primaryKey = 'note_id';

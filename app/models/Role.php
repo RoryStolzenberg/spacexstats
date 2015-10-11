@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class Role extends Model {
 
 	protected $table = 'roles';

@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class Destination extends Model {
     protected $table = 'destinations';
     protected $primaryKey = 'destination_id';

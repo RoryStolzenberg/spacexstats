@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace SpaceXStats\Events;
 
 abstract class Event
 {

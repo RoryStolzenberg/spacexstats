@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 
 class ObjectRevision extends Model {
     protected $table = 'object_revisions';

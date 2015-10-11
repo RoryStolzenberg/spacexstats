@@ -1,5 +1,5 @@
 <?php
- namespace App\Http\Controllers;
+ namespace SpaceXStats\Http\Controllers;
 use Omnipay\Omnipay;
 
 class PaymentController extends Controller {

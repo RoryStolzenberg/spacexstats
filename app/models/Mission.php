@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 
 use \SpaceXStats\Enums\LaunchSpecificity;
 

@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class SMS extends Model {
     protected $table = 'smses';
     protected $primaryKey = 'sms_id';

@@ -1,5 +1,5 @@
 <?php 
- namespace App\Http\Controllers;
+ namespace SpaceXStats\Http\Controllers;
 
 class WebcastStatusController extends Controller {
 

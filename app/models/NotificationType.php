@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class NotificationType extends Model {
     protected $table = 'notification_types';
     protected $primaryKey = 'notification_type_id';

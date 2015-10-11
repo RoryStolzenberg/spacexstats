@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace SpaceXStats\Jobs;
 
 use Illuminate\Bus\Queueable;
 

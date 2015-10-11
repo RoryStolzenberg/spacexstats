@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class Location extends Model {
     protected $table = 'locations';
     protected $primaryKey = 'location_id';

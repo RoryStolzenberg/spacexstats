@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 
 class Tag extends Model {
     protected $table = 'tags';

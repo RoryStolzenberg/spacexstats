@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Middleware;
+namespace SpaceXStats\Http\Middleware;
 
 use Closure;
 

@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class PrelaunchEvent extends Model {
 
     use ValidatableTrait;

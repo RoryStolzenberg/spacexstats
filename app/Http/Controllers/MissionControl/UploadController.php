@@ -1,5 +1,5 @@
 <?php 
- namespace App\Http\Controllers;
+ namespace SpaceXStats\Http\Controllers;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use LukeNZ\Reddit\Reddit;
 

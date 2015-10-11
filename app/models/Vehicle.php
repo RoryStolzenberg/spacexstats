@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 
 class Vehicle extends Model {
 	protected $table = 'vehicles';

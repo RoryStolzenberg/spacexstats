@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace SpaceXStats\Providers;
 
 use Illuminate\Support\ServiceProvider;
 

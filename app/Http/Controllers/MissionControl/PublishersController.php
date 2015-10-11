@@ -1,5 +1,5 @@
 <?php
- namespace App\Http\Controllers;
+ namespace SpaceXStats\Http\Controllers;
 class PublishersController extends Controller {
 
 	public function __construct(Publisher $publisher) {

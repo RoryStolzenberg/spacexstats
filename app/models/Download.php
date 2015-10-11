@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class Download extends Model {
 
     protected $table = 'downloads';

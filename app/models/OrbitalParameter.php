@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 
 class OrbitalElement extends Model {
     protected $table = 'orbital_elements';

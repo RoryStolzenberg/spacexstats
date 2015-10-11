@@ -26,7 +26,7 @@ return [
     ],
 
     'stripe' => [
-        'model'  => 'App\User',
+        'model'  => 'SpaceXStats\User',
         'secret' => '',
     ],
 

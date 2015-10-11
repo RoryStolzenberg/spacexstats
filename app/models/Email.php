@@ -1,5 +1,5 @@
 <?php
-namespace App\Models;
+namespace SpaceXStats\Models;
 class Email extends Model {
     protected $table = 'emails';
     protected $primaryKey = 'email_id';

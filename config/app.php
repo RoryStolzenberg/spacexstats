@@ -140,10 +140,10 @@ return [
         /*
          * Application Service Providers...
          */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+        SpaceXStats\Providers\AppServiceProvider::class,
+        SpaceXStats\Providers\AuthServiceProvider::class,
+        SpaceXStats\Providers\EventServiceProvider::class,
+        SpaceXStats\Providers\RouteServiceProvider::class,
 
         /*
          * Third Party Service Providers...
