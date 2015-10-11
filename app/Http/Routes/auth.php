@@ -2,8 +2,8 @@
 Route::group(array('prefix' => 'auth'), function() {
 
     // Registration
-    Route::get('/signup', 'AuthController@getSignup');
-    Route::post('/signup', 'AuthController@postSignup');
+    Route::get('/signup', 'AuthController@getSignUp');
+    Route::post('/signup', 'AuthController@postSignUp');
 
     // Login
     Route::get('/login', 'AuthController@getLogin');

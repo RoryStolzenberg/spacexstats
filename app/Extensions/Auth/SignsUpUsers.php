@@ -2,6 +2,8 @@
 namespace SpaceXStats\Extensions\Auth;
 
 use Illuminate\Foundation\Auth\RedirectsUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * Class SignsUpUsers
@@ -20,7 +22,7 @@ trait SignsUpUsers
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRegister()
+    public function getSignUp()
     {
         return view('auth.signup');
     }
@@ -31,7 +33,7 @@ trait SignsUpUsers
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function postRegister(Request $request)
+    public function postSignUp(Request $request)
     {
         $validator = $this->validator($request->all());
 
