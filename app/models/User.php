@@ -1,6 +1,7 @@
 <?php
 
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;

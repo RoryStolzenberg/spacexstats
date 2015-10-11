@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 use ColorThief\ColorThief;
 use \Mexitek\PHPColors\Color;
 

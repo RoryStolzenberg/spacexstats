@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 
 class ObjectRevision extends Model {
     protected $table = 'object_revisions';

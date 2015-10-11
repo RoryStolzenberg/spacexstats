@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 class SMS extends Model {
     protected $table = 'smses';
     protected $primaryKey = 'sms_id';

@@ -1,6 +1,5 @@
 <?php
-
-namespace SpaceXStats\Library;
+namespace SpaceXStats\Library\Miscellaneous;
 
 class DeltaV {
 

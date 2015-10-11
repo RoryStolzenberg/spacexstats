@@ -1,6 +1,9 @@
 <?php
 namespace SpaceXStats\Http\Controllers;
 
+use JavaScript;
+use SpaceXStats\Models\Statistic;
+
 class HomeController extends Controller {
 
 	public function home()	{

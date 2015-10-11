@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 class Destination extends Model {
     protected $table = 'destinations';
     protected $primaryKey = 'destination_id';

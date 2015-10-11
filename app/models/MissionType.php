@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 class MissionType extends Model {
     protected $table = 'mission_types';
     protected $primaryKey = 'mission_type_id';

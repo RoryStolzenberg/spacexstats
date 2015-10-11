@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 
 use SpaceXStats\Enums\ObjectPublicationStatus;
 use SpaceXStats\Enums\VisibilityStatus;

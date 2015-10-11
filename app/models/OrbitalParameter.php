@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
 
 class OrbitalElement extends Model {
     protected $table = 'orbital_elements';

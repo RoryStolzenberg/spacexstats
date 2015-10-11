@@ -1,5 +1,10 @@
 <?php
 namespace SpaceXStats\Models;
+use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Database\Eloquent\Model;
+use SpaceXStats\Library\Miscellaneous\StatisticDescriptionBuilder;
+use SpaceXStats\Library\Miscellaneous\StatisticResultBuilder;
 
 class Statistic extends Model {
 

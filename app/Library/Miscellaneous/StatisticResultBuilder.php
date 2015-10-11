@@ -1,4 +1,11 @@
 <?php
+namespace SpaceXStats\Library\Miscellaneous;
+
+use SpaceXStats\Models\Location;
+use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\Spacecraft;
+use SpaceXStats\Models\Vehicle;
+
 class StatisticResultBuilder {
 	public static function nextLaunch() {
         return Mission::future(1)->first()->toArray();
@@ -60,7 +67,7 @@ class StatisticResultBuilder {
 	}
 
 	public static function launchSiteCount() {
-		return LaunchSite::count();
+		return Location::count();
 	}
 
 	public static function launchSiteSLC40($parameter) {
