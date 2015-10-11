@@ -12,6 +12,6 @@ class LocationsController extends Controller {
     // AJAX GET
     public function getLocationData() {
         $locations = Location::with('missions')->with('uses')->get();
-        return Response::json($locations);
+        return response()->json($locations);
     }
 }

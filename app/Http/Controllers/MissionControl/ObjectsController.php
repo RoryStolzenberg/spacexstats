@@ -106,9 +106,9 @@ class ObjectsController extends Controller {
                 $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->delete();
             }
-            return Response::json(null, 204);
+            return response()->json(null, 204);
         }
-        return Response::json(false, 401);
+        return response()->json(false, 401);
     }
 
     // AJAX POST/DELETE
@@ -131,10 +131,10 @@ class ObjectsController extends Controller {
                 Auth::user()->favorites()->where('object_id', $object_id)->firstOrFail()->delete();
             }
 
-            return Response::json(null, 204);
+            return response()->json(null, 204);
         }
 
-        return Response::json(false, 401);
+        return response()->json(false, 401);
     }
 
     // AJAX POST
@@ -150,6 +150,6 @@ class ObjectsController extends Controller {
                 'object_id' => $object_id
             ));
         }
-        return Response::json(null, 204);
+        return response()->json(null, 204);
     }
 }

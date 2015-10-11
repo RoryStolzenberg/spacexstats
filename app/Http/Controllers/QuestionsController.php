@@ -15,6 +15,6 @@ class QuestionsController extends Controller {
 
 	// AJAX POST
 	public function getQuestions() {
-		return Response::json(Question::all()->toArray());
+		return response()->json(Question::all()->toArray());
 	}
 }

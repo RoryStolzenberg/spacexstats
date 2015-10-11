@@ -1,19 +1,7 @@
 <?php
 Route::group(array('prefix' => 'users'), function() {
 
-    Route::group(array('middleware' => 'mustBeLoggedOut'), function() {
-        Route::any('/login', array(
-            'as' => 'users.login',
-            'uses' => 'UsersController@login'
-        ));
-
-        Route::get('/verify/{email}/{key}', array(
-            'as' => 'users.verify',
-            'uses' => 'UsersController@verify'
-        ));
-    });
-
-    Route::group(array('middleware' => 'mustBeYourself'), function() {
+    Route::group(array('middleware' => 'mustBe:Yourself'), function() {
         Route::get('/{username}/edit', array(
             'as' => 'users.edit',
             'uses' => 'UsersController@edit'

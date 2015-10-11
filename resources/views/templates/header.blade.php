@@ -59,7 +59,7 @@
                                     <li><a href="/admin">Admin</a></li>
                                 @endif
 								<li>
-									<form method="post" action="/users/logout">
+									<form method="post" action="/auth/logout">
 										<input type="submit" value="Logout" />
 									</form>
 								</li>		
@@ -67,8 +67,8 @@
 						@else
 							My Account
 							<ul class="nav-second-tier">
-                                <li><a href="/users/login">Log In</a></li>
-                                <li><a href="/users/signup">Sign Up</a></li>
+                                <li><a href="/auth/login">Log In</a></li>
+                                <li><a href="/auth/signup">Sign Up</a></li>
 							</ul>
 						@endif
 						</ul>

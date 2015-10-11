@@ -4,6 +4,7 @@ namespace SpaceXStats\Http\Controllers\Auth;
 
 use SpaceXStats\Extensions\Auth\AuthenticatesUsers;
 use SpaceXStats\Extensions\Auth\SignsUpUsers;
+use SpaceXStats\Extensions\Auth\VerifiesUsers;
 use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Mail\Mailers\UserMailer;
 use SpaceXStats\Models\Profile;
@@ -26,10 +27,15 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
  */
 class AuthController extends Controller
 {
-    use AuthenticatesUsers, SignsUpUsers {
+    use ThrottlesLogins, AuthenticatesUsers;
+
+    use VerifiesUsers {
+        AuthenticatesUsers::redirectPath insteadof VerifiesUsers;
+    }
+
+    use SignsUpUsers {
         AuthenticatesUsers::redirectPath insteadof SignsUpUsers;
     }
-    use ThrottlesLogins;
 
     /**
      * Create a new authentication controller instance.
@@ -57,7 +63,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration, also send them a
+     * Create a new user instance after a valid registration, also send them a welcome email.
      *
      * @param UserMailer $mailer
      * @param  array $data

@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'auth'), function() {
+Route::group(array('prefix' => 'auth', 'namespace' => 'Auth'), function() {
 
     // Registration
     Route::get('/signup', 'AuthController@getSignUp');
@@ -11,6 +11,9 @@ Route::group(array('prefix' => 'auth'), function() {
 
     // Logout
     Route::post('/logout', 'AuthController@logout');
+
+    // Email Verification
+    Route::get('/verify/{email}/{key}', 'AuthController@verify');
 
     // Forgot & Reset Password Functionality
     Route::get('/forgotpassword', 'UsersController@getForgotPassword');

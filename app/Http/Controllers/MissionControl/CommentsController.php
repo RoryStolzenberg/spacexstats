@@ -7,7 +7,7 @@ class CommentsController extends Controller {
     // /{$object_id}/comments
     public function objectComments($object_id) {
         $object = Object::find($object_id);
-        return Response::json($object->commentTree);
+        return response()->json($object->commentTree);
     }
 
     // AJAX POST
@@ -21,7 +21,7 @@ class CommentsController extends Controller {
             'parent' => Input::get('comment.parent')
         ));
 
-        return Response::json(null, 204);
+        return response()->json(null, 204);
     }
 
     // AJAX DELETE
@@ -32,9 +32,9 @@ class CommentsController extends Controller {
         // Make sure that the request for deletion is either coming from an admin or from the user who owns the comment
         if (Auth::isAdmin() || $comment->user_id == Auth::user()->user_id) {
             $comment->delete();
-            return Response::json(null, 204);
+            return response()->json(null, 204);
         }
-        return Response::json(null, 402);
+        return response()->json(null, 402);
     }
 
     // AJAX PATCH
@@ -46,8 +46,8 @@ class CommentsController extends Controller {
         if ($comment->user_id == Auth::user()->user_id) {
             $comment->comment = Input::get('comment.comment');
             $comment->save();
-            return Response::json(null, 204);
+            return response()->json(null, 204);
         }
-        return Response::json(null, 402);
+        return response()->json(null, 402);
     }
 }

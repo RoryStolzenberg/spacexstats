@@ -4,7 +4,7 @@ class TagsController extends Controller {
     // AJAX GET
     // /tags/all
     public function all() {
-        return Response::json(Tag::all(['tag_id', 'name', 'description']));
+        return response()->json(Tag::all(['tag_id', 'name', 'description']));
     }
 
     // GET

@@ -29,9 +29,9 @@ class PublishersController extends Controller {
 					'description' =>
 				));
 
-				return Response::json($publisher, 200);
+				return response()->json($publisher, 200);
 			}
-			return Response::json();
+			return response()->json();
 		}
 	}
 
@@ -56,9 +56,9 @@ class PublishersController extends Controller {
 				$publisher->save();
 
 				// Edit publisher
-				return Response::json(null, 204);
+				return response()->json(null, 204);
 			}
-			return Response::json();			
+			return response()->json();
 		}
 	}
 }

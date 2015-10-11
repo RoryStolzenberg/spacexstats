@@ -2,12 +2,15 @@
  namespace SpaceXStats\Http\Controllers;
 
 use SpaceXStats\Library\Enums\UserRole;
+use SpaceXStats\Mail\Mailers\UserMailer;
+use SpaceXStats\Models\User;
+
 
 class UsersController extends Controller {
 
-	protected $user;
+	protected $user, $mailer;
 
-	public function __construct(User $user, \SpaceXStats\Mail\Mailers\UserMailer $mailer) {
+	public function __construct(User $user, UserMailer $mailer) {
 		$this->user = $user;
         $this->mailer = $mailer;
 	}
@@ -38,7 +41,7 @@ class UsersController extends Controller {
 
 		// No user with that username was found
 		} else {
-			return Redirect::route('home')->with('flashMessage', $this->flashMessages['userDoesNotExist']);
+			return redirect('/')->with('flashMessage', $this->flashMessages['userDoesNotExist']);
 		}
 	}
 
@@ -69,9 +72,9 @@ class UsersController extends Controller {
 		$user = User::where('username', $username)->firstOrFail();
 
         if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {
-            return Response::json($this->flashMessages['updateProfileSuccess']);
+            return response()->json($this->flashMessages['updateProfileSuccess']);
         } else {
-            return Response::json($this->flashMessages['somethingWentWrong']);
+            return response()->json($this->flashMessages['somethingWentWrong']);
         }
 	}
 
@@ -101,7 +104,7 @@ class UsersController extends Controller {
             }
         }
 
-        return Response::json($this->flashMessages['SMSNotificationSuccess']);
+        return response()->json($this->flashMessages['SMSNotificationSuccess']);
     }
 
     public function editSMSNotifications($username) {
@@ -119,7 +122,7 @@ class UsersController extends Controller {
         if ($sms['mobile'] == "") {
             $user->resetMobileDetails();
             $user->save();
-            return Response::json($this->flashMessages['SMSNotificationSuccess']);
+            return response()->json($this->flashMessages['SMSNotificationSuccess']);
         }
 
         // If status is not false
@@ -142,15 +145,15 @@ class UsersController extends Controller {
                         'user_id' => Auth::user()->user_id,
                         'notification_type_id' => SpaceXStats\Library\Enums\NotificationType::fromString($sms['status'])
                     ));
-                    return Response::json($this->flashMessages['SMSNotificationSuccess']);
+                    return response()->json($this->flashMessages['SMSNotificationSuccess']);
                 }
-                return Response::json($this->flashMessages['somethingWentWrong']);
+                return response()->json($this->flashMessages['somethingWentWrong']);
 
             } catch (Services_Twilio_RestException $e) {
-                return Response::json($this->flashMessages['SMSNotificationFailure']);
+                return response()->json($this->flashMessages['SMSNotificationFailure']);
             }
         }
-        return Response::json($this->flashMessages['SMSNotificationSuccess']);
+        return response()->json($this->flashMessages['SMSNotificationSuccess']);
     }
 
     public function editRedditNotifications($username) {

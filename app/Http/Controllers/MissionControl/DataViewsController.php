@@ -30,9 +30,9 @@ class DataViewsController extends Controller {
             $dataview->setColors();
             $dataview->save();
 
-            return Response::json($dataview);
+            return response()->json($dataview);
         }
-        return Response::json(400);
+        return response()->json(400);
     }
 
     public function edit($dataViewId) {
@@ -42,13 +42,13 @@ class DataViewsController extends Controller {
             $dataview->setColors();
             $dataview->save();
 
-            return Response::json($dataview);
+            return response()->json($dataview);
         }
-        return Response::json(400);
+        return response()->json(400);
     }
 
     public function testQuery() {
         $response = DB::connection('readOnlyMysql')->select(DB::raw(Input::get('q')));
-        return Response::json($response);
+        return response()->json($response);
     }
 }

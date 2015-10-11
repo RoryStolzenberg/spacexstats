@@ -25,13 +25,13 @@ class UploadController extends Controller {
             $upload = Upload::check($files);
 
             if ($upload->hasErrors()) {
-                return Response::json(['errors' => $upload->getErrors()], 400);
+                return response()->json(['errors' => $upload->getErrors()], 400);
             }
 
             $objects = $upload->create();
-            return Response::json(['objects' => $objects]);
+            return response()->json(['objects' => $objects]);
         }
-        return Response::json(false, 400);
+        return response()->json(false, 400);
     }
 
 	// AJAX POST
@@ -60,7 +60,7 @@ class UploadController extends Controller {
                     $objectManagers[$i]->create();
                 }
             } else {
-                return Response::json($objectValidities, 400);
+                return response()->json($objectValidities, 400);
             }
         } else {
             switch (Request::header('Submission-Type')) {
@@ -91,7 +91,7 @@ class UploadController extends Controller {
                 $objectCreator->create();
 
             } else {
-                return Response::json($objectCreator->getErrors(), 400);
+                return response()->json($objectCreator->getErrors(), 400);
             }
         }
 
@@ -100,7 +100,7 @@ class UploadController extends Controller {
             'contents' => 'Done! Your submitted content will be reviewed and published within 24 hours',
             'type' => 'success'
         ));
-        return Response::json(true);
+        return response()->json(true);
 	}
 
     // AJAX GET
@@ -108,7 +108,7 @@ class UploadController extends Controller {
         $twitter = new TwitterOAuth(Credential::TwitterConsumerKey, Credential::TwitterConsumerSecret, Credential::TwitterAccessToken, Credential::TwitterAccessSecret);
         $tweet = $twitter->get('statuses/show', array('id' => Input::get('id')));
 
-        return Response::json($tweet);
+        return response()->json($tweet);
     }
 
     // AJAX GET
@@ -116,7 +116,7 @@ class UploadController extends Controller {
         $reddit = new Reddit(Credential::RedditUsername, Credential::RedditPassword, Credential::RedditID, Credential::RedditSecret);
 
         $comment = $reddit->getComment(Input::get('url'));
-        return Response::json($comment);
+        return response()->json($comment);
     }
 
 }

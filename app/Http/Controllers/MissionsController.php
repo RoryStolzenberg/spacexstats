@@ -136,10 +136,10 @@ class MissionsController extends Controller {
                 $mission = $this->missionManager->update();
 
                 // Return, frontend to redirect.
-                return Response::json(['slug' => $mission->slug]);
+                return response()->json(['slug' => $mission->slug]);
 
             } else {
-                return Response::json(array(
+                return response()->json(array(
                     'flashMessage' => array('contents' => 'The mission could not be saved', 'type' => 'failure'),
                     'errors' => $this->missionManager->getErrors()
                 ), 400);
@@ -176,9 +176,9 @@ class MissionsController extends Controller {
                 $mission = $this->missionManager->create();
 
                 // Return, frontend to redirect to newly created page.
-                return Response::json(['slug' => $mission->slug]);
+                return response()->json(['slug' => $mission->slug]);
             } else {
-                return Response::json(array(
+                return response()->json(array(
                     'flashMessage' => array('contents' => 'The mission could not be created', 'type' => 'failure'),
                     'errors' => $this->missionManager->getErrors()
                 ), 400);
@@ -193,7 +193,7 @@ class MissionsController extends Controller {
      */
     public function all() {
         $allMissions = Mission::with('featuredImage')->get();
-        return Response::json($allMissions);
+        return response()->json($allMissions);
     }
 
     /**
@@ -205,7 +205,7 @@ class MissionsController extends Controller {
     public function launchDateTime($slug) {
         $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
-        return Response::json(array('launchDateTime' => $mission->present()->launch_exact()));
+        return response()->json(array('launchDateTime' => $mission->present()->launch_exact()));
     }
 
     /**
@@ -220,7 +220,7 @@ class MissionsController extends Controller {
             $q->whereSlug($slug);
         })->orderBy('timestamp', 'ASC')->get();
 
-        return Response::json($telemetries);
+        return response()->json($telemetries);
     }
 
     /**

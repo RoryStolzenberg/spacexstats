@@ -94,7 +94,7 @@ class MissionControlController extends Controller {
             ->orderBy('created_at','DESC')
             ->take(10)->get();
 
-        return Response::json(array(
+        return response()->json(array(
             'leaderboards' => $leaderboards,
             'uploads' => $uploads,
             'comments' => $comments,

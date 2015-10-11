@@ -13,7 +13,7 @@ class ReviewController extends Controller {
     // AJAX GET
     public function get() {
         $objectsToReview = Object::whereQueued()->with('user', 'tags')->get();
-        return Response::json($objectsToReview, 200);
+        return response()->json($objectsToReview, 200);
     }
 
     // AJAX POST
@@ -49,9 +49,9 @@ class ReviewController extends Controller {
                 $object->delete();
             }
 
-            return Response::json(null, 204);
+            return response()->json(null, 204);
         }
-        return Response::json(false, 400);
+        return response()->json(false, 400);
     }
 }
 
