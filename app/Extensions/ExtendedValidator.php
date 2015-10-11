@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Validation;
+namespace SpaceXStats\Extensions;
 
 use Illuminate\Validation\Validator;
 

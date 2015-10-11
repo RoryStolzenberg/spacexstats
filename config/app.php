@@ -146,19 +146,18 @@ return [
         SpaceXStats\Providers\RouteServiceProvider::class,
 
         /*
+         * Application-specific Service Providers...
+         */
+        SpaceXStats\Providers\ComposerServiceProvider::class,
+        SpaceXStats\Providers\ValidationServiceProvider::class,
+        SpaceXStats\Providers\SearchServiceProvider::class,
+        SpaceXStats\Providers\UploadServiceProvider::class,
+
+        /*
          * Third Party Service Providers...
          */
         //'Aws\Laravel\AwsServiceProvider',
-        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
-
-        /*
-         * Application-specific Service Providers...
-         */
-        //'SpaceXStats\Composers\ComposerServiceProvider',
-        //'SpaceXStats\Validation\ValidationServiceProvider',
-        //'SpaceXStats\Search\SearchServiceProvider',
-        //'SpaceXStats\Uploads\UploadServiceProvider'
-
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class
     ],
 
     /*
@@ -208,8 +207,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
-        //'Upload'    => 'SpaceXStats\Facades\Upload',
-        //'Search'    => 'SpaceXStats\Facades\Search',
+        'Upload'    => SpaceXStats\Facades\Upload::class,
+        'Search'    => SpaceXStats\Facades\Search::class,
 
         //'AWS'		=> 'Aws\Laravel\AwsFacade',
     ],
