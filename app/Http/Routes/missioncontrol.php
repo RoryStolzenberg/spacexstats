@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'missioncontrol'), function() {
+Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'), function() {
 
     Route::group(array('middleware' => 'mustBeLoggedIn'), function() {
 

@@ -28,43 +28,14 @@ function routesInDirectory($app = '') {
 routesInDirectory();
 
 /* MISCELLANEOUS ROUTES */
-Route::get('live', array(
-    'as' => 'live',
-    'uses' => 'LiveController@live'
-));
+Route::get('live', 'LiveController@live');
 
-Route::get('webcast/getstatus', array(
-    'as' => 'webcast.getStatus',
-    'uses' => 'WebcastStatusController@getStatus'
-));
+Route::get('webcast/getstatus', 'WebcastStatusController@getStatus');
 
-Route::get('calendars/all', array(
-    'as' => 'calendars.getAll',
-    'uses' => 'CalendarController@getAll'
-));
+Route::get('calendars/all', 'CalendarController@getAll');
+Route::get('calendars/{slug}', 'CalendarController@get')->before('doesExist:Mission');
 
-Route::get('calendars/{slug}', array(
-    'as' => 'calendars.get',
-    'uses' => 'CalendarController@get'
-))->before('doesMissionExist');
+Route::post('faq/getquestions', 'QuestionsController@getQuestions');
+Route::get('faq','QuestionsController@index');
 
-Route::post('faq/getquestions', array(
-    'as' => 'faq.getquestions',
-    'uses' => 'QuestionsController@getQuestions'
-));
-
-Route::get('faq', array(
-    'as' => 'faq',
-    'uses' => 'QuestionsController@index'
-));
-
-Route::get('admin', array(
-    'as' => 'admin',
-    'uses' => 'AdminController@index'
-))->before('mustBe:Administrator');
-
-/* CONTROLLERS */
-Route::controllers([
-    'auth' => 'Auth\AuthController',
-    'password' => 'Auth\PasswordController',
-]);
+Route::get('admin', 'AdminController@index')->before('mustBe:Administrator');

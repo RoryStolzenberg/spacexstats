@@ -1,5 +1,5 @@
 <?php 
- namespace SpaceXStats\Http\Controllers;
+ namespace SpaceXStats\Http\Controllers\Live;
 
 class LiveController extends Controller {
 

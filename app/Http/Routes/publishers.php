@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'missioncontrol/publishers'), function() {
+Route::group(array('prefix' => 'missioncontrol/publishers', 'namespace' => 'MissionControl'), function() {
 
     Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
 

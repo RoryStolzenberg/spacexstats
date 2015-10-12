@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'missioncontrol/objects'), function() {
+Route::group(array('prefix' => 'missioncontrol/objects', 'namespace' => 'MissionControl'), function() {
 
     Route::group(array('middleware' => 'mustBe:Subscriber'), function () {
 

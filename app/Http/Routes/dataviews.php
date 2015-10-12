@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'missioncontrol/dataviews'), function() {
+Route::group(array('prefix' => 'missioncontrol/dataviews', 'namespace' => 'MissionControl'), function() {
 
     Route::post('/create', array(
         'as' => 'missionControl.dataviews.create',

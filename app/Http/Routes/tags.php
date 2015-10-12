@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'missioncontrol/tags'), function() {
+Route::group(array('prefix' => 'missioncontrol/tags', 'namespace' => 'MissionControl'), function() {
     Route::get('/', array(
         'as' => 'tags.all',
         'uses' => 'TagsController@all'
