@@ -1,5 +1,5 @@
 <?php
- namespace SpaceXStats\Http\Controllers;
+ namespace SpaceXStats\Http\Controllers\MissionControl;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use Carbon\Carbon;

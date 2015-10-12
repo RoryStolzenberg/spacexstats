@@ -1,5 +1,5 @@
 <?php
- namespace SpaceXStats\Http\Controllers;
+ namespace SpaceXStats\Http\Controllers\MissionControl;
 class PublishersController extends Controller {
 
 	public function __construct(Publisher $publisher) {
@@ -24,18 +24,18 @@ class PublishersController extends Controller {
 			if ($this->publisher->isValid(Input::get('publisher'))) {
 
 				// Create publisher
-				$publisher = Publisher::create(array(
+				/*$publisher = Publisher::create(array(
 					'name' =>
 					'description' =>
-				));
+				));*/
 
-				return response()->json($publisher, 200);
+				//return response()->json($publisher, 200);
 			}
 			return response()->json();
 		}
 	}
 
-	public function edit(publisherId) {
+	public function edit($publisherId) {
 		if (Request::isMethod('get')) {			
 
 			$publisher = Publisher::find($publisherId);
