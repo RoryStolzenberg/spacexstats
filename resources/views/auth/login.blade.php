@@ -10,7 +10,7 @@
         <h1>Log In</h1>
         <main>
 
-            <form>
+            <form action="/auth/login" method="post">
                 {!! csrf_field() !!}
 
                 <label for="email">Email</label>

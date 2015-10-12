@@ -1,9 +1,12 @@
 <?php 
  namespace SpaceXStats\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use SpaceXStats\Library\Enums\NotificationType;
 use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Mail\Mailers\UserMailer;
 use SpaceXStats\Models\User;
+use JavaScript;
 
 
 class UsersController extends Controller {
@@ -15,40 +18,36 @@ class UsersController extends Controller {
         $this->mailer = $mailer;
 	}
 
-	public function get($username) {
-		$user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
+	public function get($username = null) {
+        if ($username == null) {
+            $user = Auth::user()->with(['objects', 'notes', 'favorites']);
+        } else {
+            $user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
+        }
 
-		// If a user was found
-		if (!empty($user)) {
-
-			//If the current user is logged in & If the current user is requesting themselves
-			if (Auth::isAccessingSelf($user)) {
-                return view('users.profile', array(
-                    'user' => $user,
-                    'favoriteMission' => $user->profile->favoriteMission,
-                    'objects' => $user->objects->take(10),
-                    'favorites' => $user->favorites->take(10),
-                    'notes' => $user->notes
-                ));
-			} else {
-                return view('users.profile', array(
-                    'user' => $user,
-                    'favoriteMission' => $user->profile->favoriteMission,
-                    'objects' => $user->objects()->wherePublished()->take(10),
-                    'favorites' => $user->favorites->take(10),
-                ));
-			}
-
-		// No user with that username was found
-		} else {
-			return redirect('/')->with('flashMessage', $this->flashMessages['userDoesNotExist']);
-		}
+        //If the current user is logged in & If the current user is requesting themselves
+        if (Auth::isAccessingSelf($user)) {
+            return view('users.profile', array(
+                'user' => $user,
+                'favoriteMission' => $user->profile->favoriteMission,
+                'objects' => $user->objects->take(10),
+                'favorites' => $user->favorites->take(10),
+                'notes' => $user->notes
+            ));
+        } else {
+            return view('users.profile', array(
+                'user' => $user,
+                'favoriteMission' => $user->profile->favoriteMission,
+                'objects' => $user->objects()->wherePublished()->take(10),
+                'favorites' => $user->favorites->take(10),
+            ));
+        }
 	}
 
     public function edit($username) {
         $user = User::where('username', $username)->with(['notifications.notificationType', 'profile'])->firstOrFail();
 
-        $notificationTypes = SpaceXStats\Library\Enums\NotificationType::toArray();
+        $notificationTypes = NotificationType::toArray();
         $userNotifications = $user->notifications->keyBy('notification_type_id');
 
         $hasNotifications = [];

@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'model' => SpaceXStats\User::class,
+    'model' => SpaceXStats\Models\User::class,
 
     /*
     |--------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXstats\Extensions;
 
+use Illuminate\Support\Facades\Auth;
 use SpaceXStats\Library\Enums\UserRole;
 
 class ExtendedGuard extends \Illuminate\Auth\Guard {

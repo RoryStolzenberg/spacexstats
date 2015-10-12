@@ -66,6 +66,7 @@
                                 @endif
 								<li>
 									<form method="post" action="/auth/logout">
+                                        {!! csrf_field() !!}
 										<input type="submit" value="Logout" />
 									</form>
 								</li>		
