@@ -1,7 +1,8 @@
 <?php
-namespace SpaceXStats\Launch;
+namespace SpaceXStats\Library\Launch;
 
 use SpaceXStats\Library\Enums\LaunchSpecificity;
+use SpaceXStats\Models\Mission;
 
 class LaunchReorderer {
 	protected $mission, $scheduledLaunch, $currentLaunchOrderId;
@@ -16,9 +17,9 @@ class LaunchReorderer {
 	public function run() {
         // Grab all missions as an array, pass them through
         if (is_null($this->mission->mission_id)) {
-            $allMissions = \Mission::orderBy('launch_order_id', 'ASC')->get();
+            $allMissions = Mission::orderBy('launch_order_id', 'ASC')->get();
         } else {
-            $allMissions = \Mission::where('mission_id', '!=', $this->mission->mission_id)->orderBy('launch_order_id', 'ASC')->get();
+            $allMissions = Mission::where('mission_id', '!=', $this->mission->mission_id)->orderBy('launch_order_id', 'ASC')->get();
         }
 
         $arrayedMissions = $allMissions->toArray();

@@ -1,5 +1,8 @@
 <?php
-namespace SpaceXStats\Launch;
+namespace SpaceXStats\Library\Launch;
+
+use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\PrelaunchEvent;
 
 class LaunchProbabilityCalculator {
 	private $mission;

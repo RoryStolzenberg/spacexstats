@@ -11,8 +11,8 @@ class HeaderComposer {
 		});*/
 
 		$view->with('nearbyMissions', array(
-			'past' => Mission::past(3)->get(),
-			'future' => Mission::future(3)->get()
+			'past' => Mission::past()->take(3)->get(),
+			'future' => Mission::future()->take(3)->get()
 		));
 	}
 }

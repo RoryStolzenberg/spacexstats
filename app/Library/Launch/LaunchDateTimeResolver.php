@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Launch;
+namespace SpaceXStats\Library\Launch;
 
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 
