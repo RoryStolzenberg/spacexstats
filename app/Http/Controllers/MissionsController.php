@@ -1,18 +1,24 @@
 <?php 
- namespace SpaceXStats\Http\Controllers;
+namespace SpaceXStats\Http\Controllers;
+
+use Illuminate\Support\Facades\Auth;
+use Redis;
+use JavaScript;
+use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Managers\MissionManager;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
+use SpaceXStats\Models\Mission;
 
 class MissionsController extends Controller {
 
-    protected $missionManager;
+    /*protected $missionManager;
 
     public function __construct(MissionManager $missionManager) {
         $this->missionManager = $missionManager;
-    }
+    }*/
 
     /**
-     * GET, /missions/{slug}. Where slug is a slugged name of the Mission.
+     * GET (HTTP), /missions/{slug}. Where slug is a slugged name of the Mission.
      *
      * @param $slug
      * @return \Illuminate\View\View
@@ -56,13 +62,9 @@ class MissionsController extends Controller {
      * @return \Illuminate\View\View
      */
     public function future() {
-        $futureMissions = Mission::where('status','=','Upcoming')
-                                    ->orWhere('status','In Progress')
-									->orderBy('launch_order_id')
-									->with('vehicle')->get();
 
         JavaScript::put([
-            'missions' => $futureMissions
+            'missions' => Mission::future()->with('vehicle')->get()
         ]);
 
 		return view('missions.future');
@@ -74,13 +76,9 @@ class MissionsController extends Controller {
      * @return \Illuminate\View\View
      */
     public function past() {
-		$pastMissions = Mission::where('status','=','Complete')
-                                    ->orWhere('status','=','In Progress')
-                                    ->orderBy('launch_order_id', 'DESC')
-									->with('vehicle')->get();
 
         JavaScript::put([
-            'missions' => $pastMissions
+            'missions' => Mission::past()->orWhere('status', MissionStatus::Upcoming)->with('vehicle')->get()
         ]);
 
 		return view('missions.past');

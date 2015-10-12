@@ -4,6 +4,7 @@ namespace SpaceXStats\Models;
 use Illuminate\Database\Eloquent\Model;
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
 use SpaceXStats\Presenters\MissionPresenter;
 use SpaceXStats\Presenters\PresentableTrait;
@@ -205,7 +206,7 @@ class Mission extends Model {
     }
 
     public function setLaunchDateTimeAttribute($value) {
-        $launchReorderer = new SpaceXStats\Launch\LaunchReorderer($this, $value);
+        $launchReorderer = new LaunchReorderer($this, $value);
         $launchReorderer->run();
     }
 
@@ -215,34 +216,38 @@ class Mission extends Model {
 	}
 
 	// Scoped Queries
-	public function scopeWhereComplete($query) {
-		return $query->where('status', 'Complete');
+	public function scopeWhereComplete($query, $inclusive = false) {
+        if ($inclusive) {
+            return $query->where('status', MissionStatus::Complete)->orWhere('status', MissionStatus::InProgress);
+        }
+		return $query->where('status', MissionStatus::Complete);
 	}
 
-	public function scopeWhereUpcoming($query) {
-		return $query->where('status', 'Upcoming');
+	public function scopeWhereUpcoming($query, $inclusive = false) {
+        if ($inclusive) {
+            return $query->where('status', MissionStatus::Upcoming)->orWhere('status', MissionStatus::InProgress);
+        }
+		return $query->where('status', MissionStatus::Upcoming);
 	}
 
-	public function scopeFuture($query, $take = 1) {
-		return $query->whereUpcoming()->orderBy('launch_order_id')->take($take);
+	public function scopeFuture($query) {
+		return $query->whereUpcoming()->orderBy('launch_order_id');
 	}
 
-	public function scopePast($query, $take = 1) {
-		return $query->whereComplete()->orderBy('launch_order_id', 'desc')->take($take);
+	public function scopePast($query) {
+		return $query->whereComplete()->orderBy('launch_order_id', 'desc');
 	}
 
 	// Get 1 or more next launches relative to a current launch_order_id
-	public function scopeNext($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
+	public function scopeNext($query, $currentLaunchOrderId) {
 		return $query->where('launch_order_id', '>', $currentLaunchOrderId)
-						->orderBy('launch_order_id')
-						->take($numberOfMissionsToGet);
+						->orderBy('launch_order_id');
 	}
 
 	// Get 1 or more previous launches relative to a current launch_order_id
-	public function scopePrevious($query, $currentLaunchOrderId, $numberOfMissionsToGet = 1) {
+	public function scopePrevious($query, $currentLaunchOrderId) {
 		return $query->where('launch_order_id', '<', $currentLaunchOrderId)
-						->orderBy('launch_order_id', 'DESC')
-						->take($numberOfMissionsToGet);
+						->orderBy('launch_order_id', 'DESC');
 	}
 
 	public function scopePastFromLaunchSite($query, $site) {

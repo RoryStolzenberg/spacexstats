@@ -6,12 +6,14 @@ use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use Carbon\Carbon;
-use Javascript;
+use JavaScript;
 use SpaceXStats\Models\Mission;
 
 class MissionControlController extends Controller {
 
     /**
+     * GET (HTTP). Home.
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
      */
     public function home() {
@@ -31,7 +33,11 @@ class MissionControlController extends Controller {
 		}
 	}
 
-    // AJAX GET
+    /**
+     * GET (AJAX). Returns data for the homepage (relating to recent uploads, leaderboards, favorites, downloads, etc)
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function fetch() {
         // Uploads
         $uploads['latest'] = Object::authedVisibility()->wherePublished()->orderBy('actioned_at')->take(10)->get();
@@ -107,6 +113,9 @@ class MissionControlController extends Controller {
         ));
     }
 
+    /**
+     *
+     */
     public function leaderboards() {
         
     }
