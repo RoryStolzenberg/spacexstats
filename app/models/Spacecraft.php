@@ -27,11 +27,11 @@ class Spacecraft extends Model {
 
     // Relations
     public function spacecraftFlights() {
-        return $this->hasOneOrMany('SpacecraftFlights');
+        return $this->hasOneOrMany('SpaceXStats\Models\SpacecraftFlight');
     }
 
 	public function missions() {
-		return $this->hasManyThrough('Mission', 'SpacecraftFlights');
+		return $this->hasManyThrough('SpaceXStats\Models\Mission', 'SpacecraftFlights');
 	}
 
 	// Attribute Accessors

@@ -78,80 +78,80 @@ class Mission extends Model {
 	}
 
     public function parts() {
-        return $this->belongsToMany('Part', 'part_flights_pivot');
+        return $this->belongsToMany('SpaceXStats\Models\Part', 'part_flights_pivot');
     }
 
     public function partFlights() {
-        return $this->hasMany('PartFlight');
+        return $this->hasMany('SpaceXStats\Models\PartFlight');
     }
 
 	public function spacecraftFlight() {
-		return $this->hasOne('SpacecraftFlight');
+		return $this->hasOne('SpaceXStats\Models\SpacecraftFlight');
 	}
 
     public function astronautFlights() {
-        return $this->hasManyThrough('AstronautFlight', 'SpacecraftFlight');
+        return $this->hasManyThrough('SpaceXStats\Models\AstronautFlight', 'SpacecraftFlight');
     }
 
 	public function launchSite() {
-		return $this->belongsTo('Location', 'launch_site_id');
+		return $this->belongsTo('SpaceXStats\Models\Location', 'launch_site_id');
 	}
 
 	public function prelaunchEvents() {
-		return $this->hasMany('PrelaunchEvent');
+		return $this->hasMany('SpaceXStats\Models\PrelaunchEvent');
 	}
 
     public function destination() {
-        return $this->belongsTo('Destination');
+        return $this->belongsTo('SpaceXStats\Models\Destination');
     }
 
     public function missionType() {
-        return $this->belongsTo('MissionType');
+        return $this->belongsTo('SpaceXStats\Models\MissionType');
     }
 
     public function objects() {
-        return $this->hasMany('Object');
+        return $this->hasMany('SpaceXStats\Models\Object');
     }
 
     public function payloads() {
-        return $this->hasMany('Payload');
+        return $this->hasMany('SpaceXStats\Models\Payload');
     }
 
     public function telemetries() {
-        return $this->hasMany('Telemetry');
+        return $this->hasMany('SpaceXStats\Models\Telemetry');
     }
 
     // Conditional Relationships
     public function articles() {
-        return $this->hasMany('Object')->where('type', MissionControlType::Article);
+        return $this->hasMany('SpaceXStats\Models\Object')->where('type', MissionControlType::Article);
     }
 
     public function launchVideo() {
-        return $this->belongsTo('Object', 'launch_video');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'launch_video');
     }
 
     public function missionPatch() {
-        return $this->belongsTo('Object', 'mission_patch');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'mission_patch');
     }
 
     public function pressKit() {
-        return $this->belongsTo('Object', 'press_kit');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'press_kit');
     }
 
     public function cargoManifest() {
-        return $this->belongsTo('Object', 'cargo_manifest');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'cargo_manifest');
     }
 
     public function prelaunchPressConference() {
-        return $this->belongsTo('Object', 'prelaunch_press_conference');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'prelaunch_press_conference');
     }
 
     public function postlaunchPressConference() {
-        return $this->belongsTo('Object', 'postlaunch_press_conference');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'postlaunch_press_conference');
     }
 
     public function featuredImage() {
-        return $this->belongsTo('Object', 'featured_image');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'featured_image');
     }
 
 	// Attribute Accessors

@@ -13,10 +13,10 @@ class Note extends Model {
 
     // Relations
     public function users() {
-        return $this->belongsTo('user');
+        return $this->belongsTo('SpaceXStats\Models\User');
     }
 
     public function object() {
-        return $this->belongsTo('object');
+        return $this->belongsTo('SpaceXStats\Models\Object');
     }
 }

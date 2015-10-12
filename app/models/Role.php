@@ -14,7 +14,7 @@ class Role extends Model {
 
 	// Relations
 	public function users() {
-		return $this->hasMany('User');
+		return $this->hasMany('SpaceXStats\Models\User');
 	}
 
 }

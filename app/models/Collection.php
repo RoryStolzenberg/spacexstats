@@ -14,10 +14,10 @@ class Collection extends Model {
 
     // Relationships
     public function objects() {
-        return $this->belongsToMany('Objects', 'collections_objects_pivot');
+        return $this->belongsToMany('SpaceXStats\Models\Objects', 'collections_objects_pivot');
     }
 
     public function tags() {
-        return $this->morphToMany('Tag', 'taggable', 'taggable_pivot');
+        return $this->morphToMany('SpaceXStats\Models\Tag', 'taggable', 'taggable_pivot');
     }
 }

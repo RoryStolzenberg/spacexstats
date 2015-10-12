@@ -30,18 +30,18 @@ class SpacecraftFlight extends Model {
 
     // Relations
     public function mission() {
-        return $this->belongsTo('Mission');
+        return $this->belongsTo('SpaceXStats\Models\Mission');
     }
 
     public function spacecraft() {
-        return $this->belongsTo('Spacecraft');
+        return $this->belongsTo('SpaceXStats\Models\Spacecraft');
     }
 
     public function astronauts() {
-        return $this->belongsToMany('Astronaut', 'astronauts_flights_pivot');
+        return $this->belongsToMany('SpaceXStats\Models\Astronaut', 'astronauts_flights_pivot');
     }
 
     public function astronautFlights() {
-        return $this->hasMany('AstronautFlight', 'astronaut_flights_pivot');
+        return $this->hasMany('SpaceXStats\Models\AstronautFlight', 'astronaut_flights_pivot');
     }
 }

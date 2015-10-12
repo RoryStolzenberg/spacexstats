@@ -25,11 +25,11 @@ class Award extends Model {
 
     // Relationships
     public function object() {
-        return $this->belongsTo('Object');
+        return $this->belongsTo('SpaceXStats\Models\Object');
     }
 
     public function user() {
-        return $this->belongsTo('User');
+        return $this->belongsTo('SpaceXStats\Models\User');
     }
 
     // Attribute Accessors

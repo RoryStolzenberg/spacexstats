@@ -25,10 +25,10 @@ class AstronautFlight extends Model {
     public $messages = array();
 
     public function astronaut() {
-        return $this->belongsTo('Astronaut');
+        return $this->belongsTo('SpaceXStats\Models\Astronaut');
     }
 
     public function spacecraftFlight() {
-        return $this->belongsTo('SpacecraftFlight');
+        return $this->belongsTo('SpaceXStats\Models\SpacecraftFlight');
     }
 }

@@ -237,48 +237,48 @@ class Object extends Model {
 
 	// Relations
 	public function mission() {
-		return $this->belongsTo('Mission');
+		return $this->belongsTo('SpaceXStats\Models\Mission');
 	}
 
 	public function user() {
-		return $this->belongsTo('User');
+		return $this->belongsTo('SpaceXStats\Models\User');
 	}
 
     public function tweeter() {
-        return $this->belongsTo('Tweeter');
+        return $this->belongsTo('SpaceXStats\Models\Tweeter');
     }
 
     public function publisher() {
-        return $this->belongsTo('Publisher');
+        return $this->belongsTo('SpaceXStats\Models\Publisher');
     }
 
     public function tags() {
-        return $this->morphToMany('Tag', 'taggable', 'taggables_pivot');
+        return $this->morphToMany('SpaceXStats\Models\Tag', 'taggable', 'taggables_pivot');
     }
 
     public function collections() {
-        return $this->belongsToMany('Collection', 'collections_objects_pivot');
+        return $this->belongsToMany('SpaceXStats\Models\Collection', 'collections_objects_pivot');
     }
 
     public function favorites() {
-        return $this->hasMany('Favorite');
+        return $this->hasMany('SpaceXStats\Models\Favorite');
     }
 
     public function notes() {
-        return $this->hasMany('Note');
+        return $this->hasMany('SpaceXStats\Models\Note');
     }
 
     public function downloads() {
-        return $this->hasMany('Download');
+        return $this->hasMany('SpaceXStats\Models\Download');
     }
 
     public function comments() {
-        return $this->hasMany('Comment');
+        return $this->hasMany('SpaceXStats\Models\Comment');
     }
 
     // Custom relations
     public function featuredImageOf() {
-        return $this->hasMany('Mission', 'featured_image', 'object_id');
+        return $this->hasMany('SpaceXStats\Models\Mission', 'featured_image', 'object_id');
     }
 
     // Scoped Queries

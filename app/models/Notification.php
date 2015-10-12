@@ -19,11 +19,11 @@ class Notification extends Model {
 
     // Relations
     public function emails() {
-        return $this->hasMany('Email');
+        return $this->hasMany('SpaceXStats\Models\Email');
     }
 
     public function SMSes() {
-        return $this->hasMany('SMS');
+        return $this->hasMany('SpaceXStats\Models\SMS');
     }
 
     public function notificationType() {

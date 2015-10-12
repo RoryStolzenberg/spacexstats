@@ -23,6 +23,6 @@ class Publisher extends Model {
 
     // Relations
     public function objects() {
-        return $this->hasMany('Object');
+        return $this->hasMany('SpaceXStats\Models\Object');
     }
 }

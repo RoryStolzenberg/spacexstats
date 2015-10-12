@@ -15,10 +15,10 @@ class Favorite extends Model {
 
 	// Relations
 	public function user() {
-		return $this->belongsTo('User');
+		return $this->belongsTo('SpaceXStats\Models\User');
 	}
 
 	public function object() {
-		return $this->belongsTo('Object');
+		return $this->belongsTo('SpaceXStats\Models\Object');
 	}
 }

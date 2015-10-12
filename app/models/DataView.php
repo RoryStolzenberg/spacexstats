@@ -50,7 +50,7 @@ class DataView extends Model {
 
     // Relations
     public function bannerImage() {
-        return $this->belongsTo('Object', 'banner_image');
+        return $this->belongsTo('SpaceXStats\Models\Object', 'banner_image');
     }
 
     public function getDataAttribute() {

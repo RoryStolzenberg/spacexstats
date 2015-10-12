@@ -14,10 +14,10 @@ class ObjectRevision extends Model {
 
     // Relationships
     public function object() {
-        return $this->hasOne('Object');
+        return $this->hasOne('SpaceXStats\Models\Object');
     }
 
     public function user() {
-        return $this->hasOne('User');
+        return $this->hasOne('SpaceXStats\Models\User');
     }
 }

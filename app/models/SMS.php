@@ -13,6 +13,6 @@ class SMS extends Model {
 
     // Relations
     public function notification() {
-        return $this->belongsTo('Notification');
+        return $this->belongsTo('SpaceXStats\Models\Notification');
     }
 }

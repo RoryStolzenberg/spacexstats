@@ -13,6 +13,6 @@ class Message extends Model {
     protected $guarded = [];
 
     public function user() {
-        return $this->belongsTo('User');
+        return $this->belongsTo('SpaceXStats\Models\User');
     }
 }

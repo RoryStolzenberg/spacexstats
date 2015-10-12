@@ -26,10 +26,10 @@ class Part extends Model {
 
     // Relations
     public function missions() {
-        return $this->belongsToMany('Mission', 'part_flights_pivot');
+        return $this->belongsToMany('SpaceXStats\Models\Mission', 'part_flights_pivot');
     }
 
     public function partFlights() {
-        return $this->hasMany('PartFlight');
+        return $this->hasMany('SpaceXStats\Models\PartFlight');
     }
 }

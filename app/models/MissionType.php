@@ -13,6 +13,6 @@ class MissionType extends Model {
 
     // Relationships
     public function missions() {
-        return $this->hasMany('Mission');
+        return $this->hasMany('SpaceXStats\Models\Mission');
     }
 }

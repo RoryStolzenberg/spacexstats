@@ -15,7 +15,7 @@ class Vehicle extends Model {
 
 	// Relations
 	public function missions() {
-		return $this->hasMany('Mission');
+		return $this->hasMany('SpaceXStats\Models\Mission');
 	}
 
 	// Attribute Accessors

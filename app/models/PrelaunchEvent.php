@@ -27,6 +27,6 @@ class PrelaunchEvent extends Model {
 
 	// Relations
 	public function mission() {
-		return $this->belongsTo('mission');
+		return $this->belongsTo('SpaceXStats\Models\Mission');
 	}
 }

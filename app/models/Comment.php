@@ -30,11 +30,11 @@ class Comment extends Model {
 
     // Relationships
     public function object() {
-        return $this->belongsTo('Object');
+        return $this->belongsTo('SpaceXStats\Models\Object');
     }
 
     public function user() {
-        return $this->belongsTo('User')->select(array('user_id', 'username'));
+        return $this->belongsTo('SpaceXStats\Models\User')->select(array('user_id', 'username'));
     }
 
     // Attribute Accessors

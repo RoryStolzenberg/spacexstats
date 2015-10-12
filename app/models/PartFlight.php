@@ -33,10 +33,10 @@ class PartFlight extends Model {
 
     // Relations
     public function mission() {
-        return $this->belongsTo('Mission');
+        return $this->belongsTo('SpaceXStats\Models\Mission');
     }
 
     public function part() {
-        return $this->belongsTo('Part');
+        return $this->belongsTo('SpaceXStats\Models\Part');
     }
 }

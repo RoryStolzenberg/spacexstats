@@ -33,11 +33,11 @@ class Astronaut extends Model {
 
     // Relations
     public function astronautFlights() {
-        return $this->belongsToMany('AstronautFlight', 'astronauts_flights_pivot');
+        return $this->belongsToMany('SpaceXStats\Models\AstronautFlight', 'astronauts_flights_pivot');
     }
 
     public function spacecraft() {
-        return $this->hasManyThrough('Spacecraft', 'AstronautFlight');
+        return $this->hasManyThrough('SpaceXStats\Models\Spacecraft', 'SpaceXStats\Models\AstronautFlight');
     }
 
     //Attribute Accessors
