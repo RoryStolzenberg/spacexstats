@@ -11,7 +11,7 @@ class MissionPresenter {
 
     public function launchDateTime($format = 'j M Y G:i:s') {
         if ($this->entity->launch_approximate === null) {
-            $dt = new DateTime($this->entity->launch_exact);
+            $dt = new \DateTime($this->entity->launch_exact);
             return $dt->format($format);
         } else {
             return $this->entity->launch_approximate;

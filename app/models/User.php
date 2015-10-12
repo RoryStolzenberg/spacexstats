@@ -8,17 +8,23 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\UserRole;
+use SpaceXStats\Library\Enums\VisibilityStatus;
+use SpaceXStats\Presenters\PresentableTrait;
+use SpaceXStats\Presenters\UserPresenter;
+
 use Carbon\Carbon;
 use Auth;
 use Hash;
 use Input;
-use SpaceXStats\Library\Enums\ObjectPublicationStatus;
-use SpaceXStats\Library\Enums\UserRole;
-use SpaceXStats\Library\Enums\VisibilityStatus;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
+
+    use PresentableTrait;
 
     /**
      * The database table used by the model.
@@ -35,53 +41,53 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $guarded = ['role_id', 'username','email','password', 'key'];
     protected $dates = ['subscription_expiry'];
 
-    protected $presenter = "UserPresenter";
+    protected $presenter = UserPresenter::class;
 
     // Relations
     public function profile() {
-        return $this->hasOne('SpaceXStats\Model\Profile');
+        return $this->hasOne('SpaceXStats\Models\Profile');
     }
 
     public function objects() {
-        return $this->hasMany('SpaceXStats\Model\Object');
+        return $this->hasMany('SpaceXStats\Models\Object');
     }
 
     public function favorites() {
-        return $this->hasMany('SpaceXStats\Model\Favorite');
+        return $this->hasMany('SpaceXStats\Models\Favorite');
     }
 
     public function notes() {
-        return $this->hasMany('SpaceXStats\Model\Note');
+        return $this->hasMany('SpaceXStats\Models\Note');
     }
 
     public function role() {
-        return $this->belongsTo('SpaceXStats\Model\Role');
+        return $this->belongsTo('SpaceXStats\Models\Role');
     }
 
     public function notifications() {
-        return $this->hasMany('SpaceXStats\Model\Notification');
+        return $this->hasMany('SpaceXStats\Models\Notification');
     }
 
     public function emails() {
-        return $this->hasManyThrough('SpaceXStats\Model\Email', 'SpaceXStats\Model\Notification');
+        return $this->hasManyThrough('SpaceXStats\Models\Email', 'SpaceXStats\Models\Notification');
     }
 
     public function messages() {
-        return $this->hasMany('SpaceXStats\Model\Message');
+        return $this->hasMany('SpaceXStats\Models\Message');
     }
 
     public function comments() {
-        return $this->hasMany('SpaceXStats\Model\Comment');
+        return $this->hasMany('SpaceXStats\Models\Comment');
     }
 
     public function awards() {
-        return $this->hasMany('SpaceXStats\Model\Award');
+        return $this->hasMany('SpaceXStats\Models\Award');
     }
 
     // Conditional relations
     public function publishedObjects() {
         if (Auth::isAdmin()) {
-            return $this->hasMany('SpaceXStats\Model\Object')->where('status', ObjectPublicationStatus::PublishedStatus);
+            return $this->hasMany('SpaceXStats\Models\Object')->where('status', ObjectPublicationStatus::PublishedStatus);
         }
         return $this->hasMany('Object')
             ->where('status', ObjectPublicationStatus::PublishedStatus)
@@ -89,7 +95,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     public function unreadMessages() {
-        return $this->hasMany('SpaceXStats\Model\Message')->where('hasBeenRead', false);
+        return $this->hasMany('SpaceXStats\Models\Message')->where('hasBeenRead', false);
     }
 
     // Helpers
@@ -109,26 +115,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $validator->passes() ? true : $validator->errors();
     }
 
-    public function isValidForLogin() {
-        $rules = array(
-            'email' => 'required',
-            'password' => 'required',
-            'rememberMe' => 'boolean'
-        );
-
-        $user = User::where('email', Input::get('email'))->first();
-
-        if ($user !== null && $user->role_id >= UserRole::Member) {
-            return Auth::attempt(array(
-                'email' => Input::get('email', null),
-                'password' => Input::get('password', null)),
-                Input::get('rememberMe', false)
-            );
-        } else {
-            return false;
-        }
-    }
-
     public function isValidKey($email, $key) {
         $user = User::where('email', urldecode($email))->where('key', $key)->firstOrFail();
         if (!empty($user)) {
@@ -138,17 +124,17 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     public function setMobileDetails($number) {
-        $this->attributes['mobile'] = $number->phone_number;
-        $this->attributes['mobile_national_format'] = $number->national_format;
-        $this->attributes['mobile_country_code'] = $number->country_code;
-        $this->attributes['mobile_carrier'] = isset($number->carrier->name) ? $number->carrier->name : null;
+        $this->mobile = $number->phone_number;
+        $this->mobile_national_format = $number->national_format;
+        $this->mobile_country_code = $number->country_code;
+        $this->mobile_carrier = isset($number->carrier->name) ? $number->carrier->name : null;
     }
 
     public function resetMobileDetails() {
-        $this->attributes['mobile'] = null;
-        $this->attributes['mobile_national_format'] = null;
-        $this->attributes['mobile_country_code'] = null;
-        $this->attributes['mobile_carrier'] = null;
+        $this->mobile = null;
+        $this->mobile_national_format = null;
+        $this->mobile_country_code = null;
+        $this->mobile_carrier = null;
     }
 
     /**
@@ -159,13 +145,13 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function incrementSubscription($secondsToIncrement) {
         if ($this->role_id == UserRole::Subscriber) {
-            $this->subscription_expiry->addSeconds($secondsToIncrement);
+            $this->subscription_expires_at->addSeconds($secondsToIncrement);
         }
     }
 
     // Attribute accessors
     public function getDaysUntilSubscriptionExpiresAttribute() {
-        return Carbon::now()->diffInDays($this->subscription_expiry);
+        return Carbon::now()->diffInDays($this->subscription_expires_at);
     }
 
     // Attribute mutators

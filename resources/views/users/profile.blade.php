@@ -49,7 +49,6 @@
                             <td>Member Details</td>
                             <td>
                                 {{ $user->present()->role_id() }}
-                                {{ $user->present()->subscription_details($user) }}
                             </td>
                         </tr>
                         <tr>

@@ -20,13 +20,14 @@ class UsersController extends Controller {
 
 	public function get($username = null) {
         if ($username == null) {
-            $user = Auth::user()->with(['objects', 'notes', 'favorites']);
+            $user = Auth::user()->with(['objects', 'notes', 'favorites'])->first();
         } else {
             $user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
         }
 
         //If the current user is logged in & If the current user is requesting themselves
         if (Auth::isAccessingSelf($user)) {
+
             return view('users.profile', array(
                 'user' => $user,
                 'favoriteMission' => $user->profile->favoriteMission,
@@ -34,7 +35,9 @@ class UsersController extends Controller {
                 'favorites' => $user->favorites->take(10),
                 'notes' => $user->notes
             ));
+
         } else {
+
             return view('users.profile', array(
                 'user' => $user,
                 'favoriteMission' => $user->profile->favoriteMission,

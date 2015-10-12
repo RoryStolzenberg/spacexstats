@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
+use SpaceXStats\Presenters\MissionPresenter;
 use SpaceXStats\Presenters\PresentableTrait;
 use SpaceXStats\Validators\ValidatableTrait;
 
@@ -21,7 +22,7 @@ class Mission extends Model {
     protected $fillable = [];
     protected $guarded = [];
 
-    protected $presenter = "MissionPresenter";
+    protected $presenter = MissionPresenter::class;
 
     // Observers
     public static function boot() {

@@ -62,7 +62,7 @@ gulp.task('styles', function() {
     var autoprefixer = require('gulp-autoprefixer');
     var sass = require('gulp-sass');
 
-    gulp.src('resources/assets/javascript/css/styles.scss')
+    gulp.src('resources/assets/css/styles.scss')
         .pipe(sass()).on('error', handleError)
         .pipe(autoprefixer())
         .pipe(gulp.dest('public/css'))

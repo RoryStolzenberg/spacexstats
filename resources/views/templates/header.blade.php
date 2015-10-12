@@ -59,7 +59,7 @@
 					</li>
 					<li class="gr-1on8 gr-small-12 push-3">
 						@if (Auth::check())
-                            <a href="/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a>
+                            <a href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a>
 							<ul class="nav-second-tier">
                                 @if (Auth::isAdmin())
                                     <li><a href="/admin">Admin</a></li>
