@@ -1,6 +1,8 @@
 <?php 
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use SpaceXStats\Http\Controllers\Controller;
+
 class CommentsController extends Controller {
 
     // AJAX GET

@@ -1,7 +1,9 @@
 <?php
- namespace SpaceXStats\Http\Controllers\MissionControl;
+namespace SpaceXStats\Http\Controllers\MissionControl;
+
+use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\DeltaVCalculator;
-use \SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionControlType;
 
 class ObjectsController extends Controller {
 

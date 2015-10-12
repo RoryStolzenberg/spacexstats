@@ -1,16 +1,20 @@
 <?php
- namespace SpaceXStats\Http\Controllers\MissionControl;
+namespace SpaceXStats\Http\Controllers\MissionControl;
+
+use Illuminate\Support\Facades\Auth;
+use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use Carbon\Carbon;
+use Javascript;
+use SpaceXStats\Models\Mission;
 
 class MissionControlController extends Controller {
-	/*
-	GET
-	The Mission Control home page. If users is not a subscriber,
-	go to About Mission Control + subscribe link, if they are, go to Mission Control.
-	*/
-	public function home() {
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+     */
+    public function home() {
 		if (Auth::isSubscriber()) {
 
             JavaScript::put([
@@ -23,7 +27,7 @@ class MissionControlController extends Controller {
                 'currentPage' => 'mission-control'
             ));
 		} else {
-            return Redirect::route('missionControl.about');
+            return redirect('/missioncontrol/about');
 		}
 	}
 

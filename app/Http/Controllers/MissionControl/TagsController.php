@@ -1,5 +1,8 @@
 <?php
- namespace SpaceXStats\Http\Controllers\MissionControl;
+namespace SpaceXStats\Http\Controllers\MissionControl;
+
+use SpaceXStats\Http\Controllers\Controller;
+
 class TagsController extends Controller {
     // AJAX GET
     // /tags/all

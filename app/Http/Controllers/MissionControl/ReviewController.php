@@ -1,7 +1,8 @@
 <?php 
- namespace SpaceXStats\Http\Controllers\MissionControl;
+namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use SpaceXStats\Library\DeltaV;
+use SpaceXStats\Http\Controllers\Controller;
 
 class ReviewController extends Controller {
 

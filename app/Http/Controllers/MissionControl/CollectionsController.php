@@ -1,6 +1,8 @@
 <?php 
  namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use SpaceXStats\Http\Controllers\Controller;
+
 class CollectionsController extends Controller {
 
     // GET /missioncontrol/collections/index

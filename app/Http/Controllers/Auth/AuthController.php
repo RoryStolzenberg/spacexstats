@@ -92,9 +92,6 @@ class AuthController extends Controller
     }
 
     /*public function create() {
-                return Redirect::back()->withInput(Input::except(['password', 'password_confirmation']))
-                    ->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedDatabaseError']);
-
             return Redirect::home()->with('flashMessage', $this->flashMessages['accountCreated']);
             return Redirect::back()->withErrors($isValidForSignUp)->withInput(Input::except(['password', 'password_confirmation']))
                 ->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedValidationError']);
