@@ -34,7 +34,7 @@
         <!-- jQuery& jQuery plugins -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-        <script src="//cdn.jsdelivr.net/stickynavbar.js/1.1.2/jquery.stickyNavbar.min.js"></script>
+        <script src="//cdn.jsdelivr.net/stickynavbar.js/1.3.2/jquery.stickyNavbar.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-fracs/0.15.1/jquery.fracs.js"></script>
 
         <!-- Angular -->
@@ -58,15 +58,7 @@
         <!-- Frontend App -->
         <script src="/js/app.js"></script>
         <script src="/js/spacexstatsApp.js"></script>
-
-        <!-- Fix for relative URLs due to problem wih stickyNavbar -->
-        <script>
-            $(function () {
-                $('nav.sticky-bar').stickyNavbar();
-                $('nav.sticky-bar .link').unbind('click').click();
-            });
-        </script>
-
+    
         <script>
             // Mobile left hand side drawer
             $(document).ready(function() {

@@ -36,7 +36,7 @@ class MissionsController extends Controller {
             'futureMission' => $futureMission
         );
 
-		if ($mission->status === 'Upcoming' || $mission->status === 'In Progress') {
+		if ($mission->status === MissionStatus::Upcoming || $mission->status === MissionStatus::InProgress) {
 
             JavaScript::put([
                 'mission' => $mission,
@@ -78,11 +78,19 @@ class MissionsController extends Controller {
     public function past() {
 
         JavaScript::put([
-            'missions' => Mission::past()->orWhere('status', MissionStatus::Upcoming)->with('vehicle')->get()
+            'missions' => Mission::past(true)->with('vehicle')->get()
         ]);
 
 		return view('missions.past');
 	}
+
+    public function getEdit($slug) {
+
+    }
+
+    public function patchEdit($slug) {
+
+    }
 
     /**
      * GET POST, /missions/{slug}/edit. Edit a mission.
