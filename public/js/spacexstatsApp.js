@@ -1236,6 +1236,64 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         }
     }]);
 })();
+(function() {
+    var liveApp = angular.module('app', []);
+
+    liveApp.controller('liveController', ["$scope", "liveService", function($scope, liveService) {
+        $scope.auth = laravel.auth;
+        $scope.isActive = laravel.isActive;
+        $scope.messages = laravel.messages;
+        //var socket = io();
+
+        /*
+         * Send a launch update (message) via POST off to the server to be broadcast
+         */
+        $scope.sendMessage = function() {
+            liveService.sendMessage({
+                id: $scope.messages.length + 1,
+                datetime: moment(),
+                message: $scope.update.message,
+                messageType: $scope.update.messageType
+            });
+
+            $scope.update.message = "";
+        };
+
+        $scope.turnOnSpaceXStatsLive = function() {
+            liveService.create().then(function() {
+                $scope.isActive = true;
+            });
+        }
+
+        $scope.destroy = function() {
+            liveService.destroy().then(function() {
+                $scope.isActive = false;
+            });
+        }
+
+
+    }]);
+
+    liveApp.service('liveService', ["$http", function($http) {
+
+        this.sendMessage = function(message) {
+            return $http.post('/live/send/message', message);
+        }
+
+        this.updateSettings = function(settings) {
+            return $http.post('/live/send/updateSettings', settings);
+        }
+
+        this.create = function() {
+            return $http.post('/live/send/create');
+        }
+
+        this.destroy = function() {
+            return $http.post('/live/send/destroy');
+        }
+
+    }]);
+})();
 // Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
 // https://github.com/marklagendijk/angular-recursion
 angular.module('RecursionHelper', [])
@@ -1373,6 +1431,22 @@ angular.module('RecursionHelper', [])
     });
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -1477,158 +1551,6 @@ angular.module('RecursionHelper', [])
         }
     }]);
 })();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-
-                (function() {
-                    if (typeof $scope.currentTags === 'undefined') {
-                        $scope.currentTags = [];
-                    }
-                })();
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-
-                $scope.createTag = function(createdTag) {
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
-                        }
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        // Remove any rulebreaking chars
-                        var tag = $scope.tagInput;
-                        tag = tag.replace(/["']/g, "");
-                        // Remove whitespace if present
-                        tag = tag.trim();
-
-                        $scope.createTag(tag);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-            return self;
-        }
-    });
-})();
-
-
 (function() {
     var app = angular.module('app');
 
@@ -1845,6 +1767,167 @@ angular.module('RecursionHelper', [])
     });
 })();
 (function() {
+    var app = angular.module('app', []);
+
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+        return {
+            require: 'ngModel',
+            replace: true,
+            restrict: 'E',
+            scope: {
+                availableTags: '=',
+                currentTags: '=ngModel'
+            },
+            link: function($scope, element, attributes, ctrl) {
+
+                (function() {
+                    if (typeof $scope.currentTags === 'undefined') {
+                        $scope.currentTags = [];
+                    }
+                })();
+
+                ctrl.$options = {
+                    allowInvalid: true
+                };
+
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+
+                $scope.createTag = function(createdTag) {
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
+                        });
+
+                        if (tagIsPresentInAvailableTags.length === 1) {
+                            // grab tag
+                            var newTag = tagIsPresentInAvailableTags[0];
+                        } else {
+                            // trim and convert the text to lowercase, then create!
+                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
+                        }
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
+                    }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        // Remove any rulebreaking chars
+                        var tag = $scope.tagInput;
+                        tag = tag.replace(/["']/g, "");
+                        // Remove whitespace if present
+                        tag = tag.trim();
+
+                        $scope.createTag(tag);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
+
+            },
+            templateUrl: '/js/templates/tags.html'
+        }
+    }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+            return self;
+        }
+    });
+})();
+
+
+angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            comment: '='
+        },
+        compile: function(element) {
+            // Use the compile function from the RecursionHelper,
+            // And return the linking function(s) which it returns
+            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+
+                $scope.toggleReplyState = function() {
+                    if (typeof $scope.reply !== 'undefined') {
+                        $scope.reply = !$scope.reply;
+                    } else {
+                        $scope.reply = true;
+                    }
+
+                }
+            });
+        },
+        templateUrl: '/js/templates/comment.html'
+    }
+}]);
+(function() {
     var app = angular.module('app');
 
     app.directive('deltaV', function() {
@@ -1889,31 +1972,6 @@ angular.module('RecursionHelper', [])
         }
     });
 })();
-angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            comment: '='
-        },
-        compile: function(element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
-
-                $scope.toggleReplyState = function() {
-                    if (typeof $scope.reply !== 'undefined') {
-                        $scope.reply = !$scope.reply;
-                    } else {
-                        $scope.reply = true;
-                    }
-
-                }
-            });
-        },
-        templateUrl: '/js/templates/comment.html'
-    }
-}]);
 (function() {
     var app = angular.module('app');
 
@@ -1947,6 +2005,119 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 
             },
             templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('chart', ["$window", function($window) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                chartData: '=data',
+                settings: "="
+            },
+            link: function($scope, elem, attrs) {
+
+                var d3 = $window.d3;
+                var svg = d3.select(elem[0]);
+                var width = elem.width();
+                var height = elem.height();
+
+                var settings = $scope.settings;
+
+                // check padding and set default
+                if (typeof settings.padding === 'undefined') {
+                    settings.padding = 50;
+                }
+
+                // extrapolate data
+                if (settings.extrapolate === true) {
+                    var originDatapoint = {};
+                    originDatapoint[settings.xAxisKey] = 0;
+                    originDatapoint[settings.yAxisKey] = 0;
+
+                    $scope.chartData.unshift(originDatapoint);
+                }
+
+                // draw
+                var drawLineChart = (function() {
+
+                    // Setup scales
+                    var xScale = d3.scale.linear()
+                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
+                        .range([settings.padding, width - settings.padding]);
+
+                    var yScale = d3.scale.linear()
+                        .domain([d3.max($scope.chartData, function(d) {
+                            return d[settings.yAxisKey];
+                        }), 0])
+                        .range([settings.padding, height - settings.padding]);
+
+                    // Generators
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
+                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
+                    });
+                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
+                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
+                    });
+
+                    // Line function
+                    var lineFunction = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d[settings.xAxisKey]);
+                        })
+                        .y(function(d) {
+                            return yScale(d[settings.yAxisKey]);
+                        })
+                        .interpolate("basis");
+
+                    // Element manipulation
+                    svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                        .call(xAxisGenerator);
+
+                    svg.append("svg:g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(" + settings.padding + ",0)")
+                        .attr("stroke-width", 2)
+                        .call(yAxisGenerator);
+
+                    svg.append("svg:path")
+                        .attr({
+                            d: lineFunction($scope.chartData),
+                            "stroke-width": 2,
+                            "fill": "none",
+                            "class": "path"
+                        });
+
+                    svg.append("text")
+                        .attr("class", "chart-title")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", settings.padding / 2)
+                        .text(settings.chartTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis x-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", height - (settings.padding / 2))
+                        .text(settings.xAxisTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis y-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("transform", "rotate(-90)")
+                        .attr("x", - (height / 2))
+                        .attr("y", settings.padding / 2)
+                        .text(settings.yAxisTitle);
+                })();
+            },
+            templateUrl: '/js/templates/chart.html'
         }
     }]);
 })();
@@ -2061,119 +2232,6 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
 		};
 
 	});
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('chart', ["$window", function($window) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                chartData: '=data',
-                settings: "="
-            },
-            link: function($scope, elem, attrs) {
-
-                var d3 = $window.d3;
-                var svg = d3.select(elem[0]);
-                var width = elem.width();
-                var height = elem.height();
-
-                var settings = $scope.settings;
-
-                // check padding and set default
-                if (typeof settings.padding === 'undefined') {
-                    settings.padding = 50;
-                }
-
-                // extrapolate data
-                if (settings.extrapolate === true) {
-                    var originDatapoint = {};
-                    originDatapoint[settings.xAxisKey] = 0;
-                    originDatapoint[settings.yAxisKey] = 0;
-
-                    $scope.chartData.unshift(originDatapoint);
-                }
-
-                // draw
-                var drawLineChart = (function() {
-
-                    // Setup scales
-                    var xScale = d3.scale.linear()
-                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
-                        .range([settings.padding, width - settings.padding]);
-
-                    var yScale = d3.scale.linear()
-                        .domain([d3.max($scope.chartData, function(d) {
-                            return d[settings.yAxisKey];
-                        }), 0])
-                        .range([settings.padding, height - settings.padding]);
-
-                    // Generators
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
-                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
-                    });
-                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
-                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
-                    });
-
-                    // Line function
-                    var lineFunction = d3.svg.line()
-                        .x(function(d) {
-                            return xScale(d[settings.xAxisKey]);
-                        })
-                        .y(function(d) {
-                            return yScale(d[settings.yAxisKey]);
-                        })
-                        .interpolate("basis");
-
-                    // Element manipulation
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                        .call(xAxisGenerator);
-
-                    svg.append("svg:g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + settings.padding + ",0)")
-                        .attr("stroke-width", 2)
-                        .call(yAxisGenerator);
-
-                    svg.append("svg:path")
-                        .attr({
-                            d: lineFunction($scope.chartData),
-                            "stroke-width": 2,
-                            "fill": "none",
-                            "class": "path"
-                        });
-
-                    svg.append("text")
-                        .attr("class", "chart-title")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", settings.padding / 2)
-                        .text(settings.chartTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis x-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", height - (settings.padding / 2))
-                        .text(settings.xAxisTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis y-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("transform", "rotate(-90)")
-                        .attr("x", - (height / 2))
-                        .attr("y", settings.padding / 2)
-                        .text(settings.yAxisTitle);
-                })();
-            },
-            templateUrl: '/js/templates/chart.html'
-        }
-    }]);
 })();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {

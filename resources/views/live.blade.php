@@ -7,14 +7,15 @@
     <div class="content-wrapper">
         <h1>SpaceX Stats Live</h1>
         <main>
-            <nav class="sticky-bar">
-                <ul class="container">
-                    <li class="gr-1">Stuff</li>
-                </ul>
-            </nav>
-            <section class="highlights">
-            </section>
             <section>
+                <div ng-if="auth == true">
+                    You are the launch controller.
+                    <button ng-click="turnOnSpaceXStatsLive()">Turn it on</button>
+                </div>
+                <form>
+                    <input type="text" ng-model="update.message" />
+                    <input type="submit" ng-click="sendMessage()" />
+                </form>
             </section>
         </main>
     </div>

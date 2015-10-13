@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Model\Interfaces;
+namespace SpaceXStats\Models\Interfaces;
 
 interface UploadableInterface extends HasFilesInterface {
 	public function hasCloudFile();
