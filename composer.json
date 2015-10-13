@@ -17,7 +17,8 @@
         "elasticsearch/elasticsearch": "^2.0",
         "luke-nz/phpreddit": "dev-master@dev",
         "ksubileau/color-thief-php": "^1.2",
-        "mexitek/phpcolors": "^0.4.0"
+        "mexitek/phpcolors": "^0.4.0",
+        "predis/predis": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

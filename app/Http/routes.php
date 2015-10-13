@@ -28,8 +28,6 @@ function routesInDirectory($app = '') {
 routesInDirectory();
 
 /* MISCELLANEOUS ROUTES */
-Route::get('live', 'LiveController@live');
-
 Route::get('webcast/getstatus', 'WebcastStatusController@getStatus');
 
 Route::get('calendars/all', 'CalendarController@getAll');

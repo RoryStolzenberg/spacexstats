@@ -478,7 +478,7 @@ class Spacexstats extends Migration {
             $table->datetime('subscription_expires_at')->nullable(); // Nonoptional Values
 
             // Specific roles
-            $table->boolean('launchCentralFlag');
+            $table->boolean('launchControllerFlag');
             $table->boolean('articleWriterFlag');
             $table->boolean('canSeeHiddenItemsFlag');
             $table->boolean('bannedFlag');

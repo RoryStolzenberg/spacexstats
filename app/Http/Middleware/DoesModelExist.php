@@ -3,7 +3,7 @@ namespace SpaceXStats\Http\Middleware;
 
 use Closure;
 
-class DoesExistMiddleware {
+class DoesModelExist {
 
     /**
      * Handle an incoming request.

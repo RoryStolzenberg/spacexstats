@@ -9,4 +9,12 @@ class LiveController extends Controller {
     public function live() {
         return view('live');
     }
+
+    public function update() {
+
+    }
+
+    public function updateSettings() {
+
+    }
 }

@@ -123,6 +123,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
     }
 
+    public function isLaunchController() {
+        return $this->launchControllerFlag == true;
+    }
+
     public function setMobileDetails($number) {
         $this->mobile = $number->phone_number;
         $this->mobile_national_format = $number->national_format;

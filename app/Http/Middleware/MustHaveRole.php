@@ -3,7 +3,7 @@ namespace SpaceXStats\Http\Middleware;
 
 use Closure;
 
-class MustBeMiddleware {
+class MustHaveRole {
 
     /**
      * Handle an incoming request.
