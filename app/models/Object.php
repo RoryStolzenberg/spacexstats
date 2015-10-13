@@ -4,11 +4,15 @@ use Illuminate\Database\Eloquent\Model;
 
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
-use SpaceXStats\Presenters\PresentableTrait;
+use SpaceXStats\Presenters\PresentableTrait as Presentable;
+use SpaceXStats\Models\Traits\CommentableTrait as Commentable;
+use SpaceXStats\Models\Traits\UploadableTrait as Uploadable;
+use SpaceXStats\Models\Traits\CountsViewsTrait as CountsViews;
+use SpaceXStats\Models\Interfaces\UploadableInterface;
 
-class Object extends Model {
+class Object extends Model implements UploadableInterface {
 
-    use PresentableTrait;
+    use Presentable, Commentable, Uploadable, CountsViews;
 
 	protected $table = 'objects';
 	protected $primaryKey = 'object_id';
@@ -416,29 +420,6 @@ class Object extends Model {
 
     public function getViewsAttribute() {
         return Redis::hget('object:' . $this->object_id, 'views') !== null ? Redis::hget('object:' . $this->object_id, 'views') : 0;
-    }
-
-    public function getCommentTreeAttribute() {
-        return $this->buildTree($this->comments()->withTrashed()->with('user')->get()->toArray(), 0);
-    }
-
-    private function buildTree($array, $parent, $currentDepth = 0) {
-        $branch = [];
-
-        // http://stackoverflow.com/questions/8587341/recursive-function-to-generate-multidimensional-array-from-database-result
-        foreach ($array as $model) {
-            $model['depth'] = $currentDepth;
-            if ($model['parent'] == $parent) {
-                $children = $this->buildTree($array, $model['comment_id'], $currentDepth + 1);
-
-                if ($children) {
-                    $model['children'] = $children;
-                }
-
-                $branch[] = $model;
-            }
-        }
-        return $branch;
     }
 
     // Attribute mutators
