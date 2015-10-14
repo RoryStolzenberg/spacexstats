@@ -5,7 +5,7 @@ namespace SpaceXStats\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class IsLaunchController
+class IsLaunchControllerMiddleware
 {
     /**
      * Handle an incoming request.

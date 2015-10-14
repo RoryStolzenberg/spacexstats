@@ -44,9 +44,9 @@ return [
     ],
 
     'reddit' => [
-        'redditUsername' => env('REDDIT_USERNAME'),
-        'redditPassword' => env('REDDIT_PASSWORD'),
-        'redditId' => env('REDDIT_ID'),
-        'redditSecret' => env('REDDIT_SECRET')
+        'username' => env('REDDIT_USERNAME'),
+        'password' => env('REDDIT_PASSWORD'),
+        'id' => env('REDDIT_ID'),
+        'secret' => env('REDDIT_SECRET')
     ]
 ];

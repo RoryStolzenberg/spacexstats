@@ -18,7 +18,7 @@
                 this.getStartedHeroText = 'Awesome. We just need a bit of info first.'
             },
             turnOnSpaceXStatsLive: function() {
-                liveService.create().then(function() {
+                liveService.create($scope.startingParameters).then(function() {
                     $scope.isActive = true;
                     $scope.settings.isGettingStarted = null;
                 });
@@ -78,8 +78,8 @@
             return $http.post('/live/send/updateSettings', settings);
         }
 
-        this.create = function() {
-            return $http.post('/live/send/create');
+        this.create = function(createThreadParameters) {
+            return $http.post('/live/send/create', createThreadParameters);
         }
 
         this.destroy = function() {

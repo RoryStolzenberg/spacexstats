@@ -2,8 +2,10 @@
 namespace SpaceXStats\Http\Controllers\Live;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
+use LukeNZ\Reddit\Reddit;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Models\Mission;
 
@@ -45,7 +47,18 @@ class LiveController extends Controller {
         // Turn on SpaceXStats Live
         Redis::set('spacexstatslive:active', true);
         // Establish the parameters
-        // Create the Reddit thread
+
+        // Create the Reddit thread (create a service for this)
+        $reddit = new Reddit(Config::get('reddit.username'), Config::get('reddit.password'), Config::get('reddit.id'), Config::get('reddit.secret'));
+        $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
+
+        $response = $reddit->subreddit('echocss')->submit(array(
+            'kind' => 'self',
+            'sendreplies' => true,
+            'text' => Input::get('description'),
+            'title' => Input::get('title')
+        ));
+
         return response(null, 204);
     }
 
