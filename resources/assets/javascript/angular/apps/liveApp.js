@@ -5,6 +5,52 @@
         $scope.auth = laravel.auth;
         $scope.isActive = laravel.isActive;
         $scope.messages = laravel.messages;
+
+        $scope.data = {
+            upcomingMission: laravel.mission
+        };
+
+        $scope.settings = {
+            isGettingStarted: laravel.isActive == true ? null : false,
+            getStartedHeroText: 'You are the launch controller.',
+            getStarted: function() {
+                this.isGettingStarted = true;
+                this.getStartedHeroText = 'Awesome. We just need a bit of info first.'
+            },
+            turnOnSpaceXStatsLive: function() {
+                liveService.create().then(function() {
+                    $scope.isActive = true;
+                    $scope.settings.isGettingStarted = null;
+                });
+            },
+            turnOffSpaceXStatsLive: function() {
+                liveService.destroy().then(function() {
+                    $scope.isActive = false;
+                });
+            }
+        };
+
+        $scope.startingParameters = {
+            isForLaunch: true,
+            threadName: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
+            toggleForLaunch: function() {
+                if (this.isForLaunch) {
+                    this.threadName = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
+                } else {
+                    this.threadName = null;
+                }
+
+            },
+            countdownTo: null,
+            streamingSources: {
+                nasa: false,
+                spacex: false
+            },
+            description: null,
+            extraSections: {
+
+            }
+        };
         //var socket = io();
 
         /*
@@ -20,20 +66,6 @@
 
             $scope.update.message = "";
         };
-
-        $scope.turnOnSpaceXStatsLive = function() {
-            liveService.create().then(function() {
-                $scope.isActive = true;
-            });
-        }
-
-        $scope.destroy = function() {
-            liveService.destroy().then(function() {
-                $scope.isActive = false;
-            });
-        }
-
-
     }]);
 
     liveApp.service('liveService', ["$http", function($http) {

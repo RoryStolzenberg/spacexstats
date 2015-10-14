@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Models\Mission;
 
 class LiveController extends Controller {
 
@@ -18,7 +19,8 @@ class LiveController extends Controller {
         JavaScript::put([
             'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
             'isActive' => Redis::get('spacexstatslive:isActive') == true,
-            'messages' => Redis::get('spacexstatslive:messages')
+            'messages' => Redis::get('spacexstatslive:messages'),
+            'mission' => Mission::future()->first()
         ]);
 
         return view('live');
@@ -42,6 +44,8 @@ class LiveController extends Controller {
     public function create() {
         // Turn on SpaceXStats Live
         Redis::set('spacexstatslive:active', true);
+        // Establish the parameters
+        // Create the Reddit thread
         return response(null, 204);
     }
 
