@@ -51,20 +51,33 @@
 
             }
         };
+
+        $scope.send = {
+            new: {
+                message: null
+            },
+            /*
+             * Send a launch update (message) via POST off to the server to be broadcast
+             */
+            message: function() {
+                liveService.sendMessage({
+                    id: $scope.messages.length + 1,
+                    datetime: moment(),
+                    message: $scope.send.new.message,
+                    messageType: $scope.send.new.messageType
+                });
+
+                $scope.update.message = "";
+            },
+            update: function() {
+
+            }
+        }
         //var socket = io();
 
-        /*
-         * Send a launch update (message) via POST off to the server to be broadcast
-         */
-        $scope.sendMessage = function() {
-            liveService.sendMessage({
-                id: $scope.messages.length + 1,
-                datetime: moment(),
-                message: $scope.update.message,
-                messageType: $scope.update.messageType
-            });
 
-            $scope.update.message = "";
+        $scope.sendMessage = function() {
+
         };
     }]);
 

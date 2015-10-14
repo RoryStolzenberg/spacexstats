@@ -1334,12 +1334,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LukeNZ/phpreddit.git",
-                "reference": "0749943ac0e0191ebfac1aa9bafd9742280614d3"
+                "reference": "5ddaf5871ccf138ee3039e4726842d0247107d0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LukeNZ/phpreddit/zipball/0749943ac0e0191ebfac1aa9bafd9742280614d3",
-                "reference": "0749943ac0e0191ebfac1aa9bafd9742280614d3",
+                "url": "https://api.github.com/repos/LukeNZ/phpreddit/zipball/5ddaf5871ccf138ee3039e4726842d0247107d0b",
+                "reference": "5ddaf5871ccf138ee3039e4726842d0247107d0b",
                 "shasum": ""
             },
             "require": {
@@ -1367,7 +1367,7 @@
                 "api",
                 "reddit"
             ],
-            "time": "2015-10-14 07:37:24"
+            "time": "2015-10-14 10:07:15"
         },
         {
             "name": "mexitek/phpcolors",

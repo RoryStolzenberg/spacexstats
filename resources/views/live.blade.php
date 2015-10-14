@@ -8,6 +8,7 @@
         <h1>SpaceX Stats Live</h1>
         <main>
             <section>
+                <!-- If the user is authenticated and SpaceXStats live is not running -->
                 <div ng-if="auth == true && isActive == false">
                     <span class="live-herotext">@{{ settings.getStartedHeroText }}</span>
 
@@ -43,9 +44,13 @@
 
 
                 </div>
-                <form ng-if="auth == true && isActive == true">
-                    <input type="text" ng-model="update.message" />
-                    <input type="submit" ng-click="sendMessage()" />
+
+                <!-- If the user is authenticated and SpaceXStats live is running -->
+                <form name="sendMessageForm" ng-if="auth == true && isActive == true">
+                    <textarea name="message" ng-model="send.new.message" required>
+
+                    </textarea>
+                    <input type="submit" ng-click="send.message()" value="Post" />
                 </form>
             </section>
         </main>

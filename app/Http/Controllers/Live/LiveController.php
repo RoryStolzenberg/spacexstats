@@ -3,6 +3,7 @@ namespace SpaceXStats\Http\Controllers\Live;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
@@ -20,7 +21,7 @@ class LiveController extends Controller {
 
         JavaScript::put([
             'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
-            'isActive' => Redis::get('spacexstatslive:isActive') == true,
+            'isActive' => Redis::get('spacexstatslive:active') == true,
             'messages' => Redis::get('spacexstatslive:messages'),
             'mission' => Mission::future()->first()
         ]);
@@ -49,17 +50,17 @@ class LiveController extends Controller {
         // Establish the parameters
 
         // Create the Reddit thread (create a service for this)
-        $reddit = new Reddit(Config::get('reddit.username'), Config::get('reddit.password'), Config::get('reddit.id'), Config::get('reddit.secret'));
+        $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         $response = $reddit->subreddit('echocss')->submit(array(
             'kind' => 'self',
             'sendreplies' => true,
             'text' => Input::get('description'),
-            'title' => Input::get('title')
+            'title' => Input::get('threadName')
         ));
 
-        return response(null, 204);
+        return response(json_encode($response), 204);
     }
 
     public function destroy() {
