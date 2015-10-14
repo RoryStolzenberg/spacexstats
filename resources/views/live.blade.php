@@ -41,17 +41,20 @@
 
                         <input type="submit" ng-click="settings.turnOnSpaceXStatsLive()" ng-disabled="gettingStartedForm.$invalid" value="Create Thread" />
                     </form>
-
-
                 </div>
 
-                <!-- If the user is authenticated and SpaceXStats live is running -->
-                <form name="sendMessageForm" ng-if="auth == true && isActive == true">
+                <!-- If SpaceXStats live is running -->
+                <div class="live-updates" ng-if="isActive == true">
+                    <form name="sendMessageForm" ng-if="auth == true">
                     <textarea name="message" ng-model="send.new.message" required>
-
+                        Enter a message here. Updates will automatically be timestamped.
                     </textarea>
-                    <input type="submit" ng-click="send.message()" value="Post" />
-                </form>
+                        <input type="submit" ng-click="send.message()" value="Post" />
+                    </form>
+                </div>
+
+
+
             </section>
         </main>
     </div>

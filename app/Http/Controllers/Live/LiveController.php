@@ -47,18 +47,24 @@ class LiveController extends Controller {
     public function create() {
         // Turn on SpaceXStats Live
         Redis::set('spacexstatslive:active', true);
-        // Establish the parameters
+
+        // Establish miscellaneous parameters
+        Redis::hset('spacexstatslive:streams', 'nasastream', Input::get('nasastream'));
+        Redis::hset('spacexstatslive:streams', 'spacexstream', Input::get('spacexstream'));
 
         // Create the Reddit thread (create a service for this)
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
+        // Create a post
         $response = $reddit->subreddit('echocss')->submit(array(
             'kind' => 'self',
             'sendreplies' => true,
             'text' => Input::get('description'),
             'title' => Input::get('threadName')
         ));
+
+        // Broadcast event to turn on spacexstats live
 
         return response(json_encode($response), 204);
     }

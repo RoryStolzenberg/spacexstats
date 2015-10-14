@@ -19,7 +19,8 @@
         "ksubileau/color-thief-php": "^1.2",
         "mexitek/phpcolors": "^0.4.0",
         "predis/predis": "^1.0",
-        "filp/whoops": "^1.1"
+        "filp/whoops": "^1.1",
+        "erusev/parsedown": "^1.6"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
