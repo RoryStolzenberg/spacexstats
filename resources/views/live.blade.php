@@ -18,25 +18,25 @@
 
                     <form name="gettingStartedForm" ng-if="settings.isGettingStarted == true" novalidate>
                         <span>Is this for the upcoming launch or a miscellaneous event?</span>
-                        <input type="checkbox" id="isForLaunch" name="isForLaunch" ng-model="startingParameters.isForLaunch" ng-change="startingParameters.toggleForLaunch()" />
+                        <input type="checkbox" id="isForLaunch" name="isForLaunch" ng-model="liveParameters.isForLaunch" ng-change="liveParameters.toggleForLaunch()" />
                         <label for="isForLaunch"></label>
                         @{{ data.upcomingMission.name }}
 
-                        <input type="text" ng-model="startingParameters.threadName" id="threadName" name="threadName" placeholder="The Reddit Thread Title" required />
+                        <input type="text" ng-model="liveParameters.title" id="title" name="title" placeholder="The Reddit Thread Title" required />
 
                         <div ng-hide="startingParameters.isForLaunch">
                             <label for="countdownTo">Enter an event time</label>
-                            <datetime type="datetime" ng-model="startingParameters.countdownTo"></datetime>
+                            <datetime type="datetime" ng-model="liveParameters.countdownTo"></datetime>
                         </div>
 
                         <span>SpaceX Stream</span>
-                        <input type="checkbox" id="spacexstream" name="spacexstream" value="true" ng-model="startingParameters.streamingSources.spacex" />
+                        <input type="checkbox" id="spacexstream" name="spacexstream" value="true" ng-model="liveParameters.streamingSources.spacex" />
                         <label for="spacexstream"></label>
                         <span>NASA Stream</span>
-                        <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="startingParameters.streamingSources.nasa" />
+                        <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streamingSources.nasa" />
                         <label for="nasastream"></label>
 
-                        <textarea ng-model="startingParameters.description" id="description" name="description" required placeholder="Write a small introduction about the launch here. 500 < chars, use markdown just like you would on Reddit">
+                        <textarea ng-model="liveParameters.description" id="description" name="description" required placeholder="Write a small introduction about the launch here. 500 < chars, use markdown just like you would on Reddit">
                         </textarea>
 
                         <h2>Sections</h2>
@@ -48,7 +48,7 @@
 
                         <h2>Content</h2>
                         <ul>
-                            <li ng-repeat="resource in startingParameters.resources">
+                            <li ng-repeat="resource in liveParameters.resources">
                                 <input type="text" ng-model="resource.title" required placeholder="title of resource" />
                                 <input type="text" ng-model="resource.url" required placeholder="URL to resource" />
                                 <input type="text" ng-model="resource.courtesy" required placeholder="courtesy /r/spacex" />

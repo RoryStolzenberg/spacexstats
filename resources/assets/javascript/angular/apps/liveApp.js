@@ -1,7 +1,7 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", function($scope, liveService) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Message", function($scope, liveService, Section, Resource, Message) {
         $scope.auth = laravel.auth;
         $scope.isActive = laravel.isActive;
         $scope.messages = laravel.messages;
@@ -28,21 +28,24 @@
                     $scope.isActive = false;
                 });
             },
-            addSection: function() {
+            addSection: function(section) {
+                $scope.liveParameters.sections.push(new Section(section));
+            },
+            removeSection: function(section) {
 
             },
-            removeSection: function() {
+            addResource: function(resource) {
+                $scope.liveParameters.resources.push(new Resource(resource));
+            },
+            removeResource: function(resource) {
 
             },
-            addResource: function() {
-
-            },
-            removeResource: function() {
-
+            updateSettings: function() {
+                liveService.updateSettings($scope.liveParameters);
             }
         };
 
-        $scope.startingParameters = {
+        $scope.liveParameters = {
             isForLaunch: true,
             threadName: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
             toggleForLaunch: function() {
@@ -63,10 +66,6 @@
             resources: []
         };
 
-        $scope.live = {
-
-        }
-
         $scope.send = {
             new: {
                 message: null
@@ -83,9 +82,6 @@
                 });
 
                 $scope.update.message = "";
-            },
-            updateToMessage: function() {
-
             }
         }
 
