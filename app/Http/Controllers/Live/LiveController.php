@@ -2,11 +2,13 @@
 namespace SpaceXStats\Http\Controllers\Live;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
+use SpaceXStats\Facades\BladeRenderer;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Models\Mission;
 
@@ -49,11 +51,22 @@ class LiveController extends Controller {
         Redis::set('spacexstatslive:active', true);
 
         // Establish miscellaneous parameters
-        Redis::hset('spacexstatslive:streams', 'nasastream', Input::get('nasastream'));
-        Redis::hset('spacexstatslive:streams', 'spacexstream', Input::get('spacexstream'));
+        Redis::hmset('spacexstatslive:streams', array(
+            'nasastream' => Input::get('nasastream'),
+            'spacexstream' => Input::get('spacexstream')
+        ));
+
+        //ob_start();
+        //$i = 1;
+        //include(base_path() . '/resources/assets/templates/livethreadcontents.blade.php');
+        //Blade::compilePath(base_path() . '/resources/assets/templates/livethreadcontents.blade.php');
+        //$renderer = new BladeRenderer(array(base_path() . '/resources/assets/templates'), array('cache_path' => base_path() . '/storage/framework/views', 'local_variables' => true));
+        $output = BladeRenderer::render('livethreadcontents', array('i' => 5));
+        //$var = ob_get_contents();
+        //ob_end_clean();
 
         // Create the Reddit thread (create a service for this)
-        $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
+        /*$reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         // Create a post
@@ -64,9 +77,9 @@ class LiveController extends Controller {
             'title' => Input::get('threadName')
         ));
 
-        // Broadcast event to turn on spacexstats live
+        // Broadcast event to turn on spacexstats live*/
 
-        return response(json_encode($response), 204);
+        return response(null, 204);
     }
 
     public function destroy() {

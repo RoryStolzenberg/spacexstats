@@ -152,6 +152,7 @@ return [
         SpaceXStats\Providers\ValidationServiceProvider::class,
         SpaceXStats\Providers\SearchServiceProvider::class,
         SpaceXStats\Providers\UploadServiceProvider::class,
+        SpaceXStats\Providers\BladeRendererServiceProvider::class,
 
         /*
          * Third Party Service Providers...

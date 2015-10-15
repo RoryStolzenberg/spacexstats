@@ -20,7 +20,8 @@
         "mexitek/phpcolors": "^0.4.0",
         "predis/predis": "^1.0",
         "filp/whoops": "^1.1",
-        "erusev/parsedown": "^1.6"
+        "erusev/parsedown": "^1.6",
+        "windwalker/renderer": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
