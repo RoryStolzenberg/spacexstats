@@ -28,14 +28,14 @@
                     $scope.isActive = false;
                 });
             },
-            addSection: function(section) {
-                $scope.liveParameters.sections.push(new Section(section));
+            addSection: function() {
+                $scope.liveParameters.sections.push(new Section({}));
             },
             removeSection: function(section) {
 
             },
-            addResource: function(resource) {
-                $scope.liveParameters.resources.push(new Resource(resource));
+            addResource: function() {
+                $scope.liveParameters.resources.push(new Resource({}));
             },
             removeResource: function(resource) {
 
