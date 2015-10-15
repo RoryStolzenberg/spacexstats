@@ -48,37 +48,38 @@ class LiveController extends Controller {
 
     public function create() {
         // Turn on SpaceXStats Live
-        Redis::set('spacexstatslive:active', true);
+        Redis::set('live:active', true);
 
-        // Establish miscellaneous parameters
-        Redis::hmset('spacexstatslive:streams', array(
+        // Establish redis parameters
+        Redis::hmset('live:streams', array(
             'nasastream' => Input::get('nasastream'),
             'spacexstream' => Input::get('spacexstream')
         ));
 
-        //ob_start();
-        //$i = 1;
-        //include(base_path() . '/resources/assets/templates/livethreadcontents.blade.php');
-        //Blade::compilePath(base_path() . '/resources/assets/templates/livethreadcontents.blade.php');
-        //$renderer = new BladeRenderer(array(base_path() . '/resources/assets/templates'), array('cache_path' => base_path() . '/storage/framework/views', 'local_variables' => true));
-        $output = BladeRenderer::render('livethreadcontents', array('i' => 5));
-        //$var = ob_get_contents();
-        //ob_end_clean();
+        Redis::hset('live:title', Input::get('title'));
+        Redis::hset('live:description', Input::get('description'));
+
+        Redis::hmset('live:resources', Input::get('resources'));
+        Redis::hmset('live:sections', Input::get('sections'));
+
+        // Render the Reddit thread template
+        $templatedOutput = BladeRenderer::render('livethreadcontents', array());
 
         // Create the Reddit thread (create a service for this)
-        /*$reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
+        $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         // Create a post
         $response = $reddit->subreddit('echocss')->submit(array(
             'kind' => 'self',
             'sendreplies' => true,
-            'text' => Input::get('description'),
-            'title' => Input::get('threadName')
+            'text' => $templatedOutput,
+            'title' => Input::get('title')
         ));
 
-        // Broadcast event to turn on spacexstats live*/
+        // Broadcast event to turn on spacexstats live
 
+        // Respond
         return response(null, 204);
     }
 

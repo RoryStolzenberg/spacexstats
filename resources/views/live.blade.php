@@ -39,6 +39,23 @@
                         <textarea ng-model="startingParameters.description" id="description" name="description" required placeholder="Write a small introduction about the launch here. 500 < chars, use markdown just like you would on Reddit">
                         </textarea>
 
+                        <h2>Sections</h2>
+                        <div ng-repeat="section in startingParameters.sections">
+                            <input type="text" ng-model="section.title" required />
+                            <textarea ng-model="section.content" required></textarea>
+                        </div>
+                        <button ng-click="settings.addSection()">Add Section</button>
+
+                        <h2>Content</h2>
+                        <ul>
+                            <li ng-repeat="resource in startingParameters.resources">
+                                <input type="text" ng-model="resource.title" required placeholder="title of resource" />
+                                <input type="text" ng-model="resource.url" required placeholder="URL to resource" />
+                                <input type="text" ng-model="resource.courtesy" required placeholder="courtesy /r/spacex" />
+                            </li>
+                        </ul>
+                        <button ng-click="settings.addResource()">Add Resource</button>
+
                         <input type="submit" ng-click="settings.turnOnSpaceXStatsLive()" ng-disabled="gettingStartedForm.$invalid" value="Create Thread" />
                     </form>
                 </div>

@@ -7790,6 +7790,15 @@ img#object {
     text-align: center;
     text-shadow: 0 0 10px #181c1f; }
 
+body.live {
+  background-color: #3569A4; }
+  body.live h1 {
+    height: 100px;
+    line-height: 100px;
+    text-align: center; }
+  body.live .content-wrapper main {
+    height: calc(100% - 150px + 50px); }
+
 .tagger-container .wrapper {
   border: 1px solid #CCC;
   font-size: 0;

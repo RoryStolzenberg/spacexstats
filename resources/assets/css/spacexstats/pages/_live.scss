@@ -1,0 +1,13 @@
+body.live {
+    background-color:$blue;
+
+    h1 {
+        height:100px;
+        line-height:100px;
+        text-align:center;
+    }
+
+    .content-wrapper main {
+        height:calc(100% - #{$h1-height} + 50px);
+    }
+}

@@ -27,6 +27,18 @@
                 liveService.destroy().then(function() {
                     $scope.isActive = false;
                 });
+            },
+            addSection: function() {
+
+            },
+            removeSection: function() {
+
+            },
+            addResource: function() {
+
+            },
+            removeResource: function() {
+
             }
         };
 
@@ -47,10 +59,13 @@
                 spacex: false
             },
             description: null,
-            extraSections: {
-
-            }
+            sections: [],
+            resources: []
         };
+
+        $scope.live = {
+
+        }
 
         $scope.send = {
             new: {
@@ -69,16 +84,12 @@
 
                 $scope.update.message = "";
             },
-            update: function() {
+            updateToMessage: function() {
 
             }
         }
+
         //var socket = io();
-
-
-        $scope.sendMessage = function() {
-
-        };
     }]);
 
     liveApp.service('liveService', ["$http", function($http) {
@@ -100,4 +111,22 @@
         }
 
     }]);
+
+    liveApp.factory('Message', function() {
+        return function() {
+
+        }
+    });
+
+    liveApp.factory('Resource', function() {
+        return function() {
+
+        }
+    });
+
+    liveApp.factory('Section', function() {
+        return function() {
+
+        }
+    });
 })();
