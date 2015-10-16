@@ -147,13 +147,6 @@ class Object extends Model implements UploadableInterface {
         return $query->where('status', ObjectPublicationStatus::PublishedStatus);
     }
 
-    public function scopeAuthedStatus($query) {
-        if (!Auth::isAdmin()) {
-            return $query->where('status', ObjectPublicationStatus::PublishedStatus);
-        }
-        return $query;
-    }
-
     public function scopeWherePublic($query) {
         return $query->where('visibility', VisibilityStatus::PublicStatus);
     }
@@ -162,6 +155,13 @@ class Object extends Model implements UploadableInterface {
         return $query->where('visiblility', VisibilityStatus::DefaultStatus);
     }
 
+    /**
+     * Only return Objects where the visibility of the object matches the corresponding user role
+     * of a user.
+     *
+     * @param $query
+     * @return mixed
+     */
     public function scopeAuthedVisibility($query) {
         if (Auth::isAdmin()) {
             return $query;

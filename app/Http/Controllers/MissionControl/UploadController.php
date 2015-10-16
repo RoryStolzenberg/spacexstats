@@ -11,6 +11,7 @@ use LukeNZ\Reddit\Reddit;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Publisher;
 use SpaceXStats\Models\Tag;
+use JavaScript;
 
 class UploadController extends Controller {
 

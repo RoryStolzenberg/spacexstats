@@ -2,8 +2,10 @@
 namespace SpaceXStats\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Auth;
+use SpaceXStats\Library\Enums\UserRole;
 
-class MustBeMiddlware {
+class MustBeMiddleware {
 
     /**
      * Handle an incoming request.
@@ -21,7 +23,7 @@ class MustBeMiddlware {
                 return redirect('home');
             } else {
                 // The user must be accessing themself or alternatively the user doing the accessing is an administrator
-                if (Auth::user()->role_id < UserRole::Administrator && Request::segment(2) != Auth::user()->username) {
+                if (Auth::user()->role_id < UserRole::Administrator && $request->segment(2) != Auth::user()->username) {
                     return redirect('home');
                 }
             }

@@ -31,7 +31,7 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
         ));
     });
 
-    Route::group(array('middleware' => 'mustHaveRole:Administrator'), function() {
+    Route::group(array('middleware' => 'mustBe:Administrator'), function() {
         Route::get('/review', array(
             'as' => 'missionControl.review.index',
             'uses' => 'ReviewController@index'
@@ -55,7 +55,7 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
         ));
     }));
 
-    Route::group(array('middleware' => 'mustHaveRole:Subscriber'), function() {
+    Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
 
         Route::get('/fetch', array(
             'as' => 'missionControl.fetch',
