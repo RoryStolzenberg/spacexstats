@@ -37,7 +37,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
             'aperture' => $this->exif->aperture(),
             'ISO' => $this->exif->iso(),
             'originated_at' => $this->exif->datetime(),
-			'status' => ObjectPublicationStatus::NewStatus
+			'status' => ObjectPublicationStatus::QueuedStatus
 		));
 	}
 

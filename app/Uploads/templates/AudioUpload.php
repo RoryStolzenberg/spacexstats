@@ -33,7 +33,7 @@ class AudioUpload extends GenericUpload implements UploadInterface {
             'thumb_filename' => 'audio.png',
             'cryptographic_hash' => $this->getCryptographicHash(),
             'length' => $this->getLength(),
-            'status' => ObjectPublicationStatus::NewStatus
+            'status' => ObjectPublicationStatus::QueuedStatus
         ));
     }
 

@@ -27,7 +27,7 @@ class GIFUpload extends GenericUpload implements UploadInterface {
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
-			'status' => ObjectPublicationStatus::NewStatus
+			'status' => ObjectPublicationStatus::QueuedStatus
 		));
 	}
 

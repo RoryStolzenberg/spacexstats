@@ -23,7 +23,7 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
             'thumb_filename' => $this->getThumbnail(),
             'cryptographic_hash' => $this->getCryptographicHash(),
             'length' => $this->getPageCount(),
-            'status' => ObjectPublicationStatus::NewStatus
+            'status' => ObjectPublicationStatus::QueuedStatus
         ));
     }
 

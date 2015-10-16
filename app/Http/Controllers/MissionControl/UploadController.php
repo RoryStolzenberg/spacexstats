@@ -1,9 +1,16 @@
 <?php 
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
+use SpaceXStats\Facades\Upload;
 use SpaceXStats\Http\Controllers\Controller;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use LukeNZ\Reddit\Reddit;
+use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\Publisher;
+use SpaceXStats\Models\Tag;
 
 class UploadController extends Controller {
 
@@ -37,9 +44,9 @@ class UploadController extends Controller {
     }
 
 	// AJAX POST
-	public function submit() {
+	public function submit(Request $request) {
     	// File Submissions
-		if (Request::header('Submission-Type') == 'files') {
+		if ($request->header('Submission-Type') == 'files') {
             $files = Input::get('data');
             $objectValidities = [];
             $doesNotContainErrors = true;
@@ -65,7 +72,7 @@ class UploadController extends Controller {
                 return response()->json($objectValidities, 400);
             }
         } else {
-            switch (Request::header('Submission-Type')) {
+            switch ($request->header('Submission-Type')) {
 
                 case 'article':
                     $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromArticle');
@@ -99,7 +106,7 @@ class UploadController extends Controller {
 
         // redirect to mission control
         Session::flash('flashMessage', array(
-            'contents' => 'Done! Your submitted content will be reviewed and published within 24 hours',
+            'contents' => 'Done!',
             'type' => 'success'
         ));
         return response()->json(true);
@@ -107,7 +114,7 @@ class UploadController extends Controller {
 
     // AJAX GET
     public function retrieveTweet() {
-        $twitter = new TwitterOAuth(Credential::TwitterConsumerKey, Credential::TwitterConsumerSecret, Credential::TwitterAccessToken, Credential::TwitterAccessSecret);
+        $twitter = new TwitterOAuth(Config::get('services.twitter.consumerKey'), Config::get('services.twitter.consumerSecret'), Config::get('services.twitter.accessToken'), Config::get('services.twitter.accessSecret'));
         $tweet = $twitter->get('statuses/show', array('id' => Input::get('id')));
 
         return response()->json($tweet);
@@ -115,7 +122,7 @@ class UploadController extends Controller {
 
     // AJAX GET
     public function retrieveRedditComment() {
-        $reddit = new Reddit(Credential::RedditUsername, Credential::RedditPassword, Credential::RedditID, Credential::RedditSecret);
+        $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.key'),Config::get('services.reddit.secret'));
 
         $comment = $reddit->getComment(Input::get('url'));
         return response()->json($comment);

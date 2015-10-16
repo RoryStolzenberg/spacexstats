@@ -1,8 +1,13 @@
 <?php 
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use Illuminate\Support\Facades\Input;
+use SpaceXStats\Facades\Search;
 use SpaceXStats\Library\DeltaV;
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Models\Award;
+use SpaceXStats\Models\Object;
 
 class ReviewController extends Controller {
 
@@ -23,14 +28,14 @@ class ReviewController extends Controller {
 
             $object = Object::find($object_id);
 
-            if (Input::get('status') == "Published") {
+            if (Input::get('status') == ObjectPublicationStatus::PublishedStatus) {
 
                 // Put the necessary objects to S3
-                $object->putToS3();
+                $object->putToCloud();
 
                 // Update the object properties
                 $object->fill(Input::only(['status', 'visibility']));
-                $object->actioned_at = \Carbon\Carbon::now();
+                $object->actioned_at = Carbon::now();
 
                 // Add the object to our elasticsearch node
                 Search::index($object);

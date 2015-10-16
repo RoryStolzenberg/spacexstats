@@ -7,9 +7,9 @@
 
         $scope.objectsToReview = [];
 
-        $scope.action = function(object, newStatus) {
+        $scope.action = function(object, queuedStatus) {
 
-            object.status = newStatus;
+            object.status = queuedStatus;
 
             $http.post('/missioncontrol/review/update/' + object.object_id, {
                 visibility: object.visibility, status: object.status
