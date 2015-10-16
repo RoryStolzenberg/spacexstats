@@ -89,7 +89,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         if (Auth::isAdmin()) {
             return $this->hasMany('SpaceXStats\Models\Object')->where('status', ObjectPublicationStatus::PublishedStatus);
         }
-        return $this->hasMany('Object')
+        return $this->hasMany('SpaceXStats\Models\Object')
             ->where('status', ObjectPublicationStatus::PublishedStatus)
             ->where('visibility', VisibilityStatus::DefaultStatus);
     }
