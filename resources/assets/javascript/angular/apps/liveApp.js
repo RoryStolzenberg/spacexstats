@@ -110,19 +110,21 @@
 
     liveApp.factory('Message', function() {
         return function() {
-
         }
     });
 
     liveApp.factory('Resource', function() {
         return function() {
-
+            this.title = null;
+            this.url = null;
+            this.courtesy = null;
         }
     });
 
     liveApp.factory('Section', function() {
         return function() {
-
+            this.title = null;
+            this.content = null;
         }
     });
 })();

@@ -7791,13 +7791,16 @@ img#object {
     text-shadow: 0 0 10px #181c1f; }
 
 body.live {
-  background-color: #3569A4; }
+  background-color: #3569A4;
+  height: auto; }
   body.live h1 {
     height: 100px;
     line-height: 100px;
     text-align: center; }
-  body.live .content-wrapper main {
-    height: calc(100% - 150px + 50px); }
+  body.live .content-wrapper {
+    height: auto; }
+    body.live .content-wrapper main {
+      min-height: calc(100vh - 150px + 50px); }
 
 .tagger-container .wrapper {
   border: 1px solid #CCC;

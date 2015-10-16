@@ -40,8 +40,8 @@
                         </textarea>
 
                         <h2>Sections</h2>
-                        <div ng-repeat="section in startingParameters.sections">
-                            <input type="text" ng-model="section.title" required />
+                        <div ng-repeat="section in liveParameters.sections">
+                            <input type="text" ng-model="section.title" required /><button ng-click="settings.removeSection(section)">Remove</button>
                             <textarea ng-model="section.content" required></textarea>
                         </div>
                         <button ng-click="settings.addSection()">Add Section</button>
@@ -52,12 +52,18 @@
                                 <input type="text" ng-model="resource.title" required placeholder="title of resource" />
                                 <input type="text" ng-model="resource.url" required placeholder="URL to resource" />
                                 <input type="text" ng-model="resource.courtesy" required placeholder="courtesy /r/spacex" />
+                                <button ng-click="settings.removeResource(resource)">Remove</button>
                             </li>
                         </ul>
                         <button ng-click="settings.addResource()">Add Resource</button>
 
                         <input type="submit" ng-click="settings.turnOnSpaceXStatsLive()" ng-disabled="gettingStartedForm.$invalid" value="Create Thread" />
                     </form>
+                </div>
+
+                <!-- If not authenticated and SpaceXStats live is not running -->
+                <div ng-if="isActive == false && auth == false">
+                    <span>SpaceX Stats is not live at this time.</span>
                 </div>
 
                 <!-- If SpaceXStats live is running -->

@@ -1,5 +1,6 @@
 body.live {
     background-color:$blue;
+    height:auto;
 
     h1 {
         height:100px;
@@ -7,7 +8,12 @@ body.live {
         text-align:center;
     }
 
-    .content-wrapper main {
-        height:calc(100% - #{$h1-height} + 50px);
+    .content-wrapper {
+        height:auto;
+
+        main {
+            min-height:calc(100vh - #{$h1-height} + 50px);
+        }
     }
+
 }
