@@ -24,7 +24,7 @@
 
                         <input type="text" ng-model="liveParameters.title" id="title" name="title" placeholder="The Reddit Thread Title" required />
 
-                        <div ng-hide="startingParameters.isForLaunch">
+                        <div ng-hide="liveParameters.isForLaunch">
                             <label for="countdownTo">Enter an event time</label>
                             <datetime type="datetime" ng-model="liveParameters.countdownTo"></datetime>
                         </div>

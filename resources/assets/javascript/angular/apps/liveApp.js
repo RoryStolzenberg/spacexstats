@@ -18,7 +18,7 @@
                 this.getStartedHeroText = 'Awesome. We just need a bit of info first.'
             },
             turnOnSpaceXStatsLive: function() {
-                liveService.create($scope.startingParameters).then(function() {
+                liveService.create($scope.liveParameters).then(function() {
                     $scope.isActive = true;
                     $scope.settings.isGettingStarted = null;
                 });
@@ -47,12 +47,12 @@
 
         $scope.liveParameters = {
             isForLaunch: true,
-            threadName: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
+            title: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
             toggleForLaunch: function() {
                 if (this.isForLaunch) {
-                    this.threadName = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
+                    this.title = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
                 } else {
-                    this.threadName = null;
+                    this.title = null;
                 }
 
             },

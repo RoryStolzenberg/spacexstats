@@ -10,27 +10,23 @@ Populate the launch live area based on whether the NASA stream/SpaceX stream is 
 
 | Time | Update |
 |--- | --- |
-@foreach(\Redis::lrange('live:messages', 0, -1)  as $message)
-| {{ $message['relativeTime'] }} | {{ $message['content'] }} |
-@endforeach
 
-@foreach(\Redis::lrange('live:sections', 0, -1)  as $section)
+@foreach(json_decode(\Redis::get('live:sections'), true)  as $section)
 ### {{ $section['title'] }}
 
 {{ $section['content'] }}
-
 @endforeach
 
 ### Community Content
 
 some content here
 
-@foreach(\Redis::lrange('live:resources', 0, -1)  as $resource)
-    @if ($resource['courtesy'] != null)
+@foreach(json_decode(\Redis::get('live:resources'), true)  as $resource)
+@if ($resource['courtesy'] != null)
 * [{{ $resource['title'] }}]({{ $resource['url'] }}), courtesy {{ $resource['courtesy'] }}
-    @elseif
+@else
 * [{{ $resource['title'] }}]({{ $resource['url'] }})
-    @endif
+@endif
 @endforeach
 
 ### Prevous /r/SpaceX Live Events

@@ -56,11 +56,11 @@ class LiveController extends Controller {
             'spacexstream' => Input::get('spacexstream')
         ));
 
-        Redis::hset('live:title', Input::get('title'));
-        Redis::hset('live:description', Input::get('description'));
+        Redis::set('live:title', Input::get('title'));
+        Redis::set('live:description', Input::get('description'));
 
-        Redis::hmset('live:resources', Input::get('resources'));
-        Redis::hmset('live:sections', Input::get('sections'));
+        Redis::set('live:resources', json_encode(Input::get('resources')));
+        Redis::set('live:sections', json_encode(Input::get('sections')));
 
         // Render the Reddit thread template
         $templatedOutput = BladeRenderer::render('livethreadcontents', array());
