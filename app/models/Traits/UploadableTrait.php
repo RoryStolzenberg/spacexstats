@@ -3,6 +3,7 @@ namespace SpaceXStats\Models\Traits;
 
 use Illuminate\Support\Facades\Config;
 
+
 trait UploadableTrait {
     /**
      * Checks whether the object has a file or not.
@@ -59,14 +60,14 @@ trait UploadableTrait {
      *  Uploads the objects file and thumbnails, if they exist, to Amazon S3, and then unsets the temporary file.
      */
     public function putToCloud() {
-        $s3 = AWS::get('s3');
+        $s3 = AWS::createClient('s3');
 
         if ($this->hasFile()) {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucket'),
                 'Key' => $this->filename,
                 'Body' => fopen(public_path() . $this->media, 'rb'),
-                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? \Aws\S3\Enum\CannedAcl::PUBLIC_READ : \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
+                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
             ]);
             unlink(public_path() . $this->media);
         }
@@ -76,8 +77,8 @@ trait UploadableTrait {
                 'Bucket' => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
                 'Key' => $this->thumb_filename,
                 'Body' => fopen(public_path() . $this->media_thumb_large, 'rb'),
-                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? \Aws\S3\Enum\CannedAcl::PUBLIC_READ : \Aws\S3\Enum\CannedAcl::PRIVATE_ACCESS,
-                'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
+                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
+                'StorageClass' => 'REDUCED_REDUNANCY'
             ]);
             unlink(public_path() . $this->media_thumb_large);
 
@@ -85,8 +86,8 @@ trait UploadableTrait {
                 'Bucket' => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
                 'Key' => $this->thumb_filename,
                 'Body' => fopen(public_path() . $this->media_thumb_small, 'rb'),
-                'ACL' =>  \Aws\S3\Enum\CannedAcl::PUBLIC_READ,
-                'StorageClass' => \Aws\S3\Enum\StorageClass::REDUCED_REDUNDANCY
+                'ACL' => 'public-read',
+                'StorageClass' => 'REDUCED_REDUNANCY'
             ]);
             unlink(public_path() . $this->media_thumb_small);
         }
@@ -96,7 +97,7 @@ trait UploadableTrait {
      * Deletes all files, including thumbnails, from S3, if they exist.
      */
     public function deleteFromCloud() {
-        $s3 = AWS::get('s3');
+        $s3 = AWS::createClient('s3');
 
         if ($this->hasFile()) {
             if ($this->status === ObjectPublicationStatus::PublishedStatus) {
@@ -124,7 +125,7 @@ trait UploadableTrait {
     public function putToLocal() {
         if (!$this->hasLocalFile()) {
             if ($this->hasFile()) {
-                AWS::get('s3')->getObject(array(
+                AWS::createClient('s3')->getObject(array(
                     'Bucket'    => Config::get('filesystems.disks.s3.bucket'),
                     'Key'       => $this->filename,
                     'SaveAs'    => public_path() . '/media/local/' . $this->filename

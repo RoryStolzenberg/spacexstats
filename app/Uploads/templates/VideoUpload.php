@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
+use Illuminate\Support\Facades\Auth;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use FFMpeg\FFProbe;
@@ -12,13 +13,13 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         parent::__construct($file);
 
         $this->ffprobe = FFProbe::create([
-            'ffmpeg.binaries' => \Credential::FFMpeg,
-            'ffprobe.binaries' => \Credential::FFProbe
+            'ffmpeg.binaries' => env('ffmpeg'),
+            'ffprobe.binaries' => env('ffprobe')
         ]);
 
         $this->ffmpeg = FFMpeg::create([
-            'ffmpeg.binaries' => \Credential::FFMpeg,
-            'ffprobe.binaries' => \Credential::FFProbe
+            'ffmpeg.binaries' => env('ffmpeg'),
+            'ffprobe.binaries' => env('ffprobe')
         ]);
     }
 
@@ -26,7 +27,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         $this->setThumbnails();
 
         return Object::create(array(
-            'user_id' => \Auth::id(),
+            'user_id' => Auth::id(),
             'type' => MissionControlType::Video,
             'size' => $this->fileinfo['size'],
             'filetype' => $this->fileinfo['filetype'],
@@ -61,9 +62,9 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
             // create an Imagick instance
-            $image = new \Imagick(public_path() . $this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image = new \Imagick(public_path() . '/' . $this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
             $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-            $image->writeImage(public_path() . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image->writeImage(public_path() . '/' . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
         }
 
         // Delete the temporary frame

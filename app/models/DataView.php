@@ -30,7 +30,7 @@ class DataView extends Model {
 
     // Functions
     public function setColors() {
-        AWS::get('s3')->getObject(array(
+        AWS::createClient('s3')->getObject(array(
             'Bucket'    => Credential::AWSS3BucketLargeThumbs,
             'Key'       => $this->bannerImage->filename,
             'SaveAs'    => public_path() . '/media/temp/' . $this->bannerImage->filename

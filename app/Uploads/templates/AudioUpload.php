@@ -39,6 +39,6 @@ class AudioUpload extends GenericUpload implements UploadInterface {
     }
 
     private function getLength() {
-        return round($this->ffprobe->format(public_path() . $this->directory['full'] . $this->fileinfo['filename'])->get('duration'));
+        return round($this->ffprobe->format($this->directory['full'] . $this->fileinfo['filename'])->get('duration'));
     }
 }

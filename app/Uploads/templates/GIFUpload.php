@@ -58,7 +58,7 @@ class GIFUpload extends GenericUpload implements UploadInterface {
             $image = new \Imagick();
             $image->readImageBlob($blob);
             $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-            $image->writeImage(public_path() . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image->writeImage(public_path() . '/' . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
         }
 	}
 
@@ -67,7 +67,7 @@ class GIFUpload extends GenericUpload implements UploadInterface {
     }
 
     private function getDimensions($dimension) {
-        $image = new \Imagick(public_path() . $this->directory['full'] . $this->fileinfo['filename']);
+        $image = new \Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
         return ($dimension == 'width') ? $image->getImageWidth() : $image->getImageHeight();
     }
 

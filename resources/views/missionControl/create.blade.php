@@ -117,7 +117,6 @@
                                                       is-null="::file.datetimeExtractedFromEXIF"
                                                       nullable-toggle="false"></datetime>
                                         </label>
-
                                     </li>
 
                                     <li class="gr-12">
@@ -183,6 +182,12 @@
                                     </li>
 
                                     <li class="gr-6">
+                                        <label>
+                                            <p>When was this created?</p>
+                                            <datetime type="date"
+                                                      ng-model="file.originated_at"
+                                                      nullable-toggle="false"></datetime>
+                                        </label>
                                     </li>
 
                                     <li class="gr-12">
@@ -248,6 +253,12 @@
                                     </li>
 
                                     <li class="gr-6">
+                                        <label>
+                                            <p>When was this created?</p>
+                                            <datetime type="date"
+                                                      ng-model="file.originated_at"
+                                                      nullable-toggle="false"></datetime>
+                                        </label>
                                     </li>
 
                                     <li class="gr-12">
@@ -331,6 +342,12 @@
                                     </li>
 
                                     <li class="gr-6">
+                                        <label>
+                                            <p>When was this created?</p>
+                                            <datetime type="date"
+                                                      ng-model="file.originated_at"
+                                                      nullable-toggle="false"></datetime>
+                                        </label>
                                     </li>
 
                                     <li class="gr-12">
@@ -405,6 +422,12 @@
                                     </li>
 
                                     <li class="gr-6">
+                                        <label>
+                                            <p>When was this created?</p>
+                                            <datetime type="date"
+                                                      ng-model="file.originated_at"
+                                                      nullable-toggle="false"></datetime>
+                                        </label>
                                     </li>
 
                                     <li class="gr-12">

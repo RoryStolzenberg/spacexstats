@@ -18,7 +18,7 @@ class ReviewController extends Controller {
 
     // AJAX GET
     public function get() {
-        $objectsToReview = Object::whereQueued()->with('user', 'tags')->get();
+        $objectsToReview = Object::where('status', ObjectPublicationStatus::QueuedStatus)->orderBy('created_at', 'ASC')->with('user', 'tags')->get();
         return response()->json($objectsToReview, 200);
     }
 

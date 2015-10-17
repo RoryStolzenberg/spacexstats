@@ -41,7 +41,7 @@ class UsersController extends Controller {
             return view('users.profile', array(
                 'user' => $user,
                 'favoriteMission' => $user->profile->favoriteMission,
-                'objects' => $user->objects()->wherePublished()->take(10),
+                'objects' => $user->objects()->inMissionControl()->take(10),
                 'favorites' => $user->favorites->take(10),
             ));
         }

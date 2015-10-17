@@ -8,11 +8,11 @@ abstract class GenericUpload {
     $smallThumbnailSize = 200,
     $largeThumbnailSize = 800,
 	$directory = array(
-        'full' => '/media/full/',
-        'large' => '/media/large/',
-        'small' => '/media/small/',
-        'twitter' => '/media/twitter/',
-        'frames' => '/media/frames/'
+        'full' => 'media/full/',
+        'large' => 'media/large/',
+        'small' => 'media/small/',
+        'twitter' => 'media/twitter/',
+        'frames' => 'media/frames/'
     );
 
 	public function __construct($file) {
@@ -31,10 +31,10 @@ abstract class GenericUpload {
 	}
 
     protected function getCryptographicHash() {
-        return hash_file('sha256', public_path() . $this->directory['full'] . $this->fileinfo['filename']);
+        return hash_file('sha256', public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
     }
 
     private function move() {
-		return $this->file->move(public_path() . $this->directory['full'], $this->fileinfo['filename']);
+		return $this->file->move(public_path() . '/' . $this->directory['full'], $this->fileinfo['filename']);
 	}
 }

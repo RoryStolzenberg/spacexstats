@@ -38,7 +38,7 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
 
             // PDFs, One day learn to extract thumbnails for all the other media types too
             if ($this->fileinfo['filetype'] == 'pdf' && $this->fileinfo['mime'] == 'application/pdf') {
-                $image = new \Imagick(public_path() . $this->directory['full'] . $this->fileinfo['filename'] . '[0]');
+                $image = new \Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename'] . '[0]');
                 // Use PNG because: http://stackoverflow.com/questions/10934456/imagemagick-pdf-to-jpgs-sometimes-results-in-black-background
                 $image->setImageFormat('png');
                 $image->setBackgroundColor(new \ImagickPixel('white'));
@@ -46,7 +46,7 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
                 // http://php.net/manual/en/imagick.flattenimages.php#101164
                 $image = $image->flattenImages();
                 $image->setImageFormat('jpg');
-                $image->writeImage(public_path() . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
+                $image->writeImage(public_path() . '/' . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
             }
         }
     }
@@ -65,8 +65,8 @@ class DocumentUpload extends GenericUpload implements UploadInterface {
         // PDFs only for now
         if ($filetype == 'pdf' && $mime == 'application/pdf') {
             // http://stackoverflow.com/a/9642701/1064923
-            $image = new \Imagick(public_path() . $this->directory['full'] . $this->fileinfo['filename']);
-            $image->pingImage(public_path() . $this->directory['full'] . $this->fileinfo['filename']);
+            $image = new \Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
+            $image->pingImage(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
             return $image->getNumberImages() / 2; // I have no idea why this is needed
         }
 

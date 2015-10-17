@@ -3,6 +3,7 @@ namespace SpaceXStats\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes as SoftDeletingTrait;
+use Illuminate\Support\Facades\Auth;
 use SpaceXStats\Validators\ValidatableTrait;
 
 class Comment extends Model {

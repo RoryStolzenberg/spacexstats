@@ -2,12 +2,18 @@
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use Carbon\Carbon;
 use JavaScript;
+use SpaceXStats\Models\Comment;
+use SpaceXStats\Models\Download;
+use SpaceXStats\Models\Favorite;
 use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\Object;
+use SpaceXStats\Models\User;
 
 class MissionControlController extends Controller {
 
@@ -40,9 +46,9 @@ class MissionControlController extends Controller {
      */
     public function fetch() {
         // Uploads
-        $uploads['latest'] = Object::authedVisibility()->wherePublished()->orderBy('actioned_at')->take(10)->get();
+        $uploads['latest'] = Object::authedVisibility()->inMissionControl()->orderBy('actioned_at')->take(10)->get();
 
-        $uploads['hot'] = Object::authedVisibility()->wherePublished()
+        $uploads['hot'] = Object::authedVisibility()->inMissionControl()
             ->selectRaw('objects.*, LOG10(greatest(1, count(comments.object_id)) + greatest(1, count(favorites.object_id))) / TIMESTAMPDIFF(HOUR, objects.actioned_at, NOW()) as score')
             ->leftJoin('comments', 'comments.object_id', '=', 'objects.object_id')
             ->leftJoin('favorites', 'favorites.object_id', '=', 'objects.object_id')

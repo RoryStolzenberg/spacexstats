@@ -11,7 +11,7 @@ class Checker {
     protected $mimetypes = [
         'Image'     => ['image/jpeg', 'image/pjpeg', 'image/png'],
         'GIF'       => ['image/gif'],
-        'Video'     => ['video/mp4', 'video/mpeg'],
+        'Video'     => ['video/mp4', 'video/mpeg', 'video/x-ms-wmv', 'video/x-ms-asf'],
         'Document'  => ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'text/plain', 'text/rtf', 'application/rtf'],
         'Audio'     => ['audio/mp3', 'audio/mpeg']
@@ -20,7 +20,7 @@ class Checker {
     protected $filetypes = [
         'Image'     => ['jpg', 'jpeg', 'png'],
         'GIF'       => ['gif'],
-        'Video'     => ['mp4'],
+        'Video'     => ['mp4', 'wmv'],
         'Document'  => ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'txt', 'rtf'],
         'Audio'     => ['mp3']
     ];
