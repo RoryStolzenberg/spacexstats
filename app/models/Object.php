@@ -1,9 +1,11 @@
 <?php
 namespace SpaceXStats\Models;
 
+use AWS;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
@@ -180,7 +182,7 @@ class Object extends Model implements UploadableInterface {
 
             if ($this->status == 'Published') {
                 $s3 = AWS::createClient('s3');
-                return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes');
+                return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+5 minutes');
 
             } elseif ($this->status == 'Queued' || $this->status == 'New') {
                 return '/media/full/' . $this->filename;
@@ -196,7 +198,7 @@ class Object extends Model implements UploadableInterface {
         if ($this->hasFile()) {
             $s3 = AWS::createClient('s3');
 
-            return $s3->getObjectUrl(Credential::AWSS3Bucket, $this->filename, '+5 minutes', array(
+            return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+5 minutes', array(
                 'ResponseContentDisposition' => 'attachment; filename="' . $this->title . '.' . $this->filetype . '"'
             ));
         } else {
@@ -213,7 +215,7 @@ class Object extends Model implements UploadableInterface {
             if ($this->hasThumbs()) {
                 if ($this->status == ObjectPublicationStatus::PublishedStatus) {
                     $s3 = AWS::createClient('s3');
-                    return $s3->getObjectUrl(Credential::AWSS3BucketSmallThumbs, $this->thumb_filename, '+1 minute');
+                    return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucketSmallThumbs'), $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == ObjectPublicationStatus::QueuedStatus) {
                     return '/media/small/' . $this->thumb_filename;
@@ -234,7 +236,7 @@ class Object extends Model implements UploadableInterface {
             if ($this->hasThumbs()) {
                 if ($this->status == 'Published') {
                     $s3 = AWS::createClient('s3');
-                    return $s3->getObjectUrl(Credential::AWSS3BucketLargeThumbs, $this->thumb_filename, '+1 minute');
+                    return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucketLargeThumbs'), $this->thumb_filename, '+1 minute');
 
                 } elseif ($this->status == ObjectPublicationStatus::QueuedStatus) {
                     return '/media/large/' . $this->thumb_filename;

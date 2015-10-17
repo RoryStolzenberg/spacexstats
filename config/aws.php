@@ -1,6 +1,7 @@
 <?php
 
 use Aws\Laravel\AwsServiceProvider;
+use Illuminate\Support\Facades\Config;
 
 return [
 
@@ -18,6 +19,10 @@ return [
     */
 
     'region' => env('AWS_REGION', 'us-east-1'),
+    'credentials' => [
+        'key' => Config::get('filesystems.s3.key'),
+        'secret' => Config::get('filesystems.s3.secret')
+    ],
     'version' => 'latest',
     'ua_append' => [
         'L5MOD/' . AwsServiceProvider::VERSION,

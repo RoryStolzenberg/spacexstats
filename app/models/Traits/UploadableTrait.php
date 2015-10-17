@@ -1,8 +1,11 @@
 <?php
 namespace SpaceXStats\Models\Traits;
 
+use AWS;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\VisibilityStatus;
 
 trait UploadableTrait {
     /**

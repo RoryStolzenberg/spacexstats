@@ -23,7 +23,6 @@
         "erusev/parsedown": "^1.6",
         "windwalker/renderer": "^2.1",
         "cboden/ratchet": "^0.3.3",
-        "league/flysystem-aws-s3-v3": "^1.0",
         "aws/aws-sdk-php-laravel": "^3.0"
     },
     "require-dev": {
