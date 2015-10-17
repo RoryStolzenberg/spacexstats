@@ -104,7 +104,7 @@
         }
     }]);
 
-    uploadApp.run(['$rootScope', '$http', function($rootScope, $http) {
+    uploadApp.run(['$rootScope', '$http', 'CSRF_TOKEN', function($rootScope, $http, CSRF_TOKEN) {
         $rootScope.postToMissionControl = function(dataToUpload, submissionHeader) {
             var req = {
                 method: 'POST',
@@ -113,7 +113,8 @@
                     'Submission-Type': submissionHeader
                 },
                 data: {
-                    data: dataToUpload
+                    data: dataToUpload,
+                    _token: CSRF_TOKEN
                 }
             };
 

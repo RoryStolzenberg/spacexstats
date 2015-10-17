@@ -157,7 +157,7 @@ return [
         /*
          * Third Party Service Providers...
          */
-        //'Aws\Laravel\AwsServiceProvider',
+        Aws\Laravel\AwsServiceProvider::class,
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class
     ],
 
@@ -211,7 +211,7 @@ return [
         'Upload'    => SpaceXStats\Facades\Upload::class,
         'Search'    => SpaceXStats\Facades\Search::class,
 
-        //'AWS'		=> 'Aws\Laravel\AwsFacade',
+        'AWS'		=> Aws\Laravel\AwsFacade::class
     ],
 
 ];

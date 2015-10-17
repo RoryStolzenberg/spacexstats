@@ -12,11 +12,11 @@ trait UploadableTrait {
      * @return bool
      */
     public function hasFile() {
-        return !is_null($this->filename);
+        return $this->has_temporary_file || $this->has_local_file || $this->has_cloud_file;
     }
 
     public function hasThumbs() {
-
+        return $this->has_temporary_thumbs || $this->has_local_thumbs || $this->has_cloud_thumbs;
     }
 
     /**
@@ -24,6 +24,7 @@ trait UploadableTrait {
      */
     public function hasCloudFile() {
         // Check if a file exists in S3 for this object
+        return $this->has_cloud_file;
     }
 
     /**
@@ -34,7 +35,7 @@ trait UploadableTrait {
      * @return bool
      */
     public function hasLocalFile() {
-        return !is_null($this->local_file);
+        return $this->has_local_file;
     }
 
     /**
@@ -46,12 +47,12 @@ trait UploadableTrait {
      * @return bool
      */
     public function hasLocalThumbs() {
-        $defaultThumbs = array("audio.png", "document.png", "text.png", "comment.png", "article.png", "pressrelease.png");
-        return !is_null($this->thumb_filename) && !in_array($this->thumb_filename, $defaultThumbs);
+        $defaultThumbs = array("audio.png", "document.png", "text.png", "comment.png", "article.png", "pressrelease.png", "tweet.png");
+        return !$this->has_local_thumbs && !in_array($this->thumb_filename, $defaultThumbs);
     }
 
     public function hasCloudThumbs() {
-
+        return $this->hasCloudThumbs;
     }
 
     /**
@@ -99,7 +100,7 @@ trait UploadableTrait {
 
         if ($this->hasFile()) {
             if ($this->status === ObjectPublicationStatus::PublishedStatus) {
-                $s3->deleteObject(Credential::AWSS3Bucket, $this->filename);
+                $s3->deleteObject(Config::get('filesystems.disks.s3.bucket'), $this->filename);
             }
         }
 
@@ -109,6 +110,10 @@ trait UploadableTrait {
                 $s3->deleteObject(Config::get('filesystems.disks.s3.bucketSmallThumbs'), $this->filename);
             }
         }
+
+        $this->has_cloud_file = false;
+        $this->has_cloud_thumbs = false;
+        $this->save();
     }
 
     /**
@@ -125,7 +130,7 @@ trait UploadableTrait {
                     'SaveAs'    => public_path() . '/media/local/' . $this->filename
                 ));
 
-                $this->local_file = '/media/local/' . $this->filename;
+                $this->has_local_file = true;
                 $this->save();
             }
         }
@@ -133,11 +138,13 @@ trait UploadableTrait {
 
     /**
      * Deletes the current local file.
+     *
+     * Only deletes the main file.
      */
     public function deleteFromLocal() {
         if ($this->hasLocalFile()) {
-            unlink(public_path() . $this->local_file);
-            $this->local_file = null;
+            unlink(public_path() . $this->filename);
+            $this->has_local_file = false;
             $this->save();
         }
     }

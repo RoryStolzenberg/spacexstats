@@ -25,6 +25,7 @@
                 <div ng-show="activeUploadSection == 'dropzone'">
                     <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
                     <form method="post" class="dropzone" upload enctype="multipart/form-data" action="/missioncontrol/create/upload" callback="uploadCallback(somescome)" multi-upload="true">
+                        {{ csrf_field() }}
                     </form>
                     <button id="upload" ng-click="uploadFiles()">Upload</button>
                 </div>
@@ -649,6 +650,12 @@
             </section>
         </main>
     </div>
+    <script type="text/javascript">
+        (function() {
+            var app = angular.module("app");
+            app.constant("CSRF_TOKEN", '{{ csrf_token() }}');
+        })();
+    </script>
 </body>
 @stop
 

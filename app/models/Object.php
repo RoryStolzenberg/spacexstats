@@ -1,5 +1,6 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
 
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
@@ -63,26 +64,8 @@ class Object extends Model implements UploadableInterface {
 
         // Delete any files before deleting the object
         static::deleting(function($object) {
-            $s3 = AWS::get('s3');
-
-            if ($object->hasFile()) {
-                if ($object->status === ObjectPublicationStatus::PublishedStatus) {
-                    $s3->deleteObject(Credential::AWSS3Bucket, $object->filename);
-                } else {
-                    unlink(public_path() . $object->media);
-                }
-            }
-
-            if ($object->hasThumbs()) {
-                if ($object->status === ObjectPublicationStatus::PublishedStatus) {
-                    $s3->deleteObject(Credential::AWSS3BucketLargeThumbs, $object->filename);
-                    $s3->deleteObject(Credential::AWSS3BucketSmallThumbs, $object->filename);
-                } else {
-                    unlink(public_path() . $object->media_thumb_large);
-                    unlink(public_path() . $object->media_thumb_small);
-                }
-            }
-
+            $object->deleteFromlocal();
+            $object->deleteFromCloud();
             return true;
         });
     }
@@ -230,17 +213,16 @@ class Object extends Model implements UploadableInterface {
         if (!empty($this->thumb_filename)) {
 
             if ($this->hasThumbs()) {
-                if ($this->status == 'Published') {
+                if ($this->status == ObjectPublicationStatus::PublishedStatus) {
                     $s3 = AWS::get('s3');
                     return $s3->getObjectUrl(Credential::AWSS3BucketSmallThumbs, $this->thumb_filename, '+1 minute');
 
-                } elseif ($this->status == 'Queued' || $this->status == 'New') {
+                } elseif ($this->status == ObjectPublicationStatus::QueuedStatus) {
                     return '/media/small/' . $this->thumb_filename;
                 }
 
-            } else {
-                return '/media/small/' . $this->thumb_filename;
             }
+            return '/media/small/' . $this->thumb_filename;
         }
         return null;
     }
@@ -256,13 +238,12 @@ class Object extends Model implements UploadableInterface {
                     $s3 = AWS::get('s3');
                     return $s3->getObjectUrl(Credential::AWSS3BucketLargeThumbs, $this->thumb_filename, '+1 minute');
 
-                } elseif ($this->status == 'Queued' || $this->status == 'New') {
+                } elseif ($this->status == ObjectPublicationStatus::QueuedStatus) {
                     return '/media/large/' . $this->thumb_filename;
                 }
 
-            } else {
-                return '/media/large/' . $this->thumb_filename;
             }
+            return '/media/large/' . $this->thumb_filename;
         }
         return null;
     }

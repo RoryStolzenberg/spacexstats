@@ -222,11 +222,21 @@ class Spacexstats extends Migration {
             $table->string('mimetype', Varchar::small)->nullable();
             $table->string('original_name', Varchar::small)->nullable();
             $table->string('title', Varchar::small);
-            $table->string('filename', Varchar::tiny)->nullable();
-            $table->string('thumb_filename', Varchar::tiny)->nullable();
-            $table->string('local_file', Varchar::small)->nullable();
             $table->char('cryptographic_hash', 64)->nullable();
             $table->string('perceptual_hash')->nullable();
+
+            // Filename and related material
+            $table->string('filename', Varchar::tiny)->nullable();
+            $table->string('thumb_filename', Varchar::tiny)->nullable();
+
+            $table->boolean('has_temporary_file');
+            $table->boolean('has_temporary_thumbs');
+
+            $table->boolean('has_local_file');
+            $table->boolean('has_local_thumbs');
+
+            $table->boolean('has_cloud_file');
+            $table->boolean('has_cloud_thumbs');
 
             $table->smallInteger('dimension_width')->nullable();
             $table->smallInteger('dimension_height')->nullable();
