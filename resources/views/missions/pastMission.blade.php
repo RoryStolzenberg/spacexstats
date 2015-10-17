@@ -32,13 +32,13 @@
             <section class="highlights">
                 @if(isset($pastMission))
                     <div class="past-mission-link">
-                        {{ link_to_route('missions.get', $pastMission->name, $pastMission->slug) }}
+                        <a href="/missions/{{ $pastMission->slug }}">{{ $pastMission->name }}</a>
                         <span>Previous Mission</span>
                     </div>
                 @endif
                 @if(isset($futureMission))
                     <div class="future-mission-link">
-                        {{ link_to_route('missions.get', $futureMission->name, $futureMission->slug) }}
+                        <a href="/missions/{{ $futureMission->slug }}">{{ $futureMission->name }}</a>
                         <span>Next Mission</span>
                     </div>
                 @endif
@@ -98,7 +98,7 @@
                     </li>
 
                     <li id="raw-data-download">
-                        <span>{{ link_to_route('missions.raw', 'Raw Data Download', $mission->slug) }}</span>
+                        <span><a href="/missions/{{ $mission->slug }}/raw">Raw Data Download</a></span>
                     </li>
 
                     <li id="mission-collection">

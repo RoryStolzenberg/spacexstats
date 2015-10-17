@@ -42,7 +42,7 @@
                     </div>
                     <div class="more">
                         @if ($object->anonymous == false || Auth::isAdmin())
-                            <p class="lowvisibility opacity">Uploaded by <span>{{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}</span> on <span>{{ $object->created_at->toFormattedDateString() }}</span></p>
+                            <p class="lowvisibility opacity">Uploaded by <span><a href="/users/{{ $object->user->username }}">{{ $object->user->username }}</a></span> on <span>{{ $object->created_at->toFormattedDateString() }}</span></p>
                         @elseif ($object->anonymous == true)
                             <p>Uploaded on {{ $object->created_at->toFormattedDateString() }}</p>
                         @endif

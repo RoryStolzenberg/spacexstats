@@ -1,9 +1,17 @@
 <?php
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\DeltaVCalculator;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Models\Download;
+use SpaceXStats\Models\Favorite;
+use SpaceXStats\Models\Object;
+use JavaScript;
 
 class ObjectsController extends Controller {
 
@@ -59,7 +67,7 @@ class ObjectsController extends Controller {
     public function edit($object_id) {
         $object = Object::find($object_id);
 
-        if (Request::isMethod('get')) {
+        if (request()->isMethod('get')) {
 
             JavaScript::put([
                'object' => $object
@@ -67,7 +75,7 @@ class ObjectsController extends Controller {
 
             return view('missionControl.objects.edit.edit', ['object' => $object]);
 
-        } else if (Request::isMethod('patch')) {
+        } else if (request()->isMethod('patch')) {
 
         }
     }
@@ -88,7 +96,7 @@ class ObjectsController extends Controller {
         if (Auth::isSubscriber()) {
 
             // Create
-            if (Request::isMethod('post')) {
+            if (request()->isMethod('post')) {
                 $usernote = Note::create(array(
                     'user_id' => Auth::user()->user_id,
                     'object_id' => $object_id,
@@ -98,13 +106,13 @@ class ObjectsController extends Controller {
                 $usernote->save();
 
             // Edit
-            } elseif (Request::isMethod('patch')) {
+            } elseif (request()->isMethod('patch')) {
                 $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->note = Input::get('note', null);
                 Auth::user()->notes()->save($usernote);
 
             // Delete
-            } elseif (Request::isMethod('delete')) {
+            } elseif (request()->isMethod('delete')) {
                 $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->delete();
             }
@@ -119,7 +127,7 @@ class ObjectsController extends Controller {
         if (Auth::isSubscriber()) {
 
             // Create Favorite
-            if (Request::isMethod('post')) {
+            if (request()->isMethod('post')) {
 
                 if (Auth::user()->favorites()->count() == 0) {
                     Favorite::create(array(
@@ -129,7 +137,7 @@ class ObjectsController extends Controller {
                 }
 
             // Delete Favorite
-            } elseif (Request::isMethod('delete')) {
+            } elseif (request()->isMethod('delete')) {
                 Auth::user()->favorites()->where('object_id', $object_id)->firstOrFail()->delete();
             }
 
@@ -146,7 +154,7 @@ class ObjectsController extends Controller {
         // Only increment the downloads table if the same user has not downloaded it in the last hour (just like views)
         $mostRecentDownload = Download::where('user_id', Auth::user()->user_id)->where('object_id', $object_id)->first();
 
-        if ($mostRecentDownload === null || $mostRecentDownload->created_at->diffInSeconds(Carbon\Carbon::now()) > 3600) {
+        if ($mostRecentDownload === null || $mostRecentDownload->created_at->diffInSeconds(Carbon::now()) > 3600) {
             Download::create(array(
                 'user_id' => Auth::user()->user_id,
                 'object_id' => $object_id

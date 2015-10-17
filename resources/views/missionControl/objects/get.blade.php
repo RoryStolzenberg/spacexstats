@@ -70,7 +70,7 @@
                     </div>
                     <div class="more">
                         @if ($object->anonymous == false || Auth::isAdmin())
-                            <p>Uploaded by {{ link_to_route('users.get', $object->user->username, array('username' => $object->user->username)) }}<br/>
+                            <p>Uploaded by <a href="/users/{{ $object->user->username }}">{{ $object->user->username }}</a><br/>
                                 On {{ $object->present()->created_at() }}</p>
                         @elseif ($object->anonymous == true)
                             <p>Uploaded on {{ $object->present()->created_at() }}</p>

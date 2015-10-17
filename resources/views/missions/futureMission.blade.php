@@ -49,13 +49,13 @@
 
                     @if(isset($pastMission))
                         <div class="past-mission-link">
-                            {{ link_to_route('missions.get', $pastMission->name, $pastMission->slug) }}
+                            <a href="/missions/{{ $pastmission->slug }}">{{ $pastMission->name }}</a>
                             <span>Previous Mission</span>
                         </div>
                     @endif
                     @if(isset($futureMission))
                         <div class="future-mission-link">
-                            {{ link_to_route('missions.get', $futureMission->name, $futureMission->slug) }}
+                            <a href="/missions/{{ $futureMission->slug }}">{{ $futureMission->name }}</a>
                             <span>Next Mission</span>
                         </div>
                     @endif

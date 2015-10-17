@@ -1,6 +1,9 @@
 <?php
 namespace SpaceXStats\Models\Traits;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
+
 trait CountsViewsTrait {
 
     public function incrementViewCounter() {

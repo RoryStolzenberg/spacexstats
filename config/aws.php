@@ -20,8 +20,8 @@ return [
 
     'region' => env('AWS_REGION', 'us-east-1'),
     'credentials' => [
-        'key' => Config::get('filesystems.s3.key'),
-        'secret' => Config::get('filesystems.s3.secret')
+        'key' => env('AWS_KEY'),
+        'secret' => env('AWS_SECRET')
     ],
     'version' => 'latest',
     'ua_append' => [
