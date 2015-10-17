@@ -2,8 +2,10 @@
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 use SpaceXStats\Facades\Upload;
 use SpaceXStats\Http\Controllers\Controller;
 use Abraham\TwitterOAuth\TwitterOAuth;
@@ -55,7 +57,7 @@ class UploadController extends Controller {
             // Find each object from file
             for ($i = 0; $i < count($files); $i++) {
 
-                $objectManagers[$i] = App::make('SpaceXStats\Managers\Objects\ObjectFromFile');
+                $objectManagers[$i] = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromFile');
                 $objectValidities[$i] = $objectManagers[$i]->isValid($files[$i]) ? true : $objectManagers[$i]->getErrors();
 
                 if ($objectValidities[$i] !== true) {
@@ -76,23 +78,23 @@ class UploadController extends Controller {
             switch ($request->header('Submission-Type')) {
 
                 case 'article':
-                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromArticle');
+                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromArticle');
                     break;
 
                 case 'pressrelease':
-                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromPressRelease');
+                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromPressRelease');
                     break;
 
                 case 'redditcomment':
-                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromRedditComment');
+                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromRedditComment');
                     break;
 
                 case 'NSFcomment':
-                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromNSFComment');
+                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromNSFComment');
                     break;
 
                 case 'text':
-                    $objectCreator = App::make('SpaceXStats\Managers\Objects\ObjectFromText');
+                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromText');
                     break;
             }
 

@@ -1,12 +1,11 @@
 <?php
 
-namespace SpaceXStats\Managers\Objects;
+namespace SpaceXStats\ModelManagers\Objects;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\MissionControlType;
-use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Models\Object;
 
 class ObjectFromArticle extends ObjectCreator {

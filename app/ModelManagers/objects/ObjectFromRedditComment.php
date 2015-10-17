@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceXStats\Managers\Objects;
+namespace SpaceXStats\ModelManagers\Objects;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;

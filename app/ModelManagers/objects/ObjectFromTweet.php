@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Managers\Objects;
+namespace SpaceXStats\ModelManagers\Objects;
 
 use SpaceXStats\Library\Enums\Status;
 use SpaceXStats\Library\Enums\MissionControlType;

@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Managers\Objects;
+namespace SpaceXStats\ModelManagers\Objects;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;

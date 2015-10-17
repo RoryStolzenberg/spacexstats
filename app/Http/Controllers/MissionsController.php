@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Redis;
 use JavaScript;
 use SpaceXStats\Library\Enums\MissionStatus;
-use SpaceXStats\Managers\MissionManager;
+use SpaceXStats\ModelManagers\MissionManager;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Models\Mission;
 
