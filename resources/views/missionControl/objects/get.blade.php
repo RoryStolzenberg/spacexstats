@@ -35,14 +35,7 @@
                         </audio>
 
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Video)
-                        @if ($object->external_url != null)
-                            <iframe width="100%" src="{{ $object->embed_url }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                        @else
-                            <video id="object" class="video-js vjs-default-skin" controls
-                                   preload="none" data-setup="{}" width="100%">
-                                <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
-                            </video>
-                        @endif
+
 
                     @elseif($object->type == \SpaceXStats\Enums\MissionControlType::Document)
                         <object data="{{ $object->media }}" type="application/pdf" width="100%" height="100%">

@@ -42,7 +42,7 @@ class ExtendedGuard extends \Illuminate\Auth\Guard {
         if (is_null($this->user())) {
             return false;
         } else {
-            return (Auth::user()->user_id == $user->user_id);
+            return (Auth::id() == $user->user_id);
         }
     }
 }

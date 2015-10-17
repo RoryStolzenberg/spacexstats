@@ -253,7 +253,7 @@ class Object extends Model implements UploadableInterface {
     }
 
     public function getViewsAttribute() {
-        return Redis::hget('object:' . $this->object_id, 'views') !== null ? Redis::hget('object:' . $this->object_id, 'views') : 0;
+        return Redis::hget('Object:' . $this->object_id, 'views') !== null ? Redis::hget('Object:' . $this->object_id, 'views') : 0;
     }
 
     // Attribute mutators

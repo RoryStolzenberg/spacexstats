@@ -47,6 +47,6 @@ class Comment extends Model {
     }
 
     public function getOwnershipAttribute() {
-        return Auth::user()->user_id == $this->attributes['user_id'];
+        return Auth::id() == $this->attributes['user_id'];
     }
 }

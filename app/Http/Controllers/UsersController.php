@@ -144,7 +144,7 @@ class UsersController extends Controller {
 
                     // Insert new notification
                     Notification::create(array(
-                        'user_id' => Auth::user()->user_id,
+                        'user_id' => Auth::id(),
                         'notification_type_id' => SpaceXStats\Library\Enums\NotificationType::fromString($sms['status'])
                     ));
                     return response()->json($this->flashMessages['SMSNotificationSuccess']);

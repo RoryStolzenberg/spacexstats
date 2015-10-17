@@ -18,7 +18,7 @@ class CommentsController extends Controller {
 
         Comment::create(array(
             'object_id' => $object_id,
-            'user_id' => Auth::user()->user_id,
+            'user_id' => Auth::id(),
             'comment' => Input::get('comment.comment'),
             'parent' => Input::get('comment.parent')
         ));
@@ -32,7 +32,7 @@ class CommentsController extends Controller {
         $comment = Comment::find($comment_id);
 
         // Make sure that the request for deletion is either coming from an admin or from the user who owns the comment
-        if (Auth::isAdmin() || $comment->user_id == Auth::user()->user_id) {
+        if (Auth::isAdmin() || $comment->user_id == Auth::id()) {
             $comment->delete();
             return response()->json(null, 204);
         }
@@ -45,7 +45,7 @@ class CommentsController extends Controller {
         $comment = Comment::find($comment_id);
 
         // Make sure that the request for editing is from the user who owns the comment
-        if ($comment->user_id == Auth::user()->user_id) {
+        if ($comment->user_id == Auth::id()) {
             $comment->comment = Input::get('comment.comment');
             $comment->save();
             return response()->json(null, 204);

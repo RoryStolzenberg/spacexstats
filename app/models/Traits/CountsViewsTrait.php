@@ -3,6 +3,7 @@ namespace SpaceXStats\Models\Traits;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
+use ReflectionClass;
 
 trait CountsViewsTrait {
 
@@ -10,16 +11,17 @@ trait CountsViewsTrait {
         // Only increment the view counter if the current user is a subscriber
         if (Auth::isSubscriber()) {
 
-            $className = strtolower(get_class());
+            $modelName = (new ReflectionClass($this))->getShortName();
+            $modelKey = strtolower($modelName) . '_id';
 
             // Only increment the view counter if the user has not visited in 1 hour
-            if (Redis::exists($className . 'ViewByUser:' . $this->primaryKey . ':' . Auth::user()->user_id)) {
+            if (!Redis::exists($modelName . 'ViewByUser:' . $this->$modelKey . ':' . Auth::id())) {
 
                 // Increment
-                Redis::hincrby($className . ':' . $this->primaryKey, 'views', 1);
+                Redis::hincrby($modelName . ':' . $this->$modelKey, 'views', 1);
 
                 // Add user to recent views
-                Redis::setex($className . 'ViewByUser:' . $this->primaryKey . ':' . Auth::user()->user_id, true, 3600);
+                Redis::setex($modelName . 'ViewByUser:' . $this->$modelKey . ':' . Auth::id(), 3600, true);
             }
         }
     }

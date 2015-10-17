@@ -24,7 +24,14 @@
 
             <section class="details">
                 <div class="gr-9 content">
-                    <img id="object" src="{{ $object->media }}" />
+                    @if ($object->external_url != null)
+                        <iframe width="100%" src="{{ $object->external_url }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    @else
+                        <video id="object" class="video-js vjs-default-skin" controls
+                               preload="none" data-setup="{}" width="100%">
+                            <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
+                        </video>
+                    @endif
                 </div>
 
                 <aside class="gr-3 aside">
@@ -49,7 +56,7 @@
                         <ul>
                             <li>{{ $object->present()->subtype() }}</li>
                         </ul>
-                        Image taken {{ $object->present()->originDateAsString() }}
+                        Video taken {{ $object->present()->originDateAsString() }}
                     </div>
 
                     <div class="legal">
@@ -62,16 +69,11 @@
                     @endif
 
                     @if ($object->collections()->count() > 0)
-                        <p>This image is part of {{ $object->collections()->count() }} collections</p>
+                        <p>This video is part of {{ $object->collections()->count() }} collections</p>
                         <div class="collections">
 
                         </div>
                     @endif
-
-                    <p>Image Details</p>
-                    <ul class="exif">
-                        <li>{{ $object->ISO }} ISO</li>
-                    </ul>
 
                     <p>File Details</p>
                     <div class="file-details">
@@ -82,9 +84,7 @@
 
             <h2>Summary</h2>
             <section class="summary">
-                @if ($object->type != \SpaceXStats\Enums\MissionControlType::Text)
-                    <p>{{ $object->summary }}</p>
-                @endif
+                <p>{{ $object->summary }}</p>
 
                 <h3>Tags</h3>
                 @foreach ($object->tags as $tag)
