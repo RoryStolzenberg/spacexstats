@@ -3,7 +3,8 @@ namespace SpaceXStats\Uploads\Templates;
 
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
-use SpaceXStats\Exif\Exif;
+use SpaceXStats\Library\Exif\Exif;
+use SpaceXStats\Models\Object;
 
 class ImageUpload extends GenericUpload implements UploadInterface {
 	protected $exif;
@@ -17,7 +18,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 	public function addToMissionControl() {
         $this->setThumbnails();
 
-		return \Object::create(array(
+		return Object::create(array(
 			'user_id' => \Auth::id(),
 			'type' => MissionControlType::Image,
 			'size' => $this->fileinfo['size'],
@@ -26,6 +27,8 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 			'original_name' => $this->fileinfo['original_name'],
 			'filename' => $this->fileinfo['filename'],
             'thumb_filename' => $this->fileinfo['filename'],
+            'has_temporary_file' => true,
+            'has_temporary_thumbs' => true,
             'cryptographic_hash' => $this->getCryptographicHash(),
 			'dimension_width' => $this->getDimensions('width'),
 			'dimension_height' => $this->getDimensions('height'),
@@ -37,7 +40,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
             'aperture' => $this->exif->aperture(),
             'ISO' => $this->exif->iso(),
             'originated_at' => $this->exif->datetime(),
-			'status' => ObjectPublicationStatus::QueuedStatus
+			'status' => ObjectPublicationStatus::NewStatus
 		));
 	}
 
@@ -49,15 +52,15 @@ class ImageUpload extends GenericUpload implements UploadInterface {
             $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
             // create an Imagick instance
-            $image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
+            $image = new \Imagick(public_path() . $this->directory['full'] . $this->fileinfo['filename']);
             $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-            $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename']);
+            $image->writeImage(public_path() . $this->directory[$size] . $this->fileinfo['filename']);
         }
     }
 
 	// get the dimensions of an image
 	private function getDimensions($dimension) {
-		$image = new \Imagick($this->getImagickSafeDirectory('full') . $this->fileinfo['filename']);
+		$image = new \Imagick(public_path() . $this->directory['full'] . $this->fileinfo['filename']);
 		return ($dimension == 'width') ? $image->getImageWidth() : $image->getImageHeight();
 	}
 }

@@ -2,9 +2,12 @@
 
 namespace SpaceXStats\Managers\Objects;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
+use SpaceXStats\Models\Object;
 
 class ObjectFromRedditComment extends ObjectCreator {
 
@@ -16,16 +19,15 @@ class ObjectFromRedditComment extends ObjectCreator {
     }
 
     public function create() {
-        \DB::transaction(function() {
+        DB::transaction(function() {
 
-            $this->object = \Object::create([
-                'user_id'               => \Auth::user()->user_id,
+            $this->object = Object::create([
+                'user_id'               => Auth::id(),
                 'type'                  => MissionControlType::Comment,
                 'subtype'               => MissionControlSubtype::RedditComment,
                 'title'                 => $this->input['title'],
                 'size'                  => strlen($this->input['summary']),
                 'summary'               => $this->input['summary'],
-                'thumb_filename'        => 'comment.png',
                 'cryptographic_hash'    => hash('sha256', $this->input['summary']),
                 'external_url'          => $this->input['external_url'],
                 'reddit_comment_id'     => $this->input['reddit_comment_id'],

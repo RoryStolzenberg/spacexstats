@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceXStats\Exif;
+namespace SpaceXStats\Library\Exif;
 
 use SpaceXStats\Library\Enums\ExifProperty;
 

@@ -1,8 +1,10 @@
 <?php
 namespace SpaceXStats\Managers\Objects;
 
+use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Models\Object;
 
 class ObjectFromFile extends ObjectCreator {
 
@@ -32,10 +34,10 @@ class ObjectFromFile extends ObjectCreator {
     }
 
     public function create() {
-        $this->object = \Object::find($this->input['object_id']);
+        $this->object = Object::find($this->input['object_id']);
 
         // Global object
-        \DB::transaction(function() {
+        DB::transaction(function() {
             $this->object->title = array_get($this->input, 'title', null);
             $this->object->summary = array_get($this->input, 'summary', null);
             $this->object->subtype = array_get($this->input, 'subtype', null);

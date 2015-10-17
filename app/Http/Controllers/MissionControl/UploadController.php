@@ -110,7 +110,8 @@ class UploadController extends Controller {
             'contents' => 'Done!',
             'type' => 'success'
         ));
-        return response()->json(true);
+
+        return response()->json(null, 204);
 	}
 
     // AJAX GET

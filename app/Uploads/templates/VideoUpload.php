@@ -5,6 +5,7 @@ use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use FFMpeg\FFProbe;
 use FFMpeg\FFMpeg;
+use SpaceXStats\Models\Object;
 
 class VideoUpload extends GenericUpload implements UploadInterface {
     public function __construct($file) {
@@ -24,7 +25,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
     public function addToMissionControl() {
         $this->setThumbnails();
 
-        return \Object::create(array(
+        return Object::create(array(
             'user_id' => \Auth::id(),
             'type' => MissionControlType::Video,
             'size' => $this->fileinfo['size'],
@@ -33,11 +34,13 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             'original_name' => $this->fileinfo['original_name'],
             'filename' => $this->fileinfo['filename'],
             'thumb_filename' => $this->getThumbnail(),
+            'has_temporary_file' => true,
+            'has_temporary_thumbs' => true,
             'cryptographic_hash' => $this->getCryptographicHash(),
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
-            'status' => ObjectPublicationStatus::QueuedStatus
+            'status' => ObjectPublicationStatus::NewStatus
         ));
     }
 
@@ -58,9 +61,9 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
             // create an Imagick instance
-            $image = new \Imagick($this->getImagickSafeDirectory('frames') . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image = new \Imagick(public_path() . $this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
             $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-            $image->writeImage($this->getImagickSafeDirectory($size) . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image->writeImage(public_path() . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
         }
 
         // Delete the temporary frame

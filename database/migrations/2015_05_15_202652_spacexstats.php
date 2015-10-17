@@ -276,7 +276,7 @@ class Spacexstats extends Migration {
             // Third-party-related properties
             $table->string('external_url', Varchar::small)->nullable();
 
-            $table->enum('status', array('Queued', 'Published'));
+            $table->enum('status', array('New', 'Queued', 'Published'));
             $table->enum('visibility', array('Default', 'Public', 'Hidden'));
             $table->boolean('anonymous');
             $table->datetime('actioned_at')->nullable(); // Nonoptional values

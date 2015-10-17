@@ -7,9 +7,13 @@ abstract class GenericUpload {
 	$uniqid,
     $smallThumbnailSize = 200,
     $largeThumbnailSize = 800,
-	$directory = array('full' => 'media/full/','large' => 'media/large/' ,'small' => 'media/small/',
-        'twitter' => 'media/twitter/', 'frames' => 'media/frames/'),
-    $workingDirectory = 'H:/spacexstats/public/';
+	$directory = array(
+        'full' => '/media/full/',
+        'large' => '/media/large/',
+        'small' => '/media/small/',
+        'twitter' => '/media/twitter/',
+        'frames' => '/media/frames/'
+    );
 
 	public function __construct($file) {
 		$this->file = $file;
@@ -26,32 +30,11 @@ abstract class GenericUpload {
 		$this->move();	
 	}
 
-    /**
-     * Gets the safe working directory of the file for Imagick processing.
-     *
-     * This is a workaround to bypass Imagick's inability to use relative file paths on Windows OS
-     * by prefixing them with a working directory, defined as a property of the GenericUpload class.
-     *
-     * @param $directoryType
-     * @return string
-     */
-    protected function getImagickSafeDirectory($directoryType) {
-        // *nix
-        if (DIRECTORY_SEPARATOR === '/') {
-            return $this->directory[$directoryType];
-
-        // windows
-        } elseif (DIRECTORY_SEPARATOR === '\\') {
-            return $this->workingDirectory . $this->directory[$directoryType];
-        }
-
-    }
-
     protected function getCryptographicHash() {
-        return hash_file('sha256', $this->directory['full'] . $this->fileinfo['filename']);
+        return hash_file('sha256', public_path() . $this->directory['full'] . $this->fileinfo['filename']);
     }
 
     private function move() {
-		return $this->file->move($this->directory['full'], $this->fileinfo['filename']);
+		return $this->file->move(public_path() . $this->directory['full'], $this->fileinfo['filename']);
 	}
 }
