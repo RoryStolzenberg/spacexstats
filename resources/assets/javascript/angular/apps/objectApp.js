@@ -1,5 +1,5 @@
 (function() {
-    var objectApp = angular.module('app', []);
+    var objectApp = angular.module('app', ['ui.tree']);
 
     objectApp.controller("objectController", ["$scope", "$http", function($scope, $http) {
 
@@ -91,33 +91,88 @@
             $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
         }
 
-    }]).controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
+    }]);
+
+    objectApp.controller('commentsController', ["$scope", "commentService", "Comment", function($scope, commentService, Comment) {
         $scope.object = laravel.object;
 
+        $scope.addTopLevelComment = function(form) {
+            commentService.addTopLevel($scope.object, $scope.newComment).then(function(response) {
+                $scope.comments.push(response.data);
+                $scope.newComment = null;
+                form.$setPristine();
+            });
+        };
+
+        $scope.addReplyComment = function() {
+            commentService.addReply($scope.object);
+        };
+
+        $scope.deleteComment = function() {
+
+        };
+
+        $scope.editComment = function() {
+
+        };
+
         (function() {
-            commentService.getComments($scope.object).then(function(response) {
+            commentService.get($scope.object).then(function(response) {
                 $scope.comments = response.data;
             });
         })();
 
-    }]).service("commentService", ["$http",
+    }]);
+
+    objectApp.service("noteService", ["$http", function($http) {
+
+    }]);
+
+    objectApp.service("favoriteService", ["$http", function($http) {
+
+    }]);
+
+    objectApp.service("commentService", ["$http",
         function($http) {
 
-            this.getComments = function (object) {
+            this.get = function (object) {
                 return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
             };
 
-            this.addComment = function(comment) {
-
+            this.addTopLevel = function(object, comment) {
+                return $http.post('/missioncontrol/objects/' + object.object_id + '/comments/create', { comment: {
+                    comment: comment,
+                    parent: null
+                }});
             };
 
-            this.deleteComment = function(comment) {
+            this.addReply = function(object, comment) {
 
             }
 
-            this.editComment = function(comment) {
+            this.delete = function(object, comment) {
+                return $http.delete('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id);
+            }
 
+            this.edit = function(object, comment) {
+                return $http.patch('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id);
             }
         }
     ]);
+
+    object.factory("Comment", function() {
+        return function(comment) {
+            var self = comment;
+
+            self.toggleReplyState = function() {
+                if (typeof $scope.reply !== 'undefined') {
+                    $scope.reply = !$scope.reply;
+                } else {
+                    $scope.reply = true;
+                }
+            };
+
+            return self;
+        }
+    });
 })();

@@ -40,6 +40,7 @@
         <!-- Angular -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.3/angular-scroll.js"></script>
+        <script src="/js/angular-ui-tree.js"></script>
 
         <!-- Moment.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>

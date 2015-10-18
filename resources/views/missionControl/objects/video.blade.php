@@ -28,7 +28,7 @@
                         <iframe width="100%" src="{{ $object->external_url }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                     @else
                         <video id="object" class="video-js vjs-default-skin" controls
-                               preload="none" data-setup="{}" width="100%">
+                               preload="none" data-setup="{}" width="auto" height="auto">
                             <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
                         </video>
                     @endif
@@ -113,15 +113,15 @@
             <h2>{{ $object->comments->count() }} Comments</h2>
             <section class="comments" ng-controller="commentsController" ng-strict-di>
                 @if (Auth::isSubscriber())
-                    <form>
-                        <textarea ng-model="newComment" minlength="10"></textarea>
-                        <input type="submit" ng-click="addNewComment()" value="Add comment" />
+                    <form name="commentForm">
+                        <textarea ng-model="newComment" minlength="10" required></textarea>
+                        <input type="submit" ng-click="addTopLevelComment(commentForm)" ng-disabled="commentForm.$invalid" value="Add comment" />
                     </form>
-                    <ul>
-                        <li ng-repeat="child in comments">
-                            <comment comment="child"></comment>
-                        </li>
-                    </ul>
+                    <div ui-tree data-nodrop-enabled="true" data-drag-enabled="false">
+                        <ul ui-tree-nodes="" ng-model="comments">
+                            <li ng-repeat="comment in comments" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                        </ul>
+                    </div>
                 @else
                     <p>You need to be a Mission Control subscriber to comment. Sign up today!</p>
                 @endif
@@ -129,6 +129,35 @@
 
         </main>
     </div>
+
+    <!-- Nested node template -->
+    <script type="text/ng-template" id="nodes_renderer.html">
+        <div class="{{ 'comment-depth-' + comment.depth }}" ui-tree-handle>
+
+            <span class="comment-owner">
+                <a href="{{ '/users/' + comment.user.username }}">{{ comment.user.username }}</a>
+            </span>
+
+            <p class="comment-body">{{ comment.comment }}</p>
+
+            <ul class="comment-actions">
+                <li ng-click="toggleReplyState()">Reply</li>
+                <li ng-click="edit()">Edit</li>
+                <li ng-click="delete()">Delete</li>
+            </ul>
+
+            <div ng-if="reply == true" ng-form="commentReplyForm">
+                <textarea ng-model="$parent.replyText"></textarea>
+
+                <button type="submit" ng-click="$parent.submitComment">Reply</button>
+                <button type="reset" ng-click="$parent.toggleReplyState()">Cancel</button>
+            </div>
+
+        </div>
+        <ul ui-tree-nodes="" ng-model="comment.children">
+            <li ng-repeat="children in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+        </ul>
+    </script>
 
     <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
     <script src="http://vjs.zencdn.net/4.12/video.js"></script>

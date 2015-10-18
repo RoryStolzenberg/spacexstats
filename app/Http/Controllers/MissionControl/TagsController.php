@@ -2,6 +2,7 @@
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Models\Tag;
 
 class TagsController extends Controller {
     // AJAX GET

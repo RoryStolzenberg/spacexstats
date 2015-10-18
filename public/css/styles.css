@@ -7747,6 +7747,14 @@ img#object {
   .actions.container .is-favorited {
     color: #CCAC55; }
 
+.video-js {
+  width: auto !important;
+  height: auto !important;
+  padding-top: 56.25% !important; }
+
+.vjs-fullscreen {
+  padding-top: 0% !important; }
+
 .files-list li.uploaded-file {
   width: 300px;
   height: 200px;

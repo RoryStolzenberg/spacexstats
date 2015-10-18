@@ -10,6 +10,7 @@ use SpaceXStats\Library\DeltaVCalculator;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Models\Download;
 use SpaceXStats\Models\Favorite;
+use SpaceXStats\Models\Note;
 use SpaceXStats\Models\Object;
 use JavaScript;
 
@@ -18,7 +19,7 @@ class ObjectsController extends Controller {
     // GET
     // missioncontrol/objects/{object_id}
     public function get($object_id) {
-        $object = Object::find($object_id);
+        $object = Object::findOrFail($object_id);
 
         // Item has been viewed, increment!
         $object->incrementViewCounter();
@@ -65,7 +66,7 @@ class ObjectsController extends Controller {
      * @param $object_id    The object to edit.
      */
     public function edit($object_id) {
-        $object = Object::find($object_id);
+        $object = Object::findOrFail($object_id);
 
         if (request()->isMethod('get')) {
 

@@ -221,7 +221,7 @@
         }
     }]);
 
-    uploadApp.controller("uploadController", ["$rootScope", "$scope", "objectFromFile", function($rootScope, $scope, objectFromFile) {
+    uploadApp.controller("uploadController", ["$scope", "objectFromFile", "missionControlService", function($scope, objectFromFile, missionControlService) {
         $scope.activeUploadSection = "dropzone";
 
         $scope.currentVisibleFile = null;
@@ -250,11 +250,11 @@
         };
 
         $scope.fileSubmitButtonFunction = function() {
-            $rootScope.postToMissionControl($scope.files, 'files');
+            missionControlService.postToMissionControl($scope.files, 'files');
         }
     }]);
 
-    uploadApp.controller("postController", ["$rootScope", "$scope", "$http", function($rootScope, $scope, $http) {
+    uploadApp.controller("postController", ["$scope", "missionControlService", function($scope, missionControlService ) {
 
         $scope.NSFcomment = {};
         $scope.redditcomment = {};
@@ -264,16 +264,16 @@
 
         $scope.postSubmitButtonFunction = function() {
             switch ($scope.postType) {
-                case 'NSFcomment': $rootScope.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
-                case 'redditcomment': $rootScope.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
-                case 'pressrelease' : $rootScope.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
-                case 'article': $rootScope.postToMissionControl($scope.article, 'article'); break;
-                case 'tweet': $rootScope.postToMissionControl($scope.tweet, 'tweet'); break;
+                case 'NSFcomment': missionControlService.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
+                case 'redditcomment': missionControlService.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
+                case 'pressrelease' : missionControlService.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
+                case 'article': missionControlService.postToMissionControl($scope.article, 'article'); break;
+                case 'tweet': missionControlService.postToMissionControl($scope.tweet, 'tweet'); break;
             }
         }
     }]);
 
-    uploadApp.controller("writeController", ["$rootScope", "$scope", function($rootScope, $scope) {
+    uploadApp.controller("writeController", ["$scope", "missionControlService", function($scope, missionControlService) {
 
         $scope.text = {
             title: null,
@@ -284,12 +284,12 @@
         };
 
         $scope.writeSubmitButtonFunction = function() {
-            $rootScope.postToMissionControl($scope.text, 'text');
+            missionControlService.postToMissionControl($scope.text, 'text');
         }
     }]);
 
-    uploadApp.run(['$rootScope', '$http', function($rootScope, $http) {
-        $rootScope.postToMissionControl = function(dataToUpload, submissionHeader) {
+    uploadApp.service('missionControlService', ['$http', 'CSRF_TOKEN', function($http, CSRF_TOKEN) {
+        this.postToMissionControl = function(dataToUpload, submissionHeader) {
             var req = {
                 method: 'POST',
                 url: '/missioncontrol/create/submit',
@@ -297,7 +297,8 @@
                     'Submission-Type': submissionHeader
                 },
                 data: {
-                    data: dataToUpload
+                    data: dataToUpload,
+                    _token: CSRF_TOKEN
                 }
             };
 
@@ -530,7 +531,7 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
     });
 })();
 (function() {
-    var objectApp = angular.module('app', []);
+    var objectApp = angular.module('app', ['ui.tree']);
 
     objectApp.controller("objectController", ["$scope", "$http", function($scope, $http) {
 
@@ -622,35 +623,78 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
             $http.get('/missioncontrol/objects/' + $scope.object.object_id + '/download');
         }
 
-    }]).controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
+    }]);
+
+    objectApp.controller('commentsController', ["$scope", "commentService", function($scope, commentService) {
         $scope.object = laravel.object;
 
+        $scope.addTopLevelComment = function(form) {
+            commentService.addTopLevel($scope.object, $scope.newComment).then(function(response) {
+                $scope.comments.push(response.data);
+                $scope.newComment = null;
+                form.$setPristine();
+            });
+        };
+
+        $scope.addReplyComment = function() {
+            commentService.addReply($scope.object);
+        };
+
+        $scope.deleteComment = function() {
+
+        };
+
+        $scope.editComment = function() {
+
+        };
+
         (function() {
-            commentService.getComments($scope.object).then(function(response) {
+            commentService.get($scope.object).then(function(response) {
                 $scope.comments = response.data;
             });
         })();
 
-    }]).service("commentService", ["$http",
+    }]);
+
+    objectApp.service("noteService", ["$http", function($http) {
+
+    }]);
+
+    objectApp.service("favoriteService", ["$http", function($http) {
+
+    }]);
+
+    objectApp.service("commentService", ["$http",
         function($http) {
 
-            this.getComments = function (object) {
+            this.get = function (object) {
                 return $http.get('/missioncontrol/objects/' + object.object_id + '/comments');
             };
 
-            this.addComment = function(comment) {
-
+            this.addTopLevel = function(object, comment) {
+                return $http.post('/missioncontrol/objects/' + object.object_id + '/comments/create', { comment: {
+                    comment: comment,
+                    parent: null
+                }});
             };
 
-            this.deleteComment = function(comment) {
+            this.addReply = function(object, comment) {
 
             }
 
-            this.editComment = function(comment) {
+            this.delete = function(object, comment) {
+                return $http.delete('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id);
+            }
 
+            this.edit = function(object, comment) {
+                return $http.patch('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id);
             }
         }
     ]);
+
+    object.factory("Comment", function() {
+
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -1514,118 +1558,6 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app', []);
 
-    app.directive("selectList", function() {
-        return {
-            restrict: 'E',
-            scope: {
-                options: '=',
-                selectedOption: '=ngModel',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.optionsObj = $scope.options.map(function(option) {
-                    var props = {
-                        id: option[$scope.uniqueKey],
-                        name: option[$scope.titleKey],
-                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                    };
-
-                    if (typeof $scope.descriptionKey !== 'undefined') {
-                        props.description = option[$scope.descriptionKey];
-                    }
-
-                    return props;
-                });
-
-                $scope.$watch("selectedOption", function(newValue) {
-                    if (newValue !== null) {
-                        $scope.selectedOptionObj = $scope.optionsObj
-                            .filter(function(option) {
-                                return option['id'] == newValue;
-                            }).shift();
-                    } else {
-                        $scope.selectedOptionObj = null;
-                    }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option['id'];
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.selectDefault = function() {
-                    $scope.selectedOption = null;
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                };
-
-                $scope.$watch("dropdownIsVisible", function(newValue) {
-                    if (!newValue) {
-                        $scope.search = "";
-                    }
-                });
-
-                $scope.isSelected = function(option) {
-                    return option.id == $scope.selectedOption;
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/selectList.html'
-        }
-    });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
             require: 'ngModel',
@@ -1759,6 +1691,118 @@ angular.module('RecursionHelper', [])
 })();
 
 
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("selectList", function() {
+        return {
+            restrict: 'E',
+            scope: {
+                options: '=',
+                selectedOption: '=ngModel',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.optionsObj = $scope.options.map(function(option) {
+                    var props = {
+                        id: option[$scope.uniqueKey],
+                        name: option[$scope.titleKey],
+                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                    };
+
+                    if (typeof $scope.descriptionKey !== 'undefined') {
+                        props.description = option[$scope.descriptionKey];
+                    }
+
+                    return props;
+                });
+
+                $scope.$watch("selectedOption", function(newValue) {
+                    if (newValue !== null) {
+                        $scope.selectedOptionObj = $scope.optionsObj
+                            .filter(function(option) {
+                                return option['id'] == newValue;
+                            }).shift();
+                    } else {
+                        $scope.selectedOptionObj = null;
+                    }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option['id'];
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.selectDefault = function() {
+                    $scope.selectedOption = null;
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                };
+
+                $scope.$watch("dropdownIsVisible", function(newValue) {
+                    if (!newValue) {
+                        $scope.search = "";
+                    }
+                });
+
+                $scope.isSelected = function(option) {
+                    return option.id == $scope.selectedOption;
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/selectList.html'
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -2019,31 +2063,35 @@ angular.module('RecursionHelper', [])
         }
     });
 })();
-angular.module('directives.comment', ["RecursionHelper"]).directive('comment', ["RecursionHelper", function(RecursionHelper) {
-    return {
-        restrict: 'E',
-        replace: true,
-        scope: {
-            comment: '='
-        },
-        compile: function(element) {
-            // Use the compile function from the RecursionHelper,
-            // And return the linking function(s) which it returns
-            return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+(function() {
+    var app = angular.module('app', ["RecursionHelper"]);
 
-                $scope.toggleReplyState = function() {
-                    if (typeof $scope.reply !== 'undefined') {
-                        $scope.reply = !$scope.reply;
-                    } else {
-                        $scope.reply = true;
+    app.directive('comment', ["RecursionHelper", function(RecursionHelper) {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                comment: '='
+            },
+            compile: function(element) {
+                // Use the compile function from the RecursionHelper,
+                // And return the linking function(s) which it returns
+                return RecursionHelper.compile(element, function($scope, element, attrs, ctrl) {
+
+                    $scope.toggleReplyState = function() {
+                        if (typeof $scope.reply !== 'undefined') {
+                            $scope.reply = !$scope.reply;
+                        } else {
+                            $scope.reply = true;
+                        }
+
                     }
-
-                }
-            });
-        },
-        templateUrl: '/js/templates/comment.html'
-    }
-}]);
+                });
+            },
+            templateUrl: '/js/templates/comment.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -2080,24 +2128,6 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope,elem,attrs){
-                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
-                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
 (function() {
 	var app = angular.module('app');
 
@@ -2323,6 +2353,24 @@ angular.module('directives.comment', ["RecursionHelper"]).directive('comment', [
         }
     }]);
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope,elem,attrs){
+                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
+                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
 (function() {
     var app = angular.module('app');
 
