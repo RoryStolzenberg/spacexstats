@@ -33,7 +33,7 @@
 						More...
 						<ul class="nav-second-tier wide">
                             <li><a href="/locations">Locations</a></li>
-							<li>News Summaries</li>
+							<li><a href="/newssummaries">News Summaries</a></li>
 							<li><a href="/faq">Frequently Asked Questions</a></li>
 							<li>RSS Updates</li>
                             <li>Community</li>

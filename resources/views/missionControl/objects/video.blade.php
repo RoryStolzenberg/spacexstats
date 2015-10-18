@@ -132,18 +132,18 @@
 
     <!-- Nested node template -->
     <script type="text/ng-template" id="nodes_renderer.html">
-        <div class="{{ 'comment-depth-' + comment.depth }}" ui-tree-handle>
+        <div class="@{{ 'comment-depth-' + comment.depth }}" ui-tree-handle>
 
             <span class="comment-owner">
-                <a href="{{ '/users/' + comment.user.username }}">{{ comment.user.username }}</a>
+                <a href="@{{ '/users/' + comment.user.username }}">@{{ comment.user.username }}</a>
             </span>
 
-            <p class="comment-body">{{ comment.comment }}</p>
+            <p class="comment-body">@{{ comment.comment }}</p>
 
             <ul class="comment-actions">
-                <li ng-click="toggleReplyState()">Reply</li>
-                <li ng-click="edit()">Edit</li>
-                <li ng-click="delete()">Delete</li>
+                <li ng-click="comment.toggleReplyState()">Reply</li>
+                <li ng-click="comment.edit()">Edit</li>
+                <li ng-click="comment.delete()">Delete</li>
             </ul>
 
             <div ng-if="reply == true" ng-form="commentReplyForm">

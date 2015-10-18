@@ -160,7 +160,7 @@
         }
     ]);
 
-    object.factory("Comment", function() {
+    objectApp.factory("Comment", function() {
         return function(comment) {
             var self = comment;
 
@@ -171,6 +171,14 @@
                     $scope.reply = true;
                 }
             };
+
+            self.edit = function() {
+
+            }
+
+            self.delete = function() {
+
+            }
 
             return self;
         }

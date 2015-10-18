@@ -37,7 +37,7 @@
         }
     }]);
 
-    uploadApp.controller("uploadController", ["$scope", "objectFromFile", "missionControlService", function($scope, objectFromFile, missionControlService) {
+    uploadApp.controller("uploadController", ["$scope", "objectFromFile", "uploadService", function($scope, objectFromFile, uploadService) {
         $scope.activeUploadSection = "dropzone";
 
         $scope.currentVisibleFile = null;
@@ -66,11 +66,11 @@
         };
 
         $scope.fileSubmitButtonFunction = function() {
-            missionControlService.postToMissionControl($scope.files, 'files');
+            uploadService.postToMissionControl($scope.files, 'files');
         }
     }]);
 
-    uploadApp.controller("postController", ["$scope", "missionControlService", function($scope, missionControlService ) {
+    uploadApp.controller("postController", ["$scope", "uploadService", function($scope, uploadService ) {
 
         $scope.NSFcomment = {};
         $scope.redditcomment = {};
@@ -80,16 +80,16 @@
 
         $scope.postSubmitButtonFunction = function() {
             switch ($scope.postType) {
-                case 'NSFcomment': missionControlService.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
-                case 'redditcomment': missionControlService.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
-                case 'pressrelease' : missionControlService.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
-                case 'article': missionControlService.postToMissionControl($scope.article, 'article'); break;
-                case 'tweet': missionControlService.postToMissionControl($scope.tweet, 'tweet'); break;
+                case 'NSFcomment': uploadService.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
+                case 'redditcomment': uploadService.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
+                case 'pressrelease' : uploadService.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
+                case 'article': uploadService.postToMissionControl($scope.article, 'article'); break;
+                case 'tweet': uploadService.postToMissionControl($scope.tweet, 'tweet'); break;
             }
         }
     }]);
 
-    uploadApp.controller("writeController", ["$scope", "missionControlService", function($scope, missionControlService) {
+    uploadApp.controller("writeController", ["$scope", "uploadService", function($scope, uploadService) {
 
         $scope.text = {
             title: null,
@@ -100,11 +100,11 @@
         };
 
         $scope.writeSubmitButtonFunction = function() {
-            missionControlService.postToMissionControl($scope.text, 'text');
+            uploadService.postToMissionControl($scope.text, 'text');
         }
     }]);
 
-    uploadApp.service('missionControlService', ['$http', 'CSRF_TOKEN', function($http, CSRF_TOKEN) {
+    uploadApp.service('uploadService', ['$http', 'CSRF_TOKEN', function($http, CSRF_TOKEN) {
         this.postToMissionControl = function(dataToUpload, submissionHeader) {
             var req = {
                 method: 'POST',

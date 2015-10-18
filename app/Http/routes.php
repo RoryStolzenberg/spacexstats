@@ -37,3 +37,5 @@ Route::post('faq/getquestions', 'QuestionsController@getQuestions');
 Route::get('faq','QuestionsController@index');
 
 Route::get('admin', 'AdminController@index')->before('mustBe:Administrator');
+
+Route::get('newssummaries', 'NewsSummariesController@index');
