@@ -95,10 +95,11 @@
 
     objectApp.controller('commentsController', ["$scope", "commentService", "Comment", function($scope, commentService, Comment) {
         $scope.object = laravel.object;
+        $scope.commentsAreLoaded = false;
 
         $scope.addTopLevelComment = function(form) {
             commentService.addTopLevel($scope.object, $scope.newComment).then(function(response) {
-                $scope.comments.push(response.data);
+                $scope.comments.push(new Comment(response.data));
                 $scope.newComment = null;
                 form.$setPristine();
             });
@@ -118,7 +119,10 @@
 
         (function() {
             commentService.get($scope.object).then(function(response) {
-                $scope.comments = response.data;
+                $scope.comments = response.data.map(function(comment) {
+                    return new Comment(comment);
+                });
+                $scope.commentsAreLoaded = true;
             });
         })();
 
@@ -146,8 +150,11 @@
                 }});
             };
 
-            this.addReply = function(object, comment) {
-
+            this.addReply = function(object, reply, parent) {
+                return $http.post('/missioncontrol/objects/' + object.object_id + '/comments/create', { comment: {
+                    comment: reply,
+                    parent: parent.comment_id
+                }});
             }
 
             this.delete = function(object, comment) {
@@ -160,27 +167,65 @@
         }
     ]);
 
-    objectApp.factory("Comment", function() {
-        return function(comment) {
+    objectApp.factory("Comment", ["commentService", function(commentService) {
+        function Comment(comment) {
             var self = comment;
 
+            self.isReplying = false;
+            self.isEditing = false;
+            self.isDeleting = false;
+
             self.toggleReplyState = function() {
-                if (typeof $scope.reply !== 'undefined') {
-                    $scope.reply = !$scope.reply;
+                if (self.isReplying === false) {
+                    self.isReplying = true;
+                    self.isEditing = self.isDeleting = false;
                 } else {
-                    $scope.reply = true;
+                    self.isReplying = false;
                 }
             };
 
-            self.edit = function() {
+            self.toggleEditState = function() {
+                if (self.isEditing === false) {
+                    self.isEditing = true;
+                    self.isReplying = self.isDeleting = false;
+                } else {
+                    self.isEditing = false;
+                }
+            };
 
+            self.toggleDeleteState = function() {
+                if (self.isDeleting === false) {
+                    self.isDeleting = true;
+                    self.isReplying = self.isEditing = false;
+                } else {
+                    self.isDeleting = false;
+                }
+            };
+
+            self.editText = self.comment;
+
+            self.reply = function() {
+                commentService.addReply(laravel.object, self.replyText, self).then(function() {
+                    self.replyText = null;
+                    self.isReplying = false;
+                });
+            }
+
+            self.edit = function() {
+                commentService.edit();
             }
 
             self.delete = function() {
-
+                commentService.delete(laravel.object).then(function() {
+                    self.isDeleting = false;
+                });
             }
 
-            return self;
+            self.children = self.children.map(function(reply) {
+                return new Comment(reply);
+            });
         }
-    });
+
+        return Comment;
+    }]);
 })();

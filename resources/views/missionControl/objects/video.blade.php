@@ -117,9 +117,10 @@
                         <textarea ng-model="newComment" minlength="10" required></textarea>
                         <input type="submit" ng-click="addTopLevelComment(commentForm)" ng-disabled="commentForm.$invalid" value="Add comment" />
                     </form>
+                    <p ng-if="!commentsAreLoaded">Comments are loading...</p>
                     <div ui-tree data-nodrop-enabled="true" data-drag-enabled="false">
                         <ul ui-tree-nodes="" ng-model="comments">
-                            <li ng-repeat="comment in comments" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                            <li ng-repeat="comment in comments" class="@{{ 'comment-depth-' + comment.depth }}" ui-tree-node ng-include="'nodes_renderer.html'"></li>
                         </ul>
                     </div>
                 @else
@@ -132,7 +133,7 @@
 
     <!-- Nested node template -->
     <script type="text/ng-template" id="nodes_renderer.html">
-        <div class="@{{ 'comment-depth-' + comment.depth }}" ui-tree-handle>
+        <div ui-tree-handle>
 
             <span class="comment-owner">
                 <a href="@{{ '/users/' + comment.user.username }}">@{{ comment.user.username }}</a>
@@ -142,20 +143,32 @@
 
             <ul class="comment-actions">
                 <li ng-click="comment.toggleReplyState()">Reply</li>
-                <li ng-click="comment.edit()">Edit</li>
-                <li ng-click="comment.delete()">Delete</li>
+                <li ng-click="comment.toggleEditState()">Edit</li>
+                <li ng-click="comment.toggleDeleteState()">Delete</li>
             </ul>
 
-            <div ng-if="reply == true" ng-form="commentReplyForm">
-                <textarea ng-model="$parent.replyText"></textarea>
+            <div ng-if="comment.isReplying === true" ng-form="commentReplyForm">
+                <textarea ng-model="comment.replyText" minlength="10" required></textarea>
 
-                <button type="submit" ng-click="$parent.submitComment">Reply</button>
-                <button type="reset" ng-click="$parent.toggleReplyState()">Cancel</button>
+                <button type="submit" ng-click="comment.reply()" ng-disabled="commentReplyForm.$invalid">Reply</button>
+                <button type="reset" ng-click="comment.toggleReplyState()">Cancel</button>
+            </div>
+
+            <div ng-if="comment.isEditing === true" ng-form="commentEditForm">
+                <textarea ng-model="comment.editText" minlength="10" required></textarea>
+
+                <button type="submit" ng-click="comment.edit()" ng-disabled="commentEditForm.$invalid">Edit</button>
+                <button type="reset" ng-click="comment.toggleEditState()">Cancel</button>
+            </div>
+
+            <div ng-if="comment.isDeleting === true">
+                <button type="submit" ng-click="comment.delete()">Delete</button>
+                <button type="reset" ng-click="comment.toggleDeleteState()">Cancel</button>
             </div>
 
         </div>
         <ul ui-tree-nodes="" ng-model="comment.children">
-            <li ng-repeat="children in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+            <li ng-repeat="comment in comment.children" class="@{{ 'comment-depth-' + comment.depth }}" ui-tree-node ng-include="'nodes_renderer.html'"></li>
         </ul>
     </script>
 

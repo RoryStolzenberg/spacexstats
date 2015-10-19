@@ -61,8 +61,8 @@
         <script src="/js/spacexstatsApp.js"></script>
     
         <script>
-            // Mobile left hand side drawer
             $(document).ready(function() {
+                // Mobile left hand side drawer
                 var mobileNavigation = $('.nav-mobile');
                 var contentToPush = $('body');
 
@@ -70,6 +70,9 @@
                     console.log('click');
                     contentToPush.toggleClass('nav-open');
                 });
+
+                // Stickybar
+                $('nav.sticky-bar').stickyNavbar();
             });
         </script>
 
