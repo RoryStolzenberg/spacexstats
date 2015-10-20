@@ -17,6 +17,8 @@ trait CommentableTrait {
 
                 if ($children) {
                     $model['children'] = $children;
+                } else {
+                    $model['children'] = [];
                 }
 
                 $branch[] = $model;

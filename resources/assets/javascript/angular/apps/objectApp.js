@@ -121,6 +121,7 @@
             commentService.get($scope.object).then(function(response) {
                 $scope.comments = response.data.map(function(comment) {
                     return new Comment(comment);
+                    var x = 2;
                 });
                 $scope.commentsAreLoaded = true;
             });
@@ -162,7 +163,9 @@
             }
 
             this.edit = function(object, comment) {
-                return $http.patch('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id);
+                return $http.patch('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id, { comment: {
+                    comment: comment.editText
+                }});
             }
         }
     ]);
@@ -212,11 +215,17 @@
             }
 
             self.edit = function() {
-                commentService.edit();
+                commentService.edit(laravel.object, self).then(function() {
+                    self.comment = self.editText;
+                    self.editText = null;
+                    self.isEditing = false;
+                });
             }
 
             self.delete = function() {
-                commentService.delete(laravel.object).then(function() {
+                commentService.delete(laravel.object, self).then(function() {
+                    self.comment = null;
+                    self.isHidden = true;
                     self.isDeleting = false;
                 });
             }
@@ -224,6 +233,8 @@
             self.children = self.children.map(function(reply) {
                 return new Comment(reply);
             });
+
+            return self;
         }
 
         return Comment;
