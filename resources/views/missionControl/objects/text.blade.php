@@ -11,16 +11,7 @@
         <h1>{{ $object->title }}</h1>
         <main>
 
-            <nav class="sticky-bar">
-                <ul class="container">
-                    <li class="gr-2">{{ $object->present()->type() }}</li>
-                    <li class="gr-2">Summary</li>
-                    <li class="gr-2">Comments</li>
-                    @if (Auth::isSubscriber())
-                        <li class="gr-2">Edit</li>
-                    @endif
-                </ul>
-            </nav>
+            @include('templates.objects.navigation')
 
             <section class="details">
                 <div class="gr-9 content">
@@ -82,55 +73,18 @@
 
             <h2>Summary</h2>
             <section class="summary">
-                @if ($object->type != \SpaceXStats\Enums\MissionControlType::Text)
-                    <p>{{ $object->summary }}</p>
-                @endif
-
                 <h3>Tags</h3>
                 @foreach ($object->tags as $tag)
                     <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
                 @endforeach
 
-                <h3>Your Note</h3>
-                @if (Auth::isSubscriber())
-                    <form>
-                        <div ng-show="noteState === 'read'">
-                            <p>@{{ noteReadText }}</p>
-                            <button ng-click="changeNoteState()">@{{ noteButtonText }}</button>
-                        </div>
+                @include('templates.objects.notes')
 
-                        <div ng-show="noteState === 'write'">
-                            <textarea ng-model="note"></textarea>
-                            <button ng-click="saveNote()" data-bind="disable: note().length == 0">Save Note</button>
-                            <button class="delete" ng-if="originalNote !== ''" ng-click="deleteNote()">Delete Note</button>
-                        </div>
-                    </form>
-                @else
-                    Sign up for Mission Control to leave personal notes about this.
-                @endif
             </section>
 
-            <h2>{{ $object->comments->count() }} Comments</h2>
-            <section class="comments" ng-controller="commentsController" ng-strict-di>
-                @if (Auth::isSubscriber())
-                    <form>
-                        <textarea ng-model="newComment" minlength="10"></textarea>
-                        <input type="submit" ng-click="addNewComment()" value="Add comment" />
-                    </form>
-                    <ul>
-                        <li ng-repeat="child in comments">
-                            <comment comment="child"></comment>
-                        </li>
-                    </ul>
-                @else
-                    <p>You need to be a Mission Control subscriber to comment. Sign up today!</p>
-                @endif
-            </section>
+            @include('templates.objects.comments')
 
         </main>
     </div>
-
-    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
 </body>
 @stop

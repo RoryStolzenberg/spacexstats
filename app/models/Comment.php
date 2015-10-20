@@ -35,12 +35,20 @@ class Comment extends Model {
     }
 
     public function user() {
+        if ($this->shouldBeHidden()) {
+            return null;
+        }
         return $this->belongsTo('SpaceXStats\Models\User')->select(array('user_id', 'username'));
+    }
+
+    // Methods
+    public function shouldBeHidden() {
+        return $this->isHidden || $this->trashed();
     }
 
     // Attribute Accessors
     public function getCommentAttribute() {
-        if ($this->isHidden || $this->trashed()) {
+        if ($this->shouldBeHidden()) {
             return null;
         }
         return $this->attributes['comment'];
