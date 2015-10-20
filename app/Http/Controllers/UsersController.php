@@ -47,7 +47,7 @@ class UsersController extends Controller {
         }
 	}
 
-    public function edit($username) {
+    public function getEdit($username) {
         $user = User::where('username', $username)->with(['notifications.notificationType', 'profile'])->firstOrFail();
 
         $notificationTypes = NotificationType::toArray();
@@ -70,7 +70,7 @@ class UsersController extends Controller {
         ));
     }
 
-	public function editProfile($username) {
+	public function postEditProfile($username) {
 		$user = User::where('username', $username)->firstOrFail();
 
         if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {

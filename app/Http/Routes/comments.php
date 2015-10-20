@@ -2,9 +2,7 @@
 Route::group(array('prefix' => 'missioncontrol/objects', 'namespace' => 'MissionControl'), function() {
 
     Route::group(array('middleware' => 'auth'), function() {
-
         Route::get('/{object_id}/comments', 'CommentsController@commentsForObject');
-
     });
 
     Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
