@@ -20,12 +20,14 @@ class CommentsController extends Controller {
     // /{$object_id}/comments/add
     public function create($object_id) {
 
-        $comment = Comment::create(array(
+        $newComment = Comment::create(array(
             'object_id' => $object_id,
             'user_id' => Auth::id(),
             'comment' => Input::get('comment.comment'),
             'parent' => Input::get('comment.parent')
         ));
+
+        $comment = Comment::where('comment_id', $newComment->comment_id)->with('user')->first();
 
         return response()->json($comment);
     }

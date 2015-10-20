@@ -162,7 +162,7 @@
             </div>
 
             <div ng-if="comment.isDeleting === true">
-                <button type="submit" ng-click="comment.delete()">Delete</button>
+                <button type="submit" ng-click="comment.delete(this)">Delete</button>
                 <button type="reset" ng-click="comment.toggleDeleteState()">Cancel</button>
             </div>
 

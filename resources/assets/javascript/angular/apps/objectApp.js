@@ -174,6 +174,10 @@
         function Comment(comment) {
             var self = comment;
 
+            if (typeof self.children === 'undefined') {
+                self.children = [];
+            }
+
             self.isReplying = false;
             self.isEditing = false;
             self.isDeleting = false;
@@ -208,11 +212,13 @@
             self.editText = self.comment;
 
             self.reply = function() {
-                commentService.addReply(laravel.object, self.replyText, self).then(function() {
+                commentService.addReply(laravel.object, self.replyText, self).then(function(response) {
                     self.replyText = null;
                     self.isReplying = false;
+
+                    self.children.push(new Comment(response.data));
                 });
-            }
+            };
 
             self.edit = function() {
                 commentService.edit(laravel.object, self).then(function() {
@@ -222,11 +228,17 @@
                 });
             }
 
-            self.delete = function() {
+            self.delete = function(scope) {
                 commentService.delete(laravel.object, self).then(function() {
                     self.comment = null;
-                    self.isHidden = true;
                     self.isDeleting = false;
+
+                    // If the comment has no children, remove it entirely. Otherwise, just show [deleted], similar to Reddit
+                    if (self.children.length === 0) {
+                        scope.$parent.remove();
+                    } else {
+                        self.isHidden = true;
+                    }
                 });
             }
 

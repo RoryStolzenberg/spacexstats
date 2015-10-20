@@ -49,4 +49,15 @@ class Comment extends Model {
     public function getOwnershipAttribute() {
         return Auth::id() == $this->attributes['user_id'];
     }
+
+    // Attribute Mutators
+    public function setDepthAttribute() {
+        if ($this->parent == 0) {
+            $depth = 0;
+        } else {
+            $parentComment = Comment::find($this->parent);
+            $depth = $parentComment->depth + 1;
+        }
+        $this->attributes['depth'] = $depth;
+    }
 }

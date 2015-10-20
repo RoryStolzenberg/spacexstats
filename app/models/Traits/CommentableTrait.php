@@ -21,7 +21,10 @@ trait CommentableTrait {
                     $model['children'] = [];
                 }
 
-                $branch[] = $model;
+                // Only include the comment if it has no children and has been deleted
+                if(count($model['children']) > 0 || is_null($model['deleted_at'])) {
+                    $branch[] = $model;
+                }
             }
         }
         return $branch;
