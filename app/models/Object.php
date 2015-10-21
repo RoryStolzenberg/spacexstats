@@ -171,21 +171,24 @@ class Object extends Model implements UploadableInterface {
     }
 
     /**
+     * Preferentially fetches the main media file from an object from the local repository, the cloud, and then the
+     * temporary location, if it exists.
+     *
      * @return mixed|null|string
      */
     public function getMediaAttribute() {
         if ($this->hasFile()) {
 
             if ($this->hasLocalFile()) {
-                return $this->local_file;
+                return '/media/local/full/' . $this->filename;
             }
 
-            if ($this->status == 'Published') {
-                $s3 = AWS::createClient('s3');
-                return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+5 minutes');
+            if ($this->hasCloudFile()) {
+                return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+1 minute'); // Scale for type and length!
+            }
 
-            } elseif ($this->status == 'Queued' || $this->status == 'New') {
-                return '/media/full/' . $this->filename;
+            if ($this->hasTemporaryFile()) {
+                return '/media/temporary/full/' . $this->filename;
             }
         }
         return null;
@@ -196,9 +199,8 @@ class Object extends Model implements UploadableInterface {
      */
     public function getMediaDownloadAttribute() {
         if ($this->hasFile()) {
-            $s3 = AWS::createClient('s3');
-
-            return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+5 minutes', array(
+            // scale for type and length
+            return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+5 minutes', array(
                 'ResponseContentDisposition' => 'attachment; filename="' . $this->title . '.' . $this->filetype . '"'
             ));
         } else {
@@ -210,19 +212,19 @@ class Object extends Model implements UploadableInterface {
      * @return null|string
      */
     public function getMediaThumbSmallAttribute() {
-        if (!empty($this->thumb_filename)) {
 
-            if ($this->hasThumbs()) {
-                if ($this->status == ObjectPublicationStatus::PublishedStatus) {
-                    $s3 = AWS::createClient('s3');
-                    return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucketSmallThumbs'), $this->thumb_filename, '+1 minute');
-
-                } elseif ($this->status == ObjectPublicationStatus::QueuedStatus) {
-                    return '/media/small/' . $this->thumb_filename;
-                }
-
+        if ($this->hasThumbs()) {
+            if ($this->hasLocalThumbs()) {
+                return '/media/local/small/' . $this->thumb_filename;
             }
-            return '/media/small/' . $this->thumb_filename;
+
+            if ($this->hasCloudThumbs()) {
+                return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucketSmallThumbs'), $this->thumb_filename, '+1 minute');
+            }
+
+            if ($this->hasTemporaryThumbs()) {
+                return '/media/temporary/small/' . $this->thumb_filename;
+            }
         }
         return null;
     }
@@ -231,19 +233,19 @@ class Object extends Model implements UploadableInterface {
      * @return null|string
      */
     public function getMediaThumbLargeAttribute() {
-        if (!empty($this->thumb_filename)) {
 
-            if ($this->hasThumbs()) {
-                if ($this->status == 'Published') {
-                    $s3 = AWS::createClient('s3');
-                    return $s3->getObjectUrl(Config::get('filesystems.disks.s3.bucketLargeThumbs'), $this->thumb_filename, '+1 minute');
-
-                } elseif ($this->status == ObjectPublicationStatus::QueuedStatus) {
-                    return '/media/large/' . $this->thumb_filename;
-                }
-
+        if ($this->hasThumbs()) {
+            if ($this->hasLocalThumbs()) {
+                return '/media/local/large/' . $this->thumb_filename;
             }
-            return '/media/large/' . $this->thumb_filename;
+
+            if ($this->hasCloudThumbs()) {
+                return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucketLargeThumbs'), $this->thumb_filename, '+1 minute');
+            }
+
+            if ($this->hasTemporaryThumbs()) {
+                return '/media/temporary/large/' . $this->thumb_filename;
+            }
         }
         return null;
     }

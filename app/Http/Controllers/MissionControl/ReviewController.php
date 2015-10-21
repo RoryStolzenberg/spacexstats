@@ -6,6 +6,7 @@ use SpaceXStats\Facades\Search;
 use SpaceXStats\Library\DeltaV;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\VisibilityStatus;
 use SpaceXStats\Models\Award;
 use SpaceXStats\Models\Object;
 
@@ -30,8 +31,12 @@ class ReviewController extends Controller {
 
             if (Input::get('status') == ObjectPublicationStatus::PublishedStatus) {
 
-                // Put the necessary objects to S3
+                // Put the necessary files to S3 (and maybe local)
+                if (Input::get('visibility') == VisibilityStatus::PublicStatus) {
+                    $object->putToLocal();
+                }
                 $object->putToCloud();
+                $object->deleteFromTemporary();
 
                 // Update the object properties
                 $object->fill(Input::only(['status', 'visibility']));

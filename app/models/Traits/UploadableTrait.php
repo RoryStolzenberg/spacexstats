@@ -4,9 +4,12 @@ namespace SpaceXStats\Models\Traits;
 use AWS;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 
+/**
+ * Class UploadableTrait
+ * @package SpaceXStats\Models\Traits
+ */
 trait UploadableTrait {
     /**
      * Checks whether the object has a file or not.
@@ -19,15 +22,26 @@ trait UploadableTrait {
         return $this->has_temporary_file || $this->has_local_file || $this->has_cloud_file;
     }
 
+    /**
+     * Checks whether the object has custom thumbnails or not.
+     *
+     * This function does not care about the thumb's location, the object's status, or its visibility.
+     * If a file has a generic thumbnail (such as a "document" thumb), this function will return false.
+     *
+     * @return bool
+     */
     public function hasThumbs() {
         return $this->has_temporary_thumbs || $this->has_local_thumbs || $this->has_cloud_thumbs;
     }
 
     /**
+     * Checks whether the object's file is located in the cloud or not.
      *
+     * This function does not check thumbnails.
+     *
+     * @return bool
      */
     public function hasCloudFile() {
-        // Check if a file exists in S3 for this object
         return $this->has_cloud_file;
     }
 
@@ -40,6 +54,17 @@ trait UploadableTrait {
      */
     public function hasLocalFile() {
         return $this->has_local_file;
+    }
+
+    public function hasTemporaryFile() {
+        return $this->has_temporary_file;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function hasCloudThumbs() {
+        return $this->has_cloud_thumbs;
     }
 
     /**
@@ -55,12 +80,13 @@ trait UploadableTrait {
         return !$this->has_local_thumbs && !in_array($this->thumb_filename, $defaultThumbs);
     }
 
-    public function hasCloudThumbs() {
-        return $this->hasCloudThumbs;
+    public function hasTemporaryThumbs() {
+        return $this->has_temporary_file;
     }
 
     /**
-     *  Uploads the objects file and thumbnails, if they exist, to Amazon S3, and then unsets the temporary file.
+     *  Uploads the objects file and thumbnails, if they exist, to Amazon S3 from the temporary storage location.
+     *  Does not delete any temporary files, call deleteFromTemporary() for this.
      */
     public function putToCloud() {
         $s3 = AWS::createClient('s3');
@@ -72,7 +98,7 @@ trait UploadableTrait {
                 'Body' => fopen(public_path() . $this->media, 'rb'),
                 'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
             ]);
-            unlink(public_path() . $this->media);
+            $this->has_cloud_file = true;
         }
 
         if ($this->hasThumbs()) {
@@ -80,10 +106,9 @@ trait UploadableTrait {
                 'Bucket' => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
                 'Key' => $this->thumb_filename,
                 'Body' => fopen(public_path() . $this->media_thumb_large, 'rb'),
-                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
+                'ACL' => $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
                 'StorageClass' => 'REDUCED_REDUNANCY'
             ]);
-            unlink(public_path() . $this->media_thumb_large);
 
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
@@ -92,7 +117,7 @@ trait UploadableTrait {
                 'ACL' => 'public-read',
                 'StorageClass' => 'REDUCED_REDUNANCY'
             ]);
-            unlink(public_path() . $this->media_thumb_small);
+            $this->has_cloud_thumbs = true;
         }
     }
 
@@ -102,54 +127,90 @@ trait UploadableTrait {
     public function deleteFromCloud() {
         $s3 = AWS::createClient('s3');
 
-        if ($this->hasFile()) {
-            if ($this->status === ObjectPublicationStatus::PublishedStatus) {
-                $s3->deleteObject(Config::get('filesystems.disks.s3.bucket'), $this->filename);
-            }
+        if ($this->hasCloudFile()) {
+            $s3->deleteObject(Config::get('filesystems.disks.s3.bucket'), $this->filename);
         }
 
-        if ($this->hasThumbs()) {
-            if ($this->status === ObjectPublicationStatus::PublishedStatus) {
-                $s3->deleteObject(Config::get('filesystems.disks.s3.bucketLargeThumbs'), $this->filename);
-                $s3->deleteObject(Config::get('filesystems.disks.s3.bucketSmallThumbs'), $this->filename);
-            }
+        if ($this->hasCloudThumbs()) {
+            $s3->deleteObject(Config::get('filesystems.disks.s3.bucketLargeThumbs'), $this->thumb_filename);
+            $s3->deleteObject(Config::get('filesystems.disks.s3.bucketSmallThumbs'), $this->thumb_filename);
         }
 
         $this->has_cloud_file = false;
         $this->has_cloud_thumbs = false;
-        $this->save();
     }
 
     /**
-     * Makes a local copy of a file of an object from S3.
-     *
-     * The function does not currently support the creation of local files from temporary files.
+     * Makes a local copy of a file and thumbs for an object, preferentially fetching from the temporary storage
+     * before trying to fetch from S3. Does not delete any temporary files if they exist,
+     * call deleteFromTemporary() for this.
      */
     public function putToLocal() {
-        if (!$this->hasLocalFile()) {
-            if ($this->hasFile()) {
-                AWS::createClient('s3')->getObject(array(
+
+        $s3 = AWS::createClient('s3');
+
+        if ($this->hasFile()) {
+            if ($this->hasTemporaryFile()) {
+
+            } else if ($this->hasCloudFile()) {
+                $s3->getObject(array(
                     'Bucket'    => Config::get('filesystems.disks.s3.bucket'),
                     'Key'       => $this->filename,
                     'SaveAs'    => public_path() . '/media/local/' . $this->filename
                 ));
-
-                $this->has_local_file = true;
-                $this->save();
             }
+            $this->has_local_file = true;
+        }
+
+        if ($this->hasThumbs()) {
+            if ($this->hasTemporaryThumbs()) {
+
+            } else if ($this->hasCloudThumbs()) {
+                $s3->getObject(array(
+                    'Bucket'    => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
+                    'Key'       => $this->thumb_filename,
+                    'SaveAs'    => public_path() . '/media/local/large/' . $this->filename
+                ));
+
+                $s3->getObject(array(
+                    'Bucket'    => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
+                    'Key'       => $this->thumb_filename,
+                    'SaveAs'    => public_path() . '/media/local/small/' . $this->filename
+                ));
+            }
+            $this->has_local_thumbs = true;
         }
     }
 
     /**
-     * Deletes the current local file.
-     *
-     * Only deletes the main file.
+     * Deletes the current local file and any thumbs from the local storage.
      */
     public function deleteFromLocal() {
         if ($this->hasLocalFile()) {
-            unlink(public_path() . $this->filename);
+            unlink(public_path() . $this->media);
             $this->has_local_file = false;
-            $this->save();
+        }
+
+        if ($this->hasLocalThumbs()) {
+            unlink(public_path() . $this->media_thumb_small);
+            unlink(public_path() . $this->media_thumb_large);
+            $this->has_local_thumbs = false;
+        }
+    }
+
+    /**
+     *
+     */
+    public function deleteFromTemporary() {
+        if ($this->hasTemporaryFile()) {
+            unlink(public_path() . $this->media);
+            $this->has_temporary_file = false;
+        }
+
+        if ($this->hasTemporaryThumbs()) {
+            unlink(public_path() . $this->media_thumb_small);
+            unlink(public_path() . $this->media_thumb_large);
+            $this->has_temporary_thumbs = false;
         }
     }
 }
