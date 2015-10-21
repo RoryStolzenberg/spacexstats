@@ -46,8 +46,8 @@
 						<ul class="nav-second-tier">
 							@if (Auth::isSubscriber())
 								<li><a href="/missioncontrol/create">Upload</a></li>
-                                <li>Collections</li>
-								<li>Leaderboards</li>
+                                <li><a href="/missioncontrol/collections">Collections</a></li>
+								<li><a href="/missioncontrol/leaderboards">Leaderboards</a></li>
 							@else 	
 							    <li><a href="/missioncontrol/buy">Buy</a></li>
 							@endif

@@ -4,10 +4,10 @@ Route::group(array('prefix' => 'missioncontrol/dataviews', 'namespace' => 'Missi
     Route::group(array('middleware' => 'mustBe:Administrator'), function() {
         Route::post('/create', 'DataViewsController@create');
         Route::get('/testquery', 'DataViewsController@testQuery');
-        Route::patch('/{dataViewId}/edit', 'DataViewsController@edit');
+        Route::patch('/{dataview_id}', 'DataViewsController@edit');
         Route::get('/', 'DataViewsController@index');
     });
-    
-    Route::get('/{dataViewId}', 'DataViewsController@get')->before('mustBe:Subscriber');
+
+    Route::get('/{dataview_id}', 'DataViewsController@get')->before('mustBe:Subscriber');
 
 });

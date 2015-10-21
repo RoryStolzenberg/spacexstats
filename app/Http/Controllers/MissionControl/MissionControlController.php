@@ -31,8 +31,7 @@ class MissionControlController extends Controller {
             ]);
 
             return view('missionControl.home', array(
-                'title' => 'Misson Control',
-                'currentPage' => 'mission-control'
+                'upcomingMission' => Mission::future()->first()
             ));
 		} else {
             return redirect('/missioncontrol/about');
@@ -55,6 +54,19 @@ class MissionControlController extends Controller {
             ->groupBy('objects.object_id')
             ->orderBy(DB::raw('score'))
             ->take(10)->get();
+
+        $uploads['posts'] = Object::authedVisibility()->inMissionControl()->where('type', MissionControlType::Text)
+            ->join('comments', 'comments.object_id', '=', 'objects.object_id')
+            ->orderBy('comments.created_at')
+            ->select('objects.*')
+            ->take(10)
+            ->get();
+
+        $uploads['upcomingMission'] = Object::authedVisibility()->inMissionControl()->whereHas('Mission', function($q) {
+            $q->future()->take(1);
+        })->take(10)->get();
+
+        $uploads['random'] = Object::authedVisibility()->inMissionControl()->orderByRaw("RAND()")->take(10)->get();
 
         // Leaderboards
         $leaderboards['week'] = User::join('awards', 'awards.user_id', '=', 'users.user_id')

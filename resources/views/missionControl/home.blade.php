@@ -23,7 +23,8 @@
                     <ul>
                         <li>Latest</li>
                         <li>Hot</li>
-                        <li></li>
+                        <li>Discussions</li>
+                        <li>From {{ $upcomingMission->name }}</li>
                     </ul>
                 </div>
 
@@ -35,6 +36,14 @@
                         <li>Last Year</li>
                         <li>All Time</li>
                     </ul>
+                </div>
+
+                <div class="gr-6">
+                    <h2>Recent Collections</h2>
+                </div>
+
+                <div class="gr-6">
+                    <h2>Random Uploads</h2>
                 </div>
 
                 <div class="gr-4">
