@@ -26,8 +26,10 @@ gulp.task('browsersync', function(gulpCallback) {
 // Clean media folder occasionally
 gulp.task('clean', function() {
     var del = require('del');
-    del(['public/media/small/*', 'public/media/large/*', 'public/media/full/*', 'public/media/twitter/*',
-    '!public/media/**/audio.png']);
+    del([
+        'public/media/{local,temporary}/{full,large,small,frames}/*',
+        '!public/media/**/**/**/audio.png'
+    ]);
 });
 
 // Scripts Task. Concat and minify.

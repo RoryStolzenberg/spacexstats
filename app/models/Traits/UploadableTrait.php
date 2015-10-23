@@ -77,7 +77,7 @@ trait UploadableTrait {
      */
     public function hasLocalThumbs() {
         $defaultThumbs = array("audio.png", "document.png", "text.png", "comment.png", "article.png", "pressrelease.png", "tweet.png");
-        return !$this->has_local_thumbs && !in_array($this->thumb_filename, $defaultThumbs);
+        return $this->has_local_thumbs && !in_array($this->thumb_filename, $defaultThumbs);
     }
 
     public function hasTemporaryThumbs() {
