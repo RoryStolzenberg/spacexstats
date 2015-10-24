@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
+use Imagick;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Exif\Exif;
@@ -52,7 +53,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
             $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
             // create an Imagick instance
-            $image = new \Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
+            $image = new Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
             $image->thumbnailImage($lengthDimension, $lengthDimension, true);
             $image->writeImage(public_path() . '/' . $this->directory[$size] . $this->fileinfo['filename']);
         }
@@ -60,7 +61,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 
 	// get the dimensions of an image
 	private function getDimensions($dimension) {
-		$image = new \Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
+		$image = new Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
 		return ($dimension == 'width') ? $image->getImageWidth() : $image->getImageHeight();
 	}
 }

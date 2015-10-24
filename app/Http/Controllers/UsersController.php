@@ -25,26 +25,19 @@ class UsersController extends Controller {
             $user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
         }
 
+        $params = array(
+            'user' => $user,
+            'favoriteMission' => $user->profile->favoriteMission,
+            'objects' => $user->objects()->inMissionControl()->take(10)->get(),
+            'favorites' => $user->favorites->take(10)
+        );
+
         //If the current user is logged in & If the current user is requesting themselves
         if (Auth::isAccessingSelf($user)) {
-
-            return view('users.profile', array(
-                'user' => $user,
-                'favoriteMission' => $user->profile->favoriteMission,
-                'objects' => $user->objects->take(10),
-                'favorites' => $user->favorites->take(10),
-                'notes' => $user->notes
-            ));
-
-        } else {
-
-            return view('users.profile', array(
-                'user' => $user,
-                'favoriteMission' => $user->profile->favoriteMission,
-                'objects' => $user->objects()->inMissionControl()->take(10),
-                'favorites' => $user->favorites->take(10),
-            ));
+            $params['notes'] = $user->notes;
         }
+
+        return view('users.profile', $params);
 	}
 
     public function getEdit($username) {

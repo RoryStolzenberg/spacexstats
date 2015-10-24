@@ -85,7 +85,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     // Conditional relations
-    public function publishedObjects() {
+    public function objectsInMissionContr() {
         if (Auth::isAdmin()) {
             return $this->hasMany('SpaceXStats\Models\Object')->where('status', ObjectPublicationStatus::PublishedStatus);
         }
