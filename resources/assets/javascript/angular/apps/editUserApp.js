@@ -1,7 +1,7 @@
 (function() {
-    var app = angular.module('app', []);
+    var userApp = angular.module('app', []);
 
-    app.controller("editUserController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
+    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', function($http, $scope, editUserService) {
 
         $scope.username = laravel.user.username;
 
@@ -19,9 +19,9 @@
         };
 
         $scope.updateProfile = function() {
-            $http.post('/users/' + $scope.username + '/edit/profile', $scope.profile)
+            $http.patch('/users/' + $scope.username + '/edit/profile', $scope.profile)
                 .then(function(response) {
-                    flashMessage.add(response.data);
+                    flashMessage.addOK(response.data);
                 });
         }
 
@@ -35,15 +35,9 @@
         }
 
         $scope.updateEmailNotifications = function() {
-            console.log(laravel);
-            console.log($scope.emailNotifications);
-
-            $http.post('/users/' + $scope.username + '/edit/emailnotifications',
-                { 'emailNotifications': $scope.emailNotifications }
-            )
-                .then(function(response) {
-                    flashMessage.add(response.data);
-                });
+            editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
+                // Reset form?
+            });
         }
 
         $scope.SMSNotification = {
@@ -61,14 +55,41 @@
         }
 
         $scope.updateSMSNotifications = function() {
-            $http.post('/users/' + $scope.username + '/edit/smsnotifications',
-                { 'SMSNotification': $scope.SMSNotification }
-            )
-                .then(function(response) {
-                    flashMessage.add(response.data);
-                });
+            editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
+                // Reset the form or something
+            });
         }
 
+    }]);
+
+    userApp.service('editUserService', ["$http", "flashMessage", function($http, flashMessage) {
+        this.updateSMS = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/smsnotifications',
+
+                { 'SMSNotification': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateEmails = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/emailnotifications',
+
+                { 'emailNotifications': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateProfile = function() {
+
+        };
     }]);
 
 })();

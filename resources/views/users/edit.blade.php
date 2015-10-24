@@ -99,7 +99,6 @@
                                 <span>There's a SpaceX launch in 24 hours</span>
                                 <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.tMinus24HoursEmail" />
                                 <label for="tMinus24HoursEmail"></label>
-
                             </li>
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 3 hours</span>
@@ -135,20 +134,21 @@
                 @if (Auth::isSubscriber())
                 <form>
                     <label for="mobile">Enter your mobile number</label>
-                    <input type="tel" id="mobile" ng-model="SMSNotification.mobile" />
+                    <input type="tel" id="mobile" ng-model="SMSNotification.mobile" placeholder="If you are outside the U.S., please include your country code." />
 
                     <p>How long before a launch would you like to recieve a notification?</p>
+
+                    <input type="radio" name="status" ng-model="SMSNotification.status" id="off" value="false" />
                     <label for="off">Off</label>
-                    <input type="radio" name="status" ng-model="SMSNotification.status" value="false" />
 
+                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus24HoursSMS" value="tMinus24HoursSMS" />
                     <label for="tMinus24HoursSMS">24 Hours Before</label>
-                    <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus24HoursSMS" />
 
+                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus3HoursSMS" value="tMinus3HoursSMS" />
                     <label for="tMinus3HoursSMS">3 Hours Before</label>
-                    <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus3HoursSMS" />
 
+                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus1HourSMS" value="tMinus1HourSMS" />
                     <label for="tMinus1HourSMS">1 Hour Before</label>
-                    <input type="radio" name="status" ng-model="SMSNotification.status" value="tMinus1HourSMS" />
 
                     <input type="submit" ng-click="updateSMSNotifications()" value="Update SMS Notifications" />
                 </form>

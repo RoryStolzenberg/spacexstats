@@ -11,14 +11,20 @@
         <main>
             <nav>
                 <ul>
-                    <li>Edit this Collection</li>
+                    <li class="gr-2">Edit this Collection</li>
+                    @if(Auth::isAdmin())
+                        <li class="gr-2">Delete</li>
+                        <li class="gr-2">Merge</li>
+                    @endif
                 </ul>
-                <p>{{ $collection->summary }}</p>
-                <h2>Object in this Collection</h2>
-                <section>
-
-                </section>
             </nav>
+            <p>{{ $collection->summary }}</p>
+            <h2>Objects in this Collection</h2>
+            <section>
+                @if($collection->objects()->count() == 0)
+                    <span>No objects in this collection. Add some!</span>
+                @endif
+            </section>
         </main>
     </div>
     </body>

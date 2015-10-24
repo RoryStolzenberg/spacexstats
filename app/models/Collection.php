@@ -26,7 +26,7 @@ class Collection extends Model {
 
     // Relationships
     public function objects() {
-        return $this->belongsToMany('SpaceXStats\Models\Objects', 'collections_objects_pivot');
+        return $this->belongsToMany('SpaceXStats\Models\Object', 'collections_objects_pivot');
     }
 
     public function tags() {

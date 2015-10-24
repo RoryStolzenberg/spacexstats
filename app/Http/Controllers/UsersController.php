@@ -2,9 +2,15 @@
  namespace SpaceXStats\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
+use Lookups_Services_Twilio;
+use Services_Twilio_RestException;
 use SpaceXStats\Library\Enums\NotificationType;
-use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Mail\Mailers\UserMailer;
+use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\Notification;
 use SpaceXStats\Models\User;
 use JavaScript;
 
@@ -93,13 +99,13 @@ class UsersController extends Controller {
             } else {
 
                 // Check if that notification type exists for that user, if yes, (soft) delete
-                if ($currentNotificationsForUser->has(SpaceXStats\Library\Enums\NotificationType::fromString($notificationType))) {
-                    $currentNotificationsForUser->get(SpaceXStats\Library\Enums\NotificationType::fromString($notificationType))->first()->delete();
+                if ($currentNotificationsForUser->has(NotificationType::fromString($notificationType))) {
+                    $currentNotificationsForUser->get(NotificationType::fromString($notificationType))->first()->delete();
                 }
             }
         }
 
-        return response()->json($this->flashMessages['SMSNotificationSuccess']);
+        return response()->json(Lang::get('sms.success'));
     }
 
     public function editSMSNotifications($username) {
@@ -107,23 +113,25 @@ class UsersController extends Controller {
         $sms = Input::get('SMSNotification');
 
         // Delete any previous SMS notification
-        $oldSMSNotification = Notification::where('user_id', $user->user_id)
-            ->where('notification_type_id', SpaceXStats\Library\Enums\NotificationType::tMinus24HoursSMS)
-            ->orWhere('notification_type_id', SpaceXStats\Library\Enums\NotificationType::tMinus3HoursSMS)
-            ->orWhere('notification_type_id', SpaceXStats\Library\Enums\NotificationType::tMinus1HourSMS)
-            ->delete();
+        Notification::where('user_id', $user->user_id)
+            ->whereIn('notification_type_id', array(
+                NotificationType::tMinus24HoursSMS,
+                NotificationType::tMinus3HoursSMS,
+                NotificationType::tMinus1HourSMS
+            ))->delete();
 
         // If the number is blank, assume the user wants their SMS setup deleted
         if ($sms['mobile'] == "") {
             $user->resetMobileDetails();
             $user->save();
-            return response()->json($this->flashMessages['SMSNotificationSuccess']);
+            return response()->json(Lang::get('sms.succeeded'));
         }
 
         // If status is not false
         if ($sms['status'] != 'false') {
 
-            $client = new Lookups_Services_Twilio(Credential::TwilioSID, Credential::TwilioToken);
+            // Because Twilio
+            $client = new Lookups_Services_Twilio(Config::get('services.twilio.sid'), Config::get('services.twilio.token'));
 
             // Try to see if the number exists, if not, will throw exception
             try {
@@ -138,17 +146,18 @@ class UsersController extends Controller {
                     // Insert new notification
                     Notification::create(array(
                         'user_id' => Auth::id(),
-                        'notification_type_id' => SpaceXStats\Library\Enums\NotificationType::fromString($sms['status'])
+                        'notification_type_id' => NotificationType::fromString($sms['status'])
                     ));
-                    return response()->json($this->flashMessages['SMSNotificationSuccess']);
+
+                    return response()->json(Lang::get('sms.succeeded'));
                 }
-                return response()->json($this->flashMessages['somethingWentWrong']);
+                return response()->json(Lang::get('global.somethingWentWrong'), 500);
 
             } catch (Services_Twilio_RestException $e) {
-                return response()->json($this->flashMessages['SMSNotificationFailure']);
+                return response()->json(Lang::get('sms.failed'), 400);
             }
         }
-        return response()->json($this->flashMessages['SMSNotificationSuccess']);
+        return response()->json(Lang::get('sms.succeeded'));
     }
 
     public function editRedditNotifications($username) {

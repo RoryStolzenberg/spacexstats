@@ -55,7 +55,7 @@
                         $scope.launchDateTime = response.data.launchDateTime;
                         $scope.launchSpecificity = response.data.launchSpecificity;
 
-                        flashMessage.add({ type: 'success', contents: 'Launch time updated!' });
+                        flashMessage.addOK('Launch time updated!');
                     }
                 });
         }

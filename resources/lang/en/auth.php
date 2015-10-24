@@ -18,7 +18,5 @@ return [
     'accountActivated' => "Your account has been activated!",
     'signup' => "Your account has been created, please check your email to activate your account!",
     'signupFailed' => "Looks like your account couldn't be created. Check the errors below and then resubmit.",
-    'smsFailed' => 'Number does not exist. Be sure to include the country code if you are outside the U.S.',
-    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-
+    'throttle' => 'Too many login attempts. Please try again in :seconds seconds.'
 ];

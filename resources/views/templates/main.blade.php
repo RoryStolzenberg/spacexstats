@@ -73,6 +73,7 @@
 
                 // Stickybar
                 $('nav.sticky-bar').stickyNavbar();
+
             });
         </script>
 

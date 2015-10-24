@@ -15,7 +15,7 @@
                     <label>Title</label>
                     <input type="text" name="title" ng-model="newCollection.title" minlength="10" required>
                     <label>Description</label>
-                    <textarea name="description" ng-model="newCollection.description" minlength="100" required>
+                    <textarea name="description" ng-model="newCollection.summary" minlength="100" required>
                     </textarea>
 
                     <input type="submit" ng-click="createCollection()" ng-disabled="createCollectionForm.$invalid" value="Create & Add Items" />

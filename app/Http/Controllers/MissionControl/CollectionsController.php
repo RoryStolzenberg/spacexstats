@@ -22,7 +22,11 @@ class CollectionsController extends Controller {
 
     // GET /missioncontrol/collections/{collection_id}
     public function get($collection_id) {
-        return view('missionControl.collections.get');
+        $collection = Collection::findOrFail($collection_id);
+
+        return view('missionControl.collections.get', array(
+            'collection' => $collection
+        ));
     }
 
     // PATCH /missioncontrol/collections/{collection_id}

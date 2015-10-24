@@ -35,7 +35,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $primaryKey = 'user_id';
     public $timestamps = true;
 
-    protected $hidden = ['password', 'remember_token', 'email', 'mobile', 'mobile_national_format', 'mobile_country_code', 'mobile_carrier', 'subscription_expiry', 'key', 'last_login'];
+    protected $hidden = ['password', 'remember_token', 'email', 'mobile_national_format', 'mobile_country_code', 'mobile_carrier', 'subscription_expiry', 'key', 'last_login'];
     protected $appends = [];
     protected $fillable = [];
     protected $guarded = ['role_id', 'username','email','password', 'key'];
