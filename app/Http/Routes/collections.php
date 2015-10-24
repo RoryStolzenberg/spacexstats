@@ -5,9 +5,10 @@ Route::group(array('prefix' => 'missioncontrol/collections', 'namespace' => 'Mis
         Route::get('/', 'CollectionsController@index');
         Route::get('/{collection_id}', 'CollectionsController@get');
 
-        Route::put('/create', 'CollectionsController@create');
+        Route::post('/create', 'CollectionsController@create');
         Route::patch('/{collection_id}', 'CollectionsController@edit');
 
         Route::delete('/{collection_id}', 'CollectionsController@delete')->before('mustBe:Administrator');
+        Route::patch('/{first_collection_id}/merge/{second_collection_id}', 'CollectionsController@merge')->before('mustBe:Administrator');
     });
 });

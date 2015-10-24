@@ -64,7 +64,7 @@ class Spacexstats extends Migration {
 
         Schema::create('collections', function(Blueprint $table) {
             $table->increments('collection_id');
-            $table->integer('user_id')->unsigned();
+            $table->integer('creating_user_id')->unsigned();
             $table->integer('mission_id')->unsigned()->nullable();
 
             $table->string('title', Varchar::small);
@@ -512,7 +512,7 @@ class Spacexstats extends Migration {
         });
 
         Schema::table('collections', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('creating_user_id')->references('user_id')->on('users');
             $table->foreign('mission_id')->references('mission_id')->on('missions');
         });
 

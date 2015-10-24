@@ -2,9 +2,10 @@
 namespace SpaceXStats\Extensions;
 
 use Illuminate\Validation\Validator;
+use SpaceXStats\Library\Enums\Varchar;
 
 class ExtendedValidator extends Validator {
     public function validateVarchar($attribute, $value, $parameters) {
-        return strlen($value) <= constant("SpaceXStats\\Enums\\Varchar::$parameters[0]");
+        return strlen($value) <= Varchar::fromString($parameters[0]);
     }
 }

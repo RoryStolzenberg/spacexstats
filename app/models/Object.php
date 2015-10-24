@@ -184,7 +184,15 @@ class Object extends Model implements UploadableInterface {
             }
 
             if ($this->hasCloudFile()) {
-                return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+1 minute'); // Scale for type and length!
+                $s3 = AWS::createClient('s3');
+
+                $cmd = $s3->getCommand('GetObject', [
+                    'Bucket' => Config::get('filesystems.disks.s3.bucket'),
+                    'Key' => $this->filename,
+                    'ResponseContentType' => $this->mimetype
+                ]);
+
+                return $s3->createPresignedRequest($cmd, '+1 minute')->getUri(); // Scale for type and length!
             }
 
             if ($this->hasTemporaryFile()) {
@@ -219,7 +227,15 @@ class Object extends Model implements UploadableInterface {
             }
 
             if ($this->hasCloudThumbs()) {
-                return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucketSmallThumbs'), $this->thumb_filename, '+1 minute');
+                $s3 = AWS::createClient('s3');
+
+                $cmd = $s3->getCommand('GetObject', [
+                    'Bucket' => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
+                    'Key' => $this->thumb_filename,
+                    'ResponseContentType' => $this->mimetype
+                ]);
+
+                return $s3->createPresignedRequest($cmd, '+1 minute')->getUri(); // Scale for type and length!
             }
 
             if ($this->hasTemporaryThumbs()) {
@@ -240,7 +256,15 @@ class Object extends Model implements UploadableInterface {
             }
 
             if ($this->hasCloudThumbs()) {
-                return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucketLargeThumbs'), $this->thumb_filename, '+1 minute');
+                $s3 = AWS::createClient('s3');
+
+                $cmd = $s3->getCommand('GetObject', [
+                    'Bucket' => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
+                    'Key' => $this->thumb_filename,
+                    'ResponseContentType' => $this->mimetype
+                ]);
+
+                return $s3->createPresignedRequest($cmd, '+1 minute')->getUri(); // Scale for type and length!
             }
 
             if ($this->hasTemporaryThumbs()) {

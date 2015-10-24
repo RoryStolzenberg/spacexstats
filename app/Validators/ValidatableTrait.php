@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Validators;
 
+use Illuminate\Support\Facades\Validator;
+
 trait ValidatableTrait {
     public function isValid($input) {
 

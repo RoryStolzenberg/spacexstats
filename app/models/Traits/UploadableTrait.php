@@ -95,7 +95,7 @@ trait UploadableTrait {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucket'),
                 'Key' => $this->filename,
-                'Body' => public_path() . $this->media,
+                'Body' => file_get_contents(public_path() . $this->media),
                 'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
             ]);
             $this->has_cloud_file = true;
@@ -105,7 +105,7 @@ trait UploadableTrait {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
                 'Key' => $this->thumb_filename,
-                'Body' => public_path() . $this->media_thumb_large,
+                'Body' => file_get_contents(public_path() . $this->media_thumb_large),
                 'ACL' => $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
                 'StorageClass' => 'REDUCED_REDUNDANCY'
             ]);
@@ -113,7 +113,7 @@ trait UploadableTrait {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
                 'Key' => $this->thumb_filename,
-                'Body' => public_path() . $this->media_thumb_small,
+                'Body' => file_get_contents(public_path() . $this->media_thumb_small),
                 'ACL' => 'public-read',
                 'StorageClass' => 'REDUCED_REDUNDANCY'
             ]);

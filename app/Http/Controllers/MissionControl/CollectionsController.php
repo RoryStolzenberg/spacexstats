@@ -1,12 +1,22 @@
 <?php 
  namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Models\Collection;
 
 class CollectionsController extends Controller {
 
+    public function __construct(Collection $collection) {
+        $this->collection = $collection;
+    }
+
     // GET /missioncontrol/collections
     public function index() {
+
+        // Fetch popular, recently created, and recently added to collections here
         return view('missionControl.collections.index');
     }
 
@@ -20,9 +30,19 @@ class CollectionsController extends Controller {
         return response()->json();
     }
 
-    // PUT /missioncontrol/collections/create
-    public function create($collection_id) {
-        return response()->json();
+    // POST /missioncontrol/collections/create
+    public function create() {
+        if ($this->collection->isValid(Input::all())) {
+
+            $collection = Collection::create(array(
+                'creating_user_id' =>   Auth::id(),
+                'title' =>              Input::get('title'),
+                'summary' =>            Input::get('summary')
+            ));
+
+            return response()->json($collection);
+        }
+        return response()->json(null, 400);
     }
 
     // PUT /missioncontrol/collections/{collection_id}

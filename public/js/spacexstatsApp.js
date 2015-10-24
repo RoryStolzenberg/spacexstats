@@ -1,3 +1,66 @@
+// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
+// https://github.com/marklagendijk/angular-recursion
+angular.module('RecursionHelper', [])
+    .factory('RecursionHelper', ['$compile', function($compile) {
+        return {
+            /**
+             * Manually compiles the element, fixing the recursion loop.
+             * @param element
+             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
+             * @returns An object containing the linking functions.
+             */
+            compile: function(element, link){
+                // Normalize the link parameter
+                if(angular.isFunction(link)){
+                    link = { post: link };
+                }
+
+                // Break the recursion loop by removing the contents
+                var contents = element.contents().remove();
+                var compiledContents;
+                return {
+                    pre: (link && link.pre) ? link.pre : null,
+                    /**
+                     * Compiles and re-adds the contents
+                     */
+                    post: function(scope, element){
+                        // Compile the contents
+                        if(!compiledContents){
+                            compiledContents = $compile(contents);
+                        }
+                        // Re-add the compiled contents to the element
+                        compiledContents(scope, function(clone){
+                            element.append(clone);
+                        });
+
+                        // Call the post-linking function, if any
+                        if(link && link.post){
+                            link.post.apply(null, arguments);
+                        }
+                    }
+                };
+            }
+        };
+    }
+]);
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.add = function(data) {
+
+            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+    });
+})();
+
+
 (function() {
     var missionsListApp = angular.module('app', []);
 
@@ -1353,6 +1416,34 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
     });
 })();
 (function() {
+    var collectionsApp = angular.module('app', []);
+
+    collectionsApp.controller("createCollectionController", ["$scope", "collectionService", function($scope, collectionService) {
+        $scope.createCollection = function() {
+            collectionService.create($scope.newCollection);
+        }
+    }]);
+
+    collectionsApp.service("collectionService", ["$http", function($http) {
+        this.create = function(collection) {
+            $http.post('/missioncontrol/collections/create', collection).then(function(response) {
+                window.location.href = '/missioncontrol/collections/' + response.data.collection.collection_id;
+            });
+        };
+
+        this.delete = function(collection) {
+            $http.delete('/missioncontrol/collections/' + collection.collection_id).then(function(response) {
+                window.location.href = '/missioncontrol/collections';
+            });
+        };
+
+        this.edit = function(collection) {
+            return $http.patch('/missioncontrol/collections/' + collection.collection_id);
+        }
+    }]);
+})();
+
+(function() {
     var liveApp = angular.module('app', []);
 
     liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Message", function($scope, liveService, Section, Resource, Message) {
@@ -1498,107 +1589,6 @@ angular.module('questionsApp', []).controller("questionsController", ["$scope", 
         }
     }]);
 })();
-// Courtesy http://stackoverflow.com/questions/14430655/recursion-in-angular-directives
-// https://github.com/marklagendijk/angular-recursion
-angular.module('RecursionHelper', [])
-    .factory('RecursionHelper', ['$compile', function($compile) {
-        return {
-            /**
-             * Manually compiles the element, fixing the recursion loop.
-             * @param element
-             * @param [link] A post-link function, or an object with function(s) registered via pre and post properties.
-             * @returns An object containing the linking functions.
-             */
-            compile: function(element, link){
-                // Normalize the link parameter
-                if(angular.isFunction(link)){
-                    link = { post: link };
-                }
-
-                // Break the recursion loop by removing the contents
-                var contents = element.contents().remove();
-                var compiledContents;
-                return {
-                    pre: (link && link.pre) ? link.pre : null,
-                    /**
-                     * Compiles and re-adds the contents
-                     */
-                    post: function(scope, element){
-                        // Compile the contents
-                        if(!compiledContents){
-                            compiledContents = $compile(contents);
-                        }
-                        // Re-add the compiled contents to the element
-                        compiledContents(scope, function(clone){
-                            element.append(clone);
-                        });
-
-                        // Call the post-linking function, if any
-                        if(link && link.post){
-                            link.post.apply(null, arguments);
-                        }
-                    }
-                };
-            }
-        };
-    }
-]);
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.add = function(data) {
-
-            $('<p style="display:none;" class="flash-message ' + data.type + '">' + data.contents + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-    });
-})();
-
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app', []);
 
@@ -1738,22 +1728,6 @@ angular.module('RecursionHelper', [])
             templateUrl: '/js/templates/countdown.html'
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
 })();
 (function() {
     var app = angular.module('app');
@@ -1933,87 +1907,56 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                size: '@',
+                mission: '='
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/missionCard.html'
         }
-    }]);
+    });
 })();
 (function() {
     var app = angular.module('app');
 
-    app.directive('deltaV', function() {
+    app.directive('upload', ['$parse', function($parse) {
         return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
 
-                $scope.$watch("deltaV", function(objects) {
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
 
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
                         }
-
-                        $scope.calculatedValue = $scope.newValue;
                     }
-                }, true);
+                });
 
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.calculatedValue = 0;
-            },
-            templateUrl: '/js/templates/deltaV.html'
+                // upload the files
+                $scope.uploadFiles = function() {
+                    dropzone.processQueue();
+                }
+            }
         }
-    });
+    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2154,6 +2097,46 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -2188,116 +2171,49 @@ angular.module('RecursionHelper', [])
     }]);
 })();
 (function() {
-	var app = angular.module('app');
+    var app = angular.module('app');
 
-	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
-		return {
-			restrict: 'E',
-            transclude: true,
-			link: function($scope, element, attributes) {
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
-				$scope.stagingConstraints = {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
+                $scope.$watch("deltaV", function(objects) {
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
 
-				$scope.data = {
-					missions: laravel.missions,
-					types: null,
-                    tags: laravel.tags
-				}
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
 
-                $scope.onSearchKeyPress = function(event) {
-                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
-                }
-			},
-			templateUrl: '/js/templates/search.html'
-		}
-	}]);
+                        $scope.calculatedValue = $scope.newValue;
+                    }
+                }, true);
 
-    app.service('constraintsReader', ['kebabToCamelCase', function(kebabToCamelCase) {
-		this.fromSearch = function(rawSearchTerm) {
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
 
-			var currentSearch = {
-				searchTerm: null,
-				tags: {
-					tags: []
-				},
-				constraints: {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
-			};
-
-			// parse out tags https://regex101.com/r/uL9jN5/1
-			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
-            var re = /\[([^)]+?)\]/gi;
-            while (match = re.exec(rawSearchTerm)) {
-                currentSearch.tags.tags.push(match[1]);
-            }
-            rawSearchTerm = rawSearchTerm.replace(re, "");
-
-			// constraints https://regex101.com/r/iT2zH5/2
-			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
-			var constraint;
-			var rawConstraintsArray = [];
-			var touchedConstraintsArray = [];
-
-			// Pull out all the raw constraints 
-			do {
-			    constraint = re.exec(rawSearchTerm);
-			    if (constraint) {
-			        rawConstraintsArray.push(typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3]);
-			        touchedConstraintsArray.push(kebabToCamelCase.convert(constraint[1]));
-			    }
-			} while (constraint);
-            rawSearchTerm = rawSearchTerm.replace(re, "");
-
-			// reset the constraints present in the current search
-			for (var propertyName in currentSearch.constraints) {
-
-				// If the constraint exists
-				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
-					var index = touchedConstraintsArray.indexOf(propertyName);
-					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
-				}
-			}
-
-            // Send the search term through
-            currentSearch.searchTerm = rawSearchTerm;
-			return currentSearch;
-		}
-	}]);
-
-    app.service('kebabToCamelCase', function() {
-		// Converts a search-constraint into a searchConstraint
-		this.convert = function(string) {
-
-			for(var i = 0; i < string.length; i++) {
-
-				if (string[i] === "-") {
-					string = string.replace(string.substr(i, 1), "");
-					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
-				}
-			}
-			return string;
-		};
-
-	});
+                $scope.calculatedValue = 0;
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
 })();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
@@ -2441,4 +2357,116 @@ angular.module('RecursionHelper', [])
            return null;
        }
     });
+})();
+(function() {
+	var app = angular.module('app');
+
+	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
+		return {
+			restrict: 'E',
+            transclude: true,
+			link: function($scope, element, attributes) {
+
+				$scope.stagingConstraints = {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+
+				$scope.data = {
+					missions: laravel.missions,
+					types: null,
+                    tags: laravel.tags
+				}
+
+                $scope.onSearchKeyPress = function(event) {
+                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
+                }
+			},
+			templateUrl: '/js/templates/search.html'
+		}
+	}]);
+
+    app.service('constraintsReader', ['kebabToCamelCase', function(kebabToCamelCase) {
+		this.fromSearch = function(rawSearchTerm) {
+
+			var currentSearch = {
+				searchTerm: null,
+				tags: {
+					tags: []
+				},
+				constraints: {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+			};
+
+			// parse out tags https://regex101.com/r/uL9jN5/1
+			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
+            var re = /\[([^)]+?)\]/gi;
+            while (match = re.exec(rawSearchTerm)) {
+                currentSearch.tags.tags.push(match[1]);
+            }
+            rawSearchTerm = rawSearchTerm.replace(re, "");
+
+			// constraints https://regex101.com/r/iT2zH5/2
+			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
+			var constraint;
+			var rawConstraintsArray = [];
+			var touchedConstraintsArray = [];
+
+			// Pull out all the raw constraints 
+			do {
+			    constraint = re.exec(rawSearchTerm);
+			    if (constraint) {
+			        rawConstraintsArray.push(typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3]);
+			        touchedConstraintsArray.push(kebabToCamelCase.convert(constraint[1]));
+			    }
+			} while (constraint);
+            rawSearchTerm = rawSearchTerm.replace(re, "");
+
+			// reset the constraints present in the current search
+			for (var propertyName in currentSearch.constraints) {
+
+				// If the constraint exists
+				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
+					var index = touchedConstraintsArray.indexOf(propertyName);
+					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
+				}
+			}
+
+            // Send the search term through
+            currentSearch.searchTerm = rawSearchTerm;
+			return currentSearch;
+		}
+	}]);
+
+    app.service('kebabToCamelCase', function() {
+		// Converts a search-constraint into a searchConstraint
+		this.convert = function(string) {
+
+			for(var i = 0; i < string.length; i++) {
+
+				if (string[i] === "-") {
+					string = string.replace(string.substr(i, 1), "");
+					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
+				}
+			}
+			return string;
+		};
+
+	});
 })();
