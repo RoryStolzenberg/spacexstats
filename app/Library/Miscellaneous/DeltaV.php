@@ -1,18 +1,20 @@
 <?php
 namespace SpaceXStats\Library\Miscellaneous;
 
+use SpaceXStats\Models\Object;
+
 class DeltaV {
 
     const DELTAV_TO_DAY_CONVERSION_RATE     = 1000;
     const SECONDS_PER_DAY                   = 86400;
 
     /**
-     * Calculates the total deltaV value of a particular object.
+     * Calculates the total deltaV value of a particular object
      *
-     * @param   $object Object  The object to calculate the deltaV for.
-     * @return  int             The total worth of the object in deltaV.
+     * @param   $object   SpaceXStats\Models\Object   The object to calculate the deltaV for.
+     * @return  int                                     The total worth of the object in deltaV.
      */
-    public static function calculate(\Object $object) {
+    public static function calculate(Object $object) {
         return 1;
     }
 

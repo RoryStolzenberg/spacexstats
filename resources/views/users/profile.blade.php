@@ -53,7 +53,7 @@
                         </tr>
                         <tr>
                             <td>Uploads</td>
-                            <td>{{ $user->publishedObjects()->count() }}</td>
+                            <td>{{ $user->objects()->inMissionControl()->count() }}</td>
                         </tr>
                         <tr>
                             <td>Favorites</td>

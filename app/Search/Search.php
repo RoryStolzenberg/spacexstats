@@ -3,6 +3,7 @@ namespace SpaceXStats\Search;
 
 use Elasticsearch\Client;
 use Credential;
+use Elasticsearch\ClientBuilder;
 
 class Search {
 
@@ -14,9 +15,9 @@ class Search {
      *
      */
     public function __construct() {
-        $this->elasticSearchClient = new Client(array(
-            'hosts' => [Credential::ElasticSearchHost]
-        ));
+        $this->elasticSearchClient = ClientBuilder::create()->setHosts(
+            [env('ELASTICSEARCH_HOST')]
+        )->build();
     }
 
     /**
@@ -118,6 +119,6 @@ class Search {
      * @return Client
      */
     public function get() {
-        return $this->$elasticSearchClient;
+        return $this->elasticSearchClient;
     }
 }

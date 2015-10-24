@@ -1,7 +1,8 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
-use SpaceXStats\Library\DeltaV;
+use SpaceXStats\Library\Miscellaneous\DeltaV;
 
 class Award extends Model {
 

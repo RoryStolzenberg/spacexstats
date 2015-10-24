@@ -95,7 +95,7 @@ trait UploadableTrait {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucket'),
                 'Key' => $this->filename,
-                'Body' => fopen(public_path() . $this->media, 'rb'),
+                'Body' => public_path() . $this->media,
                 'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
             ]);
             $this->has_cloud_file = true;
@@ -105,17 +105,17 @@ trait UploadableTrait {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
                 'Key' => $this->thumb_filename,
-                'Body' => fopen(public_path() . $this->media_thumb_large, 'rb'),
+                'Body' => public_path() . $this->media_thumb_large,
                 'ACL' => $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
-                'StorageClass' => 'REDUCED_REDUNANCY'
+                'StorageClass' => 'REDUCED_REDUNDANCY'
             ]);
 
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
                 'Key' => $this->thumb_filename,
-                'Body' => fopen(public_path() . $this->media_thumb_small, 'rb'),
+                'Body' => public_path() . $this->media_thumb_small,
                 'ACL' => 'public-read',
-                'StorageClass' => 'REDUCED_REDUNANCY'
+                'StorageClass' => 'REDUCED_REDUNDANCY'
             ]);
             $this->has_cloud_thumbs = true;
         }
@@ -187,13 +187,13 @@ trait UploadableTrait {
      */
     public function deleteFromLocal() {
         if ($this->hasLocalFile()) {
-            unlink(public_path() . $this->media);
+            unlink(public_path() . '/media/local/full/' . $this->filename);
             $this->has_local_file = false;
         }
 
         if ($this->hasLocalThumbs()) {
-            unlink(public_path() . $this->media_thumb_small);
-            unlink(public_path() . $this->media_thumb_large);
+            unlink(public_path() . '/media/local/small/' . $this->thumb_filename);
+            unlink(public_path() . '/media/local/large/' . $this->thumb_filename);
             $this->has_local_thumbs = false;
         }
     }
@@ -203,13 +203,13 @@ trait UploadableTrait {
      */
     public function deleteFromTemporary() {
         if ($this->hasTemporaryFile()) {
-            unlink(public_path() . $this->media);
+            unlink(public_path() . '/media/temporary/full/' . $this->filename);
             $this->has_temporary_file = false;
         }
 
         if ($this->hasTemporaryThumbs()) {
-            unlink(public_path() . $this->media_thumb_small);
-            unlink(public_path() . $this->media_thumb_large);
+            unlink(public_path() . '/media/temporary/small/' . $this->thumb_filename);
+            unlink(public_path() . '/media/temporary/large/' . $this->thumb_filename);
             $this->has_temporary_thumbs = false;
         }
     }
