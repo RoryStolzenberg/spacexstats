@@ -395,6 +395,10 @@ class Spacexstats extends Migration {
 
         Schema::create('questions', function(Blueprint $table) {
             $table->increments('question_id');
+            $table->string('question', Varchar::medium);
+            $table->string('answer', Varchar::xlarge);
+
+            $table->timestamps();
         });
 
         Schema::create('roles', function(Blueprint $table) {

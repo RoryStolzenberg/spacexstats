@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \SpaceXStats\Console\Commands\Inspire::class,
+        \SpaceXStats\Console\Commands\QuestionUpdaterCommand::class,
     ];
 
     /**
@@ -24,7 +24,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('inspire')
-                 ->hourly();
+        $schedule->command('reddit:questions')->daily();
     }
 }

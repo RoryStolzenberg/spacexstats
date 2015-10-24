@@ -1,20 +1,19 @@
 <?php
- namespace SpaceXStats\Http\Controllers;
+namespace SpaceXStats\Http\Controllers;
+
+use SpaceXStats\Models\Question;
 
 class QuestionsController extends Controller {
 
 	// GET
 	public function index() {
-		$questions = Question::all();
-
 		return view('questions.faq', array(
-			'questionCount' => $questions->count(),
-			'questions' => $questions
-		));
+            'questionCount' => Question::all()->count()
+        ));
 	}
 
-	// AJAX POST
-	public function getQuestions() {
-		return response()->json(Question::all()->toArray());
+	// AJAX GET
+	public function get() {
+		return response()->json(Question::all());
 	}
 }

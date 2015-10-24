@@ -6,7 +6,7 @@ class Question extends Model {
 
 	protected $table = 'questions';
 	protected $primaryKey = 'question_id';
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $hidden = [];
     protected $appends = [];

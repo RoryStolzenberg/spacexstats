@@ -33,7 +33,7 @@ Route::get('webcast/getstatus', 'WebcastStatusController@getStatus');
 Route::get('calendars/all', 'CalendarController@getAll');
 Route::get('calendars/{slug}', 'CalendarController@get')->before('doesExist:Mission');
 
-Route::post('faq/getquestions', 'QuestionsController@getQuestions');
+Route::get('faq/get', 'QuestionsController@get');
 Route::get('faq','QuestionsController@index');
 
 Route::get('admin', 'AdminController@index')->before('mustBe:Administrator');
