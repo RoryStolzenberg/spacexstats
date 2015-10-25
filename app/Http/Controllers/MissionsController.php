@@ -4,18 +4,22 @@ namespace SpaceXStats\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Redis;
 use JavaScript;
+use SpaceXStats\Http\Requests\CreateMissionRequest;
+use SpaceXStats\Http\Requests\EditMissionRequest;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\ModelManagers\MissionManager;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
+use SpaceXStats\Models\Astronaut;
+use SpaceXStats\Models\Destination;
+use SpaceXStats\Models\Location;
 use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\MissionType;
+use SpaceXStats\Models\Object;
+use SpaceXStats\Models\Part;
+use SpaceXStats\Models\Spacecraft;
+use SpaceXStats\Models\Vehicle;
 
 class MissionsController extends Controller {
-
-    /*protected $missionManager;
-
-    public function __construct(MissionManager $missionManager) {
-        $this->missionManager = $missionManager;
-    }*/
 
     /**
      * GET (HTTP), /missions/{slug}. Where slug is a slugged name of the Mission.
@@ -84,22 +88,14 @@ class MissionsController extends Controller {
 		return view('missions.past');
 	}
 
-    public function getEdit($slug) {
-
-    }
-
-    public function patchEdit($slug) {
-
-    }
-
     /**
      * GET POST, /missions/{slug}/edit. Edit a mission.
      *
      * @param $slug
      * @return \Illuminate\View\View
      */
-    public function edit($slug) {
-        if (Request::isMethod('get')) {
+    public function getEdit($slug) {
+        if (request()->isMethod('get')) {
 
             JavaScript::put([
                 'mission' => Mission::whereSlug($slug)
@@ -136,7 +132,7 @@ class MissionsController extends Controller {
 
             return view('missions.edit');
 
-        } elseif (Request::isMethod('patch')) {
+        } elseif (request()->isMethod('patch')) {
 
             if ($this->missionManager->isValid()) {
                 $mission = $this->missionManager->update();
@@ -153,42 +149,38 @@ class MissionsController extends Controller {
         }
     }
 
-    // GET
-    // missions/create
-    /**
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
-     */
-    public function create() {
-        if (Request::isMethod('get')) {
+    public function postEdit(EditMissionRequest $request, $slug) {
 
-            JavaScript::put([
-                'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
-                'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
-                'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
-                'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
-                'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
-                'parts' => Part::whereDoesntHave('partFlights', function($q) {
-                    $q->where('landed', false);
-                })->get()->toArray(),
-                'spacecraft' => Spacecraft::all()->toArray(),
-                'astronauts' => Astronaut::all()->toArray()
-            ]);
+    }
 
-            return view('missions.create');
+    public function getCreate() {
+        JavaScript::put([
+            'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
+            'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
+            'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
+            'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
+            'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
+            'parts' => Part::whereDoesntHave('partFlights', function($q) {
+                $q->where('landed', false);
+            })->get()->toArray(),
+            'spacecraft' => Spacecraft::all()->toArray(),
+            'astronauts' => Astronaut::all()->toArray()
+        ]);
 
-        } elseif (Request::isMethod('post')) {
+        return view('missions.create');
+    }
 
-            if ($this->missionManager->isValid()) {
-                $mission = $this->missionManager->create();
+    public function postCreate(CreateMissionRequest $request) {
+        if ($this->missionManager->isValid()) {
+            $mission = $this->missionManager->create();
 
-                // Return, frontend to redirect to newly created page.
-                return response()->json(['slug' => $mission->slug]);
-            } else {
-                return response()->json(array(
-                    'flashMessage' => array('contents' => 'The mission could not be created', 'type' => 'failure'),
-                    'errors' => $this->missionManager->getErrors()
-                ), 400);
-            }
+            // Return, frontend to redirect to newly created page.
+            return response()->json($mission->slug);
+        } else {
+            return response()->json(array(
+                'flashMessage' => 'The mission could not be created',
+                'errors' => $this->missionManager->getErrors()
+            ), 400);
         }
     }
 

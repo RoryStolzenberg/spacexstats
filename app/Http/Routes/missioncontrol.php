@@ -3,15 +3,9 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
 
     Route::group(array('middleware' => 'authenticate'), function() {
 
-        Route::get('/create/retrievetweet', array(
-            'as' => 'missionControl.create.retrieveTweet',
-            'uses' => 'UploadController@retrieveTweet'
-        ));
+        Route::get('/create/retrievetweet', 'UploadController@retrieveTweet');
 
-        Route::get('/create/retrieveredditcomment', array(
-            'as' => 'missionControl.create.retrieveRedditComment',
-            'uses' => 'UploadController@retrieveRedditComment'
-        ));
+        Route::get('/create/retrieveredditcomment', 'UploadController@retrieveRedditComment');
 
         Route::get('/buy', array('as' => 'missionControl.buy', function() {
             return View::make('missionControl.buy', array(
@@ -20,32 +14,15 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
             ));
         }));
 
-        Route::post('/buy', array(
-            'as' => 'missionControl.buy',
-            'uses' => 'PaymentController@purchase'
-        ));
+        Route::post('/buy', 'PaymentController@purchase');
 
-        Route::get('/buy/success', array(
-            'as' => 'missionControl.buy.success',
-            'uses' => 'PaymentController@success'
-        ));
+        Route::get('/buy/success', 'PaymentController@success');
     });
 
     Route::group(array('middleware' => 'mustBe:Administrator'), function() {
-        Route::get('/review', array(
-            'as' => 'missionControl.review.index',
-            'uses' => 'ReviewController@index'
-        ));
-
-        Route::get('/review/get', array(
-            'as' => 'missionControl.review.get',
-            'uses' => 'ReviewController@get'
-        ));
-
-        Route::post('/review/update/{object_id}', array(
-            'as' => 'missionControl.review.update',
-            'uses' => 'ReviewController@update'
-        ))->before('doesObjectExist');
+        Route::get('/review', 'ReviewController@index');
+        Route::get('/review/get', 'ReviewController@get');
+        Route::post('/review/update/{object_id}', 'ReviewController@update')->before('doesExist:Object');
     });
 
     Route::get('/about', array('as' => 'missionControl.about', function() {
@@ -57,35 +34,15 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
 
     Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
 
-        Route::get('/fetch', array(
-            'as' => 'missionControl.fetch',
-            'uses' => 'MissionControlController@fetch'
-        ));
+        Route::get('/fetch', 'MissionControlController@fetch');
 
-        Route::post('/search', array(
-            'as' => 'missionControl.search',
-            'uses' => 'SearchController@search'
-        ));
+        Route::post('/search', 'SearchController@search');
 
-        Route::get('/create', array(
-            'as' => 'missionControl.create',
-            'uses' => 'UploadController@show'
-        ));
-
-        Route::post('/create/upload', array(
-            'as' => 'missionControl.create.upload',
-            'uses' => 'UploadController@upload'
-        ));
-
-        Route::post('/create/submit', array(
-            'as' => 'missionControl.create.submit',
-            'uses' => 'UploadController@submit'
-        ));
+        Route::get('/create', 'UploadController@show');
+        Route::post('/create/upload', 'UploadController@upload');
+        Route::post('/create/submit', 'UploadController@submit');
     });
 
-    Route::get('/', array(
-        'as' => 'missionControl',
-        'uses' => 'MissionControlController@home'
-    ));
+    Route::get('/', 'MissionControlController@home');
 });
 

@@ -52,7 +52,9 @@ class QuestionUpdaterCommand extends Command
 
         foreach($this->faqPages as $faqPage) {
             $wikipage = $reddit->subreddit('spacex')->wikiPage($faqPage);
+            $contents = str_replace("\r\n", "", $wikipage->data->content_md);
 
+            $rawQuestions = explode('###', $contents);
 
             $i = 0;
             foreach($rawQuestions as $rawQuestion) {

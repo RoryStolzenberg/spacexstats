@@ -1,54 +1,23 @@
 <?php
 Route::group(array('prefix' => 'missions'), function() {
-    Route::get('/future', array(
-        'as' => 'missions.future',
-        'uses' => 'MissionsController@future'
-    ));
+    Route::get('/future', 'MissionsController@future');
 
-    Route::get('/past', array(
-        'as' => 'missions.past',
-        'uses' => 'MissionsController@past'
-    ));
+    Route::get('/past', 'MissionsController@past');
 
-    Route::get('/all', array(
-        'as' => 'missions.all',
-        'uses' => 'MissionsController@all'
-    ))->before('mustBe:Subscriber');
+    Route::get('/all', 'MissionsController@all')->before('mustBe:Subscriber');
 
     Route::group(array('middleware' => 'mustBe:Administrator'), function() {
-        Route::get('/create', array(
-            'as' => 'missions.create',
-            'uses' => 'MissionsController@create'
-        ));
+        Route::get('/create', 'MissionsController@getCreate');
+        Route::post('/create', 'MissionsController@postCreate');
 
-        Route::post('/create', array(
-            'as' => 'missions.create',
-            'uses' => 'MissionsController@create'
-        ))->before('csrf');
-
-        Route::any('/{slug}/edit', array(
-            'as' => 'missions.edit',
-            'uses' => 'MissionsController@edit'
-        ))->before('doesMissionExist');
+        Route::get('/{slug}/edit', 'MissionsController@getEdit')->before('doesExist:Mission');
+        Route::post('/{slug}/edit', 'MissionsController@postEdit')->before('doesExist:Mission');
     });
 
-    Route::get('/{slug}', array(
-        'as' => 'missions.get',
-        'uses' => 'MissionsController@get'
-    ))->before('doesMissionExist');
+    Route::get('/{slug}', 'MissionsController@get')->before('doesExist:Mission');
 
-    Route::get('/{slug}/launchdatetime', array(
-        'as' => 'missions.launchDateTime',
-        'uses' => 'MissionsController@launchDateTime'
-    ))->before('doesMissionExist');
+    Route::get('/{slug}/launchdatetime', 'MissionsController@launchDateTime')->before('doesExist:Mission');
 
-    Route::get('/{slug}/telemetry', array(
-        'as' => 'missions.telemetry',
-        'uses' => 'MissionsController@telemetry'
-    ))->before(['doesMissionExist']);
-
-    Route::get('/{slug}/raw', array(
-        'as' => 'missions.raw',
-        'uses' => 'MissionsController@raw'
-    ))->before(['mustBe:Subscriber', 'doesMissionExist']);
+    Route::get('/{slug}/telemetry', 'MissionsController@telemetry')->before(['mustBe:Subscriber', 'doesExist:Mission']);
+    Route::get('/{slug}/raw', 'MissionsController@raw')->before(['mustBe:Subscriber', 'doesExist:Mission']);
 });

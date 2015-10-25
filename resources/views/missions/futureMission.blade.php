@@ -49,7 +49,7 @@
 
                     @if(isset($pastMission))
                         <div class="past-mission-link">
-                            <a href="/missions/{{ $pastmission->slug }}">{{ $pastMission->name }}</a>
+                            <a href="/missions/{{ $pastMission->slug }}">{{ $pastMission->name }}</a>
                             <span>Previous Mission</span>
                         </div>
                     @endif

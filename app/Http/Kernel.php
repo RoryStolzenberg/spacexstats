@@ -30,7 +30,7 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'guest' => \SpaceXStats\Http\Middleware\RedirectIfAuthenticated::class,
         'mustBe' => \SpaceXStats\Http\Middleware\MustBeMiddleware::class,
-        'doesModelExist' => \SpaceXStats\Http\Middleware\DoesModelExistMiddleware::class,
+        'doesExist' => \SpaceXStats\Http\Middleware\DoesModelExistMiddleware::class,
         'isLaunchController' => \SpaceXStats\Http\Middleware\IsLaunchControllerMiddleware::class
     ];
 }

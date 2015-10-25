@@ -151,6 +151,7 @@ trait UploadableTrait {
 
         if ($this->hasFile()) {
             if ($this->hasTemporaryFile()) {
+                copy(public_path() . '/media/temporary/full/' . $this->filename, public_path() . '/media/local/full/' . $this->filename);
 
             } else if ($this->hasCloudFile()) {
                 $s3->getObject(array(
@@ -164,6 +165,8 @@ trait UploadableTrait {
 
         if ($this->hasThumbs()) {
             if ($this->hasTemporaryThumbs()) {
+                copy(public_path() . '/media/temporary/small/' . $this->thumb_filename, public_path() . '/media/local/small/' . $this->thumb_filename);
+                copy(public_path() . '/media/temporary/large/' . $this->thumb_filename, public_path() . '/media/local/large/' . $this->thumb_filename);
 
             } else if ($this->hasCloudThumbs()) {
                 $s3->getObject(array(
