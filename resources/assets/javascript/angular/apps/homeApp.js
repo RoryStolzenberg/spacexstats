@@ -1,9 +1,7 @@
 (function() {
-    var app = angular.module('app', ['duScroll']);
+    var app = angular.module('app', ['duScroll', 'ngAnimate']);
 
-    app.value('duScrollDuration', 1000);
-
-    app.controller("homeController", ['$scope', 'Statistic', function($scope, Statistic) {
+    app.controller("homeController", ['$scope', '$document', 'Statistic', function($scope, $document, Statistic) {
         $scope.statistics = [];
         $scope.activeStatistic = false;
 
@@ -12,12 +10,22 @@
             $scope.activeStatistic = statisticType;
         };
 
+        $scope.goToFirstStatistic = function() {
+            var stat = $scope.statistics[0];
+
+            history.replaceState('', document.title, '#' + stat.camelCaseType);
+            $scope.activeStatistic = stat.camelCaseType;
+
+            $document.scrollToElement(angular.element(document.getElementById(stat.camelCaseType)), 0, 1000);
+        };
+
         $scope.goToNeighborStatistic = function(index) {
             if (index >= 0 && index < $scope.statistics.length) {
                 var stat = $scope.statistics[index];
 
                 history.replaceState('', document.title, '#' + stat.camelCaseType);
                 $scope.activeStatistic = stat.camelCaseType;
+                $document.scrollToElement(angular.element(document.getElementById(stat.camelCaseType)), 0, 1000);
 
                 return stat.camelCaseType;
             } else {
@@ -25,14 +33,10 @@
             }
         };
 
-        $scope.goToFirstStatistic = function() {
-
-        };
-
         $scope.goHome = function() {
             history.replaceState('', document.title, window.location.pathname);
             $scope.activeStatistic = false;
-            return 'home';
+            $document.scrollToElement(angular.element(document.getElementById('home')), 0, 1000);
         };
 
         /*$window.on('scroll',
@@ -59,6 +63,8 @@
 
             var self = {};
 
+            self.isToggling = false;
+
             self.changeSubstatistic = function(newSubstatistic) {
                 self.activeSubstatistic = newSubstatistic;
             };
@@ -79,4 +85,22 @@
             return self;
         }
     });
+
+    app.animation('.fade', [function() {
+        return {
+            enter: function(element, done) {
+                element.css('display', 'none');
+                element.fadeIn(5000, done);
+                return function() {
+                    element.stop();
+                }
+            },
+            leave: function(element, done) {
+                element.fadeOut(5000, done)
+                return function() {
+                    element.stop();
+                }
+            }
+        };
+    }]);
 })();

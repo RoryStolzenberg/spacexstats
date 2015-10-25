@@ -38,7 +38,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-fracs/0.15.1/jquery.fracs.js"></script>
 
         <!-- Angular -->
-        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.7/angular-animate.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.3/angular-scroll.js"></script>
         <script src="/js/angular-ui-tree.js"></script>
 
@@ -48,10 +49,6 @@
 
         <!-- d3.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
-
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
 
     <script src="/js/jstz-1.0.4.min.js"></script>
     <script src="/js/dropzone.js"></script>

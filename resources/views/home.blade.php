@@ -18,20 +18,20 @@
     <!-- Navigation -->
     <ul id="statistics-navigation">
         <li class="statistic-holder">
-            <a class="statistic-link" ng-class="{ 'active' : activeStatistic == false }" ng-click="goHome()" du-smooth-scroll="home"></a>
+            <a class="statistic-link" ng-class="{ 'active' : activeStatistic == false }" ng-click="goHome()"></a>
         </li>
         <li class="statistic-holder" ng-repeat="statistic in statistics">
-            <a class="statistic-link" ng-class="{ 'active' : statistic.isActiveStatistic }" ng-click="goToClickedStatistic(statistic.camelCaseType)" du-smooth-scroll="@{{ statistic.camelCaseType}}"></a>
+            <a class="statistic-link" ng-class="{ 'active' : statistic.isActiveStatistic }" ng-click="goToClickedStatistic(statistic.camelCaseType)"></a>
         </li>
     </ul>
 
     <!-- Statistics -->
     <div class="content-wrapper single-page background" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}">
 
-        <h1>@{{ statistic.activeSubstatistic.full_title }}</h1>
+        <h1 animate-on-change="statistic.activeSubstatistic">@{{ statistic.activeSubstatistic.full_title }}</h1>
 
         <main>
-            <button class="previous-stat" ng-click="goToNeighborStatistic($index - 1)" du-smooth-scroll=""><i class="fa fa-angle-up fa-3x"></i></button>
+            <button class="previous-stat" ng-click="goToNeighborStatistic($index - 1)"><i class="fa fa-angle-up fa-3x"></i></button>
 
             <nav>
                 <ul class="container">
@@ -50,10 +50,10 @@
                 </table>
             </div>
 
-            <countdown ng-repeat-end ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity"></countdown>
+            <countdown ng-repeat-end ng-if="substatistic.display == 'count'" ng-show="statistic.activeSubstatistic == substatistic" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity"></countdown>
 
             <p class="description">@{{ statistic.activeSubstatistic.description }}</p>
-            <button class="next-stat" ng-click="goToNeighborStatistic($index + 1)" du-smooth-scroll=""><i class="fa fa-angle-down fa-3x"></i></button>
+            <button class="next-stat" ng-click="goToNeighborStatistic($index + 1)"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>
     </div>
 </body>
