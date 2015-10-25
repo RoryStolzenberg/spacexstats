@@ -99,24 +99,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     // Helpers
-    public function isValidForSignUp($input) {
-        $rules = array(
-            'username' => 'required|unique:users,username|min:3|alpha_dash|varchar:tiny',
-            'email' => 'required|unique:users,email|email|varchar:tiny',
-            'password' => 'required|confirmed|min:6',
-            'eula' => 'required|accepted'
-        );
+    public function isValidKey($userId, $key) {
+        $user = User::where('user_id', $userId)->where('key', $key)->firstOrFail();
 
-        $messages = array(
-            'eula.required' => 'Please confirm you agree with the End User License Agreement'
-        );
-
-        $validator = Validator::make($input, $rules, $messages);
-        return $validator->passes() ? true : $validator->errors();
-    }
-
-    public function isValidKey($email, $key) {
-        $user = User::where('email', urldecode($email))->where('key', $key)->firstOrFail();
         if (!empty($user)) {
             $user->role_id = UserRole::Member;
             return $user->save();

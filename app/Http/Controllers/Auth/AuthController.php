@@ -2,6 +2,9 @@
 
 namespace SpaceXStats\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use SpaceXStats\Extensions\Auth\AuthenticatesUsers;
 use SpaceXStats\Extensions\Auth\SignsUpUsers;
 use SpaceXStats\Extensions\Auth\VerifiesUsers;
@@ -42,10 +45,11 @@ class AuthController extends Controller
     /**
      * Create a new authentication controller instance.
      *
-     * @return void
+     * @param UserMailer $mailer
      */
-    public function __construct()
+    public function __construct(UserMailer $mailer)
     {
+        $this->mailer = $mailer;
         $this->middleware('guest', ['except' => ['logout', 'getLogout']]);
     }
 
@@ -60,52 +64,50 @@ class AuthController extends Controller
         return Validator::make($data, [
             'username' => 'required|varchar:small',
             'email' => 'required|email|varchar:small|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|min:6',
+            'eula' => 'required|accepted'
         ]);
     }
 
     /**
      * Create a new user instance after a valid registration, also send them a welcome email.
      *
-     * @param UserMailer $mailer
      * @param  array $data
      * @return User
      */
-    protected function create(UserMailer $mailer, array $data)
+    protected function create(array $data)
     {
-        $user = User::create([
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'password' => $data['password'], // Hashed as a mutator on the User model
-            'key' => str_random(32),
-            'role_id' => UserRole::Unauthenticated
-        ]);
+        $user = new User();
+        $user->username     = $data['username'];
+        $user->email        = $data['email'];
+        $user->password     = $data['password']; // Hashed as a mutator on the User model
+        $user->key          = str_random(32);
+        $user->role_id      = UserRole::Unauthenticated;
 
-        // Associate a profile
-        $profile = new Profile();
-        $profile->user()->associate($user)->save();
+        DB::transaction(function() use($user) {
+            $user->save();
+
+            // Associate a profile
+            $profile = new Profile();
+            $profile->user()->associate($user)->save();
+        });
 
         // Send a welcome email
-        $mailer->welcome($user);
+        $this->mailer->welcome($user);
 
         return $user;
     }
 
-    /*public function create() {
-            return Redirect::home()->with('flashMessage', $this->flashMessages['accountCreated']);
-            return Redirect::back()->withErrors($isValidForSignUp)->withInput(Input::except(['password', 'password_confirmation']))
-                ->with('flashMessage', $this->flashMessages['accountCouldNotBeCreatedValidationError']);
-
-    }*/
-
-    public function verify($email, $key) {
-        if ($this->user->isValidKey($email, $key)) {
-            return Redirect::route('users.login')
-                ->with('flashMessage', $this->flashMessages['accountActivated']);
+    public function verify(User $user, $userId, $key) {
+        if ($user->isValidKey($userId, $key)) {
+            return redirect('/auth/login')->with('flashMessage', Lang::get('auth.accountActivated'));
         } else {
-            return Redirect::route('home')
-                ->with('flashMessage', $this->flashMessages['accountCouldNotBeActivated']);
+            return redirect('/')->with('flashMessage', Lang::get('auth.accountCouldNotBeActivated'));
         }
+    }
+
+    public function authenticated(Request $request, $user) {
+        return redirect("/users/{$user->username}");
     }
 
     /*public function login() {

@@ -1,7 +1,4 @@
 <?php
-// Route to handle redirect if no intended URL from login
-Route::get('/user', 'UsersController@get')->before('authenticate');
-
 Route::group(array('prefix' => 'users'), function() {
 
     Route::group(array('middleware' => 'mustBe:Yourself'), function() {

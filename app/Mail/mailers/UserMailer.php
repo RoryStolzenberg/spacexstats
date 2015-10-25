@@ -1,14 +1,13 @@
 <?php
-
 namespace SpaceXStats\Mail\Mailers;
 
-use \User;
+use SpaceXStats\Models\User;
 
 class UserMailer extends Mailer {
 
 	public function welcome(User $user) {
 		$view = 'emails.welcome';
-		$data = ['email' => $user->email, 'key' => $user->key];
+		$data = ['id' => $user->user_id, 'key' => $user->key];
 		$subject = 'Welcome to SpaceX Stats';
 
 		$this->sendTo($user, $subject, $view, $data);

@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
  * Class SignsUpUsers
  *
  * This trait is a replacement for a the \Illuminate\Foundation\Auth\RegistersUsers trait. Reasons for replacement:
- * My preferred naming solution for registration is "sign up" rather than "register". No other changes are present.
+ * My preferred naming solution for registration is "sign up" rather than "register".
+ * Signing up is handled via AJAX rather than simple HTTP requests.
  *
  * @package SpaceXStats\Extensions\Auth
  */
@@ -43,9 +44,8 @@ trait SignsUpUsers
             );
         }
 
-        Auth::login($this->create($request->all()));
+        $user = $this->create($request->all());
 
-        return redirect($this->redirectPath());
+        return response()->json($user);
     }
-
 }

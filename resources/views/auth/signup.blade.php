@@ -9,7 +9,7 @@
     <div class="content-wrapper single-page">
         <h1>Join SpaceX Stats</h1>
         <main>
-            <div class="gr-6">
+            <div class="gr-6" ng-hide="hasSignedUp">
                 <form name="signUpForm" novalidate>
                     {!! csrf_field() !!}
 
@@ -25,8 +25,11 @@
                     <input type="checkbox" name="eula" id="eula" value="true" ng-model="user.eula" required>
                     <label for="eula">I have read & agree to the terms and conditions</label>
 
-                    <input type="submit" value="Sign Up" ng-disabled="signUpForm.$invalid">
+                    <input type="submit" value="@{{ signUpButtonText }}" ng-disabled="signUpForm.$invalid || isSigningUp" ng-click="signUp()">
                 </form>
+            </div>
+            <div ng-show="hasSignedUp">
+                <p>Thanks for signing up! You can activate your account by clicking the confirmation link in the email we just sent you.</p>
             </div>
         </main>
     </div>

@@ -13,12 +13,12 @@ Route::group(array('prefix' => 'auth', 'namespace' => 'Auth'), function() {
     Route::post('/logout', 'AuthController@logout');
 
     // Email Verification
-    Route::get('/verify/{email}/{key}', 'AuthController@verify');
+    Route::get('/verify/{userId}/{key}', 'AuthController@verify');
 
     // Forgot & Reset Password Functionality
-    Route::get('/forgotpassword', 'UsersController@getForgotPassword');
-    Route::post('/forgotpassword', 'UsersController@postForgotPassword');
+    Route::get('/forgotpassword', 'PasswordController@getForgotPassword');
+    Route::post('/forgotpassword', 'PasswordController@postForgotPassword');
 
-    Route::get('/resetpassword/{username}/{key}', 'UsersController@getResetPassword');
-    Route::post('/resetpassword/{username}/{key}', 'UsersController@postResetPassword');
+    Route::get('/resetpassword/{userId}/{key}', 'PasswordController@getResetPassword');
+    Route::post('/resetpassword/{userId}/{key}', 'PasswordController@postResetPassword');
 });

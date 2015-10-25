@@ -19,8 +19,8 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" />
 
-                <label for="rememberMe">Remember Me</label>
-                <input type="checkbox" id="rememberMe" name="rememberMe" />
+                <input type="checkbox" id="remember" name="remember" />
+                <label for="remember">Remember Me</label>
 
                 <input type="submit" value="Log In" />
             </form>
