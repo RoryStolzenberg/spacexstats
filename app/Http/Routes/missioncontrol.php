@@ -4,7 +4,6 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
     Route::group(array('middleware' => 'authenticate'), function() {
 
         Route::get('/create/retrievetweet', 'UploadController@retrieveTweet');
-
         Route::get('/create/retrieveredditcomment', 'UploadController@retrieveRedditComment');
 
         Route::get('/buy', array('as' => 'missionControl.buy', function() {

@@ -25,5 +25,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('reddit:questions')->daily();
+        $schedule->command('webcast:check')->everyMinute();
     }
 }

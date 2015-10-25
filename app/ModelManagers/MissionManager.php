@@ -1,19 +1,6 @@
 <?php
 namespace SpaceXStats\Managers;
 
-use Carbon\Carbon;
-use \Part;
-use \Spacecraft;
-use \PartFlight;
-use \SpacecraftFlight;
-use \Mission;
-use \Astronaut;
-use \AstronautFlight;
-use \Payload;
-use \PrelaunchEvent;
-use \Telemetry;
-use \Object;
-
 class MissionManager {
     private $input, $errors = [];
     private $mission;
@@ -32,7 +19,7 @@ class MissionManager {
 
     public function isValid() {
         // Get the input
-        $this->input = \Input::all();
+        $this->input = Input::all();
 
         // Validate the mission model
         $missionValidity = $this->mission->isValid($this->input('mission'));

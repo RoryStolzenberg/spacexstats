@@ -15,16 +15,13 @@ class DoesModelExistMiddleware {
      */
     public function handle($request, Closure $next, $model)
     {
-        /* Check if a mission page exists before directing user to the page */
-        Route::filter('doesMissionExist', function() {
-            Mission::whereSlug(Route::input('slug'))->firstOrFail();
-        });
 
-        Route::filter('doesObjectExist', function() {
+        if ($model == 'Mission') {
+            Mission::whereSlug(Route::input('slug'))->firstOrFail();
+        } elseif ($model == 'Object') {
             Object::findOrFail(Route::input('object_id'));
-        });
+        }
 
         return $next($request);
     }
-
 }

@@ -95,62 +95,56 @@ class MissionsController extends Controller {
      * @return \Illuminate\View\View
      */
     public function getEdit($slug) {
-        if (request()->isMethod('get')) {
 
-            JavaScript::put([
-                'mission' => Mission::whereSlug($slug)
-                    ->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part', 'prelaunchEvents', 'telemetries')->first(),
-                'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
-                'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
-                'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
-                'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
-                'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
-                'parts' => Part::whereDoesntHave('partFlights', function($q) {
-                    $q->where('landed', false);
-                })->get()->toArray(),
-                'spacecraft' => Spacecraft::all()->toArray(),
-                'astronauts' => Astronaut::all()->toArray(),
-                'launchVideos' => Object::where('subtype', MissionControlSubtype::LaunchVideo)->whereNotNull('external_url')->whereHas('mission', function($q) use ($slug) {
-                    $q->whereSlug($slug);
-                })->get(),
-                'missionPatches' => Object::where('subtype', MissionControlSubtype::MissionPatch)->whereHas('mission', function($q) use ($slug) {
-                    $q->whereSlug($slug);
-                })->get(),
-                'pressKits' => Object::where('subtype', MissionControlSubtype::PressKit)->whereHas('mission', function($q) use ($slug) {
-                    $q->whereSlug($slug);
-                })->get(),
-                'cargoManifests' => Object::where('subtype', MissionControlSubtype::CargoManifest)->whereHas('mission', function($q) use ($slug) {
-                    $q->whereSlug($slug);
-                })->get(),
-                'pressConferences' => Object::where('subtype', MissionControlSubtype::PressConference)->whereHas('mission', function($q) use ($slug) {
-                    $q->whereSlug($slug);
-                })->get(),
-                'featuredImages' => Object::where('subtype', MissionControlSubtype::Photo)->whereHas('mission', function($q) use ($slug) {
-                    $q->whereSlug($slug);
-                })->get(),
-            ]);
+        JavaScript::put([
+            'mission' => Mission::whereSlug($slug)
+                ->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part', 'prelaunchEvents', 'telemetries')->first(),
+            'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
+            'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
+            'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
+            'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
+            'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
+            'parts' => Part::whereDoesntHave('partFlights', function($q) {
+                $q->where('landed', false);
+            })->get()->toArray(),
+            'spacecraft' => Spacecraft::all()->toArray(),
+            'astronauts' => Astronaut::all()->toArray(),
+            'launchVideos' => Object::where('subtype', MissionControlSubtype::LaunchVideo)->whereNotNull('external_url')->whereHas('mission', function($q) use ($slug) {
+                $q->whereSlug($slug);
+            })->get(),
+            'missionPatches' => Object::where('subtype', MissionControlSubtype::MissionPatch)->whereHas('mission', function($q) use ($slug) {
+                $q->whereSlug($slug);
+            })->get(),
+            'pressKits' => Object::where('subtype', MissionControlSubtype::PressKit)->whereHas('mission', function($q) use ($slug) {
+                $q->whereSlug($slug);
+            })->get(),
+            'cargoManifests' => Object::where('subtype', MissionControlSubtype::CargoManifest)->whereHas('mission', function($q) use ($slug) {
+                $q->whereSlug($slug);
+            })->get(),
+            'pressConferences' => Object::where('subtype', MissionControlSubtype::PressConference)->whereHas('mission', function($q) use ($slug) {
+                $q->whereSlug($slug);
+            })->get(),
+            'featuredImages' => Object::where('subtype', MissionControlSubtype::Photo)->whereHas('mission', function($q) use ($slug) {
+                $q->whereSlug($slug);
+            })->get(),
+        ]);
 
-            return view('missions.edit');
-
-        } elseif (request()->isMethod('patch')) {
-
-            if ($this->missionManager->isValid()) {
-                $mission = $this->missionManager->update();
-
-                // Return, frontend to redirect.
-                return response()->json(['slug' => $mission->slug]);
-
-            } else {
-                return response()->json(array(
-                    'flashMessage' => array('contents' => 'The mission could not be saved', 'type' => 'failure'),
-                    'errors' => $this->missionManager->getErrors()
-                ), 400);
-            }
-        }
+        return view('missions.edit');
     }
 
     public function postEdit(EditMissionRequest $request, $slug) {
+        if ($this->missionManager->isValid()) {
+            $mission = $this->missionManager->update();
 
+            // Return, frontend to redirect.
+            return response()->json($mission->slug);
+
+        } else {
+            return response()->json(array(
+                'flashMessage' => 'The mission could not be saved',
+                'errors' => $this->missionManager->getErrors()
+            ), 400);
+        }
     }
 
     public function getCreate() {
@@ -170,7 +164,7 @@ class MissionsController extends Controller {
         return view('missions.create');
     }
 
-    public function postCreate(CreateMissionRequest $request) {
+    public function postCreate(CreateMissionRequest $request, MissionManager $missionManager) {
         if ($this->missionManager->isValid()) {
             $mission = $this->missionManager->create();
 
