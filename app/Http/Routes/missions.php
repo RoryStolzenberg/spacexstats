@@ -11,7 +11,7 @@ Route::group(array('prefix' => 'missions'), function() {
         Route::post('/create', 'MissionsController@postCreate');
 
         Route::get('/{slug}/edit', 'MissionsController@getEdit')->before('doesExist:Mission');
-        Route::post('/{slug}/edit', 'MissionsController@postEdit')->before('doesExist:Mission');
+        Route::patch('/{slug}/edit', 'MissionsController@patchEdit')->before('doesExist:Mission');
     });
 
     Route::get('/{slug}', 'MissionsController@get')->before('doesExist:Mission');

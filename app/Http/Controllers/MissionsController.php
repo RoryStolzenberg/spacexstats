@@ -132,9 +132,9 @@ class MissionsController extends Controller {
         return view('missions.edit');
     }
 
-    public function postEdit(EditMissionRequest $request, $slug) {
-        if ($this->missionManager->isValid()) {
-            $mission = $this->missionManager->update();
+    public function patchEdit(MissionManager $missionManager) {
+        if ($missionManager->isValid()) {
+            $mission = $missionManager->update();
 
             // Return, frontend to redirect.
             return response()->json($mission->slug);
@@ -142,7 +142,7 @@ class MissionsController extends Controller {
         } else {
             return response()->json(array(
                 'flashMessage' => 'The mission could not be saved',
-                'errors' => $this->missionManager->getErrors()
+                'errors' => $missionManager->getErrors()
             ), 400);
         }
     }
@@ -164,16 +164,16 @@ class MissionsController extends Controller {
         return view('missions.create');
     }
 
-    public function postCreate(CreateMissionRequest $request, MissionManager $missionManager) {
-        if ($this->missionManager->isValid()) {
-            $mission = $this->missionManager->create();
+    public function postCreate(MissionManager $missionManager) {
+        if ($missionManager->isValid()) {
+            $mission = $missionManager->create();
 
             // Return, frontend to redirect to newly created page.
             return response()->json($mission->slug);
         } else {
             return response()->json(array(
                 'flashMessage' => 'The mission could not be created',
-                'errors' => $this->missionManager->getErrors()
+                'errors' => $missionManager->getErrors()
             ), 400);
         }
     }

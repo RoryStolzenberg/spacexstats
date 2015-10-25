@@ -25,7 +25,7 @@
                         </li>
 
                         <li class="gr-6">
-                            <label>Mission Type</label>
+                            <label>Mission Type <i class="fa fa-info-circle"></i></label>
                             <span>Selecting the type of mission determines the mission icon and image, if it is not set.</span>
                             <select ng-model="mission.mission_type_id" ng-options="missionType.mission_type_id as missionType.name for missionType in data.missionTypes" required></select>
                         </li>

@@ -132,7 +132,6 @@ class MissionManager {
 
         \DB::beginTransaction();
         try {
-
             // Fill mission
             $this->mission->fill($this->input('mission'));
             $this->mission->save();

@@ -8,4 +8,8 @@ class ExtendedValidator extends Validator {
     public function validateVarchar($attribute, $value, $parameters) {
         return strlen($value) <= Varchar::fromString($parameters[0]);
     }
+
+    public function validateIsLaunchDateTime($attribute, $value, $parameters) {
+
+    }
 }
