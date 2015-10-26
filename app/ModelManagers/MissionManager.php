@@ -1,5 +1,19 @@
 <?php
-namespace SpaceXStats\Managers;
+namespace SpaceXStats\ModelManagers;
+
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
+use SpaceXStats\Models\Astronaut;
+use SpaceXStats\Models\AstronautFlight;
+use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\Part;
+use SpaceXStats\Models\PartFlight;
+use SpaceXStats\Models\Payload;
+use SpaceXStats\Models\PrelaunchEvent;
+use SpaceXStats\Models\Spacecraft;
+use SpaceXStats\Models\SpacecraftFlight;
+use SpaceXStats\Models\Telemetry;
 
 class MissionManager {
     private $input, $errors = [];
@@ -105,7 +119,7 @@ class MissionManager {
 
     public function create() {
         // Create the mission
-        \DB::beginTransaction();
+        DB::beginTransaction();
         try {
 
             // Fill mission
@@ -118,9 +132,9 @@ class MissionManager {
             $this->createSpacecraftFlightRelation();
             $this->createPrelaunchEventRelation();
 
-            \DB::commit();
+            DB::commit();
         } catch (Exception $e) {
-            \DB::rollback();
+            DB::rollback();
         }
 
         return $this->mission;
@@ -130,7 +144,7 @@ class MissionManager {
 
         $this->mission = Mission::with('payloads', 'partFlights', 'spacecraftFlight', 'telemetries')->find($this->input('mission')['mission_id']);
 
-        \DB::beginTransaction();
+        DB::beginTransaction();
         try {
             // Fill mission
             $this->mission->fill($this->input('mission'));
@@ -142,9 +156,9 @@ class MissionManager {
             $this->managePartFlightRelations();
             $this->manageTelemetryRelations();
 
-            \DB::commit();
+            DB::commit();
         } catch (Exception $e) {
-            \DB::rollback();
+            DB::rollback();
         }
 
         return $this->mission;

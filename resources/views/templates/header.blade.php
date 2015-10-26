@@ -8,7 +8,7 @@
 	<header class="text-center">
 			<i class="fa fa-navicon toggleMobileNavigation gridle-show-small"></i>
 			<span id="logo"><a href="/">SpaceX Stats</a></span>
-			<nav>		
+			<nav>
 				<ul>
                     <li class="gr-1on8 gr-small-12">
                         <a href="/live">Live</a>
@@ -48,8 +48,8 @@
 								<li><a href="/missioncontrol/create">Upload</a></li>
                                 <li><a href="/missioncontrol/collections">Collections</a></li>
 								<li><a href="/missioncontrol/leaderboards">Leaderboards</a></li>
-							@else 	
-							    <li><a href="/missioncontrol">Buy</a></li>
+							@else
+							    <li><a href="/missioncontrol/buy">Buy</a></li>
 							@endif
 							<li><a href="/docs#missioncontrol">Docs</a></li>
                             @if (Auth::isAdmin())
@@ -69,8 +69,8 @@
                                         {!! csrf_field() !!}
 										<input type="submit" value="Logout" />
 									</form>
-								</li>		
-							</ul>				
+								</li>
+							</ul>
 						@else
 							My Account
 							<ul class="nav-second-tier">
@@ -80,8 +80,8 @@
 						@endif
 						</ul>
 					</li>
-				</ul>	
-			</nav>		
+				</ul>
+			</nav>
 	</header>
 </div>
 

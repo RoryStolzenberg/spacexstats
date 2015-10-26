@@ -108,11 +108,7 @@ class UploadController extends Controller {
         }
 
         // redirect to mission control
-        Session::flash('flashMessage', array(
-            'contents' => 'Done!',
-            'type' => 'success'
-        ));
-
+        Session::flash('flashMessage', 'Done!');
         return response()->json(null, 204);
 	}
 

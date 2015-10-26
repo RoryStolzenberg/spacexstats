@@ -23,7 +23,6 @@ class DatabaseSeeder extends Seeder {
         $this->call('UsersTableSeeder');
         $this->call('ProfilesTableSeeder');
         $this->call('StatisticsTableSeeder');
-        $this->call('ObjectsTableSeeder');
         $this->call('PartsTableSeeder');
         $this->call('MissionsTableSeeder');
         $this->call('PartFlightsTableSeeder');
@@ -32,7 +31,6 @@ class DatabaseSeeder extends Seeder {
         $this->call('NotificationsTableSeeder');
         $this->call('AstronautsTableSeeder');
         $this->call('MissionTypesTableSeeder');
-        $this->call('CommentsTableSeeder');
         $this->call('PublishersTableSeeder');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');

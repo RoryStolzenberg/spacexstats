@@ -4,7 +4,6 @@
 @section('content')
 <body class="profile">
 
-
     @include('templates.header')
 
     <div class="content-wrapper">
@@ -126,7 +125,7 @@
             <h2>Comments</h2>
             <section id="comments" class="">
                 @foreach ($comments as $comment)
-                    @include('templates.objectCard', ['bias' => 'comment', 'object' => $object])
+                    @include('templates.objectCard', ['bias' => 'comment', 'object' => $comment->object])
                 @endforeach
                 @if ($comments->count() == 0)
                     <p>Nothing to see here</p>

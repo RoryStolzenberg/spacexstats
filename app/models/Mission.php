@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\MissionStatus;
+use SpaceXStats\Library\Launch\LaunchReorderer;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
 use SpaceXStats\Presenters\MissionPresenter;
 use SpaceXStats\Presenters\PresentableTrait;
@@ -50,15 +51,6 @@ class Mission extends Model {
 
                 // Tweet about it
             }*/
-
-            // If the mission's featured image has changed, delete the old image and set a new one.
-            if ($mission->featuredImage !== null) {
-                if ($mission->getOriginal()['featured_image'] !== null) {
-                    Object::find($mission->getOriginal()['featured_image'])->deleteLocalFile();
-                }
-                $mission->featuredImage->makeLocalFile();
-            }
-            return true;
         });
     }
 

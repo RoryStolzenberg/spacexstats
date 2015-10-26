@@ -4,7 +4,6 @@
 @section('content')
 <body class="missioncontrol-upload" ng-controller="uploadAppController" ng-strict-di>
 
-
     @include('templates.header')
 
     <div class="content-wrapper">

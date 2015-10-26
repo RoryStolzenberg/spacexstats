@@ -20,7 +20,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'Omelek Island')->firstOrFail()->location_id,
             'summary' => "Here's a short summary of the mission",
             'article' => "Here's an article",
-            'featured_image' => 1,
             'status' => 'Complete',
             'outcome' => 'Failure'
         ]);
@@ -38,7 +37,6 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', 'Low Earth Orbit')->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'article' => "Here's an article",
-            'featured_image' => 1,
             'status' => 'Complete',
             'outcome' => 'Success'
         ));

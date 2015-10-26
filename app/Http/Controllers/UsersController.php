@@ -70,9 +70,9 @@ class UsersController extends Controller {
 		$user = User::where('username', $username)->firstOrFail();
 
         if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {
-            return response()->json($this->flashMessages['updateProfileSuccess']);
+            return response()->json(Lang::get('profile.updated'));
         } else {
-            return response()->json($this->flashMessages['somethingWentWrong']);
+            return response()->json(Lang::get('global.somethingWentWrong'));
         }
 	}
 
@@ -102,7 +102,7 @@ class UsersController extends Controller {
             }
         }
 
-        return response()->json(Lang::get('sms.success'));
+        return response()->json(Lang::get('profile.email.succeeded'));
     }
 
     public function editSMSNotifications($username) {
@@ -121,7 +121,7 @@ class UsersController extends Controller {
         if ($sms['mobile'] == "") {
             $user->resetMobileDetails();
             $user->save();
-            return response()->json(Lang::get('sms.succeeded'));
+            return response()->json(Lang::get('profile.sms.succeeded'));
         }
 
         // If status is not false
@@ -146,15 +146,15 @@ class UsersController extends Controller {
                         'notification_type_id' => NotificationType::fromString($sms['status'])
                     ));
 
-                    return response()->json(Lang::get('sms.succeeded'));
+                    return response()->json(Lang::get('profile.sms.succeeded'));
                 }
                 return response()->json(Lang::get('global.somethingWentWrong'), 500);
 
             } catch (Services_Twilio_RestException $e) {
-                return response()->json(Lang::get('sms.failed'), 400);
+                return response()->json(Lang::get('profile.sms.failed'), 400);
             }
         }
-        return response()->json(Lang::get('sms.succeeded'));
+        return response()->json(Lang::get('profile.sms.succeeded'));
     }
 
     public function editRedditNotifications($username) {

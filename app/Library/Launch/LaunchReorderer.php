@@ -7,7 +7,7 @@ use SpaceXStats\Models\Mission;
 class LaunchReorderer {
 	protected $mission, $scheduledLaunch, $currentLaunchOrderId;
 
-	public function __construct(\Mission $currentMissionReference, $scheduledLaunch) {
+	public function __construct(Mission $currentMissionReference, $scheduledLaunch) {
         $this->mission = $currentMissionReference;
         $this->scheduledLaunch = $scheduledLaunch;
         $this->currentMissionDt = LaunchDateTimeResolver::parseString($scheduledLaunch);
