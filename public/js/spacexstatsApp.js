@@ -1050,7 +1050,7 @@
                     mission: mission,
                     _token: CSRF_TOKEN
                 }).then(function (response) {
-                    window.location = '/missions/' + response.slug;
+                    window.location = '/missions/' + response.data;
                 });
             };
 
@@ -1059,7 +1059,7 @@
                     mission: mission,
                     _token: CSRF_TOKEN
                 }).then(function (response) {
-                    window.location = '/missions/' + response.slug;
+                    window.location = '/missions/' + response.data;
                 });
             };
         }
@@ -1763,44 +1763,6 @@ angular.module('RecursionHelper', [])
     });
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -1882,46 +1844,6 @@ angular.module('RecursionHelper', [])
             templateUrl: '/js/templates/missionCard.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2282,6 +2204,46 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -2316,116 +2278,72 @@ angular.module('RecursionHelper', [])
     }]);
 })();
 (function() {
-	var app = angular.module('app');
+    var app = angular.module('app');
 
-	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
-		return {
-			restrict: 'E',
-            transclude: true,
-			link: function($scope, element, attributes) {
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
 
-				$scope.stagingConstraints = {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
 
-				$scope.data = {
-					missions: laravel.missions,
-					types: null,
-                    tags: laravel.tags
-				}
+                        $scope.files = files.objects;
 
-                $scope.onSearchKeyPress = function(event) {
-                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    dropzone.processQueue();
                 }
-			},
-			templateUrl: '/js/templates/search.html'
-		}
-	}]);
-
-    app.service('constraintsReader', ['kebabToCamelCase', function(kebabToCamelCase) {
-		this.fromSearch = function(rawSearchTerm) {
-
-			var currentSearch = {
-				searchTerm: null,
-				tags: {
-					tags: []
-				},
-				constraints: {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
-			};
-
-			// parse out tags https://regex101.com/r/uL9jN5/1
-			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
-            var re = /\[([^)]+?)\]/gi;
-            while (match = re.exec(rawSearchTerm)) {
-                currentSearch.tags.tags.push(match[1]);
             }
-            rawSearchTerm = rawSearchTerm.replace(re, "");
+        }
+    }]);
+})();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
 
-			// constraints https://regex101.com/r/iT2zH5/2
-			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
-			var constraint;
-			var rawConstraintsArray = [];
-			var touchedConstraintsArray = [];
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope,elem,attrs){
+                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
+                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
 
-			// Pull out all the raw constraints 
-			do {
-			    constraint = re.exec(rawSearchTerm);
-			    if (constraint) {
-			        rawConstraintsArray.push(typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3]);
-			        touchedConstraintsArray.push(kebabToCamelCase.convert(constraint[1]));
-			    }
-			} while (constraint);
-            rawSearchTerm = rawSearchTerm.replace(re, "");
+(function() {
+    var app = angular.module('app');
 
-			// reset the constraints present in the current search
-			for (var propertyName in currentSearch.constraints) {
+    app.directive('animateOnChange', [function() {
+        return {
+            restrict: 'A',
+            link: function() {
 
-				// If the constraint exists
-				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
-					var index = touchedConstraintsArray.indexOf(propertyName);
-					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
-				}
-			}
-
-            // Send the search term through
-            currentSearch.searchTerm = rawSearchTerm;
-			return currentSearch;
-		}
-	}]);
-
-    app.service('kebabToCamelCase', function() {
-		// Converts a search-constraint into a searchConstraint
-		this.convert = function(string) {
-
-			for(var i = 0; i < string.length; i++) {
-
-				if (string[i] === "-") {
-					string = string.replace(string.substr(i, 1), "");
-					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
-				}
-			}
-			return string;
-		};
-
-	});
+            }
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2540,35 +2458,117 @@ angular.module('RecursionHelper', [])
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
-    var app = angular.module('app');
+	var app = angular.module('app');
 
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope,elem,attrs){
-                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
-                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
+	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
+		return {
+			restrict: 'E',
+            transclude: true,
+			link: function($scope, element, attributes) {
+
+				$scope.stagingConstraints = {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+
+				$scope.data = {
+					missions: laravel.missions,
+					types: null,
+                    tags: laravel.tags
+				}
+
+                $scope.onSearchKeyPress = function(event) {
+                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
+                }
+			},
+			templateUrl: '/js/templates/search.html'
+		}
+	}]);
+
+    app.service('constraintsReader', ['kebabToCamelCase', function(kebabToCamelCase) {
+		this.fromSearch = function(rawSearchTerm) {
+
+			var currentSearch = {
+				searchTerm: null,
+				tags: {
+					tags: []
+				},
+				constraints: {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+			};
+
+			// parse out tags https://regex101.com/r/uL9jN5/1
+			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
+            var re = /\[([^)]+?)\]/gi;
+            while (match = re.exec(rawSearchTerm)) {
+                currentSearch.tags.tags.push(match[1]);
             }
-        }
-    });
-})();
+            rawSearchTerm = rawSearchTerm.replace(re, "");
 
-(function() {
-    var app = angular.module('app');
+			// constraints https://regex101.com/r/iT2zH5/2
+			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
+			var constraint;
+			var rawConstraintsArray = [];
+			var touchedConstraintsArray = [];
 
-    app.directive('animateOnChange', [function() {
-        return {
-            restrict: 'A',
-            link: function() {
+			// Pull out all the raw constraints 
+			do {
+			    constraint = re.exec(rawSearchTerm);
+			    if (constraint) {
+			        rawConstraintsArray.push(typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3]);
+			        touchedConstraintsArray.push(kebabToCamelCase.convert(constraint[1]));
+			    }
+			} while (constraint);
+            rawSearchTerm = rawSearchTerm.replace(re, "");
 
-            }
-        }
-    }]);
+			// reset the constraints present in the current search
+			for (var propertyName in currentSearch.constraints) {
+
+				// If the constraint exists
+				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
+					var index = touchedConstraintsArray.indexOf(propertyName);
+					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
+				}
+			}
+
+            // Send the search term through
+            currentSearch.searchTerm = rawSearchTerm;
+			return currentSearch;
+		}
+	}]);
+
+    app.service('kebabToCamelCase', function() {
+		// Converts a search-constraint into a searchConstraint
+		this.convert = function(string) {
+
+			for(var i = 0; i < string.length; i++) {
+
+				if (string[i] === "-") {
+					string = string.replace(string.substr(i, 1), "");
+					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
+				}
+			}
+			return string;
+		};
+
+	});
 })();
 (function() {
     var app = angular.module('app');

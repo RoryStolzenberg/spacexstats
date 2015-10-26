@@ -116,14 +116,14 @@ class MissionsController extends Controller {
             'astronauts'        => Astronaut::all()->toArray(),
             'launchVideos'      => $missionObjects->where('subtype', MissionControlSubtype::LaunchVideo)->filter(function($item) {
                                         return $item->external_url != null;
-                                    }),
-            'missionPatches'    => $missionObjects->where('subtype', MissionControlSubtype::MissionPatch),
-            'pressKits'         => $missionObjects->where('subtype', MissionControlSubtype::PressKit),
-            'cargoManifests'    => $missionObjects->where('subtype', MissionControlSubtype::CargoManifest),
+                                    })->values(),
+            'featuredImages'    => $missionObjects->where('subtype', MissionControlSubtype::Photo)->values(),
+            'missionPatches'    => $missionObjects->where('subtype', MissionControlSubtype::MissionPatch)->values(),
+            'pressKits'         => $missionObjects->where('subtype', MissionControlSubtype::PressKit)->values(),
+            'cargoManifests'    => $missionObjects->where('subtype', MissionControlSubtype::CargoManifest)->values(),
             'pressConferences'  => $missionObjects->where('subtype', MissionControlSubtype::PressConference)->filter(function($item) {
                                         return $item->external_url != null;
-                                    }),
-            'featuredImages'    => $missionObjects->where('subtype', MissionControlSubtype::Photo)
+                                    })->values()
         ]);
 
         return view('missions.edit');

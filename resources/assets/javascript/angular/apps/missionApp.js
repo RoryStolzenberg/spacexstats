@@ -223,7 +223,7 @@
                     mission: mission,
                     _token: CSRF_TOKEN
                 }).then(function (response) {
-                    window.location = '/missions/' + response.slug;
+                    window.location = '/missions/' + response.data;
                 });
             };
 
@@ -232,7 +232,7 @@
                     mission: mission,
                     _token: CSRF_TOKEN
                 }).then(function (response) {
-                    window.location = '/missions/' + response.slug;
+                    window.location = '/missions/' + response.data;
                 });
             };
         }
