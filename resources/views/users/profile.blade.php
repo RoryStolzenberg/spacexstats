@@ -96,6 +96,9 @@
                     @foreach ($favorites as $favorite)
                         @include('templates.objectCard', ['bias' => 'favorite', 'object' => $favorite->object])
                     @endforeach
+                    @if ($favorites->count() == 0)
+                        <p>Nothing to see here</p>
+                    @endif
             </section>
 
             @if (Auth::isAccessingSelf($user) || Auth::isAdmin())
@@ -104,6 +107,9 @@
                     @foreach ($notes as $note)
                         @include('templates.objectCard', ['bias' => 'note', 'object' => $note->object])
                     @endforeach
+                    @if ($notes->count() == 0)
+                        <p>Nothing to see here</p>
+                    @endif
                 </section>
             @endif
 
@@ -112,11 +118,19 @@
                 @foreach ($objects as $object)
                     @include('templates.objectCard', ['bias' => 'object', 'object' => $object])
                 @endforeach
+                @if ($objects->count() == 0)
+                    <p>Nothing to see here.<a href="/missioncontrol/create">Why don't you upload something?</a></p>
+                @endif
             </section>
 
             <h2>Comments</h2>
-            <section id="comments" class="comments">
-
+            <section id="comments" class="">
+                @foreach ($comments as $comment)
+                    @include('templates.objectCard', ['bias' => 'comment', 'object' => $object])
+                @endforeach
+                @if ($comments->count() == 0)
+                    <p>Nothing to see here</p>
+                @endif
             </section>
         </main>
     </div>

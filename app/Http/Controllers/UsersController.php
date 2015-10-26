@@ -25,22 +25,19 @@ class UsersController extends Controller {
 	}
 
 	public function get($username = null) {
-        if ($username == null) {
-            $user = Auth::user()->with(['objects', 'notes', 'favorites'])->first();
-        } else {
-            $user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
-        }
+        $user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
 
         $params = array(
             'user' => $user,
             'favoriteMission' => $user->profile->favoriteMission,
             'objects' => $user->objects()->inMissionControl()->take(10)->get(),
-            'favorites' => $user->favorites->take(10)
+            'favorites' => $user->favorites->take(10),
+            'comments' => $user->comments->take(10)
         );
 
-        //If the current user is logged in & If the current user is requesting themselves
+        // If the requesting user is logged in & if the requesting user is requesting themselves
         if (Auth::isAccessingSelf($user)) {
-            $params['notes'] = $user->notes;
+            $params['notes'] = $user->notes->take(10);
         }
 
         return view('users.profile', $params);
