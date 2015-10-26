@@ -28,7 +28,7 @@
     <!-- Statistics -->
     <div class="content-wrapper single-page background" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}">
 
-        <h1 animate-on-change="statistic.activeSubstatistic">@{{ statistic.activeSubstatistic.full_title }}</h1>
+        <h1 class="fade" ng-repeat="substatistic in statistic.substatistics" ng-show="statistic.activeSubstatistic == substatistic">@{{ substatistic.full_title }}</h1>
 
         <main>
             <button class="previous-stat" ng-click="goToNeighborStatistic($index - 1)"><i class="fa fa-angle-up fa-3x"></i></button>
@@ -52,7 +52,7 @@
 
             <countdown ng-repeat-end ng-if="substatistic.display == 'count'" ng-show="statistic.activeSubstatistic == substatistic" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity"></countdown>
 
-            <p class="description">@{{ statistic.activeSubstatistic.description }}</p>
+            <p class="description" ng-repeat="substatistic in statistic.substatistics" ng-show="statistic.activeSubstatistic == substatistic">@{{ substatistic.description }}</p>
             <button class="next-stat" ng-click="goToNeighborStatistic($index + 1)"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>
     </div>

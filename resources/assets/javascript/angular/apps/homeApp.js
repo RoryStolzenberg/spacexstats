@@ -85,22 +85,4 @@
             return self;
         }
     });
-
-    app.animation('.fade', [function() {
-        return {
-            enter: function(element, done) {
-                element.css('display', 'none');
-                element.fadeIn(5000, done);
-                return function() {
-                    element.stop();
-                }
-            },
-            leave: function(element, done) {
-                element.fadeOut(5000, done)
-                return function() {
-                    element.stop();
-                }
-            }
-        };
-    }]);
 })();

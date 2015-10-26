@@ -49,7 +49,7 @@
                                 <li><a href="/missioncontrol/collections">Collections</a></li>
 								<li><a href="/missioncontrol/leaderboards">Leaderboards</a></li>
 							@else 	
-							    <li><a href="/missioncontrol/buy">Buy</a></li>
+							    <li><a href="/missioncontrol">Buy</a></li>
 							@endif
 							<li><a href="/docs#missioncontrol">Docs</a></li>
                             @if (Auth::isAdmin())

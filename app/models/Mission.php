@@ -261,4 +261,14 @@ class Mission extends Model {
 			$q->where('name',$site);
 		})->orderBy('launch_order_id','ASC');
 	}
+
+    public function scopeWhereSpecificVehicle($query, $vehicle) {
+        $query->whereHas('vehicle', function($q) use($vehicle) {
+             $q->where('vehicle', $vehicle);
+        });
+    }
+
+    public function scopeWhereGenericVehicle($query, $vehicle) {
+
+    }
 }

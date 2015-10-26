@@ -7676,6 +7676,23 @@ section.comments {
 .next-stat {
   bottom: -45px; }
 
+/*.fade.ng-hide-add {
+    transition:opacity 1s ease;
+    opacity:1;
+
+    &.ng-hide-add-active {
+        opacity:0;
+    }
+}
+
+.fade.ng-hide-remove {
+    transition:all 1s ease 1s;
+    opacity:0;
+
+    &.ng-hide-remove-active {
+        opacity:1;
+    }
+}*/
 .background {
   background-image: url("../images/backgrounds/dscovr2.jpg"); }
 

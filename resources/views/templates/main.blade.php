@@ -50,8 +50,9 @@
         <!-- d3.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
 
-    <script src="/js/jstz-1.0.4.min.js"></script>
-    <script src="/js/dropzone.js"></script>
+        <!-- jstz & dropzone -->
+        <script src="/js/jstz-1.0.4.min.js"></script>
+        <script src="/js/dropzone.js"></script>
 
         <!-- Frontend App -->
         <script src="/js/app.js"></script>
@@ -70,7 +71,6 @@
 
                 // Stickybar
                 $('nav.sticky-bar').stickyNavbar();
-
             });
         </script>
 

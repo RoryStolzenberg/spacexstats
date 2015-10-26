@@ -1,21 +1,12 @@
 <?php
 Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'), function() {
 
-    Route::group(array('middleware' => 'authenticate'), function() {
+    Route::group(array('middleware' => 'auth'), function() {
 
         Route::get('/create/retrievetweet', 'UploadController@retrieveTweet');
         Route::get('/create/retrieveredditcomment', 'UploadController@retrieveRedditComment');
 
-        Route::get('/buy', array('as' => 'missionControl.buy', function() {
-            return View::make('missionControl.buy', array(
-                'title' => 'Misson Control',
-                'currentPage' => 'mission-control-buy'
-            ));
-        }));
-
-        Route::post('/buy', 'PaymentController@purchase');
-
-        Route::get('/buy/success', 'PaymentController@success');
+        Route::get('/success', 'PaymentController@success');
     });
 
     Route::group(array('middleware' => 'mustBe:Administrator'), function() {

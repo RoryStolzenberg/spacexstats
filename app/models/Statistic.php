@@ -40,12 +40,12 @@ class Statistic extends Model {
         $description = $this->attributes['description'];
 
         $dynamicData = array();
-        preg_match_all("/\{\{ (.*)\ }\}/U", $description, $dynamicData);
+        preg_match_all("/\{\{\s?(.*)\s?\}\}/U", $description, $dynamicData);
 
         foreach ($dynamicData[0] as $match => $dynamicString) {
-            $this->attributes['description'] = substr_replace($dynamicString, StatisticDescriptionBuilder::$type($this->name, $dynamicData[1][$match]), 0);
+            $description = str_replace($dynamicString, StatisticDescriptionBuilder::$type($this->name, $dynamicData[1][$match]), $description);
         }
 
-        return $this->attributes['description'];
+        return $description;
     }
 }
