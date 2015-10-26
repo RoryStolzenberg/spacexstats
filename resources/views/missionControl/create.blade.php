@@ -26,7 +26,7 @@
                     <form method="post" class="dropzone" upload enctype="multipart/form-data" action="/missioncontrol/create/upload" callback="uploadCallback(somescome)" multi-upload="true">
                         {{ csrf_field() }}
                     </form>
-                    <button id="upload" ng-click="uploadFiles()">Upload</button>
+                    <button id="upload" ng-click="uploadFiles()" ng-disabled="isUploading">@{{ isUploading ? 'Uploading...' : 'Upload' }}</button>
                 </div>
 
                 <div ng-show="activeUploadSection == 'data'" ng-form="uploadForm">
@@ -441,7 +441,7 @@
                         </div>
 
                     </div>
-                    <button id="files-submit" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submit' : 'Submitting...' }}</button>
+                    <button id="files-submit" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit'  }}</button>
                 </div>
             </section>
 
@@ -630,7 +630,7 @@
                         <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
-                    <button name="submit" ng-click="postSubmitButtonFunction()" ng-disabled="postForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submit' : 'Submitting...' }}</button>
+                    <button name="submit" ng-click="postSubmitButtonFunction()" ng-disabled="postForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
                 </form>
             </section>
 
@@ -667,7 +667,7 @@
                     <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>
                     <span ng-show="writeForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
 
-                    <button name="submit" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submit' : 'Submitting...' }}</button>
+                    <button name="submit" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
                 </form>
             </section>
         </main>

@@ -13,13 +13,13 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         parent::__construct($file);
 
         $this->ffprobe = FFProbe::create([
-            'ffmpeg.binaries' => env('ffmpeg'),
-            'ffprobe.binaries' => env('ffprobe')
+            'ffmpeg.binaries' => env('FFMPEG'),
+            'ffprobe.binaries' => env('FFPROBE')
         ]);
 
         $this->ffmpeg = FFMpeg::create([
-            'ffmpeg.binaries' => env('ffmpeg'),
-            'ffprobe.binaries' => env('ffprobe')
+            'ffmpeg.binaries' => env('FFMPEG'),
+            'ffprobe.binaries' => env('FFPROBE')
         ]);
     }
 

@@ -28,7 +28,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => 7,
-            'launch_order_id' => 1,
+            'launch_order_id' => 2,
             'launch_exact' => Carbon::create(2007, 3, 21, 1, 10, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -45,7 +45,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => 7,
-            'launch_order_id' => 1,
+            'launch_order_id' => 3,
             'launch_exact' => Carbon::create(2008, 8, 3, 3, 34, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -62,7 +62,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => 7,
-            'launch_order_id' => 1,
+            'launch_order_id' => 4,
             'launch_exact' => Carbon::create(2008, 9, 28, 23, 15, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -79,7 +79,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => 7,
-            'launch_order_id' => 1,
+            'launch_order_id' => 5,
             'launch_exact' => Carbon::create(2009, 7, 14, 3, 35, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -96,7 +96,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create(array(
             'mission_type_id' => 7,
-            'launch_order_id' => 2,
+            'launch_order_id' => 6,
             'launch_exact' => Carbon::now()->subMonth(),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -112,7 +112,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create(array(
             'mission_type_id' => 2,
-            'launch_order_id' => 3,
+            'launch_order_id' => 7,
             'launch_exact' => Carbon::now()->subWeek(),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -128,7 +128,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create(array(
             'mission_type_id' => 1,
-            'launch_order_id' => 4,
+            'launch_order_id' => 8,
             'launch_exact' => Carbon::now()->subDay(),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -144,7 +144,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create(array(
             'mission_type_id' => 1,
-            'launch_order_id' => 5,
+            'launch_order_id' => 9,
             'launch_exact' => Carbon::now()->addWeek(),
             'launch_approximate' => null,
             'launch_specificity' => 7,
@@ -160,7 +160,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create(array(
             'mission_type_id' => 9,
-            'launch_order_id' => 6,
+            'launch_order_id' => 10,
             'launch_exact' => Carbon::now()->addMonth(),
             'launch_approximate' => null,
             'launch_specificity' => 7,

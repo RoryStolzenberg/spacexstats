@@ -40,6 +40,7 @@
     uploadApp.controller("uploadController", ["$scope", "objectFromFile", "uploadService", function($scope, objectFromFile, uploadService) {
         $scope.activeUploadSection = "dropzone";
         $scope.isSubmitting = false;
+        $scope.isUploading = false;
 
         $scope.currentVisibleFile = null;
         $scope.isVisibleFile = function(file) {
@@ -50,6 +51,7 @@
         };
 
         $scope.uploadCallback = function() {
+            $scope.isUplading = false;
 
             // Once files have been successfully upload, convert to Objects
             $scope.files.forEach(function(file, index) {

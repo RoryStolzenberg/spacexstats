@@ -27,15 +27,13 @@
                         }
                     },
                     error: function() {
-                        element.disabled = false;
-                        element.value = "Upload";
+                        $scope.isUploading = false;
                     }
                 });
 
                 // upload the files
                 $scope.uploadFiles = function() {
-                    element.disabled = true;
-                    element.value = "Uploading...";
+                    $scope.isUploading = true;
                     dropzone.processQueue();
                 }
             }
