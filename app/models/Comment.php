@@ -4,6 +4,7 @@ namespace SpaceXStats\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes as SoftDeletingTrait;
 use Illuminate\Support\Facades\Auth;
+use Parsedown;
 use SpaceXStats\Validators\ValidatableTrait;
 
 class Comment extends Model {
@@ -51,7 +52,7 @@ class Comment extends Model {
         if ($this->shouldBeHidden()) {
             return null;
         }
-        return $this->attributes['comment'];
+        return Parsedown::instance()->text($this->attributes['comment']);
     }
 
     public function getOwnershipAttribute() {

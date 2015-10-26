@@ -10,6 +10,7 @@ use SpaceXStats\Mail\MailQueues\MissionMailQueue;
 use SpaceXStats\Presenters\MissionPresenter;
 use SpaceXStats\Presenters\PresentableTrait;
 use SpaceXStats\Validators\ValidatableTrait;
+use Parsedown;
 
 class Mission extends Model {
 
@@ -189,6 +190,10 @@ class Mission extends Model {
 
     public function getSuccessfulConsecutiveLaunchAttribute() {
 
+    }
+
+    public function getArticleAttribute() {
+        return Parsedown::instance()->text($this->attributes['article']);
     }
 
     // Attribute Mutators

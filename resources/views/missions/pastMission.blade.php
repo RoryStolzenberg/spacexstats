@@ -44,7 +44,7 @@
                 @endif
             </section>
 
-            {{ $mission->present()->article() }}
+            {!! $mission->present()->article() !!}
 
             <h2>Details</h2>
             @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])

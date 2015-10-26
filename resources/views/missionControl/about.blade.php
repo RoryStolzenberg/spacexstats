@@ -16,6 +16,9 @@
         <h1>Gigabytes Now, Terabytes Soon.</h1>
     </div>
     <div class="content-wrapper single-page background">
+        <h1>Noted. And Commented. And Shared.</h1>
+    </div>
+    <div class="content-wrapper single-page background">
         <h1>Unparalleled Analytics</h1>
     </div>
 </body>

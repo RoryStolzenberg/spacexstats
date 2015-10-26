@@ -2,7 +2,7 @@
 <section class="comments" ng-controller="commentsController" ng-strict-di>
     @if (Auth::isSubscriber())
         <form name="commentForm">
-            <textarea ng-model="newComment" minlength="10" required></textarea>
+            <textarea ng-model="newComment" minlength="10" required placeholder="You can use markdown here."></textarea>
             <input type="submit" ng-click="addTopLevelComment(commentForm)" ng-disabled="commentForm.$invalid" value="Add comment" />
         </form>
         <p ng-if="!commentsAreLoaded">Comments are loading...</p>
@@ -33,14 +33,14 @@
         </ul>
 
         <div ng-if="comment.isReplying === true" ng-form="commentReplyForm">
-            <textarea ng-model="comment.replyText" minlength="10" required></textarea>
+            <textarea ng-model="comment.replyText" minlength="10" required placeholder="You can use markdown here."></textarea>
 
             <button type="submit" ng-click="comment.reply()" ng-disabled="commentReplyForm.$invalid">Reply</button>
             <button type="reset" ng-click="comment.toggleReplyState()">Cancel</button>
         </div>
 
         <div ng-if="comment.isEditing === true" ng-form="commentEditForm">
-            <textarea ng-model="comment.editText" minlength="10" required></textarea>
+            <textarea ng-model="comment.editText" minlength="10" required placeholder="You can use markdown here."></textarea>
 
             <button type="submit" ng-click="comment.edit()" ng-disabled="commentEditForm.$invalid">Edit</button>
             <button type="reset" ng-click="comment.toggleEditState()">Cancel</button>

@@ -84,7 +84,7 @@
                     <ul>
                         <li class="gr-12">
                             <label for="">Article</label>
-                            <textarea ng-model="mission.article" placeholder="Mission article" maxlength="5000"></textarea>
+                            <textarea ng-model="mission.article" placeholder="Mission article" maxlength="5000" placeholder="You can use markdown here."></textarea>
                         </li>
                     </ul>
                 </fieldset>
