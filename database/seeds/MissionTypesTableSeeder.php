@@ -4,6 +4,8 @@ use SpaceXStats\Models\MissionType;
 
 class MissionTypesTableSeeder extends Seeder {
     public function run() {
+
+        // Any changes made here must also be reflected in SpaceXStats/Library/Enums/MissionType
         MissionType::insert(array(
             array('name' => 'Dragon (ISS)'),
             array('name' => 'Dragon (Freeflight)'),
