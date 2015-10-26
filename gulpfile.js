@@ -83,7 +83,7 @@ gulp.task('images', function() {
 
 // Fonts Task.
 gulp.task('fonts', function() {
-   gulp.src('resources/assets/javascript/fonts/*')
+   gulp.src('resources/assets/fonts/*')
        .pipe(gulp.dest('public/fonts'));
 });
 
