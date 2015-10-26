@@ -66,7 +66,7 @@ class UsersController extends Controller {
         ));
     }
 
-	public function postEditProfile($username) {
+	public function patchEditProfile($username) {
 		$user = User::where('username', $username)->firstOrFail();
 
         if ($user->profile->fill(Input::only(['summary', 'twitter_account', 'reddit_account', 'favorite_mission', 'favorite_mission_patch', 'favorite_quote']))->save()) {

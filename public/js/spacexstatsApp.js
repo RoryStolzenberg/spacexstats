@@ -1076,6 +1076,101 @@
     ]);
 })();
 (function() {
+    var userApp = angular.module('app', []);
+
+    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', function($http, $scope, editUserService) {
+
+        $scope.username = laravel.user.username;
+
+        $scope.missions = laravel.missions;
+
+        $scope.patches = laravel.patches;
+
+        $scope.profile = {
+            summary: laravel.user.profile.summary,
+            twitter_account: laravel.user.profile.twitter_account,
+            reddit_account: laravel.user.profile.reddit_account,
+            favorite_quote: laravel.user.profile.favorite_quote,
+            favorite_mission: laravel.user.profile.favorite_mission,
+            favorite_patch: laravel.user.profile.favorite_patch
+        };
+
+        $scope.updateProfile = function() {
+            $http.patch('/users/' + $scope.username + '/edit', $scope.profile)
+                .then(function(response) {
+                    flashMessage.addOK(response.data);
+                });
+        }
+
+        $scope.emailNotifications = {
+            launchTimeChange: laravel.notifications.launchTimeChange,
+            newMission: laravel.notifications.newMission,
+            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
+            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
+            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+            newsSummaries: laravel.notifications.newsSummaries
+        }
+
+        $scope.updateEmailNotifications = function() {
+            editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
+                // Reset form?
+            });
+        }
+
+        $scope.SMSNotification = {
+            mobile: laravel.user.mobile
+        };
+
+        if (laravel.notifications.tMinus24HoursSMS === true) {
+            $scope.SMSNotification.status = "tMinus24HoursSMS";
+        } else if (laravel.notifications.tMinus3HoursSMS === true) {
+            $scope.SMSNotification.status = "tMinus3HoursSMS";
+        } else if (laravel.notifications.tMinus1HourSMS === true) {
+            $scope.SMSNotification.status = "tMinus1HourSMS";
+        } else {
+            $scope.SMSNotification.status = "false";
+        }
+
+        $scope.updateSMSNotifications = function() {
+            editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
+                // Reset the form or something
+            });
+        }
+
+    }]);
+
+    userApp.service('editUserService', ["$http", "flashMessage", function($http, flashMessage) {
+        this.updateSMS = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/smsnotifications',
+
+                { 'SMSNotification': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateEmails = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/emailnotifications',
+
+                { 'emailNotifications': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateProfile = function() {
+
+        };
+    }]);
+
+})();
+(function() {
     var dataViewApp = angular.module('app', []);
 
     dataViewApp.controller('dataViewController', ['DataView', 'dataViewService', '$scope', '$http', function(DataView, dataViewService, $scope, $http) {
@@ -1363,101 +1458,6 @@
     }]);
 })();
 
-(function() {
-    var userApp = angular.module('app', []);
-
-    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', function($http, $scope, editUserService) {
-
-        $scope.username = laravel.user.username;
-
-        $scope.missions = laravel.missions;
-
-        $scope.patches = laravel.patches;
-
-        $scope.profile = {
-            summary: laravel.user.profile.summary,
-            twitter_account: laravel.user.profile.twitter_account,
-            reddit_account: laravel.user.profile.reddit_account,
-            favorite_quote: laravel.user.profile.favorite_quote,
-            favorite_mission: laravel.user.profile.favorite_mission,
-            favorite_patch: laravel.user.profile.favorite_patch
-        };
-
-        $scope.updateProfile = function() {
-            $http.patch('/users/' + $scope.username + '/edit/profile', $scope.profile)
-                .then(function(response) {
-                    flashMessage.addOK(response.data);
-                });
-        }
-
-        $scope.emailNotifications = {
-            launchTimeChange: laravel.notifications.launchTimeChange,
-            newMission: laravel.notifications.newMission,
-            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
-            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
-            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
-            newsSummaries: laravel.notifications.newsSummaries
-        }
-
-        $scope.updateEmailNotifications = function() {
-            editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
-                // Reset form?
-            });
-        }
-
-        $scope.SMSNotification = {
-            mobile: laravel.user.mobile
-        };
-
-        if (laravel.notifications.tMinus24HoursSMS === true) {
-            $scope.SMSNotification.status = "tMinus24HoursSMS";
-        } else if (laravel.notifications.tMinus3HoursSMS === true) {
-            $scope.SMSNotification.status = "tMinus3HoursSMS";
-        } else if (laravel.notifications.tMinus1HourSMS === true) {
-            $scope.SMSNotification.status = "tMinus1HourSMS";
-        } else {
-            $scope.SMSNotification.status = "false";
-        }
-
-        $scope.updateSMSNotifications = function() {
-            editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
-                // Reset the form or something
-            });
-        }
-
-    }]);
-
-    userApp.service('editUserService', ["$http", "flashMessage", function($http, flashMessage) {
-        this.updateSMS = function(username, notification) {
-            return $http.patch('/users/' + username + '/edit/smsnotifications',
-
-                { 'SMSNotification': notification }
-
-            ).then(function(response) {
-                return flashMessage.addOK(response.data);
-            }, function(response) {
-                return flashMessage.addError(response.data);
-            });
-        };
-
-        this.updateEmails = function(username, notification) {
-            return $http.patch('/users/' + username + '/edit/emailnotifications',
-
-                { 'emailNotifications': notification }
-
-            ).then(function(response) {
-                return flashMessage.addOK(response.data);
-            }, function(response) {
-                return flashMessage.addError(response.data);
-            });
-        };
-
-        this.updateProfile = function() {
-
-        };
-    }]);
-
-})();
 (function() {
     var liveApp = angular.module('app', []);
 
@@ -1773,22 +1773,6 @@ angular.module('RecursionHelper', [])
     });
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -1858,6 +1842,22 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app');
 
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('upload', ['$parse', function($parse) {
         return {
             restrict: 'A',
@@ -1896,6 +1896,181 @@ angular.module('RecursionHelper', [])
             }
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('datetime', function() {
+        return {
+            require: 'ngModel',
+            restrict: 'E',
+            replace: true,
+            scope: {
+                type: '@',
+                datetimevalue: '=ngModel',
+                startYear: '@',
+                nullableToggle: '@?',
+                isNull: '=',
+                disabled: '=?ngDisabled'
+            },
+            link: function($scope, element, attrs, ctrl) {
+
+                $scope.days = [];
+                $scope.days.push({ value: 0, display: '-'});
+
+                for (i = 1; i <= 31; i++) {
+                    $scope.days.push({ value: i, display: i });
+                }
+
+                $scope.months = [
+                    { value: 0, display: '-'},
+                    { value: 1, display: 'January'},
+                    { value: 2, display: 'February'},
+                    { value: 3, display: 'March'},
+                    { value: 4, display: 'April'},
+                    { value: 5, display: 'May'},
+                    { value: 6, display: 'June'},
+                    { value: 7, display: 'July'},
+                    { value: 8, display: 'August'},
+                    { value: 9, display: 'September'},
+                    { value: 10, display: 'October'},
+                    { value: 11, display: 'November'},
+                    { value: 12, display: 'December'}
+                ];
+
+                $scope.years = function() {
+                    var years = [];
+
+                    var currentYear = moment().year();
+
+                    if (typeof $scope.startYear !== 'undefined') {
+                        var startYear = $scope.startYear;
+                    } else {
+                        var startYear = 1950;
+                    }
+
+                    while (currentYear >= startYear) {
+                        years.push(currentYear);
+                        currentYear--;
+                    }
+                    return years;
+                };
+
+                //convert data from view format to model format
+                ctrl.$parsers.push(function(viewvalue) {
+
+                    if ($scope.isNull == true) {
+                        return null;
+                    }
+
+                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
+
+                        if ($scope.type == 'datetime') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date,
+                                hour: viewvalue.hour,
+                                minute: viewvalue.minute,
+                                second: viewvalue.second
+                            }).format('YYYY-MM-DD HH:mm:ss');
+
+                        } else if ($scope.type == 'date') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date
+                            }).format('YYYY-MM-DD');
+                        }
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2) + " "
+                                + ("0" + viewvalue.hour).slice(-2) + ":"
+                                + ("0" + viewvalue.minute).slice(-2) + ":"
+                                + ("0" + viewvalue.second).slice(-2);
+
+                        } else {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2);
+                        }
+                    }
+                    return value;
+                });
+
+                ctrl.$render = function() {
+                    $scope.year = ctrl.$viewValue.year;
+                    $scope.month = ctrl.$viewValue.month;
+                    $scope.date = ctrl.$viewValue.date
+
+                    if ($scope.type == 'datetime') {
+                        $scope.hour = ctrl.$viewValue.hour;
+                        $scope.minute = ctrl.$viewValue.minute;
+                        $scope.second = ctrl.$viewValue.second;
+                    }
+                };
+
+                //convert data from model format to view format
+                ctrl.$formatters.push(function(data) {
+
+                    // If the value is not undefined and the value is valid,
+                    if (typeof data !== 'undefined' && moment(data).isValid()) {
+
+                        var dt = moment(data);
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date(),
+                                hour: dt.hour(),
+                                minute: dt.minute(),
+                                second: dt.second()
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date()
+                            }
+                        }
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0,
+                                hour: 0,
+                                minute: 0,
+                                second: 0
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0
+                            }
+                        }
+                    }
+                });
+
+                $scope.$watch('datetimevalue', function(value) {
+                    if (typeof value === null) {
+                        $scope.isNull = true;
+                    }
+                });
+
+                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
+                    ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
+                });
+            },
+            templateUrl: '/js/templates/datetime.html'
+        }
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2076,181 +2251,6 @@ angular.module('RecursionHelper', [])
 (function() {
     var app = angular.module('app');
 
-    app.directive('datetime', function() {
-        return {
-            require: 'ngModel',
-            restrict: 'E',
-            replace: true,
-            scope: {
-                type: '@',
-                datetimevalue: '=ngModel',
-                startYear: '@',
-                nullableToggle: '@?',
-                isNull: '=',
-                disabled: '=?ngDisabled'
-            },
-            link: function($scope, element, attrs, ctrl) {
-
-                $scope.days = [];
-                $scope.days.push({ value: 0, display: '-'});
-
-                for (i = 1; i <= 31; i++) {
-                    $scope.days.push({ value: i, display: i });
-                }
-
-                $scope.months = [
-                    { value: 0, display: '-'},
-                    { value: 1, display: 'January'},
-                    { value: 2, display: 'February'},
-                    { value: 3, display: 'March'},
-                    { value: 4, display: 'April'},
-                    { value: 5, display: 'May'},
-                    { value: 6, display: 'June'},
-                    { value: 7, display: 'July'},
-                    { value: 8, display: 'August'},
-                    { value: 9, display: 'September'},
-                    { value: 10, display: 'October'},
-                    { value: 11, display: 'November'},
-                    { value: 12, display: 'December'}
-                ];
-
-                $scope.years = function() {
-                    var years = [];
-
-                    var currentYear = moment().year();
-
-                    if (typeof $scope.startYear !== 'undefined') {
-                        var startYear = $scope.startYear;
-                    } else {
-                        var startYear = 1950;
-                    }
-
-                    while (currentYear >= startYear) {
-                        years.push(currentYear);
-                        currentYear--;
-                    }
-                    return years;
-                };
-
-                //convert data from view format to model format
-                ctrl.$parsers.push(function(viewvalue) {
-
-                    if ($scope.isNull == true) {
-                        return null;
-                    }
-
-                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
-
-                        if ($scope.type == 'datetime') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date,
-                                hour: viewvalue.hour,
-                                minute: viewvalue.minute,
-                                second: viewvalue.second
-                            }).format('YYYY-MM-DD HH:mm:ss');
-
-                        } else if ($scope.type == 'date') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date
-                            }).format('YYYY-MM-DD');
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2) + " "
-                                + ("0" + viewvalue.hour).slice(-2) + ":"
-                                + ("0" + viewvalue.minute).slice(-2) + ":"
-                                + ("0" + viewvalue.second).slice(-2);
-
-                        } else {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2);
-                        }
-                    }
-                    return value;
-                });
-
-                ctrl.$render = function() {
-                    $scope.year = ctrl.$viewValue.year;
-                    $scope.month = ctrl.$viewValue.month;
-                    $scope.date = ctrl.$viewValue.date
-
-                    if ($scope.type == 'datetime') {
-                        $scope.hour = ctrl.$viewValue.hour;
-                        $scope.minute = ctrl.$viewValue.minute;
-                        $scope.second = ctrl.$viewValue.second;
-                    }
-                };
-
-                //convert data from model format to view format
-                ctrl.$formatters.push(function(data) {
-
-                    // If the value is not undefined and the value is valid,
-                    if (typeof data !== 'undefined' && moment(data).isValid()) {
-
-                        var dt = moment(data);
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date(),
-                                hour: dt.hour(),
-                                minute: dt.minute(),
-                                second: dt.second()
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date()
-                            }
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0,
-                                hour: 0,
-                                minute: 0,
-                                second: 0
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0
-                            }
-                        }
-                    }
-                });
-
-                $scope.$watch('datetimevalue', function(value) {
-                    if (typeof value === null) {
-                        $scope.isNull = true;
-                    }
-                });
-
-                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
-                    ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
-                });
-            },
-            templateUrl: '/js/templates/datetime.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('deltaV', function() {
         return {
             restrict: 'E',
@@ -2292,6 +2292,118 @@ angular.module('RecursionHelper', [])
             templateUrl: '/js/templates/deltaV.html'
         }
     });
+})();
+(function() {
+	var app = angular.module('app');
+
+	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
+		return {
+			restrict: 'E',
+            transclude: true,
+			link: function($scope, element, attributes) {
+
+				$scope.stagingConstraints = {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+
+				$scope.data = {
+					missions: laravel.missions,
+					types: null,
+                    tags: laravel.tags
+				}
+
+                $scope.onSearchKeyPress = function(event) {
+                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
+                }
+			},
+			templateUrl: '/js/templates/search.html'
+		}
+	}]);
+
+    app.service('constraintsReader', ['kebabToCamelCase', function(kebabToCamelCase) {
+		this.fromSearch = function(rawSearchTerm) {
+
+			var currentSearch = {
+				searchTerm: null,
+				tags: {
+					tags: []
+				},
+				constraints: {
+					mission: null,
+					type: null,
+					before: null,
+					after: null,
+					year: null,
+					uploadedBy: null,
+					favorited: null,
+					noted: null,
+					downloaded: null
+				}
+			};
+
+			// parse out tags https://regex101.com/r/uL9jN5/1
+			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
+            var re = /\[([^)]+?)\]/gi;
+            while (match = re.exec(rawSearchTerm)) {
+                currentSearch.tags.tags.push(match[1]);
+            }
+            rawSearchTerm = rawSearchTerm.replace(re, "");
+
+			// constraints https://regex101.com/r/iT2zH5/2
+			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
+			var constraint;
+			var rawConstraintsArray = [];
+			var touchedConstraintsArray = [];
+
+			// Pull out all the raw constraints 
+			do {
+			    constraint = re.exec(rawSearchTerm);
+			    if (constraint) {
+			        rawConstraintsArray.push(typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3]);
+			        touchedConstraintsArray.push(kebabToCamelCase.convert(constraint[1]));
+			    }
+			} while (constraint);
+            rawSearchTerm = rawSearchTerm.replace(re, "");
+
+			// reset the constraints present in the current search
+			for (var propertyName in currentSearch.constraints) {
+
+				// If the constraint exists
+				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
+					var index = touchedConstraintsArray.indexOf(propertyName);
+					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
+				}
+			}
+
+            // Send the search term through
+            currentSearch.searchTerm = rawSearchTerm;
+			return currentSearch;
+		}
+	}]);
+
+    app.service('kebabToCamelCase', function() {
+		// Converts a search-constraint into a searchConstraint
+		this.convert = function(string) {
+
+			for(var i = 0; i < string.length; i++) {
+
+				if (string[i] === "-") {
+					string = string.replace(string.substr(i, 1), "");
+					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
+				}
+			}
+			return string;
+		};
+
+	});
 })();
 (function() {
     var app = angular.module('app');
@@ -2441,118 +2553,6 @@ angular.module('RecursionHelper', [])
             templateUrl: '/js/templates/chart.html'
         }
     }]);
-})();
-(function() {
-	var app = angular.module('app');
-
-	app.directive('search', ['constraintsReader', "$http", function(constraintsReader, $http) {
-		return {
-			restrict: 'E',
-            transclude: true,
-			link: function($scope, element, attributes) {
-
-				$scope.stagingConstraints = {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
-
-				$scope.data = {
-					missions: laravel.missions,
-					types: null,
-                    tags: laravel.tags
-				}
-
-                $scope.onSearchKeyPress = function(event) {
-                    $scope.currentSearch = constraintsReader.fromSearch($scope.rawSearchTerm)
-                }
-			},
-			templateUrl: '/js/templates/search.html'
-		}
-	}]);
-
-    app.service('constraintsReader', ['kebabToCamelCase', function(kebabToCamelCase) {
-		this.fromSearch = function(rawSearchTerm) {
-
-			var currentSearch = {
-				searchTerm: null,
-				tags: {
-					tags: []
-				},
-				constraints: {
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
-			};
-
-			// parse out tags https://regex101.com/r/uL9jN5/1
-			//currentSearch.tags.tags = /\[([^)]+?)\]/gi.exec(rawSearchTerm);
-            var re = /\[([^)]+?)\]/gi;
-            while (match = re.exec(rawSearchTerm)) {
-                currentSearch.tags.tags.push(match[1]);
-            }
-            rawSearchTerm = rawSearchTerm.replace(re, "");
-
-			// constraints https://regex101.com/r/iT2zH5/2
-			var re = /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi;
-			var constraint;
-			var rawConstraintsArray = [];
-			var touchedConstraintsArray = [];
-
-			// Pull out all the raw constraints 
-			do {
-			    constraint = re.exec(rawSearchTerm);
-			    if (constraint) {
-			        rawConstraintsArray.push(typeof constraint[2] !== 'undefined' ? constraint[2] : constraint[3]);
-			        touchedConstraintsArray.push(kebabToCamelCase.convert(constraint[1]));
-			    }
-			} while (constraint);
-            rawSearchTerm = rawSearchTerm.replace(re, "");
-
-			// reset the constraints present in the current search
-			for (var propertyName in currentSearch.constraints) {
-
-				// If the constraint exists
-				if (touchedConstraintsArray.indexOf(propertyName) !== -1) {
-					var index = touchedConstraintsArray.indexOf(propertyName);
-					currentSearch.constraints[propertyName] = rawConstraintsArray[index];
-				}
-			}
-
-            // Send the search term through
-            currentSearch.searchTerm = rawSearchTerm;
-			return currentSearch;
-		}
-	}]);
-
-    app.service('kebabToCamelCase', function() {
-		// Converts a search-constraint into a searchConstraint
-		this.convert = function(string) {
-
-			for(var i = 0; i < string.length; i++) {
-
-				if (string[i] === "-") {
-					string = string.replace(string.substr(i, 1), "");
-					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
-				}
-			}
-			return string;
-		};
-
-	});
 })();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {

@@ -4,7 +4,6 @@
 @section('content')
 <body class="object" ng-app="objectApp" ng-controller="objectController" ng-strict-di>
 
-
     @include('templates.header')
 
     <div class="content-wrapper">
@@ -15,7 +14,7 @@
 
             <section class="details">
                 <div class="gr-9 content">
-                    <img id="object" src="{{ $object->media }}" />
+
                 </div>
 
                 <aside class="gr-3 aside">
@@ -40,7 +39,6 @@
                         <ul>
                             <li>{{ $object->present()->subtype() }}</li>
                         </ul>
-                        Image taken {{ $object->present()->originDateAsString() }}
                     </div>
 
                     <div class="legal">

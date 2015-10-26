@@ -31,6 +31,8 @@ class Object extends Model implements UploadableInterface {
 	protected $fillable = [];
 	protected $guarded = [];
 
+    protected $supportsMarkdown = [];
+
     public function getDates() {
         return ['created_at', 'updated_at', 'actioned_at'];
     }
@@ -280,6 +282,10 @@ class Object extends Model implements UploadableInterface {
 
     public function getViewsAttribute() {
         return Redis::hget('Object:' . $this->object_id, 'views') !== null ? Redis::hget('Object:' . $this->object_id, 'views') : 0;
+    }
+
+    public function getSummaryAttribute() {
+        return Parsedown::instance()->text($this->attributes['summary']);
     }
 
     // Attribute mutators

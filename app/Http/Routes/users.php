@@ -5,7 +5,7 @@ Route::group(array('prefix' => 'users'), function() {
 
         // Main edit functionality
         Route::get('/{username}/edit', 'UsersController@getEdit');
-        Route::post('/{username}/edit', 'UsersController@postEditProfile');
+        Route::patch('/{username}/edit', 'UsersController@patchEditProfile');
 
         // Individual edit functionality
         Route::patch('/{username}/edit/emailnotifications', 'UsersController@editEmailNotifications');
