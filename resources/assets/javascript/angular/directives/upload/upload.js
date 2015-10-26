@@ -25,11 +25,17 @@
                             var func = $parse(attrs.callback);
                             func($scope, { files: files });
                         }
+                    },
+                    error: function() {
+                        element.disabled = false;
+                        element.value = "Upload";
                     }
                 });
 
                 // upload the files
                 $scope.uploadFiles = function() {
+                    element.disabled = true;
+                    element.value = "Uploading...";
                     dropzone.processQueue();
                 }
             }

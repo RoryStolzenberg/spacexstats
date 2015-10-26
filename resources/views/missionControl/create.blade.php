@@ -441,7 +441,7 @@
                         </div>
 
                     </div>
-                    <button id="files-submit" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()">Submit</button>
+                    <button id="files-submit" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submit' : 'Submitting...' }}</button>
                 </div>
             </section>
 
@@ -630,7 +630,7 @@
                         <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
-                    <input type="submit" value="Submit" name="submit" id="post-submit" ng-click="postSubmitButtonFunction()" ng-disabled="postForm.$invalid" />
+                    <button name="submit" ng-click="postSubmitButtonFunction()" ng-disabled="postForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submit' : 'Submitting...' }}</button>
                 </form>
             </section>
 
@@ -667,7 +667,7 @@
                     <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>
                     <span ng-show="writeForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
 
-                    <input type="submit" value="Submit" name="submit" ng-disabled="writeForm.$invalid" ng-click="writeSubmitButtonFunction()" />
+                    <button name="submit" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submit' : 'Submitting...' }}</button>
                 </form>
             </section>
         </main>

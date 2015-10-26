@@ -39,6 +39,7 @@
 
     uploadApp.controller("uploadController", ["$scope", "objectFromFile", "uploadService", function($scope, objectFromFile, uploadService) {
         $scope.activeUploadSection = "dropzone";
+        $scope.isSubmitting = false;
 
         $scope.currentVisibleFile = null;
         $scope.isVisibleFile = function(file) {
@@ -66,6 +67,7 @@
         };
 
         $scope.fileSubmitButtonFunction = function() {
+            $scope.isSubmitting = true;
             uploadService.postToMissionControl($scope.files, 'files');
         }
     }]);
@@ -78,7 +80,10 @@
         $scope.article = {};
         $scope.tweet = {};
 
+        $scope.isSubmitting = false;
+
         $scope.postSubmitButtonFunction = function() {
+            $scope.isSubmitting = true;
             switch ($scope.postType) {
                 case 'NSFcomment': uploadService.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
                 case 'redditcomment': uploadService.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
@@ -99,7 +104,10 @@
             tags: []
         };
 
+        $scope.isSubmitting = false;
+
         $scope.writeSubmitButtonFunction = function() {
+            $scope.isSubmitting = true;
             uploadService.postToMissionControl($scope.text, 'text');
         }
     }]);

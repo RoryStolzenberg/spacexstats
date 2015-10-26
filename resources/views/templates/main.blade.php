@@ -34,7 +34,7 @@
         <!-- jQuery& jQuery plugins -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-        <script src="/js/jquery.stickyNavbar.min.js"></script>
+        <script src="/js/jquery.stickyNavbar.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-fracs/0.15.1/jquery.fracs.js"></script>
 
         <!-- Angular -->
