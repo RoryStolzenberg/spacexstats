@@ -31,7 +31,7 @@ class MissionPresenter {
 					</section>';
 		} else {
 			return '<section>
-						<article class="article">
+						<article class="article md">
 						'.$this->entity->article.'
 						</article>
 					</section>';

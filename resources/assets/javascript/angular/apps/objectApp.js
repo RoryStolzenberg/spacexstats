@@ -1,5 +1,5 @@
 (function() {
-    var objectApp = angular.module('app', ['ui.tree']);
+    var objectApp = angular.module('app', ['ui.tree', 'ngSanitize']);
 
     objectApp.controller("objectController", ["$scope", "$http", function($scope, $http) {
 

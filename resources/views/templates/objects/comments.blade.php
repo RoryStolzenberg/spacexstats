@@ -24,7 +24,7 @@
             <a href="@{{ '/users/' + comment.user.username }}">@{{ comment.user.username }}</a>
         </span>
 
-        <p class="comment-body">@{{ comment.comment }}</p>
+        <p class="comment-body comment md" ng-bind-html="comment.comment"></p>
 
         <ul class="comment-actions">
             <li ng-click="comment.toggleReplyState()">Reply</li>
