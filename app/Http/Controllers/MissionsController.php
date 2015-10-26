@@ -97,7 +97,7 @@ class MissionsController extends Controller {
     public function getEdit($slug) {
 
         // Fetch all objects at once and then organize into collection to reduce queries
-        $missionObjects = Object::wherePublic()->whereHas('mission', function($q) use($slug) {
+        $missionObjects = Object::wherePublic()->inMissionControl()->whereHas('mission', function($q) use($slug) {
             $q->whereSlug($slug);
         })->get();
 
@@ -123,7 +123,7 @@ class MissionsController extends Controller {
             'pressConferences'  => $missionObjects->where('subtype', MissionControlSubtype::PressConference)->filter(function($item) {
                                         return $item->external_url != null;
                                     }),
-            'featuredImages'    => $missionObjects->where('subtype', MissionControlSubtype::Photo),
+            'featuredImages'    => $missionObjects->where('subtype', MissionControlSubtype::Photo)
         ]);
 
         return view('missions.edit');

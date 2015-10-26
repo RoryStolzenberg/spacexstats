@@ -81,7 +81,7 @@ trait UploadableTrait {
     }
 
     public function hasTemporaryThumbs() {
-        return $this->has_temporary_file;
+        return $this->has_temporary_thumbs;
     }
 
     /**
