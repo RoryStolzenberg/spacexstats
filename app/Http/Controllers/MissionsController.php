@@ -96,37 +96,34 @@ class MissionsController extends Controller {
      */
     public function getEdit($slug) {
 
+        // Fetch all objects at once and then organize into collection to reduce queries
+        $missionObjects = Object::wherePublic()->whereHas('mission', function($q) use($slug) {
+            $q->whereSlug($slug);
+        })->get();
+
         JavaScript::put([
-            'mission' => Mission::whereSlug($slug)
+            'mission'           => Mission::whereSlug($slug)
                 ->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part', 'prelaunchEvents', 'telemetries')->first(),
-            'destinations' => Destination::all(['destination_id', 'destination'])->toArray(),
-            'missionTypes' => MissionType::all(['name', 'mission_type_id'])->toArray(),
-            'launchSites' => Location::where('type', 'Launch Site')->get()->toArray(),
-            'landingSites' => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
-            'vehicles' => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
-            'parts' => Part::whereDoesntHave('partFlights', function($q) {
-                $q->where('landed', false);
-            })->get()->toArray(),
-            'spacecraft' => Spacecraft::all()->toArray(),
-            'astronauts' => Astronaut::all()->toArray(),
-            'launchVideos' => Object::where('subtype', MissionControlSubtype::LaunchVideo)->whereNotNull('external_url')->whereHas('mission', function($q) use ($slug) {
-                $q->whereSlug($slug);
-            })->get(),
-            'missionPatches' => Object::where('subtype', MissionControlSubtype::MissionPatch)->whereHas('mission', function($q) use ($slug) {
-                $q->whereSlug($slug);
-            })->get(),
-            'pressKits' => Object::where('subtype', MissionControlSubtype::PressKit)->whereHas('mission', function($q) use ($slug) {
-                $q->whereSlug($slug);
-            })->get(),
-            'cargoManifests' => Object::where('subtype', MissionControlSubtype::CargoManifest)->whereHas('mission', function($q) use ($slug) {
-                $q->whereSlug($slug);
-            })->get(),
-            'pressConferences' => Object::where('subtype', MissionControlSubtype::PressConference)->whereHas('mission', function($q) use ($slug) {
-                $q->whereSlug($slug);
-            })->get(),
-            'featuredImages' => Object::where('subtype', MissionControlSubtype::Photo)->whereHas('mission', function($q) use ($slug) {
-                $q->whereSlug($slug);
-            })->get(),
+            'destinations'      => Destination::all(['destination_id', 'destination'])->toArray(),
+            'missionTypes'      => MissionType::all(['name', 'mission_type_id'])->toArray(),
+            'launchSites'       => Location::where('type', 'Launch Site')->get()->toArray(),
+            'landingSites'      => Location::where('type', 'Landing Site')->orWhere('type', 'ASDS')->get()->toArray(),
+            'vehicles'          => Vehicle::all(['vehicle', 'vehicle_id'])->toArray(),
+            'parts'             => Part::whereDoesntHave('partFlights', function($q) {
+                                        $q->where('landed', false);
+                                    })->get()->toArray(),
+            'spacecraft'        => Spacecraft::all()->toArray(),
+            'astronauts'        => Astronaut::all()->toArray(),
+            'launchVideos'      => $missionObjects->where('subtype', MissionControlSubtype::LaunchVideo)->filter(function($item) {
+                                        return $item->external_url != null;
+                                    }),
+            'missionPatches'    => $missionObjects->where('subtype', MissionControlSubtype::MissionPatch),
+            'pressKits'         => $missionObjects->where('subtype', MissionControlSubtype::PressKit),
+            'cargoManifests'    => $missionObjects->where('subtype', MissionControlSubtype::CargoManifest),
+            'pressConferences'  => $missionObjects->where('subtype', MissionControlSubtype::PressConference)->filter(function($item) {
+                                        return $item->external_url != null;
+                                    }),
+            'featuredImages'    => $missionObjects->where('subtype', MissionControlSubtype::Photo),
         ]);
 
         return view('missions.edit');

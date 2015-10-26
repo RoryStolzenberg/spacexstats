@@ -6,7 +6,7 @@
         <span ng-show="selectedOption == null" class="name">{{ placeholder || 'Select...' }}</span>
     </div>
 
-    <ul ng-show="dropdownIsVisible" class="options">
+    <ul ng-show="dropdownIsVisible && optionsObj.length > 0" class="options">
         <li ng-show="searchable">
             <input type="text" placeholder="Search..." ng-model="search.name" />
         </li>
@@ -17,5 +17,8 @@
             <img ng-attr-src="{{ option.image }}" />
             <span class="name">{{ option.name }}</span>
         </li>
+    </ul>
+    <ul ng-show="dropdownIsVisible && optionsObj.length == 0" class="options">
+        <li>Nothing to show</li>
     </ul>
 </div>
