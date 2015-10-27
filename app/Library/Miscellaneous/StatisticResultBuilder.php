@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Library\Miscellaneous;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use SpaceXStats\Models\Location;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Spacecraft;
@@ -12,15 +13,15 @@ class StatisticResultBuilder {
 	}
 
 	public static function launchCount($parameter) {
-		if ($parameter === 'By Rocket') {
-			return Vehicle::select('vehicle', DB::raw('COUNT(vehicle) as vehiclecount'))->with('mission')->whereHas('mission', function($q) {
-				$q->where('status','Complete');
-			})->groupBy('vehicle')->get();
+		if ($parameter === 'Total') {
+			return Mission::whereComplete()->count();
 		}
 
-		return Mission::whereComplete()->with('vehicle')->whereHas('vehicle', function($q) use($parameter) {
-			$q->where('vehicle', 'like', ($parameter == 'Falcon 9') ? $parameter . '%' : $parameter);
-		})->count();
+        if ($parameter === 'MCT') {
+            return 0;
+        }
+
+		return Mission::whereComplete()->withGenericVehicle($parameter)->count();
 	}
 
 	public static function launchesPerYear() {
@@ -34,31 +35,60 @@ class StatisticResultBuilder {
 				$q->whereComplete();
 			})->count();
 
-		} else if ($parameter === 'ISS Resupplies') {
+		}
+
+        if ($parameter === 'ISS Resupplies') {
 			return Spacecraft::whereNotNull('iss_berth')->whereHas('mission', function($q) {
 				$q->whereComplete();
 			})->count();
 
-		} else if ($parameter === 'Total Flight Duration') {
+		}
+
+        if ($parameter === 'Total Flight Time') {
 			//SELECT SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) as duration FROM spacecraft INNER JOIN missions ON spacecraft.mission_id=missions.mission_id
 			return Spacecraft::select(DB::raw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) AS duration'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','spacecraft.mission_id')->first();
 		
-		} else if ($parameter === 'Individual Flight Duration') {
+		}
+
+        if ($parameter === 'Flight Time (Graph)') {
 			return Spacecraft::select('missions.name',DB::raw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return) AS duration'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','spacecraft.mission_id')->first();
 
-		} else if ($parameter === 'Cargo') {
+		}
+
+        if ($parameter === 'Cargo') {
 			return Spacecraft::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
 				$q->whereComplete();
 			})->first();
 		}
+
+        if ($parameter === 'Reused') {
+            return 0;
+        }
 	}
 
+    public static function vehicles($parameter) {
+        if ($parameter == 'Landed') {
+            return 0;
+        }
+
+        if ($parameter == 'Reflown') {
+            return 0;
+        }
+    }
+
 	public static function engines($parameter) {
+        if ($parameter === 'Flown') {
+            //return PartFlight::select(DB::raw(SUM('firststage_land')))->first();
+            return 0;
+        }
+
 		if ($parameter === 'Flight Time') {
 			// SELECT SUM(vehicles.firststage_meco) AS flight_time FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
 			return Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first();
 		
-		} else if ($parameter === 'Success Rate') {
+		}
+
+        if ($parameter === 'Success Rate') {
 			// SELECT SUM(vehicles.firststage_engine_failures) AS engine_failures, ROUND(100 - (SUM(vehicles.firststage_engine_failures) / (COUNT(vehicles.vehicle_id) * 9) * 100)) AS success_rate 
 			// FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
 			return Vehicle::select(DB::raw('SUM(vehicles.firststage_engine_failures) AS engine_failures, ROUND(100 - (SUM(vehicles.firststage_engine_failures) / (COUNT(vehicles.mission_id) * 9) * 100)) AS success_rate'))
@@ -66,11 +96,7 @@ class StatisticResultBuilder {
 		}
 	}
 
-	public static function launchSiteCount() {
-		return Location::count();
-	}
-
-	public static function launchSiteSLC40($parameter) {
+	public static function capeCanaveral($parameter) {
 		if ($parameter === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','SLC-40');
@@ -79,7 +105,7 @@ class StatisticResultBuilder {
 		} else if ($parameter === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('SLC-40')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			} catch (ModelNotFoundException $e) {
 				return 'false';
 			}
 			return $lastLaunch;
@@ -87,14 +113,38 @@ class StatisticResultBuilder {
 		} else if ($parameter === 'Next Launch') {
 			try {
 				$nextLaunch = Mission::nextFromLaunchSite('SLC-40')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			} catch (ModelNotFoundException $e) {
 				return 'false';
 			}
 			return $nextLaunch;			
 		}
 	}
 
-	public static function launchSiteSLC4E($parameter) {
+    public static function capeKennedy($parameter) {
+        if ($parameter === 'Launch Count') {
+            return Mission::whereComplete()->whereHas('launchSite', function($q) {
+                $q->where('name','LC-39A');
+            })->count();
+
+        } else if ($parameter === 'Last Launch') {
+            try {
+                $lastLaunch = Mission::lastFromLaunchSite('LC-39A')->firstOrFail();
+            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                return 'false';
+            }
+            return $lastLaunch;
+
+        } else if ($parameter === 'Next Launch') {
+            try {
+                $nextLaunch = Mission::nextFromLaunchSite('LC-39A')->firstOrFail();
+            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+                return 'false';
+            }
+            return $nextLaunch;
+        }
+    }
+
+	public static function vandenberg($parameter) {
 		if ($parameter === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','SLC-4E');
@@ -103,7 +153,7 @@ class StatisticResultBuilder {
 		} else if ($parameter === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('SLC-4E')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			} catch (ModelNotFoundException $e) {
 				return 'false';
 			}
 			return $lastLaunch;
@@ -111,38 +161,14 @@ class StatisticResultBuilder {
 		} else if ($parameter === 'Next Launch') {
 			try {
 				$nextLaunch = Mission::nextFromLaunchSite('SLC-4E')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			} catch (ModelNotFoundException $e) {
 				return 'false';
 			}
 			return $nextLaunch;			
 		}
 	}
 
-	public static function launchSiteLC39A($parameter) {
-		if ($parameter === 'Launch Count') {
-			return Mission::whereComplete()->whereHas('launchSite', function($q) {
-				$q->where('name','LC-39A');
-			})->count();
-
-		} else if ($parameter === 'Last Launch') {
-			try {
-				$lastLaunch = Mission::lastFromLaunchSite('LC-39A')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-				return 'false';
-			}
-			return $lastLaunch;
-
-		} else if ($parameter === 'Next Launch') {
-			try {
-				$nextLaunch = Mission::nextFromLaunchSite('LC-39A')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-				return 'false';
-			}
-			return $nextLaunch;			
-		}
-	}
-
-	public static function launchSiteBocaChica($parameter) {
+	public static function bocaChica($parameter) {
 		if ($parameter === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','Boca Chica');
@@ -159,14 +185,14 @@ class StatisticResultBuilder {
 		} else if ($parameter === 'Next Launch') {
 			try {
 				$nextLaunch = Mission::nextFromLaunchSite('Boca Chica')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			} catch (ModelNotFoundException $e) {
 				return 'false';
 			}
 			return $nextLaunch;			
 		}
 	}
 
-	public static function launchSiteKwajalein($parameter) {
+	public static function kwajalein($parameter) {
 		if ($parameter === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','Omelek Island');
@@ -175,12 +201,48 @@ class StatisticResultBuilder {
 		} else if ($parameter === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('Omelek Island')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			} catch (ModelNotFoundException $e) {
 				return 'false';
 			}
 			return $lastLaunch;
 
 		}
 	}
+
+    public static function astronauts($parameter) {
+        return 0;
+    }
+
+    public static function elonMusksBetExpires() {
+        return 0;
+    }
+
+    public static function payloads($parameter) {
+        return 0;
+    }
+
+    public static function upperStagesInOrbit() {
+        return 0;
+    }
+
+    public static function distance($parameter) {
+        return 0;
+    }
+
+    public static function turnaround($parameter) {
+        return 0;
+    }
+
+    public static function internetConstellation() {
+        return 0;
+    }
+
+    public static function marsPopulationCount() {
+        return 0;
+    }
+
+    public static function hoursWorked() {
+        return 0;
+    }
 }
 ?>

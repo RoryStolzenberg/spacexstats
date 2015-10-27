@@ -254,18 +254,20 @@ class Mission extends Model {
 	}
 
 	public function scopeFutureFromLaunchSite($query, $site) {
-		$nextLaunch = $query->whereUpcoming()->whereHas('launchSite', function($q) use($site) {
+		return $query->whereUpcoming()->whereHas('launchSite', function($q) use($site) {
 			$q->where('name',$site);
 		})->orderBy('launch_order_id','ASC');
 	}
 
     public function scopeWhereSpecificVehicle($query, $vehicle) {
-        $query->whereHas('vehicle', function($q) use($vehicle) {
+        return $query->whereHas('vehicle', function($q) use($vehicle) {
              $q->where('vehicle', $vehicle);
         });
     }
 
     public function scopeWhereGenericVehicle($query, $vehicle) {
-
+        return $query->whereHas('vehicle', function($q) use ($vehicle) {
+            $q->where('vehicle', 'like', ($vehicle == 'Falcon 9') ? $vehicle . '%' : $vehicle);
+        });
     }
 }

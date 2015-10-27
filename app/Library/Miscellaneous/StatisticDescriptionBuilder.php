@@ -11,16 +11,94 @@ class StatisticDescriptionBuilder {
     }
 
     public static function launchCount($substatistic, $dynamicString) {
-        if ($substatistic === 'Falcon 9') {
+        if ($substatistic === 'Total') {
             if ($dynamicString === 'n') {
-                return Mission::whereHas('Vehicle', function($q) {
-                    $q->whereIn('vehicle', array('Falcon 9 v1.0', 'Falcon 9 v1.1', 'Falcon 9 v1.2'));
-                })->whereComplete()->count();
-            }
-        } elseif ($substatistic === 'Falcon Heavy') {
-            if ($dynamicString === 'n') {
-                return Mission::whereSpecificVehicle('Falcon Heavy')->whereComplete()->count();
+                return Mission::whereComplete()->count();
             }
         }
+
+        if ($substatistic === 'Falcon 9') {
+            if ($dynamicString === 'n') {
+                return Mission::whereGenericVehicle('Falcon 9')->whereComplete()->count();
+            }
+        }
+
+        if ($substatistic === 'Falcon Heavy' || $substatistic === 'Falcon 1') {
+            if ($dynamicString === 'n') {
+                return Mission::whereSpecificVehicle($substatistic)->whereComplete()->count();
+            }
+        }
+    }
+
+    public static function launchesPerYear() {
+        return 0;
+    }
+
+    public static function dragon($parameter) {
+        return 0;
+    }
+
+    public static function vehicles($parameter) {
+        return 0;
+    }
+
+    public static function engines($parameter) {
+        return 0;
+    }
+
+    public static function capeCanaveral($parameter) {
+        return 0;
+    }
+
+    public static function capeKennedy($parameter) {
+        return 0;
+    }
+
+    public static function vandenberg($parameter) {
+        return 0;
+    }
+
+    public static function bocaChica($parameter) {
+        return 0;
+    }
+
+    public static function kwajalein($parameter) {
+        return 0;
+    }
+
+    public static function astronauts($substatistic) {
+        return 0;
+    }
+
+    public static function elonMusksBetExpires($substatistic) {
+        return 0;
+    }
+
+    public static function payloads($substatistic) {
+        return 0;
+    }
+
+    public static function upperStagesInOrbit($substatistic) {
+        return 0;
+    }
+
+    public static function distance($substatistic) {
+        return 0;
+    }
+
+    public static function turnaround($substatistic) {
+        return 0;
+    }
+
+    public static function internetConstellation($substatistic) {
+        return 0;
+    }
+
+    public static function marsPopulationCount($substatistic) {
+        return 0;
+    }
+
+    public static function hoursWorked($substatistic) {
+        return 0;
     }
 }

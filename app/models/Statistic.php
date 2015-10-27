@@ -28,7 +28,7 @@ class Statistic extends Model {
 	}
 
     public function getFullTitleAttribute() {
-        if ($this->type === $this->name) {
+        if ($this->type === $this->name || is_null($this->name)) {
             return $this->type;
         } else {
             return $this->type . ' - ' . $this->name;
@@ -36,6 +36,10 @@ class Statistic extends Model {
     }
 
     public function getDescriptionAttribute() {
+        if (is_null($this->description)) {
+            return null;
+        }
+
         $type = camel_case($this->type);
         $description = $this->attributes['description'];
 
