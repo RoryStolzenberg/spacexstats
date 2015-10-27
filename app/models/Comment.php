@@ -16,7 +16,7 @@ class Comment extends Model {
     public $timestamps = true;
 
     protected $hidden = [];
-    protected $appends = ['ownership'];
+    protected $appends = ['ownership', 'comment_md'];
     protected $fillable = [];
     protected $guarded = [];
 
@@ -52,7 +52,11 @@ class Comment extends Model {
         if ($this->shouldBeHidden()) {
             return null;
         }
-        return Parsedown::instance()->text($this->attributes['comment']);
+        return $this->attributes['comment'];
+    }
+
+    public function getCommentMdAttribute() {
+        return Parsedown::instance()->text($this->comment);
     }
 
     public function getOwnershipAttribute() {

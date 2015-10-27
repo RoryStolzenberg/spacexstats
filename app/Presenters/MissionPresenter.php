@@ -32,7 +32,7 @@ class MissionPresenter {
 		} else {
 			return '<section>
 						<article class="article md">
-						'.$this->entity->article.'
+						'.$this->entity->article_md.'
 						</article>
 					</section>';
 		}

@@ -55,7 +55,7 @@ class CommentsController extends Controller {
         if ($comment->user_id == Auth::id()) {
             $comment->comment = Input::get('comment.comment');
             $comment->save();
-            return response()->json(null, 204);
+            return response()->json($comment, 200);
         }
         return response()->json(null, 402);
     }

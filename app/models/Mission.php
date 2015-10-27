@@ -192,7 +192,7 @@ class Mission extends Model {
 
     }
 
-    public function getArticleAttribute() {
+    public function getArticleMdAttribute() {
         return Parsedown::instance()->text($this->attributes['article']);
     }
 

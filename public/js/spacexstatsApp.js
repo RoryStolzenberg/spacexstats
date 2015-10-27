@@ -688,23 +688,10 @@
             });
         };
 
-        $scope.addReplyComment = function() {
-            commentService.addReply($scope.object);
-        };
-
-        $scope.deleteComment = function() {
-
-        };
-
-        $scope.editComment = function() {
-
-        };
-
         (function() {
             commentService.get($scope.object).then(function(response) {
                 $scope.comments = response.data.map(function(comment) {
                     return new Comment(comment);
-                    var x = 2;
                 });
                 $scope.commentsAreLoaded = true;
             });
@@ -804,7 +791,8 @@
             };
 
             self.edit = function() {
-                commentService.edit(laravel.object, self).then(function() {
+                commentService.edit(laravel.object, self).then(function(response) {
+                    self.comment_md = response.data.comment_md;
                     self.comment = self.editText;
                     self.editText = null;
                     self.isEditing = false;
@@ -813,7 +801,7 @@
 
             self.delete = function(scope) {
                 commentService.delete(laravel.object, self).then(function() {
-                    self.comment = null;
+                    self.comment = self.comment_md = null;
                     self.isDeleting = false;
 
                     // If the comment has no children, remove it entirely. Otherwise, just show [deleted], similar to Reddit
@@ -1773,6 +1761,64 @@ angular.module('RecursionHelper', [])
     });
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -1840,63 +1886,141 @@ angular.module('RecursionHelper', [])
     }]);
 })();
 (function() {
-    var app = angular.module('app');
+    var app = angular.module('app', []);
 
-    app.directive('missionCard', function() {
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
+            require: 'ngModel',
+            replace: true,
             restrict: 'E',
             scope: {
-                size: '@',
-                mission: '='
+                availableTags: '=',
+                currentTags: '=ngModel'
             },
-            link: function($scope) {
+            link: function($scope, element, attributes, ctrl) {
+
+                (function() {
+                    if (typeof $scope.currentTags === 'undefined') {
+                        $scope.currentTags = [];
+                    }
+                })();
+
+                ctrl.$options = {
+                    allowInvalid: true
+                };
+
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+
+                $scope.createTag = function(createdTag) {
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
+                        });
+
+                        if (tagIsPresentInAvailableTags.length === 1) {
+                            // grab tag
+                            var newTag = tagIsPresentInAvailableTags[0];
+                        } else {
+                            // trim and convert the text to lowercase, then create!
+                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
+                        }
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
+                    }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        // Remove any rulebreaking chars
+                        var tag = $scope.tagInput;
+                        tag = tag.replace(/["']/g, "");
+                        // Remove whitespace if present
+                        tag = tag.trim();
+
+                        $scope.createTag(tag);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
+
             },
-            templateUrl: '/js/templates/missionCard.html'
+            templateUrl: '/js/templates/tags.html'
+        }
+    }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+            return self;
         }
     });
 })();
-(function() {
-    var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
 
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -2073,142 +2197,6 @@ angular.module('RecursionHelper', [])
     });
 })();
 (function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-
-                (function() {
-                    if (typeof $scope.currentTags === 'undefined') {
-                        $scope.currentTags = [];
-                    }
-                })();
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-
-                $scope.createTag = function(createdTag) {
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
-                        }
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        // Remove any rulebreaking chars
-                        var tag = $scope.tagInput;
-                        tag = tag.replace(/["']/g, "");
-                        // Remove whitespace if present
-                        tag = tag.trim();
-
-                        $scope.createTag(tag);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-            return self;
-        }
-    });
-})();
-
-
-(function() {
     var app = angular.module('app');
 
     app.directive('tweet', ["$http", function($http) {
@@ -2292,6 +2280,42 @@ angular.module('RecursionHelper', [])
             templateUrl: '/js/templates/deltaV.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch('redditComment.external_url', function() {
+                    $scope.retrieveRedditComment();
+                });
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
 })();
 (function() {
 	var app = angular.module('app');
@@ -2405,42 +2429,24 @@ angular.module('RecursionHelper', [])
 
 	});
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive('passwordToggle',function($compile){
         return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.$watch('redditComment.external_url', function() {
-                    $scope.retrieveRedditComment();
-                });
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
+            restrict: 'A',
+            scope:{},
+            link: function(scope,elem,attrs){
+                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
+                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
         }
-    }]);
+    });
 })();
+
 (function() {
     var app = angular.module('app');
 
@@ -2554,24 +2560,6 @@ angular.module('RecursionHelper', [])
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope,elem,attrs){
-                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
-                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
 (function() {
     var app = angular.module('app');
 

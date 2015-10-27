@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
+use Parsedown;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 
@@ -284,7 +285,7 @@ class Object extends Model implements UploadableInterface {
         return Redis::hget('Object:' . $this->object_id, 'views') !== null ? Redis::hget('Object:' . $this->object_id, 'views') : 0;
     }
 
-    public function getSummaryAttribute() {
+    public function getSummaryMdAttribute() {
         return Parsedown::instance()->text($this->attributes['summary']);
     }
 

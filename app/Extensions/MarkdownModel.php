@@ -1,9 +1,8 @@
 <?php
-
 namespace SpaceXStats\Extensions;
 
+use Illuminate\Database\Eloquent\Model;
 
-class MarkdownModel
+class MarkdownModel extends Model
 {
-
 }

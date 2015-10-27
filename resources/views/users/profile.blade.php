@@ -23,6 +23,14 @@
                     @endif
                 </ul>
             </nav>
+            <section class="highlights">
+                SMS messages setup
+                Launch changes setup
+                Upcoming launches
+                News Sumamries
+                Favorite Mission Setup
+                Favorite Patch Setup
+            </section>
             <section id="overview" class="overview container">
                 <div class="gr-4">
                     <table>

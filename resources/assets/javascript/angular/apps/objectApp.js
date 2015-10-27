@@ -105,23 +105,10 @@
             });
         };
 
-        $scope.addReplyComment = function() {
-            commentService.addReply($scope.object);
-        };
-
-        $scope.deleteComment = function() {
-
-        };
-
-        $scope.editComment = function() {
-
-        };
-
         (function() {
             commentService.get($scope.object).then(function(response) {
                 $scope.comments = response.data.map(function(comment) {
                     return new Comment(comment);
-                    var x = 2;
                 });
                 $scope.commentsAreLoaded = true;
             });
@@ -221,7 +208,8 @@
             };
 
             self.edit = function() {
-                commentService.edit(laravel.object, self).then(function() {
+                commentService.edit(laravel.object, self).then(function(response) {
+                    self.comment_md = response.data.comment_md;
                     self.comment = self.editText;
                     self.editText = null;
                     self.isEditing = false;
@@ -230,7 +218,7 @@
 
             self.delete = function(scope) {
                 commentService.delete(laravel.object, self).then(function() {
-                    self.comment = null;
+                    self.comment = self.comment_md = null;
                     self.isDeleting = false;
 
                     // If the comment has no children, remove it entirely. Otherwise, just show [deleted], similar to Reddit
