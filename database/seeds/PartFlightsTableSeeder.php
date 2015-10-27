@@ -38,7 +38,7 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 3,
             'part_id' => 5,
-            'firststage_engine' => Engine::Merlin1C,
+            'firststage_engine' => Engine::Merlin1CF1,
             'landed' => false
         ));
 
@@ -52,7 +52,7 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 4,
             'part_id' => 7,
-            'firststage_engine' => Engine::Merlin1C,
+            'firststage_engine' => Engine::Merlin1CF1,
             'landed' => false
         ));
 
@@ -66,7 +66,7 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 5,
             'part_id' => 9,
-            'firststage_engine' => Engine::Merlin1C,
+            'firststage_engine' => Engine::Merlin1CF1,
             'landed' => false
         ));
 
