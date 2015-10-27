@@ -290,6 +290,7 @@ class Spacexstats extends Migration {
             $table->integer('user_id')->unsigned();
             $table->text('object');
             $table->string('changelog', Varchar::xlarge)->nullable();
+            $table->boolean('did_file_change');
             $table->timestamps();
         });
 

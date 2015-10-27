@@ -74,7 +74,7 @@
         }
     }]);
 
-    uploadApp.controller("postController", ["$scope", "uploadService", function($scope, uploadService ) {
+    uploadApp.controller("postController", ["$scope", "uploadService", function($scope, uploadService) {
 
         $scope.NSFcomment = {};
         $scope.redditcomment = {};

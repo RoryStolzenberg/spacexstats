@@ -6,13 +6,17 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Http\Requests\EditObjectRequest;
 use SpaceXStats\Library\DeltaVCalculator;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Library\Enums\VisibilityStatus;
 use SpaceXStats\Models\Download;
 use SpaceXStats\Models\Favorite;
 use SpaceXStats\Models\Note;
 use SpaceXStats\Models\Object;
 use JavaScript;
+use SpaceXStats\Models\ObjectRevision;
 
 class ObjectsController extends Controller {
 
@@ -28,7 +32,7 @@ class ObjectsController extends Controller {
         $viewType = strtolower(MissionControlType::getKey($object->type));
 
         // Object is visible to everyone and is published
-        if ($object->visibility == 'Public' && $object->status == 'Published') {
+        if ($object->visibility == VisibilityStatus::PublicStatus && $object->status == ObjectPublicationStatus::PublishedStatus) {
 
             if (Auth::isSubscriber()) {
                 JavaScript::put([
@@ -43,7 +47,7 @@ class ObjectsController extends Controller {
 
         // Object is visible to subscribers, is published, and the logged in user is also a subscriber
         // or the user is an admin
-        } elseif (($object->visibility == 'Default' && $object->status == 'Published' && Auth::isSubscriber()) || Auth::isAdmin()) {
+        } elseif (($object->visibility == VisibilityStatus::DefaultStatus && $object->status == ObjectPublicationStatus::PublishedStatus && Auth::isSubscriber()) || Auth::isAdmin()) {
 
                 // Inject dynamic data into page
                 JavaScript::put([
@@ -63,22 +67,44 @@ class ObjectsController extends Controller {
      * GET/PATCH, /missioncontrol/objects/{objectId}/edit. Allows for the editing of objects by mission
      * control subscribers and admins.
      *
-     * @param $object_id    The object to edit.
+     * @param $objectId
+     *
+     * @return \Illuminate\View\View
      */
-    public function edit($object_id) {
-        $object = Object::findOrFail($object_id);
+    public function getEdit($objectId) {
+        $object = Object::findOrFail($objectId);
 
-        if (request()->isMethod('get')) {
+        JavaScript::put([
+           'object' => $object,
+           'revisions' => $object->objectRevisions
+        ]);
 
-            JavaScript::put([
-               'object' => $object
-            ]);
+        return view('missionControl.objects.edit.edit', ['object' => $object]);
+    }
 
-            return view('missionControl.objects.edit.edit', ['object' => $object]);
+    public function patchEdit(EditObjectRequest $request, $objectId) {
+        $object = Object::findOrFail($objectId);
 
-        } else if (request()->isMethod('patch')) {
+        DB::transation(function() use($objectId, $object) {
+            // Create a snapshot of the object at this point in time
+            ObjectRevision::create(array(
+                'object_id' => $objectId,
+                'user_id' => Auth::id(),
+                'object' => $object->toJson(),
+                'changelog' => Input::get('metadata.changelog'),
+                'did_file_change' => false
+            ));
 
-        }
+            // Update the object
+            $object->title = Input::get('object.title');
+            $object->summary = Input::get('object.summary');
+            $object->author = Input::get('object.author');
+            $object->attribution = Input::get('object.attribution');
+
+            $object->save();
+        });
+
+        return response()->json(null, 204);
     }
 
     /**
@@ -88,6 +114,10 @@ class ObjectsController extends Controller {
      * @param $objectRevisionId
      */
     public function revert($objectId, $objectRevisionId) {
+
+    }
+
+    public function addToCollection($objectId, $collectionId) {
 
     }
 

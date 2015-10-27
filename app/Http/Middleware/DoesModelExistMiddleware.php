@@ -2,6 +2,9 @@
 namespace SpaceXStats\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Route;
+use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\Object;
 
 class DoesModelExistMiddleware {
 
