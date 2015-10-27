@@ -2,9 +2,10 @@
 namespace SpaceXStats\Library\Miscellaneous;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use SpaceXStats\Models\Location;
+use Illuminate\Support\Facades\DB;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Spacecraft;
+use SpaceXStats\Models\SpacecraftFlight;
 use SpaceXStats\Models\Vehicle;
 
 class StatisticResultBuilder {
@@ -21,44 +22,46 @@ class StatisticResultBuilder {
             return 0;
         }
 
-		return Mission::whereComplete()->withGenericVehicle($parameter)->count();
+		return Mission::whereComplete()->whereGenericVehicle($parameter)->count();
 	}
 
 	public static function launchesPerYear() {
 		// SELECT COUNT(mission_id) as missions, YEAR(launch_exact) as year FROM missions GROUP BY year
-		return Mission::select(DB::raw('COUNT(mission_id) AS missions, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get();
+		return Mission::select(DB::raw('COUNT(mission_id) AS missions, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get()->toArray();
     }
 
 	public static function dragon($parameter) {
 		if ($parameter === 'Missions') {
-			return Spacecraft::whereHas('mission', function($q) {
+			return SpacecraftFlight::whereHas('mission', function($q) {
 				$q->whereComplete();
 			})->count();
-
 		}
 
         if ($parameter === 'ISS Resupplies') {
-			return Spacecraft::whereNotNull('iss_berth')->whereHas('mission', function($q) {
+			return SpacecraftFlight::whereNotNull('iss_berth')->whereHas('mission', function($q) {
 				$q->whereComplete();
-			})->count();
-
+            })->count();
 		}
 
         if ($parameter === 'Total Flight Time') {
 			//SELECT SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) as duration FROM spacecraft INNER JOIN missions ON spacecraft.mission_id=missions.mission_id
-			return Spacecraft::select(DB::raw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) AS duration'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','spacecraft.mission_id')->first();
+			return SpacecraftFlight::select(DB::raw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration'))
+                ->where('missions.status','Complete')
+                ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')
+                ->first();
 		
 		}
 
         if ($parameter === 'Flight Time (Graph)') {
-			return Spacecraft::select('missions.name',DB::raw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return) AS duration'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','spacecraft.mission_id')->first();
-
+			return SpacecraftFlight::select('missions.name',DB::raw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration'))
+                ->where('missions.status','Complete')
+                ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')->first();
 		}
 
         if ($parameter === 'Cargo') {
-			return Spacecraft::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
+			return SpacecraftFlight::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
 				$q->whereComplete();
-			})->first();
+			})->groupBy('upmass')->first();
 		}
 
         if ($parameter === 'Reused') {
@@ -129,7 +132,7 @@ class StatisticResultBuilder {
         } else if ($parameter === 'Last Launch') {
             try {
                 $lastLaunch = Mission::lastFromLaunchSite('LC-39A')->firstOrFail();
-            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            } catch (ModelNotFoundException $e) {
                 return 'false';
             }
             return $lastLaunch;
@@ -137,7 +140,7 @@ class StatisticResultBuilder {
         } else if ($parameter === 'Next Launch') {
             try {
                 $nextLaunch = Mission::nextFromLaunchSite('LC-39A')->firstOrFail();
-            } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            } catch (ModelNotFoundException $e) {
                 return 'false';
             }
             return $nextLaunch;
@@ -177,7 +180,7 @@ class StatisticResultBuilder {
 		} else if ($parameter === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('Boca Chica')->firstOrFail();
-			} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+			} catch (ModelNotFoundException $e) {
 				return 'false';
 			}
 			return $lastLaunch;
@@ -229,7 +232,7 @@ class StatisticResultBuilder {
         return 0;
     }
 
-    public static function turnaround($parameter) {
+    public static function turnarounds($parameter) {
         return 0;
     }
 

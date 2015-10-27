@@ -21,7 +21,7 @@ class Mission extends Model {
     public $timestamps = true;
 
     protected $hidden = ['launch_exact', 'launch_approximate'];
-    protected $appends = ['launchDateTime'];
+    protected $appends = [];
     protected $fillable = [];
     protected $guarded = [];
 

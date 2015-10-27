@@ -86,7 +86,7 @@ class StatisticDescriptionBuilder {
         return 0;
     }
 
-    public static function turnaround($substatistic) {
+    public static function turnarounds($substatistic) {
         return 0;
     }
 

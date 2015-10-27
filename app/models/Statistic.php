@@ -18,7 +18,7 @@ class Statistic extends Model {
 
 	// Attribute Accessors
 	public function getResultAttribute() {
-		$type = camel_case($this->type);
+		$type = camel_case(str_replace("'","",$this->type));
 
 		if (!empty($this->name)) {
 			return StatisticResultBuilder::$type($this->name);
@@ -36,11 +36,11 @@ class Statistic extends Model {
     }
 
     public function getDescriptionAttribute() {
-        if (is_null($this->description)) {
+        if (is_null($this->attributes['description'])) {
             return null;
         }
 
-        $type = camel_case($this->type);
+        $type = camel_case(str_replace("'","",$this->type));
         $description = $this->attributes['description'];
 
         $dynamicData = array();
