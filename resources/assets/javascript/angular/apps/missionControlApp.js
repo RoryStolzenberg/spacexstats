@@ -21,13 +21,11 @@
     }]);
 
     missionControlApp.controller("searchController", ["$scope", "$rootScope", "missionControlService", function($scope, $rootScope, missionControlService) {
-        $scope.currentSearch = {};
 
         $scope.search = function() {
-            missionControlService.search($scope.currentSearch).then(function() {
-                // Boradcast page title change
-                console.log('broadcast');
-                $rootScope.$broadcast('startedSearching', $scope.currentSearch.searchTerm);
+            var currentQuery = $scope.currentSearch.toQuery();
+            missionControlService.search(currentQuery).then(function() {
+                $rootScope.$broadcast('startedSearching', currentQuery.searchTerm);
             });
         };
 
@@ -37,8 +35,8 @@
     }]);
 
     missionControlApp.service("missionControlService", ["$http", function($http) {
-        this.search = function(currentSearch) {
-            return $http.post('/missioncontrol/search', { search: currentSearch });
+        this.search = function(currentQuery) {
+            return $http.post('/missioncontrol/search', { search: currentQuery });
         };
 
         this.fetch = function() {

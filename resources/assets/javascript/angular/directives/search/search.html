@@ -1,10 +1,10 @@
 <div class="search">
     <div class="search-controls container">
         <div class="grid-8">
-            <input class="search" type="search" ng-model="rawSearchTerm" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="grid-8" />
+            <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="grid-8" />
         </div>
         <div class="grid-4">
-            <button class="search" ng-click="search()" ng-disabled="currentSearch == null || currentSearch.searchTerm == ''"><i class="fa fa-search"></i></button>
+            <button class="search" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
             <input type="reset" value="Reset" ng-click="reset()" />
         </div>
     </div>

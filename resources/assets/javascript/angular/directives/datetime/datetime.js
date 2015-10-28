@@ -102,18 +102,6 @@
                     return value;
                 });
 
-                ctrl.$render = function() {
-                    $scope.year = ctrl.$viewValue.year;
-                    $scope.month = ctrl.$viewValue.month;
-                    $scope.date = ctrl.$viewValue.date
-
-                    if ($scope.type == 'datetime') {
-                        $scope.hour = ctrl.$viewValue.hour;
-                        $scope.minute = ctrl.$viewValue.minute;
-                        $scope.second = ctrl.$viewValue.second;
-                    }
-                };
-
                 //convert data from model format to view format
                 ctrl.$formatters.push(function(data) {
 
@@ -158,6 +146,18 @@
                         }
                     }
                 });
+
+                ctrl.$render = function() {
+                    $scope.year = ctrl.$viewValue.year;
+                    $scope.month = ctrl.$viewValue.month;
+                    $scope.date = ctrl.$viewValue.date
+
+                    if ($scope.type == 'datetime') {
+                        $scope.hour = ctrl.$viewValue.hour;
+                        $scope.minute = ctrl.$viewValue.minute;
+                        $scope.second = ctrl.$viewValue.second;
+                    }
+                };
 
                 $scope.$watch('datetimevalue', function(value) {
                     if (typeof value === null) {
