@@ -4,6 +4,8 @@ namespace SpaceXStats\Search;
 use Elasticsearch\Client;
 use Credential;
 use Elasticsearch\ClientBuilder;
+use Illuminate\Database\Eloquent\Model;
+use SpaceXStats\Models\Object;
 
 class Search {
 
@@ -53,7 +55,10 @@ class Search {
             'visibility' => $object->visibility,
             'anonymous' => $object->anonymous,
             'actioned_at' => $object->actioned_at->toDateTimeString(),
-            'tags' => $object->tags()->lists('name')
+            'tags' => $object->tags()->lists('name'),
+            'favorites' => $object->favorites()->list('user_id'),
+            'notes' => $object->notes()->list('user_id'),
+            'downloads' => $object->downloads()->list('user_id')->unique()
         ];
 
         if ($object->mission()->count() == 1) {
@@ -84,7 +89,7 @@ class Search {
      */
     public function search($search, $limitTypesToThese = null) {
         if ($limitTypesToThese == null) {
-            $limitTypesToThese = 'objects,collections';
+            $limitTypesToThese = 'objects,collections,dataviews';
         }
 
         $requestBody = array();
@@ -96,9 +101,9 @@ class Search {
             )
         );
 
-        // Filters
-        if ($search['constraints']['mission'] != null) {
-            $requestBody['filter']['bool']['must']['term']['mission.name'] = strtolower($search['constraints']['mission']);
+        // Add filters
+        if ($search['filters']['mission'] != null) {
+            $requestBody['filter']['bool']['must']['term']['mission.name'] = strtolower($search['filters']['mission']);
         }
 
         return $this->elasticSearchClient->search(array(
@@ -108,10 +113,14 @@ class Search {
         ));
     }
 
+    public function reindex(Model $model) {
+
+    }
+
     /**
      *
      */
-    public function moreLikeThis() {
+    public function moreLikeThis(Model $model) {
 
     }
 

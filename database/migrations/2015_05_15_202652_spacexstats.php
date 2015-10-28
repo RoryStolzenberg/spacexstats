@@ -407,6 +407,12 @@ class Spacexstats extends Migration {
             $table->string('name', Varchar::tiny);
         });
 
+        Schema::create('searches', function(Blueprint $table) {
+            $table->increments('search_id');
+            $table->string('query', Varchar::large);
+            $table->integer('user_id');
+        });
+
         Schema::create('smses', function(Blueprint $table) {
             $table->increments('sms_id');
             $table->integer('user_id')->unsigned();
@@ -589,6 +595,10 @@ class Spacexstats extends Migration {
             $table->foreign('user_id')->references('user_id')->on('users');
             $table->foreign('favorite_mission')->references('mission_id')->on('missions');
             $table->foreign('favorite_mission_patch')->references('mission_id')->on('missions');
+        });
+
+        Schema::table('searches', function(Blueprint $table) {
+            $table->foreign('user_id')->references('user_id')->on('users');
         });
 
         Schema::table('smses', function(Blueprint $table) {

@@ -12,8 +12,7 @@ function handleError(error) {
 // Refresh browser on changes
 gulp.task('browsersync', function(gulpCallback) {
     browserSync.init({
-        open: false,
-        proxy: "spacexstats.dev"
+        proxy: "spacexstats.app"
     }, function callback() {
 
         gulp.watch('resources/assets/css/**/*.scss', ['styles']);

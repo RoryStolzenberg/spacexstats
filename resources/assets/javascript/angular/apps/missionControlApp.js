@@ -2,34 +2,47 @@
     var missionControlApp = angular.module("app", []);
 
     missionControlApp.controller("missionControlController", ["$scope", "missionControlService", function($scope, missionControlService) {
-        $scope.activeSection = 'missionControl';
+        $scope.hasSearchResults = false;
         $scope.pageTitle = "Mission Control";
 
-        $scope.search = function() {
-            missionControlService.search($scope.currentSearch).then(function() {
-                $scope.pageTitle = "Search Results for \"" + $scope.currentSearch.searchTerm + "\"";
-            });
-            $scope.activeSection = 'searchResults';
-        };
+        $scope.$on('startedSearching', function(event, arg) {
+            $scope.hasSearchResults = true;
+            $scope.pageTitle = '"' + arg + '" results';
+        });
 
-        $scope.reset = function() {
+        $scope.$on('stoppedSearching', function(event, arg) {
+            $scope.hasSearchResults = false;
             $scope.pageTitle = "Mission Control";
-            $scope.currentSearch = "";
-            $scope.activeSection = 'missionControl';
-        };
+        });
 
         (function() {
             missionControlService.fetch();
         })();
     }]);
 
+    missionControlApp.controller("searchController", ["$scope", "$rootScope", "missionControlService", function($scope, $rootScope, missionControlService) {
+        $scope.currentSearch = {};
+
+        $scope.search = function() {
+            missionControlService.search($scope.currentSearch).then(function() {
+                // Boradcast page title change
+                console.log('broadcast');
+                $rootScope.$broadcast('startedSearching', $scope.currentSearch.searchTerm);
+            });
+        };
+
+        $scope.reset = function() {
+            $rootScope.$broadcast('stoppedSearching');
+        };
+    }]);
+
     missionControlApp.service("missionControlService", ["$http", function($http) {
         this.search = function(currentSearch) {
             return $http.post('/missioncontrol/search', { search: currentSearch });
-        }
+        };
 
         this.fetch = function() {
             return $http.get('/missioncontrol/fetch');
-        }
+        };
     }]);
 })();

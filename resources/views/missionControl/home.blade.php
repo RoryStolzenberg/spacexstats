@@ -9,15 +9,17 @@
     <div class="content-wrapper">
         <h1>@{{ pageTitle }}</h1>
         <main>
-            <form id="search">
-                <search></search>
-            </form>
+            <div ng-controller="searchController">
+                <form id="search">
+                    <search></search>
+                </form>
 
-            <section ng-show="activeSection == 'searchResults'">
+                <section ng-show="hasSearchResults">
 
-            </section>
+                </section>
+            </div>
 
-            <section ng-show="activeSection == 'missionControl'">
+            <section ng-show="!hasSearchResults">
                 <div class="gr-8">
                     <h2>Uploads</h2>
                     <ul>
