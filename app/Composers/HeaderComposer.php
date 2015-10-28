@@ -10,9 +10,9 @@ class HeaderComposer {
 			print_r($q);
 		});*/
 
-		$view->with('nearbyMissions', array(
+		$view->with('nearbyMissions', [
 			'past' => Mission::past()->take(3)->get(),
 			'future' => Mission::future()->take(3)->get()
-		));
+		]);
 	}
 }

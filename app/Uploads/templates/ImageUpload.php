@@ -1,7 +1,6 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
-use Imagick;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Exif\Exif;
@@ -45,18 +44,9 @@ class ImageUpload extends GenericUpload implements UploadInterface {
 		));
 	}
 
-    // Create a thumbnail using Imagick, with sizes determined in the object, and then write it to the appropriate size directory
     private function setThumbnails() {
-        $thumbnailsToCreate = ['small', 'large'];
-
-        foreach ($thumbnailsToCreate as $size) {
-            $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
-
-            // create an Imagick instance
-            $image = new Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
-            $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-            $image->writeImage(public_path() . '/' . $this->directory[$size] . $this->fileinfo['filename']);
-        }
+        $this->createSmallThumbnail();
+        $this->createLargeThumbnail();
     }
 
 	// get the dimensions of an image

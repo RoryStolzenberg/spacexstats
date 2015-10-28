@@ -26,7 +26,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
     public function addToMissionControl() {
         $this->setThumbnails();
 
-        return Object::create(array(
+        return Object::create([
             'user_id' => Auth::id(),
             'type' => MissionControlType::Video,
             'size' => $this->fileinfo['size'],
@@ -42,7 +42,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             'dimension_height' => $this->getDimensions('height'),
             'length' => $this->getLength(),
             'status' => ObjectPublicationStatus::NewStatus
-        ));
+        ]);
     }
 
     private function setThumbnails() {
