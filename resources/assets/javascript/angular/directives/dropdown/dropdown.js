@@ -1,7 +1,7 @@
 (function() {
     var app = angular.module('app', []);
 
-    app.directive("selectList", function() {
+    app.directive("dropdown", function() {
         return {
             restrict: 'E',
             scope: {

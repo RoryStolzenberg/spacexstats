@@ -1,15 +1,18 @@
 <div class="search">
     <div class="search-controls container">
-        <div class="grid-8">
+        <div class="gr-8">
             <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="grid-8" />
         </div>
-        <div class="grid-4">
+        <div class="gr-4">
             <button class="search" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
             <input type="reset" value="Reset" ng-click="reset()" />
         </div>
     </div>
 
-	<div class="constraints container">
-		<select-list class="grid-2" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" selected-option="stagingConstraints.mission" placeholder="Filter by mission"></select-list>
+	<div class="filters container">
+		<dropdown class="gr-2" options="searchData.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
+
+        <dropdown class="gr-2" options="searchData.types" unique-key="type" title-key="type" has-default-option="false"
+        ng-model="brokerFilters.type" placeholder="Type"></dropdown>
 	</div>
 </div>
