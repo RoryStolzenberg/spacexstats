@@ -43,6 +43,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.1/angular-sanitize.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-scroll/0.7.3/angular-scroll.js"></script>
         <script src="/js/angular-ui-tree.js"></script>
+        <script src="/js/angular-datepicker.js"></script>
 
         <!-- Moment.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.js"></script>

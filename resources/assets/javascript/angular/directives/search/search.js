@@ -1,5 +1,5 @@
 (function() {
-	var app = angular.module('app');
+	var app = angular.module('app', ['720kb.datepicker']);
 
 	app.directive('search', ['searchService', 'conversionService', "$http", function(searchService, conversionService, $http) {
 		return {
@@ -14,16 +14,16 @@
                     before:     null,
                     after:      null,
                     year:       null,
-                    uploadedBy: null,
+                    user:       null,
                     favorited:  null,
                     noted:      null,
-                    downloaded: null,
-                }
+                    downloaded: null
+                };
 
                 // Update the filters from the search
                 $scope.onSearchKeyPress = function(event) {
                     conversionService.searchesToFilters($scope.currentSearch.toQuery.filters, $scope.brokerFilters);
-                }
+                };
 
                 // Update the search from the filters
                 $scope.$watch('brokerFilters', function() {
@@ -41,11 +41,11 @@
             filters.forEach(function(filter) {
 
             });
-        }
+        };
 
         this.filtersToSearches = function(searchFilters, brokerFilters) {
             var filters = Object.keys(searchFilters);
-        }
+        };
     }]);
 
     /**
@@ -69,7 +69,6 @@
                     while (match = this.regex.tags.exec(this.rawQuery)) {
                         tags.push(match[1]);
                     }
-
                     return tags;
                 },
                 mission: function() {
@@ -87,8 +86,8 @@
                 year: function() {
                     return this.regex.other.year.exec(this.rawQuery)[0];
                 },
-                uploadedBy: function() {
-                    return this.regex.other.uploadedBy.exec(this.rawQuery)[0];
+                user: function() {
+                    return this.regex.other.user.exec(this.rawQuery)[0];
                 },
                 favorited: function() {
                     return this.regex.other.favorited.exec(this.rawQuery)[0];
@@ -111,7 +110,7 @@
                         before:     this.filters.before(),
                         after:      this.filters.after(),
                         year:       this.filters.year(),
-                        uploadedBy: this.filters.uploadedBy(),
+                        user:       this.filters.user(),
                         favorited:  this.filters.favorited(),
                         noted:      this.filters.noted(),
                         downloaded: this.filters.downloaded()
@@ -127,10 +126,10 @@
                 before: /before:([0-9-]+)/i,
                 after: /after:([0-9-]+)/i,
                 year: /year:([0-9]{4})/i,
-                uploadedBy: /uploaded-by:([a-zA-Z0-9_-]+)/i,
-                favorited: /favorited:(true|false|yes|no|y|n|1|0)/i,
-                noted: /noted:(true|false|yes|no|y|n|1|0)/i,
-                downloaded: /downloaded:(true|false|yes|no|y|n|1|0)/i,
+                user: /uploaded-by:([a-zA-Z0-9_-]+)/i,
+                favorited: /favorited:(true|yes|y|1)/i,
+                noted: /noted:(true|yes|y|1)/i,
+                downloaded: /downloaded:(true|yes|y|1)/i
             };
         };
     }]);

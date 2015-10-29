@@ -41,6 +41,5 @@ class ObjectPresenter {
             return jdmonthname($month, 0) . " " . $year;
         }
         return \Carbon\Carbon::parse($this->entity->originated_at)->toFormattedDateString();
-
     }
 }

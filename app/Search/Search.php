@@ -5,7 +5,6 @@ use Elasticsearch\Client;
 use Credential;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Database\Eloquent\Model;
-use SpaceXStats\Models\Object;
 
 class Search {
 
@@ -23,60 +22,66 @@ class Search {
     }
 
     /**
-     * @param $object
+     * @param $model
      * @return array
      */
-    public function index($object) {
-        $paramBody = [
-            'object_id' => $object->object_id,
-            'user_id' => $object->user_id,
-            'user' => [
-                'user_id' => $object->user->user_id,
-                'username' => $object->user->username
-            ],
-            'mission_id' => $object->mission_id,
-            'type' => $object->type,
-            'subtype' => $object->subtype,
-            'size' => $object->size,
-            'filetype' => $object->filetype,
-            'title' => $object->title,
-            'dimensions' => [
-                'width' => $object->dimension_width,
-                'height' => $object->dimension_height
-            ],
-            'length' => $object->length,
-            'summary' => $object->summary,
-            'author' => $object->author,
-            'attribution' => $object->attribution,
-            'originated_at' => $object->originDateAsString,
-            'tweet_user_name' => $object->tweet_user_name,
-            'tweet_text' => $object->tweet_text,
-            'status' => $object->status,
-            'visibility' => $object->visibility,
-            'anonymous' => $object->anonymous,
-            'actioned_at' => $object->actioned_at->toDateTimeString(),
-            'tags' => $object->tags()->lists('name'),
-            'favorites' => $object->favorites()->list('user_id'),
-            'notes' => $object->notes()->list('user_id'),
-            'downloads' => $object->downloads()->list('user_id')->unique()
-        ];
+    public function index(Model $model) {
+        if (get_class($model) == "Object") {
+            $paramBody = [
+                'object_id' => $model->object_id,
+                'user_id' => $model->user_id,
+                'user' => [
+                    'user_id' => $model->user->user_id,
+                    'username' => $model->user->username
+                ],
+                'mission_id' => $model->mission_id,
+                'type' => $model->type,
+                'subtype' => $model->subtype,
+                'size' => $model->size,
+                'filetype' => $model->filetype,
+                'title' => $model->title,
+                'dimensions' => [
+                    'width' => $model->dimension_width,
+                    'height' => $model->dimension_height
+                ],
+                'length' => $model->length,
+                'summary' => $model->summary,
+                'author' => $model->author,
+                'attribution' => $model->attribution,
+                'originated_at' => $model->originDateAsString,
+                'tweet_user_name' => $model->tweet_user_name,
+                'tweet_text' => $model->tweet_text,
+                'status' => $model->status,
+                'visibility' => $model->visibility,
+                'anonymous' => $model->anonymous,
+                'actioned_at' => $model->actioned_at->toDateTimeString(),
+                'tags' => $model->tags()->lists('name'),
+                'favorites' => $model->favorites()->list('user_id'),
+                'notes' => $model->notes()->list('user_id'),
+                'downloads' => $model->downloads()->list('user_id')->unique()
+            ];
 
-        if ($object->mission()->count() == 1) {
-            $paramBody['mission'] = [
-                'mission_id' => $object->mission->mission_id,
-                'name' => $object->mission->name
-            ];
-        } else {
-            $paramBody['mission'] = [
-                'mission_id' => null,
-                'name' => null
-            ];
+            if ($model->mission()->count() == 1) {
+                $paramBody['mission'] = [
+                    'mission_id' => $model->mission->mission_id,
+                    'name' => $model->mission->name
+                ];
+            } else {
+                $paramBody['mission'] = [
+                    'mission_id' => null,
+                    'name' => null
+                ];
+            }
+        } elseif (get_class($model) == "DataView") {
+
+        } else if (get_class($model) == "Collection") {
+
         }
 
         $params = [
             'index' => Search::INDEX,
             'type' => 'objects',
-            'id' => $object->object_id,
+            'id' => $model->object_id,
             'body' => $paramBody
         ];
 
@@ -85,21 +90,21 @@ class Search {
 
     /**
      * @param $search
-     * @param null $limitTypesTo
+     * @param array $limitTypesToThese
      */
     public function search($search, $limitTypesToThese = null) {
         if ($limitTypesToThese == null) {
             $limitTypesToThese = 'objects,collections,dataviews';
+        } else {
+
         }
 
-        $requestBody = array();
-
-        $requestBody['query'] = array(
-            'multi_match' => array(
+        $requestBody['query'] = [
+            'multi_match' => [
                 'query'     => $search['searchTerm'],
-                'fields'    => array('title^2', 'summary', 'tweet_text', 'article')
-            )
-        );
+                'fields'    => ['title^2', 'summary', 'tweet_text', 'article']
+            ]
+        ];
 
         // Add filters
         if ($search['filters']['mission'] != null) {
@@ -117,17 +122,41 @@ class Search {
 
     }
 
+    public function addFavorite(Model $model) {
+
+    }
+
+    public function removeFavorite(Model $model) {
+
+    }
+
+    public function addNote(Model $model) {
+
+    }
+
+    public function removeNote(Model $model) {
+
+    }
+
+    public function addDownload(Model $model) {
+
+    }
+
+    public function delete(Model $model) {
+
+    }
+
     /**
      *
      */
-    public function moreLikeThis(Model $model) {
+    public function moreLikeThis(Model $model, $take) {
 
     }
 
     /**
      * @return Client
      */
-    public function get() {
+    public function client() {
         return $this->elasticSearchClient;
     }
 }
