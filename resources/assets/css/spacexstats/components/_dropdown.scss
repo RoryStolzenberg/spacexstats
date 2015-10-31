@@ -1,12 +1,12 @@
-$selectListSize: 40px;
+$dropdownSize: 40px;
 
-.select-list {
+.dropdown {
     margin:0 10px;
     position: relative;
 
     >.default {
         border:1px solid $bordergrey;
-        height:$selectListSize;
+        height:$dropdownSize;
         overflow:hidden;
     }
 
@@ -26,7 +26,7 @@ $selectListSize: 40px;
     li {
         margin:5px 0;
         padding:0;
-        height:$selectListSize;
+        height:$dropdownSize;
 
         &.hover {
             background-color:$bordergrey;
@@ -39,21 +39,21 @@ $selectListSize: 40px;
 
     .selected-option {
         img {
-            width:#{$selectListSize} - 2px;
-            height:#{$selectListSize} - 2px;
+            width:#{$dropdownSize} - 2px;
+            height:#{$dropdownSize} - 2px;
         }
     }
 
     img {
-        width:$selectListSize;
-        height:$selectListSize;
+        width:$dropdownSize;
+        height:$dropdownSize;
         position:absolute;
     }
 
     .name {
         font-weight:bold;
-        line-height:$selectListSize;
+        line-height:$dropdownSize;
         vertical-align: top;
-        margin-left:$selectListSize + 10px;
+        margin-left:$dropdownSize + 10px;
     }
 }

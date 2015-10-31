@@ -17,7 +17,6 @@
             link: function($scope, element, attributes, ngModelCtrl) {
 
                 ngModelCtrl.$viewChangeListeners.push(function() {
-                    console.log('called');
                     $scope.$eval(attributes.ngChange);
                 });
 
@@ -38,12 +37,14 @@
                 });
 
                 $scope.selectOption = function(option) {
-                    attributes.ngModel = $scope.selectedOption = option;
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
                     $scope.dropdownIsVisible = false;
                 };
 
                 $scope.selectDefault = function() {
-                    attributes.ngModel = $scope.selectedOption = null;
+                    $scope.selectedOption = null;
+                    ngModelCtrl.$setViewValue(option);
                     $scope.dropdownIsVisible = false;
                 };
 
@@ -56,7 +57,7 @@
 
                 $scope.dropdownIsVisible = false;
             },
-            templateUrl: '/js/templates/selectList.html'
+            templateUrl: '/js/templates/dropdown.html'
         }
     });
 })();

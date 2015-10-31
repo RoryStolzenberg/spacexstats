@@ -50,8 +50,7 @@
 
     app.service('conversionService', function() {
         this.searchesToFilters = function(searchFilters, brokerFilters, data) {
-            var filters = Object.keys(searchFilters);
-
+           // var filters = Object.keys(searchFilters);
         };
 
         this.filtersToSearches = function(someTest) {
