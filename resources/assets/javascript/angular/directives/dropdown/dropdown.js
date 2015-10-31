@@ -4,9 +4,9 @@
     app.directive("dropdown", function() {
         return {
             restrict: 'E',
+            require: '^ngModel',
             scope: {
-                options: '=',
-                selectedOption: '=ngModel',
+                data: '=options',
                 uniqueKey: '@',
                 titleKey: '@',
                 imageKey: '@?',
@@ -14,55 +14,44 @@
                 searchable: '@',
                 placeholder: '@'
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-                $scope.optionsObj = $scope.options.map(function(option) {
-                    var props = {
-                        id: option[$scope.uniqueKey],
-                        name: option[$scope.titleKey],
-                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                    };
-
-                    if (typeof $scope.descriptionKey !== 'undefined') {
-                        props.description = option[$scope.descriptionKey];
-                    }
-
-                    return props;
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    console.log('called');
+                    $scope.$eval(attributes.ngChange);
                 });
 
-                $scope.$watch("selectedOption", function(newValue) {
-                    if (newValue !== null) {
-                        $scope.selectedOptionObj = $scope.optionsObj
-                            .filter(function(option) {
-                                return option['id'] == newValue;
-                            }).shift();
-                    } else {
-                        $scope.selectedOptionObj = null;
-                    }
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
                 });
 
                 $scope.selectOption = function(option) {
-                    $scope.selectedOption = option['id'];
+                    attributes.ngModel = $scope.selectedOption = option;
                     $scope.dropdownIsVisible = false;
                 };
 
                 $scope.selectDefault = function() {
-                    $scope.selectedOption = null;
+                    attributes.ngModel = $scope.selectedOption = null;
                     $scope.dropdownIsVisible = false;
                 };
 
                 $scope.toggleDropdown = function() {
                     $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                };
-
-                $scope.$watch("dropdownIsVisible", function(newValue) {
-                    if (!newValue) {
-                        $scope.search = "";
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search = null;
                     }
-                });
-
-                $scope.isSelected = function(option) {
-                    return option.id == $scope.selectedOption;
                 };
 
                 $scope.dropdownIsVisible = false;

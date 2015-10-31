@@ -1,15 +1,42 @@
 <div class="search">
     <div class="search-controls container">
-        <div class="grid-8">
-            <input class="search" type="search" ng-model="rawSearchTerm" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="grid-8" />
+        <div class="gr-8">
+            <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="grid-8" />
         </div>
-        <div class="grid-4">
-            <button class="search" ng-click="search()" ng-disabled="currentSearch == null || currentSearch.searchTerm == ''"><i class="fa fa-search"></i></button>
+        <div class="gr-4">
+            <button class="search" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
             <input type="reset" value="Reset" ng-click="reset()" />
         </div>
     </div>
 
-	<div class="constraints container">
-		<select-list class="grid-2" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" selected-option="stagingConstraints.mission" placeholder="Filter by mission"></select-list>
+	<div class="filters container">
+		<dropdown class="gr-2 filter missions" ng-change="onFilterUpdate('mission')" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
+
+        <dropdown class="gr-2 filter types" options="data.types" unique-key="type" title-key="type" has-default-option="false"
+        ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Type"></dropdown>
+
+        <div class="gr-2 filter before after">
+            <datepicker format="yyyy-MMMM-dd">
+                <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
+            </datepicker>
+            <datepicker format="yyyy-MMMM-dd">
+                <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
+            </datepicker>
+        </div>
+
+        <div class="gr-2 filter favorited">
+            <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
+            <label for="favorited"></label>
+        </div>
+
+        <div class="gr-2 filter noted">
+            <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
+            <label for="noted"></label>
+        </div>
+
+        <div class="gr-2 filter downloaded">
+            <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
+            <label for="downloaded"></label>
+        </div>
 	</div>
 </div>

@@ -48,13 +48,11 @@
     }]);
 
     missionControlApp.controller("searchController", ["$scope", "$rootScope", "missionControlService", function($scope, $rootScope, missionControlService) {
-        $scope.currentSearch = {};
 
         $scope.search = function() {
-            missionControlService.search($scope.currentSearch).then(function() {
-                // Boradcast page title change
-                console.log('broadcast');
-                $rootScope.$broadcast('startedSearching', $scope.currentSearch.searchTerm);
+            var currentQuery = $scope.currentSearch.toQuery();
+            missionControlService.search(currentQuery).then(function() {
+                $rootScope.$broadcast('startedSearching', currentQuery.searchTerm);
             });
         };
 
@@ -64,8 +62,8 @@
     }]);
 
     missionControlApp.service("missionControlService", ["$http", function($http) {
-        this.search = function(currentSearch) {
-            return $http.post('/missioncontrol/search', { search: currentSearch });
+        this.search = function(currentQuery) {
+            return $http.post('/missioncontrol/search', { search: currentQuery });
         };
 
         this.fetch = function() {
@@ -1688,122 +1686,6 @@
 })();
 
 
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("selectList", function() {
-        return {
-            restrict: 'E',
-            scope: {
-                options: '=',
-                selectedOption: '=ngModel',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.optionsObj = $scope.options.map(function(option) {
-                    var props = {
-                        id: option[$scope.uniqueKey],
-                        name: option[$scope.titleKey],
-                        image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                    };
-
-                    if (typeof $scope.descriptionKey !== 'undefined') {
-                        props.description = option[$scope.descriptionKey];
-                    }
-
-                    return props;
-                });
-
-                $scope.$watch("selectedOption", function(newValue) {
-                    if (newValue !== null) {
-                        $scope.selectedOptionObj = $scope.optionsObj
-                            .filter(function(option) {
-                                return option['id'] == newValue;
-                            }).shift();
-                    } else {
-                        $scope.selectedOptionObj = null;
-                    }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option['id'];
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.selectDefault = function() {
-                    $scope.selectedOption = null;
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                };
-
-                $scope.$watch("dropdownIsVisible", function(newValue) {
-                    if (!newValue) {
-                        $scope.search = "";
-                    }
-                });
-
-                $scope.isSelected = function(option) {
-                    return option.id == $scope.selectedOption;
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/selectList.html'
-        }
-    });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -1867,6 +1749,48 @@
                 }
             },
             templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
         }
     }]);
 })();
@@ -2126,18 +2050,6 @@
                     return value;
                 });
 
-                ctrl.$render = function() {
-                    $scope.year = ctrl.$viewValue.year;
-                    $scope.month = ctrl.$viewValue.month;
-                    $scope.date = ctrl.$viewValue.date
-
-                    if ($scope.type == 'datetime') {
-                        $scope.hour = ctrl.$viewValue.hour;
-                        $scope.minute = ctrl.$viewValue.minute;
-                        $scope.second = ctrl.$viewValue.second;
-                    }
-                };
-
                 //convert data from model format to view format
                 ctrl.$formatters.push(function(data) {
 
@@ -2183,6 +2095,18 @@
                     }
                 });
 
+                ctrl.$render = function() {
+                    $scope.year = ctrl.$viewValue.year;
+                    $scope.month = ctrl.$viewValue.month;
+                    $scope.date = ctrl.$viewValue.date
+
+                    if ($scope.type == 'datetime') {
+                        $scope.hour = ctrl.$viewValue.hour;
+                        $scope.minute = ctrl.$viewValue.minute;
+                        $scope.second = ctrl.$viewValue.second;
+                    }
+                };
+
                 $scope.$watch('datetimevalue', function(value) {
                     if (typeof value === null) {
                         $scope.isNull = true;
@@ -2196,6 +2120,46 @@
             templateUrl: '/js/templates/datetime.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2245,46 +2209,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -2319,163 +2243,148 @@
     }]);
 })();
 (function() {
-	var app = angular.module('app');
+	var app = angular.module('app', ['720kb.datepicker']);
 
-	app.directive('search', ['filtersReader', "$http", function(filtersReader, $http) {
+	app.directive('search', ['searchService', 'conversionService', "$http", function(searchService, conversionService, $http) {
 		return {
 			restrict: 'E',
             transclude: true,
 			link: function($scope, element, attributes) {
 
-                $scope.currentSearch = {
-
+                $scope.data = {
+                    missions: [],
+                    types: []
                 };
 
-				$scope.stagingFilters = {
-                    tags: [],
-					mission: null,
-					type: null,
-					before: null,
-					after: null,
-					year: null,
-					uploadedBy: null,
-					favorited: null,
-					noted: null,
-					downloaded: null
-				}
+                $scope.currentSearch = searchService;
 
-				$scope.data = {
-					missions: laravel.missions,
-					types: null,
-                    tags: laravel.tags
-				}
+                $scope.brokerFilters = {
+                    mission:    null,
+                    type:       null,
+                    before:     null,
+                    after:      null,
+                    year:       null,
+                    user:       null,
+                    favorited:  null,
+                    noted:      null,
+                    downloaded: null
+                };
 
+                // Update the filters from the search
                 $scope.onSearchKeyPress = function(event) {
-                    $scope.currentSearch = filtersReader.fromSearch($scope.currentSearch, $scope.rawSearchTerm);
-                }
+                    conversionService.searchesToFilters($scope.currentSearch.toQuery.filters, $scope.brokerFilters);
+                };
 
-                $scope.$watch('stagingConstraints', function(stagingFilters) {
-                    $scope.currentSearch = filtersReader.fromFilters($scope.currentSearch, $scope.stagingFilters);
-                }, true);
+                $scope.onFilterUpdate = function(filter) {
+                    conversionService.filtersToSearches(filter);
+                };
+
+                (function() {
+                    $http.get('/missioncontrol/search/fetch').then(function(response) {
+                        $scope.data = {
+                            missions: response.data.missions,
+                            types: response.data.types
+                        }
+                    });
+                })();
 			},
 			templateUrl: '/js/templates/search.html'
 		}
 	}]);
 
-    app.service('filtersReader', ['kebabToCamelCase', function(kebabToCamelCase) {
-		this.fromSearch = function(currentSearch, rawSearchTerm) {
+    app.service('conversionService', function() {
+        this.searchesToFilters = function(searchFilters, brokerFilters, data) {
+            var filters = Object.keys(searchFilters);
 
-			// parse out tags https://regex101.com/r/uL9jN5/1
-            var match;
-            while (match = .exec(rawSearchTerm)) {
-                currentSearch.filters.tags.push(match[1]);
-            }
-            rawSearchTerm = rawSearchTerm;
+        };
 
-			// other filters https://regex101.com/r/iT2zH5/2
-			var filter;
-			var rawFiltersArray = [];
-			var touchedFiltersArray = [];
-
-			// Pull out all the raw filters
-			do {
-                filter = .exec(rawSearchTerm);
-			    if (filter) {
-			        rawFiltersArray.push(typeof filter[2] !== 'undefined' ? filter[2] : filter[3]);
-			        touchedFiltersArray.push(kebabToCamelCase.convert(filter[1]));
-			    }
-			} while (filter);
-            rawSearchTerm = rawSearchTerm.replace(re, "");
-
-			// reset the filters present in the current search
-			for (var propertyName in currentSearch.filters) {
-
-				// If the constraint exists
-				if (touchedFiltersArray.indexOf(propertyName) !== -1) {
-					var index = touchedFiltersArray.indexOf(propertyName);
-					currentSearch.filters[propertyName] = rawFiltersArray[index];
-				}
-			}
-
-            // Now update the values on the filter options
-            for (var)
-
-
-            // Send the search term through
-            currentSearch.searchTerm = rawSearchTerm;
-			return currentSearch;
-		}
-
-        this.fromFilters = function(currentSearch, stagingFilters) {
-            stagingFilters.forEach(function(stagingFilter) {
-
-            });
-        }
-	}]);
-
-    app.service('kebabToCamelCase', function() {
-		// Converts a search-filter into a searchFilter
-		this.convert = function(string) {
-
-			for(var i = 0; i < string.length; i++) {
-
-				if (string[i] === "-") {
-					string = string.replace(string.substr(i, 1), "");
-					string = string.substring(0, i) + string.charAt(i).toUpperCase() + string.substring(i+1, string.length);
-				}
-			}
-			return string;
-		};
-
-	});
+        this.filtersToSearches = function(someTest) {
+            console.log(someTest);
+        };
+    });
 
     /**
      *  Eventually we could cache the outputs of the searchTerm and filters to make sure we don't re-regex
      *  things we don't have to?
      */
-    app.factory('Search', function() {
+    app.service('searchService', function() {
         return function() {
 
             this.rawQuery = null;
 
             this.searchTerm = function() {
-                return this.rawQuery.replace(this.regex.tags, "").(this.regex.other, "");
+                return this.rawQuery.replace(this.regex.tags, "").replace(this.regex.other, "");
             };
 
             this.filters = {
-                tags: null,
-                mission: null,
-                type: null,
-                before: null,
-                after: null,
-                year: null,
-                uploadedBy: null,
-                favorited: null,
-                noted: null,
-                downloaded: null
+                tags: function() {
+                    var match;
+                    var tags = [];
+
+                    while (match = this.regex.tags.exec(this.rawQuery)) {
+                        tags.push(match[1]);
+                    }
+                    return tags;
+                },
+                mission: function() {
+                    return this.regex.other.mission.exec(this.rawQuery)[0];
+                },
+                type: function() {
+                    return this.regex.other.type.exec(this.rawQuery)[0];
+                },
+                before: function() {
+                    return this.regex.other.before.exec(this.rawQuery)[0];
+                },
+                after: function() {
+                    return this.regex.other.after.exec(this.rawQuery)[0];
+                },
+                year: function() {
+                    return this.regex.other.year.exec(this.rawQuery)[0];
+                },
+                user: function() {
+                    return this.regex.other.user.exec(this.rawQuery)[0];
+                },
+                favorited: function() {
+                    return this.regex.other.favorited.exec(this.rawQuery)[0];
+                },
+                noted: function() {
+                    return this.regex.other.noted.exec(this.rawQuery)[0];
+                },
+                downloaded: function() {
+                    return this.regex.other.downloaded.exec(this.rawQuery)[0];
+                }
             };
 
             this.toQuery = function() {
                 return {
                     searchTerm: this.searchTerm(),
                     filters: {
-                        tags: this.filters.tags(),
-                        mission: this.filters.mission(),
-                        type: this.filters.tags(),
-                        before: this.filters.tags(),
-                        after: this.filters.tags(),
-                        year: this.filters.tags(),
-                        uploadedBy: this.filters.tags(),
-                        favorited: this.filters.tags(),
-                        noted: this.filters.tags(),
-                        downloaded: this.filters.tags()
+                        tags:       this.filters.tags(),
+                        mission:    this.filters.mission(),
+                        type:       this.filters.type(),
+                        before:     this.filters.before(),
+                        after:      this.filters.after(),
+                        year:       this.filters.year(),
+                        user:       this.filters.user(),
+                        favorited:  this.filters.favorited(),
+                        noted:      this.filters.noted(),
+                        downloaded: this.filters.downloaded()
                     }
                 }
             };
 
             this.regex = {
-                tags: /\[([^)]+?)\]/gi,
-                other: /([a-z-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi
+                tags: /\[([^)]+?)\]/gi, // https://regex101.com/r/uL9jN5/1
+                // https://regex101.com/r/iT2zH5/2
+                mission: /mission:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
+                type: /type:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
+                before: /before:([0-9-]+)/i,
+                after: /after:([0-9-]+)/i,
+                year: /year:([0-9]{4})/i,
+                user: /uploaded-by:([a-zA-Z0-9_-]+)/i,
+                favorited: /favorited:(true|yes|y|1)/i,
+                noted: /noted:(true|yes|y|1)/i,
+                downloaded: /downloaded:(true|yes|y|1)/i
             };
         };
     });
@@ -2633,5 +2542,67 @@
            }
            return null;
        }
+    });
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    console.log('called');
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                });
+
+                $scope.selectOption = function(option) {
+                    attributes.ngModel = $scope.selectedOption = option;
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.selectDefault = function() {
+                    attributes.ngModel = $scope.selectedOption = null;
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search = null;
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/selectList.html'
+        }
     });
 })();

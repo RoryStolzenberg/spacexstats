@@ -50,11 +50,11 @@ gulp.task('scripts', function() {
 
     // Move templates
     gulp.src('resources/assets/javascript/angular/**/*.html')
-        .pipe(rename({ dirname: ''}))
+        .pipe(rename({ dirname: ''})).on('error', handleError)
         .pipe(gulp.dest('public/js/templates'));
 
     // Move library
-    gulp.src('resources/assets/javascript/lib/**/*.js')
+    gulp.src('resources/assets/javascript/lib/**/*.js').on('error', handleError)
         .pipe(gulp.dest('public/js'));
 });
 

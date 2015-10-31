@@ -10,32 +10,32 @@
     </div>
 
 	<div class="filters container">
-		<dropdown class="gr-2 filter missions" options="searchData.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
+		<dropdown class="gr-2 filter missions" ng-change="onFilterUpdate('mission')" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
 
-        <dropdown class="gr-2 filter types" options="searchData.types" unique-key="type" title-key="type" has-default-option="false"
-        ng-model="brokerFilters.type" placeholder="Type"></dropdown>
+        <dropdown class="gr-2 filter types" options="data.types" unique-key="type" title-key="type" has-default-option="false"
+        ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Type"></dropdown>
 
         <div class="gr-2 filter before after">
             <datepicker format="yyyy-MMMM-dd">
-                <input ng-model="brokerFilters.after" type="text"/>
+                <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
             </datepicker>
             <datepicker format="yyyy-MMMM-dd">
-                <input ng-model="brokerFilters.before" type="text"/>
+                <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
             </datepicker>
         </div>
 
         <div class="gr-2 filter favorited">
-            <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" />
+            <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
             <label for="favorited"></label>
         </div>
 
         <div class="gr-2 filter noted">
-            <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" />
+            <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
             <label for="noted"></label>
         </div>
 
         <div class="gr-2 filter downloaded">
-            <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" />
+            <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
             <label for="downloaded"></label>
         </div>
 	</div>

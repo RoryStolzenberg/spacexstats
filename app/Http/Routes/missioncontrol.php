@@ -27,6 +27,7 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
         Route::get('/fetch', 'MissionControlController@fetch');
 
         Route::post('/search', 'SearchController@search');
+        Route::get('/search/fetch', 'SearchController@fetch');
 
         Route::get('/create', 'UploadController@show');
         Route::post('/create/upload', 'UploadController@upload');

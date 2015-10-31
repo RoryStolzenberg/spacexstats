@@ -6,6 +6,7 @@ use SpaceXStats\Facades\Search;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Models\Mission;
 
 class SearchController extends Controller {
     // POST
@@ -17,8 +18,7 @@ class SearchController extends Controller {
     public function fetch() {
         return response()->json([
             'missions' => Mission::all(),
-            'types' => array_merge(MissionControlType::toArray(), MissionControlSubtype::toArray()),
-
+            'types' => array_values(array_merge(MissionControlType::toArray(), MissionControlSubtype::toArray()))
         ]);
     }
 }

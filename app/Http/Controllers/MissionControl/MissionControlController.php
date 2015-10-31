@@ -26,8 +26,7 @@ class MissionControlController extends Controller {
 		if (Auth::isSubscriber()) {
 
             JavaScript::put([
-                'missions' => Mission::all(),
-                'types' => array_merge(MissionControlType::toArray(), MissionControlSubtype::toArray())
+                'missions' => Mission::all()
             ]);
 
             return view('missionControl.home', array(

@@ -5,24 +5,23 @@ namespace SpaceXStats\Library\Enums;
 abstract class MissionControlType extends Enum
 {
     // Upload
-    const Image 		= 1;
-    const GIF 			= 2;
-    const Audio 		= 3;
-    const Video 		= 4;
-    const Document 		= 5;
-    const Model         = 6;
+    const Image 		= "Image";
+    const GIF 			= "GIF";
+    const Audio 		= "Audio";
+    const Video 		= "Video";
+    const Document 		= "Document";
+    const Model         = "Model";
 
     // Submission
-    const Tweet 		= 7;
-    const Article 		= 8;
-    const Transcript	= 9;
-    const Comment		= 10;
-    const Webpage       = 11;
+    const Tweet 		= "Tweet";
+    const Article 		= "Article";
+    const Transcript	= "Transcript";
+    const Comment		= "Comment";
+    const Webpage       = "Webpage";
 
     // Writing
-    const Text		    = 12;
+    const Text		    = "Text";
 
     // Private
-    const Pivot			= 13;
-    const Person 		= 14;
+    const Person 		= "Person";
 }

@@ -216,8 +216,8 @@ class Spacexstats extends Migration {
             $table->increments('object_id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->integer('mission_id')->unsigned()->nullable();
-            $table->smallInteger('type')->unsigned();
-            $table->smallInteger('subtype')->unsigned()->nullable();
+            $table->string('type');
+            $table->string('subtype')->nullable();
             $table->integer('size')->unsigned();
             $table->string('filetype', Varchar::small)->nullable();
             $table->string('mimetype', Varchar::small)->nullable();
@@ -410,7 +410,7 @@ class Spacexstats extends Migration {
         Schema::create('searches', function(Blueprint $table) {
             $table->increments('search_id');
             $table->string('query', Varchar::large);
-            $table->integer('user_id');
+            $table->integer('user_id')->unsigned();
         });
 
         Schema::create('smses', function(Blueprint $table) {

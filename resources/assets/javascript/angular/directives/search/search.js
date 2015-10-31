@@ -6,6 +6,12 @@
 			restrict: 'E',
             transclude: true,
 			link: function($scope, element, attributes) {
+
+                $scope.data = {
+                    missions: [],
+                    types: []
+                };
+
                 $scope.currentSearch = searchService;
 
                 $scope.brokerFilters = {
@@ -25,40 +31,45 @@
                     conversionService.searchesToFilters($scope.currentSearch.toQuery.filters, $scope.brokerFilters);
                 };
 
-                // Update the search from the filters
-                $scope.$watch('brokerFilters', function() {
-                    conversionService.filtersToSearches($scope.currentSearch.toQuery.filters, $scope.brokerFilters);
-                }, true);
+                $scope.onFilterUpdate = function(filter) {
+                    conversionService.filtersToSearches(filter);
+                };
+
+                (function() {
+                    $http.get('/missioncontrol/search/fetch').then(function(response) {
+                        $scope.data = {
+                            missions: response.data.missions,
+                            types: response.data.types
+                        }
+                    });
+                })();
 			},
 			templateUrl: '/js/templates/search.html'
 		}
 	}]);
 
-    app.service('conversionService', ['searchData', function(searchData) {
-        this.searchesToFilters = function(searchFilters, brokerFilters) {
+    app.service('conversionService', function() {
+        this.searchesToFilters = function(searchFilters, brokerFilters, data) {
             var filters = Object.keys(searchFilters);
 
-            filters.forEach(function(filter) {
-
-            });
         };
 
-        this.filtersToSearches = function(searchFilters, brokerFilters) {
-            var filters = Object.keys(searchFilters);
+        this.filtersToSearches = function(someTest) {
+            console.log(someTest);
         };
-    }]);
+    });
 
     /**
      *  Eventually we could cache the outputs of the searchTerm and filters to make sure we don't re-regex
      *  things we don't have to?
      */
-    app.service('searchService', ["$scope", function($scope) {
+    app.service('searchService', function() {
         return function() {
 
             this.rawQuery = null;
 
             this.searchTerm = function() {
-                return this.rawQuery.replace(this.regex.tags, "").(this.regex.other, "");
+                return this.rawQuery.replace(this.regex.tags, "").replace(this.regex.other, "");
             };
 
             this.filters = {
@@ -132,10 +143,5 @@
                 downloaded: /downloaded:(true|yes|y|1)/i
             };
         };
-    }]);
-
-    app.value('searchData', {
-        missions: laravel.missions,
-        types: laravel.types
     });
 })();
