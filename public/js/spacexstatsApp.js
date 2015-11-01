@@ -1,32 +1,4 @@
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-
-        this.addError = function(message) {
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        }
-    });
-})();
-
-
-(function() {
     var missionsListApp = angular.module('app', []);
 
     missionsListApp.controller("missionsListController", ['$scope', function($scope) {
@@ -1687,20 +1659,74 @@
 })();
 
 (function() {
-    var app = angular.module('app');
+    var app = angular.module('app', []);
 
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+
+        this.addError = function(message) {
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
         }
     });
+})();
+
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
 })();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -1771,84 +1797,18 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                size: '@',
+                mission: '='
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/missionCard.html'
         }
-    }]);
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2209,6 +2169,46 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -2271,12 +2271,12 @@
                 };
 
                 // Update the filters from the search
-                $scope.onSearchKeyPress = function(event) {
-                    conversionService.searchesToFilters($scope.currentSearch.toQuery.filters, $scope.brokerFilters);
+                $scope.onSearchKeyPress = function() {
+                    conversionService.searchesToFilters($scope.brokerFilters, $scope.currentSearch, $scope.data);
                 };
 
-                $scope.onFilterUpdate = function(filter) {
-                    conversionService.filtersToSearches(filter);
+                $scope.onFilterUpdate = function(filterType) {
+                    conversionService.filtersToSearches($scope.brokerFilters, $scope.currentSearch, filterType);
                 };
 
                 (function() {
@@ -2293,12 +2293,84 @@
 	}]);
 
     app.service('conversionService', function() {
-        this.searchesToFilters = function(searchFilters, brokerFilters, data) {
-           // var filters = Object.keys(searchFilters);
+        this.searchesToFilters = function(brokerFilters, search, data) {
+            var missionResult = search.filters().mission();
+            if (missionResult != null) {
+                var mission = data.missions.filter(function(mission) {
+                    return mission.name == missionResult;
+                });
+
+                if (mission !== null) {
+                    brokerFilters.mission = mission[0];
+                } else {
+                    brokerFilters.mission = null;
+                }
+            } else {
+                brokerFilters.mission = null;
+            }
+
+            brokerFilters.favorited = search.filters().favorited() != null;
+            brokerFilters.noted = search.filters().noted() != null;
+            brokerFilters.downloaded = search.filters().downloaded() != null;
+
         };
 
-        this.filtersToSearches = function(someTest) {
-            console.log(someTest);
+        this.filtersToSearches = function(brokerFilters, search, filterType) {
+            if (filterType === 'mission') {
+                if (brokerFilters.mission === null) {
+                    search.rawQuery = search.rawQuery.replace(search.regex.mission, '');
+                } else {
+                    if (search.filters().mission() === null) {
+                        if (/\s/.test(brokerFilters.mission.name)) {
+                            search.rawQuery = search.rawQuery.concat('mission:"' + brokerFilters.mission.name + '"');
+                        } else {
+                            search.rawQuery = search.rawQuery.concat('mission:' + brokerFilters.mission.name);
+                        }
+                    } else {
+                        if (/\s/.test(brokerFilters.mission.name)) {
+                            search.rawQuery = search.rawQuery.replace(search.regex.mission, 'mission:"' + brokerFilters.mission.name + '"');
+                        } else {
+                            search.rawQuery = search.rawQuery.replace(search.regex.mission, 'mission:' + brokerFilters.mission.name);
+                        }
+                    }
+                }
+            }
+
+            else if (filterType == 'type') {
+
+            }
+
+            else if (filterType == 'before') {
+
+            }
+
+            else if (filterType == 'after') {
+
+            }
+
+            else if (filterType === 'favorited') {
+                if (search.filters().favorited() === null) {
+                    search.rawQuery = search.rawQuery.concat('favorited:true');
+                } else {
+                    search.rawQuery = search.rawQuery.replace(search.regex.favorited, '');
+                }
+            }
+
+            else if (filterType === 'noted') {
+                if (search.filters().noted() === null) {
+                    search.rawQuery = search.rawQuery.concat('noted:true');
+                } else {
+                    search.rawQuery = search.rawQuery.replace(search.regex.noted, '');
+                }
+            }
+
+            else if (filterType === 'downloaded') {
+                if (search.filters().downloaded() === null) {
+                    search.rawQuery = search.rawQuery.concat('downloaded:true');
+                } else {
+                    search.rawQuery = search.rawQuery.replace(search.regex.downloaded, '');
+                }
+            }
         };
     });
 
@@ -2307,85 +2379,95 @@
      *  things we don't have to?
      */
     app.service('searchService', function() {
-        return function() {
+        var self = this;
 
-            this.rawQuery = null;
+        self.rawQuery = "";
 
-            this.searchTerm = function() {
-                return this.rawQuery.replace(this.regex.tags, "").replace(this.regex.other, "");
-            };
+        self.searchTerm = function () {
+            return self.rawQuery.replace(self.regex.tags, "").replace(self.regex.all, "");
+        };
 
-            this.filters = {
-                tags: function() {
+        // https://regex101.com/r/uL9jN5/1
+        // https://regex101.com/r/iT2zH5/2
+        self.filters = function() {
+            return {
+                tags: function () {
                     var match;
                     var tags = [];
 
-                    while (match = this.regex.tags.exec(this.rawQuery)) {
+                    while (match = self.regex.tags.exec(self.rawQuery)) {
                         tags.push(match[1]);
                     }
                     return tags;
                 },
-                mission: function() {
-                    return this.regex.other.mission.exec(this.rawQuery)[0];
-                },
-                type: function() {
-                    return this.regex.other.type.exec(this.rawQuery)[0];
-                },
-                before: function() {
-                    return this.regex.other.before.exec(this.rawQuery)[0];
-                },
-                after: function() {
-                    return this.regex.other.after.exec(this.rawQuery)[0];
-                },
-                year: function() {
-                    return this.regex.other.year.exec(this.rawQuery)[0];
-                },
-                user: function() {
-                    return this.regex.other.user.exec(this.rawQuery)[0];
-                },
-                favorited: function() {
-                    return this.regex.other.favorited.exec(this.rawQuery)[0];
-                },
-                noted: function() {
-                    return this.regex.other.noted.exec(this.rawQuery)[0];
-                },
-                downloaded: function() {
-                    return this.regex.other.downloaded.exec(this.rawQuery)[0];
+                mission: function () {
+                    var missionResult = self.regex.mission.exec(self.rawQuery);
+                    return  missionResult !== null ? missionResult[1] : null;
                 }
-            };
-
-            this.toQuery = function() {
-                return {
-                    searchTerm: this.searchTerm(),
-                    filters: {
-                        tags:       this.filters.tags(),
-                        mission:    this.filters.mission(),
-                        type:       this.filters.type(),
-                        before:     this.filters.before(),
-                        after:      this.filters.after(),
-                        year:       this.filters.year(),
-                        user:       this.filters.user(),
-                        favorited:  this.filters.favorited(),
-                        noted:      this.filters.noted(),
-                        downloaded: this.filters.downloaded()
-                    }
+                ,
+                type: function () {
+                    return self.regex.type.exec(self.rawQuery)[0];
+                },
+                before: function () {
+                    return self.regex.before.exec(self.rawQuery)[0];
+                },
+                after: function () {
+                    return self.regex.after.exec(self.rawQuery)[0];
+                },
+                year: function () {
+                    return self.regex.year.exec(self.rawQuery)[0];
+                },
+                user: function () {
+                    return self.regex.user.exec(self.rawQuery)[0];
+                },
+                favorited: function () {
+                    var favoritedResult = self.regex.favorited.exec(self.rawQuery);
+                    return favoritedResult !== null ? favoritedResult[0] : null;
+                },
+                noted: function () {
+                    var notedResult = self.regex.noted.exec(self.rawQuery);
+                    return notedResult !== null ? notedResult[0] : null;
+                },
+                downloaded: function () {
+                    var downloadedResult = self.regex.downloaded.exec(self.rawQuery);
+                    return downloadedResult !== null ? downloadedResult[0] : null;
                 }
-            };
-
-            this.regex = {
-                tags: /\[([^)]+?)\]/gi, // https://regex101.com/r/uL9jN5/1
-                // https://regex101.com/r/iT2zH5/2
-                mission: /mission:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
-                type: /type:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
-                before: /before:([0-9-]+)/i,
-                after: /after:([0-9-]+)/i,
-                year: /year:([0-9]{4})/i,
-                user: /uploaded-by:([a-zA-Z0-9_-]+)/i,
-                favorited: /favorited:(true|yes|y|1)/i,
-                noted: /noted:(true|yes|y|1)/i,
-                downloaded: /downloaded:(true|yes|y|1)/i
-            };
+            }
         };
+
+        self.toQuery = function() {
+            return {
+                searchTerm: self.searchTerm(),
+                filters: {
+                    tags: self.filters.tags(),
+                    mission: self.filters.mission(),
+                    type: self.filters.type(),
+                    before: self.filters.before(),
+                    after: self.filters.after(),
+                    year: self.filters.year(),
+                    user: self.filters.user(),
+                    favorited: self.filters.favorited(),
+                    noted: self.filters.noted(),
+                    downloaded: self.filters.downloaded()
+                }
+            }
+        }
+
+        self.regex = {
+            tags: /\[([^)]+?)\]/gi,
+            mission: /mission:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
+            type: /type:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
+            before: /before:([0-9-]+)/i,
+            after:/after:([0-9-]+)/i,
+            year: /year:([0-9]{4})/i,
+            user: /uploaded-by:([a-zA-Z0-9_-]+)/i,
+            favorited: /favorited:(true|yes|y|1)/i,
+            noted: /noted:(true|yes|y|1)/i,
+            downloaded: /downloaded:(true|yes|y|1)/i,
+            all: /([a-z,-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi
+        }
+
+        return self;
     });
 })();
 (function() {
@@ -2501,6 +2583,18 @@
         }
     }]);
 })();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('animateOnChange', [function() {
+        return {
+            restrict: 'A',
+            link: function() {
+
+            }
+        }
+    }]);
+})();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
@@ -2522,14 +2616,14 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('animateOnChange', [function() {
-        return {
-            restrict: 'A',
-            link: function() {
-
-            }
-        }
-    }]);
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2569,14 +2663,13 @@
                     });
                 });
 
+                ngModelCtrl.$render = function() {
+                    console.log(ngModelCtrl.$viewValue);
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                }
+
                 $scope.selectOption = function(option) {
                     $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.selectDefault = function() {
-                    $scope.selectedOption = null;
                     ngModelCtrl.$setViewValue(option);
                     $scope.dropdownIsVisible = false;
                 };
@@ -2592,18 +2685,5 @@
             },
             templateUrl: '/js/templates/dropdown.html'
         }
-    });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
     });
 })();

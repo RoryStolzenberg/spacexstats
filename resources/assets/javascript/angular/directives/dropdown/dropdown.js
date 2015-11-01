@@ -36,14 +36,13 @@
                     });
                 });
 
+                ngModelCtrl.$render = function() {
+                    console.log(ngModelCtrl.$viewValue);
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                }
+
                 $scope.selectOption = function(option) {
                     $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.selectDefault = function() {
-                    $scope.selectedOption = null;
                     ngModelCtrl.$setViewValue(option);
                     $scope.dropdownIsVisible = false;
                 };
