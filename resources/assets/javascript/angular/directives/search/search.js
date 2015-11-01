@@ -1,7 +1,7 @@
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
-	app.directive('search', ['searchService', 'conversionService', "$http", function(searchService, conversionService, $http) {
+	app.directive('search', ['searchService', 'conversionService', "$http", "$filter", function(searchService, conversionService, $http, $filter) {
 		return {
 			restrict: 'E',
             transclude: true,
@@ -19,8 +19,6 @@
                     type:       null,
                     before:     null,
                     after:      null,
-                    year:       null,
-                    user:       null,
                     favorited:  null,
                     noted:      null,
                     downloaded: null
@@ -43,6 +41,18 @@
                         }
                     });
                 })();
+
+                $scope.datepickerText = function() {
+                    if ($scope.brokerFilters.before === null && $scope.brokerFilters.after === null) {
+                        return "Any time";
+                    } else if ($scope.brokerFilters.before !== null && $scope.brokerFilters.after === null) {
+                        return "Before " + $filter('date')($scope.brokerFilters.before, "MMM d, yyyy");
+                    } else if ($scope.brokerFilters.before === null && $scope.brokerFilters.after !== null) {
+                        return "After " + $filter('date')($scope.brokerFilters.after, "MMM d, yyyy");
+                    } else {
+                        return "Between " + $filter('date')($scope.brokerFilters.after, "MMM d, yyyy") + " - " + $filter('date')($scope.brokerFilters.before, "MMM d, yyyy");
+                    }
+                };
 			},
 			templateUrl: '/js/templates/search.html'
 		}
@@ -158,11 +168,11 @@
                 },
                 mission: function () {
                     var missionResult = self.regex.mission.exec(self.rawQuery);
-                    return  missionResult !== null ? missionResult[1] : null;
-                }
-                ,
+                    return missionResult !== null ? (!angular.isUndefined(missionResult[1]) ? missionResult[1] : missionResult[2]) : null;
+                },
                 type: function () {
-                    return self.regex.type.exec(self.rawQuery)[0];
+                    var typeResult = self.regex.type.exec(self.rawQuery);
+                    return typeResult !== null ? (!angular.isUndefined(typeResult[1]) ? typeResult[1] : typeResult[2]) : null;
                 },
                 before: function () {
                     return self.regex.before.exec(self.rawQuery)[0];
@@ -171,10 +181,12 @@
                     return self.regex.after.exec(self.rawQuery)[0];
                 },
                 year: function () {
-                    return self.regex.year.exec(self.rawQuery)[0];
+                    var yearResult = self.regex.year.exec(self.rawQuery);
+                    return yearResult !== null ? yearResult[1] : null;
                 },
                 user: function () {
-                    return self.regex.user.exec(self.rawQuery)[0];
+                    var userResult = self.regex.user.exec(self.rawQuery);
+                    return userResult !== null ? userResult[1] : null;
                 },
                 favorited: function () {
                     var favoritedResult = self.regex.favorited.exec(self.rawQuery);

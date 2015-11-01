@@ -1,7 +1,7 @@
-<div class="search">
+<div class="search" id="search">
     <div class="search-controls container">
         <div class="gr-8">
-            <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="grid-8" />
+            <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="gr-8" />
         </div>
         <div class="gr-4">
             <button class="search" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
@@ -15,13 +15,18 @@
         <dropdown class="gr-2 filter types" options="data.types" unique-key="type" title-key="type" has-default-option="false"
         ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Type"></dropdown>
 
-        <div class="gr-2 filter before after">
-            <datepicker format="yyyy-MMMM-dd">
-                <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
-            </datepicker>
-            <datepicker format="yyyy-MMMM-dd">
-                <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
-            </datepicker>
+        <div class="gr-2 filter before after search-datepicker">
+            <div ng-click="isDatepickerVisible = !isDatepickerVisible">
+                <span ng-bind="datepickerText()"></span>
+            </div>
+            <div class="datepicker-dropdown" ng-show="isDatepickerVisible">
+                <datepicker  date-format="MMMM d, yyyy">
+                    <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
+                </datepicker>
+                <datepicker date-format="MMMM d, yyyy">
+                    <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
+                </datepicker>
+            </div>
         </div>
 
         <div class="gr-2 filter favorited">
