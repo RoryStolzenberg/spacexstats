@@ -12,7 +12,8 @@ class UsersTableSeeder extends Seeder {
             'email' => 'elonmusk@spacexstats.com',
             'password' => 'password',
             'subscription_expires_at' => Carbon::now()->addYear(),
-            'key' => str_random(32)
+            'key' => str_random(32),
+            'launchControllerFlag' => true
         ));
 
         User::create(array(

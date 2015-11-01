@@ -85,7 +85,11 @@
             }
         }
 
-        //var socket = io();
+        var socket = io();
+
+        socket.on('live-updates:SpaceXStats\\Events\\SpaceXStatsLiveStartedEvent', function(data) {
+            console.log(data);
+        });
     }]);
 
     liveApp.service('liveService', ["$http", function($http) {

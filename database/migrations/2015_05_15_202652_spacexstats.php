@@ -121,6 +121,14 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
+        Schema::create('live_updates', function(Blueprint $table) {
+            $table->increments('live_update_id');
+            $table->string('message', Varchar::large);
+            $table->string('live_event_name', Varchar::small);
+            $table->integer('user_id', Varchar::tiny)->unsigned();
+            $table->timestamps();
+        });
+
         Schema::create('locations', function(Blueprint $table) {
             $table->increments('location_id');
             $table->string('name', Varchar::tiny);
@@ -538,6 +546,10 @@ class Spacexstats extends Migration {
 
         Schema::table('emails', function(Blueprint $table) {
             $table->foreign('notification_id')->references('notification_id')->on('notifications');
+        });
+
+        Schema::table('live_updates', function(Blueprint $table) {
+            $table->foreign('user_id')->references('user_id')->on('users');
         });
 
         Schema::table('notifications', function(Blueprint $table) {

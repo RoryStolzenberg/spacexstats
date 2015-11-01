@@ -4,6 +4,8 @@ namespace SpaceXStats\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use SpaceXStats\Console\Commands\QuestionUpdaterCommand;
+use SpaceXStats\Console\Commands\WebcastCheckCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        \SpaceXStats\Console\Commands\QuestionUpdaterCommand::class,
+        QuestionUpdaterCommand::class,
+        WebcastCheckCommand::class
     ];
 
     /**

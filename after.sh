@@ -8,12 +8,12 @@ DBPASSWD=localpassword
 
 echo "Begin custom provisioning..."
 
-echo "[1/6] Installing ffmpeg..."
+echo "[1/7] Installing ffmpeg..."
 sudo add-apt-repository ppa:kirillshkrogalev/ffmpeg-next -y >/dev/null 2>&1
 sudo apt-get update
 sudo apt-get install ffmpeg -y
 
-echo "[2/6] Installing & starting Elasticsearch..."
+echo "[2/7] Installing & starting Elasticsearch..."
 sudo apt-get update
 
 # install java
@@ -28,17 +28,21 @@ update-rc.d elasticsearch defaults 95 10
 
 sudo service elasticsearch start
 
-echo "[3/6] Installing PHP extensions..."
+echo "[3/7] Installing PHP extensions..."
 sudo apt-get install php5-imagick -y
 sudo service php5-fpm restart
 
-echo "[4/6] Customizing MySQL..."
+echo "[4/7] Customizing MySQL..."
 mysql -uroot -psecret -e "grant all privileges on $DBNAME.* to '$DBUSER'@'localhost' identified by '$DBPASSWD'"
 
-echo "[5/6] Migrating..."
+echo "[5/7] Migrating..."
 cd /home/vagrant/spacexstats
 php artisan migrate
 php artisan db:seed
 
-echo "[6/6] Restarting nginx..."
+echo "[6/7] Setting up Node.js..."
+npm install socket.io ioredis express --save --no-bin-links
+# --no-bin-links is not required if you are not using Vagrant for Windows
+
+echo "[7/7] Restarting nginx..."
 service nginx restart

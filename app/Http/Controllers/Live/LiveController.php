@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Input;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
+use SpaceXStats\Events\SpaceXStatsLiveStartedEvent;
 use SpaceXStats\Facades\BladeRenderer;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Models\Mission;
@@ -24,7 +25,7 @@ class LiveController extends Controller {
         JavaScript::put([
             'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
             'isActive' => Redis::get('spacexstatslive:active') == true,
-            'messages' => Redis::get('spacexstatslive:messages'),
+            'updates' => Redis::get('spacexstatslive:updates'),
             'mission' => Mission::future()->first()
         ]);
 
@@ -32,18 +33,38 @@ class LiveController extends Controller {
     }
 
     // /send/message, POST.
-    public function message() {
+    public function createLiveUpdate() {
+        Input::get();
 
+        // Calculate created_at and updated_at and displayed timestamp
+
+        // Expand acronyms, open images, display tweets, etc
+
+        // Websockets
+
+        // Push to queue for Reddit
     }
 
     // /send/message/{messagetimestamp}/edit, PATCH.
-    public function editMessage() {
+    public function editLiveUpdate() {
+        // Find message in Redis
 
+        // patch updated_at property
+
+        // Websockets
+
+        // Push to queue for Reddit
     }
 
     // /send/settings, POST.
-    public function settings() {
+    public function editSettings() {
+        // Fetch settings
 
+        // patch
+
+        // Websockets
+
+        // Push to queue for Reddit
     }
 
     public function create() {
@@ -78,6 +99,7 @@ class LiveController extends Controller {
         ));
 
         // Broadcast event to turn on spacexstats live
+        event(new SpaceXStatsLiveStartedEvent());
 
         // Respond
         return response(null, 204);
@@ -85,8 +107,12 @@ class LiveController extends Controller {
 
     public function destroy() {
         // Turn off SpaceXStats Live
+        Redis::set('live:active', false);
         // Clean up all spacexstats live redis keys
+        Redis::del(['live.streams', 'live:title', 'live:description', 'live:resources', 'live:sections']);
         // Commit to database
+
+
         return response(null, 204);
     }
 }
