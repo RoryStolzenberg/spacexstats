@@ -1,4 +1,32 @@
 (function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+
+        this.addError = function(message) {
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+    });
+})();
+
+
+(function() {
     var missionsListApp = angular.module('app', []);
 
     missionsListApp.controller("missionsListController", ['$scope', function($scope) {
@@ -30,15 +58,23 @@
 
     missionControlApp.controller("missionControlController", ["$scope", "missionControlService", function($scope, missionControlService) {
         $scope.hasSearchResults = false;
+        $scope.isCurrentlySearching = false;
         $scope.pageTitle = "Mission Control";
 
-        $scope.$on('startedSearching', function(event, arg) {
+        $scope.$on('startedSearching', function() {
+            $scope.hasSearchResults = false;
+            $scope.isCurrentlySearching = true;
+            $scope.pageTitle = "Searching...";
+        });
+
+        $scope.$on('finishedSearching', function(event, arg) {
             $scope.hasSearchResults = true;
+            $scope.isCurrentlySearching = false;
             $scope.pageTitle = '"' + arg + '" results';
         });
 
-        $scope.$on('stoppedSearching', function(event, arg) {
-            $scope.hasSearchResults = false;
+        $scope.$on('exitSearchMode', function(event, arg) {
+            $scope.hasSearchResults = $scope.isCurrentlySearching = false;
             $scope.pageTitle = "Mission Control";
         });
 
@@ -50,14 +86,20 @@
     missionControlApp.controller("searchController", ["$scope", "$rootScope", "missionControlService", function($scope, $rootScope, missionControlService) {
 
         $scope.search = function() {
+
+            // Get query and broadcast
             var currentQuery = $scope.currentSearch.toQuery();
-            missionControlService.search(currentQuery).then(function() {
-                $rootScope.$broadcast('startedSearching', currentQuery.searchTerm);
+            $rootScope.$broadcast('startedSearching');
+
+            // Make request
+            missionControlService.search(currentQuery).then(function(response) {
+                $rootScope.$broadcast('finishedSearching', currentQuery.searchTerm);
+                $scope.searchResults = response.data;
             });
         };
 
         $scope.reset = function() {
-            $rootScope.$broadcast('stoppedSearching');
+            $rootScope.$broadcast('exitSearchMode');
         };
     }]);
 
@@ -1659,47 +1701,15 @@
 })();
 
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-
-        this.addError = function(message) {
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        }
-    });
-})();
-
-
-(function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
     });
 })();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
@@ -1813,42 +1823,18 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                size: '@',
+                mission: '='
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/missionCard.html'
         }
-    }]);
+    });
 })();
 (function() {
     var app = angular.module('app');
@@ -2026,51 +2012,6 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.$watch("deltaV", function(objects) {
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
-
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
-                        }
-
-                        $scope.calculatedValue = $scope.newValue;
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.calculatedValue = 0;
-            },
-            templateUrl: '/js/templates/deltaV.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
@@ -2209,6 +2150,91 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch("deltaV", function(objects) {
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
+
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
+
+                        $scope.calculatedValue = $scope.newValue;
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.calculatedValue = 0;
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -2290,11 +2316,11 @@
                     if ($scope.brokerFilters.before === null && $scope.brokerFilters.after === null) {
                         return "Any time";
                     } else if ($scope.brokerFilters.before !== null && $scope.brokerFilters.after === null) {
-                        return "Before " + $filter('date')($scope.brokerFilters.before, "MMM d, yyyy");
+                        return "Before " + $scope.brokerFilters.before;
                     } else if ($scope.brokerFilters.before === null && $scope.brokerFilters.after !== null) {
-                        return "After " + $filter('date')($scope.brokerFilters.after, "MMM d, yyyy");
+                        return "After " + $scope.brokerFilters.after;
                     } else {
-                        return "Between " + $filter('date')($scope.brokerFilters.after, "MMM d, yyyy") + " - " + $filter('date')($scope.brokerFilters.before, "MMM d, yyyy");
+                        return "Between " + $scope.brokerFilters.after + " - " + $scope.brokerFilters.before;
                     }
                 };
 			},
@@ -2419,10 +2445,12 @@
                     return typeResult !== null ? (!angular.isUndefined(typeResult[1]) ? typeResult[1] : typeResult[2]) : null;
                 },
                 before: function () {
-                    return self.regex.before.exec(self.rawQuery)[0];
+                    var beforeResult = self.regex.before.exec(self.rawQuery);
+                    return beforeResult !== null ? beforeResult[1] : null;
                 },
                 after: function () {
-                    return self.regex.after.exec(self.rawQuery)[0];
+                    var afterResult = self.regex.after.exec(self.rawQuery);
+                    return afterResult !== null ? afterResult[1] : null;
                 },
                 year: function () {
                     var yearResult = self.regex.year.exec(self.rawQuery);
@@ -2451,16 +2479,16 @@
             return {
                 searchTerm: self.searchTerm(),
                 filters: {
-                    tags: self.filters.tags(),
-                    mission: self.filters.mission(),
-                    type: self.filters.type(),
-                    before: self.filters.before(),
-                    after: self.filters.after(),
-                    year: self.filters.year(),
-                    user: self.filters.user(),
-                    favorited: self.filters.favorited(),
-                    noted: self.filters.noted(),
-                    downloaded: self.filters.downloaded()
+                    tags: self.filters().tags(),
+                    mission: self.filters().mission(),
+                    type: self.filters().type(),
+                    before: self.filters().before(),
+                    after: self.filters().after(),
+                    year: self.filters().year(),
+                    user: self.filters().user(),
+                    favorited: self.filters().favorited(),
+                    noted: self.filters().noted(),
+                    downloaded: self.filters().downloaded()
                 }
             }
         }
@@ -2614,18 +2642,6 @@
 })();
 
 (function() {
-    var app = angular.module('app');
-
-    app.directive('animateOnChange', [function() {
-        return {
-            restrict: 'A',
-            link: function() {
-
-            }
-        }
-    }]);
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -2691,12 +2707,12 @@
 (function() {
     var app = angular.module('app');
 
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
+    app.directive('animateOnChange', [function() {
+        return {
+            restrict: 'A',
+            link: function() {
+
+            }
+        }
+    }]);
 })();

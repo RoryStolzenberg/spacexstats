@@ -13,13 +13,22 @@
                 <form id="search">
                     <search></search>
                 </form>
+                <section ng-show="isCurrentlySearching">
 
+                </section>
                 <section ng-show="hasSearchResults">
-
+                    <p>@{{ searchResults.hits.total }} results</p>
+                    <p>Search took: @{{ searchResults.took }} ms</p>
+                    <div ng-if="searchResults.hits.total == 0">
+                        No results :(
+                    </div>
+                    <div ng-repeat="result in searchResults.hits.hits">
+                        @{{ result._source.title }}
+                    </div>
                 </section>
             </div>
 
-            <section ng-show="!hasSearchResults">
+            <section ng-show="!hasSearchResults && !isCurrentlySearching">
                 <div class="gr-8">
                     <h2>Uploads</h2>
                     <ul>

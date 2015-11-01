@@ -5,7 +5,7 @@
         </div>
         <div class="gr-4">
             <button class="search" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
-            <input type="reset" value="Reset" ng-click="reset()" />
+            <button class="reset" ng-click="reset()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-close"></i></button>
         </div>
     </div>
 
@@ -20,10 +20,10 @@
                 <span ng-bind="datepickerText()"></span>
             </div>
             <div class="datepicker-dropdown" ng-show="isDatepickerVisible">
-                <datepicker  date-format="MMMM d, yyyy">
+                <datepicker  date-format="MMM d, yyyy">
                     <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
                 </datepicker>
-                <datepicker date-format="MMMM d, yyyy">
+                <datepicker date-format="MMM d, yyyy">
                     <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
                 </datepicker>
             </div>
@@ -31,17 +31,17 @@
 
         <div class="gr-2 filter favorited">
             <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
-            <label for="favorited"></label>
+            <label for="favorited">Favorited?</label>
         </div>
 
         <div class="gr-2 filter noted">
             <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
-            <label for="noted"></label>
+            <label for="noted">Noted?</label>
         </div>
 
         <div class="gr-2 filter downloaded">
             <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
-            <label for="downloaded"></label>
+            <label for="downloaded">Downloaded?</label>
         </div>
 	</div>
 </div>

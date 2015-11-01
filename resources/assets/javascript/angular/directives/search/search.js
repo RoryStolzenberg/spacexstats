@@ -46,11 +46,11 @@
                     if ($scope.brokerFilters.before === null && $scope.brokerFilters.after === null) {
                         return "Any time";
                     } else if ($scope.brokerFilters.before !== null && $scope.brokerFilters.after === null) {
-                        return "Before " + $filter('date')($scope.brokerFilters.before, "MMM d, yyyy");
+                        return "Before " + $scope.brokerFilters.before;
                     } else if ($scope.brokerFilters.before === null && $scope.brokerFilters.after !== null) {
-                        return "After " + $filter('date')($scope.brokerFilters.after, "MMM d, yyyy");
+                        return "After " + $scope.brokerFilters.after;
                     } else {
-                        return "Between " + $filter('date')($scope.brokerFilters.after, "MMM d, yyyy") + " - " + $filter('date')($scope.brokerFilters.before, "MMM d, yyyy");
+                        return "Between " + $scope.brokerFilters.after + " - " + $scope.brokerFilters.before;
                     }
                 };
 			},
@@ -175,10 +175,12 @@
                     return typeResult !== null ? (!angular.isUndefined(typeResult[1]) ? typeResult[1] : typeResult[2]) : null;
                 },
                 before: function () {
-                    return self.regex.before.exec(self.rawQuery)[0];
+                    var beforeResult = self.regex.before.exec(self.rawQuery);
+                    return beforeResult !== null ? beforeResult[1] : null;
                 },
                 after: function () {
-                    return self.regex.after.exec(self.rawQuery)[0];
+                    var afterResult = self.regex.after.exec(self.rawQuery);
+                    return afterResult !== null ? afterResult[1] : null;
                 },
                 year: function () {
                     var yearResult = self.regex.year.exec(self.rawQuery);
@@ -207,16 +209,16 @@
             return {
                 searchTerm: self.searchTerm(),
                 filters: {
-                    tags: self.filters.tags(),
-                    mission: self.filters.mission(),
-                    type: self.filters.type(),
-                    before: self.filters.before(),
-                    after: self.filters.after(),
-                    year: self.filters.year(),
-                    user: self.filters.user(),
-                    favorited: self.filters.favorited(),
-                    noted: self.filters.noted(),
-                    downloaded: self.filters.downloaded()
+                    tags: self.filters().tags(),
+                    mission: self.filters().mission(),
+                    type: self.filters().type(),
+                    before: self.filters().before(),
+                    after: self.filters().after(),
+                    year: self.filters().year(),
+                    user: self.filters().user(),
+                    favorited: self.filters().favorited(),
+                    noted: self.filters().noted(),
+                    downloaded: self.filters().downloaded()
                 }
             }
         }

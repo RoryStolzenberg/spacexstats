@@ -3,15 +3,23 @@
 
     missionControlApp.controller("missionControlController", ["$scope", "missionControlService", function($scope, missionControlService) {
         $scope.hasSearchResults = false;
+        $scope.isCurrentlySearching = false;
         $scope.pageTitle = "Mission Control";
 
-        $scope.$on('startedSearching', function(event, arg) {
+        $scope.$on('startedSearching', function() {
+            $scope.hasSearchResults = false;
+            $scope.isCurrentlySearching = true;
+            $scope.pageTitle = "Searching...";
+        });
+
+        $scope.$on('finishedSearching', function(event, arg) {
             $scope.hasSearchResults = true;
+            $scope.isCurrentlySearching = false;
             $scope.pageTitle = '"' + arg + '" results';
         });
 
-        $scope.$on('stoppedSearching', function(event, arg) {
-            $scope.hasSearchResults = false;
+        $scope.$on('exitSearchMode', function(event, arg) {
+            $scope.hasSearchResults = $scope.isCurrentlySearching = false;
             $scope.pageTitle = "Mission Control";
         });
 
@@ -23,14 +31,20 @@
     missionControlApp.controller("searchController", ["$scope", "$rootScope", "missionControlService", function($scope, $rootScope, missionControlService) {
 
         $scope.search = function() {
+
+            // Get query and broadcast
             var currentQuery = $scope.currentSearch.toQuery();
-            missionControlService.search(currentQuery).then(function() {
-                $rootScope.$broadcast('startedSearching', currentQuery.searchTerm);
+            $rootScope.$broadcast('startedSearching');
+
+            // Make request
+            missionControlService.search(currentQuery).then(function(response) {
+                $rootScope.$broadcast('finishedSearching', currentQuery.searchTerm);
+                $scope.searchResults = response.data;
             });
         };
 
         $scope.reset = function() {
-            $rootScope.$broadcast('stoppedSearching');
+            $rootScope.$broadcast('exitSearchMode');
         };
     }]);
 
