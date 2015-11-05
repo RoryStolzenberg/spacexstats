@@ -70,17 +70,25 @@
             return $scope.activeStatistic;
         };
 
+
+        $('.content-wrapper').fracs('max', 'visible', function(fracs) {
+            console.log(fracs);
+
+            console.log(this);
+            // var active = $scope.statistics.filter(function(statistic) {
+            //return statistic.camelCaseType == best.id;
+            //)[0];
+
+            //history.replaceState('', document.title, '#' + active.camelCaseType);
+            //$scope.activeStatistic = active;
+        });
+
         // Manage user-initiated scrolling
         angular.element($window).on('scroll', function() {
-            $('.content-wrapper').fracs('max', 'visible', function(best) {
-                var active = $scope.statistics.filter(function(statistic) {
-                    return statistic.camelCaseType == best.id;
-                })[0];
-
-                history.replaceState('', document.title, '#' + active.camelCaseType);
-                $scope.activeStatistic = active;
-            });
+            console.log($('.content-wrapper').fracs('check'));
         });
+
+
 
         (function() {
             laravel.statistics.forEach(function(statistic) {
