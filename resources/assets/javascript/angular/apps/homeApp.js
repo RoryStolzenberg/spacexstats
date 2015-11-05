@@ -1,59 +1,97 @@
 (function() {
     var app = angular.module('app', ['duScroll', 'ngAnimate']);
 
-    app.controller("homeController", ['$scope', '$document', 'Statistic', function($scope, $document, Statistic) {
+    app.controller("homeController", ['$scope', '$document', '$window', 'Statistic', function($scope, $document, $window, Statistic) {
         $scope.statistics = [];
-        $scope.activeStatistic = false;
+        $scope.activeStatistic = null;
 
-        $scope.goToClickedStatistic = function(statisticType) {
-            history.replaceState('', document.title, '#' + statisticType);
-            $scope.activeStatistic = statisticType;
+        $scope.goToClickedStatistic = function(statistic) {
+            $scope.scrollToAndMakeActive(statistic);
         };
 
         $scope.goToFirstStatistic = function() {
-            var stat = $scope.statistics[0];
-
-            history.replaceState('', document.title, '#' + stat.camelCaseType);
-            $scope.activeStatistic = stat.camelCaseType;
-
-            $document.scrollToElement(angular.element(document.getElementById(stat.camelCaseType)), 0, 1000);
+            $scope.scrollToAndMakeActive($scope.statistics[0]);
         };
 
         $scope.goToNeighborStatistic = function(index) {
             if (index >= 0 && index < $scope.statistics.length) {
-                var stat = $scope.statistics[index];
+                $scope.scrollToAndMakeActive($scope.statistics[index]);
+                return $scope.activeStatistic.camelCaseType;
 
-                history.replaceState('', document.title, '#' + stat.camelCaseType);
-                $scope.activeStatistic = stat.camelCaseType;
-                $document.scrollToElement(angular.element(document.getElementById(stat.camelCaseType)), 0, 1000);
-
-                return stat.camelCaseType;
             } else {
                 $scope.goHome();
             }
         };
 
         $scope.goHome = function() {
-            history.replaceState('', document.title, window.location.pathname);
-            $scope.activeStatistic = false;
-            $document.scrollToElement(angular.element(document.getElementById('home')), 0, 1000);
+            $scope.scrollToAndMakeActive(null, true);
         };
 
-        /*$window.on('scroll',
-            $.debounce(100, function() {
-                $('div[data-stat]').fracs('max', 'visible', function(best) {
-                    $scope.activeStatistic($(best).data('stat'));
-                });
-            })
-        );*/
+        $scope.keypress = function(event) {
+            // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+            // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+            // event.key == down
+            if (event.which == 40) {
+                if ($scope.activeStatistic == null) {
+                    $scope.goToFirstStatistic();
+
+                } else if ($scope.activeStatistic == $scope.statistics[$scope.statistics.length - 1]) {
+                    $scope.goHome();
+
+                } else {
+                    $scope.scrollToAndMakeActive($scope.statistics[$scope.statistics.indexOf($scope.activeStatistic) + 1]);
+                }
+            }
+
+            // event.key == up
+            if (event.which == 38) {
+                if ($scope.activeStatistic == null) {
+                    $scope.scrollToAndMakeActive($scope.statistics[$scope.statistics.length - 1]);
+
+                } else if ($scope.activeStatistic == $scope.statistics[0]) {
+                    $scope.goHome();
+
+                } else {
+                    $scope.scrollToAndMakeActive($scope.statistics[$scope.statistics.indexOf($scope.activeStatistic) - 1]);
+                }
+            }
+        };
+
+        $scope.scrollToAndMakeActive = function(statistic, setToDefault) {
+            if (setToDefault === true) {
+                history.replaceState('', document.title, window.location.pathname);
+                $scope.activeStatistic = null;
+                $document.scrollToElement(angular.element(document.getElementById('home')), 0, 1000);;
+            } else {
+                $document.scrollToElement(angular.element(document.getElementById(statistic.camelCaseType)), 0, 1000);
+            }
+
+            return $scope.activeStatistic;
+        };
+
+        // Manage user-initiated scrolling
+        angular.element($window).on('scroll', function() {
+            $('.content-wrapper').fracs('max', 'visible', function(best) {
+                var active = $scope.statistics.filter(function(statistic) {
+                    return statistic.camelCaseType == best.id;
+                })[0];
+
+                history.replaceState('', document.title, '#' + active.camelCaseType);
+                $scope.activeStatistic = active;
+            });
+        });
 
         (function() {
             laravel.statistics.forEach(function(statistic) {
                 $scope.statistics.push(new Statistic(statistic));
             });
 
+            // If a hash exists, preset it
             if (window.location.hash) {
-                $scope.activeStatistic = window.location.hash.substring(1);
+                $scope.activeStatistic = $scope.statistics.filter(function(statistic) {
+                    return statistic.camelCaseType == window.location.hash.substring(1);
+                })[0];
             }
         })();
     }]);
@@ -62,8 +100,6 @@
         return function(statistic) {
 
             var self = {};
-
-            self.isToggling = false;
 
             self.changeSubstatistic = function(newSubstatistic) {
                 self.activeSubstatistic = newSubstatistic;
@@ -76,7 +112,7 @@
                     self.substatistics = [];
                     self.activeSubstatistic = substatistic;
                     self.type = substatistic.type;
-                    self.camelCaseType = self.type.replace(" ", "");
+                    self.camelCaseType = self.type.replace(/\W/g, "");
                 }
 
                 self.substatistics.push(substatistic);

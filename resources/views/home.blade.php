@@ -2,7 +2,7 @@
 @section('title', 'Home')
 
 @section('content')
-<body class="home" ng-controller="homeController" ng-strict-di>
+<body class="home" ng-controller="homeController" ng-strict-di ng-keydown="keypress($event)">
 
 
     @include('templates.header', ['class' => 'no-background'])
@@ -21,12 +21,12 @@
             <a class="statistic-link" ng-class="{ 'active' : activeStatistic == false }" ng-click="goHome()"></a>
         </li>
         <li class="statistic-holder" ng-repeat="statistic in statistics">
-            <a class="statistic-link" ng-class="{ 'active' : statistic.isActiveStatistic }" ng-click="goToClickedStatistic(statistic.camelCaseType)"></a>
+            <a class="statistic-link" ng-class="{ 'active' : statistic.isActiveStatistic }" ng-click="goToClickedStatistic(statistic)"></a>
         </li>
     </ul>
 
     <!-- Statistics -->
-    <div class="content-wrapper single-page background" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}">
+    <div class="content-wrapper single-page background statistic" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}">
 
         <h1 class="fade" ng-repeat="substatistic in statistic.substatistics" ng-show="statistic.activeSubstatistic == substatistic">@{{ substatistic.full_title }}</h1>
 
