@@ -214,10 +214,10 @@ class StatisticsTableSeeder extends Seeder {
             'display' => 'single'
         ));
 
-        // Astronauts
+        // DragonRiders
         Statistic::create(array(
             'order' => 24,
-            'type' => 'Astronauts',
+            'type' => 'DragonRiders',
             'name' => 'In Space',
             'description' => "",
             'unit' => 'DragonRiders',
@@ -226,7 +226,7 @@ class StatisticsTableSeeder extends Seeder {
 
         Statistic::create(array(
             'order' => 25,
-            'type' => 'Astronauts',
+            'type' => 'DragonRiders',
             'name' => 'Cumulative',
             'description' => "",
             'unit' => 'DragonRiders',

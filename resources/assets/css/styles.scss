@@ -29,34 +29,6 @@
 @import "spacexstats/components/datetime";
 @import "spacexstats/components/objectCard";
 
-
-/* Sticky Bar Nav */
-nav.sticky-bar {
-    position:sticky;
-    top:0; // tell the element where to stick
-    width:inherit;
-    max-width:1400px;
-    font-size:14px;
-    @include transitionMed((background-color, color));
-
-  &.sticky {
-      background-color:$blue;
-      color:$white;
-      z-index:1000;
-  }
-}
-
-.sticky ~ * {
-    top:30px;
-    position:relative;
-}
-
-.highlights {
-    height:40px;
-    width:100%;
-    position:relative;
-}
-
 /* -------------- CONTENT ----------------- */
 p {
     padding-top:10px;

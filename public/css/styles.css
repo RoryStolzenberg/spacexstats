@@ -7321,6 +7321,8 @@ body {
     background-position: center center; }
     .content-wrapper.background main {
       background-color: rgba(255, 255, 255, 0.75); }
+      .content-wrapper.background main.invert {
+        background-color: rgba(24, 28, 31, 0.75); }
 
 h1, main {
   width: 100%;
@@ -7336,9 +7338,8 @@ main {
   min-height: calc(100% - 150px);
   display: block;
   padding-bottom: 30px; }
-  main nav {
-    height: 30px;
-    line-height: 30px; }
+  main.invert {
+    color: #FFF; }
 
 main > * {
   padding: 0 10px; }
@@ -7485,23 +7486,19 @@ header > nav {
       text-align: left; } }
   header > nav ul {
     cursor: pointer; }
-
-li > ul.nav-second-tier {
-  display: none; }
-
-li:hover {
-  background-color: rgba(255, 255, 255, 0.1); }
-
-li:hover > ul.nav-second-tier, li > ul.nav-second-tier:hover {
-  display: block;
-  background-color: #FFF;
-  color: #181c1f;
-  z-index: 300;
-  position: relative;
-  box-shadow: 10px 10px 15px rgba(33, 39, 43, 0.2); }
-
-ul.nav-second-tier li:hover {
-  background-color: rgba(53, 105, 164, 0.1); }
+  header > nav li > ul.nav-second-tier {
+    display: none; }
+  header > nav li:hover {
+    background-color: rgba(255, 255, 255, 0.1); }
+  header > nav li:hover > ul.nav-second-tier, header > nav li > ul.nav-second-tier:hover {
+    display: block;
+    background-color: #FFF;
+    color: #181c1f;
+    z-index: 300;
+    position: relative;
+    box-shadow: 10px 10px 15px rgba(33, 39, 43, 0.2); }
+  header > nav ul.nav-second-tier li:hover {
+    background-color: rgba(53, 105, 164, 0.1); }
 
 .wide {
   width: 250%; }
@@ -7510,11 +7507,57 @@ body, nav {
   -webkit-transition: left ease 0.5s;
           transition: left ease 0.5s; }
 
-/* Mobile navigation */
+/* MOBILE NAVIGATION */
 .nav-open {
   left: 250px; }
   .nav-open nav {
     left: 0; }
+
+/* IN PAGE NAVIGATION */
+nav.in-page {
+  text-align: center;
+  height: 30px;
+  line-height: 30px; }
+  nav.in-page li {
+    height: 30px;
+    cursor: pointer;
+    padding-bottom: 3px; }
+    nav.in-page li:after {
+      content: '';
+      display: block;
+      margin: auto;
+      height: 3px;
+      width: 0px;
+      background: transparent;
+      -webkit-transition: width 0.5s ease, background-color 0.5s ease;
+              transition: width 0.5s ease, background-color 0.5s ease; }
+    nav.in-page li.active:after {
+      width: 100%;
+      background: #CCAC55; }
+
+/* Sticky Bar Nav */
+nav.sticky-bar {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  width: inherit;
+  max-width: 1400px;
+  font-size: 14px;
+  -webkit-transition: background-color ease 0.5s, color ease 0.5s;
+          transition: background-color ease 0.5s, color ease 0.5s; }
+  nav.sticky-bar.sticky {
+    background-color: #3569A4;
+    color: #FFF;
+    z-index: 1000; }
+
+.sticky ~ * {
+  top: 30px;
+  position: relative; }
+
+.highlights {
+  height: 40px;
+  width: 100%;
+  position: relative; }
 
 form ul li {
   padding: 10px; }
@@ -8049,15 +8092,17 @@ section.comments {
     .hero.statistic .description {
       height: 100px; }
 
-#statistics-navigation {
+#side-navigation {
   position: fixed;
-  top: 50%; }
-  #statistics-navigation .statistic-link {
+  top: 50%;
+  margin-top: -210px; }
+  #side-navigation .link {
     display: block;
     width: 5px;
     height: 5px;
-    padding: 10px; }
-    #statistics-navigation .statistic-link:before {
+    padding: 10px;
+    cursor: pointer; }
+    #side-navigation .link:before {
       width: 6px;
       height: 6px;
       top: -3px;
@@ -8067,7 +8112,9 @@ section.comments {
       content: "";
       display: block;
       background-color: rgba(255, 255, 255, 0.5); }
-    #statistics-navigation .statistic-link.active:before {
+    #side-navigation .link:hover:before, #side-navigation .link.active:hover:before {
+      background-color: #3569A4; }
+    #side-navigation .link.active:before {
       background-color: #FFF; }
 
 .previous-stat, .next-stat {
@@ -8348,30 +8395,6 @@ body.live {
       margin: 0 auto; }
   .object-card .object-overview {
     height: 100px; }
-
-/* Sticky Bar Nav */
-nav.sticky-bar {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  width: inherit;
-  max-width: 1400px;
-  font-size: 14px;
-  -webkit-transition: background-color ease 0.5s, color ease 0.5s;
-          transition: background-color ease 0.5s, color ease 0.5s; }
-  nav.sticky-bar.sticky {
-    background-color: #3569A4;
-    color: #FFF;
-    z-index: 1000; }
-
-.sticky ~ * {
-  top: 30px;
-  position: relative; }
-
-.highlights {
-  height: 40px;
-  width: 100%;
-  position: relative; }
 
 /* -------------- CONTENT ----------------- */
 p {

@@ -57,15 +57,17 @@
     }
 }
 
-#statistics-navigation {
+#side-navigation {
     position: fixed;
     top:50%;
+    margin-top:-210px;
 
-    .statistic-link {
+    .link {
         display: block;
         width: 5px;
         height: 5px;
         padding: 10px;
+        cursor:pointer;
 
         &:before {
             width: 6px;
@@ -77,6 +79,10 @@
             content: "";
             display: block;
             background-color:rgba($white, 0.5);
+        }
+
+        &:hover:before, &.active:hover:before {
+            background-color:$blue;
         }
 
         &.active:before {

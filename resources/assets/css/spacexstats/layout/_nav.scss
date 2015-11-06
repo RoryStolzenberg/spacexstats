@@ -19,27 +19,27 @@ header > nav {
         cursor:pointer;
 
     }
-}
 
-li > ul.nav-second-tier {
-    display:none;
-}
+    li > ul.nav-second-tier {
+        display:none;
+    }
 
-li:hover {
-    background-color:rgba($white,0.1);
-}
+    li:hover {
+        background-color:rgba($white,0.1);
+    }
 
-li:hover > ul.nav-second-tier, li > ul.nav-second-tier:hover {
-    display:block;
-    background-color:$white;
-    color:$slateblack;
-    z-index:300;
-    position:relative;
-    box-shadow:10px 10px 15px rgba($lightblack, 0.2);
-}
+    li:hover > ul.nav-second-tier, li > ul.nav-second-tier:hover {
+        display:block;
+        background-color:$white;
+        color:$slateblack;
+        z-index:300;
+        position:relative;
+        box-shadow:10px 10px 15px rgba($lightblack, 0.2);
+    }
 
-ul.nav-second-tier li:hover {
-    background-color:rgba($blue, 0.1);
+    ul.nav-second-tier li:hover {
+        background-color:rgba($blue, 0.1);
+    }
 }
 
 .wide {
@@ -50,11 +50,66 @@ body, nav {
     @include transitionMed(left);
 }
 
-/* Mobile navigation */
+/* MOBILE NAVIGATION */
 .nav-open {
     left:250px;
 
     nav {
         left:0;
     }
+}
+
+/* IN PAGE NAVIGATION */
+nav.in-page {
+    text-align:center;
+    height:30px; // Includes the 10px padding of the parent element
+    line-height:30px;
+
+    li {
+        height:30px;
+        cursor:pointer;
+        padding-bottom: 3px;
+
+        &:after {
+            content: '';
+            display: block;
+            margin: auto;
+            height: 3px;
+            width: 0px;
+            background: transparent;
+            transition: width .5s ease, background-color .5s ease;
+        }
+
+        &.active:after {
+            width: 100%;
+            background:$gold;
+        }
+    }
+}
+
+/* Sticky Bar Nav */
+nav.sticky-bar {
+    position:sticky;
+    top:0; // tell the element where to stick
+    width:inherit;
+    max-width:1400px;
+    font-size:14px;
+    @include transitionMed((background-color, color));
+
+    &.sticky {
+        background-color:$blue;
+        color:$white;
+        z-index:1000;
+    }
+}
+
+.sticky ~ * {
+    top:30px;
+    position:relative;
+}
+
+.highlights {
+    height:40px;
+    width:100%;
+    position:relative;
 }

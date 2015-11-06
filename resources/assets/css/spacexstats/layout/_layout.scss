@@ -48,6 +48,10 @@ body {
 
         main {
             background-color:rgba($white, 0.75);
+
+            &.invert {
+                background-color:rgba($slateblack, 0.75);
+            }
         }
     }
 }
@@ -69,9 +73,8 @@ main {
     display:block; // Make IE happy
     padding-bottom:30px; // undo the effects of a position:sticky bar causing the sibling element to have a top of 30px
 
-    nav {
-        height:30px; // Includes the 10px padding of the parent element
-        line-height:30px;
+    &.invert {
+        color:$white;
     }
 }
 
