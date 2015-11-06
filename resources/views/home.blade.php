@@ -8,7 +8,7 @@
     @include('templates.header', ['class' => 'no-background'])
 
     <!-- Main content -->
-    <div class="content-wrapper single-page background" id="home">
+    <div class="content-wrapper single-page background" id="home" du-scrollspy="home">
         <h1>Welcome</h1>
         <main>
             <button class="next-stat" ng-click="goToFirstStatistic()"><i class="fa fa-angle-down fa-3x"></i></button>
@@ -26,7 +26,7 @@
     </ul>
 
     <!-- Statistics -->
-    <div class="content-wrapper single-page background statistic" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}" du-scrollspy>
+    <div class="content-wrapper single-page background statistic" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}" du-scrollspy="@{{ substatistic.camelCaseType }}" href="#@{{ statistic.camelCaseType }}">
 
         <h1 class="fade" ng-repeat="substatistic in statistic.substatistics" ng-show="statistic.activeSubstatistic == substatistic">@{{ substatistic.full_title }}</h1>
 

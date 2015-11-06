@@ -1,7 +1,7 @@
 (function() {
     var app = angular.module('app', ['duScroll', 'ngAnimate']);
 
-    app.controller("homeController", ['$scope', '$document', '$window', 'Statistic', function($scope, $document, $window, Statistic) {
+    app.controller("homeController", ['$scope', '$rootScope', '$document', '$window', 'Statistic', function($scope, $rootScope, $document, $window, Statistic) {
         $scope.statistics = [];
         $scope.activeStatistic = null;
 
@@ -64,19 +64,23 @@
                 $scope.activeStatistic = null;
                 $document.scrollToElement(angular.element(document.getElementById('home')), 0, 1000);;
             } else {
+                $scope.activeStatistic = statistic;
                 $document.scrollToElement(angular.element(document.getElementById(statistic.camelCaseType)), 0, 1000);
             }
 
             return $scope.activeStatistic;
         };
 
-        $rootScope.$on('duScrollspy:becameActive', function($event, $element, $target){
-            console.log($element);
-            //Automaticly update location
-            //var hash = $element.prop('hash');
-            //if (hash) {
-            //    history.replaceState(null, null, hash);
-            //}
+        $rootScope.$on('duScrollspy:becameActive', function($event, $element, $target) {
+            if ($element.prop('id') == 'home') {
+                history.replaceState('', document.title, window.location.pathname);
+                $scope.activeStatistic = null;
+            } else {
+                $scope.activeStatistic = $scope.statistics.filter(function(statistic) {
+                    return statistic.camelCaseType == $element.prop('id');
+                })[0];
+                history.replaceState('', document.title, '#' + $scope.activeStatistic.camelCaseType);
+            }
         });
 
         (function() {
