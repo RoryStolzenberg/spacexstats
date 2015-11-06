@@ -111,22 +111,17 @@
 }
 
 // Animation of substatistics
-/*.fade.ng-hide-add {
-    transition:opacity 1s ease;
+.fade-in-out {
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -moz-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    -ms-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
     opacity:1;
-
-    &.ng-hide-add-active {
-        opacity:0;
-    }
 }
 
-.fade.ng-hide-remove {
-    transition:all 1s ease 1s;
-    opacity:0;
-
-    &.ng-hide-remove-active {
-        opacity:1;
-    }
-}*/
+.fade-in-out.ng-hide {
+    opacity: 0;
+}
 
 .background {	@include filteredBackground("../images/backgrounds/dscovr2.jpg"); }

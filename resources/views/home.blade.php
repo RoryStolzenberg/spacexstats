@@ -31,7 +31,7 @@
     <!-- Statistics -->
     <div class="content-wrapper single-page background" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}" du-scrollspy="@{{ substatistic.camelCaseType }}" href="#@{{ statistic.camelCaseType }}">
 
-        <h1 class="fade">@{{ statistic.activeSubstatistic.full_title }}</h1>
+        <h1 class="fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.full_title }}</h1>
 
         <main class="invert">
             <button class="previous-stat" ng-click="goToNeighborStatistic($index - 1)"><i class="fa fa-angle-up fa-3x"></i></button>
@@ -42,8 +42,8 @@
                 </ul>
             </nav>
 
-            <div class="hero hero-centered statistic" ng-repeat-start="substatistic in statistic.substatistics" ng-if="substatistic.display == 'single'" ng-show="statistic.activeSubstatistic == substatistic">
-                <table style="color:inherit;">
+            <div class="hero fade-in-out statistic" ng-repeat="substatistic in statistic.substatistics" ng-show="statistic.activeSubstatistic == substatistic && statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">
+                <table style="color:inherit;" ng-if="substatistic.display == 'single'">
                     <tr class="value">
                         <td>@{{ substatistic.result }}</td>
                     </tr>
@@ -51,11 +51,11 @@
                         <td>@{{ substatistic.unit }}</td>
                     </tr>
                 </table>
+
+                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity"></countdown>
             </div>
 
-            <countdown ng-repeat-end ng-if="substatistic.display == 'count'" ng-show="statistic.activeSubstatistic == substatistic" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity"></countdown>
-
-            <p class="description">@{{ statistic.activeSubstatistic.description }}</p>
+            <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>
             <button class="next-stat" ng-click="goToNeighborStatistic($index + 1)"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>
     </div>

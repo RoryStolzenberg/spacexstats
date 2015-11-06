@@ -97,13 +97,20 @@
         })();
     }]);
 
-    app.factory('Statistic', function() {
+    app.factory('Statistic', ["$timeout", function($timeout) {
         return function(statistic) {
 
             var self = {};
 
+            self.show = true;
+
             self.changeSubstatistic = function(newSubstatistic) {
-                self.activeSubstatistic = newSubstatistic;
+                self.show = false;
+
+                $timeout(function () {
+                    self.activeSubstatistic = newSubstatistic;
+                    self.show = true;
+                }, 300);
             };
 
             statistic.forEach(function(substatistic) {
@@ -121,5 +128,5 @@
 
             return self;
         }
-    });
+    }]);
 })();
