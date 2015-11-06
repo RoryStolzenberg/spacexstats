@@ -70,25 +70,14 @@
             return $scope.activeStatistic;
         };
 
-
-        $('.content-wrapper').fracs('max', 'visible', function(fracs) {
-            console.log(fracs);
-
-            console.log(this);
-            // var active = $scope.statistics.filter(function(statistic) {
-            //return statistic.camelCaseType == best.id;
-            //)[0];
-
-            //history.replaceState('', document.title, '#' + active.camelCaseType);
-            //$scope.activeStatistic = active;
+        $rootScope.$on('duScrollspy:becameActive', function($event, $element, $target){
+            console.log($element);
+            //Automaticly update location
+            //var hash = $element.prop('hash');
+            //if (hash) {
+            //    history.replaceState(null, null, hash);
+            //}
         });
-
-        // Manage user-initiated scrolling
-        angular.element($window).on('scroll', function() {
-            console.log($('.content-wrapper').fracs('check'));
-        });
-
-
 
         (function() {
             laravel.statistics.forEach(function(statistic) {

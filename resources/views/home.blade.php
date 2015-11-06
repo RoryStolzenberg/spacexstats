@@ -26,7 +26,7 @@
     </ul>
 
     <!-- Statistics -->
-    <div class="content-wrapper single-page background statistic" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}">
+    <div class="content-wrapper single-page background statistic" ng-repeat="statistic in statistics" id="@{{ statistic.camelCaseType }}" du-scrollspy>
 
         <h1 class="fade" ng-repeat="substatistic in statistic.substatistics" ng-show="statistic.activeSubstatistic == substatistic">@{{ substatistic.full_title }}</h1>
 
