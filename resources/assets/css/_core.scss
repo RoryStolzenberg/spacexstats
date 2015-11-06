@@ -38,7 +38,7 @@ $h1-height: 150px;
     $transitions: ();
 
     @each $property in $properties {
-        $trans: unquote("#{$property} ease 0.2s");
+        $trans: unquote("#{$property} ease-in-out 0.3s");
         $transitions: append($transitions, $trans, comma );
     }
 
@@ -49,7 +49,7 @@ $h1-height: 150px;
     $transitions: ();
 
     @each $property in $properties {
-        $trans: unquote("#{$property} ease 0.5s");
+        $trans: unquote("#{$property} ease-in-out 0.5s");
         $transitions: append($transitions, $trans, comma );
     }
 
@@ -60,7 +60,7 @@ $h1-height: 150px;
     $transitions: ();
 
     @each $property in $properties {
-        $trans: unquote("#{$property} ease 1s");
+        $trans: unquote("#{$property} ease-in-out 1s");
         $transitions: append($transitions, $trans, comma );
     }
 

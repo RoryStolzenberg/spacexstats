@@ -112,12 +112,7 @@
 
 // Animation of substatistics
 .fade-in-out {
-    -webkit-transition: opacity 0.3s ease-in-out;
-    -moz-transition: opacity 0.3s ease-in-out;
-    -o-transition: opacity 0.3s ease-in-out;
-    -ms-transition: opacity 0.3s ease-in-out;
-    transition: opacity 0.3s ease-in-out;
-    opacity:1;
+    @include transitionFast(opacity);
 }
 
 .fade-in-out.ng-hide {

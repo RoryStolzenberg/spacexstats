@@ -7504,8 +7504,8 @@ header > nav {
   width: 250%; }
 
 body, nav {
-  -webkit-transition: left ease 0.5s;
-          transition: left ease 0.5s; }
+  -webkit-transition: left ease-in-out 0.5s;
+          transition: left ease-in-out 0.5s; }
 
 /* MOBILE NAVIGATION */
 .nav-open {
@@ -7543,8 +7543,8 @@ nav.sticky-bar {
   width: inherit;
   max-width: 1400px;
   font-size: 14px;
-  -webkit-transition: background-color ease 0.5s, color ease 0.5s;
-          transition: background-color ease 0.5s, color ease 0.5s; }
+  -webkit-transition: background-color ease-in-out 0.5s, color ease-in-out 0.5s;
+          transition: background-color ease-in-out 0.5s, color ease-in-out 0.5s; }
   nav.sticky-bar.sticky {
     background-color: #3569A4;
     color: #FFF;
@@ -7572,10 +7572,10 @@ form label {
   margin: 0 10px; }
 
 form input, form textarea, form button, form select {
-  -webkit-transition: border ease 0.2s;
-          transition: border ease 0.2s;
-  -webkit-transition: box-shadow ease 0.2s;
-          transition: box-shadow ease 0.2s; }
+  -webkit-transition: border ease-in-out 0.3s;
+          transition: border ease-in-out 0.3s;
+  -webkit-transition: box-shadow ease-in-out 0.3s;
+          transition: box-shadow ease-in-out 0.3s; }
   form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched, form button.invalid, form button.ng-invalid.ng-touched, form select.invalid, form select.ng-invalid.ng-touched {
     border: 1px solid #C05B40; }
   form input:focus, form textarea:focus, form button:focus, form select:focus {
@@ -8134,9 +8134,8 @@ section.comments {
   bottom: -45px; }
 
 .fade-in-out {
-  -webkit-transition: opacity 0.3s ease-in-out;
-  transition: opacity 0.3s ease-in-out;
-  opacity: 1; }
+  -webkit-transition: opacity ease-in-out 0.3s;
+          transition: opacity ease-in-out 0.3s; }
 
 .fade-in-out.ng-hide {
   opacity: 0; }
@@ -8179,11 +8178,11 @@ section.comments {
     text-align: center;
     margin-left: 10px;
     padding: 0;
-    -webkit-transition: background-color ease 0.5s;
-            transition: background-color ease 0.5s; }
+    -webkit-transition: background-color ease-in-out 0.5s;
+            transition: background-color ease-in-out 0.5s; }
     .display-date-time .timezone:hover {
-      -webkit-transition: background-color ease 0.5s;
-              transition: background-color ease 0.5s;
+      -webkit-transition: background-color ease-in-out 0.5s;
+              transition: background-color ease-in-out 0.5s;
       background-color: #CCAC55; }
 
 #countdown > * {
@@ -8228,8 +8227,8 @@ img#object {
   text-align: center;
   display: inline-block;
   overflow: hidden;
-  -webkit-transition: background-color ease 0.5s;
-          transition: background-color ease 0.5s; }
+  -webkit-transition: background-color ease-in-out 0.5s;
+          transition: background-color ease-in-out 0.5s; }
   .files-list li.uploaded-file img {
     max-width: 100%;
     max-height: 100%; }

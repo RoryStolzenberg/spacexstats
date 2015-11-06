@@ -45,7 +45,7 @@
             }
 
             // event.key == up
-            if (event.which == 38) {
+            else if (event.which == 38) {
                 if ($scope.activeStatistic == null) {
                     $scope.scrollToAndMakeActive($scope.statistics[$scope.statistics.length - 1]);
 
@@ -56,6 +56,34 @@
                     $scope.scrollToAndMakeActive($scope.statistics[$scope.statistics.indexOf($scope.activeStatistic) - 1]);
                 }
             }
+
+            // event.key == left
+            else if (event.which == 37) {
+                if ($scope.activeStatistic == null) {
+                    return;
+                }
+
+                if ($scope.activeStatistic.activeSubstatistic == $scope.activeStatistic.substatistics[0]) {
+                    $scope.activeStatistic.changeSubstatistic($scope.activeStatistic.substatistics[$scope.activeStatistic.substatistics.length - 1]);
+
+                } else {
+                    $scope.activeStatistic.changeSubstatistic($scope.activeStatistic.substatistics[$scope.activeStatistic.substatistics.indexOf($scope.activeStatistic.activeSubstatistic) - 1]);
+                }
+            }
+
+            else if (event.which == 39) {
+                if ($scope.activeStatistic == null) {
+                    return;
+                }
+
+                if ($scope.activeStatistic.activeSubstatistic == $scope.activeStatistic.substatistics[$scope.activeStatistic.substatistics.length - 1]) {
+                    $scope.activeStatistic.changeSubstatistic($scope.activeStatistic.substatistics[0]);
+
+                } else {
+                    $scope.activeStatistic.changeSubstatistic($scope.activeStatistic.substatistics[$scope.activeStatistic.substatistics.indexOf($scope.activeStatistic.activeSubstatistic) + 1]);
+                }
+            }
+
         };
 
         $scope.scrollToAndMakeActive = function(statistic, setToDefault) {
