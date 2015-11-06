@@ -1,6 +1,35 @@
 @charset "UTF-8";
 /* --------------- COLOR SWATCHES ----------------- */
 /* --------------- FONT VARIABLES ----------------- */
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_bld-webfont.eot");
+  src: url("../fonts/brandon_bld-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_bld-webfont.woff2") format("woff2"), url("../fonts/brandon_bld-webfont.woff") format("woff"), url("../fonts/brandon_bld-webfont.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_med-webfont.eot");
+  src: url("../fonts/brandon_med-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_med-webfont.woff2") format("woff2"), url("../fonts/brandon_med-webfont.woff") format("woff"), url("../fonts/brandon_med-webfont.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_reg-webfont.eot");
+  src: url("../fonts/brandon_reg-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_reg-webfont.woff2") format("woff2"), url("../fonts/brandon_reg-webfont.woff") format("woff"), url("../fonts/brandon_reg-webfont.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_thin-webfont.eot");
+  src: url("../fonts/brandon_thin-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_thin-webfont.woff2") format("woff2"), url("../fonts/brandon_thin-webfont.woff") format("woff"), url("../fonts/brandon_thin-webfont.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal; }
+
+/* --------------- FONT VARIABLES ----------------- */
 /* ------------------- DESIGN --------------------- */
 /* ------------------ GENERAL MIXINS ----------------- */
 /* ----------------- HELPER CLASSES --------------- */
@@ -7348,7 +7377,7 @@ ul, ol {
   list-style-type: none; }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   font-weight: 400;
   text-transform: uppercase; }
 
@@ -7443,7 +7472,7 @@ p {
   width: 8.33333%;
   font-weight: 800;
   font-size: 20px;
-  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium"; }
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
 
 .flash-message {
   position: fixed;
@@ -8047,7 +8076,7 @@ section.comments {
 .hero {
   height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
   text-align: center;
-  font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   text-transform: uppercase; }
   .hero:before {
     content: '';
@@ -8255,7 +8284,7 @@ img#object {
     line-height: 200px;
     background-size: cover;
     background-position: 50% 50%;
-    font-family: "Brandon Grotesque", "Brandon Grotesque Thin", "Brandon Grotesque Regular", "Brandon Grotesque Medium";
+    font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
     font-weight: lighter;
     font-size: 60px;
     color: #FFF;

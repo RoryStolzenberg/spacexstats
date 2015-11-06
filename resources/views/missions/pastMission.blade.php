@@ -10,7 +10,7 @@
     <div class="content-wrapper">
         <h1>{{ $mission->name }}</h1>
         <main>
-            <nav class="sticky-bar">
+            <nav class="in-page sticky-bar">
                 <ul class="container">
                     <li class="gr-1">Article</li>
                     <li class="gr-1">Details</li>
@@ -20,12 +20,12 @@
                     <li class="gr-1">Documents</li>
                     <li class="gr-1">Articles</li>
                     <li class="gr-1">Analytics</li>
-                    <li class="gr-3 actions">
+                    <li class="gr-2">{{ $mission->status }} - {{ $mission->outcome }}</li>
+                    <li class="gr-2 actions">
                         <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
                         <i class="fa fa-twitter"></i>
                         <i class="fa fa-rss"></i>
                     </li>
-                    <li class="gr-2">{{ $mission->status }} - {{ $mission->outcome }}</li>
                 </ul>
             </nav>
 

@@ -10,13 +10,6 @@
     <div class="content-wrapper">
         <h1>Past Launches</h1>
         <main>
-            <p>Browse all past launches here</p>
-            <h2>Previous Launch</h2>
-            <p>Detailed previous launch, reddit discussion thread, article, etc etc</p>
-            <p>Have a "ribbon/badge beneath upcoming/previous launch count</p>
-            <h2>Past Launches</h2>
-            <p>Every other launch</p>
-
             <p>Browse all the previous SpaceX launches &amp; missions here! The last launch was @{{ lastLaunch().name }}. SpaceX has completed
                 <ng-pluralize
                         count="missionsInYear(currentYear(), 'Complete')"
@@ -35,7 +28,7 @@
 
             <p>Filter a launch: <input type="text" ng-model="x.name" placeholder="Type a launch name here" /></p>
 
-            <h2 ng-repeat-start="mission in missions | filter:x as search" ng-show="missions.indexOf(mission) == 0 && search.length == missions.length">Next Launch</h2>
+            <h2 ng-repeat-start="mission in missions | filter:x as search" ng-show="missions.indexOf(mission) == 0 && search.length == missions.length">Previous Launch</h2>
             <h2 ng-show="missions.indexOf(mission) == 1  && search.length == missions.length">More Missions</h2>
             <mission-card ng-repeat-end mission="mission" size="large"></mission-card>
         </main>
