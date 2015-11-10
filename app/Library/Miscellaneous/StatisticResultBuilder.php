@@ -27,7 +27,7 @@ class StatisticResultBuilder {
 
 	public static function launchesPerYear() {
 		// SELECT COUNT(mission_id) as missions, YEAR(launch_exact) as year FROM missions GROUP BY year
-		return Mission::select(DB::raw('COUNT(mission_id) AS missions, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get()->toArray();
+		return Mission::select(DB::raw('*, COUNT(mission_id) AS missions, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get()->toArray();
     }
 
 	public static function dragon($parameter) {
@@ -49,7 +49,6 @@ class StatisticResultBuilder {
                 ->where('missions.status','Complete')
                 ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')
                 ->first();
-		
 		}
 
         if ($parameter === 'Flight Time (Graph)') {
@@ -212,7 +211,7 @@ class StatisticResultBuilder {
 		}
 	}
 
-    public static function astronauts($parameter) {
+    public static function dragonRiders($parameter) {
         return 0;
     }
 

@@ -94,31 +94,31 @@
                     <ul>
                         <li class="gr-4">
                             <label>Launch Video</label>
-                            <select-list options="data.launchVideos" ng-model="mission.launch_video" unique-key="object_id" title-key="title" searchable="true"></select-list>
+                            <dropdown options="data.launchVideos" ng-model="mission.launch_video" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label for=""">Mission Patch</label>
-                            <select-list options="data.missionPatches" ng-model="mission.mission_patch" unique-key="object_id" title-key="title" searchable="true"></select-list>
+                            <dropdown options="data.missionPatches" ng-model="mission.mission_patch" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label for="">Press Kit</label>
-                            <select-list options="data.pressKits" ng-model="mission.press_kit" unique-key="object_id" title-key="title" searchable="true"></select-list>
+                            <dropdown options="data.pressKits" ng-model="mission.press_kit" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label>Cargo Manifest</label>
-                            <select-list options="data.cargoManifests" ng-model="mission.cargo_manifest" unique-key="object_id" title-key="title" searchable="true"></select-list>
+                            <dropdown options="data.cargoManifests" ng-model="mission.cargo_manifest" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label>Prelaunch Press Conference</label>
-                            <select-list options="data.pressConferences" ng-model="mission.prelaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></select-list>
+                            <dropdown options="data.pressConferences" ng-model="mission.prelaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label>Postlaunch Press Conference</label>
-                            <select-list options="data.pressConferences" ng-model="mission.postlaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></select-list>
+                            <dropdown options="data.pressConferences" ng-model="mission.postlaunch_press_conference" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label>Featured Image</label>
-                            <select-list options="data.featuredImages" ng-model="mission.featured_image" unique-key="object_id" title-key="title" searchable="true"></select-list>
+                            <dropdown options="data.featuredImages" ng-model="mission.featured_image" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label>Reddit Discussion</label>

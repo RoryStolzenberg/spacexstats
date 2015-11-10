@@ -8,12 +8,12 @@
 
         &:hover {
             .placeholder {
-                transform:translateX(150px);
+                transform:translateX(140px);
                 opacity:0;
             }
 
             .link {
-                transform:translateX(150px);
+                transform:translateX(140px);
                 opacity:1;
             }
         }
@@ -22,12 +22,12 @@
     &.past-mission-link {
         &:hover {
             .placeholder {
-                transform:translateX(-150px);
+                transform:translateX(-140px);
                 opacity:0;
             }
 
             .link {
-                transform:translateX(-150px);
+                transform:translateX(-140px);
                 opacity:1;
             }
         }
@@ -36,7 +36,7 @@
     .placeholder {
         text-transform:uppercase;
         display:inline-block;
-        width:150px;
+        width:140px;
         opacity:1;
         @include transitionFast(all);
     }

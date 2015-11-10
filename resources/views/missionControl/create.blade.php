@@ -42,7 +42,7 @@
                     <div class="files-details" ng-repeat="file in files">
 
                         <!-- IMAGE FILE TEMPLATE -->
-                        <div ng-if="file.type == 1" ng-show="isVisibleFile(file)">
+                        <div ng-if="file.type == 'Image'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
@@ -67,14 +67,14 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list
+                                            <dropdown
                                                     name="mission"
                                                     options="data.missions"
                                                     ng-model="file.mission_id"
                                                     unique-key="mission_id"
                                                     title-key="name"
                                                     searchable="true">
-                                            </select-list>
+                                            </dropdown>
                                         </label>
                                     </li>
 
@@ -130,7 +130,7 @@
                         </div>
 
                         <!-- GIF FILE TEMPLATE -->
-                        <div ng-if="file.type == 2" ng-show="isVisibleFile(file)">
+                        <div ng-if="file.type == 'GIF'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
@@ -155,7 +155,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
                                         </label>
                                     </li>
 
@@ -201,7 +201,7 @@
                         </div>
 
                         <!-- AUDIO FILE TEMPLATE -->
-                        <div ng-if="file.type == 3" ng-show="isVisibleFile(file)">
+                        <div ng-if="file.type == 'Audio'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
@@ -226,7 +226,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
                                         </label>
                                     </li>
 
@@ -272,7 +272,7 @@
                         </div>
 
                         <!-- VIDEO FILE TEMPLATE -->
-                        <div ng-if="file.type == 4" ng-show="isVisibleFile(file)">
+                        <div ng-if="file.type == 'Video'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
@@ -306,7 +306,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
                                         </label>
                                     </li>
 
@@ -361,7 +361,7 @@
                         </div>
 
                         <!-- DOCUMENT FILE TEMPLATE -->
-                        <div ng-if="file.type == 5" ng-show="isVisibleFile(file)">
+                        <div ng-if="file.type == 'Document'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
                                 <ul class="container">
@@ -386,7 +386,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <select-list options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></select-list>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
                                         </label>
                                     </li>
 
@@ -499,7 +499,7 @@
                         <datetime ng-model="article.originated_at" type="date" is-null="false"></datetime>
 
                         <label>Publication</label>
-                        <select-list
+                        <dropdown
                                 name="publisher"
                                 options="data.publishers"
                                 ng-model="article.publisher_id"
@@ -507,7 +507,7 @@
                                 title-key="name"
                                 searchable="true"
                                 placeholder="Select the publisher of the article">
-                        </select-list>
+                        </dropdown>
                         <p>Can't find the article publisher? <a href="/publishers/create">Create them first</a>.</p>
 
                         <label>Article Author</label>
@@ -520,7 +520,7 @@
                         <textarea ng-model="article.article" required></textarea>
 
                         <label>Select Mission</label>
-                        <select-list
+                        <dropdown
                                 name="mission"
                                 options="data.missions"
                                 ng-model="article.mission_id"
@@ -528,7 +528,7 @@
                                 title-key="name"
                                 searchable="true"
                                 placeholder="Select a related mission...">
-                        </select-list>
+                        </dropdown>
 
                         <label>Tags</label>
                         <tags available-tags="data.tags" name="tags" ng-model="article.tags"></tags>
@@ -552,7 +552,7 @@
                         <textarea ng-model="pressrelease.article" required></textarea>
 
                         <label>Select Mission</label>
-                        <select-list
+                        <dropdown
                                 name="mission"
                                 options="data.missions"
                                 ng-model="pressrelease.mission_id"
@@ -560,7 +560,7 @@
                                 title-key="name"
                                 searchable="true"
                                 placeholder="Select a related mission...">
-                        </select-list>
+                        </dropdown>
 
                         <label>Tags</label>
                         <tags available-tags="data.tags" name="tags" ng-model="pressrelease.tags"></tags>
@@ -580,7 +580,7 @@
                         <reddit-comment ng-model="redditcomment"></reddit-comment>
 
                         <label>Select Mission</label>
-                        <select-list
+                        <dropdown
                                 name="mission"
                                 options="data.missions"
                                 ng-model="redditcomment.mission_id"
@@ -588,7 +588,7 @@
                                 title-key="name"
                                 searchable="true"
                                 placeholder="Select a related mission...">
-                        </select-list>
+                        </dropdown>
 
                         <label>Tags</label>
                         <tags available-tags="data.tags" name="tags" ng-model="redditcomment.tags"></tags>
@@ -615,7 +615,7 @@
                         <textarea ng-model="NSFcomment.comment" required></textarea>
 
                         <label>Select Mission</label>
-                        <select-list
+                        <dropdown
                                 name="mission"
                                 options="data.missions"
                                 ng-model="NSFcomment.mission_id"
@@ -623,7 +623,7 @@
                                 title-key="name"
                                 searchable="true"
                                 placeholder="Select a related mission...">
-                        </select-list>
+                        </dropdown>
 
                         <label>Tags</label>
                         <tags available-tags="data.tags" name="tags" ng-model="NSFcomment.tags"></tags>
@@ -649,7 +649,7 @@
                     <textarea name="content" ng-model="text.content" placeholder="Write your post" rows="10" minlength="100" required></textarea>
 
                     <label>Select related mission</label>
-                    <select-list
+                    <dropdown
                             name="mission"
                             options="data.missions"
                             ng-model="text.mission_id"
@@ -657,7 +657,7 @@
                             title-key="name"
                             searchable="true"
                             placeholder="Select a related mission...">
-                    </select-list>
+                    </dropdown>
 
                     <p>Submit anonymously?</p>
                     <input type="checkbox" name="anonymous" id="anonymous-text" value="true" ng-model="text.anonymous" />

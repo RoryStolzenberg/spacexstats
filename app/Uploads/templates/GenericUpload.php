@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
+use Imagick;
+
 abstract class GenericUpload {
 	protected $file,
 	$fileinfo,

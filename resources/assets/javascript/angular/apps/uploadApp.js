@@ -239,11 +239,11 @@
     uploadApp.service("objectFromFile", ["Image", "GIF", "Audio", "Video", "Document", function(Image, GIF, Audio, Video, Document) {
         this.create = function(file, index) {
             switch(file.type) {
-                case 1: return new Image(file, index);
-                case 2: return new GIF(file, index);
-                case 3: return new Audio(file, index);
-                case 4: return new Video(file, index);
-                case 5: return new Document(file, index);
+                case 'Image': return new Image(file, index);
+                case 'GIF': return new GIF(file, index);
+                case 'Audio': return new Audio(file, index);
+                case 'Video': return new Video(file, index);
+                case 'Document': return new Document(file, index);
                 default: return null;
             }
         }

@@ -21,7 +21,7 @@
 
                     <li class="gr-6">
                         <label>Select a banner image</label>
-                        <select-list options="data.bannerImages" has-default-option="false" unique-key="object_id" title-key="title" searchable="true" ng-model="newDataView.banner_image"></select-list>
+                        <dropdown options="data.bannerImages" has-default-option="false" unique-key="object_id" title-key="title" searchable="true" ng-model="newDataView.banner_image"></dropdown>
                     </li>
 
                     <li class="gr-4 suffix-8">

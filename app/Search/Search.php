@@ -5,6 +5,7 @@ use Elasticsearch\Client;
 use Credential;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
 
 class Search {
 
@@ -26,7 +27,9 @@ class Search {
      * @return array
      */
     public function index(Model $model) {
-        if (get_class($model) == "Object") {
+        $classname = (new ReflectionClass($model))->getShortName();
+
+        if ($classname == "Object") {
             $paramBody = [
                 'object_id' => $model->object_id,
                 'user_id' => $model->user_id,
@@ -56,9 +59,9 @@ class Search {
                 'anonymous' => $model->anonymous,
                 'actioned_at' => $model->actioned_at->toDateTimeString(),
                 'tags' => $model->tags()->lists('name'),
-                'favorites' => $model->favorites()->list('user_id'),
-                'notes' => $model->notes()->list('user_id'),
-                'downloads' => $model->downloads()->list('user_id')->unique()
+                'favorites' => $model->favorites()->lists('user_id'),
+                'notes' => $model->notes()->lists('user_id'),
+                'downloads' => $model->downloads()->lists('user_id')->unique()
             ];
 
             if ($model->mission()->count() == 1) {
@@ -72,9 +75,9 @@ class Search {
                     'name' => null
                 ];
             }
-        } elseif (get_class($model) == "DataView") {
+        } elseif ($classname == "DataView") {
 
-        } else if (get_class($model) == "Collection") {
+        } else if ($classname == "Collection") {
 
         }
 

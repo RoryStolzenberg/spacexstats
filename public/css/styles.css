@@ -8182,29 +8182,29 @@ section.comments {
     float: right;
     text-align: right; }
     .mission-link.future-mission-link:hover .placeholder {
-      -webkit-transform: translateX(150px);
-          -ms-transform: translateX(150px);
-              transform: translateX(150px);
+      -webkit-transform: translateX(140px);
+          -ms-transform: translateX(140px);
+              transform: translateX(140px);
       opacity: 0; }
     .mission-link.future-mission-link:hover .link {
-      -webkit-transform: translateX(150px);
-          -ms-transform: translateX(150px);
-              transform: translateX(150px);
+      -webkit-transform: translateX(140px);
+          -ms-transform: translateX(140px);
+              transform: translateX(140px);
       opacity: 1; }
   .mission-link.past-mission-link:hover .placeholder {
-    -webkit-transform: translateX(-150px);
-        -ms-transform: translateX(-150px);
-            transform: translateX(-150px);
+    -webkit-transform: translateX(-140px);
+        -ms-transform: translateX(-140px);
+            transform: translateX(-140px);
     opacity: 0; }
   .mission-link.past-mission-link:hover .link {
-    -webkit-transform: translateX(-150px);
-        -ms-transform: translateX(-150px);
-            transform: translateX(-150px);
+    -webkit-transform: translateX(-140px);
+        -ms-transform: translateX(-140px);
+            transform: translateX(-140px);
     opacity: 1; }
   .mission-link .placeholder {
     text-transform: uppercase;
     display: inline-block;
-    width: 150px;
+    width: 140px;
     opacity: 1;
     -webkit-transition: all ease-in-out 0.3s;
             transition: all ease-in-out 0.3s; }

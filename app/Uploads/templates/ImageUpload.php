@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
+use Imagick;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Exif\Exif;
