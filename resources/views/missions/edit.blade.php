@@ -97,7 +97,7 @@
                             <dropdown options="data.launchVideos" ng-model="mission.launch_video" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
-                            <label for=""">Mission Patch</label>
+                            <label for="">Mission Patch</label>
                             <dropdown options="data.missionPatches" ng-model="mission.mission_patch" unique-key="object_id" title-key="title" searchable="true"></dropdown>
                         </li>
                         <li class="gr-4">
@@ -118,7 +118,7 @@
                         </li>
                         <li class="gr-4">
                             <label>Featured Image</label>
-                            <dropdown options="data.featuredImages" ng-model="mission.featured_image" unique-key="object_id" title-key="title" searchable="true"></dropdown>
+                            <dropdown options="data.featuredImages" ng-model="mission.featured_image" unique-key="object_id" title-key="title" searchable="true" id-only="true"></dropdown>
                         </li>
                         <li class="gr-4">
                             <label>Reddit Discussion</label>

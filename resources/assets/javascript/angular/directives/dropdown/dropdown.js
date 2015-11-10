@@ -12,7 +12,8 @@
                 imageKey: '@?',
                 descriptionKey: '@?',
                 searchable: '@',
-                placeholder: '@'
+                placeholder: '@',
+                idOnly: '@?'
             },
             link: function($scope, element, attributes, ngModelCtrl) {
 
@@ -37,9 +38,26 @@
                 });
 
                 ngModelCtrl.$render = function() {
-                    console.log(ngModelCtrl.$viewValue);
                     $scope.selectedOption = ngModelCtrl.$viewValue;
                 }
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                    if ($scope.idOnly === 'true') {
+                        return $scope.options.filter(function(option) {
+                            return option.id = modelValue;
+                        });
+                    } else {
+                        return modelValue;
+                    }
+                });
 
                 $scope.selectOption = function(option) {
                     $scope.selectedOption = option;
