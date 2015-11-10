@@ -1,3 +1,53 @@
+.mission-link {
+    display:inline-block;
+    overflow:hidden;
+
+    &.future-mission-link {
+        float:right;
+        text-align:right;
+
+        &:hover {
+            .placeholder {
+                transform:translateX(150px);
+                opacity:0;
+            }
+
+            .link {
+                transform:translateX(150px);
+                opacity:1;
+            }
+        }
+    }
+
+    &.past-mission-link {
+        &:hover {
+            .placeholder {
+                transform:translateX(-150px);
+                opacity:0;
+            }
+
+            .link {
+                transform:translateX(-150px);
+                opacity:1;
+            }
+        }
+    }
+
+    .placeholder {
+        text-transform:uppercase;
+        display:inline-block;
+        width:150px;
+        opacity:1;
+        @include transitionFast(all);
+    }
+
+    .link {
+        opacity: 0;
+        display:inline-block;
+        @include transitionFast(all);
+    }
+}
+
 .display-date-time {
     position:absolute;
     right:0;

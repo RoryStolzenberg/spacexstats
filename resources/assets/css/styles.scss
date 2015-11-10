@@ -13,10 +13,11 @@
 @import "spacexstats/layout/comments";
 @import "spacexstats/layout/charts";
 @import "spacexstats/layout/search";
+@import "spacexstats/layout/markdown";
 
 // SpaceXStats pages
 @import "spacexstats/pages/home";
-@import "spacexstats/pages/futureMission";
+@import "spacexstats/pages/mission";
 @import "spacexstats/pages/object";
 @import "spacexstats/pages/upload";
 @import "spacexstats/pages/dataviews";

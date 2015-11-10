@@ -25,13 +25,13 @@ class LaunchReorderer {
         $arrayedMissions = $allMissions->toArray();
 
         // Add the mission we are running from to the array
-        array_push($arrayedMissions, array('context' => true, 'launchDateTime' => $this->scheduledLaunch));
+        array_push($arrayedMissions, array('context' => true, 'launch_date_time' => $this->scheduledLaunch));
 
         // Sort the missions by launchDateTime
         // Use the at symbol because http://stackoverflow.com/a/10985500/1064923
         @usort($arrayedMissions, function($a, $b) {
-            $ldta = LaunchDateTimeResolver::parseString($a['launchDateTime']);
-            $ldtb = LaunchDateTimeResolver::parseString($b['launchDateTime']);
+            $ldta = LaunchDateTimeResolver::parseString($a['launch_date_time']);
+            $ldtb = LaunchDateTimeResolver::parseString($b['launch_date_time']);
 
             return LaunchDateTime::compare($ldta, $ldtb);
         });

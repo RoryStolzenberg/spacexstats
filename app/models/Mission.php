@@ -20,8 +20,8 @@ class Mission extends Model {
 	protected $primaryKey = 'mission_id';
     public $timestamps = true;
 
-    protected $hidden = ['launch_exact', 'launch_approximate'];
-    protected $appends = [];
+    protected $hidden = [];
+    protected $appends = ['launch_date_time'];
     protected $fillable = [];
     protected $guarded = [];
 
@@ -60,7 +60,7 @@ class Mission extends Model {
         'name' => ['sometimes', 'required', 'string', 'varchar:tiny'],
         'contractor' => ['sometimes', 'required', 'string', 'varchar:small'],
         'launch_exact' => ['sometimes', 'date_format:Y-m-d H:i:s'],
-        'launch_approximate' => ['sometimes', 'required', 'string', 'varchar:tiny']
+        'launch_approximate' => ['sometimes', 'string', 'varchar:tiny']
     );
 
     public $messages = array(

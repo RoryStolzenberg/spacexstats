@@ -62,11 +62,11 @@ body, nav {
 /* IN PAGE NAVIGATION */
 nav.in-page {
     text-align:center;
-    height:30px; // Includes the 10px padding of the parent element
-    line-height:30px;
+    height:40px; // Includes the 10px padding of the parent element
+    line-height:40px;
 
     li {
-        height:30px;
+        height:40px;
         cursor:pointer;
         padding-bottom: 3px;
 
@@ -104,7 +104,7 @@ nav.sticky-bar {
 }
 
 .sticky ~ * {
-    top:30px;
+    top:40px;
     position:relative;
 }
 

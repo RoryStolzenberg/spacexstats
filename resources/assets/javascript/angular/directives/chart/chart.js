@@ -19,7 +19,7 @@
                 var settings = $scope.settings;
 
                 // check padding and set default
-                if (typeof settings.padding === 'undefined') {
+                if (typeof settings === 'undefined') {
                     settings.padding = 50;
                 }
 

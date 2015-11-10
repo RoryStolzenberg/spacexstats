@@ -32,7 +32,7 @@
 
                         <li class="gr-12">
                             <label>Launch Date Time</label>
-                            <input type="text" ng-model="mission.launchDateTime" placeholder="Entering a text string is okay, but if a precise date is needed, please follow MySQL date format" required/>
+                            <input type="text" ng-model="mission.launch_date_time" placeholder="Entering a text string is okay, but if a precise date is needed, please follow MySQL date format" required/>
                         </li>
 
                         <li class="gr-4">

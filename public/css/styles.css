@@ -7545,10 +7545,10 @@ body, nav {
 /* IN PAGE NAVIGATION */
 nav.in-page {
   text-align: center;
-  height: 30px;
-  line-height: 30px; }
+  height: 40px;
+  line-height: 40px; }
   nav.in-page li {
-    height: 30px;
+    height: 40px;
     cursor: pointer;
     padding-bottom: 3px; }
     nav.in-page li:after {
@@ -7580,7 +7580,7 @@ nav.sticky-bar {
     z-index: 1000; }
 
 .sticky ~ * {
-  top: 30px;
+  top: 40px;
   position: relative; }
 
 .highlights {
@@ -8073,6 +8073,9 @@ section.comments {
   background: rgba(25, 2, 0, 0.02);
   cursor: default; }
 
+.md em {
+  font-style: italic; }
+
 .hero {
   height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
   text-align: center;
@@ -8171,6 +8174,45 @@ section.comments {
 
 .background {
   background-image: url("../images/backgrounds/dscovr2.jpg"); }
+
+.mission-link {
+  display: inline-block;
+  overflow: hidden; }
+  .mission-link.future-mission-link {
+    float: right;
+    text-align: right; }
+    .mission-link.future-mission-link:hover .placeholder {
+      -webkit-transform: translateX(150px);
+          -ms-transform: translateX(150px);
+              transform: translateX(150px);
+      opacity: 0; }
+    .mission-link.future-mission-link:hover .link {
+      -webkit-transform: translateX(150px);
+          -ms-transform: translateX(150px);
+              transform: translateX(150px);
+      opacity: 1; }
+  .mission-link.past-mission-link:hover .placeholder {
+    -webkit-transform: translateX(-150px);
+        -ms-transform: translateX(-150px);
+            transform: translateX(-150px);
+    opacity: 0; }
+  .mission-link.past-mission-link:hover .link {
+    -webkit-transform: translateX(-150px);
+        -ms-transform: translateX(-150px);
+            transform: translateX(-150px);
+    opacity: 1; }
+  .mission-link .placeholder {
+    text-transform: uppercase;
+    display: inline-block;
+    width: 150px;
+    opacity: 1;
+    -webkit-transition: all ease-in-out 0.3s;
+            transition: all ease-in-out 0.3s; }
+  .mission-link .link {
+    opacity: 0;
+    display: inline-block;
+    -webkit-transition: all ease-in-out 0.3s;
+            transition: all ease-in-out 0.3s; }
 
 .display-date-time {
   position: absolute;

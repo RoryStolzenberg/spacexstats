@@ -71,7 +71,9 @@
                 });
 
                 // Stickybar
-                $('nav.sticky-bar').stickyNavbar();
+                $('nav.sticky-bar').stickyNavbar({
+                    selector: 'li'
+                });
             });
         </script>
 

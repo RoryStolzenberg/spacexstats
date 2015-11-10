@@ -4,7 +4,7 @@
     app.controller("futureMissionController", ['$http', '$scope', 'flashMessage', function($http, $scope, flashMessage) {
 
         $scope.missionSlug = laravel.mission.slug;
-        $scope.launchDateTime = laravel.mission.launchDateTime;
+        $scope.launchDateTime = laravel.mission.launch_date_time;
         $scope.launchSpecificity = laravel.mission.launch_specificity;
 
         $scope.$watch("launchSpecificity", function(newValue) {

@@ -12,121 +12,152 @@
         <main>
             <nav class="in-page sticky-bar">
                 <ul class="container">
-                    <li class="gr-1">Article</li>
-                    <li class="gr-1">Details</li>
-                    <li class="gr-1">Timeline</li>
-                    <li class="gr-1">Images</li>
-                    <li class="gr-1">Videos</li>
-                    <li class="gr-1">Documents</li>
-                    <li class="gr-1">Articles</li>
-                    <li class="gr-1">Analytics</li>
-                    <li class="gr-2">{{ $mission->status }} - {{ $mission->outcome }}</li>
-                    <li class="gr-2 actions">
+                    <li class="gr-1">
+                        <a href="#article">Article</a>
+                    </li>
+                    <li class="gr-1">
+                        <a href="#details">Details</a>
+                    </li>
+                    <li class="gr-1">
+                        <a href="#timeline">Timeline</a>
+                    </li>
+                    <li class="gr-1">
+                        <a href="#images">Images</a>
+                    </li>
+                    <li class="gr-1">
+                        <a href="#videos">Videos</a>
+                    </li>
+                    <li class="gr-1">
+                        <a href="#documents">Documents</a>
+                    </li>
+                    <li class="gr-1">
+                        <a href="#articles">Articles</a>
+                    </li>
+                    <li class="gr-1">
+                        <a href="#analytics">Analytics</a>
+                    </li>
+                    <li class="gr-1">
+                        {{ $mission->status }}
+                    </li>
+                    <li class="gr-1">
+                        {{ $mission->outcome }}
+                    </li>
+                    <li class="gr-1 actions">
                         <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
-                        <i class="fa fa-twitter"></i>
-                        <i class="fa fa-rss"></i>
                     </li>
                 </ul>
             </nav>
 
             <section class="highlights">
                 @if(isset($pastMission))
-                    <div class="past-mission-link">
-                        <a href="/missions/{{ $pastMission->slug }}">{{ $pastMission->name }}</a>
-                        <span>Previous Mission</span>
-                    </div>
+                    <a href="/missions/{{ $pastMission->slug }}">
+                        <div class="mission-link past-mission-link">
+                            <span class="placeholder">Previous Mission</span>
+                            <span class="link"><i class="fa fa-arrow-left"></i> {{ $pastMission->name }}</span>
+                        </div>
+                    </a>
                 @endif
                 @if(isset($futureMission))
-                    <div class="future-mission-link">
-                        <a href="/missions/{{ $futureMission->slug }}">{{ $futureMission->name }}</a>
-                        <span>Next Mission</span>
-                    </div>
+                    <a href="/missions/{{ $futureMission->slug }}">
+                        <div class="mission-link future-mission-link">
+                            <span class="link">{{ $futureMission->name }} <i class="fa fa-arrow-right"></i></span>
+                            <span class="placeholder">Next Mission</span>
+                        </div>
+                    </a>
                 @endif
             </section>
 
             {!! $mission->present()->article() !!}
 
             <h2>Details</h2>
-            @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
-            <div class="gr-8">
-                <h3>Flight Details</h3>
-                @if(count($mission->spaceflightFlight))
-                    <h3>Dragon</h3>
-                @endif
-                <h3>Satellites</h3>
-                <h3>Upper Stage</h3>
-            </div>
-            <div class="gr-4">
-                <h3>Library</h3>
-                <ul class="library">
-
-                    <li id="launch-video">
-                        <span>Watch the Launch</span>
-                    </li>
-
-                    @if($mission->missionPatch()->count() == 1)
-                        <li id="mission-patch">
-                            <img src="{{ $mission->missionPatch->thumb_small }}"/>
-                            <span>{{ $mission->name }} Mission Patch</span>
-                        </li>
+            <section id="details" class="scrollto">
+                @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
+                <div class="gr-8">
+                    <h3>Flight Details</h3>
+                    @if(count($mission->spaceflightFlight))
+                        <h3>Dragon</h3>
                     @endif
+                    <h3>Satellites</h3>
+                    <h3>Upper Stage</h3>
+                </div>
+                <div class="gr-4">
+                    <h3>Library</h3>
+                    <ul class="library">
 
-                    <li id="press-kit">
-                        <span>Press Kit</span>
-                    </li>
-
-                    @if($mission->spacecraftFlight()->count() == 1)
-                        <li id="cargo-manifest">
-                            <span>Cargo Manifest</span>
+                        <li id="launch-video">
+                            <span>Watch the Launch</span>
                         </li>
-                    @endif
 
-                    <li id="prelaunch-press-conference">
-                        <span>Prelaunch Press Conference</span>
-                    </li>
+                        @if($mission->missionPatch()->count() == 1)
+                            <li id="mission-patch">
+                                <img src="{{ $mission->missionPatch->thumb_small }}"/>
+                                <span>{{ $mission->name }} Mission Patch</span>
+                            </li>
+                        @endif
 
-                    <li id="postlaunch-press-conference">
-                        <span>Postlaunch Press Conference</span>
-                    </li>
+                        <li id="press-kit">
+                            <span>Press Kit</span>
+                        </li>
 
-                    <li id="reddit-discussion">
-                        <span>/r/SpaceX Reddit Live Thread</span>
-                    </li>
+                        @if($mission->spacecraftFlight()->count() == 1)
+                            <li id="cargo-manifest">
+                                <span>Cargo Manifest</span>
+                            </li>
+                        @endif
 
-                    <li id="flightclub-link">
-                        <span>FlightClub Simulation</span>
-                    </li>
+                        <li id="prelaunch-press-conference">
+                            <span>Prelaunch Press Conference</span>
+                        </li>
 
-                    <li id="raw-data-download">
-                        <span><a href="/missions/{{ $mission->slug }}/raw">Raw Data Download</a></span>
-                    </li>
+                        <li id="postlaunch-press-conference">
+                            <span>Postlaunch Press Conference</span>
+                        </li>
 
-                    <li id="mission-collection">
-                        <span>{{ $mission->name }} Mission Collection</span>
-                    </li>
+                        <li id="reddit-discussion">
+                            <span>/r/SpaceX Reddit Live Thread</span>
+                        </li>
 
-                </ul>
-            </div>
+                        <li id="flightclub-link">
+                            <span>FlightClub Simulation</span>
+                        </li>
+
+                        <li id="raw-data-download">
+                            <span><a href="/missions/{{ $mission->slug }}/raw">Raw Data Download</a></span>
+                        </li>
+
+                        <li id="mission-collection">
+                            <span>{{ $mission->name }} Mission Collection</span>
+                        </li>
+
+                    </ul>
+                </div>
+            </section>
+
             <h2>Timeline</h2>
-            <h3>Prelaunch</h3>
-            <h3>Launch</h3>
-            <h3>Postlaunch</h3>
+            <section id="timeline" class="scrollto">
+                <h3>Prelaunch</h3>
+                <h3>Launch</h3>
+                <h3>Postlaunch</h3>
+            </section>
 
             <h2>Images</h2>
-            <section class="images">
+            <section id="images" class="scrollto">
             </section>
+
             <h2>Videos</h2>
-            <section class="videos">
+            <section id="videos" class="scrollto">
             </section>
+
             <h2>Documents</h2>
-            <section class="documents">
+            <section id="documents" class="scrollto">
             </section>
+
             <h2>Articles</h2>
-            <section class="articles">
+            <section id="articles" class="scrollto">
             </section>
 
             <h2>Analytics</h2>
-            <section class="analytics container">
+            <section id="analytics" class="scrollto container">
                 <div class="gr-4">
                     <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
                 </div>
