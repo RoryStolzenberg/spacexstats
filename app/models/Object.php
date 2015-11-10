@@ -230,7 +230,7 @@ class Object extends Model implements UploadableInterface {
 
         if ($this->hasThumbs()) {
             if ($this->hasLocalThumbs()) {
-                return '/media/temporary/small/' . $this->thumb_filename;
+                return '/media/local/small/' . $this->thumb_filename;
             }
 
             if ($this->hasCloudThumbs()) {
@@ -259,7 +259,7 @@ class Object extends Model implements UploadableInterface {
 
         if ($this->hasThumbs()) {
             if ($this->hasLocalThumbs()) {
-                return '/media/temporary/large/' . $this->thumb_filename;
+                return '/media/local/large/' . $this->thumb_filename;
             }
 
             if ($this->hasCloudThumbs()) {
