@@ -36,14 +36,18 @@
                     <li class="gr-1">
                         <a href="#analytics">Analytics</a>
                     </li>
-                    <li class="gr-1">
-                        {{ $mission->status }}
-                    </li>
-                    <li class="gr-1">
-                        {{ $mission->outcome }}
-                    </li>
                     <li class="gr-1 actions">
                         <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
+                    </li>
+                    <li class="gr-1">
+                        <span>{{ $mission->status }}</span>
+                    </li>
+                    <li class="gr-1">
+                        @if ($mission->outcome == 'Success')
+                            <span><i class="fa fa-check"></i>Success</span>
+                        @else
+                            <span><i class="fa fa-cross"></i>Success</span>
+                        @endif
                     </li>
                 </ul>
             </nav>
