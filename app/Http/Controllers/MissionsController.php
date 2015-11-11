@@ -6,6 +6,7 @@ use Redis;
 use JavaScript;
 use SpaceXStats\Http\Requests\CreateMissionRequest;
 use SpaceXStats\Http\Requests\EditMissionRequest;
+use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\ModelManagers\MissionManager;
@@ -46,6 +47,7 @@ class MissionsController extends Controller {
                 'mission' => $mission,
                 'webcast' => Redis::hgetall('webcast')
             ]);
+
 			return view('missions.futureMission', $data);
 		} else {
 
@@ -56,6 +58,11 @@ class MissionsController extends Controller {
             }
 
             JavaScript::put($js);
+
+            $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
+            $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
+            $data['launchVideo'];
+
             return view('missions.pastMission', $data);
         }
 	}

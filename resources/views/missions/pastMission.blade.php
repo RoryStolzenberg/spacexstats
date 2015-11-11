@@ -151,6 +151,8 @@
 
             <h2>Articles</h2>
             <section id="articles" class="scrollto">
+                @foreach ($mission->articles() as $article)
+                @endforeach
             </section>
 
             <h2>Timeline</h2>
