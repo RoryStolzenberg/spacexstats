@@ -40,13 +40,13 @@
                         <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
                     </li>
                     <li class="gr-1">
-                        <span>{{ $mission->status }}</span>
+                        <span class="status complete"><i class="fa fa-flag"></i> {{ $mission->status }}</span>
                     </li>
                     <li class="gr-1">
                         @if ($mission->outcome == 'Success')
-                            <span><i class="fa fa-check"></i>Success</span>
+                            <span class="outcome success"><i class="fa fa-check"></i> Success</span>
                         @else
-                            <span><i class="fa fa-cross"></i>Success</span>
+                            <span class="outcome failure"><i class="fa fa-cross"></i> Failure</span>
                         @endif
                     </li>
                 </ul>
@@ -132,16 +132,8 @@
                         <li id="mission-collection">
                             <span>{{ $mission->name }} Mission Collection</span>
                         </li>
-
                     </ul>
                 </div>
-            </section>
-
-            <h2>Timeline</h2>
-            <section id="timeline" class="scrollto">
-                <h3>Prelaunch</h3>
-                <h3>Launch</h3>
-                <h3>Postlaunch</h3>
             </section>
 
             <h2>Images</h2>
@@ -158,6 +150,43 @@
 
             <h2>Articles</h2>
             <section id="articles" class="scrollto">
+            </section>
+
+            <h2>Timeline</h2>
+            <section id="timeline" class="scrollto">
+                <h3>Prelaunch</h3>
+                    <table>
+                        <tr>
+                            <th>Occurred At</th>
+                            <th>Event Type</th>
+                            <th>Summary</th>
+                            <th>Scheduled Lauch at time of event</th>
+                        </tr>
+                        @foreach ($prelaunchEvents as $prelaunchEvent)
+                            <tr>
+                                <td>{{ $prelaunchEvent->occurred_at }}</td>
+                                <td>{{ $prelaunchEvent->event }}</td>
+                                <td>{{ $prelaunchEvent->summary }}</td>
+                                <td>{{ $prelaunchEvent->scheduled_launch_date_time }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+
+                <h3>Launch</h3>
+                    <p>The following data represents telemetry and readouts from the launch loop at SpaceX's Hawthorne HQ.</p>
+                    <table>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Telemetry</th>
+                        </tr>
+                        @foreach($telemetries as $telemetry)
+                            <tr>
+                                <td>{{ $telemetry->timestamp }}</td>
+                                <td>{{ $telemetry->telemetry }}</td>
+                            </tr>
+                        @endforeach
+                    </table>
+                <h3>Postlaunch</h3>
             </section>
 
             <h2>Analytics</h2>

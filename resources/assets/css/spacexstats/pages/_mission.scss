@@ -48,6 +48,21 @@
     }
 }
 
+.outcome, .status {
+    border-radius:$border-radius-small;
+    color:$white;
+
+    &.
+
+    &.success {
+        background-color:$green;
+    }
+
+    &.failure {
+        background-color:$red;
+    }
+}
+
 .display-date-time {
     position:absolute;
     right:0;
@@ -109,3 +124,4 @@ section.details {
 
     }
 }
+
