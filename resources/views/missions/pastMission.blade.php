@@ -80,6 +80,7 @@
                     <h3>Flight Details</h3>
                     @if(count($mission->spaceflightFlight))
                         <h3>Dragon</h3>
+                        @include('templates.spacecraftCard')
                     @endif
                     <h3>Satellites</h3>
                     <h3>Upper Stage</h3>

@@ -11,10 +11,18 @@
             <main>
                 <nav class="sticky-bar">
                     <ul class="container">
-                        <li class="gr-1">Countdown</li>
-                        <li class="gr-1">Details</li>
-                        <li class="gr-1">Timeline</li>
-                        <li class="gr-1">Articles</li>
+                        <li class="gr-1">
+                            <a href="#countdown">Countdown</a>
+                        </li>
+                        <li class="gr-1">
+                            <a href="#details">Details</a>
+                        </li>
+                        <li class="gr-1">
+                            <a href="#timeline">Timeline</a>
+                        </li>
+                        <li class="gr-1">
+                            <a href="#articles">Articles</a>
+                        </li>
 
                         <li class="gr-2 prefix-3 actions">
                             @if (Auth::isAdmin())
@@ -87,17 +95,21 @@
                 </section>
                 <p>{{ $mission->summary }}</p>
                 <h2>Details</h2>
-                <section class="details">
+                <section class="scrollto" id="details">
+                    <h3>Live</h3>
                     <div id="live-tweets">
 
                     </div>
+
+                    <h3>Satellites</h3>
                 </section>
+
                 <h2>Timeline</h2>
-                <section class="timeline">
+                <section class="scrollto" id="timeline">
                     <canvas></canvas>
                 </section>
                 <h2>Articles</h2>
-                <section class="articles">
+                <section class="scrollto" id="articles">
                     @foreach ($mission->articles() as $article)
                     @endforeach
                 </section>
