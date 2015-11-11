@@ -1,3 +1,9 @@
+$launch-date-time-width = 250px;
+
+body.future-mission .highlights {
+    padding-right:$launch-date-time-width;
+}
+
 .mission-link {
     display:inline-block;
     overflow:hidden;
@@ -78,7 +84,7 @@
     position:absolute;
     right:0;
     top:0;
-    width:240px;
+    width:$launch-date-time-width;
 
     .launch {
         display:inline-block;
