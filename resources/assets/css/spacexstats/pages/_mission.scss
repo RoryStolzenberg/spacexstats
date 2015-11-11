@@ -78,8 +78,7 @@
     position:absolute;
     right:0;
     top:0;
-    width:225px;
-
+    width:240px;
 
     .launch {
         display:inline-block;
@@ -104,6 +103,14 @@
             position: absolute;
             content: "";
         }
+    }
+
+    .timezone-list {
+        display:none;
+    }
+
+    &:hover .timezone-list {
+        display:block;
     }
 
     .timezone {

@@ -1,7 +1,6 @@
 <?php
 use Illuminate\Database\Seeder;
 use SpaceXStats\Models\Spacecraft;
-use SpaceXStats\Models\Vehicle;
 
 class SpacecraftTableSeeder extends Seeder {
     public function run() {

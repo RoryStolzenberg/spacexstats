@@ -7588,6 +7588,9 @@ nav.sticky-bar {
   width: 100%;
   position: relative; }
 
+.actions {
+  font-size: 16px; }
+
 form ul li {
   padding: 10px; }
 
@@ -8233,7 +8236,7 @@ section.comments {
   position: absolute;
   right: 0;
   top: 0;
-  width: 225px; }
+  width: 240px; }
   .display-date-time .launch {
     display: inline-block;
     text-align: right;
@@ -8255,6 +8258,10 @@ section.comments {
       right: 0;
       position: absolute;
       content: ""; }
+  .display-date-time .timezone-list {
+    display: none; }
+  .display-date-time:hover .timezone-list {
+    display: block; }
   .display-date-time .timezone {
     font-size: 14px;
     color: #21272B;

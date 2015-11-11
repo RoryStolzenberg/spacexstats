@@ -1,6 +1,6 @@
 <div class="card mission-card {{ $size }}">
 	<div class="top">
-		<div class="thumb" style="background-image:url('{{ $mission->featuredImage->media_thumb_small }}');"></div>
+		<div class="thumb" style="background-image:url('{{ !is_null($mission->featuredImage) ? $mission->featuredImage->media_thumb_small : null }}');"></div>
 		<p>
             <span class="mission-name">
                 <a href="/missions/{{ $mission->slug }}">{{ $mission->name }}</a>
@@ -45,7 +45,7 @@
                     <div class="gr-1on9 smallcaps">Launch of the Year</div>
                 @endif
                 @if ($mission->status == 'Upcoming')
-				    <div class="gr-1on9 smallcaps">Probability</div>
+				    <div class="gr-1on9 smallcaps">Probability of Launch</div>
                 @endif
 				<div class="gr-1on9 smallcaps">Vehicle</div>
 				<div class="gr-1on9 smallcaps">Destination</div>

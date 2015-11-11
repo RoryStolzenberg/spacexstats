@@ -9,7 +9,7 @@
         <div class="content-wrapper" ng-controller="futureMissionController" ng-strict-di>
             <h1>{{ $mission->name }}</h1>
             <main>
-                <nav class="sticky-bar">
+                <nav class="in-page sticky-bar">
                     <ul class="container">
                         <li class="gr-1">
                             <a href="#countdown">Countdown</a>
@@ -24,7 +24,7 @@
                             <a href="#articles">Articles</a>
                         </li>
 
-                        <li class="gr-2 prefix-3 actions">
+                        <li class="gr-2 float-right actions">
                             @if (Auth::isAdmin())
                                 <a class="link" href="/missions/{{ $mission->slug }}/edit">
                                     <i class="fa fa-pencil"></i>
@@ -46,7 +46,7 @@
                                 <i class="fa fa-rss"></i>
                             </a>
                         </li>
-                        <li class="gr-1">
+                        <li class="gr-1 float-right">
                             @if ($mission->status == 'Complete')
                                 <span class="status complete"><i class="fa fa-check"></i> Complete</span>
                             @elseif ($mission->status == 'In Progress')
@@ -64,26 +64,30 @@
                     </div>
 
                     @if(isset($pastMission))
-                        <div class="past-mission-link">
-                            <a href="/missions/{{ $pastMission->slug }}">{{ $pastMission->name }}</a>
-                            <span>Previous Mission</span>
-                        </div>
+                        <a href="/missions/{{ $pastMission->slug }}">
+                            <div class="mission-link past-mission-link">
+                                <span class="placeholder">Previous Mission</span>
+                                <span class="link"><i class="fa fa-arrow-left"></i> {{ $pastMission->name }}</span>
+                            </div>
+                        </a>
                     @endif
                     @if(isset($futureMission))
-                        <div class="future-mission-link">
-                            <a href="/missions/{{ $futureMission->slug }}">{{ $futureMission->name }}</a>
-                            <span>Next Mission</span>
-                        </div>
+                        <a href="/missions/{{ $futureMission->slug }}">
+                            <div class="mission-link future-mission-link">
+                                <span class="link">{{ $futureMission->name }} <i class="fa fa-arrow-right"></i></span>
+                                <span class="placeholder">Next Mission</span>
+                            </div>
+                        </a>
                     @endif
 
-                    <div ng-if="isLaunchExact == true" class="display-date-time">
-                        <div class="launch">@{{ launchDateTime | date:currentFormat:currentTimezone}}</div>
-                        <div class="timezone">
+                    <div class="display-date-time">
+                        <div class="launch">@{{ displayDateTime() }}</div>
+                        <div class="timezone" ng-if="isLaunchExact == true">
                             <span class="timezone-current">@{{ currentTimezoneFormatted }}</span>
                             <ul class="timezone-list">
                                 <li class="timezone-option" ng-click="setTimezone('local')">Local (@{{ localTimezone }})</li>
-                                <li class="timezone-option" ng-click="setTimezone('ET')">ET</li>
-                                <li class="timezone-option" ng-click="setTimezone('PT')">PT</li>
+                                <li class="timezone-option" ng-click="setTimezone('ET')">Eastern</li>
+                                <li class="timezone-option" ng-click="setTimezone('PT')">Pacific</li>
                                 <li class="timezone-option" ng-click="setTimezone('UTC')">UTC</li>
                             </ul>
                         </div>
@@ -94,8 +98,12 @@
                     <countdown specificity="launchSpecificity" countdown-to="launchDateTime" callback="requestFrequencyManager"></countdown>
                 </section>
                 <p>{{ $mission->summary }}</p>
+
                 <h2>Details</h2>
                 <section class="scrollto" id="details">
+
+                    @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
+
                     <h3>Live</h3>
                     <div id="live-tweets">
 
