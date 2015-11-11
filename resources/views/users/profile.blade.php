@@ -9,15 +9,24 @@
     <div class="content-wrapper">
         <h1>{{ $user->username }}</h1>
         <main>
-            <nav class="sticky-bar">
+            <nav class="in-page sticky-bar">
                 <ul class="container">
-                    <li class="gr-1"><a href="#overview">Overview</a></li>
-                    <li class="gr-1"><a href="#favorites">Favorites</a></li>
+                    <li class="gr-1">
+                        <a href="#overview">Overview</a>
+                    </li>
+
+                    <li class="gr-1">
+                        <a href="#favorites">Favorites</a>
+                    </li>
+
                     @if (Auth::check() && Auth::user()->username === $user->username)
                         <li class="gr-1">Notes</li>
                     @endif
+
                     <li class="gr-1">Uploads</li>
+
                     <li class="gr-1">Comments</li>
+
                     @if (Auth::check() && Auth::user()->username === $user->username)
                         <li class="gr-1"><a href="/users/{{ $user->username }}/edit"><i class="fa fa-pencil"></i></a></li>
                     @endif

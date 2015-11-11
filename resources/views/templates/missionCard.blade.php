@@ -1,7 +1,13 @@
 <div class="card mission-card {{ $size }}">
 	<div class="top">
-		<div class="thumb" style="background-image:url(/media/1454e6bb28540a77.93511822.jpeg);"></div>
-		<p><span><a href="/missions/{{ $mission->slug }}">{{ $mission->name }}</a></span> for <span>{{ $mission->contractor }}</span></p>
+		<div class="thumb" style="background-image:url('{{ $mission->featuredImage->media_thumb_small }}');"></div>
+		<p>
+            <span class="mission-name">
+                <a href="/missions/{{ $mission->slug }}">{{ $mission->name }}</a>
+            </span>
+            <span class="for"> for </span>
+            <span class="mission-contractor">{{ $mission->contractor }}</span>
+        </p>
 	</div>
 	<div class="bottom">
 		@if ($size == 'small')

@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder {
         $this->call('AstronautsTableSeeder');
         $this->call('MissionTypesTableSeeder');
         $this->call('PublishersTableSeeder');
+        $this->call('SpacecraftTableSeeder');
+        $this->call('SpacecraftFlightsTableSeeder');
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 	}

@@ -4,8 +4,7 @@
 @section('content')
 <body class="past-mission" ng-controller="pastMissionController" ng-strict-di>
 
-
-    @include('templates.header', array('backgroundImage' => !is_null($mission->featuredImage) ? $mission->featuredImage->local_file : ''))
+    @include('templates.header', array('backgroundImage' => !is_null($mission->featuredImage) ? $mission->featuredImage->media : ''))
 
     <div class="content-wrapper">
         <h1>{{ $mission->name }}</h1>
@@ -39,10 +38,10 @@
                     <li class="gr-1 actions">
                         <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
                     </li>
-                    <li class="gr-1">
+                    <li class="gr-1 float-right">
                         <span class="status complete"><i class="fa fa-flag"></i> {{ $mission->status }}</span>
                     </li>
-                    <li class="gr-1">
+                    <li class="gr-1 float-right">
                         @if ($mission->outcome == 'Success')
                             <span class="outcome success"><i class="fa fa-check"></i> Success</span>
                         @else
@@ -78,8 +77,10 @@
                 @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
                 <div class="gr-8">
                     <h3>Flight Details</h3>
+                    <mission-profile></mission-profile>
+
                     @if(count($mission->spaceflightFlight))
-                        <h3>Dragon</h3>
+                        <h3>{{ $mission->spaceflightFlight->spacecraft->name }}</h3>
                         @include('templates.spacecraftCard')
                     @endif
                     <h3>Satellites</h3>
@@ -165,7 +166,7 @@
                             <th>Summary</th>
                             <th>Scheduled Lauch at time of event</th>
                         </tr>
-                        @foreach ($prelaunchEvents as $prelaunchEvent)
+                        @foreach ($mission->prelaunchEvents as $prelaunchEvent)
                             <tr>
                                 <td>{{ $prelaunchEvent->occurred_at }}</td>
                                 <td>{{ $prelaunchEvent->event }}</td>
@@ -182,7 +183,7 @@
                             <th>Timestamp</th>
                             <th>Telemetry</th>
                         </tr>
-                        @foreach($telemetries as $telemetry)
+                        @foreach($mission->telemetries as $telemetry)
                             <tr>
                                 <td>{{ $telemetry->timestamp }}</td>
                                 <td>{{ $telemetry->telemetry }}</td>

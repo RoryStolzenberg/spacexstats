@@ -51,8 +51,19 @@
 .outcome, .status {
     border-radius:$border-radius-small;
     color:$white;
+    padding:3px 5px;
 
-    &.
+    &.complete {
+        background-color:$gold;
+    }
+
+    &.in-progress {
+        background-color:$gold;
+    }
+
+    &.upcoming {
+        background-color:$grey;
+    }
 
     &.success {
         background-color:$green;

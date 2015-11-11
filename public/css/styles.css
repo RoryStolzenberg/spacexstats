@@ -8214,6 +8214,21 @@ section.comments {
     -webkit-transition: all ease-in-out 0.3s;
             transition: all ease-in-out 0.3s; }
 
+.outcome, .status {
+  border-radius: 3px;
+  color: #FFF;
+  padding: 3px 5px; }
+  .outcome.complete, .status.complete {
+    background-color: #CCAC55; }
+  .outcome.in-progress, .status.in-progress {
+    background-color: #CCAC55; }
+  .outcome.upcoming, .status.upcoming {
+    background-color: #8B939B; }
+  .outcome.success, .status.success {
+    background-color: #40C085; }
+  .outcome.failure, .status.failure {
+    background-color: #C05B40; }
+
 .display-date-time {
   position: absolute;
   right: 0;
@@ -8457,6 +8472,52 @@ body.live {
   .object-card .object-overview {
     height: 100px; }
 
+.mission-card {
+  box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
+  width: 100%;
+  position: relative;
+  margin-top: 30px; }
+  .mission-card .top {
+    padding: 10px;
+    padding-left: 120px;
+    height: 80px;
+    color: #8B939B;
+    text-transform: uppercase;
+    font-family: "Segoe WP", sans-serif; }
+    .mission-card .top .mission-name {
+      font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+      font-size: 40px;
+      text-transform: initial; }
+    .mission-card .top .for {
+      padding: 0 10px;
+      font-size: 12px; }
+    .mission-card .top .mission-contractor {
+      font-size: 14px; }
+  .mission-card .bottom {
+    padding: 10px;
+    text-align: center;
+    vertical-align: middle; }
+  .mission-card .thumb {
+    background-size: cover;
+    background-position: center center;
+    border-radius: 8px;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    display: inline-block; }
+  .mission-card .launch-count {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #3569A4;
+    display: block;
+    color: #FFF;
+    line-height: 50px;
+    text-align: center;
+    margin: 0 auto; }
+
 /* -------------- CONTENT ----------------- */
 p {
   padding-top: 10px;
@@ -8492,40 +8553,6 @@ section.question-list {
      -moz-columns: 3 200px;
           columns: 3 200px;
   text-align: center; }
-
-/* --------------- MISSION CARDS ----------------- */
-.mission-card {
-  box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
-  width: 100%;
-  position: relative;
-  margin-top: 30px; }
-  .mission-card .top {
-    padding: 10px;
-    padding-left: 120px;
-    height: 80px; }
-  .mission-card .bottom {
-    padding: 10px;
-    text-align: center; }
-  .mission-card .thumb {
-    background-size: cover;
-    background-position: center center;
-    border-radius: 8px;
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    top: -20px;
-    left: 10px;
-    display: inline-block; }
-  .mission-card .launch-count {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #3569A4;
-    display: block;
-    color: #FFF;
-    line-height: 50px;
-    text-align: center;
-    margin: 0 auto; }
 
 /* --------------- LOCATIONS ----------------- */
 #location-nav {
