@@ -118,7 +118,7 @@ h3 {
 section {
     &:before,
     &:after {
-        content: ".";
+        content: "";
         display: block;
         height: 0;
         overflow: hidden;
@@ -136,7 +136,26 @@ p {
     border-bottom:1px solid $bordergrey;
 }
 
-/// Text
+// Text
+p {
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size:14px;
+}
+
+a:link, a:visited, a:hover, a:active {
+    color:inherit;
+    text-decoration:inherit;
+}
+
+.smallcaps {
+    font-size:14px;
+    color:$lightblack;
+    text-transform: uppercase;
+    font-weight:600;
+    font-family:$segoeWP;
+}
+
 .lowvisibility {
     &.color {
         color:$bordergrey;
@@ -153,4 +172,8 @@ p {
 
 .code {
     font-family:"Source Code Pro";
+}
+
+.hidden {
+    display:none;
 }

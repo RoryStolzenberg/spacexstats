@@ -39,3 +39,7 @@ Route::get('faq','QuestionsController@index');
 Route::get('admin', 'AdminController@index')->before('mustBe:Administrator');
 
 Route::get('newssummaries', 'NewsSummariesController@index');
+
+Route::get('about/rulesandtermsofservice', function() {
+    return View::make('about.rulesAndTermsOfService');
+});

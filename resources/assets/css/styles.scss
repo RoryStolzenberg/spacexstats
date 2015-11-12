@@ -31,26 +31,6 @@
 @import "spacexstats/components/objectCard";
 @import "spacexstats/components/missionCard";
 
-/* -------------- CONTENT ----------------- */
-p {
-    padding-top:10px;
-    padding-bottom:10px;
-    font-size:14px;
-}
-
-a:link, a:visited, a:hover, a:active {
-    color:inherit;
-    text-decoration:inherit;
-}
-
-.hidden {
-    display:none;
-}
-
-.smallcaps {
-    @include smallCaps();
-}
-
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {
     background-color:$blue;
@@ -59,9 +39,6 @@ a:link, a:visited, a:hover, a:active {
     margin:0 10px;
     overflow:hidden;
 }
-
-/* --------------- FORM DESIGN ----------------- */
-
 
 /* --------------- FAQS ----------------- */
 section.question-list {

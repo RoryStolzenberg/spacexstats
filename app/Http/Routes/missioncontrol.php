@@ -1,7 +1,7 @@
 <?php
-Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'), function() {
+Route::group(['prefix' => 'missioncontrol', 'namespace' => 'MissionControl'], function() {
 
-    Route::group(array('middleware' => 'auth'), function() {
+    Route::group(['middleware' => 'auth'], function() {
 
         Route::get('/create/retrievetweet', 'UploadController@retrieveTweet');
         Route::get('/create/retrieveredditcomment', 'UploadController@retrieveRedditComment');
@@ -9,20 +9,17 @@ Route::group(array('prefix' => 'missioncontrol', 'namespace' => 'MissionControl'
         Route::get('/success', 'PaymentController@success');
     });
 
-    Route::group(array('middleware' => 'mustBe:Administrator'), function() {
+    Route::group(['middleware' => 'mustBe:Administrator'], function() {
         Route::get('/review', 'ReviewController@index');
         Route::get('/review/get', 'ReviewController@get');
         Route::post('/review/update/{object_id}', 'ReviewController@update')->before('doesExist:Object');
     });
 
-    Route::get('/about', array('as' => 'missionControl.about', function() {
-        return View::make('missionControl.about', array(
-            'title' => 'Misson Control',
-            'currentPage' => 'mission-control-about'
-        ));
-    }));
+    Route::get('/about', function() {
+        return View::make('missionControl.about');
+    });
 
-    Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
+    Route::group(['middleware' => 'mustBe:Subscriber'], function() {
 
         Route::get('/fetch', 'MissionControlController@fetch');
 

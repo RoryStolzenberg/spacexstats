@@ -3,7 +3,7 @@ form {
         padding:10px;
     }
 
-    label {
+    label, .label {
         @include smallCaps();
         line-height: 2;
         margin:0 10px;
@@ -60,6 +60,14 @@ form {
             border-radius: 100px;
             cursor: pointer;
             transition: all .3s ease;
+
+            span {
+                position: relative;
+                left: 50px;
+                min-width: 200px;
+                display: block;
+                line-height: 1.5;
+            }
 
             &:after {
                 position: absolute;

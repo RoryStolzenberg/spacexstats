@@ -124,18 +124,3 @@ $h1-height: 150px;
     //background-image: linear-gradient(rgba(#33495E, 0.5), rgba($slateblack, 0.5)), url($backgroundImage);
     //-ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#BF21272B', endColorstr='#BF21272B', gradientType='0')";
 }
-
-@mixin smallCaps() {
-    font-size:14px;
-    color:$lightblack;
-    text-transform: uppercase;
-    font-weight:600;
-    font-family:$segoeWP;
-}
-
-/* ----------------- HELPER CLASSES --------------- */
-@each $align in left, right, center {
-    .text-#{$align} {
-        text-align:$align;
-    }
-}
