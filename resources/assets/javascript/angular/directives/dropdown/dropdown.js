@@ -50,7 +50,7 @@
                 });
 
                 ngModelCtrl.$formatters.push(function(modelValue) {
-                    if ($scope.idOnly === 'true') {
+                    if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
                         return $scope.options.filter(function(option) {
                             return option.id = modelValue;
                         });
