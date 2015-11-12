@@ -42,6 +42,6 @@ class SpacecraftFlight extends Model {
     }
 
     public function astronautFlights() {
-        return $this->hasMany('SpaceXStats\Models\AstronautFlight', 'astronaut_flights_pivot');
+        return $this->hasMany('SpaceXStats\Models\AstronautFlight');
     }
 }

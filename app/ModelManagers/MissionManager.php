@@ -29,6 +29,9 @@ class MissionManager {
         $this->astronautFlight      = $astronautFlight;
         $this->astronaut            = $astronaut;
         $this->telemetry            = $telemetry;
+        $this->prelaunchEvent       = $prelaunchEvent;
+
+        $
     }
 
     public function isValid() {
@@ -127,9 +130,9 @@ class MissionManager {
             $this->mission->status = 'Upcoming';
             $this->mission->push();
 
-            $this->createPayloadRelations();
+            $this->managePayloadRelations();
             $this->managePartFlightRelations();
-            $this->createSpacecraftFlightRelation();
+            $this->manageSpacecraftFlightRelation();
             $this->createPrelaunchEventRelation();
 
             DB::commit();
@@ -142,18 +145,19 @@ class MissionManager {
 
     public function update() {
 
-        $this->mission = Mission::with('payloads', 'partFlights', 'spacecraftFlight', 'telemetries')->find($this->input('mission')['mission_id']);
+        $this->mission = Mission::with('payloads', 'partFlights.part', 'spacecraftFlight.astronautFlights.astronaut', 'telemetries')->find($this->input('mission')['mission_id']);
 
         DB::beginTransaction();
         try {
             // Fill mission
             $this->mission->fill($this->input('mission'));
             $this->mission->save();
-            $this->mission->push();
+            //$this->mission->push();
 
             // Update any relations, create new relations, delete any relations which have been removed.
-            $this->updatePayloadRelations();
+            $this->managePayloadRelations();
             $this->managePartFlightRelations();
+            $this->manageSpacecraftFlightRelation();
             $this->manageTelemetryRelations();
 
             DB::commit();
@@ -173,6 +177,8 @@ class MissionManager {
         } else if ($filter == 'payloads') {
             return $this->input['mission']['payloads'];
 
+        } else if ($filter == 'spacecraft') {
+            return $this->input['mission']['spacecraft_flight']['spacecraft'];
         }
     }
 
@@ -182,13 +188,7 @@ class MissionManager {
         $payload->save();
     }
 
-    private function createPayloadRelations() {
-        foreach ($this->input('payloads') as $payloadInput) {
-            $this->createPayload($payloadInput);
-        }
-    }
-
-    private function updatePayloadRelations() {
+    private function managePayloadRelations() {
         $currentPayloads = $this->mission->payloads->keyBy('payload_id');
 
         foreach ($this->input('payloads') as $payloadInput) {
@@ -235,85 +235,69 @@ class MissionManager {
 
         // Delete any remaining partflights
         if (!$currentPartFlights->isEmpty()) {
-            PartFlight::whereIn('part_flight_id', $currentPartFlights->keys())->delete();
+            $partFlightsToDelete = PartFlight::whereIn('part_flight_id', $currentPartFlights->keys());
+
+            // For each partFlight, if it has a part which has not been used elsewhere, also delete it
+            foreach($partFlightsToDelete as $partFlightToDelete) {
+
+                if ($partFlight->part()->partFlights()->count() > 1) {
+                    $partFlightToDelete->part()->delete();
+                }
+
+                $partFlightToDelete->delete();
+            }
         }
     }
+    private function manageSpacecraftFlightRelation() {
+        $currentSpacecraftFlight = $this->mission->spacecraftFlight;
+        $spacecraftInput = array_pull($this->input['mission']['spacecraft_flight'], 'spacecraft');
 
-    private function createSpacecraftFlightRelation() {
+        // If the input spacecraft flight exists (create/update)
         if (!is_null($this->input['mission']['spacecraft_flight'])) {
-            $spacecraftFlight = new SpacecraftFlight();
+            $spacecraftFlight = $currentSpacecraftFlight->count() == true ? $this->mission->spacecraftFlight->fill($spacecraftInput) : new SpacecraftFlight($spacecraftInput);
 
-            $spacecraftInput = array_pull($this->input['mission']['spacecraft_flight'], 'spacecraft');
-
-            // Create part if it is not being reused or otherwise find it
+            // Create spacecraft if it is not being reused or otherwise find it and update it
             $spacecraft = array_key_exists('spacecraft_id', $spacecraftInput) ? Spacecraft::find($spacecraftInput['spacecraft_id']) : new Spacecraft();
             $spacecraft->fill($spacecraftInput);
-            $spacecraft->save();
 
             $spacecraft->spacecraftFlights()->save($spacecraftFlight);
             $spacecraftFlight->mission()->associate($this->mission);
 
-            if (array_key_exists($spacecraftFlight, 'astronaut_flights')) {
-                foreach ($spacecraftFlight['astronaut_flights'] as $astronautFlightInput)
-                {
-                    $astronautFlight = new AstronautFlight();
+            // Now manage astronautFlights and astronauts
+            $this->manageAstronautFlightsRelation();
 
-                    $astronautId = $astronautFlightInput['astronaut']['astronaut_id'];
-                    $astronaut = is_null($astronautId) ? new Astronaut() : Astronaut::find($astronautId);
-
-                    $astronaut->fill($astronautFlightInput['astronaut']);
-
-                    $astronaut->astronautFlights()->save($astronautFlightInput);
-                    $astronautFlight->spacecraftFlight()->associate($spacecraftFlight);
-                }
-            }
-        }
-    }
-
-    private function updateSpacecraftFlightRelation() {
-        $currentSpacecraftFlight = $this->mission->spacecraftFlight;
-
-        // If the input spacecraft flight exists and the current spacecraft flight does not (create)
-        if (!is_null($this->input['mission']['spacecraft_flight']) && $currentSpacecraftFlight->count() == false) {
-
-        // If the input spacecraft flight exists and the current spacecraft flight does (update)
-        } elseif (!is_null($this->input['mission']['spacecraft_flight']) && $currentSpacecraftFlight->count() == true) {
 
         // If the input spacecraft flight does not exist and the current spacecraft flight does (delete)
         } elseif (is_null($this->input['mission']['spacecraft_flight']) && $currentSpacecraftFlight->count() == true) {
+            $this->mission->spacecraftFlight->delete();
 
-        }
-
-
-        // -------------------------
-        $currentPartFlights = $this->mission->partFlights->keyBy('part_flight_id');
-
-        foreach ($this->input('partFlights') as $partFlightInput) {
-
-            // If the partFlight exists, update it, otherwise, create it
-            if (array_key_exists('part_flight_id', $partFlightInput)) {
-                $partFlight = $currentPartFlights->pull($partFlightInput['part_flight_id']);
-                $partFlight->fill($partFlightInput);
-
-            } else {
-                $partFlight = new Payload($partFlightInput);
-                $partFlight->mission()->associate($this->mission);
-            }
-
-            $partFlight->save();
-        }
-
-        // Delete any remaining payloads
-        if (!$currentPartFlights->isEmpty()) {
-            PartFlight::whereIn('part_flight_id', $currentPartFlights->keys())->delete();
+            // Also delete any astronaut flights & spacecraft (Maybe manage with database cascading?)
         }
     }
 
+    private function manageAstronautFlightsRelation() {
+        $astronautFlightsInput = array_pull($this->input['mission']['spacecraft_flight'], 'astronaut_flights');
+
+            foreach ($astronautFlightsInput as $astronautFlightInput)
+            {
+                $astronautFlight = array_key_exists('astronaut_flight_id', $astronautFlightInput) ? AstronautFlight::find($astronautFlightInput['astronaut_flight_id']) : new AstronautFlight();
+
+                $astronautId = $astronautFlightInput['astronaut']['astronaut_id'];
+                $astronaut = is_null($astronautId) ? new Astronaut() : Astronaut::find($astronautId);
+
+                $astronaut->fill($astronautFlightInput['astronaut']);
+
+                $astronaut->astronautFlights()->save($astronautFlightInput);
+                $astronautFlight->spacecraftFlight()->associate($spacecraftFlight);
+            }
+    }
+
     private function createPrelaunchEventRelation() {
-        $prelaunchEvent = new PrelaunchEvent();
-        $prelaunchEvent->event = 'Announcement';
-        $prelaunchEvent->occurred_at = Carbon::now();
-        $prelaunchEvent->summary = 'Mission Created';
+        $prelaunchEvent = PrelaunchEvent::create([
+            'event' => 'Announcement',
+            'occurred_at' => Carbon::now(),
+            'summary' => 'Mission created'
+        ]);
         $prelaunchEvent->mission()->associate($this->mission);
         $prelaunchEvent->save();
     }

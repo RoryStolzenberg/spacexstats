@@ -526,63 +526,63 @@ class Spacexstats extends Migration {
 
         // Add foreign keys
         Schema::table('astronauts_flights_pivot', function(Blueprint $table) {
-            $table->foreign('astronaut_id')->references('astronaut_id')->on('astronauts');
-            $table->foreign('spacecraft_flight_id')->references('spacecraft_flight_id')->on('spacecraft_flights_pivot');
+            $table->foreign('astronaut_id')->references('astronaut_id')->on('astronauts')->onDelete('restrict'); // Restrict deletion of an astronaut if that astronaut has astronaut flights
+            $table->foreign('spacecraft_flight_id')->references('spacecraft_flight_id')->on('spacecraft_flights_pivot')->onDelete('cascade'); // When a spacecraft flight is deleted, also delete any referencing astronaut flights
         });
 
         Schema::table('collections', function(Blueprint $table) {
-            $table->foreign('creating_user_id')->references('user_id')->on('users');
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
+            $table->foreign('creating_user_id')->references('user_id')->on('users')->onDelete('set null'); // When a user is deleted, set the creating user of the collection to null
+            $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('cascade'); // When a mission is deleted, also delete any referencing collections
         });
 
         Schema::table('collections_objects_pivot', function(Blueprint $table) {
-            $table->foreign('collection_id')->references('collection_id')->on('collections');
-            $table->foreign('object_id')->references('object_id')->on('objects');
+            $table->foreign('collection_id')->references('collection_id')->on('collections')->onDelete('cascade'); // When a collection is deleted, also delete any referencing collection_objects
+            $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade'); // When an object is deleted, also delete any referencing collection_object
         });
 
         Schema::table('dataviews', function(Blueprint $table) {
-            $table->foreign('banner_image')->references('object_id')->on('objects');
+            $table->foreign('banner_image')->references('object_id')->on('objects')->onDelete('set null'); // When an object is deleted, set the banner image to null
         });
 
         Schema::table('emails', function(Blueprint $table) {
-            $table->foreign('notification_id')->references('notification_id')->on('notifications');
+            $table->foreign('notification_id')->references('notification_id')->on('notifications')->onDelete('set null'); // When a notification is deleted, set the notification id of the email to null
         });
 
         Schema::table('live_updates', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null'); // When a user is deleted, set the user who made the live update to null
         });
 
         Schema::table('notifications', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('notification_type_id')->references('notification_type_id')->on('notification_types');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade'); // When a user is deleted, also delete any notifications they have
+            $table->foreign('notification_type_id')->references('notification_type_id')->on('notification_types')->onDelete('cascade'); // When a notification type is deleted, also delete any notifications
         });
 
         Schema::table('missions', function(Blueprint $table) {
-            $table->foreign('mission_type_id')->references('mission_type_id')->on('mission_types');
-            $table->foreign('vehicle_id')->references('vehicle_id')->on('vehicles');
-            $table->foreign('destination_id')->references('destination_id')->on('destinations');
-            $table->foreign('launch_site_id')->references('location_id')->on('locations');
+            $table->foreign('mission_type_id')->references('mission_type_id')->on('mission_types')->onDelete('restrict');
+            $table->foreign('vehicle_id')->references('vehicle_id')->on('vehicles')->onDelete('restrict');
+            $table->foreign('destination_id')->references('destination_id')->on('destinations')->onDelete('restrict');
+            $table->foreign('launch_site_id')->references('location_id')->on('locations')->onDelete('restrict');
 
-            $table->foreign('launch_video')->references('object_id')->on('objects');
-            $table->foreign('mission_patch')->references('object_id')->on('objects');
-            $table->foreign('press_kit')->references('object_id')->on('objects');
-            $table->foreign('cargo_manifest')->references('object_id')->on('objects');
-            $table->foreign('prelaunch_press_conference')->references('object_id')->on('objects');
-            $table->foreign('postlaunch_press_conference')->references('object_id')->on('objects');
-            $table->foreign('featured_image')->references('object_id')->on('objects');
+            $table->foreign('launch_video')->references('object_id')->on('objects')->onDelete('set null');
+            $table->foreign('mission_patch')->references('object_id')->on('objects')->onDelete('set null');
+            $table->foreign('press_kit')->references('object_id')->on('objects')->onDelete('set null');
+            $table->foreign('cargo_manifest')->references('object_id')->on('objects')->onDelete('set null');
+            $table->foreign('prelaunch_press_conference')->references('object_id')->on('objects')->onDelete('set null');
+            $table->foreign('postlaunch_press_conference')->references('object_id')->on('objects')->onDelete('set null');
+            $table->foreign('featured_image')->references('object_id')->on('objects')->onDelete('set null');
         });
 
         Schema::table('notes', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('object_id')->references('object_id')->on('objects');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade');
         });
 
         Schema::table('objects', function(Blueprint $table) {
             $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null');
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
+            $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('set null');
 
-            $table->foreign('publisher_id')->references('publisher_id')->on('publishers');
-            $table->foreign('tweeter_id')->references('tweeter_id')->on('tweeters');
+            $table->foreign('publisher_id')->references('publisher_id')->on('publishers')->onDelete('set null');
+            $table->foreign('tweeter_id')->references('tweeter_id')->on('tweeters')->onDelete('set null');
         });
 
         Schema::table('taggables_pivot', function(Blueprint $table) {
@@ -590,40 +590,40 @@ class Spacexstats extends Migration {
         });
 
         Schema::table('part_flights_pivot', function(Blueprint $table) {
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
-            $table->foreign('landing_site_id')->references('location_id')->on('locations');
-            $table->foreign('part_id')->references('part_id')->on('parts');
+            $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('cascade');
+            $table->foreign('landing_site_id')->references('location_id')->on('locations')->onDelete('restrict');
+            $table->foreign('part_id')->references('part_id')->on('parts')->onDelete('restrict');
         });
 
         Schema::table('payloads', function(Blueprint $table) {
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
+            $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('cascade');
         });
 
         Schema::table('prelaunch_events', function(Blueprint $table) {
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
+            $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('cascade');
         });
 
         Schema::table('profiles', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
-            $table->foreign('favorite_mission')->references('mission_id')->on('missions');
-            $table->foreign('favorite_mission_patch')->references('mission_id')->on('missions');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('favorite_mission')->references('mission_id')->on('missions')->onDelete('set null');
+            $table->foreign('favorite_mission_patch')->references('mission_id')->on('missions')->onDelete('set null');
         });
 
         Schema::table('searches', function(Blueprint $table) {
-            $table->foreign('user_id')->references('user_id')->on('users');
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null');
         });
 
         Schema::table('smses', function(Blueprint $table) {
-            $table->foreign('notification_id')->references('notification_id')->on('notifications');
+            $table->foreign('notification_id')->references('notification_id')->on('notifications')->onDelete('set null');
         });
 
         Schema::table('spacecraft_flights_pivot', function(Blueprint $table) {
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
-            $table->foreign('spacecraft_id')->references('spacecraft_id')->on('spacecraft');
+            $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('cascade');
+            $table->foreign('spacecraft_id')->references('spacecraft_id')->on('spacecraft')->onDelete('restrict');
         });
 
         Schema::table('telemetries', function(Blueprint $table) {
-            $table->foreign('mission_id')->references('mission_id')->on('missions');
+            $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('cascade');
         });
 
         Schema::table('users', function(Blueprint $table) {
