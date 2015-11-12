@@ -18,9 +18,6 @@
                         <a href="#details">Details</a>
                     </li>
                     <li class="gr-1">
-                        <a href="#timeline">Timeline</a>
-                    </li>
-                    <li class="gr-1">
                         <a href="#images">Images</a>
                     </li>
                     <li class="gr-1">
@@ -33,11 +30,16 @@
                         <a href="#articles">Articles</a>
                     </li>
                     <li class="gr-1">
+                        <a href="#timeline">Timeline</a>
+                    </li>
+                    <li class="gr-1">
                         <a href="#analytics">Analytics</a>
                     </li>
-                    <li class="gr-1 actions">
-                        <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
-                    </li>
+                    @if (Auth::isAdmin())
+                        <li class="gr-1 actions">
+                            <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
+                        </li>
+                    @endif
                     <li class="gr-1 float-right">
                         <span class="status complete"><i class="fa fa-flag"></i> {{ $mission->status }}</span>
                     </li>
@@ -119,21 +121,27 @@
                             <span>Postlaunch Press Conference</span>
                         </li>
 
-                        <li id="reddit-discussion">
-                            <span>/r/SpaceX Reddit Live Thread</span>
-                        </li>
+                        @if ($mission->reddit_discussion != null)
+                            <li id="reddit-discussion">
+                                <span>/r/SpaceX Reddit Live Thread</span>
+                            </li>
+                        @endif
 
-                        <li id="flightclub-link">
-                            <span>FlightClub Simulation</span>
-                        </li>
+                        @if ($mission->flightclub != null)
+                            <li id="flightclub-link">
+                                <span>FlightClub Simulation</span>
+                            </li>
+                        @endif
 
-                        <li id="raw-data-download">
-                            <span><a href="/missions/{{ $mission->slug }}/raw">Raw Data Download</a></span>
-                        </li>
+                        @if (Auth::isMember())
+                            <li id="raw-data-download">
+                                <span><a href="/missions/{{ $mission->slug }}/raw">Raw Data Download</a></span>
+                            </li>
 
-                        <li id="mission-collection">
-                            <span>{{ $mission->name }} Mission Collection</span>
-                        </li>
+                            <li id="mission-collection">
+                                <span>{{ $mission->name }} Mission Collection</span>
+                            </li>
+                        @endif
                     </ul>
                 </div>
             </section>
@@ -143,11 +151,22 @@
             </section>
 
             <h2>Videos</h2>
-            <section id="videos" class="scrollto">
+            <section id="videos" class="scrollto container">
+                @if ($mission->launch_video != null)
+                    <div class="gr-8">
+                        <h3>Launch Video</h3>
+                    </div>
+                @endif
+                <div class="gr-4 {{ $mission->launch_video != null ? 'launch-video' : 'no-launch-video' }}">
+
+                </div>
+
             </section>
 
             <h2>Documents</h2>
             <section id="documents" class="scrollto">
+                @foreach($documents as $document)
+                @endforeach
             </section>
 
             <h2>Articles</h2>
@@ -195,6 +214,7 @@
 
             <h2>Analytics</h2>
             <section id="analytics" class="scrollto container">
+                <h3>Dataplots</h3>
                 <div class="gr-4">
                     <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
                 </div>
@@ -209,7 +229,8 @@
                 </div>
                 <ul>
                     <li>Upper Stage Tracking</li>
-                    <li>Estimators for Data plots</li>
+                    <li>Data plot interpolation queries</li>
+                    <li>Hazard Maps/Barge Landings</li>
                 </ul>
             </section>
         </main>

@@ -104,8 +104,15 @@
 
                     @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
 
-                    <h3>Live</h3>
-                    <div id="live-tweets">
+                    @if ($mission->isNextToLaunch())
+                        <h3>SpaceX Stats Live</h3>
+                        <div>
+                            <p>Watch & follow the launch in real time with SpaceX Stats Live</p>
+                        </div>
+                    @endif
+
+                    <h3>Recent Tweets</h3>
+                    <div id="recent-tweets">
 
                     </div>
 

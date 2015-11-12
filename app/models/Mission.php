@@ -212,6 +212,11 @@ class Mission extends Model {
 		return $query->where('slug', $slug);
 	}
 
+    // Functions
+    public function isNextToLaunch() {
+        return $this->mission_id === Mission::future()->first()->mission_id;
+    }
+
 	// Scoped Queries
 	public function scopeWhereComplete($query, $inclusive = false) {
         if ($inclusive) {
