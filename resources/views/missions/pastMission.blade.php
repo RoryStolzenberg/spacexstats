@@ -214,24 +214,28 @@
 
             <h2>Analytics</h2>
             <section id="analytics" class="scrollto container">
-                <h3>Dataplots</h3>
-                <div class="gr-4">
-                    <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
-                </div>
-                <div class="gr-4">
-                    <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
-                </div>
-                <div class="gr-4">
-                    <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
-                </div>
-                <div class="gr-4">
-                    <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
-                </div>
-                <ul>
-                    <li>Upper Stage Tracking</li>
-                    <li>Data plot interpolation queries</li>
-                    <li>Hazard Maps/Barge Landings</li>
-                </ul>
+                @if(Auth::isAdmin())
+                    <h3>Dataplots</h3>
+                    <div class="gr-4">
+                        <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
+                    </div>
+                    <div class="gr-4">
+                        <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
+                    </div>
+                    <div class="gr-4">
+                        <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
+                    </div>
+                    <div class="gr-4">
+                        <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
+                    </div>
+                    <ul>
+                        <li>Upper Stage Tracking</li>
+                        <li>Data plot interpolation queries</li>
+                        <li>Hazard Maps/Barge Landings</li>
+                    </ul>
+                @else
+                    <p class="should-subscribe">Subscribe to Mission Control to see mission analytics.</p>
+                @endif
             </section>
         </main>
     </div>
