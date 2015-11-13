@@ -259,6 +259,7 @@
         $scope.activeUploadSection = "dropzone";
         $scope.isSubmitting = false;
         $scope.isUploading = false;
+        $scope.queuedFiles = 0;
 
         $scope.currentVisibleFile = null;
         $scope.isVisibleFile = function(file) {
@@ -1854,22 +1855,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('upload', ['$parse', function($parse) {
         return {
             restrict: 'A',
@@ -1900,6 +1885,16 @@
                     }
                 });
 
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
                 // upload the files
                 $scope.uploadFiles = function() {
                     $scope.isUploading = true;
@@ -1908,6 +1903,22 @@
             }
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2305,6 +2316,24 @@
         }
     });
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope,elem,attrs){
+                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
+                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
 (function() {
     var app = angular.module('app');
 
@@ -2696,24 +2725,6 @@
         return self;
     });
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope,elem,attrs){
-                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
-                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
 (function() {
     var app = angular.module('app');
 
@@ -2723,22 +2734,6 @@
             link: function() {
 
             }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionProfile', [function() {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-            },
-            templateUrl: '/js/templates/missionProfile.html'
         }
     }]);
 })();
@@ -2823,6 +2818,22 @@
     });
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionProfile', [function() {
+        return {
+            restrict: 'E',
+            scope: {
+                mission: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+            },
+            templateUrl: '/js/templates/missionProfile.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 

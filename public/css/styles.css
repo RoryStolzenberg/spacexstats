@@ -7463,7 +7463,8 @@ table.data-table th {
     color: #FFF;
     z-index: 100;
     line-height: 50px;
-    height: 50px; }
+    height: 50px;
+    text-align: center; }
     .header-wrapper header i {
       width: 8.33333%;
       display: none;
@@ -7747,6 +7748,11 @@ button.icon-button {
   height: 100px; }
   button.icon-button img {
     text-align: center; }
+
+button.wide-button {
+  width: 100%;
+  margin: 0 auto;
+  display: block; }
 
 input[type="submit"], input[type="reset"], button {
   height: 32px;
@@ -8333,6 +8339,9 @@ img#object {
 .vjs-fullscreen {
   padding-top: 0% !important; }
 
+.upload-type {
+  text-align: center; }
+
 .files-list li.uploaded-file {
   width: 300px;
   height: 200px;
@@ -8474,9 +8483,17 @@ body.live {
     margin-left: 50px; }
 
 .dropzone {
-  border: 3px dashed blue;
-  border-radius: 8px;
-  height: 300px; }
+  border: 2px dashed #3569A4;
+  background-color: rgba(53, 105, 164, 0.2);
+  border-radius: 3px;
+  height: 300px;
+  -webkit-transition: background-color ease-in-out 0.5s;
+          transition: background-color ease-in-out 0.5s;
+  margin-bottom: 20px; }
+  .dropzone:hover {
+    background-color: rgba(204, 172, 85, 0.5); }
+  .dropzone .dz-preview.dz-image-preview {
+    background: none; }
 
 .datetime input[type="number"] {
   width: 60px;

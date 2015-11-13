@@ -41,6 +41,7 @@
         $scope.activeUploadSection = "dropzone";
         $scope.isSubmitting = false;
         $scope.isUploading = false;
+        $scope.queuedFiles = 0;
 
         $scope.currentVisibleFile = null;
         $scope.isVisibleFile = function(file) {

@@ -31,6 +31,16 @@
                     }
                 });
 
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
                 // upload the files
                 $scope.uploadFiles = function() {
                     $scope.isUploading = true;

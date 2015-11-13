@@ -10,7 +10,7 @@
         <h1>Upload to Mission Control</h1>
         <main>
             <!-- List of methods to upload -->
-            <nav>
+            <nav class="in-page">
                 <ul class="upload-type text-center">
                     <li ng-click="changeSection('upload')"><i class="fa fa-upload"></i> Upload</li>
                     <li ng-click="changeSection('post')"><i class="fa fa-paperclip"></i> Post</li>
@@ -22,11 +22,11 @@
             <section class="upload-upload" ng-controller="uploadController" ng-show="activeSection == 'upload'">
 
                 <div ng-show="activeUploadSection == 'dropzone'">
-                    <p>Do not upload files that might violate SpaceX's Communications Policy. If you are unsure </p>
+                    <p class="warning">Do not upload files that might violate SpaceX's Communications Policy or U.S. export control laws. If you are unsure about the status of a file, please <a href="/about/contact">contact us</a>.</p>
                     <form method="post" class="dropzone" upload enctype="multipart/form-data" action="/missioncontrol/create/upload" callback="uploadCallback(somescome)" multi-upload="true">
                         {{ csrf_field() }}
                     </form>
-                    <button id="upload" ng-click="uploadFiles()" ng-disabled="isUploading">@{{ isUploading ? 'Uploading...' : 'Upload' }}</button>
+                    <button class="wide-button" ng-click="uploadFiles()" ng-disabled="queuedFiles == 0 || isUploading">@{{ isUploading ? 'Uploading...' : 'Upload' }}</button>
                 </div>
 
                 <div ng-show="activeUploadSection == 'data'" ng-form="uploadForm">
@@ -441,7 +441,7 @@
                         </div>
 
                     </div>
-                    <button id="files-submit" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit'  }}</button>
+                    <button id="files-submit" class="wide-button" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit'  }}</button>
                 </div>
             </section>
 
@@ -669,6 +669,11 @@
 
                     <button name="submit" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
                 </form>
+            </section>
+
+            <h2 ng-show="showRecentAdditions()">Recent Additions</h2>
+            <section ng-show="showRecentAdditions()">
+
             </section>
         </main>
     </div>

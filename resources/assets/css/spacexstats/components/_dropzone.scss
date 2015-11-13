@@ -1,5 +1,16 @@
 .dropzone {
-    border:3px dashed blue;
-    border-radius:$border-radius-large;
+    border:2px dashed $blue;
+    background-color:rgba($blue, 0.2);
+    border-radius:$border-radius-small;
     height:300px;
+    @include transitionMed(background-color);
+    margin-bottom:20px;
+
+    &:hover {
+        background-color:rgba($gold, 0.5);
+    }
+
+    .dz-preview.dz-image-preview {
+        background:none;
+    }
 }

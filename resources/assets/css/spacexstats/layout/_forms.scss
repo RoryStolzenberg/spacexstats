@@ -193,6 +193,12 @@ button.icon-button {
     }
 }
 
+button.wide-button {
+    width:100%;
+    margin:0 auto;
+    display:block;
+}
+
 input[type="submit"], input[type="reset"], button {
     height:32px;
     min-width:150px;
