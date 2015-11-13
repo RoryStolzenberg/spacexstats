@@ -196,45 +196,53 @@
                     </table>
 
                 <h3>Launch</h3>
-                    <p>The following data represents telemetry and readouts from the launch loop at SpaceX's Hawthorne HQ.</p>
-                    <table>
-                        <tr>
-                            <th>Timestamp</th>
-                            <th>Telemetry</th>
-                        </tr>
-                        @foreach($mission->telemetries as $telemetry)
+                    @if ($mission->telemetries->count() > 0)
+                        <p>The following data represents telemetry and readouts from the countdown net & webcast at SpaceX's Hawthorne HQ.</p>
+                        <table class="data-table">
                             <tr>
-                                <td>{{ $telemetry->timestamp }}</td>
-                                <td>{{ $telemetry->telemetry }}</td>
+                                <th>Timestamp</th>
+                                <th>Readout</th>
                             </tr>
-                        @endforeach
-                    </table>
+                            @foreach($mission->telemetries as $telemetry)
+                                <tr>
+                                    <td>{{ $telemetry->formatted_timestamp }}</td>
+                                    <td>{{ $telemetry->readout }}</td>
+                                </tr>
+                            @endforeach
+                        </table>
+                    @else
+                        <p class="exclaim">No telemetry yet!</p>
+                    @endif
                 <h3>Postlaunch</h3>
             </section>
 
             <h2>Analytics</h2>
-            <section id="analytics" class="scrollto container">
+            <section id="analytics" class="scrollto">
                 @if(Auth::isAdmin())
                     <h3>Dataplots</h3>
-                    <div class="gr-4">
-                        <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
-                    </div>
-                    <div class="gr-4">
-                        <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
-                    </div>
-                    <div class="gr-4">
-                        <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
-                    </div>
-                    <div class="gr-4">
-                        <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
-                    </div>
-                    <ul>
-                        <li>Upper Stage Tracking</li>
-                        <li>Data plot interpolation queries</li>
-                        <li>Hazard Maps/Barge Landings</li>
+                    <p>These dataplots are based on kinematic data extracted from the countdown net during launch, and are only approximate. For more detailed simulations, refer to the FlightClub entry for this launch.</p>
+                    <ul class="container">
+                        <li class="gr-4 gr-12@small">
+                            <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
+                        </li>
+                        <li class="gr-4 gr-12@small">
+                            <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
+                        </li>
+                        <li class="gr-4 gr-12@small">
+                            <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
+                        </li>
+                        <li class="gr-4 gr-12@small">
+                            <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
+                        </li>
                     </ul>
+
+                    <h3>Interpolation Queries</h3>
+
+                    <h3>Upper Stage Tracking</h3>
+
+                    <h3>Maps</h3>
                 @else
-                    <p class="should-subscribe">Subscribe to Mission Control to see mission analytics.</p>
+                    <p class="should-subscribe exclaim">Subscribe to Mission Control to see mission analytics.</p>
                 @endif
             </section>
         </main>

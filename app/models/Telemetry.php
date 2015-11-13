@@ -33,4 +33,18 @@ class Telemetry extends Model {
     public function mission() {
         return $this->belongsTo('SpaceXStats\Models\Mission');
     }
+
+    // functions
+    public function hasPositionalData() {
+        return ($this->attributes['altitude'] != null || $this->attributes['downrange'] != null || $this->attributes['velocity'] != null);
+    }
+
+    // Attribute accessors
+    public function getFormattedTimestampAttribute() {
+        $totalSeconds = $this->attributes['timestamp'];
+
+        $minutes = floor($totalSeconds / 60);
+        $seconds = sprintf('%02d', $totalSeconds - ($minutes * 60));
+        return "{$minutes}:{$seconds}s";
+    }
 }

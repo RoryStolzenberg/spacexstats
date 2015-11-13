@@ -54,7 +54,9 @@ class MissionsController extends Controller {
             $js['mission'] = $mission;
 
             if (Auth::isSubscriber()) {
-                $js['telemetry'] = $mission->telemetries()->orderBy('timestamp', 'ASC')->get();
+                $js['telemetry'] = $mission->telemetries()->orderBy('timestamp', 'ASC')->get()->filter(function($telemetry) {
+                    return $telemetry->hasPositionalData();
+                })->values();
             }
 
             JavaScript::put($js);

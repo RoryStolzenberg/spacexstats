@@ -4,7 +4,11 @@ form {
     }
 
     label, .label {
-        @include smallCaps();
+        font-size:14px;
+        color:$lightblack;
+        text-transform: uppercase;
+        font-weight:600;
+        font-family:$segoeWP;
         line-height: 2;
         margin:0 10px;
     }

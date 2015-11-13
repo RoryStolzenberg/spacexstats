@@ -32,16 +32,6 @@
 /* --------------- FONT VARIABLES ----------------- */
 /* ------------------- DESIGN --------------------- */
 /* ------------------ GENERAL MIXINS ----------------- */
-/* ----------------- HELPER CLASSES --------------- */
-.text-left {
-  text-align: left; }
-
-.text-right {
-  text-align: right; }
-
-.text-center {
-  text-align: center; }
-
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -7366,7 +7356,7 @@ main {
   color: #181c1f;
   min-height: calc(100% - 150px);
   display: block;
-  padding-bottom: 30px; }
+  padding-bottom: 40px; }
   main.invert {
     color: #FFF; }
 
@@ -7406,7 +7396,7 @@ section {
   /* IE < 8 */ }
   section:before,
   section:after {
-    content: ".";
+    content: "";
     display: block;
     height: 0;
     overflow: hidden; }
@@ -7418,6 +7408,15 @@ p {
 
 .border-bottom {
   border-bottom: 1px solid #CCC; }
+
+p {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 14px; }
+
+a:link, a:visited, a:hover, a:active {
+  color: inherit;
+  text-decoration: inherit; }
 
 .lowvisibility.color {
   color: #CCC; }
@@ -7431,6 +7430,19 @@ p {
 
 .code {
   font-family: "Source Code Pro"; }
+
+.hidden {
+  display: none; }
+
+table.data-table td, table.data-table th {
+  border: 1px solid #CCC;
+  padding: 5px; }
+
+table.data-table th {
+  padding: 10px;
+  font-weight: bold;
+  background-color: #33495E;
+  color: #F5F5F5; }
 
 .header-wrapper {
   width: 100%;
@@ -7594,7 +7606,7 @@ nav.sticky-bar {
 form ul li {
   padding: 10px; }
 
-form label {
+form label, form .label {
   font-size: 14px;
   color: #21272B;
   text-transform: uppercase;
@@ -7646,6 +7658,12 @@ form input[type="checkbox"] {
     cursor: pointer;
     -webkit-transition: all 0.3s ease;
             transition: all 0.3s ease; }
+    form input[type="checkbox"] + label span {
+      position: relative;
+      left: 50px;
+      min-width: 200px;
+      display: block;
+      line-height: 1.5; }
     form input[type="checkbox"] + label:after {
       position: absolute;
       left: -2px;
@@ -8178,6 +8196,9 @@ section.comments {
 .background {
   background-image: url("../images/backgrounds/dscovr2.jpg"); }
 
+body.future-mission .highlights {
+  padding-right: 250px; }
+
 .mission-link {
   display: inline-block;
   overflow: hidden; }
@@ -8236,7 +8257,7 @@ section.comments {
   position: absolute;
   right: 0;
   top: 0;
-  width: 240px; }
+  width: 250px; }
   .display-date-time .launch {
     display: inline-block;
     text-align: right;
@@ -8525,26 +8546,6 @@ body.live {
     text-align: center;
     margin: 0 auto; }
 
-/* -------------- CONTENT ----------------- */
-p {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-size: 14px; }
-
-a:link, a:visited, a:hover, a:active {
-  color: inherit;
-  text-decoration: inherit; }
-
-.hidden {
-  display: none; }
-
-.smallcaps {
-  font-size: 14px;
-  color: #21272B;
-  text-transform: uppercase;
-  font-weight: 600;
-  font-family: "Segoe WP", sans-serif; }
-
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {
   background-color: #3569A4;
@@ -8553,7 +8554,6 @@ a:link, a:visited, a:hover, a:active {
   margin: 0 10px;
   overflow: hidden; }
 
-/* --------------- FORM DESIGN ----------------- */
 /* --------------- FAQS ----------------- */
 section.question-list {
   -webkit-columns: 3 200px;

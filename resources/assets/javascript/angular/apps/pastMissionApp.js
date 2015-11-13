@@ -23,7 +23,7 @@
                             return d / 1000;
                         }
                     }
-                }
+                };
 
                 $scope.altitudeVsDownrange = {
                     data: laravel.telemetry.map(function(telemetry) {
@@ -61,7 +61,7 @@
                         yAxisTitle: 'Velocity (m/s)',
                         chartTitle: 'Velocity vs. Time'
                     }
-                }
+                };
 
                 $scope.downrangeVsTime = {
                     data: laravel.telemetry.map(function(telemetry) {

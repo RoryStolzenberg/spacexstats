@@ -64,7 +64,7 @@ class Spacexstats extends Migration {
 
         Schema::create('collections', function(Blueprint $table) {
             $table->increments('collection_id');
-            $table->integer('creating_user_id')->unsigned();
+            $table->integer('creating_user_id')->unsigned()->nullable();
             $table->integer('mission_id')->unsigned()->nullable();
 
             $table->string('title', Varchar::small);
@@ -87,7 +87,7 @@ class Spacexstats extends Migration {
             $table->string('column_titles', Varchar::medium);
             $table->string('query', Varchar::medium);
             $table->string('summary', Varchar::medium);
-            $table->integer('banner_image')->unsigned();
+            $table->integer('banner_image')->unsigned()->nullable();
             $table->string('dark_color', Varchar::tiny);
             $table->string('light_color', Varchar::tiny);
         });
@@ -125,7 +125,7 @@ class Spacexstats extends Migration {
             $table->increments('live_update_id');
             $table->string('message', Varchar::large);
             $table->string('live_event_name', Varchar::small);
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
             $table->timestamps();
         });
 
@@ -418,13 +418,13 @@ class Spacexstats extends Migration {
         Schema::create('searches', function(Blueprint $table) {
             $table->increments('search_id');
             $table->string('query', Varchar::large);
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned()->nullable();
         });
 
         Schema::create('smses', function(Blueprint $table) {
             $table->increments('sms_id');
             $table->integer('user_id')->unsigned();
-            $table->integer('notification_id')->unsigned();
+            $table->integer('notification_id')->unsigned()->nullable();
             $table->string('message', Varchar::compact)->nullable();
             $table->timestamps();
         });
@@ -478,7 +478,7 @@ class Spacexstats extends Migration {
             $table->increments('telemetry_id');
             $table->integer('mission_id')->unsigned();
             $table->smallInteger('timestamp')->unsigned();
-            $table->string('readout', Varchar::small)->nullable();
+            $table->string('readout', Varchar::medium)->nullable();
             $table->integer('altitude')->unsigned()->nullable();
             $table->smallInteger('velocity')->unsigned()->nullable();
             $table->integer('downrange')->unsigned()->nullable();

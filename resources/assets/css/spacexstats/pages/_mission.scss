@@ -1,4 +1,4 @@
-$launch-date-time-width = 250px;
+$launch-date-time-width: 250px;
 
 body.future-mission .highlights {
     padding-right:$launch-date-time-width;
@@ -120,7 +120,11 @@ body.future-mission .highlights {
     }
 
     .timezone {
-        @include smallCaps();
+        font-size:14px;
+        color:$lightblack;
+        text-transform: uppercase;
+        font-weight:600;
+        font-family:$segoeWP;
         text-align:center;
         margin-left:10px;
         padding:0;

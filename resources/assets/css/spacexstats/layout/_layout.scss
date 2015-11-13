@@ -71,7 +71,7 @@ main {
     color:$slateblack;
     min-height:calc(100% - #{$h1-height}); // Substract h1 height
     display:block; // Make IE happy
-    padding-bottom:30px; // undo the effects of a position:sticky bar causing the sibling element to have a top of 30px
+    padding-bottom:40px; // undo the effects of a position:sticky bar causing the sibling element to have a top of 40px
 
     &.invert {
         color:$white;
@@ -148,14 +148,6 @@ a:link, a:visited, a:hover, a:active {
     text-decoration:inherit;
 }
 
-.smallcaps {
-    font-size:14px;
-    color:$lightblack;
-    text-transform: uppercase;
-    font-weight:600;
-    font-family:$segoeWP;
-}
-
 .lowvisibility {
     &.color {
         color:$bordergrey;
@@ -176,4 +168,20 @@ a:link, a:visited, a:hover, a:active {
 
 .hidden {
     display:none;
+}
+
+// Tables
+table.data-table {
+
+    td, th {
+        border:1px solid $bordergrey;
+        padding:5px;
+    }
+
+    th {
+        padding:10px;
+        font-weight:bold;
+        background-color:$october;
+        color:$offwhite;
+    }
 }
