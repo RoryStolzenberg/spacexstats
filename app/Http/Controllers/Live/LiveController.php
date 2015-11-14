@@ -2,15 +2,17 @@
 namespace SpaceXStats\Http\Controllers\Live;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
-use SpaceXStats\Events\SpaceXStatsLiveStartedEvent;
+use SpaceXStats\Events\LiveStartedEvent;
+use SpaceXStats\Events\LiveUpdateCreatedEvent;
 use SpaceXStats\Facades\BladeRenderer;
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Jobs\UpdateRedditLiveThreadJob;
+use SpaceXStats\Live\LiveUpdate;
 use SpaceXStats\Models\Mission;
 
 class LiveController extends Controller {
@@ -24,32 +26,48 @@ class LiveController extends Controller {
 
         JavaScript::put([
             'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
-            'isActive' => Redis::get('spacexstatslive:active') == true,
-            'updates' => Redis::get('spacexstatslive:updates'),
+            'isActive' => Redis::get('live:active') == true,
+            'updates' => Redis::lrange('live:updates', 0, -1),
             'mission' => Mission::future()->first()
         ]);
 
         return view('live');
     }
 
-    // /send/message, POST.
-    public function createLiveUpdate() {
-        Input::get();
+    /**
+     * Creates a live update from a message and actions it.
+     *
+     * Takes a live update from the POST data,
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function message() {
 
-        // Calculate created_at and updated_at and displayed timestamp
+        // Create live update
+        $liveUpdate = new LiveUpdate([
+            'update' => Input::get('message'),
+            'updateType' => Input::get('messageType'),
+            'id' => \SpaceXStats\Models\LiveUpdate::count() + 1
+        ]);
 
-        // Expand acronyms, open images, display tweets, etc
-
-        // Websockets
+        // Push into Websockets
+        event(new LiveUpdateCreatedEvent($liveUpdate));
 
         // Push to queue for Reddit
+        //$this->dispatch(new UpdateRedditLiveThreadJob($liveUpdate))->onQueue('live');
+
+        // Add to Redis
+        //Redis::rpush('live:updates', json_encode($liveUpdate));
+
+        // Add to DB
+        //\SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
+
+        // Respond
+        return response()->json(null, 204);
     }
 
-    // /send/message/{messagetimestamp}/edit, PATCH.
+    // /send/message/{messageid}/edit, PATCH.
     public function editLiveUpdate() {
         // Find message in Redis
-
-        // patch updated_at property
 
         // Websockets
 
@@ -99,7 +117,7 @@ class LiveController extends Controller {
         ));
 
         // Broadcast event to turn on spacexstats live
-        event(new SpaceXStatsLiveStartedEvent());
+        event(new LiveStartedEvent());
 
         // Respond
         return response(null, 204);

@@ -2,6 +2,8 @@
     var liveApp = angular.module('app', []);
 
     liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Message", function($scope, liveService, Section, Resource, Message) {
+        var socket = io('http://spacexstats.app:3000');
+
         $scope.auth = laravel.auth;
         $scope.isActive = laravel.isActive;
         $scope.messages = laravel.messages;
@@ -32,13 +34,13 @@
                 $scope.liveParameters.sections.push(new Section({}));
             },
             removeSection: function(section) {
-
+                $scope.liveParameters.sections.splice($scope.liveParameters.sections.indexOf(section), 1);
             },
             addResource: function() {
                 $scope.liveParameters.resources.push(new Resource({}));
             },
             removeResource: function(resource) {
-
+                $scope.liveParameters.resources.splice($scope.liveParameters.resources.indexOf(resource), 1);
             },
             updateSettings: function() {
                 liveService.updateSettings($scope.liveParameters);
@@ -68,26 +70,27 @@
 
         $scope.send = {
             new: {
-                message: null
+                message: null,
+                messageType: 'update'
             },
             /*
              * Send a launch update (message) via POST off to the server to be broadcast
              */
             message: function() {
                 liveService.sendMessage({
-                    id: $scope.messages.length + 1,
-                    datetime: moment(),
                     message: $scope.send.new.message,
                     messageType: $scope.send.new.messageType
                 });
 
-                $scope.update.message = "";
+                $scope.send.new.message = "";
             }
-        }
+        };
 
-        var socket = io();
+        socket.on('foo', function(data) {
+            console.log(data);
+        });
 
-        socket.on('live-updates:SpaceXStats\\Events\\SpaceXStatsLiveStartedEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateCreatedEvent', function(data) {
             console.log(data);
         });
     }]);
@@ -96,19 +99,23 @@
 
         this.sendMessage = function(message) {
             return $http.post('/live/send/message', message);
+        };
+
+        this.editMessage = function(message) {
+            return $http.patch('/live/send/')
         }
 
         this.updateSettings = function(settings) {
             return $http.post('/live/send/updateSettings', settings);
-        }
+        };
 
         this.create = function(createThreadParameters) {
             return $http.post('/live/send/create', createThreadParameters);
-        }
+        };
 
         this.destroy = function() {
             return $http.post('/live/send/destroy');
-        }
+        };
 
     }]);
 

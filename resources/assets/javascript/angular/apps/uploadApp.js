@@ -3,6 +3,7 @@
 
     uploadApp.controller("uploadAppController", ["$scope", function($scope) {
         $scope.activeSection = "upload";
+        $scope.showRecentAdditions = true;
 
         $scope.data = {
             missions: laravel.missions,
@@ -34,7 +35,9 @@
 
         $scope.changeSection = function(section) {
             $scope.activeSection = section;
-        }
+            $scope.showRecentAdditions = section == 'upload';
+        };
+
     }]);
 
     uploadApp.controller("uploadController", ["$scope", "objectFromFile", "uploadService", function($scope, objectFromFile, uploadService) {
@@ -66,6 +69,7 @@
 
             // Change the upload section
             $scope.activeUploadSection = "data";
+            $scope.showRecentAdditions = false;
             $scope.$apply();
         };
 

@@ -6,7 +6,7 @@ use SpaceXStats\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class SpaceXStatsLiveStartedEvent extends Event implements ShouldBroadcast
+class LiveStartedEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 

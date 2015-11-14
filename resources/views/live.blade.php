@@ -5,7 +5,15 @@
     <body class="live" ng-controller="liveController" ng-strict-di>
     <!-- Custom Header -->
     <div class="content-wrapper">
-        <h1>SpaceX Stats Live</h1>
+        <header class="container">
+            <p class="gr-2"><a href="/">SpaceX Stats</a></p>
+            <h1 class="gr-8">SpaceX Stats Live</h1>
+            @if (Auth::check())
+                <p class="gr-2"><a target="_blank" href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a></p>
+            @else
+                <p class="gr-2"><a target="_blank" href="/auth/login">My Account</a></p>
+            @endif
+        </header>
         <main>
             <section>
                 <!-- If the user is authenticated and SpaceXStats live is not running -->
@@ -69,14 +77,25 @@
 
                 <!-- If not authenticated and SpaceXStats live is not running -->
                 <div ng-if="isActive == false && auth == false">
-                    <span>SpaceX Stats is not live at this time.</span>
+                    <p class="exclaim">SpaceX Stats is not live at this time.</p>
                 </div>
 
-                <!-- If authenticated and SpaceXStats live is running -->
+                <!-- If SpaceXStats live is running -->
                 @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                     <div class="live-updates" ng-if="isActive == true">
-                        <form name="sendMessageForm" ng-if="auth == true">
+                        <form name="sendMessageForm">
                             <div>Buttons</div>
+                            <ul>
+                                <li>Hold/Abort</li>
+                                <li>T-10s</li>
+                                <li>Liftoff</li>
+                                <li>Max-Q</li>
+                                <li>MECO</li>
+                                <li>MVac Ignition</li>
+                                <li>SECO</li>
+                                <li>Mission Success</li>
+                                <li>Mission Failure</li>
+                            </ul>
                             <textarea name="message" ng-model="send.new.message"
                                       placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown">required>
                             </textarea>
@@ -84,8 +103,6 @@
                         </form>
                     </div>
                 @endif
-
-                <!-- If not authenticated and SpaceXStats live is running -->
 
             </section>
         </main>

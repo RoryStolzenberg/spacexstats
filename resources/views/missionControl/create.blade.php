@@ -671,8 +671,8 @@
                 </form>
             </section>
 
-            <h2 ng-show="showRecentAdditions()">Recent Additions</h2>
-            <section ng-show="showRecentAdditions()">
+            <h2 ng-show="showRecentAdditions">Recent Additions</h2>
+            <section ng-show="showRecentAdditions">
 
             </section>
         </main>

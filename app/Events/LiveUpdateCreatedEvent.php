@@ -5,7 +5,7 @@ namespace SpaceXStats\Events;
 use SpaceXStats\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use SpaceXStats\Models\LiveUpdate;
+use SpaceXStats\Live\LiveUpdate;
 
 class LiveUpdateCreatedEvent extends Event implements ShouldBroadcast
 {
