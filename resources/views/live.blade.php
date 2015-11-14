@@ -140,17 +140,27 @@
                 </section>
             @endif
 
-            <section ng-if="isActive == true">
-                <div ng-repeat="update in updates">
-                    <div>
-                        <p><span>@{{ update.timestamp }}</span> @{{ update.created_at }}</p>
-                        <i class="fa fa-edit" ng-if="auth == true"></i>
-                    </div>
+            <section ng-if="isActive == true" id="content" class="container">
+                <div class="gr-9">
+                    <div ng-repeat="update in updates">
+                        <div>
+                            <p><span>@{{ update.timestamp }}</span> @{{ update.createdAt }}</p>
+                            <i class="fa fa-edit" ng-if="auth == true" ng-click="update.isEditFormVisible = true"></i>
+                        </div>
 
-                    <div class="md">
-                        @{{ update.update }}
+                        <div class="md" ng-bind-html="update.updateMd"></div>
+
+                        <form name="editUpdateForm" ng-if="update.isEditFormVisible">
+                            <textarea ng-model="update.update" required></textarea>
+                            <button ng-click="update.edit()">Save</button>
+                            <button ng-click="update.isEditFormVisible = false">Close</button>
+                        </form>
                     </div>
                 </div>
+
+                <aside class="gr-3">
+
+                </aside>
             </section>
         </main>
     </div>

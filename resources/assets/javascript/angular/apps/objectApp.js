@@ -143,17 +143,17 @@
                     comment: reply,
                     parent: parent.comment_id
                 }});
-            }
+            };
 
             this.delete = function(object, comment) {
                 return $http.delete('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id);
-            }
+            };
 
             this.edit = function(object, comment) {
                 return $http.patch('/missioncontrol/objects/' + object.object_id + '/comments/' + comment.comment_id, { comment: {
                     comment: comment.editText
                 }});
-            }
+            };
         }
     ]);
 
@@ -214,7 +214,7 @@
                     self.editText = null;
                     self.isEditing = false;
                 });
-            }
+            };
 
             self.delete = function(scope) {
                 commentService.delete(laravel.object, self).then(function() {
@@ -228,7 +228,7 @@
                         self.isHidden = true;
                     }
                 });
-            }
+            };
 
             self.children = self.children.map(function(reply) {
                 return new Comment(reply);

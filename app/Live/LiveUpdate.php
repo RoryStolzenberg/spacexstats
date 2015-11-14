@@ -18,10 +18,12 @@ class LiveUpdate implements JsonSerializable, Arrayable {
         $this->timestamp = $this->constructTimestamp();
 
         $this->update       = $data['update'];
+        $this->updateMd    = \Parsedown::instance()->text($this->update);
+
         $this->updateType   = $data['updateType'];
         $this->id           = $data['id'];
 
-        $this->parseTweetsAndImages();
+        //$this->parseTweetsAndImages();
     }
 
     public function setUpdate($updateInput) {
@@ -35,6 +37,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
             'createdAt' => $this->createdAt->toDateTimeString(),
             'updatedAt' => $this->updatedAt->toDateTimeString(),
             'update' => $this->update,
+            'updateMd' => $this->updateMd,
             'updateType' => $this->updateType,
             'timestamp' => $this->timestamp
         ];
@@ -89,6 +92,16 @@ class LiveUpdate implements JsonSerializable, Arrayable {
     }
 
     private function parseTweetsAndImages() {
+        preg_match_all("/http:\/\/i\.imgur\.com\/[a-z1-9]*\.jpg/i", $this->updateMd, $imgurMatches, PREG_OFFSET_CAPTURE);
 
+        foreach($imgurMatches as $imgurMatch) {
+
+        }
+
+        preg_match_all("/(https?:\/\/(?:www\.)?twitter\.com\/[a-z0-9]*\/status\/[0-9]*)/i", $this->updateMd, $twitterMatches, PREG_OFFSET_CAPTURE);
+
+        foreach($twitterMatches as $twitterMatch) {
+
+        }
     }
 }

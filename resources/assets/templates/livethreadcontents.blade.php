@@ -1,4 +1,4 @@
-# Welcome to the {{ \Redis::get('live:title') }}!
+# Welcome to the {{ \Redis::get('live:reddit:title') }}!
 
 {{ \Redis::get('live:description') }}
 
@@ -10,6 +10,10 @@ Populate the launch live area based on whether the NASA stream/SpaceX stream is 
 
 | Time | Update |
 |--- | --- |
+@foreach(\Redis::lrange('live:updates', 0, -1) as json_decode($update))
+| {{ $update['timestamp'] }} | {{ $update['update'] }} |
+@endforeach
+
 
 @foreach(json_decode(\Redis::get('live:sections'), true)  as $section)
 ### {{ $section['title'] }}

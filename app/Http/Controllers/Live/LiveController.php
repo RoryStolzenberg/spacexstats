@@ -28,7 +28,9 @@ class LiveController extends Controller {
             'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
             'mission' => Mission::future()->first(),
             'isActive' => Redis::get('live:active') == true,
-            'updates' => Redis::lrange('live:updates', 0, -1)
+            'updates' => collect(Redis::lrange('live:updates', 0, -1))->map(function($update) {
+                return json_decode($update);
+            })
         ]);
 
         return view('live');
@@ -53,7 +55,7 @@ class LiveController extends Controller {
         event(new LiveUpdateCreatedEvent($liveUpdate));
 
         // Push to queue for Reddit
-        //$this->dispatch(new UpdateRedditLiveThreadJob($liveUpdate))->onQueue('live');
+        $this->dispatch(new UpdateRedditLiveThreadJob())->onQueue('live');
 
         // Add to Redis
         Redis::rpush('live:updates', json_encode($liveUpdate));
@@ -104,7 +106,7 @@ class LiveController extends Controller {
         Redis::set('live:countdownTo', Input::get('countdownTo'));
 
         Redis::set('live:title', Input::get('title'));
-        Redis::set('live:redditTitle', Input::get('redditTitle'));
+        Redis::set('live:reddit:title', Input::get('redditTitle'));
         Redis::set('live:description', Input::get('description'));
         Redis::set('live:isForMission', Input::get('isForMission'));
 
@@ -127,7 +129,7 @@ class LiveController extends Controller {
         ));
 
         // Set the link thread link
-        Redis::set('live:redditDiscussion', 'foo');
+        Redis::set('live:reddit:link', 'foo');
 
         // Broadcast event to turn on spacexstats live
         event(new LiveStartedEvent([

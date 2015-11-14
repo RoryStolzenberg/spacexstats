@@ -9,15 +9,13 @@ use SpaceXStats\Live\LiveUpdate;
 
 class UpdateRedditLiveThreadJob extends Job implements SelfHandling
 {
-    public $liveUpdate;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(LiveUpdate $liveUpdate)
+    public function __construct()
     {
-        $this->liveUpdate = $liveUpdate;
     }
 
     /**
@@ -27,9 +25,14 @@ class UpdateRedditLiveThreadJob extends Job implements SelfHandling
      */
     public function handle()
     {
+        // Rerender content
+        $templatedOutput = BladeRenderer::render('livethreadcontents', array());
+
+        // Connect to Reddit
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
-        //$reddit->
+        // Update Thread
+        $reddit->thing('foo')->edit($templatedOutput);
     }
 }

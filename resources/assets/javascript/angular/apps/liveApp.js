@@ -1,7 +1,7 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Message", function($scope, liveService, Section, Resource, Message) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Message", function($scope, liveService, Section, Resource, Update) {
         var socket = io('http://spacexstats.app:3000');
 
         $scope.data = {
@@ -49,7 +49,7 @@
 
         $scope.liveParameters = {
             isForLaunch: true,
-            title: $scope.data.upcomingMission,
+            title: $scope.data.upcomingMission.name,
             redditTitle: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
             pageTitle: function() {
                 if (!$scope.settings.isActive) {
@@ -109,8 +109,7 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateCreatedEvent', function(data) {
-            console.log(data);
-            $scope.updates.push(data);
+            $scope.updates.push(data.liveUpdate);
         });
 
         // Init
@@ -145,10 +144,21 @@
 
     }]);
 
-    liveApp.factory('Message', function() {
-        return function() {
+    liveApp.factory('Update', ['liveService', function(liveService) {
+        return function(update) {
+            var self = update;
+
+            self.isEditFormVisible = false;
+
+            self.edit = function() {
+                liveService.editMessage(self).then(function() {
+                    console.log('done');
+                });
+            };
+
+            return self;
         }
-    });
+    }]);
 
     liveApp.factory('Resource', function() {
         return function() {
