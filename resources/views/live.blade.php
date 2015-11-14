@@ -159,7 +159,9 @@
                 </div>
 
                 <aside class="gr-3">
-
+                    <ul>
+                        <li ng-repeat="resource in liveParameters.resources">@{{ resource.title }}</li>
+                    </ul>
                 </aside>
             </section>
         </main>
