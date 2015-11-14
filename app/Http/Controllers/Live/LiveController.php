@@ -26,9 +26,9 @@ class LiveController extends Controller {
 
         JavaScript::put([
             'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
+            'mission' => Mission::future()->first(),
             'isActive' => Redis::get('live:active') == true,
-            'updates' => Redis::lrange('live:updates', 0, -1),
-            'mission' => Mission::future()->first()
+            'updates' => Redis::lrange('live:updates', 0, -1)
         ]);
 
         return view('live');
@@ -56,7 +56,7 @@ class LiveController extends Controller {
         //$this->dispatch(new UpdateRedditLiveThreadJob($liveUpdate))->onQueue('live');
 
         // Add to Redis
-        //Redis::rpush('live:updates', json_encode($liveUpdate));
+        Redis::rpush('live:updates', json_encode($liveUpdate));
 
         // Add to DB
         //\SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
@@ -65,13 +65,19 @@ class LiveController extends Controller {
         return response()->json(null, 204);
     }
 
-    // /send/message/{messageid}/edit, PATCH.
-    public function editLiveUpdate() {
+    // /send/message, PATCH.
+    public function editMessage() {
         // Find message in Redis
 
-        // Websockets
+        // Push into websockets
 
         // Push to queue for Reddit
+
+        // Repush into Redis
+
+        // Repush to DB
+
+        return response()->json(null, 204);
     }
 
     // /send/settings, POST.
@@ -95,8 +101,12 @@ class LiveController extends Controller {
             'spacexstream' => Input::get('spacexstream')
         ));
 
+        Redis::set('live:countdownTo', Input::get('countdownTo'));
+
         Redis::set('live:title', Input::get('title'));
+        Redis::set('live:redditTitle', Input::get('redditTitle'));
         Redis::set('live:description', Input::get('description'));
+        Redis::set('live:isForMission', Input::get('isForMission'));
 
         Redis::set('live:resources', json_encode(Input::get('resources')));
         Redis::set('live:sections', json_encode(Input::get('sections')));
@@ -113,24 +123,37 @@ class LiveController extends Controller {
             'kind' => 'self',
             'sendreplies' => true,
             'text' => $templatedOutput,
-            'title' => Input::get('title')
+            'title' => Input::get('redditTitle')
         ));
 
+        // Set the link thread link
+        Redis::set('live:redditDiscussion', 'foo');
+
         // Broadcast event to turn on spacexstats live
-        event(new LiveStartedEvent());
+        event(new LiveStartedEvent([
+            'active' => true,
+            'spacexstream' => Input::get('spacexstream'),
+            'nasastream' => Input::get('nasastream'),
+            'countdownTo' => Input::get('countdownTo'),
+            'title' => Input::get('title'),
+            'redditTitle' => Input::get('redditTitle'),
+            'redditDiscussion' => Input::get('redditDiscussion'),
+            'description' => Input::get('description'),
+            'isForMission' => Input::get('isForMission'),
+            'resources' => Input::get('resources'),
+            'sections' => Input::get('sections'),
+        ]));
 
         // Respond
-        return response(null, 204);
+        return response()->json(null, 204);
     }
 
     public function destroy() {
         // Turn off SpaceXStats Live
         Redis::set('live:active', false);
         // Clean up all spacexstats live redis keys
-        Redis::del(['live.streams', 'live:title', 'live:description', 'live:resources', 'live:sections']);
-        // Commit to database
+        Redis::del(['live.streams', 'live:title', 'live:description', 'live:resources', 'live:sections', 'live:updates', 'live:countdownTo', 'live:discussion']);
 
-
-        return response(null, 204);
+        return response()->json(null, 204);
     }
 }

@@ -4,10 +4,6 @@
     liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Message", function($scope, liveService, Section, Resource, Message) {
         var socket = io('http://spacexstats.app:3000');
 
-        $scope.auth = laravel.auth;
-        $scope.isActive = laravel.isActive;
-        $scope.messages = laravel.messages;
-
         $scope.data = {
             upcomingMission: laravel.mission
         };
@@ -19,8 +15,12 @@
                 this.isGettingStarted = true;
                 this.getStartedHeroText = 'Awesome. We just need a bit of info first.'
             },
+
+            isCreating: false,
             turnOnSpaceXStatsLive: function() {
+                $scope.settings.isCreating = true;
                 liveService.create($scope.liveParameters).then(function() {
+                    $scope.settings.isCreating = false;
                     $scope.isActive = true;
                     $scope.settings.isGettingStarted = null;
                 });
@@ -49,7 +49,15 @@
 
         $scope.liveParameters = {
             isForLaunch: true,
-            title: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
+            title: $scope.data.upcomingMission,
+            redditTitle: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
+            pageTitle: function() {
+                if (!$scope.settings.isActive) {
+                    return 'SpaceXStats Live';
+                } else {
+                    return 'countdown here';
+                }
+            },
             toggleForLaunch: function() {
                 if (this.isForLaunch) {
                     this.title = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
@@ -58,7 +66,7 @@
                 }
 
             },
-            countdownTo: null,
+            countdownTo: $scope.data.upcomingMission.launch_date_time,
             streamingSources: {
                 nasa: false,
                 spacex: false
@@ -86,13 +94,31 @@
             }
         };
 
-        socket.on('foo', function(data) {
-            console.log(data);
+        $scope.buttons = {
+            click: function(messageType) {
+
+            },
+            isVisible: function(messageType) {
+                return true;
+            }
+        };
+
+        // Websocket listeners
+        socket.on('live-updates:SpaceXStats\\Events\\LiveStartedEvent', function(data) {
+            $scope.isActive = true;
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateCreatedEvent', function(data) {
             console.log(data);
+            $scope.updates.push(data);
         });
+
+        // Init
+        (function() {
+            $scope.auth = laravel.auth;
+            $scope.isActive = laravel.isActive;
+            $scope.updates = laravel.updates;
+        })();
     }]);
 
     liveApp.service('liveService', ["$http", function($http) {
@@ -102,8 +128,8 @@
         };
 
         this.editMessage = function(message) {
-            return $http.patch('/live/send/')
-        }
+            return $http.patch('/live/send/', message);
+        };
 
         this.updateSettings = function(settings) {
             return $http.post('/live/send/updateSettings', settings);

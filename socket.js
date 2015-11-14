@@ -2,6 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 
 var io = require('socket.io')(server);
+io.set('origins', 'http://spacexstats.app:8000'); // For development
 
 var redis = require('ioredis');
 var Redis = new redis();
@@ -11,8 +12,9 @@ Redis.subscribe('live-updates');
 Redis.on('message', function(channel, message) {
     message = JSON.parse(message);
 
-    console.log(channel, message);
-    io.emit('foo', message.data);
+    console.log(channel);
+    console.log(message);
+    io.emit(channel + ':' + message.event, message.data);
 });
 
 server.listen(3000, function() {

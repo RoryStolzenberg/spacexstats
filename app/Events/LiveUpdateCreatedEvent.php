@@ -3,14 +3,11 @@
 namespace SpaceXStats\Events;
 
 use SpaceXStats\Events\Event;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use SpaceXStats\Live\LiveUpdate;
 
 class LiveUpdateCreatedEvent extends Event implements ShouldBroadcast
 {
-    use SerializesModels;
-
     public $liveUpdate;
 
     /**
@@ -20,7 +17,7 @@ class LiveUpdateCreatedEvent extends Event implements ShouldBroadcast
      */
     public function __construct(LiveUpdate $liveUpdate)
     {
-        $this->liveUpdate = $liveUpdate;
+        $this->liveUpdate = $liveUpdate->jsonSerialize();
     }
 
     /**
