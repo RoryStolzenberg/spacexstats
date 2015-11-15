@@ -28,7 +28,7 @@
                     <form name="gettingStartedForm" ng-if="settings.isGettingStarted == true" novalidate>
                         <h3>Is this for @{{ data.upcomingMission.name }} or a miscellaneous event?</h3>
                         <input type="checkbox" id="isForLaunch" name="isForLaunch" ng-model="liveParameters.isForLaunch" ng-change="settings.toggleForLaunch()" />
-                        <label for="isForLaunch"></label>
+                        <label for="isForLaunch">@{{ liveParameters.isForLaunch == true ? data.upcomingMission.name : 'Miscellaneous Event' }}</label>
 
 
                         <ul class="container">
