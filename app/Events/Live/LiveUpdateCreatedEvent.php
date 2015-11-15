@@ -1,6 +1,6 @@
 <?php
 
-namespace SpaceXStats\Events;
+namespace SpaceXStats\Events\Live;
 
 use SpaceXStats\Events\Event;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

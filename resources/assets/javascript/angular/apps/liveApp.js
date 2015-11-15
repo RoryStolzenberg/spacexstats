@@ -143,23 +143,28 @@
         };
 
         // Websocket listeners
-        socket.on('live-updates:SpaceXStats\\Events\\LiveStartedEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveStartedEvent', function(data) {
             $scope.isActive = true;
             console.log(data);
             $scope.$apply();
         });
 
-        socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateCreatedEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
             $scope.$apply();
         });
 
-        socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateUpdatedEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateUpdatedEvent', function(data) {
             var indexOfUpdate = $scope.updates.indexOf($scope.updates.filter(function(update) {
                 return update.id == data.liveUpdate.id;
             }).shift());
 
             $scope.updates[indexOfUpdate] = new Update(data.liveUpdate);
+            $scope.$apply();
+        });
+
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveEndedEvent', function(data) {
+            $scope.isActive = false;
             $scope.$apply();
         });
     }]);

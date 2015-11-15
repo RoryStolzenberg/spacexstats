@@ -19,10 +19,10 @@
             <!-- SpaceXStats live is not running -->
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section ng-if="!isActive">
-                    <span class="live-herotext">@{{ settings.getStartedHeroText }}</span>
+                    <p class="live-herotext exclaim" ng-bind-html="settings.getStartedHeroText"></p>
 
                     <div ng-if="settings.isGettingStarted == false">
-                        <button ng-click="settings.getStarted()">Get Started</button>
+                        <button class="wide-button" ng-click="settings.getStarted()">Get Started</button>
                     </div>
 
                     <form name="gettingStartedForm" ng-if="settings.isGettingStarted == true" novalidate>
@@ -85,7 +85,8 @@
             @endif
 
             <section ng-if="!isActive && auth == false">
-                <p class="exclaim">SpaceX Stats is not live at this time.</p>
+                <p class="exclaim">SpaceX Stats <span class="gold">Live</span> is not active at this time.</p>
+                <p class="exclaim">The next launch is <a href="@{{ '/missions/' + data.upcomingMission.slug }}">@{{ data.upcomingMission.name }}</a>.</p>
             </section>
 
             <!-- If SpaceXStats live is running -->

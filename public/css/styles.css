@@ -7422,6 +7422,13 @@ small {
   font-size: smaller;
   opacity: 0.8; }
 
+.exclaim {
+  text-align: center;
+  font-size: 32px;
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  font-weight: 100;
+  color: #8B939B; }
+
 .lowvisibility.color {
   color: #CCC; }
 
