@@ -38,10 +38,10 @@
             },
             toggleForLaunch: function() {
                 if ($scope.liveParameters.isForLaunch) {
-                    $scope.liveParameters.redditTitle = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
+                    $scope.liveParameters.reddit.title = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
                     $scope.liveParameters.title = $scope.data.upcomingMission.name;
                 } else {
-                    $scope.liveParameters.title = $scope.liveParameters.redditTitle = null;
+                    $scope.liveParameters.title = $scope.liveParameters.reddit.title = null;
                 }
             },
             isEditingSettings: false,
@@ -73,7 +73,10 @@
         $scope.liveParameters = {
             isForLaunch: true,
             title: laravel.title ? laravel.title : $scope.data.upcomingMission.name,
-            redditTitle: laravel.redditTitle ? laravel.redditTitle : '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
+            reddit: {
+                title: laravel.reddit.title ? laravel.reddit.title : '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
+                thing: laravel.reddit.thing ? laravel.reddit.thing : null,
+            },
             pageTitle: function() {
                 if (!$scope.settings.isActive) {
                     return 'SpaceXStats Live';
@@ -89,8 +92,8 @@
             },
             selectedStreamingSource: 'none',
             description: laravel.description,
-            sections: laravel.sections,
-            resources: laravel.resources
+            sections: laravel.sections ? laravel.sections : [],
+            resources: laravel.resources ? laravel.resources : []
         };
 
         $scope.send = {
@@ -145,7 +148,9 @@
         // Websocket listeners
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveStartedEvent', function(data) {
             $scope.isActive = true;
-            console.log(data);
+            $scope.liveParameters.sections = data.data.sections;
+            $scope.liveParameters.resources = data.data.resources;
+            $scope.liveParameters.title = data.data.title;
             $scope.$apply();
         });
 

@@ -22,7 +22,6 @@ Populate the launch live area based on whether the NASA stream/SpaceX stream is 
 {{ $section['content'] }}
 @endforeach
 
-@if (\Redis::exists('live:resources'))
 ### Resources
 @foreach(json_decode(\Redis::get('live:resources'), true) as $resource)
 @if ($resource['courtesy'] != null)
@@ -31,7 +30,6 @@ Populate the launch live area based on whether the NASA stream/SpaceX stream is 
 * [{{ $resource['title'] }}]({{ $resource['url'] }})
 @endif
 @endforeach
-@endif
 
 ### Prevous /r/SpaceX Live Events
 

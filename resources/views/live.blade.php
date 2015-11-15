@@ -34,7 +34,7 @@
                         <ul class="container">
                             <li class="gr-6">
                                 <label>Reddit Thread Title</label>
-                                <input type="text" ng-model="liveParameters.redditTitle" id="reddit-title" name="reddit-title" placeholder="The Reddit Thread Title" required />
+                                <input type="text" ng-model="liveParameters.reddit.title" id="reddit-title" name="reddit-title" placeholder="The Reddit Thread Title" required />
                             </li>
                             <li class="gr-6">
                                 <label>SpaceXStats Live Title</label>
@@ -218,6 +218,7 @@
                 <div class="gr-9">
                     Sections, maps
 
+                    <h3>Updates</h3>
                     <div ng-repeat="update in updates | orderBy:'id':true">
                         <div>
                             <p><span>@{{ update.timestamp }}</span> @{{ update.createdAt }}</p>
@@ -232,6 +233,8 @@
                             <button ng-click="update.isEditFormVisible = false">Close</button>
                         </form>
                     </div>
+
+                    <p class="exclaim" ng-show="updates.length == 0">No updates :(</p>
                 </div>
 
                 <aside class="gr-3">

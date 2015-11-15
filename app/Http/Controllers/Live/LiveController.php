@@ -7,9 +7,10 @@ use Illuminate\Support\Facades\Input;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
-use SpaceXStats\Events\LiveStartedEvent;
-use SpaceXStats\Events\LiveUpdateCreatedEvent;
-use SpaceXStats\Events\LiveUpdateUpdatedEvent;
+use SpaceXStats\Events\Live\LiveStartedEvent;
+use SpaceXStats\Events\Live\LiveUpdateCreatedEvent;
+use SpaceXStats\Events\Live\LiveUpdateUpdatedEvent;
+use SpaceXStats\Events\Live\LiveEndedEvent;
 use SpaceXStats\Facades\BladeRenderer;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Jobs\UpdateRedditLiveThreadJob;
@@ -33,7 +34,7 @@ class LiveController extends Controller {
                 return json_decode($update);
             }),
             'title' => Redis::get('live:title'),
-            'redditTitle' => Redis::get('live:reddit:title'),
+            'reddit' => Redis::hgetall('live:reddit'),
             'sections' => json_decode(Redis::get('live:sections')),
             'resources' => json_decode(Redis::get('live:resources')),
             'description' => Redis::get('live:description')
@@ -135,7 +136,6 @@ class LiveController extends Controller {
         Redis::set('live:countdownTo', Input::get('countdownTo'));
 
         Redis::set('live:title', Input::get('title'));
-        Redis::set('live:reddit:title', Input::get('redditTitle'));
         Redis::set('live:description', Input::get('description'));
         Redis::set('live:isForLaunch', Input::get('isForLaunch'));
 
@@ -168,11 +168,16 @@ class LiveController extends Controller {
             'kind' => 'self',
             'sendreplies' => true,
             'text' => $templatedOutput,
-            'title' => Input::get('redditTitle')
+            'title' => Input::get('reddit.title')
         ]);
 
-        // Set the link thread link
-        Redis::set('live:reddit:thing', $response->data->name);
+        // error check reddit here
+
+        // Set the Reddit redis parameters
+        Redis::hmset('live:streams', array(
+            'thing' => $response->data->name,
+            'title' => Input::get('redditTitle')
+        ));
 
         // Broadcast event to turn on spacexstats live
         event(new LiveStartedEvent([
@@ -181,8 +186,10 @@ class LiveController extends Controller {
             'nasastream' => Input::get('nasastream'),
             'countdownTo' => Input::get('countdownTo'),
             'title' => Input::get('title'),
-            'redditTitle' => Input::get('redditTitle'),
-            'redditDiscussion' => Input::get('redditDiscussion'),
+            'reddit' => [
+                'title' => Input::get('reddit.title'),
+                'thing' => Input::get('reddit.thing'),
+            ],
             'description' => Input::get('description'),
             'isForLaunch' => Input::get('isForLaunch'),
             'resources' => Input::get('resources'),
@@ -202,9 +209,13 @@ class LiveController extends Controller {
 
         // Turn off SpaceXStats Live
         Redis::set('live:active', false);
+
         // Clean up all spacexstats live redis keys
         Redis::del(['live:streams', 'live:title', 'live:description', 'live:resources', 'live:sections', 'live:updates',
-            'live:countdownTo', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit:thing', 'live:reddit:title']);
+            'live:countdownTo', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit']);
+
+        // Send out event
+        event(new LiveEndedEvent());
 
         return response()->json(null, 204);
     }
