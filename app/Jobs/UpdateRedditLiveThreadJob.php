@@ -3,8 +3,10 @@
 namespace SpaceXStats\Jobs;
 
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
 use Illuminate\Contracts\Bus\SelfHandling;
+use SpaceXStats\Facades\BladeRenderer;
 use SpaceXStats\Live\LiveUpdate;
 
 class UpdateRedditLiveThreadJob extends Job implements SelfHandling
@@ -26,13 +28,19 @@ class UpdateRedditLiveThreadJob extends Job implements SelfHandling
     public function handle()
     {
         // Rerender content
-        $templatedOutput = BladeRenderer::render('livethreadcontents', array());
+        $templatedOutput = BladeRenderer::render('livethreadcontents', array(
+            'updates' => collect(Redis::lrange('live:updates', 0, -1))->reverse()->map(function($update) {
+                return json_decode($update);
+            })
+        ));
 
         // Connect to Reddit
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         // Update Thread
-        $reddit->thing('foo')->edit($templatedOutput);
+        if (Redis::exists('live:reddit:thing')) {
+            $reddit->thing(Redis::get('live:reddit:thing'))->edit($templatedOutput);
+        }
     }
 }

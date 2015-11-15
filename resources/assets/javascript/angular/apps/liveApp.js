@@ -1,7 +1,7 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Message", function($scope, liveService, Section, Resource, Update) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
         var socket = io('http://spacexstats.app:3000');
 
         $scope.data = {
@@ -22,7 +22,7 @@
                 liveService.create($scope.liveParameters).then(function() {
                     $scope.settings.isCreating = false;
                     $scope.isActive = true;
-                    $scope.settings.isGettingStarted = null;
+                    $scope.settings.isGettingStarted = false;
                 });
             },
             turnOffSpaceXStatsLive: function() {
@@ -84,19 +84,26 @@
             /*
              * Send a launch update (message) via POST off to the server to be broadcast
              */
-            message: function() {
+            message: function(form) {
+
+                // Send the message
                 liveService.sendMessage({
                     message: $scope.send.new.message,
                     messageType: $scope.send.new.messageType
                 });
 
+                // Reset the form
                 $scope.send.new.message = "";
+                form.$setPristine();
             }
         };
 
         $scope.buttons = {
             click: function(messageType) {
 
+            },
+            isDisabled: function(messageType) {
+                return true;
             },
             isVisible: function(messageType) {
                 return true;
@@ -106,17 +113,31 @@
         // Websocket listeners
         socket.on('live-updates:SpaceXStats\\Events\\LiveStartedEvent', function(data) {
             $scope.isActive = true;
+            console.log(data);
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateCreatedEvent', function(data) {
-            $scope.updates.push(data.liveUpdate);
+            $scope.updates.push(new Update(data.liveUpdate));
         });
 
-        // Init
+        socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateUpdatedEvent', function(data) {
+            var indexOfUpdate = $scope.updates.indexOf($scope.updates.filter(function(update) {
+                return update.id == data.liveUpdate.id;
+            }).shift());
+
+            $scope.updates[indexOfUpdate] = new Update(data.liveUpdate);
+        });
+
+        // Initialize from page load
         (function() {
             $scope.auth = laravel.auth;
             $scope.isActive = laravel.isActive;
-            $scope.updates = laravel.updates;
+            $scope.updates = laravel.updates.map(function(update) {
+                return new Update(update);
+            });
+            $scope.liveParameters.resources = laravel.resources;
+            $scope.liveParameters.description = laravel.description;
+            $scope.liveParameters.sections = laravel.sections;
         })();
     }]);
 
@@ -127,7 +148,7 @@
         };
 
         this.editMessage = function(message) {
-            return $http.patch('/live/send/', message);
+            return $http.patch('/live/send/message', message);
         };
 
         this.updateSettings = function(settings) {
@@ -149,10 +170,12 @@
             var self = update;
 
             self.isEditFormVisible = false;
+            self.isEditButtonDisabled = false;
 
             self.edit = function() {
+                self.isEditButtonDisabled = true;
                 liveService.editMessage(self).then(function() {
-                    console.log('done');
+                    self.isEditFormVisible = self.isEditButtonDisabled = false;
                 });
             };
 

@@ -40,9 +40,11 @@ cd /home/vagrant/spacexstats
 php artisan migrate
 php artisan db:seed
 
-echo "[6/7] Setting up Node.js..."
-npm install socket.io ioredis express --save --no-bin-links
+echo "[6/7] Setting up Node.js"
 # --no-bin-links is not required if you are not using Vagrant for Windows
+npm install socket.io ioredis express --save --no-bin-links
+npm install -g forever
+forever start socket.js
 
 echo "[7/7] Restarting nginx..."
 service nginx restart

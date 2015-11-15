@@ -123,10 +123,13 @@ class Spacexstats extends Migration {
 
         Schema::create('live_updates', function(Blueprint $table) {
             $table->increments('live_update_id');
-            $table->string('message', Varchar::large);
-            $table->string('live_event_name', Varchar::small);
             $table->integer('user_id')->unsigned()->nullable();
-            $table->timestamps();
+            $table->string('update', Varchar::large);
+            $table->string('update_type', Varchar::small);
+            $table->string('live_event_name', Varchar::small);
+            $table->string('timestamp', Varchar::tiny);
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at');
         });
 
         Schema::create('locations', function(Blueprint $table) {

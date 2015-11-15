@@ -96,13 +96,9 @@
 
             <!-- add streams here -->
 
-            <section ng-if="isActive == true">
-                Resources, Sections, Maps, etc
-            </section>
-
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section class="live-message-form" ng-if="isActive == true">
-                    <form name="sendMessageForm">
+                    <form name="sendMessageForm" novalidate>
                         <ul class="container">
                             <li class="gr-1">
                                 <button ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
@@ -133,16 +129,20 @@
                             </li>
                         </ul>
                         <textarea name="message" ng-model="send.new.message"
-                                  placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown">required>
+                                  placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown" required>
                         </textarea>
-                        <input type="submit" ng-click="send.message()" value="Post" />
+                        <input type="submit" ng-click="send.message(sendMessageForm)" ng-disabled="sendMessageForm.$invalid" value="Post" />
                     </form>
                 </section>
             @endif
 
             <section ng-if="isActive == true" id="content" class="container">
                 <div class="gr-9">
-                    <div ng-repeat="update in updates">
+                    Sections, maps
+                </div>
+
+                <div class="gr-9">
+                    <div ng-repeat="update in updates | orderBy:'id':true">
                         <div>
                             <p><span>@{{ update.timestamp }}</span> @{{ update.createdAt }}</p>
                             <i class="fa fa-edit" ng-if="auth == true" ng-click="update.isEditFormVisible = true"></i>
@@ -150,15 +150,16 @@
 
                         <div class="md" ng-bind-html="update.updateMd"></div>
 
-                        <form name="editUpdateForm" ng-if="update.isEditFormVisible">
-                            <textarea ng-model="update.update" required></textarea>
-                            <button ng-click="update.edit()">Save</button>
+                        <form name="editUpdateForm" ng-if="update.isEditFormVisible" novalidate>
+                            <textarea required ng-model="update.update" name="update"></textarea>
+                            <button ng-click="update.edit()" ng-disabled="update.isEditButtonDisabled || editUpdateForm.update.$pristine || editUpdateForm.$invalid">Save</button>
                             <button ng-click="update.isEditFormVisible = false">Close</button>
                         </form>
                     </div>
                 </div>
 
                 <aside class="gr-3">
+                    <h3>Resources</h3>
                     <ul>
                         <li ng-repeat="resource in liveParameters.resources">@{{ resource.title }}</li>
                     </ul>

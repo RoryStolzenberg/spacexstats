@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
 use SpaceXStats\Events\LiveStartedEvent;
 use SpaceXStats\Events\LiveUpdateCreatedEvent;
+use SpaceXStats\Events\LiveUpdateUpdatedEvent;
 use SpaceXStats\Facades\BladeRenderer;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Jobs\UpdateRedditLiveThreadJob;
@@ -30,7 +31,10 @@ class LiveController extends Controller {
             'isActive' => Redis::get('live:active') == true,
             'updates' => collect(Redis::lrange('live:updates', 0, -1))->map(function($update) {
                 return json_decode($update);
-            })
+            }),
+            'sections' => json_decode(Redis::get('live:sections')),
+            'resources' => json_decode(Redis::get('live:resources')),
+            'description' => json_decode(Redis::get('live:description'))
         ]);
 
         return view('live');
@@ -47,18 +51,18 @@ class LiveController extends Controller {
         // Create live update
         $liveUpdate = new LiveUpdate([
             'update' => Input::get('message'),
-            'updateType' => Input::get('messageType'),
-            'id' => \SpaceXStats\Models\LiveUpdate::count() + 1
+            'updateType' => Input::get('messageType')
         ]);
+
+        // Add to Redis
+        Redis::rpush('live:updates', json_encode($liveUpdate));
 
         // Push into Websockets
         event(new LiveUpdateCreatedEvent($liveUpdate));
 
         // Push to queue for Reddit
-        $this->dispatch(new UpdateRedditLiveThreadJob())->onQueue('live');
-
-        // Add to Redis
-        Redis::rpush('live:updates', json_encode($liveUpdate));
+        $job = (new UpdateRedditLiveThreadJob())->onQueue('live');
+        $this->dispatch($job);
 
         // Add to DB
         //\SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
@@ -70,12 +74,21 @@ class LiveController extends Controller {
     // /send/message, PATCH.
     public function editMessage() {
         // Find message in Redis
+        $id = Input::get('id');
+        $liveUpdate = new LiveUpdate(json_decode(Redis::lindex('live:updates', $id)));
 
-        // Push into websockets
-
-        // Push to queue for Reddit
+        // Update
+        $liveUpdate->setUpdate(Input::get('update'));
 
         // Repush into Redis
+        Redis::lset('live:updates', $id, json_encode($liveUpdate));
+
+        // Push into websockets
+        event(new LiveUpdateUpdatedEvent($liveUpdate));
+
+        // Push to queue for Reddit
+        $job = (new UpdateRedditLiveThreadJob())->onQueue('live');
+        $this->dispatch($job);
 
         // Repush to DB
 
@@ -121,15 +134,15 @@ class LiveController extends Controller {
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         // Create a post
-        $response = $reddit->subreddit('echocss')->submit(array(
+        $response = $reddit->subreddit('echocss')->submit([
             'kind' => 'self',
             'sendreplies' => true,
             'text' => $templatedOutput,
             'title' => Input::get('redditTitle')
-        ));
+        ]);
 
         // Set the link thread link
-        Redis::set('live:reddit:link', 'foo');
+        Redis::set('live:reddit:thing', $response->data->name);
 
         // Broadcast event to turn on spacexstats live
         event(new LiveStartedEvent([
