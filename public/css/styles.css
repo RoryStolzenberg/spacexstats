@@ -95,7 +95,7 @@ table {
 .state-default .row, .state-default .row-reverse, .row, .row-reverse {
   zoom: 1; }
 
-.state-default .gr-1on5, .state-default .gr-1on8, .state-default .gr-1on9, .state-default .gr-0, .state-default .gr-1, .state-default .gr-2, .state-default .gr-3, .state-default .gr-4, .state-default .gr-5, .state-default .gr-6, .state-default .gr-7, .state-default .gr-8, .state-default .gr-9, .state-default .gr-10, .state-default .gr-11, .state-default .gr-12, .gr-1on5, .gr-1on8, .gr-1on9, .gr-0, .gr-1, .gr-2, .gr-3, .gr-4, .gr-5, .gr-6, .gr-7, .gr-8, .gr-9, .gr-10, .gr-11, .gr-12, .header-wrapper header i, #logo, header > nav, section.details #live-tweets, .upload-type li {
+.state-default .gr-1on5, .state-default .gr-1on8, .state-default .gr-1on9, .state-default .gr-0, .state-default .gr-1, .state-default .gr-2, .state-default .gr-3, .state-default .gr-4, .state-default .gr-5, .state-default .gr-6, .state-default .gr-7, .state-default .gr-8, .state-default .gr-9, .state-default .gr-10, .state-default .gr-11, .state-default .gr-12, .gr-1on5, .gr-1on8, .gr-1on9, .gr-0, .gr-1, .gr-2, .gr-3, .gr-4, .gr-5, .gr-6, .gr-7, .gr-8, .gr-9, .gr-10, .gr-11, .gr-12, .header-wrapper header i, #logo, header > nav, section.details #live-tweets, .upload-type li, body.live .access-links#logo {
   display: inline-block;
   min-height: 1px;
   float: left;
@@ -8396,6 +8396,19 @@ body.live {
     height: auto; }
     body.live .content-wrapper main {
       min-height: calc(100vh - 150px + 50px); }
+  body.live .access-links {
+    color: white;
+    line-height: 100px;
+    text-align: center; }
+    body.live .access-links#logo {
+      width: 16.66667%; }
+
+button.canned-response {
+  width: 100px;
+  min-width: 100px;
+  padding: 0;
+  font-size: smaller;
+  letter-spacing: normal; }
 
 .tagger-container .wrapper {
   border: 1px solid #CCC;

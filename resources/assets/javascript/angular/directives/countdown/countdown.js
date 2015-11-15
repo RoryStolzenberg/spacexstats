@@ -9,6 +9,7 @@
             scope: {
                 specificity: '=',
                 countdownTo: '=',
+                isPaused: '=',
                 callback: '&?'
             },
             link: function($scope, elem, attrs) {

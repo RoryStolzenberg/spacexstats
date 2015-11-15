@@ -16,4 +16,21 @@ body.live {
         }
     }
 
+    .access-links {
+        color:white;
+        line-height:100px;
+        text-align: center;
+
+        &#logo {
+            @include gridle_grid(2);
+        }
+    }
+}
+
+button.canned-response {
+    width:100px;
+    min-width:100px;
+    padding:0;
+    font-size:smaller;
+    letter-spacing: normal;
 }

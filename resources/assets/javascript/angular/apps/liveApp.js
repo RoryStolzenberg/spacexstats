@@ -71,6 +71,7 @@
                 nasa: false,
                 spacex: false
             },
+            selectedStreamingSource: 'none',
             description: null,
             sections: [],
             resources: []
@@ -94,7 +95,7 @@
 
                 // Reset the form
                 $scope.send.new.message = "";
-                form.$setPristine();
+                form.$setUntouched();
             }
         };
 
@@ -114,10 +115,12 @@
         socket.on('live-updates:SpaceXStats\\Events\\LiveStartedEvent', function(data) {
             $scope.isActive = true;
             console.log(data);
+            $scope.$apply();
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
+            $scope.$apply();
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\LiveUpdateUpdatedEvent', function(data) {
@@ -126,6 +129,7 @@
             }).shift());
 
             $scope.updates[indexOfUpdate] = new Update(data.liveUpdate);
+            $scope.$apply();
         });
 
         // Initialize from page load

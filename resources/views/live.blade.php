@@ -6,18 +6,19 @@
     <!-- Custom Header -->
     <div class="content-wrapper">
         <header class="container">
-            <p class="gr-2"><a href="/">SpaceX Stats</a></p>
-            <h1 class="gr-8">@{{ liveParameters.pageTitle() }}</h1>
+            <div class="access-links" id="logo"><a href="/">SpaceX Stats</a></div>
+            <h1 class="gr-8" ng-if="isActive == false">@{{ liveParameters.pageTitle() }}</h1>
+            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdownTo"></countdown></div>
             @if (Auth::check())
-                <p class="gr-2"><a target="_blank" href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a></p>
+                <div class="access-links"><a target="_blank" href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a></div>
             @else
-                <p class="gr-2"><a target="_blank" href="/auth/login">My Account</a></p>
+                <div class="access-links"><a target="_blank" href="/auth/login">My Account</a></div>
             @endif
         </header>
         <main>
             <!-- SpaceXStats live is not running -->
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                <section ng-if="isActive == false">
+                <section ng-if="!isActive">
                     <span class="live-herotext">@{{ settings.getStartedHeroText }}</span>
 
                     <div ng-if="settings.isGettingStarted == false">
@@ -75,21 +76,21 @@
                 </section>
             @endif
 
-            <section ng-if="isActive == false && auth == false">
+            <section ng-if="!isActive && auth == false">
                 <p class="exclaim">SpaceX Stats is not live at this time.</p>
             </section>
 
             <!-- If SpaceXStats live is running -->
-            <nav class="in-page" ng-if="isActive == true">
-                <ul>
-                    <li></li>
-                    <li>No video</li>
-                    <li>SpaceX Only</li>
-                    <li>NASA Only</li>
-                    <li>Split-screen</li>
+            <nav class="in-page" ng-if="isActive">
+                <ul class="container highlights">
+                    <li class="gr-4">@{{ liveParameters.title }} Event</li>
+                    <li class="gr-1">No video</li>
+                    <li class="gr-1">SpaceX</li>
+                    <li class="hidden">NASA Only</li>
+                    <li class="hidden">Split-screen</li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                        <li><i class="fa fa-cog"></i></li>
+                        <li class="gr-1"><i class="fa fa-cog"></i></li>
                     @endif
                 </ul>
             </nav>
@@ -97,35 +98,35 @@
             <!-- add streams here -->
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                <section class="live-message-form" ng-if="isActive == true">
+                <section class="live-message-form" ng-if="isActive">
                     <form name="sendMessageForm" novalidate>
                         <ul class="container">
                             <li class="gr-1">
-                                <button ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
+                                <button class="canned-response" ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('T-10s')" ng-if="buttons.isVisible('T-10s')">T-10s</button>
+                                <button class="canned-response" ng-click="buttons.click('T-10s')" ng-if="buttons.isVisible('T-10s')">T-10s</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible('Liftoff')">Liftoff</button>
+                                <button class="canned-response" ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible('Liftoff')">Liftoff</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('Max-Q')" ng-if="buttons.isVisible('Max-Q')">Max-Q</button>
+                                <button class="canned-response" ng-click="buttons.click('Max-Q')" ng-if="buttons.isVisible('Max-Q')">Max-Q</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('MECO')" ng-if="buttons.isVisible('MECO')">MECO</button>
+                                <button class="canned-response" ng-click="buttons.click('MECO')" ng-if="buttons.isVisible('MECO')">MECO</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('MVac Ignition')" ng-if="buttons.isVisible('MVac Ignition')">MVac Ignition</button>
+                                <button class="canned-response" ng-click="buttons.click('MVac Ignition')" ng-if="buttons.isVisible('MVac Ignition')">MVac Ignition</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('SECO')" ng-if="buttons.isVisible('SECO')">SECO</button>
+                                <button class="canned-response" ng-click="buttons.click('SECO')" ng-if="buttons.isVisible('SECO')">SECO</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('Mission Success')" ng-if="buttons.isVisible('Mission Success')">Mission Success</button>
+                                <button class="canned-response" ng-click="buttons.click('Mission Success')" ng-if="buttons.isVisible('Mission Success')">Mission Success</button>
                             </li>
                             <li class="gr-1">
-                                <button ng-click="buttons.click('Mission Failure')" ng-if="buttons.isVisible('Mission Failure')">Mission Failure</button>
+                                <button class="canned-response" ng-click="buttons.click('Mission Failure')" ng-if="buttons.isVisible('Mission Failure')">Mission Failure</button>
                             </li>
                         </ul>
                         <textarea name="message" ng-model="send.new.message"
@@ -136,12 +137,10 @@
                 </section>
             @endif
 
-            <section ng-if="isActive == true" id="content" class="container">
+            <section ng-if="isActive" id="content" class="container">
                 <div class="gr-9">
                     Sections, maps
-                </div>
 
-                <div class="gr-9">
                     <div ng-repeat="update in updates | orderBy:'id':true">
                         <div>
                             <p><span>@{{ update.timestamp }}</span> @{{ update.createdAt }}</p>
