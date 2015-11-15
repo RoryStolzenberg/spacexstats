@@ -4,9 +4,16 @@
     liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
         var socket = io('http://spacexstats.app:3000');
 
+        $scope.auth = laravel.auth;
+        $scope.isActive = laravel.isActive;
+
         $scope.data = {
             upcomingMission: laravel.mission
         };
+
+        $scope.updates = laravel.updates.map(function(update) {
+            return new Update(update);
+        });
 
         $scope.settings = {
             isGettingStarted: laravel.isActive == true ? null : false,
@@ -15,7 +22,6 @@
                 this.isGettingStarted = true;
                 this.getStartedHeroText = 'Awesome. We just need a bit of info first.'
             },
-
             isCreating: false,
             turnOnSpaceXStatsLive: function() {
                 $scope.settings.isCreating = true;
@@ -27,30 +33,47 @@
             },
             turnOffSpaceXStatsLive: function() {
                 liveService.destroy().then(function() {
-                    $scope.isActive = false;
+                    $scope.isActive = $scope.auth = false;
                 });
             },
+            toggleForLaunch: function() {
+                if ($scope.liveParameters.isForLaunch) {
+                    $scope.liveParameters.redditTitle = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
+                    $scope.liveParameters.title = $scope.data.upcomingMission.name;
+                } else {
+                    $scope.liveParameters.title = $scope.liveParameters.redditTitle = null;
+                }
+            },
+            isEditingSettings: false,
             addSection: function() {
+                if (!$scope.liveParameters.sections) {
+                    $scope.liveParameters.sections = [];
+                }
                 $scope.liveParameters.sections.push(new Section({}));
             },
             removeSection: function(section) {
                 $scope.liveParameters.sections.splice($scope.liveParameters.sections.indexOf(section), 1);
             },
             addResource: function() {
+                if (!$scope.liveParameters.resources) {
+                    $scope.liveParameters.resources = [];
+                }
                 $scope.liveParameters.resources.push(new Resource({}));
             },
             removeResource: function(resource) {
                 $scope.liveParameters.resources.splice($scope.liveParameters.resources.indexOf(resource), 1);
             },
             updateSettings: function() {
-                liveService.updateSettings($scope.liveParameters);
+                liveService.updateSettings($scope.liveParameters).then(function(response) {
+                    $scope.settings.isEditingSettings = false;
+                });
             }
         };
 
         $scope.liveParameters = {
             isForLaunch: true,
-            title: $scope.data.upcomingMission.name,
-            redditTitle: '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
+            title: laravel.title ? laravel.title : $scope.data.upcomingMission.name,
+            redditTitle: laravel.redditTitle ? laravel.redditTitle : '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
             pageTitle: function() {
                 if (!$scope.settings.isActive) {
                     return 'SpaceXStats Live';
@@ -58,23 +81,16 @@
                     return 'countdown here';
                 }
             },
-            toggleForLaunch: function() {
-                if (this.isForLaunch) {
-                    this.title = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
-                } else {
-                    this.title = null;
-                }
-
-            },
             countdownTo: $scope.data.upcomingMission.launch_date_time,
+            isCountdownPaused: false,
             streamingSources: {
                 nasa: false,
                 spacex: false
             },
             selectedStreamingSource: 'none',
-            description: null,
-            sections: [],
-            resources: []
+            description: laravel.description,
+            sections: laravel.sections,
+            resources: laravel.resources
         };
 
         $scope.send = {
@@ -100,6 +116,18 @@
         };
 
         $scope.buttons = {
+            cannedResponses: {
+                holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
+                tMinusTen: laravel.cannedResponses ? laravel.cannedResponses.tMinusTen : null,
+                liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
+                maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
+                meco: laravel.cannedResponses ? laravel.cannedResponses.meco : null,
+                stageSep: laravel.cannedResponses ? laravel.cannedResponses.stageSep : null,
+                mVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.mVacIgnition : null,
+                seco: laravel.cannedResponses ? laravel.cannedResponses.seco : null,
+                missionSuccess: laravel.cannedResponses ? laravel.cannedResponses.missionSuccess : null,
+                missionFailure: laravel.cannedResponses ? laravel.cannedResponses.missionFailure : null
+            },
             click: function(messageType) {
 
             },
@@ -108,6 +136,9 @@
             },
             isVisible: function(messageType) {
                 return true;
+            },
+            updateCannedResponses: function() {
+
             }
         };
 
@@ -131,18 +162,6 @@
             $scope.updates[indexOfUpdate] = new Update(data.liveUpdate);
             $scope.$apply();
         });
-
-        // Initialize from page load
-        (function() {
-            $scope.auth = laravel.auth;
-            $scope.isActive = laravel.isActive;
-            $scope.updates = laravel.updates.map(function(update) {
-                return new Update(update);
-            });
-            $scope.liveParameters.resources = laravel.resources;
-            $scope.liveParameters.description = laravel.description;
-            $scope.liveParameters.sections = laravel.sections;
-        })();
     }]);
 
     liveApp.service('liveService', ["$http", function($http) {
@@ -156,7 +175,11 @@
         };
 
         this.updateSettings = function(settings) {
-            return $http.post('/live/send/updateSettings', settings);
+            return $http.post('/live/send/settings', settings);
+        };
+
+        this.updateCannedResponses = function(cannedResponses) {
+            return $http.patch('/live/sent/cannedresponses', cannedResponses);
         };
 
         this.create = function(createThreadParameters) {
@@ -164,9 +187,8 @@
         };
 
         this.destroy = function() {
-            return $http.post('/live/send/destroy');
+            return $http.delete('/live/send/destroy');
         };
-
     }]);
 
     liveApp.factory('Update', ['liveService', function(liveService) {

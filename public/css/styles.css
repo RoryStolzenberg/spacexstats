@@ -7418,6 +7418,10 @@ a:link, a:visited, a:hover, a:active {
   color: inherit;
   text-decoration: inherit; }
 
+small {
+  font-size: smaller;
+  opacity: 0.8; }
+
 .lowvisibility.color {
   color: #CCC; }
 
@@ -7427,6 +7431,9 @@ a:link, a:visited, a:hover, a:active {
 .subheading {
   font-size: 18px;
   line-height: 2; }
+
+.gold {
+  color: #CCAC55; }
 
 .code {
   font-family: "Source Code Pro"; }
@@ -7770,7 +7777,7 @@ input[type="submit"], input[type="reset"], button {
   background-color: #1FA67A; }
   input[type="submit"].submit, input[type="reset"].submit, button.submit {
     background-color: #3569A4; }
-  input[type="submit"].delete, input[type="reset"].delete, button.delete {
+  input[type="submit"].warning, input[type="reset"].warning, button.warning {
     background-color: #C05B40; }
   input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled {
     background-color: #CCC; }
@@ -8388,7 +8395,7 @@ img#object {
 body.live {
   background-color: #3569A4;
   height: auto; }
-  body.live h1 {
+  body.live h1, body.live .countdown.live {
     height: 100px;
     line-height: 100px;
     text-align: center; }
@@ -8397,11 +8404,27 @@ body.live {
     body.live .content-wrapper main {
       min-height: calc(100vh - 150px + 50px); }
   body.live .access-links {
-    color: white;
+    color: #FFF;
     line-height: 100px;
     text-align: center; }
     body.live .access-links#logo {
       width: 16.66667%; }
+
+.countdown.live {
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  font-weight: 100;
+  font-size: 80px;
+  color: #FFF;
+  margin: 0 auto; }
+  .countdown.live td {
+    min-width: 125px; }
+
+section.editing-settings {
+  background-color: #CCC;
+  box-shadow: 0px 10px 10px -10px #33495E inset, 0px -10px 10px -10px #33495E inset; }
+
+.canned-responses textarea {
+  min-height: 80px; }
 
 button.canned-response {
   width: 100px;

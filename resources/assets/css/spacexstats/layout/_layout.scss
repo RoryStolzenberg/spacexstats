@@ -148,6 +148,11 @@ a:link, a:visited, a:hover, a:active {
     text-decoration:inherit;
 }
 
+small {
+    font-size:smaller;
+    opacity:0.8;
+}
+
 .lowvisibility {
     &.color {
         color:$bordergrey;
@@ -160,6 +165,10 @@ a:link, a:visited, a:hover, a:active {
 .subheading {
     font-size:$font-large;
     line-height:2;
+}
+
+.gold {
+    color:$gold;
 }
 
 .code {

@@ -95,7 +95,7 @@
                 </section>
 
                 <section class="hero" id="countdown">
-                    <countdown specificity="launchSpecificity" countdown-to="launchDateTime" callback="requestFrequencyManager"></countdown>
+                    <countdown specificity="launchSpecificity" countdown-to="launchDateTime" callback="requestFrequencyManager" type="classic"></countdown>
                 </section>
                 <p>{{ $mission->summary }}</p>
 

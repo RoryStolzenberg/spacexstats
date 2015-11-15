@@ -6,9 +6,9 @@
     <!-- Custom Header -->
     <div class="content-wrapper">
         <header class="container">
-            <div class="access-links" id="logo"><a href="/">SpaceX Stats</a></div>
+            <div class="access-links" id="logo"><a href="/">SpaceX Stats <span class="gold">Live</span></a></div>
             <h1 class="gr-8" ng-if="isActive == false">@{{ liveParameters.pageTitle() }}</h1>
-            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdownTo"></countdown></div>
+            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdownTo" type="live"></countdown></div>
             @if (Auth::check())
                 <div class="access-links"><a target="_blank" href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a></div>
             @else
@@ -26,26 +26,34 @@
                     </div>
 
                     <form name="gettingStartedForm" ng-if="settings.isGettingStarted == true" novalidate>
-                        <span>Is this for the upcoming launch or a miscellaneous event?</span>
-                        <input type="checkbox" id="isForLaunch" name="isForLaunch" ng-model="liveParameters.isForLaunch" ng-change="liveParameters.toggleForLaunch()" />
+                        <h3>Is this for @{{ data.upcomingMission.name }} or a miscellaneous event?</h3>
+                        <input type="checkbox" id="isForLaunch" name="isForLaunch" ng-model="liveParameters.isForLaunch" ng-change="settings.toggleForLaunch()" />
                         <label for="isForLaunch"></label>
-                        @{{ data.upcomingMission.name }}
 
-                        <input type="text" ng-model="liveParameters.redditTitle" id="reddit-title" name="reddit-title" placeholder="The Reddit Thread Title" required />
-                        <input type="text" ng-model="liveParameters.title" id="title" name="title" placeholder="The SpaceXStats Live title. Generally just the mission name." required />
+
+                        <ul class="container">
+                            <li class="gr-6">
+                                <label>Reddit Thread Title</label>
+                                <input type="text" ng-model="liveParameters.redditTitle" id="reddit-title" name="reddit-title" placeholder="The Reddit Thread Title" required />
+                            </li>
+                            <li class="gr-6">
+                                <label>SpaceXStats Live Title</label>
+                                <input type="text" ng-model="liveParameters.title" id="title" name="title" placeholder="The SpaceXStats Live title. Generally just the mission name." required />
+                            </li>
+                        </ul>
 
                         <div ng-hide="liveParameters.isForLaunch">
                             <label for="countdownTo">Enter an event time (UTC)</label>
                             <datetime type="datetime" ng-model="liveParameters.countdownTo"></datetime>
                         </div>
 
-                        <p>What streams should be shown?</p>
-                        <span>SpaceX Stream</span>
+                        <h3>What streams should be shown?</h3>
+
                         <input type="checkbox" id="spacexstream" name="spacexstream" value="true" ng-model="liveParameters.streamingSources.spacex" />
-                        <label for="spacexstream"></label>
-                        <span>NASA Stream</span>
+                        <label for="spacexstream"><span>SpaceX Stream</span></label>
+
                         <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streamingSources.nasa" />
-                        <label for="nasastream"></label>
+                        <label for="nasastream"><span>NASA Stream</span></label>
 
                         <textarea ng-model="liveParameters.description" id="description" name="description" required
                                   placeholder="Write a small introduction about the launch here. 500 < chars, use markdown just like you would on Reddit. This is shown at the top of the Reddit thread.">
@@ -90,16 +98,81 @@
                     <li class="hidden">Split-screen</li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                        <li class="gr-1"><i class="fa fa-cog"></i></li>
+                        <li class="gr-1"><i class="fa fa-cog" ng-click="settings.isEditingSettings = !settings.isEditingSettings"></i></li>
                     @endif
                 </ul>
             </nav>
 
+            @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
+                <section class="editing-settings container" ng-if="isActive && settings.isEditingSettings">
+                    <div class="gr-7">
+                        <h3>Settings</h3>
+                        <button ng-click="settings.updateSettings()">Save Settings</button>
+                    </div>
+                    <div class="gr-5 canned-responses" ng-if="liveParameters.isForLaunch">
+                        <h3>Canned Responses</h3>
+                        <p>Canned responses allow you quickly double click or tap a button to automatically send out an update without typing, simply set the update beforehand. Different responses will become available at different parts of the mission.</p>
+                        <form name="cannedResponseSetupForm">
+                            <ul>
+                                <li>
+                                    <label for="holdAbort">Hold/Abort</label>
+                                    <textarea name="holdAbort" ng-model="buttons.cannedResponses.holdAbort" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="tMinusTen">T-10s</label>
+                                    <textarea name="tMinusTen" ng-model="buttons.cannedResponses.tMinusTen" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="liftoff">Liftoff</label>
+                                    <textarea name="liftoff" ng-model="buttons.cannedResponses.liftoff" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="maxQ">Max-Q</label>
+                                    <textarea name="maxQ" ng-model="buttons.cannedResponses.maxQ" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="meco">MECO</label>
+                                    <textarea name="meco" ng-model="buttons.cannedResponses.meco" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="stageSep">Stage Sep</label>
+                                    <textarea name="stageSep" ng-model="buttons.cannedResponses.stageSep" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="mVacIgnition">mVac Ignition</label>
+                                    <textarea name="mVacIgnition" ng-model="buttons.cannedResponses.mVacIgnition" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="seco">SECO</label>
+                                    <textarea name="seco" ng-model="buttons.cannedResponses.seco" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="missionSuccess">Mission Success</label>
+                                    <textarea name="missionSuccess" ng-model="buttons.cannedResponses.missionSuccess" required></textarea>
+                                </li>
+                                <li>
+                                    <label for="missionFailure">Mission Failure</label>
+                                    <textarea name="missionFailure" ng-model="buttons.cannedResponses.missionFailure" required></textarea>
+                                </li>
+                            </ul>
+                        </form>
+                        <button ng-click="buttons.updateCannedResponses()" ng-disabled="cannedResponseSetupForm.$invalid">Save Canned Responses</button>
+                    </div>
+                    <div>
+                        <h3>Turn Off SpaceXStats Live</h3>
+                        <p>Are you sure?</p>
+                        <p>What will this do? It will set SpaceXStats Live back to the original state when you created the event. It will archive all updates, and destroy any miscellaneous data. Once done, you will be unset as launch controller.</p>
+                        <p>The Reddit Live Thread will remain visible and stickied, but you will no longer be able to edit the thread. </p>
+                        <button class="warning" ng-click="settings.turnOffSpaceXStatsLive()">Turn Off</button>
+                    </div>
+                </section>
+            @endif
+
             <!-- add streams here -->
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                <section class="live-message-form" ng-if="isActive">
-                    <form name="sendMessageForm" novalidate>
+                <section class="live-message-form" ng-if="isActive && liveParameters.isForLaunch">
+                    <form name="cannedResponsePostForm" novalidate>
                         <ul class="container">
                             <li class="gr-1">
                                 <button class="canned-response" ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
@@ -117,6 +190,9 @@
                                 <button class="canned-response" ng-click="buttons.click('MECO')" ng-if="buttons.isVisible('MECO')">MECO</button>
                             </li>
                             <li class="gr-1">
+                                <button class="canned-response" ng-click="buttons.click('Stage Sep')" ng-if="buttons.isVisible('Stage Sep')">Stage Sep</button>
+                            </li>
+                            <li class="gr-1">
                                 <button class="canned-response" ng-click="buttons.click('MVac Ignition')" ng-if="buttons.isVisible('MVac Ignition')">MVac Ignition</button>
                             </li>
                             <li class="gr-1">
@@ -132,7 +208,7 @@
                         <textarea name="message" ng-model="send.new.message"
                                   placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown" required>
                         </textarea>
-                        <input type="submit" ng-click="send.message(sendMessageForm)" ng-disabled="sendMessageForm.$invalid" value="Post" />
+                        <input type="submit" ng-click="send.message(cannedResponsePostForm)" ng-disabled="cannedResponsePostForm.$invalid" value="Post" />
                     </form>
                 </section>
             @endif

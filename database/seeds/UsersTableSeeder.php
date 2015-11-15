@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder {
             'password' => 'password',
             'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32),
-            'launchControllerFlag' => true
+            'launch_controller_flag' => true
         ));
 
         User::create(array(

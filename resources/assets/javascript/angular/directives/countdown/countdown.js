@@ -10,6 +10,7 @@
                 specificity: '=',
                 countdownTo: '=',
                 isPaused: '=',
+                type: '@',
                 callback: '&?'
             },
             link: function($scope, elem, attrs) {

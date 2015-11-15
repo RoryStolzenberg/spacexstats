@@ -25,17 +25,25 @@ class LiveController extends Controller {
      */
     public function live() {
 
-        JavaScript::put([
+        $js = [
             'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
             'mission' => Mission::future()->first(),
             'isActive' => Redis::get('live:active') == true,
             'updates' => collect(Redis::lrange('live:updates', 0, -1))->map(function($update) {
                 return json_decode($update);
             }),
+            'title' => Redis::get('live:title'),
+            'redditTitle' => Redis::get('live:reddit:title'),
             'sections' => json_decode(Redis::get('live:sections')),
             'resources' => json_decode(Redis::get('live:resources')),
-            'description' => json_decode(Redis::get('live:description'))
-        ]);
+            'description' => Redis::get('live:description')
+        ];
+
+        if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::IsAdmin()) {
+            $js['cannedResponses'] = Redis::hgetall('live:cannedResponses');
+        }
+
+        JavaScript::put($js);
 
         return view('live');
     }
@@ -95,7 +103,7 @@ class LiveController extends Controller {
         return response()->json(null, 204);
     }
 
-    // /send/settings, POST.
+    // /live/send/settings, POST.
     public function editSettings() {
         // Fetch settings
 
@@ -104,6 +112,14 @@ class LiveController extends Controller {
         // Websockets
 
         // Push to queue for Reddit
+
+        return response()->json(null, 204);
+    }
+
+    public function editCannedResponses() {
+        // Reset Canned Responses
+
+        return response()->json(null, 204);
     }
 
     public function create() {
@@ -121,10 +137,24 @@ class LiveController extends Controller {
         Redis::set('live:title', Input::get('title'));
         Redis::set('live:reddit:title', Input::get('redditTitle'));
         Redis::set('live:description', Input::get('description'));
-        Redis::set('live:isForMission', Input::get('isForMission'));
+        Redis::set('live:isForLaunch', Input::get('isForLaunch'));
 
         Redis::set('live:resources', json_encode(Input::get('resources')));
         Redis::set('live:sections', json_encode(Input::get('sections')));
+
+        // Create the canned responses
+        Redis::hmset('live:cannedResponses', [
+            'holdAbort' => 'HOLD HOLD HOLD',
+            'tMinusTen' => 'T-10 seconds until launch',
+            'liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
+            'maxQ' => 'MaxQ, at this point in flight maximum aerodynamic pressure on the vehicle is occurring.',
+            'meco' => 'MECO! Main Engine Cutoff. The vehicles first stage engines have shutdown in preparation for stage separation.',
+            'stageSep' => 'Stage separation confirmed.',
+            'mVacIgnition' => "Falcon's upper stage engine has ignited.",
+            'seco' => 'SECO! Second Stage Engine Cutoff. Falcon is now in orbit.',
+            'missionSuccess' => 'Success! SpaceX has completed another successful mission.',
+            'missionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
+        ]);
 
         // Render the Reddit thread template
         $templatedOutput = BladeRenderer::render('livethreadcontents', array());
@@ -154,7 +184,7 @@ class LiveController extends Controller {
             'redditTitle' => Input::get('redditTitle'),
             'redditDiscussion' => Input::get('redditDiscussion'),
             'description' => Input::get('description'),
-            'isForMission' => Input::get('isForMission'),
+            'isForLaunch' => Input::get('isForLaunch'),
             'resources' => Input::get('resources'),
             'sections' => Input::get('sections'),
         ]));
@@ -164,10 +194,17 @@ class LiveController extends Controller {
     }
 
     public function destroy() {
+        // Disable access
+        if (Auth::user()->isLaunchController()) {
+            Auth::user()->launch_controller_flag = false;
+            Auth::user()->save();
+        }
+
         // Turn off SpaceXStats Live
         Redis::set('live:active', false);
         // Clean up all spacexstats live redis keys
-        Redis::del(['live.streams', 'live:title', 'live:description', 'live:resources', 'live:sections', 'live:updates', 'live:countdownTo', 'live:discussion']);
+        Redis::del(['live:streams', 'live:title', 'live:description', 'live:resources', 'live:sections', 'live:updates',
+            'live:countdownTo', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit:thing', 'live:reddit:title']);
 
         return response()->json(null, 204);
     }

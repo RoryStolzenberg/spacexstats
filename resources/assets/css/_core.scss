@@ -119,6 +119,10 @@ $h1-height: 150px;
     transform:$transformation;
 }
 
+@mixin insetBoxShadow($color) {
+    box-shadow:0px 10px 10px -10px $color inset, 0px -10px 10px -10px $color inset;
+}
+
 @mixin filteredBackground($backgroundImage) {
     background-image: url($backgroundImage);
     //background-image: linear-gradient(rgba(#33495E, 0.5), rgba($slateblack, 0.5)), url($backgroundImage);

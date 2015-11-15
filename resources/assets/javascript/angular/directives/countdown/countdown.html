@@ -1,4 +1,4 @@
-<table class="countdown" ng-if="isLaunchExact == true">
+<table class="countdown" ng-if="isLaunchExact && type == 'classic'">
     <tr>
         <td class="value days">{{ days }}</td>
         <td class="value hours">{{ hours }}</td>
@@ -12,11 +12,20 @@
         <td class="unit seconds">{{ secondsText }}</td>
     </tr>
 </table>
-<table class="single" ng-if="isLaunchExact != true">
+<table class="single" ng-if="!isLaunchExact && type == 'classic'">
     <tr>
         <td class="value">{{ countdownText }}</td>
     </tr>
     <tr>
         <td class="unit">Expected Launch</td>
+    </tr>
+</table>
+<table class="countdown live" ng-if="type == 'live'">
+    <tr>
+        <td>T-</td>
+        <td>{{ days }}<small>d</small></td>
+        <td>{{ hours }}<small>h</small></td>
+        <td>{{ minutes }}<small>m</small></td>
+        <td>{{ seconds }}<small>s</small></td>
     </tr>
 </table>
