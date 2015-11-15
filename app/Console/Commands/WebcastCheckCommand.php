@@ -4,6 +4,7 @@ namespace SpaceXStats\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
+use SpaceXStats\Events\WebcastEvent;
 use SpaceXStats\Models\WebcastStatus;
 
 class WebcastCheckCommand extends Command
@@ -41,6 +42,14 @@ class WebcastCheckCommand extends Command
     {
         $livestream = json_decode(file_get_contents('http://xspacexx.api.channel.livestream.com/2.0/livestatus.json'));
 
+        // If the Livestream is active now, and wasn't before, or vice versa, send an event
+        if ($livestream->channel->isLive && Redis::hget('webcast', 'isLive') == 'false') {
+            event(new WebcastEvent(true));
+        } else if ($livestream->channel->isLive && Redis::hget('webcast', 'isLive') == 'false') {
+            event(new WebcastEvent(false));
+        }
+
+        // Set the Redis properties
         Redis::hmset('webcast', 'isLive', $livestream->channel->isLive === true ? 'true' : 'false', 'viewers', $livestream->channel->currentViewerCount);
 
         // Add to Database if livestream is active

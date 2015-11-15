@@ -8,9 +8,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
 class WebcastEvent extends Event implements ShouldBroadcast
 {
-    public function __construct()
+    public $isActive;
+
+    public function __construct(bool $isActive)
     {
-        //
+        $this->isActive = $isActive;
     }
 
     /**
