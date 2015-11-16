@@ -10,8 +10,9 @@ class MissionType extends Enum
     const CommunicationsSatellite = "Communications Satellite";
     const ConstellationMission = "Constellation Mission";
     const SpaceXConstellationMission = "SpaceX Constellation Mission";
-    const Expirimental = "Experimental";
+    const Experimental = "Experimental";
     const DemoFlight = "Demo Flight";
     const Military = "Military";
     const Scientific = "Scientific";
+    const MarsColonialTransporter = "Mars Colonial Transporter";
 }
