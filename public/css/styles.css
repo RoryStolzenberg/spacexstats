@@ -7448,6 +7448,21 @@ small {
 .hidden {
   display: none; }
 
+.fancy-heading {
+  position: relative; }
+  .fancy-heading span {
+    background-color: #FFF;
+    padding: 0 20px;
+    position: relative; }
+  .fancy-heading:before {
+    background: #CCC none repeat scroll 0% 0%;
+    content: "";
+    display: block;
+    height: 1px;
+    position: absolute;
+    top: 50%;
+    width: 100%; }
+
 table.data-table td, table.data-table th {
   border: 1px solid #CCC;
   padding: 5px; }
@@ -8542,7 +8557,7 @@ button.canned-response {
           transition: background-color ease-in-out 0.5s;
   margin-bottom: 20px; }
   .dropzone:hover {
-    background-color: rgba(204, 172, 85, 0.5); }
+    background-color: rgba(53, 105, 164, 0.5); }
   .dropzone .dz-preview.dz-image-preview {
     background: none; }
 
@@ -8615,11 +8630,19 @@ button.canned-response {
     margin: 0 auto; }
 
 .twitter-card {
-  background-color: rgba(64, 153, 255, 0.2);
-  border-radius: 8px;
-  border: 1px solid #4099FF;
+  border-radius: 3px;
+  border: 1px solid #CCD6DD;
   max-width: 800px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  padding: 20px; }
+  .twitter-card img {
+    width: 50px;
+    height: 50px;
+    display: block; }
+  .twitter-card .write-options {
+    text-align: center;
+    font-style: italic;
+    margin: 20px 0; }
   .twitter-card input:focus {
     border: 1px solid #4099FF; }
 

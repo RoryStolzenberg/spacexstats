@@ -1,5 +1,7 @@
 <div class="datetime">
+
     <input type="checkbox" ng-if="nullableToggle == 'true'" ng-model="$parent.isNull" ng-change="toggleChecked()"/>
+
 
     <select ng-model="date" ng-options="day.value as day.display for day in days" ng-disabled="isNull == true || disabled == true">
     </select>

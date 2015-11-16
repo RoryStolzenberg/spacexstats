@@ -180,11 +180,31 @@ small {
 }
 
 .code {
-    font-family:"Source Code Pro";
+    font-family:$sourceCodePro;
 }
 
 .hidden {
     display:none;
+}
+
+.fancy-heading {
+    position:relative;
+
+    span {
+        background-color:$white;
+        padding:0 20px;
+        position:relative;
+    }
+
+    &:before {
+        background: $bordergrey none repeat scroll 0% 0%;
+        content: "";
+        display: block;
+        height: 1px;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+    }
 }
 
 // Tables
