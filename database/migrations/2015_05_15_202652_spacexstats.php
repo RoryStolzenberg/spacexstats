@@ -252,7 +252,8 @@ class Spacexstats extends Migration {
 
             $table->smallInteger('dimension_width')->nullable();
             $table->smallInteger('dimension_height')->nullable();
-            $table->smallInteger('length')->nullable();
+            $table->smallInteger('duration')->nullable();
+            $table->smallInteger('page_count')->nullable();
 
             // Mission control related properties
             $table->string('summary', Varchar::large);

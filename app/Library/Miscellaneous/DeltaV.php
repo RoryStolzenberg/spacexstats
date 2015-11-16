@@ -10,7 +10,8 @@ class DeltaV {
     const DELTAV_TO_DAY_CONVERSION_RATE     = 1000;
     const SECONDS_PER_DAY                   = 86400;
 
-    protected $object, $score;
+    protected $object;
+    protected $score = 0;
 
     protected $baseTypeScores = [
         MissionControlType::Image       => 50,
@@ -26,22 +27,44 @@ class DeltaV {
     ];
 
     protected $specialTypeMultiplier = [
-        MissionControlSubtype::MissionPatch => 2
+        MissionControlSubtype::MissionPatch     => 2,
+        MissionControlSubtype::Photo            => 1.1,
+        MissionControlSubtype::LaunchVideo      => 2,
+        MissionControlSubtype::PressKit         => 2,
+        MissionControlSubtype::WeatherForecast  => 2
     ];
 
-    protected $resourceQualityScore = [
-
+    protected $resourceQuality = [
+        'multipliers' => [
+            'perMegapixel' => 1,
+            'perMinute' => 1
+        ],
+        'scores' => [
+            'perPage' => 1
+        ]
     ];
 
     protected $metadataScore = [
-
+        'summary' => [
+            'perCharacter' => 0.01
+        ],
+        'author' => [
+            'perCharacter' => 0.1
+        ],
+        'attribution' => [
+            'perCharacter' => 0.1
+        ]
     ];
 
-    protected $dateAccuracyScore = [
+    protected $dateAccuracyMultiplier = [
+        'year' => 1,
+        'month' => 1.2,
+        'date' => 1.5,
+        'datetime' => 2,
     ];
 
     protected $dataSaverMultiplier = [
-        'hasExternalUrl' => 2
+        'hasExternalUrl' => 3
     ];
 
     /**
@@ -52,10 +75,14 @@ class DeltaV {
      */
     public function calculate(Object $object) {
         $this->object = $object;
-    }
 
-    private function baseScoreRegime() {
+        $this->typeRegime();
+        $this->resourceQualityRegime();
+        $this->metadataRegime();
+        $this->dateAccuracyRegime();
+        $this->dataSaverRegime();
 
+        return round($this->score);
     }
 
     /**
@@ -69,5 +96,107 @@ class DeltaV {
         $secondsPerPoint = DeltaV::SECONDS_PER_DAY / DeltaV::DELTAV_TO_DAY_CONVERSION_RATE;
 
         return (int) round($deltaV * $secondsPerPoint);
+    }
+
+    /**
+     * @internal
+     */
+    private function typeRegime() {
+        // The base score
+        $this->score += $this->baseTypeScores[$this->object->type];
+
+        // The special type multiplier
+        if (array_key_exists($this->object->subtype, $this->specialTypeMultiplier)) {
+            $this->score *= $this->specialTypeMultiplier[$this->object->subtype];
+        }
+    }
+
+    /**
+     * @internal
+     */
+    private function resourceQualityRegime() {
+        $resourceQualityScore = 0;
+
+        if ($this->object->type == MissionControlType::Image) {
+            $resourceQualityScore = $this->megapixelSubscore();
+        }
+
+        if ($this->object->type == MissionControlType::GIF || $this->object->type == MissionControlType::Video) {
+            $resourceQualityScore = $this->megapixelSubscore() * $this->minuteSubscore();
+        }
+
+        if ($this->object->type == MissionControlType::Audio) {
+            $resourceQualityScore = $this->minuteSubscore();
+        }
+
+        if ($this->object->type == MissionControlType::Document) {
+            $resourceQualityScore = $this->pageSubscore();
+        }
+
+        $this->score += $resourceQualityScore;
+    }
+
+    /**
+     * @internal
+     */
+    private function metadataRegime() {
+        $this->score += strlen($this->object->summary) * $this->metadataScore['summary']['perCharacter'];
+        $this->score += strlen($this->object->author) * $this->metadataScore['author']['perCharacter'];
+        $this->score += strlen($this->object->attribution) * $this->metadataScore['attribution']['perCharacter'];
+    }
+
+    /**
+     * @internal
+     */
+    private function dateAccuracyRegime() {
+        $year = substr($this->object->originated_at, 0, 4);
+        $month = substr($this->object->originated_at, 5, 2);
+        $day = substr($this->object->originated_at, 8, 2);
+        $datetime = substr($this->object->originated_at, 11, 8);
+
+        if ($datetime != '00:00:00') {
+            $this->score *= $this->dateAccuracyMultiplier['datetime'];
+        } elseif ($day != '00') {
+            $this->score *= $this->dateAccuracyMultiplier['day'];
+        } elseif ($month != '00') {
+            $this->score *= $this->dateAccuracyMultiplier['month'];
+        } elseif ($year != '0000') {
+            $this->score *= $this->dateAccuracyMultiplier['year'];
+        }
+    }
+
+    /**
+     * @internal
+     * @return int
+     */
+    private function dataSaverRegime() {
+        if (!is_null($this->object->external_url)) {
+            return $this->score * $this->dataSaverMultiplier['hasExternalUrl'];
+        }
+    }
+
+    /**
+     * @internal
+     * @return mixed
+     */
+    private function megapixelSubscore() {
+        $megapixels = ($this->object->dimension_width * $this->object->dimension_height) / 1000000;
+        return $this->resourceQuality['multipliers']['perMegapixel'] * $megapixels;
+    }
+
+    /**
+     * @internal
+     * @return mixed
+     */
+    private function minuteSubscore() {
+        return $this->resourceQuality['multipliers']['perMinute'] * ($this->object->duration / 60);
+    }
+
+    /**
+     * @internal
+     * @return mixed
+     */
+    private function pageSubscore() {
+        return $this->resourceQuality['scores']['perPage'] * $this->object->page_count;
     }
 }
