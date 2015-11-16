@@ -144,7 +144,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      */
     public function createSubscription() {
+        // Stripe
 
+        // Save changes
+        $this->role_id = UserRole::Subscriber;
+        $this->save();
     }
 
     // Attribute accessors
