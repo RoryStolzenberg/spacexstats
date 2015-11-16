@@ -494,6 +494,7 @@ class Spacexstats extends Migration {
             $table->string('user_profile_image_url', Varchar::small)->nullable();
             $table->string('user_screen_name', Varchar::tiny)->nullable();
             $table->string('user_name', Varchar::tiny)->nullable();
+            $table->string('description', Varchar::medium)->nullable();
         });
 
         Schema::create('users', function(Blueprint $table) {

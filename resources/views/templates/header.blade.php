@@ -35,10 +35,10 @@
                             <li><a href="/locations">Locations</a></li>
 							<li><a href="/newssummaries">News Summaries</a></li>
 							<li><a href="/faq">Frequently Asked Questions</a></li>
-							<li>RSS Updates</li>
-                            <li>Community</li>
-							<li>About</li>
-							<li>Contact</li>
+							<li><a href="/rss">RSS Updates</a></li>
+                            <li><a href="/community">Community</a></li>
+							<li><a href="/about">About</a></li>
+							<li><a href="/about/contact">Contact & Tips</a></li>
 						</ul>
 					</li>
 					<li class="gr-1on8 gr-small-12 push-3">
@@ -51,7 +51,7 @@
 							@else
 							    <li><a href="/missioncontrol">Buy</a></li>
 							@endif
-							<li><a href="/docs#missioncontrol">Docs</a></li>
+							<li><a href="/about/docs#missioncontrol">Docs</a></li>
                             @if (Auth::isAdmin())
                                 <li><a href="/missioncontrol/review">Review</a></li>
                             @endif

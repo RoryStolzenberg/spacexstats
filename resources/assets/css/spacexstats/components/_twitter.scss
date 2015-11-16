@@ -1,0 +1,13 @@
+$twitter-blue:#4099FF;
+
+.twitter-card {
+    background-color:rgba($twitter-blue,0.2);
+    border-radius:$border-radius-large;
+    border:1px solid $twitter-blue;
+    max-width:800px;
+    margin:0 auto;
+
+    input:focus {
+        border:1px solid $twitter-blue;
+    }
+}

@@ -10,6 +10,7 @@
             link: function($scope, element, attributes) {
 
                 $scope.$watch("deltaV", function(objects) {
+                    console.log('called');
                     if (typeof objects !== 'undefined') {
                         $scope.newValue = 0;
 
@@ -21,7 +22,7 @@
                             $scope.newValue = $scope.calculate(objects);
                         }
 
-                        $scope.calculatedValue = $scope.newValue;
+                        $scope.setCalculatedValue();
                     }
                 }, true);
 
@@ -37,7 +38,14 @@
                     return internalValue;
                 };
 
-                $scope.calculatedValue = 0;
+                $scope.setCalculatedValue = function() {
+                    return 0;
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0,
+                };
             },
             templateUrl: '/js/templates/deltaV.html'
         }

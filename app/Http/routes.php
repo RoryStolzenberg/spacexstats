@@ -40,6 +40,11 @@ Route::get('admin', 'AdminController@index')->before('mustBe:Administrator');
 
 Route::get('newssummaries', 'NewsSummariesController@index');
 
+// ABOUT Routes
 Route::get('about/rulesandtermsofservice', function() {
-    return View::make('about.rulesAndTermsOfService');
+    return view('about.rulesAndTermsOfService');
+});
+
+Route::get('about/docs', function() {
+    return view('about.docs');
 });

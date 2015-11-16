@@ -1,7 +1,7 @@
 (function() {
 	var publisherApp = angular.module('app', []);
 
-	publisherApp.controller('publishersController', ["$scope", "publisherSevice", function($scope, publisherSevice) {
+	publisherApp.controller('publishersController', ["$scope", "publisherService", function($scope, publisherService) {
         $scope.publishers = laravel.publishers;
         $scope.isCreatingPublisher = false;
 

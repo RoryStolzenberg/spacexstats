@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Http\Requests\EditObjectRequest;
-use SpaceXStats\Library\DeltaVCalculator;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;

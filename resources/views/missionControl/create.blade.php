@@ -448,6 +448,7 @@
             <!-- Post -->
             <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
                 <form name="postForm">
+                    <p>Select what type of resource you want to submit...</p>
                     <fieldset class="post-type-selection container">
                         <div class="gr-2">
                             <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" ng-click="postType = 'tweet'" />
@@ -590,8 +591,6 @@
 
                     <!-- NSF Comment -->
                     <fieldset class="post-type nsf-comment" ng-if="postType == 'NSFcomment'">
-                        <delta-v ng-model="NSFcomment"></delta-v>
-
                         <label>Comment URL</label>
                         <input type="url" name="NSFcomment-url" id="article-url" ng-model="NSFcomment.external_url" placeholder="The direct URL to the comment" required ng-pattern="/nasaspaceflight.com\//" />
 
@@ -621,7 +620,11 @@
                         <label>Tags</label>
                         <tags available-tags="data.tags" name="tags" ng-model="NSFcomment.tags"></tags>
                         <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+
+                        <delta-v ng-model="NSFcomment"></delta-v>
                     </fieldset>
+
+                    <p class="exclaim" ng-if="postType == null">No Resource Selected</p>
 
                     <button name="submit" class="wide-button" ng-click="postSubmitButtonFunction()" ng-disabled="postType == null || postForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
                 </form>

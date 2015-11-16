@@ -7638,7 +7638,7 @@ form input, form textarea, form button, form select {
   form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched, form button.invalid, form button.ng-invalid.ng-touched, form select.invalid, form select.ng-invalid.ng-touched {
     border: 1px solid #C05B40; }
   form input:focus, form textarea:focus, form button:focus, form select:focus {
-    border: 1px solid #CCAC55 !important;
+    border: 1px solid #CCAC55;
     box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
 
 form input, form textarea {
@@ -7771,7 +7771,6 @@ button.icon-button {
 
 button.wide-button {
   width: 100%;
-  margin: 0 auto;
   display: block; }
 
 input[type="submit"], input[type="reset"], button {
@@ -7787,6 +7786,8 @@ input[type="submit"], input[type="reset"], button {
   letter-spacing: 1px;
   cursor: pointer;
   box-shadow: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
   background-color: #1FA67A; }
   input[type="submit"].submit, input[type="reset"].submit, button.submit {
     background-color: #3569A4; }
@@ -8449,7 +8450,8 @@ button.canned-response {
 .tagger-container .wrapper {
   border: 1px solid #CCC;
   font-size: 0;
-  overflow: hidden; }
+  overflow: hidden;
+  background-color: #FFF; }
   .tagger-container .wrapper .tag-wrapper {
     display: inline-block;
     font-size: 12px; }
@@ -8611,6 +8613,15 @@ button.canned-response {
     line-height: 50px;
     text-align: center;
     margin: 0 auto; }
+
+.twitter-card {
+  background-color: rgba(64, 153, 255, 0.2);
+  border-radius: 8px;
+  border: 1px solid #4099FF;
+  max-width: 800px;
+  margin: 0 auto; }
+  .twitter-card input:focus {
+    border: 1px solid #4099FF; }
 
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {
