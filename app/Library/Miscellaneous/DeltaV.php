@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Library\Miscellaneous;
 
+use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Models\Object;
 
@@ -14,18 +15,18 @@ class DeltaV {
     protected $baseTypeScores = [
         MissionControlType::Image       => 50,
         MissionControlType::GIF         => 50,
-        MissionControlType::Audio       => 0,
-        MissionControlType::Video       => 0,
-        MissionControlType::Document    => 50,
+        MissionControlType::Audio       => 10,
+        MissionControlType::Video       => 10,
+        MissionControlType::Document    => 10,
         MissionControlType::Tweet       => 10,
-        MissionControlType::Article     => 25,
-        MissionControlType::Comment     => 1,
+        MissionControlType::Article     => 20,
+        MissionControlType::Comment     => 5,
         MissionControlType::Webpage     => 50,
-        MissionControlType::Text        => 0
+        MissionControlType::Text        => 50
     ];
 
     protected $specialTypeMultiplier = [
-
+        MissionControlSubtype::MissionPatch => 2
     ];
 
     protected $resourceQualityScore = [
@@ -37,7 +38,6 @@ class DeltaV {
     ];
 
     protected $dateAccuracyScore = [
-
     ];
 
     protected $dataSaverMultiplier = [
