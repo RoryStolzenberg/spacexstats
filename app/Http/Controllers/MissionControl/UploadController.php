@@ -11,6 +11,7 @@ use SpaceXStats\Http\Controllers\Controller;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use LukeNZ\Reddit\Reddit;
 use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\Object;
 use SpaceXStats\Models\Publisher;
 use SpaceXStats\Models\Tag;
 use JavaScript;
@@ -22,10 +23,13 @@ class UploadController extends Controller {
         JavaScript::put([
             'tags' => Tag::all(),
             'missions' => Mission::with('featuredImage')->get(),
-            'publishers' => Publisher::all()
+            'publishers' => Publisher::all(),
+
         ]);
 
-		return view('missionControl.create');
+		return view('missionControl.create', [
+            'recentUploads' => Object::orderBy('created_at', 'desc')->take(10)->get()
+        ]);
 	}	
 
 	// AJAX POST
@@ -122,7 +126,8 @@ class UploadController extends Controller {
 
     // AJAX GET
     public function retrieveRedditComment() {
-        $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.key'),Config::get('services.reddit.secret'));
+        $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'),Config::get('services.reddit.secret'));
+        $reddit->setUserAgent('/u/ElongatedMuskrat by /u/EchoLogic, retrieving an important comment...');
 
         $comment = $reddit->getComment(Input::get('url'));
         return response()->json($comment);

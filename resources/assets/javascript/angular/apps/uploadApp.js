@@ -30,7 +30,8 @@
                     {value: 17, display: 'License' }
                 ]
             },
-            publishers: laravel.publishers
+            publishers: laravel.publishers,
+            recentUploads: laravel.recentUploads
         };
 
         $scope.changeSection = function(section) {

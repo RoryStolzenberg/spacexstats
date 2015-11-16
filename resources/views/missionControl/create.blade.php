@@ -450,35 +450,28 @@
                 <form name="postForm">
                     <fieldset class="post-type-selection container">
                         <div class="gr-2">
-                            <span ng-click="postType = 'tweet'">Tweet</span>
-                            <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" />
-                            <label for="tweet"></label>
-
-                            <span>Icons should become in colored when selected</span>
+                            <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" ng-click="postType = 'tweet'" />
+                            <label for="tweet"><span>Tweet</span></label>
                         </div>
 
                         <div class="gr-2">
-                            <span ng-click="postType = 'article'">News Article</span>
-                            <input type="radio" name="type" id="article" value="article" ng-model="postType" />
-                            <label for="article"></label>
+                            <input type="radio" name="type" id="article" value="article" ng-model="postType" ng-click="postType = 'article'" />
+                            <label for="article"><span>News Article</span></label>
                         </div>
 
                         <div class="gr-2">
-                            <span ng-click="postType = 'pressrelease'">SpaceX Press Release</span>
-                            <input type="radio" name="type" id="pressrelease" value="pressrelease" ng-model="postType" />
-                            <label for="pressrelease"></label>
+                            <input type="radio" name="type" id="pressrelease" value="pressrelease" ng-model="postType" ng-click="postType = 'pressrelease'" />
+                            <label for="pressrelease"><span>SpaceX Press Release</span></label>
                         </div>
 
                         <div class="gr-2">
-                            <span ng-click="postType = 'redditcomment'">Reddit Comment</span>
-                            <input type="radio" name="type" id="redditcomment" value="redditcomment" ng-model="postType" />
-                            <label for="redditcomment"></label>
+                            <input type="radio" name="type" id="redditcomment" value="redditcomment" ng-model="postType" ng-click="postType = 'redditcomment'" />
+                            <label for="redditcomment"><span>Reddit Comment</span></label>
                         </div>
 
                         <div class="gr-2">
-                            <span ng-click="postType = 'NSFcomment'">NSF Comment</span>
-                            <input type="radio" name="type" id="NSFcomment" value="NSFcomment" ng-model="postType" />
-                            <label for="NSFcomment"></label>
+                            <input type="radio" name="type" id="NSFcomment" value="NSFcomment" ng-model="postType" ng-click="postType = 'NSFcomment'" />
+                            <label for="NSFcomment"><span>NSF Comment</span></label>
                         </div>
                     </fieldset>
 
@@ -508,7 +501,7 @@
                                 searchable="true"
                                 placeholder="Select the publisher of the article">
                         </dropdown>
-                        <p>Can't find the article publisher? <a href="/publishers/create">Create them first</a>.</p>
+                        <p>Can't find the article publisher? <a href="/missioncontrol/publishers/create">Create them first</a>.</p>
 
                         <label>Article Author</label>
                         <input type="text" name="article-author" id="article-author" ng-model="article.author" />
@@ -600,19 +593,19 @@
                         <delta-v ng-model="NSFcomment"></delta-v>
 
                         <label>Comment URL</label>
-                        <input type="url" name="NSFcomment-url" id="article-url" ng-model="NSFcomment.external_url" required ng-pattern="/nasaspaceflight.com\//" />
+                        <input type="url" name="NSFcomment-url" id="article-url" ng-model="NSFcomment.external_url" placeholder="The direct URL to the comment" required ng-pattern="/nasaspaceflight.com\//" />
 
                         <label>Title Describing The Comment</label>
-                        <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" required minlength="10" />
+                        <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" placeholder="The title that appears on SpaceX Stats" required minlength="10" />
 
-                        <label>Comment Date</label>
+                        <label>Comment Date (UTC)</label>
                         <datetime ng-model="NSFcomment.originated_at" type="datetime" start-year="2000" is-null="false"></datetime>
 
                         <label>Comment Author</label>
-                        <input type="author" name="NSFcomment-author" id="article-author" ng-model="NSFcomment.author" required />
+                        <input type="author" name="NSFcomment-author" id="article-author" ng-model="NSFcomment.author" placeholder="The author of the comment" required />
 
                         <label>Comment</label>
-                        <textarea ng-model="NSFcomment.comment" required></textarea>
+                        <textarea ng-model="NSFcomment.comment" placeholder="Enter in the comment body here" required></textarea>
 
                         <label>Select Mission</label>
                         <dropdown
@@ -630,7 +623,7 @@
                         <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                     </fieldset>
 
-                    <button name="submit" ng-click="postSubmitButtonFunction()" ng-disabled="postForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
+                    <button name="submit" class="wide-button" ng-click="postSubmitButtonFunction()" ng-disabled="postType == null || postForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
                 </form>
             </section>
 
@@ -667,13 +660,15 @@
                     <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>
                     <span ng-show="writeForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
 
-                    <button name="submit" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
+                    <button name="submit" class="wide-button" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
                 </form>
             </section>
 
-            <h2 ng-show="showRecentAdditions">Recent Additions</h2>
-            <section ng-show="showRecentAdditions">
-
+            <h2>Recent Additions</h2>
+            <section>
+                @foreach($recentUploads as $recentUpload)
+                    @include('templates.objectCard', ['bias' => 'object', 'object' => $recentUpload])
+                @endforeach
             </section>
         </main>
     </div>

@@ -8,6 +8,7 @@ use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Models\Object;
+use SpaceXStats\Models\Publisher;
 
 class ObjectFromPressRelease extends ObjectCreator {
     public function isValid($input) {

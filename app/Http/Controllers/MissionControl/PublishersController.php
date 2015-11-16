@@ -2,6 +2,8 @@
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Models\Publisher;
+use JavaScript;
 
 class PublishersController extends Controller {
 
@@ -9,59 +11,48 @@ class PublishersController extends Controller {
 		$this->publisher = $publisher;
 	}
 
-	public function get($publisherId) {
-		$publisher = Publisher::find($publisherId);
+    public function index() {
+        JavaScript::put([
+            'publishers' => Publisher::all()
+        ]);
 
-		return view('missionControl.publishers.get', array(
-			'publisher' => $publisher
-		));
+        return view('missionControl.publishers.index');
+    }
+
+	public function get($publisher_id) {
+		return view('missionControl.publishers.get', [
+			'publisher' => Publisher::find($publisher_id)
+		]);
 	}
 
 	public function create() {
-		if (Request::isMethod('get')) {
+        if ($this->publisher->isValid(Input::get('publisher'))) {
 
-			return view('missionControl.publishers.create');
+            // Create publisher
+            /*$publisher = Publisher::create(array(
+                'name' =>
+                'description' =>
+            ));*/
 
-		} elseif (Request::isMethod('post')) {
-
-			if ($this->publisher->isValid(Input::get('publisher'))) {
-
-				// Create publisher
-				/*$publisher = Publisher::create(array(
-					'name' =>
-					'description' =>
-				));*/
-
-				//return response()->json($publisher, 200);
-			}
-			return response()->json();
-		}
+            //return response()->json($publisher, 200);
+        }
+        return response()->json();
 	}
 
-	public function edit($publisherId) {
-		if (Request::isMethod('get')) {			
+	public function edit($publisher_id) {
 
-			$publisher = Publisher::find($publisherId);
-			JavaScript::put([
-				'publisher' => $this->publisher
-			]);
-			return view('missionControl.publishers.edit');
+        // Is the publisher details provided valid?
+        if ($this->publisher->isValid(Input::get('publisher'))) {
 
-		} elseif (Request::isMethod('post')) {
+            // update
+            $publisher = Publisher::find(Input::get('publisher.publisher_id'));
+            $publisher->name =
+            $publisher->description =
+            $publisher->save();
 
-			// Is the publisher details provided valid?
-			if ($this->publisher->isValid(Input::get('publisher'))) {
-
-				// update
-				$publisher = Publisher::find(Input::get('publisher.publisher_id'));
-				$publisher->name = 
-				$publisher->description = 
-				$publisher->save();
-
-				// Edit publisher
-				return response()->json(null, 204);
-			}
-			return response()->json();
-		}
+            // Edit publisher
+            return response()->json(null, 204);
+        }
+        return response()->json();
 	}
 }
