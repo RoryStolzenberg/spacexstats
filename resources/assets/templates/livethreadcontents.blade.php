@@ -1,4 +1,4 @@
-# Welcome to the {{ \Redis::get('live:reddit:title') }}!
+# Welcome to the {{ \Redis::hget('live:reddit', 'title') }}!
 
 {{ \Redis::get('live:description') }}
 

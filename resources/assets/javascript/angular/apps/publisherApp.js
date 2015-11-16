@@ -1,13 +1,40 @@
 (function() {
 	var publisherApp = angular.module('app', []);
 
-	publisherApp.controller(["$scope", "$http", function($scope, $http) {
+	publisherApp.controller('publishersController', ["$scope", "publisherSevice", function($scope, publisherSevice) {
+        $scope.publishers = laravel.publishers;
+        $scope.isCreatingPublisher = false;
 
-		// Init
-		(function() {
-			if (typeof laravel.publisher !== 'undefined') {
-				$scope.publisher = laravel.publisher;
-			}
-		})();
+        $scope.editPublisher = function(publisher) {
+            publisherService.edit(publisher).then(function(response) {
+                // Push & flashMessage
+            });
+        };
+
+        $scope.createPublisher = function(publisher) {
+            publisherService.create(publisher).then(function(response) {
+                // Push & flashMessage
+            });
+        };
+
+        $scope.deletePublisher = function(publisher) {
+            publisherService.delete(publisher).then(function(response) {
+                // Delete & flashMessage
+            });
+        }
 	}]);
+
+    publisherApp.service('publisherService', ["$http", function($http) {
+        this.create = function(publisher) {
+            return $http.post('/missioncontrol/publishers/create', publisher);
+        };
+
+        this.edit = function(publisher) {
+            return $http.patch('/missioncontrol/publishers/' + publisher.publisher_id, publisher);
+        };
+
+        this.delete = function(publisher) {
+            return $http.delete('/missioncontrol/publishers/' + publisher.publisher_id);
+        };
+    }]);
 })();

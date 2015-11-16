@@ -3,12 +3,11 @@ Route::group(array('prefix' => 'missioncontrol/publishers', 'namespace' => 'Miss
 
     Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
 
+        Route::get('/', 'PublishersController@index');
         Route::get('/{publisher_id}', 'PublishersController@get');
+        Route::post('/create', 'PublishersController@create');
+        Route::patch('/{publisher_id}', 'PublishersController@edit');
 
-        Route::get('/create', 'PublishersController@getCreate');
-        Route::post('/create', 'PublishersController@postCreate');
-
-        Route::get('/{publisher_id}/edit', 'PublishersController@getEdit');
-        Route::patch('/{publisher_id}/edit', 'PublishersController@patchEdit');
+        Route::delete('/{publisher_id}', 'PublishersController@delete')->before('mustBe:Administrator');
     });
 });

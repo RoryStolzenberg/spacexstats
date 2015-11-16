@@ -18,7 +18,12 @@ class Publisher extends Model {
     protected $guarded = [];
 
     // Validation
-    public $rules = array();
+    public $rules = array(
+        'name' => ['unique:publishers', 'varchar:tiny', 'required'],
+        'description' => ['varchar:medium', 'required'],
+        'url' => ['varchar:small', 'required']
+    );
+
     public $messages = array();
 
     // Relations

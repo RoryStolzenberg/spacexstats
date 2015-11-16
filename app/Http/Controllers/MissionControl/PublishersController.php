@@ -12,8 +12,14 @@ class PublishersController extends Controller {
 	}
 
     public function index() {
+        $publishers = Publisher::with('objects')->get()->map(function($publisher) {
+            $publisher->articleCount = $publisher->objects->count();
+            unset($publisher->objects);
+            return $publisher;
+        });
+
         JavaScript::put([
-            'publishers' => Publisher::all()
+            'publishers' => $publishers
         ]);
 
         return view('missionControl.publishers.index');
@@ -55,4 +61,9 @@ class PublishersController extends Controller {
         }
         return response()->json();
 	}
+
+    public function delete($publisher_id) {
+        Publisher::find($publisher_id)->delete();
+        return response()->json(null, 204);
+    }
 }
