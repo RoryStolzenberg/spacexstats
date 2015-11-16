@@ -28,7 +28,7 @@
                     <form name="gettingStartedForm" ng-if="settings.isGettingStarted == true" novalidate>
                         <h3>Is this for @{{ data.upcomingMission.name }} or a miscellaneous event?</h3>
                         <input type="checkbox" id="isForLaunch" name="isForLaunch" ng-model="liveParameters.isForLaunch" ng-change="settings.toggleForLaunch()" />
-                        <label for="isForLaunch">@{{ liveParameters.isForLaunch == true ? data.upcomingMission.name : 'Miscellaneous Event' }}</label>
+                        <label for="isForLaunch"><span>@{{ liveParameters.isForLaunch == true ? data.upcomingMission.name : 'Miscellaneous Event' }}</span></label>
 
 
                         <ul class="container">
@@ -78,7 +78,7 @@
                             </li>
                         </ul>
                         <button ng-click="settings.addResource()">Add Resource</button>
-
+                        <p>When you click create, the Reddit Live Thread will be created, and SpaceXStats Live will be started. You can begin posting updates immediately.</p>
                         <input type="submit" ng-click="settings.turnOnSpaceXStatsLive()" ng-disabled="gettingStartedForm.$invalid || settings.isCreating" value="@{{ !settings.isCreating ? 'Create' : 'Creating...' }}" />
                     </form>
                 </section>
