@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Laravel\Cashier\Billable;
+use Laravel\Cashier\Contracts\Billable as BillableContract;
 
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\UserRole;
@@ -20,9 +22,9 @@ use Auth;
 use Hash;
 use Input;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, BillableContract
 {
-    use Authenticatable, Authorizable, CanResetPassword;
+    use Authenticatable, Authorizable, CanResetPassword, Billable;
 
     use PresentableTrait;
 
@@ -39,7 +41,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     protected $appends = [];
     protected $fillable = [];
     protected $guarded = ['role_id', 'username','email','password', 'key'];
-    protected $dates = ['subscription_expiry'];
+    protected $dates = ['subscription_ends_at', 'trial_ends_at'];
 
     protected $presenter = UserPresenter::class;
 
@@ -85,7 +87,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     // Conditional relations
-    public function objectsInMissionContr() {
+    public function objectsInMissionControl() {
         if (Auth::isAdmin()) {
             return $this->hasMany('SpaceXStats\Models\Object')->where('status', ObjectPublicationStatus::PublishedStatus);
         }
@@ -95,7 +97,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     public function unreadMessages() {
-        return $this->hasMany('SpaceXStats\Models\Message')->where('hasBeenRead', false);
+        return $this->hasMany('SpaceXStats\Models\Message')->where('is_read', false);
     }
 
     // Helpers
@@ -134,8 +136,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function incrementSubscription($secondsToIncrement) {
         if ($this->role_id == UserRole::Subscriber) {
-            $this->subscription_expires_at->addSeconds($secondsToIncrement);
+            $this->subscription_ends_at->addSeconds($secondsToIncrement);
         }
+    }
+
+    /**
+     *
+     */
+    public function createSubscription() {
+
     }
 
     // Attribute accessors

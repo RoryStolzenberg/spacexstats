@@ -27,7 +27,7 @@ return [
 
     'stripe' => [
         'model'  => 'SpaceXStats\User',
-        'secret' => '',
+        'secret' => env('STRIPE_SECRET'),
     ],
 
     'twilio' => [

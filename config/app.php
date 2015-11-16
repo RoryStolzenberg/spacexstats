@@ -158,7 +158,8 @@ return [
          * Third Party Service Providers...
          */
         Aws\Laravel\AwsServiceProvider::class,
-        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
+        Laravel\Cashier\CashierServiceProvider::class
     ],
 
     /*
