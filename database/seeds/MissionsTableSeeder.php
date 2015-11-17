@@ -4,15 +4,16 @@ use Illuminate\Database\Seeder;
 use SpaceXStats\Models\Destination;
 use SpaceXStats\Models\Location;
 use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\MissionType;
 use SpaceXStats\Library\Enums\MissionOutcome;
 use SpaceXStats\Library\Enums\MissionStatus;
-use SpaceXStats\Library\Enums\MissionType;
+use SpaceXStats\Library\Enums\MissionType as MissionTypeEnum;
 use SpaceXStats\Library\Enums\Destination as DestinationEnum;
 
 class MissionsTableSeeder extends Seeder {
     public function run() {
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DemoFlight)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
             'launch_order_id' => 1,
             'launch_exact' => Carbon::create(2006, 3, 24, 22, 30, 0),
             'launch_approximate' => null,
@@ -29,7 +30,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DemoFlight)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
             'launch_order_id' => 2,
             'launch_exact' => Carbon::create(2007, 3, 21, 1, 10, 0),
             'launch_approximate' => null,
@@ -46,7 +47,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DemoFlight)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
             'launch_order_id' => 3,
             'launch_exact' => Carbon::create(2008, 8, 3, 3, 34, 0),
             'launch_approximate' => null,
@@ -63,7 +64,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DemoFlight)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
             'launch_order_id' => 4,
             'launch_exact' => Carbon::create(2008, 9, 28, 23, 15, 0),
             'launch_approximate' => null,
@@ -80,7 +81,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::Scientific)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
             'launch_order_id' => 5,
             'launch_exact' => Carbon::create(2009, 7, 14, 3, 35, 0),
             'launch_approximate' => null,
@@ -97,7 +98,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DemoFlight)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
             'launch_order_id' => 6,
             'launch_exact' => Carbon::create(2010, 6, 4, 18, 45, 0),
             'launch_approximate' => null,
@@ -114,7 +115,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DragonFreeflight)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonFreeflight)->firstOrFail()->mission_type_id,
             'launch_order_id' => 7,
             'launch_exact' => Carbon::create(2010, 12, 8, 15, 43, 0),
             'launch_approximate' => null,
@@ -131,7 +132,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DragonISS)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 8,
             'launch_exact' => Carbon::create(2012, 5, 22, 7, 44, 38),
             'launch_approximate' => null,
@@ -148,7 +149,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DragonISS)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 9,
             'launch_exact' => Carbon::create(2012, 10, 8, 0, 34, 7),
             'launch_approximate' => null,
@@ -165,7 +166,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create(array(
-            'mission_type_id' => MissionType::where('name', MissionType::DragonISS)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 10,
             'launch_exact' => Carbon::create(2013, 3, 1, 15, 10, 0),
             'launch_approximate' => null,
@@ -182,7 +183,7 @@ class MissionsTableSeeder extends Seeder {
         ));
 
         Mission::create(array(
-            'mission_type_id' => MissionType::where('name', MissionType::Scientific)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
             'launch_order_id' => 11,
             'launch_exact' => Carbon::create(2013, 9, 29, 16, 0, 0),
             'launch_approximate' => null,
@@ -199,7 +200,7 @@ class MissionsTableSeeder extends Seeder {
         ));
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 12,
             'launch_exact' => Carbon::now()->addWeek(),
             'launch_approximate' => null,
@@ -215,7 +216,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 13,
             'launch_exact' => Carbon::now()->addMonth(),
             'launch_approximate' => null,
@@ -231,7 +232,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::DragonISS)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 14,
             'launch_exact' => Carbon::now()->addMonths(2),
             'launch_approximate' => null,
@@ -247,7 +248,7 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionType::ConstellationMission)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 15,
             'launch_exact' => Carbon::now()->addMonths(3),
             'launch_approximate' => null,
