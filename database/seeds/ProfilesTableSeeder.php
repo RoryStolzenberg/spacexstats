@@ -24,5 +24,17 @@ class ProfilesTableSeeder extends Seeder {
             'summary' => 'Creator of the Merlin Engine',
             'twitter_account' => 'TMueller'
         ));
+
+        Profile::create(array(
+            'user_id' => 4,
+            'summary' => 'DFJ',
+            'twitter_account' => 'DFJ'
+        ));
+
+        Profile::create(array(
+            'user_id' => 5,
+            'summary' => 'Barry Matsomouri',
+            'twitter_account' => 'Barry'
+        ));
     }
 }

@@ -23,7 +23,7 @@
                     <input type="password" password-toggle ng-model="user.password" required />
 
                     <input type="checkbox" name="eula" id="eula" value="true" ng-model="user.eula" required>
-                    <label for="eula">I have read & agree to the <a target="_blank" href="/about/rulesandtermsofservice">terms of service</a></label>
+                    <label for="eula"><span>I have read & agree to the <a target="_blank" href="/about/rulesandtermsofservice">terms of service</a></span></label>
 
                     <input type="submit" value="@{{ signUpButtonText }}" ng-disabled="signUpForm.$invalid || isSigningUp" ng-click="signUp()">
                 </form>

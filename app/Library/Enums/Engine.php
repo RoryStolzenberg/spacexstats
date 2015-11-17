@@ -2,7 +2,7 @@
 
 namespace SpaceXStats\Library\Enums;
 
-class Engine extends Enum
+abstract class Engine extends Enum
 {
     const Merlin1A = "Merlin 1A";
     const Merlin1B = "Merlin 1B";

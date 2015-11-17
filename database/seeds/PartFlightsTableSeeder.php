@@ -17,7 +17,7 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 1,
             'part_id' => 2,
-            'firststage_engine' => Engine::Kestrel,
+            'upperstage_engine' => Engine::Kestrel,
             'landed' => false
         ));
 
@@ -31,7 +31,7 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 2,
             'part_id' => 4,
-            'firststage_engine' => Engine::Kestrel,
+            'upperstage_engine' => Engine::Kestrel,
             'landed' => false
         ));
 
@@ -45,7 +45,7 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 3,
             'part_id' => 6,
-            'firststage_engine' => Engine::Kestrel,
+            'upperstage_engine' => Engine::Kestrel,
             'landed' => false
         ));
 
@@ -59,7 +59,7 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 4,
             'part_id' => 8,
-            'firststage_engine' => Engine::Kestrel,
+            'upperstage_engine' => Engine::Kestrel,
             'landed' => false
         ));
 
@@ -73,11 +73,24 @@ class PartFlightsTableSeeder extends Seeder {
         PartFlight::create(array(
             'mission_id' => 5,
             'part_id' => 10,
-            'firststage_engine' => Engine::Kestrel,
+            'upperstage_engine' => Engine::Kestrel,
             'landed' => false
         ));
 
         // Falcon 9 v1.0 partflights
+        PartFlight::create(array(
+            'mission_id' => 6,
+            'part_id' => 11,
+            'firststage_engine' => Engine::Merlin1CF9,
+            'landed' => false
+        ));
+
+        PartFlight::create(array(
+            'mission_id' => 6,
+            'part_id' => 12,
+            'upperstage_engine' => Engine::Merlin1CVac,
+            'landed' => false
+        ));
 
         // Falcon 9 v1.1 partflights
 

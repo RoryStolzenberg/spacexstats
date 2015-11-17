@@ -57,7 +57,60 @@ class PartsTableSeeder extends Seeder {
             'type' => PartType::UpperStage
         ));
 
-        // Falcon 9 v1.1 parts
+        // Falcon 9 v1.0 parts
+        Part::create(array(
+            'name' => 'F9-001',
+            'type' => PartType::FirstStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-001-US',
+            'type' => PartType::UpperStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-002',
+            'type' => PartType::FirstStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-002-US',
+            'type' => PartType::UpperStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-003',
+            'type' => PartType::FirstStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-003-US',
+            'type' => PartType::UpperStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-004',
+            'type' => PartType::FirstStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-004-US',
+            'type' => PartType::UpperStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-005',
+            'type' => PartType::FirstStage
+        ));
+
+        Part::create(array(
+            'name' => 'F9-005-US',
+            'type' => PartType::UpperStage
+        ));
+
+        // Falcon 9 v1.1 parts (CRS-4 core switch)
+
+        // Post Jason-3 parts (v1.2)
 
     }
 }
