@@ -86,6 +86,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany('SpaceXStats\Models\Award');
     }
 
+    public function payments() {
+        return $this->hasMany('SpaceXStats\Models\Payment');
+    }
+
     // Conditional relations
     public function objectsInMissionControl() {
         if (Auth::isAdmin()) {
@@ -128,32 +132,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         $this->mobile_carrier = null;
     }
 
-    /**
-     * Increment the user's Mission Control subscription by the given number of seconds if they are a
-     * Mission Control subscriber.
-     *
-     * @param $secondsToIncrement   integer     The number of seconds to increment a user subscription by.
-     */
-    public function incrementSubscription($secondsToIncrement) {
-        if ($this->role_id == UserRole::Subscriber) {
-            $this->subscription_ends_at->addSeconds($secondsToIncrement);
-        }
-    }
-
-    /**
-     *
-     */
-    public function createSubscription() {
-        // Stripe
-
-        // Save changes
-        $this->role_id = UserRole::Subscriber;
-        $this->save();
-    }
-
     // Attribute accessors
     public function getDaysUntilSubscriptionExpiresAttribute() {
-        return Carbon::now()->diffInDays($this->subscription_expires_at);
+        return Carbon::now()->diffInDays($this->subscription_ends_at);
     }
 
     // Attribute mutators

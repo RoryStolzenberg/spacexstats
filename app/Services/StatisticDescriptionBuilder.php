@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Library\Miscellaneous;
+namespace SpaceXStats\Services;
 
 use SpaceXStats\Models\Mission;
 

@@ -7343,7 +7343,8 @@ body {
       .content-wrapper.background main.invert {
         background-color: rgba(24, 28, 31, 0.75); }
   .content-wrapper.transparent main {
-    background: none; }
+    background: none;
+    box-shadow: none; }
 
 h1, main {
   width: 100%;
@@ -7464,6 +7465,9 @@ small {
     position: absolute;
     top: 50%;
     width: 100%; }
+
+.text-center {
+  text-align: center; }
 
 table.data-table td, table.data-table th {
   border: 1px solid #CCC;
@@ -7790,7 +7794,7 @@ button.wide-button {
   width: 100%;
   display: block; }
 
-input[type="submit"], input[type="reset"], button {
+input[type="submit"], input[type="reset"], button, .button {
   height: 32px;
   min-width: 150px;
   padding: 0 20px;
@@ -7806,11 +7810,11 @@ input[type="submit"], input[type="reset"], button {
   margin-top: 10px;
   margin-bottom: 10px;
   background-color: #1FA67A; }
-  input[type="submit"].submit, input[type="reset"].submit, button.submit {
+  input[type="submit"].submit, input[type="reset"].submit, button.submit, .button.submit {
     background-color: #3569A4; }
-  input[type="submit"].warning, input[type="reset"].warning, button.warning {
+  input[type="submit"].warning, input[type="reset"].warning, button.warning, .button.warning {
     background-color: #C05B40; }
-  input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled {
+  input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled, .button[disabled], .button.disabled {
     background-color: #CCC; }
 
 input[type="reset"] {
@@ -8140,6 +8144,18 @@ section.comments {
 
 .md em {
   font-style: italic; }
+
+.subscribe {
+  text-align: center;
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  color: #FFF;
+  font-size: 18px;
+  vertical-align: top; }
+  .subscribe .plan {
+    width: 400px;
+    background-color: #3569A4;
+    min-height: 400px;
+    display: inline-block; }
 
 .hero {
   height: calc(100vh - 50px - 150px - 30px - 40px - 100px);

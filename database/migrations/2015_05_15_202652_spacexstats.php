@@ -511,13 +511,22 @@ class Spacexstats extends Migration {
             $table->string('mobile_carrier', Varchar::small)->nullable();
 
             $table->char('password', 60);
-            $table->datetime('subscription_expires_at')->nullable(); // Nonoptional Values
 
             // Specific roles
             $table->boolean('launch_controller_flag');
-            $table->boolean('articleWriterFlag');
-            $table->boolean('canSeeHiddenItemsFlag');
-            $table->boolean('bannedFlag');
+            $table->boolean('article_writer_flag'); // Not implemented
+            $table->boolean('can_see_hidden_items_flag'); // Not implemented
+            $table->boolean('banned_flag'); // Not implemented
+
+            // Payment-related material
+            $table->tinyInteger('stripe_active')->default(0);
+            $table->string('stripe_id')->nullable();
+            $table->string('stripe_subscription')->nullable();
+            $table->string('stripe_plan', 100)->nullable();
+            $table->string('last_four', 4)->nullable();
+            $table->timestamp('trial_ends_at')->nullable();
+            $table->timestamp('subscription_ends_at')->nullable();
+            $table->smallInteger('price_at_first_subscription')->nullable();
 
             $table->datetime('last_login')->nullable(); // Nonoptional Values
             $table->char('key', 32);

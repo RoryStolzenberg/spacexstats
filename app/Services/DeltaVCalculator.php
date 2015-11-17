@@ -1,11 +1,11 @@
 <?php
-namespace SpaceXStats\Library\Miscellaneous;
+namespace SpaceXStats\Services;
 
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Models\Object;
 
-class DeltaV {
+class DeltaVCalculator {
 
     const DELTAV_TO_DAY_CONVERSION_RATE     = 1000;
     const SECONDS_PER_DAY                   = 86400;

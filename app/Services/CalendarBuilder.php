@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Library\Miscellaneous;
+namespace SpaceXStats\Services;
 
 class CalendarBuilder {
 	private $missions;

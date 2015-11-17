@@ -2,6 +2,7 @@
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
@@ -29,13 +30,19 @@ class MissionControlController extends Controller {
                 'missions' => Mission::all()
             ]);
 
-            return view('missionControl.home', array(
+            return view('missionControl.home', [
                 'upcomingMission' => Mission::future()->first()
-            ));
+            ]);
 		} else {
             return redirect('/missioncontrol/about');
 		}
 	}
+
+    public function about() {
+        return view('/missioncontrol/about', [
+            'stripePublicKey' => Config::get('services.stripe.public')
+        ]);
+    }
 
     /**
      * GET (AJAX). Returns data for the homepage (relating to recent uploads, leaderboards, favorites, downloads, etc)

@@ -31,12 +31,12 @@ routesInDirectory();
 Route::get('webcast/getstatus', 'WebcastStatusController@getStatus');
 
 Route::get('calendars/all', 'CalendarController@getAll');
-Route::get('calendars/{slug}', 'CalendarController@get')->before('doesExist:Mission');
+Route::get('calendars/{slug}', 'CalendarController@get')->middleware(['doesExist:Mission']);
 
 Route::get('faq/get', 'QuestionsController@get');
 Route::get('faq','QuestionsController@index');
 
-Route::get('admin', 'AdminController@index')->before('mustBe:Administrator');
+Route::get('admin', 'AdminController@index')->middleware(['mustBe:Administrator']);
 
 Route::get('newssummaries', 'NewsSummariesController@index');
 

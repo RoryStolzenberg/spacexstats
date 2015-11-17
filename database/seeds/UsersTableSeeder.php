@@ -11,7 +11,6 @@ class UsersTableSeeder extends Seeder {
             'username' => 'elonmusk',
             'email' => 'elonmusk@spacexstats.com',
             'password' => 'password',
-            'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32),
             'launch_controller_flag' => true
         ));
@@ -21,7 +20,6 @@ class UsersTableSeeder extends Seeder {
             'username' => 'gwynne.shotwell',
             'email' => 'gwynne.shotwell@spacexstats.com',
             'password' => 'password',
-            'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32)
         ));
 
@@ -30,7 +28,7 @@ class UsersTableSeeder extends Seeder {
             'username' => 'TomMueller',
             'email' => 'tmueller@spacexstats.com',
             'password' => 'password',
-            'subscription_expires_at' => Carbon::now()->addYear(),
+            'subscription_ends_at' => Carbon::now()->addYear(),
             'key' => str_random(32)
         ));
 
@@ -39,7 +37,6 @@ class UsersTableSeeder extends Seeder {
             'username' => 'stevejurvetson',
             'email' => 'dfj@spacexstats.com',
             'password' => 'password',
-            'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32)
         ));
 
@@ -48,7 +45,6 @@ class UsersTableSeeder extends Seeder {
             'username' => 'barrymatsomuri',
             'email' => 'barrymatsomuri@spacexstats.com',
             'password' => 'password',
-            'subscription_expires_at' => Carbon::now()->addYear(),
             'key' => str_random(32)
         ));
     }

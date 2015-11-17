@@ -2,8 +2,8 @@
 namespace SpaceXStats\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use SpaceXStats\Library\Miscellaneous\StatisticDescriptionBuilder;
-use SpaceXStats\Library\Miscellaneous\StatisticResultBuilder;
+use SpaceXStats\Services\StatisticDescriptionBuilder;
+use SpaceXStats\Services\StatisticResultBuilder;
 
 class Statistic extends Model {
 

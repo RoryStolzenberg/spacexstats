@@ -6,18 +6,15 @@ Route::group(['prefix' => 'missioncontrol', 'namespace' => 'MissionControl'], fu
         Route::get('/create/retrievetweet', 'UploadController@retrieveTweet');
         Route::get('/create/retrieveredditcomment', 'UploadController@retrieveRedditComment');
 
-        Route::get('/success', 'PaymentController@success');
     });
 
     Route::group(['middleware' => 'mustBe:Administrator'], function() {
         Route::get('/review', 'ReviewController@index');
         Route::get('/review/get', 'ReviewController@get');
-        Route::post('/review/update/{object_id}', 'ReviewController@update')->before('doesExist:Object');
+        Route::post('/review/update/{object_id}', 'ReviewController@update')->before(['doesExist:Object']);
     });
 
-    Route::get('/about', function() {
-        return View::make('missionControl.about');
-    });
+    Route::get('/about', 'MissionControlController@about');
 
     Route::group(['middleware' => 'mustBe:Subscriber'], function() {
 

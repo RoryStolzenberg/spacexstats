@@ -7,19 +7,21 @@
     @include('templates.header', ['class' => 'no-background'])
 
     <div class="content-wrapper single-page background transparent">
-        <h1 class="center">Mission Control</h1>
+        <h1 class="text-center">Mission Control</h1>
         <main>
             <section class="subscribe" ng-controller="subscriptionController">
-                <p>Stay on the leading edge of SpaceX updates, browse vast amounts of images, videos, documents, and articles. In depth statistics and mission analysis</p>
+                <p>Stay on the leading edge of SpaceX updates, browse vast amounts of images, videos, documents, and articles. In depth statistics and mission analysis.</p>
                 <p>All you need to do is buy me a cup of coffee every few months.</p>
 
+                @if (!Auth::check())
                 <div class="plan free">
-                    <span>Free</span>
+                    <span>Sign Up For Free</span>
                     <div class="features">
                         <p>Just like before, email launch notifications remain free.</p>
-                        <a class="button">Sign Up</a>
+                        <a href="/auth/signup" class="button">Sign Up</a>
                     </div>
                 </div>
+                @endif
                 <div class="plan subscription">
                     <span>$9/year</span>
                     <div class="features">
@@ -30,21 +32,28 @@
                             <li>Mission Analytics</li>
                             <li>Community Access</li>
                         </ul>
-                        <button ng-click="showSubscribeForm">Sign Me Up!</button>
+                        @if (Auth::isMember())
+                            <button ng-click="showSubscribeForm">Lets Go!</button>
+                        @else
+                            <a href="/auth/signup" class="button">Sign Up</a>
+                        @endif
                     </div>
-                    <form name="subscribeForm">
-                        <label for="Card Number">Card Number</label>
-                        <input type="text" name="creditcardnumber" ng-model="creditcard.number" credit-card-validator="number" />
-                        <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry" credit-card-validator="expiry" placeholder="MM/YY" />
-                        <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" credit-card-validator="cvc" placeholder="CVC" />
+                    @if (Auth::isMember())
+                        <form name="subscribeForm">
+                            <label for="Card Number">Card Number</label>
+                            <input type="text" name="creditcardnumber" ng-model="creditcard.number" credit-card-validator="number" data-stripe="number" />
+                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" credit-card-validator="expirymonth" placeholder="MM/YY" data-stripe="exp-month"/>
+                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="MM/YY" data-stripe="exp-year" />
+                            <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" credit-card-validator="cvc" placeholder="CVC" data-stripe="cvc" />
 
-                        <button ng-click="subscription.subscribe(creditcard)"><i class="fa fa-lock"></i> Pay $9</button>
-                    </form>
-                    <div class="response">
-                        Payment Complete!
+                            <button ng-click="subscription.subscribe($event)" ng-disabled="isSubscribing"><i class="fa fa-lock"></i> Pay $9</button>
+                        </form>
+                        <div class="response">
+                            Payment Complete!
 
-                        <a class="button">Go To Mission Control</a>
-                    </div>
+                            <a class="button">Go To Mission Control</a> <!-- Make button text fade and change -->
+                        </div>
+                    @endif
                 </div>
 
                 <p>You will never pay more for Mission Control, you will always be charged at the rate that was available when you signed up (excluding inflation).</p>
@@ -75,6 +84,12 @@
         <h1>Convinced? Sign Me Up!</h1>
     </div>
 
+    @if (Auth::check())
+    <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+    <script type="text/javascript">
+        Stripe.setPublishableKey('{{ $stripePublicKey }}');
+    </script>
+    @endif
 </body>
 @stop
 
