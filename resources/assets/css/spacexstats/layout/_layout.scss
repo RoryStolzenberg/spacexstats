@@ -54,6 +54,10 @@ body {
             }
         }
     }
+
+    &.transparent main {
+        background:none;
+    }
 }
 
 // CONTENT HOLDERS

@@ -2,23 +2,21 @@
 @section('title', 'Mission Control')
 
 @section('content')
-<body class="missioncontrol-about">
+<body class="missioncontrol-about" ng-app="aboutMissionControlApp">
 
     @include('templates.header', ['class' => 'no-background'])
 
-    <div class="content-wrapper single-page background">
-        <h1>Mission Control - The best blah blah</h1>
+    <div class="content-wrapper single-page background transparent">
+        <h1 class="center">Mission Control</h1>
         <main>
-            <section class="subscribe" ng-app="subscriptionApp" ng-controller="subscriptionController">
+            <section class="subscribe" ng-controller="subscriptionController">
                 <p>Stay on the leading edge of SpaceX updates, browse vast amounts of images, videos, documents, and articles. In depth statistics and mission analysis</p>
                 <p>All you need to do is buy me a cup of coffee every few months.</p>
 
                 <div class="plan free">
                     <span>Free</span>
                     <div class="features">
-                        <ul>
-                            <li>Email Launch Notifications</li>
-                        </ul>
+                        <p>Just like before, email launch notifications remain free.</p>
                         <a class="button">Sign Up</a>
                     </div>
                 </div>
@@ -44,6 +42,8 @@
                     </form>
                     <div class="response">
                         Payment Complete!
+
+                        <a class="button">Go To Mission Control</a>
                     </div>
                 </div>
 
@@ -53,10 +53,10 @@
             <p>Scroll down to see why Mission Control is so awesome.</p>
         </main>
     </div>
-    <div class="content-wrapper single-page background">
+    <div class="content-wrapper single-page background transparent">
         <h1>Text & Email Notifications</h1>
     </div>
-    <div class="content-wrapper single-page background">
+    <div class="content-wrapper single-page background transparent">
         <h1>Gigabytes Of Archived Content</h1>
     </div>
     <div class="content-wrapper single-page background">
