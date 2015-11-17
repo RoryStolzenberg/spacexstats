@@ -5,7 +5,6 @@
         return {
             require: 'ngModel',
             restrict: 'E',
-            replace: true,
             scope: {
                 type: '@',
                 datetimevalue: '=ngModel',
@@ -14,7 +13,7 @@
                 isNull: '=',
                 disabled: '=?ngDisabled'
             },
-            link: function($scope, element, attrs, ctrl) {
+            link: function($scope, element, attrs, ngModelController) {
 
                 $scope.days = [];
                 $scope.days.push({ value: 0, display: '-'});
@@ -58,7 +57,7 @@
                 };
 
                 //convert data from view format to model format
-                ctrl.$parsers.push(function(viewvalue) {
+                ngModelController.$parsers.push(function(viewvalue) {
 
                     if ($scope.isNull == true) {
                         return null;
@@ -103,7 +102,7 @@
                 });
 
                 //convert data from model format to view format
-                ctrl.$formatters.push(function(data) {
+                ngModelController.$formatters.push(function(data) {
 
                     // If the value is not undefined and the value is valid,
                     if (typeof data !== 'undefined' && moment(data).isValid()) {
@@ -147,15 +146,15 @@
                     }
                 });
 
-                ctrl.$render = function() {
-                    $scope.year = ctrl.$viewValue.year;
-                    $scope.month = ctrl.$viewValue.month;
-                    $scope.date = ctrl.$viewValue.date
+                ngModelController.$render = function() {
+                    $scope.year = ngModelController.$viewValue.year;
+                    $scope.month = ngModelController.$viewValue.month;
+                    $scope.date = ngModelController.$viewValue.date;
 
                     if ($scope.type == 'datetime') {
-                        $scope.hour = ctrl.$viewValue.hour;
-                        $scope.minute = ctrl.$viewValue.minute;
-                        $scope.second = ctrl.$viewValue.second;
+                        $scope.hour = ngModelController.$viewValue.hour;
+                        $scope.minute = ngModelController.$viewValue.minute;
+                        $scope.second = ngModelController.$viewValue.second;
                     }
                 };
 
@@ -166,8 +165,13 @@
                 });
 
                 $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
-                    ctrl.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
+                    ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
                 });
+
+                $scope.toggleChecked = function() {
+                    console.log('yep');
+                    $scope.isNull = !$scope.isNull;
+                }
             },
             templateUrl: '/js/templates/datetime.html'
         }

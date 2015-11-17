@@ -7342,6 +7342,8 @@ body {
       background-color: rgba(255, 255, 255, 0.75); }
       .content-wrapper.background main.invert {
         background-color: rgba(24, 28, 31, 0.75); }
+  .content-wrapper.transparent main {
+    background: none; }
 
 h1, main {
   width: 100%;
@@ -8561,9 +8563,12 @@ button.canned-response {
   .dropzone .dz-preview.dz-image-preview {
     background: none; }
 
-.datetime input[type="number"] {
-  width: 60px;
-  margin: 0 2px; }
+.datetime {
+  padding: 0 10px;
+  display: block; }
+  .datetime input[type="number"] {
+    width: 60px;
+    margin: 0 2px; }
 
 .object-card {
   margin: 10px 0;

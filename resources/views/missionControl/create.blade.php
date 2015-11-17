@@ -597,7 +597,7 @@
                         <label>Title Describing The Comment</label>
                         <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" placeholder="The title that appears on SpaceX Stats" required minlength="10" />
 
-                        <label>Comment Date (UTC)</label>
+                        <label>Comment Date</label>
                         <datetime ng-model="NSFcomment.originated_at" type="datetime" start-year="2000" is-null="false"></datetime>
 
                         <label>Comment Author</label>

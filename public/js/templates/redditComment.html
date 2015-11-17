@@ -1,7 +1,13 @@
 <div class="card reddit-comment">
-    <ul>
-        <li>Comment by {{ redditComment.author }} in /r/{{ redditComment.reddit_subreddit }}</li>
-        <li>On {{ redditComment.originated_at }}</li>
-    </ul>
-    <div>{{ redditComment.summary }}</div>
+    <div class="read">
+
+    </div>
+
+    <div class="write">
+        <ul>
+            <li>Comment by {{ redditComment.author }} in /r/{{ redditComment.reddit_subreddit }}</li>
+            <li>On {{ redditComment.originated_at }}</li>
+        </ul>
+        <div>{{ redditComment.summary }}</div>
+    </div>
 </div>
