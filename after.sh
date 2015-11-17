@@ -35,6 +35,12 @@ sudo service php5-fpm restart
 echo "[4/7] Customizing MySQL..."
 mysql -uroot -psecret -e "grant all privileges on $DBNAME.* to '$DBUSER'@'localhost' identified by '$DBPASSWD'"
 
+#uninstall postgres
+if [ -f "/etc/init.d/postgresql" ];  then
+	apt-get purge -y postgresql-9.4 postgresql-client-common postgresql-contrib-9.4 postgresql-client-9.4 postgresql-common
+	apt-get autoremove -y -qq
+fi
+
 echo "[5/7] Migrating..."
 cd /home/vagrant/spacexstats
 php artisan migrate

@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Database\Seeder;
 use SpaceXStats\Models\Destination;
-use SpacexStats\Library\Enums\Destination as DestinationEnum;
+use SpaceXStats\Library\Enums\Destination as DestinationEnum;
 
 class DestinationsTableSeeder extends Seeder {
     public function run() {

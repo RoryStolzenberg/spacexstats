@@ -3,6 +3,7 @@ use Illuminate\Database\Seeder;
 use SpaceXStats\Models\Role;
 
 class RolesTableSeeder extends Seeder {
+
     public function run() {
         Role::create(array('name' => 'Unauthenticated'));
         Role::create(array('name' => 'Member'));
