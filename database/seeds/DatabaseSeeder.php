@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('RolesTableSeeder');
         $this->call('DestinationsTableSeeder');
         $this->call('LocationsTableSeeder');
+        $this->call('MissionTypesTableSeeder');
         $this->call('VehiclesTableSeeder');
         $this->call('UsersTableSeeder');
         $this->call('ProfilesTableSeeder');
@@ -30,7 +31,6 @@ class DatabaseSeeder extends Seeder {
         $this->call('NotificationTypesTableSeeder');
         $this->call('NotificationsTableSeeder');
         $this->call('AstronautsTableSeeder');
-        $this->call('MissionTypesTableSeeder');
         $this->call('PublishersTableSeeder');
         $this->call('SpacecraftTableSeeder');
         $this->call('SpacecraftFlightsTableSeeder');
