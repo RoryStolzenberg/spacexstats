@@ -11,19 +11,13 @@
                 currentTags: '=ngModel'
             },
             link: function($scope, element, attributes, ctrl) {
-
-                (function() {
-                    if (typeof $scope.currentTags === 'undefined') {
-                        $scope.currentTags = [];
-                    }
-                })();
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
 
                 ctrl.$options = {
                     allowInvalid: true
                 };
-
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
 
                 $scope.createTag = function(createdTag) {
                     var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {

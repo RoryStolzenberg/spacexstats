@@ -77,11 +77,6 @@ class Object extends Model implements UploadableInterface {
         });
     }
 
-    // Functions
-    public function getRules() {
-        return $this->rules;
-    }
-
 	// Relations
 	public function mission() {
 		return $this->belongsTo('SpaceXStats\Models\Mission');

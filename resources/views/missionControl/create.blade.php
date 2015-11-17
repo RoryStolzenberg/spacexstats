@@ -566,10 +566,10 @@
                         <delta-v ng-model="redditcomment"></delta-v>
 
                         <label>Permalink URL</label>
-                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
+                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
 
                         <label>Title Describing The Comment</label>
-                        <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" required minlength="10"  />
+                        <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" required ng-minlength="10"  />
 
                         <reddit-comment ng-model="redditcomment"></reddit-comment>
 
