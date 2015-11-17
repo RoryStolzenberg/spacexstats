@@ -39,7 +39,7 @@ class MissionControlController extends Controller {
 	}
 
     public function about() {
-        return view('/missioncontrol/about', [
+        return view('missionControl.about', [
             'stripePublicKey' => Config::get('services.stripe.public')
         ]);
     }
