@@ -145,7 +145,7 @@
                     @endif
             </section>
 
-            @if (Auth::isAccessingSelf($user) || Auth::isAdmin())
+            @if (Auth::isAccessingSelf($user))
                 <h2>Notes</h2>
                 <section id="notes" class="notes">
                     @foreach ($notes as $note)

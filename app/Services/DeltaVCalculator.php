@@ -8,7 +8,7 @@ use SpaceXStats\Models\Object;
 class DeltaVCalculator {
 
     const DELTAV_TO_DAY_CONVERSION_RATE     = 1000;
-    const SECONDS_PER_DAY                   = 86400;
+    const SECONDS_PER_DAY                   = 60 * 60 * 24;
 
     protected $object;
     protected $score = 0;
@@ -86,14 +86,14 @@ class DeltaVCalculator {
     }
 
     /**
-     * For a given amount of deltaV, calculayes the number of seconds mission control it is worth.
+     * For a given amount of deltaV, calculates the number of seconds mission control it is worth.
      *
      * @param   $deltaV   int   The input value of deltaV.
      * @return  int             The number of seconds of mission control the input deltaV value corresponds to.
      */
     public function toSeconds($deltaV) {
         // Currently 86.4 seconds per point
-        $secondsPerPoint = DeltaV::SECONDS_PER_DAY / DeltaV::DELTAV_TO_DAY_CONVERSION_RATE;
+        $secondsPerPoint = self::SECONDS_PER_DAY / self::DELTAV_TO_DAY_CONVERSION_RATE;
 
         return (int) round($deltaV * $secondsPerPoint);
     }

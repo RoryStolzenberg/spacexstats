@@ -441,7 +441,7 @@
                         </div>
 
                     </div>
-                    <button id="files-submit" class="wide-button" ng-disabled="uploadForm.$invalid" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit'  }}</button>
+                    <button id="files-submit" class="wide-button" ng-disabled="uploadForm.$invalid || isSubmitting" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit'  }}</button>
                 </div>
             </section>
 

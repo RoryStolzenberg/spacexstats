@@ -15,15 +15,6 @@ class Award extends Model {
     protected $fillable = [];
     protected $guarded = [];
 
-    // Observers
-    public static function boot() {
-        parent::boot();
-
-        Award::created(function($award) {
-            $award->user->incrementSubscription(DeltaV::toSeconds($award->value));
-        });
-    }
-
     // Relationships
     public function object() {
         return $this->belongsTo('SpaceXStats\Models\Object');

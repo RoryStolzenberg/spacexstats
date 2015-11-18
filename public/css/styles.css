@@ -7469,15 +7469,20 @@ small {
 .text-center {
   text-align: center; }
 
-table.data-table td, table.data-table th {
-  border: 1px solid #CCC;
+table td, table th {
   padding: 5px; }
+
+table.data-table td, table.data-table th {
+  border: 1px solid #CCC; }
 
 table.data-table th {
   padding: 10px;
   font-weight: bold;
   background-color: #33495E;
   color: #F5F5F5; }
+
+blockquote {
+  background-color: #8B939B; }
 
 .header-wrapper {
   width: 100%;
@@ -7638,6 +7643,10 @@ nav.sticky-bar {
 
 .actions {
   font-size: 16px; }
+  .actions a {
+    padding: 0 5px; }
+    .actions a:hover {
+      color: #CCAC55; }
 
 form ul li {
   padding: 10px; }
@@ -7951,9 +7960,10 @@ section.comments {
   padding-top: 20px; }
   #search .filters {
     padding-top: 10px; }
-  #search button.search {
-    width: 100px;
-    background-color: #3569A4; }
+  #search button {
+    margin: 0; }
+    #search button.reset {
+      min-width: 40px; }
 
 .search-datepicker .datepicker-dropdown {
   position: absolute; }
@@ -8152,10 +8162,15 @@ section.comments {
   font-size: 18px;
   vertical-align: top; }
   .subscribe .plan {
-    width: 400px;
     background-color: #3569A4;
-    min-height: 400px;
-    display: inline-block; }
+    display: inline-block;
+    border-radius: 8px; }
+    .subscribe .plan.free {
+      width: 240px;
+      height: 400px; }
+    .subscribe .plan.subscription {
+      width: 300px;
+      height: 500px; }
 
 .hero {
   height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
@@ -8177,7 +8192,22 @@ section.comments {
     position: relative;
     text-align: center; }
     .hero table td {
-      min-width: 260px; }
+      min-width: 250px; }
+      .state-small .hero table td {
+        font-size: 150px; }
+      @media (max-width: 640px) {
+        .hero table td {
+          font-size: 150px; } }
+      .state-medium .hero table td {
+        font-size: 150px; }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table td {
+          font-size: 150px; } }
+      .state-large .hero table td {
+        font-size: 200px; }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table td {
+          font-size: 200px; } }
     .hero table .value {
       font-size: 150px;
       font-weight: 300;
@@ -8326,7 +8356,7 @@ body.future-mission .highlights {
     height: 40px;
     line-height: 40px;
     width: 100%;
-    padding: 0 10px;
+    padding: 0 20px 0 10px;
     position: relative;
     right: -10px; }
     .display-date-time .launch:after {
@@ -8360,7 +8390,7 @@ body.future-mission .highlights {
       background-color: #CCAC55; }
 
 #countdown > * {
-  top: -10%; }
+  top: -7.5%; }
 
 section.details #live-tweets {
   width: 33.33333%; }

@@ -40,7 +40,7 @@ class Object extends Model implements UploadableInterface {
 
     protected $presenter = ObjectPresenter::class;
 
-	protected $rules = array(
+	public $rules = array(
         'user_id' => ['integer', 'exists:users,user_id'],
         'mission_id' => ['integer','exists:missions,mission_id'],
 

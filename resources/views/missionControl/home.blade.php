@@ -31,21 +31,21 @@
             <section ng-show="!hasSearchResults && !isCurrentlySearching">
                 <div class="gr-8">
                     <h2>Uploads</h2>
-                    <ul>
-                        <li>Latest</li>
-                        <li>Hot</li>
-                        <li>Discussions</li>
-                        <li>From {{ $upcomingMission->name }}</li>
+                    <ul class="container">
+                        <li class="gr-2">Latest</li>
+                        <li class="gr-2">Hot</li>
+                        <li class="gr-2">Discussions</li>
+                        <li class="gr-2">From {{ $upcomingMission->name }}</li>
                     </ul>
                 </div>
 
                 <div class="gr-4">
                     <h2>Community Leaderboards</h2>
-                    <ul>
-                        <li>Last Week</li>
-                        <li>Last Month</li>
-                        <li>Last Year</li>
-                        <li>All Time</li>
+                    <ul class="container">
+                        <li class="gr-2">Last Week</li>
+                        <li class="gr-2">Last Month</li>
+                        <li class="gr-2">Last Year</li>
+                        <li class="gr-2">All Time</li>
                     </ul>
                 </div>
 

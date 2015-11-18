@@ -29,7 +29,7 @@ class ObjectFromFile extends ObjectCreator {
                 break;
         }
 
-        $rules = array_intersect_key($this->object->getRules(), $rulesToGet);
+        $rules = array_intersect_key($this->object->rules, $rulesToGet);
         return $this->validate($rules);
     }
 

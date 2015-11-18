@@ -7,9 +7,10 @@ use SpaceXStats\Facades\Search;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
-use SpaceXStats\Library\Miscellaneous\DeltaV;
+use SpaceXStats\Services\DeltaVCalculator;
 use SpaceXStats\Models\Award;
 use SpaceXStats\Models\Object;
+use SpaceXStats\Services\SubscriptionService;
 
 class ReviewController extends Controller {
 
@@ -19,13 +20,17 @@ class ReviewController extends Controller {
     }
 
     // AJAX GET
-    public function get() {
-        $objectsToReview = Object::where('status', ObjectPublicationStatus::QueuedStatus)->orderBy('created_at', 'ASC')->with('user', 'tags')->get();
+    public function get(DeltaVCalculator $deltaV) {
+        $objectsToReview = Object::where('status', ObjectPublicationStatus::QueuedStatus)->orderBy('created_at', 'ASC')->with('user', 'tags')->get()->map(function($objectToReview) use ($deltaV) {
+            $objectToReview->deltaV = $deltaV->calculate($objectToReview);
+            return $objectToReview;
+        });
+
         return response()->json($objectsToReview, 200);
     }
 
     // AJAX POST
-    public function update($object_id) {
+    public function update(SubscriptionService $subscriptionService, DeltaVCalculator $deltaV, $object_id) {
         if (Input::has(['status', 'visibility'])) {
 
             $object = Object::find($object_id);
@@ -49,13 +54,16 @@ class ReviewController extends Controller {
                 // Save the object if there's no errors
                 $object->save();
 
-                // Finally, give out some deltaV
-                Award::create(array(
+                // Create an award wih DeltaV
+                $award = Award::create(array(
                     'user_id'   => $object->user_id,
                     'object_id' => $object->object_id,
                     'type'      => 'Created',
-                    'value'     => DeltaV::calculate($object)
+                    'value'     => $deltaV->calculate($object)
                 ));
+
+                // Once done, extend subscription
+                $subscriptionService->incrementSubscription($object->user, $award);
 
             } elseif (Input::get('status') == "Deleted") {
                 $object->delete();

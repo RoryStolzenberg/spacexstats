@@ -12,7 +12,7 @@ class ObjectFromArticle extends ObjectCreator {
     public function isValid($input) {
         $this->input = $input;
 
-        $rules = array_intersect_key($this->object->getRules(), []);
+        $rules = array_intersect_key($this->object->rules, []);
         return $this->validate($rules);
     }
 

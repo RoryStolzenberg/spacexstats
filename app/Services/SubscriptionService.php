@@ -2,32 +2,32 @@
 
 namespace SpaceXStats\Services;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Models\Award;
 use SpaceXStats\Models\Payment;
 use SpaceXStats\Models\User;
+use Stripe\Plan;
 
 class SubscriptionService
 {
+    protected $currentPlan = 'missioncontrol';
+
     public function createSubscription($token) {
-        // Set the plan
-        $plan = 'missioncontrol';
 
         // Subscribe the user
-        $stripeResponse = Auth::user()->subscription($plan)->create($token);
+        Auth::user()->subscription($this->currentPlan)->create($token);
 
-        // Create a payment model
+        // Create a payment representation
         Payment::create([
             'user_id' => Auth::id(),
-            'price' => $stripeResponse->plan->amount
+            'price' => Plan::retrieve($this->currentPlan)->amount
         ]);
 
         // Set the user to the subscriber role
         Auth::user()->role_id = UserRole::Subscriber;
         Auth::user()->save();
-
-        return $stripeResponse;
     }
 
     /**
@@ -41,8 +41,16 @@ class SubscriptionService
         // Calculate the seconds to extend by
         $seconds = (new DeltaVCalculator())->toSeconds($award->value);
 
-        // Extend trial somehow
-        //$user->
+        // Fetch the current subscription/trail end
+        //$endDate = is_null($user->getTrialEndDate()) ? $user->getSubscriptionEndDate() : $user->getTrialEndDate();
+
+        $endDate = $user->subscription()->getSubscriptionEndDate();
+
+        // Calculate the new end date
+        $newEndDate = $endDate->addSeconds($seconds);
+
+        // Extend trial by to that date
+        $user->subscription()->noProrate()->trialFor($newEndDate);
     }
 
     public function deleteSubscription() {

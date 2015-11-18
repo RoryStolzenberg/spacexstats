@@ -526,7 +526,6 @@ class Spacexstats extends Migration {
             $table->string('last_four', 4)->nullable();
             $table->timestamp('trial_ends_at')->nullable();
             $table->timestamp('subscription_ends_at')->nullable();
-            $table->smallInteger('price_at_first_subscription')->nullable();
 
             $table->datetime('last_login')->nullable(); // Nonoptional Values
             $table->char('key', 32);
