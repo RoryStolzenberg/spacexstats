@@ -30,11 +30,11 @@
                 <input type="text" ng-model="filter.name" placeholder="Filter by a launch name..." />
             </form>
 
-            <h2 ng-repeat-start="mission in missions | filter:filter as search" ng-show="missions.indexOf(mission) == 0 && search.length == missions.length">Previous Launch</h2>
-            <h2 ng-show="missions.indexOf(mission) == 1  && search.length == missions.length">More Missions</h2>
+            <h2 ng-repeat-start="mission in missions | filter:filter as filteredMissions" ng-show="missions.indexOf(mission) == 0 && filteredMissions.length == missions.length">Previous Launch</h2>
+            <h2 ng-show="missions.indexOf(mission) == 1  && filteredMissions.length == missions.length">Before That</h2>
             <mission-card ng-repeat-end mission="mission" size="large"></mission-card>
 
-            <p class="exclaim" ng-show="search.length = 0">No missions :(</p>
+            <p class="exclaim" ng-show="filteredMissions.length == 0">No missions :(</p>
         </main>
     </div>
 </body>
