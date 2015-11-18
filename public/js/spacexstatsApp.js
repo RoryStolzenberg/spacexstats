@@ -2071,22 +2071,6 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
@@ -2219,95 +2203,18 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('deltaV', function() {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
             scope: {
-                deltaV: '=ngModel'
+                size: '@',
+                mission: '='
             },
-            link: function($scope, element, attributes) {
-
-                $scope.$watch("deltaV", function(objects) {
-                    console.log('called');
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
-
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
-                        }
-
-                        $scope.setCalculatedValue();
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.setCalculatedValue = function() {
-                    return 0;
-                };
-
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0,
-                };
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/deltaV.html'
+            templateUrl: '/js/templates/missionCard.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2491,6 +2398,99 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch("deltaV", function(objects) {
+                    console.log('called');
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
+
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
+
+                        $scope.setCalculatedValue();
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.setCalculatedValue = function() {
+                    return 0;
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0,
+                };
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
@@ -2520,24 +2520,6 @@
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope,elem,attrs){
-                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
-                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
@@ -2893,53 +2875,35 @@
         }
     }]);
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('creditCardValidator', [function() {
+    app.directive('passwordToggle',function($compile){
         return {
             restrict: 'A',
-            require: 'ngModel',
-            scope: {
-                componentToValidate: '@',
-                model: '=ngModel'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-                if ($scope.componentToValidate == 'cvc') {
-                    ctrl.$validators.cvc = function(modelValue, viewValue) {
-                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
-                    };
-                }
-
-                else if ($scope.componentToValidate == 'expiry') {
-                }
-
-                else if ($scope.componentToValidate == 'number') {
-
-                }
-
-                /*$scope.$watch('model', function() {
-                    ctrl.$validate();
-                });*/
+            scope:{},
+            link: function(scope,elem,attrs){
+                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
+                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
             }
         }
-    }]);
+    });
 })();
+
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionProfile', [function() {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-            },
-            templateUrl: '/js/templates/missionProfile.html'
-        }
-    }]);
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -3025,12 +2989,48 @@
 (function() {
     var app = angular.module('app');
 
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
+    app.directive('missionProfile', [function() {
+        return {
+            restrict: 'E',
+            scope: {
+                mission: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+            },
+            templateUrl: '/js/templates/missionProfile.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('creditCardValidator', [function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: {
+                componentToValidate: '@',
+                model: '=ngModel'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+                if ($scope.componentToValidate == 'cvc') {
+                    ctrl.$validators.cvc = function(modelValue, viewValue) {
+                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
+                    };
+                }
+
+                else if ($scope.componentToValidate == 'expiry') {
+                }
+
+                else if ($scope.componentToValidate == 'number') {
+
+                }
+
+                /*$scope.$watch('model', function() {
+                    ctrl.$validate();
+                });*/
+            }
+        }
+    }]);
 })();

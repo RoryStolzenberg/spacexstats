@@ -25,7 +25,7 @@
                 };
 
                 // Update the filters from the search
-                $scope.onSearchKeyPress = function() {
+                $scope.onSearchChange = function() {
                     conversionService.searchesToFilters($scope.brokerFilters, $scope.currentSearch, $scope.data);
                 };
 

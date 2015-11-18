@@ -1,13 +1,16 @@
-#search {
-    padding-top:20px;
+#search-form {
+    padding:30px 0;
 
     .filters {
         padding-top:10px;
     }
 
-    button.search {
-        width:100px;
-        background-color:$blue;
+    button {
+        margin:0;
+
+        &.reset {
+            min-width:40px;
+        }
     }
 }
 

@@ -1,11 +1,12 @@
 <div class="search" id="search">
+
     <div class="search-controls container">
-        <div class="gr-8">
-            <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-keyup="onSearchKeyPress($event)" placeholder="Search Mission Control" class="gr-8" />
+        <div class="gr-9">
+            <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-change="onSearchChange($event)" placeholder="Search Mission Control" class="gr-8" />
         </div>
-        <div class="gr-4">
-            <button class="search" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
-            <button class="reset" ng-click="reset()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-close"></i></button>
+        <div class="gr-3">
+            <button class="search submit" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
+            <button class="reset warning" ng-click="reset()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-close"></i></button>
         </div>
     </div>
 

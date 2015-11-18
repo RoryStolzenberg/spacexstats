@@ -10,7 +10,7 @@
         <h1>@{{ pageTitle }}</h1>
         <main>
             <div ng-controller="searchController">
-                <form id="search">
+                <form id="search-form">
                     <search></search>
                 </form>
                 <section ng-show="isCurrentlySearching">
@@ -42,10 +42,10 @@
                 <div class="gr-4">
                     <h2>Community Leaderboards</h2>
                     <ul class="container">
-                        <li class="gr-2">Last Week</li>
-                        <li class="gr-2">Last Month</li>
-                        <li class="gr-2">Last Year</li>
-                        <li class="gr-2">All Time</li>
+                        <li class="gr-3">Last Week</li>
+                        <li class="gr-3">Last Month</li>
+                        <li class="gr-3">Last Year</li>
+                        <li class="gr-3">All Time</li>
                     </ul>
                 </div>
 

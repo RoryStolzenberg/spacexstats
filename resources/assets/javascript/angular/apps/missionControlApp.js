@@ -45,6 +45,7 @@
 
         $scope.reset = function() {
             $rootScope.$broadcast('exitSearchMode');
+            $scope.currentSearch.rawQuery = '';
         };
     }]);
 
