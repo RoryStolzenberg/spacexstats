@@ -26,7 +26,13 @@
         text-align:center;
 
         td {
-            min-width:260px;
+            @include gridle_state("small" "medium") {
+                font-size:150px;
+            }
+            @include gridle_state("large") {
+                font-size:200px;
+            }
+            min-width:250px;
         }
 
         .value {

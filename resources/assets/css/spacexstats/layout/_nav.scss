@@ -116,4 +116,12 @@ nav.sticky-bar {
 
 .actions {
     font-size:16px;
+
+    a {
+        padding:0 5px;
+
+        &:hover {
+            color:$gold;
+        }
+    }
 }
