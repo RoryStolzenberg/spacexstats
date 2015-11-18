@@ -3,6 +3,8 @@ Route::group(array('prefix' => 'missioncontrol/collections', 'namespace' => 'Mis
 
     Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
         Route::get('/', 'CollectionsController@index');
+
+        Route::get('/mission/{slug}', 'CollectionsController@mission');
         Route::get('/{collection_id}', 'CollectionsController@get');
 
         Route::post('/create', 'CollectionsController@create');

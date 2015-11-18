@@ -148,6 +148,18 @@
 
             <h2>Images</h2>
             <section id="images" class="scrollto">
+                @if ($imageCount > 0)
+                    @foreach ($images as $image)
+                        <div class="square">
+                            <img src="" alt="" class="square" />
+                        </div>
+                    @endforeach
+                    @if ($imageCount > 20)
+                        <div class="square">
+                            {{ $imageCount - 20 }} more...
+                        </div>
+                    @endif
+                @endif
             </section>
 
             <h2>Videos</h2>
