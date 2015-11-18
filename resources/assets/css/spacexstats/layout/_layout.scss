@@ -217,11 +217,13 @@ small {
 }
 
 // Tables
-table.data-table {
+table td, table th {
+    padding:5px;
+}
 
+table.data-table {
     td, th {
         border:1px solid $bordergrey;
-        padding:5px;
     }
 
     th {
@@ -230,4 +232,9 @@ table.data-table {
         background-color:$october;
         color:$offwhite;
     }
+}
+
+// Blockquotes
+blockquote {
+    background-color:$grey;
 }

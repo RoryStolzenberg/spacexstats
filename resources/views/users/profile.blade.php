@@ -19,7 +19,7 @@
                         <a href="#favorites">Favorites</a>
                     </li>
 
-                    @if (Auth::check() && Auth::user()->username === $user->username)
+                    @if (Auth::isAccessingSelf())
                         <li class="gr-1">Notes</li>
                     @endif
 
@@ -27,7 +27,7 @@
 
                     <li class="gr-1">Comments</li>
 
-                    @if (Auth::check() && Auth::user()->username === $user->username)
+                    @if (Auth::isAccessingSelf())
                         <li class="gr-1"><a href="/users/{{ $user->username }}/edit"><i class="fa fa-pencil"></i></a></li>
                     @endif
                 </ul>
@@ -41,50 +41,63 @@
                 Favorite Patch Setup
             </section>
             <section id="overview" class="overview container">
-                <div class="gr-4">
+                <div class="gr-8">
                     <table>
                         <tr>
-                            <td>Bio</td>
-                            <td>{{ $user->profile->summary }}</td>
+                            <td class="lowvisibility color">Bio</td>
+                            <td><div class="backing">{{ $user->profile->summary or 'Nothing here' }}</div></td>
                         </tr>
+                        @if (!is_null($user->profile->twitter_account))
                         <tr>
-                            <td>Twitter</td>
-                            <td>{{ $user->profile->twitter_account }}</td>
+                            <td class="lowvisibility color"><i class="fa fa-twitter"></i> Twitter</td>
+                            <td>{{ '@' . $user->profile->twitter_account }}</td>
                         </tr>
+                        @endif
+                        @if (!is_null($user->profile->reddit_account))
                         <tr>
-                            <td>Reddit</td>
-                            <td>{{ $user->profile->reddit_account }}</td>
+                            <td class="lowvisibility color"><i class="fa fa-reddit"></i> Reddit</td>
+                            <td>{{ '/u/' . $user->profile->reddit_account }}</td>
                         </tr>
+                        @endif
                         <tr>
-                            <td>Member Since</td>
+                            <td class="lowvisibility color">Member Since</td>
                             <td>
                                 {{ $user->created_at->toFormattedDateString() }}
                             </td>
                         </tr>
                         <tr>
-                            <td>Member Details</td>
+                            <td class="lowvisibility color">Member Details</td>
                             <td>
                                 {{ $user->present()->role_id() }}
                             </td>
                         </tr>
+
+                    </table>
+                </div>
+                <div class="gr-4">
+                    <div>
+                        <span>2154</span><small>m/s</small><br/>
+                        <span>of DeltaV</span>
+                    </div>
+                    <table>
                         <tr>
-                            <td>Uploads</td>
+                            <td class="lowvisibility color">Uploads</td>
                             <td>{{ $user->objects()->inMissionControl()->count() }}</td>
                         </tr>
                         <tr>
-                            <td>Favorites</td>
+                            <td class="lowvisibility color">Favorites</td>
                             <td>{{ $user->favorites->count() }}</td>
                         </tr>
                         <tr>
-                            <td>Comments</td>
-                            <td></td>
+                            <td class="lowvisibility color">Comments</td>
+                            <td>{{ $user->comments->count() }}</td>
                         </tr>
                     </table>
                 </div>
-                <div class="gr-8">
+                <div class="gr-12">
                     <table>
                         <tr>
-                            <td>Favorite Mission</td>
+                            <td class="lowvisibility color">Favorite Mission</td>
                             <td>
                                 @if ($favoriteMission)
                                     @include('templates.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
@@ -95,12 +108,21 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Favorite Mission Patch</td>
-                            <td>{{ $user->profile->favorite_mission_patch }}</td>
+                            <td class="lowvisibility color">Favorite Mission Patch</td>
+                            <td>
+                                {{ $user->profile->favorite_mission_patch or 'No Favorite Mission Patch. Add one!' }}
+                            </td>
                         </tr>
                         <tr>
-                            <td>Favorite Elon Musk Quote</td>
-                            <td>{{ $user->profile->favorite_quote }}</td>
+                            <td class="lowvisibility color">Favorite Elon Musk Quote</td>
+                            <td>
+                                @if ($user->profile->favorite_quote)
+                                    <blockquote>{{ $user->profile->favorite_quote }}</blockquote>
+                                @else
+                                    No favorite quote. Add one!
+                                @endif
+                            </td>
+
                         </tr>
                     </table>
 
@@ -113,7 +135,7 @@
                         @include('templates.objectCard', ['bias' => 'favorite', 'object' => $favorite->object])
                     @endforeach
                     @if ($favorites->count() == 0)
-                        <p>Nothing to see here</p>
+                        <p class="exclaim">Nothing to see here</p>
                     @endif
             </section>
 
@@ -124,7 +146,7 @@
                         @include('templates.objectCard', ['bias' => 'note', 'object' => $note->object])
                     @endforeach
                     @if ($notes->count() == 0)
-                        <p>Nothing to see here</p>
+                        <p class="exclaim">Nothing to see here</p>
                     @endif
                 </section>
             @endif
@@ -135,7 +157,11 @@
                     @include('templates.objectCard', ['bias' => 'object', 'object' => $object])
                 @endforeach
                 @if ($objects->count() == 0)
-                    <p>Nothing to see here.<a href="/missioncontrol/create">Why don't you upload something?</a></p>
+                    <p class="exclaim">Nothing to see here.
+                        @if (Auth::isAccessingSelf() && Auth::isSubscriber())
+                            <a href="/missioncontrol/create">Why don't you upload something?</a>
+                        @endif
+                    </p>
                 @endif
             </section>
 
@@ -145,7 +171,7 @@
                     @include('templates.objectCard', ['bias' => 'comment', 'object' => $comment->object])
                 @endforeach
                 @if ($comments->count() == 0)
-                    <p>Nothing to see here</p>
+                    <p class="exclaim">Nothing to see here</p>
                 @endif
             </section>
         </main>
