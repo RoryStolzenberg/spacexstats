@@ -19,7 +19,7 @@
                         <a href="#favorites">Favorites</a>
                     </li>
 
-                    @if (Auth::isAccessingSelf())
+                    @if (Auth::isAccessingSelf($user))
                         <li class="gr-1">Notes</li>
                     @endif
 
@@ -27,19 +27,23 @@
 
                     <li class="gr-1">Comments</li>
 
-                    @if (Auth::isAccessingSelf())
+                    @if (Auth::isAccessingSelf($user))
                         <li class="gr-1"><a href="/users/{{ $user->username }}/edit"><i class="fa fa-pencil"></i></a></li>
                     @endif
                 </ul>
             </nav>
+
             <section class="highlights">
-                SMS messages setup
-                Launch changes setup
-                Upcoming launches
-                News Sumamries
-                Favorite Mission Setup
-                Favorite Patch Setup
+                <ul>
+                    <li>SMS messages</li>
+                    <li>Launch changes</li>
+                    <li>Upcoming launches</li>
+                    <li>News Sumamries</li>
+                    <li>Favorite Mission</li>
+                    <li>Favorite Patch</li>
+                </ul>
             </section>
+
             <section id="overview" class="overview container">
                 <div class="gr-8">
                     <table>
@@ -74,6 +78,7 @@
 
                     </table>
                 </div>
+
                 <div class="gr-4">
                     <div>
                         <span>2154</span><small>m/s</small><br/>
@@ -94,6 +99,7 @@
                         </tr>
                     </table>
                 </div>
+
                 <div class="gr-12">
                     <table>
                         <tr>
@@ -158,7 +164,7 @@
                 @endforeach
                 @if ($objects->count() == 0)
                     <p class="exclaim">Nothing to see here.
-                        @if (Auth::isAccessingSelf() && Auth::isSubscriber())
+                        @if (Auth::isAccessingSelf($user) && Auth::isSubscriber())
                             <a href="/missioncontrol/create">Why don't you upload something?</a>
                         @endif
                     </p>
