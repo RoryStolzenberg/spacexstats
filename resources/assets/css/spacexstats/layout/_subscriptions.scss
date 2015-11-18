@@ -1,3 +1,6 @@
+$planHeight:500px;
+$planWidth:300px;
+
 .subscribe {
     text-align:center;
     font-family: $brandonGrotesque;
@@ -6,10 +9,19 @@
     vertical-align: top;
 
     .plan {
-        width:400px;
         background-color:$blue;
-        min-height:400px;
         display:inline-block;
+        border-radius:$border-radius-large;
 
-    }
+		&.free {
+			width:($planWidth / 5) * 4;
+			height:($planHeight / 5) * 4;
+		}
+
+		&.subscription {
+			width:$planWidth;
+			height:$planHeight;
+		}
+
+	}
 }
