@@ -2,13 +2,15 @@
 
 namespace SpaceXStats\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use LukeNZ\Reddit\Reddit;
+use LukeNZ\Ephemeris\Ephemeris;
+use LukeNZ\Ephemeris\SatelliteIdentifiers\NoradID;
 use SpaceXStats\Library\Enums\MissionOutcome;
 use SpaceXStats\Models\Mission;
-use SpaceXStats\Models\Question;
+use SpaceXStats\Models\OrbitalElement;
 
 class SpaceTrackDataFetchCommand extends Command
 {
@@ -49,7 +51,9 @@ class SpaceTrackDataFetchCommand extends Command
         // Fetch all the missions we want to query orbital elements for.
         $missions = Mission::with(['orbitalElements', 'partFlights'])
             ->whereComplete()->where('outcome', MissionOutcome::Success)
-            ->whereNotNull('norad_id')->get();
+            ->whereHas('partFlights', function($q) {
+                $q->whereNotNull('upperstage_norad_id');
+            })->get();
 
         // Login to SpaceTrack
         $ephemeris = new Ephemeris(Config::get('services.spacetrack.identity'), Config::get('services.spacetrack.password'));
@@ -81,7 +85,30 @@ class SpaceTrackDataFetchCommand extends Command
             $missionOrbitalElements = $tles->map(function($tle) {
                 $orbitalElement = new OrbitalElement();
                 //$orbitalElement->part_flight_id = $mission->partFlights->
-
+                $orbitalElement->object_name = $tle->object_name;
+                $orbitalElement->object_type = $tle->object_type;
+                $orbitalElement->classification_type = $tle->classification_type;
+                $orbitalElement->epoch = $tle->epoch;
+                $orbitalElement->mean_motion = $tle->mean_motion;
+                $orbitalElement->eccentricity = $tle->eccentricity;
+                $orbitalElement->inclination = $tle->inclination;
+                $orbitalElement->ra_of_asc_node = $tle->ra_of_asc_node;
+                $orbitalElement->arg_of_pericenter = $tle->arg_of_pericenter;
+                $orbitalElement->mean_anomaly = $tle->mean_anomaly;
+                $orbitalElement->ephemeris_type = $tle->ephemeris_type;
+                $orbitalElement->element_set_no = $tle->element_set_no;
+                $orbitalElement->rev_at_epoch = $tle->rev_at_epoch;
+                $orbitalElement->bstar = $tle->bstar;
+                $orbitalElement->mean_motion_dot = $tle->mean_motion_dot;
+                $orbitalElement->mean_motion_ddot = $tle->mean_motion_ddot;
+                $orbitalElement->file = $tle->file;
+                $orbitalElement->tle_line0 = $tle->tle_line0;
+                $orbitalElement->tle_line1 = $tle->tle_line1;
+                $orbitalElement->tle_line2 = $tle->tle_line2;
+                $orbitalElement->semimajor_axis = $tle->semimajor_axis;
+                $orbitalElement->period = $tle->period;
+                $orbitalElement->apogee = $tle->apogee;
+                $orbitalElement->perigee = $tle->perigee;
                 return $orbitalElement;
             });
 

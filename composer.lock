@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bede6b79864036009a94f44348e41993",
-    "content-hash": "9ba70cb9c56789df26666d9aca987c11",
+    "hash": "2ee510f59aa859dbe404ecbf1411fb56",
+    "content-hash": "5605d728de0bc0503aa8016914fce1a8",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -1555,6 +1555,50 @@
                 "storage"
             ],
             "time": "2015-09-30 22:26:59"
+        },
+        {
+            "name": "luke-nz/ephemeris",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LukeNZ/ephemeris.git",
+                "reference": "0da0303cbe4f6c49e64ce513d33d1e40519033c2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LukeNZ/ephemeris/zipball/0da0303cbe4f6c49e64ce513d33d1e40519033c2",
+                "reference": "0da0303cbe4f6c49e64ce513d33d1e40519033c2",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "php": ">=5.5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "LukeNZ\\Ephemeris\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luke Davia"
+                }
+            ],
+            "description": "An API for the Space-Track.org service, allowing you to retrieve data about satellites in orbit.",
+            "homepage": "http://github.com/LukeNZ/ephemeris",
+            "keywords": [
+                "api",
+                "ephemeris",
+                "orbit",
+                "satellite",
+                "space-track"
+            ],
+            "time": "2015-11-19 07:41:36"
         },
         {
             "name": "luke-nz/phpreddit",
@@ -4714,7 +4758,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "sybio/gif-frame-extractor": 20,
-        "luke-nz/phpreddit": 20
+        "luke-nz/phpreddit": 20,
+        "luke-nz/ephemeris": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

@@ -9,14 +9,14 @@ abstract class Engine extends Enum
     const Merlin1CF1 = "Merlin 1C-F1";
     const Merlin1CF9 = "Merlin 1C-F9";
     const Merlin1D = "Merlin 1D";
-    const Merlin1DFullThrust = "Merlin 1D Full Thrust";
+    const Merlin1DFullThrust = "Merlin 1D Fullthrust";
 
     const Kestrel = "Kestrel";
     const Kestrel2 = "Kestrel 2";
 
     const Merlin1CVac = "Merlin 1C-Vac";
     const Merlin1DVac = "Merlin 1D-Vac";
-    const Merlin1DVacFullThrust = "Merlin 1D-Vac Full Thrust";
+    const Merlin1DVacFullThrust = "Merlin 1D-Vac Fullthrust";
 
     const Raptor = "Raptor";
 

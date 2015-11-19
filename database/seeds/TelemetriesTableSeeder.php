@@ -4,76 +4,308 @@ use SpaceXStats\Models\Telemetry;
 
 class TelemetriesTableSeeder extends Seeder {
     public function run() {
+        $this->Falcon1Flight1();
+        $this->COTS2Plus();
+    }
+
+    public function Falcon1Flight1() {
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 0,
+            'readout'       => '0'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 1,
+            'readout'       => 'Plus One'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 2,
+            'readout'       => 'Plus Two'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 3,
+            'readout'       => 'Plus Three'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 4,
+            'readout'       => 'Plus Four'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 5,
+            'readout'       => 'Plus Five'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 6,
+            'readout'       => 'Plus Six'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 7,
+            'readout'       => 'Plus Seven'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 8,
+            'readout'       => 'Plus Eight'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 9,
+            'readout'       => 'Plus Nine'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 10,
+            'readout'       => 'Plus Ten'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 13,
+            'readout'       => 'We have liftoff confirmed'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 16,
+            'readout'       => 'Copy'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 18,
+            'readout'       => 'Good signal strength'
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 25,
+            'readout'       => 'This is the LC on the countdown net, Falcon 1 is airborne at this time.'
+        ]);
+    }
+
+    public function Falcon1Flight2() {
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 5,
+            'readout'       => 'We have liftoff'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 6,
+            'readout'       => 'And we have liftoff'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 11,
+            'readout'       => 'Falcon has cleared the tower'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 19,
+            'readout'       => 'Pitchover'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 20,
+            'readout'       => 'First stage engine performance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 40,
+            'readout'       => 'Velocity 128 metres per second, altitude 2.6 kilometres.'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 46,
+            'readout'       => 'Guidance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 49,
+            'readout'       => 'Kwajalein RF telemetry lock nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 59,
+            'readout'       => 'First stage engine performance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 62,
+            'readout'       => 'Nominal velocity'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 76,
+            'readout'       => 'Max-Q'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 79,
+            'readout'       => "Vehicle's passing through Max-Q"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 84,
+            'readout'       => 'Velocity 450 metres per second, alttide 13.9 kilometres'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 100,
+            'readout'       => 'Kwajalein RF telemetry lock nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 110,
+            'readout'       => 'First stage engine performance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 125,
+            'readout'       => 'Guidance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 129,
+            'readout'       => 'Telemetry lock nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 149,
+            'readout'       => 'Merlin engine performance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 165,
+            'readout'       => 'Coming up on stage separation'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 172,
+            'readout'       => '[inaudible] [cheering] Stages are separated!'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 177,
+            'readout'       => 'Second stage ignition confirmed'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 189,
+            'readout'       => 'Second stage engine ignition nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 191,
+            'readout'       => 'Coming up on fairing separation'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 198,
+            'readout'       => 'Fairing separaton is confirmed'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 201,
+            'readout'       => 'copy'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 202,
+            'readout'       => 'Fairing sep confirmed'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 206,
+            'readout'       => 'Vehicle velocity is 2634 metres per second, altitude 117 kilometres'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 212,
+            'readout'       => 'Second stage engine performance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 236,
+            'readout'       => 'Second stage engine performance nominal'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 241,
+            'readout'       => 'yeah, guidance nominal too'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 252,
+            'readout'       => 'yep, velocity 2778 metres per second, altitude 161 kilometres down',
+
+        ]);
+    }
+
+    public function COTS2Plus() {
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 1,
-            'readout'       => "Stage 1",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Stage 1"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 3,
-            'readout'       => "We have liftoff of the Falcon 9",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "We have liftoff of the Falcon 9"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 8,
-            'readout'       => "Falcon 9 has cleared the tower",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Falcon 9 has cleared the tower"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 10,
-            'readout'       => "Starting pitchkick",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Starting pitchkick"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 24,
-            'readout'       => "Starting gravity turn",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Starting gravity turn"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 28,
-            'readout'       => "First stage engines at full power, looking good",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "First stage engines at full power, looking good"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 39,
-            'readout'       => "We have a solid telemetry link and power systems are nominal",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "We have a solid telemetry link and power systems are nominal"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 51,
-            'readout'       => "First stage propellant utilization is active",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "First stage propellant utilization is active"
         ]);
 
         Telemetry::create([
@@ -88,37 +320,25 @@ class TelemetriesTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 71,
-            'readout'       => "Vehicle is supersonic",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Vehicle is supersonic"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 83,
-            'readout'       => "Vehicle has reached maximum aerodynamic pressure",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Vehicle has reached maximum aerodynamic pressure"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 90,
-            'readout'       => "Propulsion's performing nominally, starting stage two engine chill",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Propulsion's performing nominally, starting stage two engine chill"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 99,
-            'readout'       => "We have a solid RF link and power systems are nominal",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "We have a solid RF link and power systems are nominal"
         ]);
 
         Telemetry::create([
@@ -133,10 +353,7 @@ class TelemetriesTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 129,
-            'readout'       => "Dragon power systems are nominal",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Dragon power systems are nominal"
         ]);
 
         Telemetry::create([
@@ -151,73 +368,49 @@ class TelemetriesTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 160,
-            'readout'       => "Approaching MECO 1",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Approaching MECO 1"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 170,
-            'readout'       => "MECO 1. Planned shutdown on engines 1 and 9.",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "MECO 1. Planned shutdown on engines 1 and 9."
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 175,
-            'readout'       => "First stage impact point past min-MECO",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "First stage impact point past min-MECO"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 181,
-            'readout'       => "MECO 2",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "MECO 2"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 183,
-            'readout'       => "Nominal velocity at MECO",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Nominal velocity at MECO"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 188,
-            'readout'       => "Stage sep confirmed",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "Stage sep confirmed"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 195,
-            'readout'       => "MVac ignition confirmed",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "MVac ignition confirmed"
         ]);
 
         Telemetry::create([
             'mission_id'    => 8,
             'timestamp'     => 235,
-            'readout'       => "The Dragon uh- The Dragon nosecone has been jettisoned",
-            'altitude'      => null,
-            'velocity'      => null,
-            'downrange'     => null
+            'readout'       => "The Dragon uh- The Dragon nosecone has been jettisoned"
         ]);
 
         Telemetry::create([
