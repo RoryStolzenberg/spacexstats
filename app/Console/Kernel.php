@@ -6,6 +6,7 @@ use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use SpaceXStats\Console\Commands\QuestionUpdaterCommand;
 use SpaceXStats\Console\Commands\WebcastCheckCommand;
+use SpaceXStats\Console\Commands\SpaceTrackDataFetchCommand;
 
 class Kernel extends ConsoleKernel
 {

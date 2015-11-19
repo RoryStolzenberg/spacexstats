@@ -87,6 +87,11 @@
                     @endif
                     <h3>Satellites</h3>
                     <h3>Upper Stage</h3>
+                    In Orbit / Deorbited / Decayed / Did Not Reach Oribt
+
+                    Time in Orbit (countup)
+
+                    Current Orbit (646km x 321km, inclined 9.4deg)
                 </div>
                 <div class="gr-4">
                     <h3>Library</h3>
@@ -230,7 +235,7 @@
 
             <h2>Analytics</h2>
             <section id="analytics" class="scrollto">
-                @if(Auth::isAdmin())
+                @if(Auth::isSubscriber())
                     <h3>Dataplots</h3>
                     <p>These dataplots are based on kinematic data extracted from the countdown net during launch, and are only approximate. For more detailed simulations, refer to the FlightClub entry for this launch.</p>
                     <ul class="container">
@@ -250,7 +255,30 @@
 
                     <h3>Interpolation Queries</h3>
 
-                    <h3>Upper Stage Tracking</h3>
+                    <h3>Upper Stage</h3>
+                    @if ($mission->orbitalElements->count() != 0)
+                        {{ $orbitalElements->first()->perigee }}km x {{ $orbitalElements->first()->apogee }}km, inclined {{ $orbitalElements->first()->inclination }}deg
+
+                        <h4>Latest TLE</h4>
+                        <div class="tle">
+                            <p>{{ $orbitalElements->first()->object_name }}</p>
+                        </div>
+
+                        <h4>Last 5 Orbital Elements</h4>
+                        <table>
+                            <tr>
+                                <th>Epoch</th>
+                                <th>Perigee</th>
+                                <th>Apogee</th>
+                                <th>Inclination</th>
+                                <th>Eccentricity</th>
+                                <th>Semimajor Axis</th>
+                                <th>Orbital Period</th>
+                            </tr>
+                        </table>
+                    @else
+                        <p class="exclaim">No orbital element data at this time.</p>
+                    @endif
 
                     <h3>Maps</h3>
                 @else

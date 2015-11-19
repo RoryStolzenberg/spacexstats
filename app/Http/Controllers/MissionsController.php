@@ -30,7 +30,7 @@ class MissionsController extends Controller {
      */
     public function get($slug) {
 
-        $mission = Mission::whereSlug($slug)->first();
+        $mission = Mission::with(['telemetries', 'orbitalElements'])->whereSlug($slug)->first();
 
         $pastMission = Mission::previous($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
         $futureMission = Mission::next($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
@@ -54,9 +54,10 @@ class MissionsController extends Controller {
             $js['mission'] = $mission;
 
             if (Auth::isSubscriber()) {
-                $js['telemetry'] = $mission->telemetries()->orderBy('timestamp', 'ASC')->get()->filter(function($telemetry) {
+                $js['telemetry'] = $mission->telemetries->orderBy('timestamp', 'ASC')->get()->filter(function($telemetry) {
                     return $telemetry->hasPositionalData();
                 })->values();
+                $js['orbitalElements'] = $mission->orbitalElements->sort('epoch');
             }
 
             JavaScript::put($js);
@@ -64,6 +65,7 @@ class MissionsController extends Controller {
             $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
             $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
             $data['launchVideo'] = $mission->launchVideo();
+            $data['orbitalElements'] = $mission->orbitalElements->sort('epoch');
 
             return view('missions.pastMission', $data);
         }
