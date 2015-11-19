@@ -39,4 +39,8 @@ class PartFlight extends Model {
     public function part() {
         return $this->belongsTo('SpaceXStats\Models\Part');
     }
+
+    public function orbitalElements() {
+        return $this->hasMany('SpaceXStats\Models\OrbitalElement');
+    }
 }

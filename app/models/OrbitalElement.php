@@ -14,6 +14,10 @@ class OrbitalElement extends Model {
 
     // Relationships
     public function mission() {
-        return $this->hasOne('SpaceXStats\Models\Mission');
+        return $this->belongsTo('SpaceXStats\Models\Mission');
+    }
+
+    public function partFlight() {
+        return $this->belongsTo('SpaceXStats\Models\PartFlight');
     }
 }

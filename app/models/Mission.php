@@ -88,10 +88,6 @@ class Mission extends Model {
         return $this->hasManyThrough('SpaceXStats\Models\AstronautFlight', 'SpacecraftFlight');
     }
 
-	public function launchSite() {
-		return $this->belongsTo('SpaceXStats\Models\Location', 'launch_site_id');
-	}
-
 	public function prelaunchEvents() {
 		return $this->hasMany('SpaceXStats\Models\PrelaunchEvent');
 	}
@@ -116,7 +112,15 @@ class Mission extends Model {
         return $this->hasMany('SpaceXStats\Models\Telemetry');
     }
 
+    public function orbitalElements() {
+        return $this->hasManyThrough('SpaceXStats\Models\OrbitalElement', 'SpaceXStats\Models\PartFlight');
+    }
+
     // Conditional Relationships
+    public function launchSite() {
+        return $this->belongsTo('SpaceXStats\Models\Location', 'launch_site_id');
+    }
+
     public function articles() {
         return $this->hasMany('SpaceXStats\Models\Object')->where('type', MissionControlType::Article);
     }

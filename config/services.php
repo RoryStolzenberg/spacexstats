@@ -49,5 +49,10 @@ return [
         'password' => env('REDDIT_PASSWORD'),
         'id' => env('REDDIT_ID'),
         'secret' => env('REDDIT_SECRET')
+    ],
+
+    'spacetrack' => [
+        'identity' => env('SPACETRACK_IDENTITY'),
+        'password' => env('SPACETRACK_PASSWORD')
     ]
 ];

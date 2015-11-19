@@ -306,8 +306,34 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('orbital_parameters', function(Blueprint $table) {
-            $table->increments('orbital_parameter_id');
+        Schema::create('orbital_elements', function(Blueprint $table) {
+            $table->increments('orbital_element_id');
+            $table->integer('part_flight_id')->unsigned();
+            $table->string('object_name', 60);
+            $table->string('object_type', 11);
+            $table->char('classification_type', 1);
+            $table->datetime('epoch');
+            $table->double('mean_motion', 10, 8);
+            $table->double('eccentricity', 8, 7);
+            $table->double('inclination', 5, 4);
+            $table->double('ra_of_asc_node', 7, 4);
+            $table->double('arg_of_pericenter', 7, 4);
+            $table->double('mean_anomaly', 7, 4);
+            $table->tinyInteger('ephemeris_type')->unsigned();
+            $table->smallInteger('element_set_no')->unsigned();
+            $table->float('rev_at_epoch');
+            $table->double('bstar', 9, 8);
+            $table->double('mean_motion_dot', 10, 9);
+            $table->double('mean_motion_ddot', 10, 9);
+            $table->integer('file')->unsigned();
+            $table->string('tle_line0', 62);
+            $table->char('tle_line1', 71);
+            $table->char('tle_line2', 71);
+            $table->double('semimajor_axis', 20, 3);
+            $table->double('period', 20, 3)->nullable();
+            $table->double('apogee', 20, 3);
+            $table->double('perigee', 20, 3);
+            $table->timestamps();
         });
 
         Schema::create('parts', function(Blueprint $table) {

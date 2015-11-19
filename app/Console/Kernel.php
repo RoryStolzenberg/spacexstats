@@ -16,7 +16,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         QuestionUpdaterCommand::class,
-        WebcastCheckCommand::class
+        WebcastCheckCommand::class,
+        SpaceTrackDataFetchCommand::class
     ];
 
     /**
@@ -29,5 +30,6 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('reddit:questions')->daily();
         $schedule->command('webcast:check')->everyMinute();
+        $schedule->command('spacetrack:fetch')->dailyAt('19:37'); // Random time after 1700 to satisfy API request rules
     }
 }
