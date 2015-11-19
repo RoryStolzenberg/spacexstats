@@ -153,15 +153,15 @@
 
             <h2>Images</h2>
             <section id="images" class="scrollto">
-                @if ($imageCount > 0)
+                @if ($images->count() > 0)
                     @foreach ($images as $image)
                         <div class="square">
                             <img src="" alt="" class="square" />
                         </div>
                     @endforeach
-                    @if ($imageCount > 20)
+                    @if ($images->count() > 20)
                         <div class="square">
-                            {{ $imageCount - 20 }} more...
+                            {{ $images->count() - 20 }} more...
                         </div>
                     @endif
                 @endif
