@@ -57,7 +57,7 @@ class MissionsController extends Controller {
                 $js['telemetry'] = $mission->telemetries->orderBy('timestamp', 'ASC')->get()->filter(function($telemetry) {
                     return $telemetry->hasPositionalData();
                 })->values();
-                $js['orbitalElements'] = $mission->orbitalElements->sort('epoch');
+                $js['orbitalElements'] = $mission->orbitalElements->sortBy('epoch');
             }
 
             JavaScript::put($js);
@@ -65,7 +65,7 @@ class MissionsController extends Controller {
             $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
             $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
             $data['launchVideo'] = $mission->launchVideo();
-            $data['orbitalElements'] = $mission->orbitalElements->sort('epoch');
+            $data['orbitalElements'] = $mission->orbitalElements->sortBy('epoch');
 
             return view('missions.pastMission', $data);
         }
