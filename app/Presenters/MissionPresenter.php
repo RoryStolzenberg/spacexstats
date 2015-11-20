@@ -19,7 +19,11 @@ class MissionPresenter {
     }
 
     public function launchOfYear() {
-        return $this->ordinal($this->entity->launchOfYear);
+        return $this->ordinal($this->entity->launch_of_year);
+    }
+
+    public function flightGraph() {
+
     }
 
 	public function article() {
