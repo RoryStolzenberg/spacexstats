@@ -109,7 +109,7 @@ class Mission extends Model {
         return $this->hasMany('SpaceXStats\Models\Payload');
     }
 
-    public function telemetries() {
+    public function telemetry() {
         return $this->hasMany('SpaceXStats\Models\Telemetry');
     }
 
