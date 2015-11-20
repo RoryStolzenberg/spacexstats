@@ -202,7 +202,7 @@ trait UploadableTrait {
     }
 
     /**
-     *
+     * Deletes any current temporary files
      */
     public function deleteFromTemporary() {
         if ($this->hasTemporaryFile()) {

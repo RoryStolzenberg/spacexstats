@@ -3,13 +3,19 @@
 
     reviewApp.controller("reviewController", ["$scope", 'reviewService', function($scope, reviewService) {
         $scope.isLoading = true;
+        $scope.objectsToReview = [];
 
         $scope.visibilities = ['Default', 'Public', 'Hidden'];
 
         $scope.action = function(object, status) {
 
             object.status = status;
-            object.isBeingActioned = true;
+
+            if (status == 'Published') {
+                object.isBeingPublished = true;
+            } else if (status == 'Deleted') {
+                object.isBeingDeleted = true;
+            }
 
             reviewService.review(object).then(function() {
                 $scope.objectsToReview.splice($scope.objectsToReview.indexOf(object), 1);
@@ -24,26 +30,25 @@
             if ($scope.isLoading) {
                 return 'Loading Queued Objects...';
             } else {
-                return '<span>' + $scope.objects.length + '</span> objects to review';
+                if (angular.isDefined($scope.objectsToReview))
+                    return '<span>' + $scope.objectsToReview.length + '</span> objects to review';
             }
         };
 
-        $scope.on('reviewPageLoaded', function() {
-            $scope.isLoading = false;
-        });
-
         (function() {
-            $scope.objectsToReview = reviewService.fetch();
+            reviewService.fetch().then(function(response) {
+                console.log(response);
+                $scope.objectsToReview = response;
+                $scope.isLoading = false;
+            });
         })();
     }]);
 
-    reviewApp.service('reviewService', ["$http", "$rootScope", "ObjectToReview", function($http, $rootScope, ObjectToReview) {
+    reviewApp.service('reviewService', ["$http", "ObjectToReview", function($http, ObjectToReview) {
         this.fetch = function() {
             return $http.get('/missioncontrol/review/get').then(function(response) {
 
-                $rootScope.broadcast('reviewPageLoaded');
-
-                return response.data.forEach(function(objectToReview) {
+                return response.data.map(function(objectToReview) {
                     return new ObjectToReview(objectToReview);
                 });
             });
@@ -63,12 +68,14 @@
             self.visibility = "Default";
 
             self.linkToObject = '/missioncontrol/object/' + self.object_id;
-
             self.linkToUser = 'users/' + self.user.username;
 
             self.createdAtRelative = moment.utc(self.created_at).fromNow();
 
-            self.isBeingActioned = false;
+            self.size = self.size / 1000 + ' KB';
+
+            self.isBeingPublished = false;
+            self.isBeingDeleted = false;
 
             return self;
         }

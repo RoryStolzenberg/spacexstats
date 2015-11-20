@@ -6,8 +6,8 @@ abstract class ObjectPublicationStatus extends Enum {
     /**
      * An object will have a publication status of 'New' when it has just been uploaded and the user is still
      * entering information about it. We do not show these items in search results, nor are they visible. If an
-     * object retains a 'new' status for more than 24 hours we assume it was abandoned and it is deleted via a
-     * job.
+     * object retains a 'new' status for more than 7 days we assume it was abandoned and it is deleted via the
+     * DeleteOrphanedFilesCommand.
      */
     const NewStatus = 'New';
 

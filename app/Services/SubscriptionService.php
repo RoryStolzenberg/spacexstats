@@ -34,23 +34,28 @@ class SubscriptionService
      * Increment the user's Mission Control subscription by the given number of seconds if they are a
      * Mission Control subscriber.
      *
+     * This method has safeguards to prevent users with higher roles (charter subscribers, admins) from
+     * being awarded extra time on a nonexistent subscription.
+     *
      * @param User $user    The user to award
      * @param Award $award The award for which we can calculate the subscription length
      */
     public function incrementSubscription(User $user, Award $award) {
-        // Calculate the seconds to extend by
-        $seconds = (new DeltaVCalculator())->toSeconds($award->value);
+        if ($user->role_id == UserRole::Subscriber) {
+            // Calculate the seconds to extend by
+            $seconds = (new DeltaVCalculator())->toSeconds($award->value);
 
-        // Fetch the current subscription/trail end
-        //$endDate = is_null($user->getTrialEndDate()) ? $user->getSubscriptionEndDate() : $user->getTrialEndDate();
+            // Fetch the current subscription/trail end
+            //$endDate = is_null($user->getTrialEndDate()) ? $user->getSubscriptionEndDate() : $user->getTrialEndDate();
 
-        $endDate = $user->subscription()->getSubscriptionEndDate();
+            $endDate = $user->subscription()->getSubscriptionEndDate();
 
-        // Calculate the new end date
-        $newEndDate = $endDate->addSeconds($seconds);
+            // Calculate the new end date
+            $newEndDate = $endDate->addSeconds($seconds);
 
-        // Extend trial by to that date
-        $user->subscription()->noProrate()->trialFor($newEndDate);
+            // Extend trial by to that date
+            $user->subscription()->noProrate()->trialFor($newEndDate);
+        }
     }
 
     public function deleteSubscription() {
