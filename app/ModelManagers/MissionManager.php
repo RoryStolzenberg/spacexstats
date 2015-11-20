@@ -30,8 +30,6 @@ class MissionManager {
         $this->astronaut            = $astronaut;
         $this->telemetry            = $telemetry;
         $this->prelaunchEvent       = $prelaunchEvent;
-
-        $
     }
 
     public function isValid() {
@@ -303,13 +301,13 @@ class MissionManager {
     }
 
     private function manageTelemetryRelations() {
-        $currentTelemetries = $this->mission->telemetries->keyBy('telemetry_id');
+        $currentTelemetry = $this->mission->telemetry->keyBy('telemetry_id');
 
-        foreach ($this->input['mission']['telemetries'] as $telemetryInput) {
+        foreach ($this->input['mission']['telemetry'] as $telemetryInput) {
 
             // If the telemetry exists, update it, otherwise, create it
             if (array_key_exists('telemetry_id', $telemetryInput)) {
-                $telemetry = $currentTelemetries->pull($telemetryInput['telemetry_id']);
+                $telemetry = $currentTelemetry->pull($telemetryInput['telemetry_id']);
                 $telemetry->fill($telemetryInput);
                 $telemetry->save();
 
@@ -321,8 +319,8 @@ class MissionManager {
         }
 
         // Delete any telemetry payloads
-        if (!$currentTelemetries->isEmpty()) {
-            Telemetry::whereIn('telemetry_id', $currentTelemetries->keys())->delete();
+        if (!$currentTelemetry->isEmpty()) {
+            Telemetry::whereIn('telemetry_id', $currentTelemetry->keys())->delete();
         }
     }
 

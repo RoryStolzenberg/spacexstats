@@ -662,7 +662,7 @@ class Spacexstats extends Migration {
             $table->foreign('spacecraft_id')->references('spacecraft_id')->on('spacecraft')->onDelete('restrict');
         });
 
-        Schema::table('telemetries', function(Blueprint $table) {
+        Schema::table('telemetry', function(Blueprint $table) {
             $table->foreign('mission_id')->references('mission_id')->on('missions')->onDelete('cascade');
         });
 

@@ -2,7 +2,7 @@
 use Illuminate\Database\Seeder;
 use SpaceXStats\Models\Telemetry;
 
-class TelemetriesTableSeeder extends Seeder {
+class TelemetryTableSeeder extends Seeder {
     public function run() {
         $this->Falcon1Flight1();
         $this->COTS2Plus();

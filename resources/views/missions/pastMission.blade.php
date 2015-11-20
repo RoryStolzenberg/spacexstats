@@ -215,14 +215,14 @@
                     </table>
 
                 <h3>Launch</h3>
-                    @if ($mission->telemetries->count() > 0)
+                    @if ($mission->telemetry->count() > 0)
                         <p>The following data represents telemetry and readouts from the countdown net & webcast at SpaceX's Hawthorne HQ.</p>
                         <table class="data-table">
                             <tr>
                                 <th>Timestamp</th>
                                 <th>Readout</th>
                             </tr>
-                            @foreach($mission->telemetries as $telemetry)
+                            @foreach($mission->telemetry as $telemetry)
                                 <tr>
                                     <td>{{ $telemetry->formatted_timestamp }}</td>
                                     <td>{{ $telemetry->readout }}</td>

@@ -30,7 +30,7 @@ class MissionsController extends Controller {
      */
     public function get($slug) {
 
-        $mission = Mission::with(['telemetries', 'orbitalElements'])->whereSlug($slug)->first();
+        $mission = Mission::with(['telemetry', 'orbitalElements'])->whereSlug($slug)->first();
 
         $pastMission = Mission::previous($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
         $futureMission = Mission::next($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
@@ -54,8 +54,8 @@ class MissionsController extends Controller {
             $js['mission'] = $mission;
 
             if (Auth::isSubscriber()) {
-                $js['telemetry'] = $mission->telemetries->orderBy('timestamp', 'ASC')->get()->filter(function($telemetry) {
-                    return $telemetry->hasPositionalData();
+                $js['telemetry'] = $mission->telemetry->orderBy('timestamp', 'ASC')->get()->filter(function($readout) {
+                    return $readout->hasPositionalData();
                 })->values();
                 $js['orbitalElements'] = $mission->orbitalElements->sortBy('epoch');
             }
@@ -216,11 +216,11 @@ class MissionsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function telemetry($slug) {
-        $telemetries = Telemetry::whereHas('mission', function($q) use ($slug) {
+        $telemetry = Telemetry::whereHas('mission', function($q) use ($slug) {
             $q->whereSlug($slug);
         })->orderBy('timestamp', 'ASC')->get();
 
-        return response()->json($telemetries);
+        return response()->json($telemetry);
     }
 
     /**

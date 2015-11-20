@@ -956,7 +956,7 @@
                 self.part_flights = [];
                 self.spacecraft_flight = null;
                 self.prelaunch_events = [];
-                self.telemetries = [];
+                self.telemetry = [];
 
             } else {
                 var self = mission;
@@ -995,11 +995,11 @@
             };
 
             self.addTelemetry = function() {
-                self.telemetries.push(new Telemetry());
+                self.telemetry.push(new Telemetry());
             };
 
             self.removeTelemetry = function(telemetry) {
-                self.telemetries.splice(self.telemetries.indexOf(telemetry), 1);
+                self.telemetry.splice(self.telemetry.indexOf(telemetry), 1);
             };
 
             return self;
