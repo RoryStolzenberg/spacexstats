@@ -54,7 +54,7 @@ class SubscriptionService
             $newEndDate = $endDate->addSeconds($seconds);
 
             // Extend trial by to that date
-            $user->subscription()->noProrate()->trialFor($newEndDate);
+            $user->subscription()->noProrate()->trialFor($newEndDate)->swap();
         }
     }
 
