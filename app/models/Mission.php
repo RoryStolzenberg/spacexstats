@@ -4,6 +4,7 @@ namespace SpaceXStats\Models;
 use Illuminate\Database\Eloquent\Model;
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionOutcome;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Library\Launch\LaunchReorderer;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
@@ -195,7 +196,29 @@ class Mission extends Model {
     }
 
     public function getSuccessfulConsecutiveLaunchAttribute() {
+        if ($this->status == MissionStatus::Complete && $this->outcome != MissionOutcome::Failure) {
 
+            try {
+                $lastFailedMissionLaunchOrderId = Mission::where('outcome', MissionOutcome::Failure)
+                    ->previous($this->launch_order_id)
+                    ->firstOrFail()->launch_order_id;
+
+            } catch (ModelNotFoundException $e) {
+                $lastFailedMissionLaunchOrderId = 0;
+            }
+
+            return $this->launch_order_id - $lastFailedMissionLaunchOrderId;
+        }
+        return null;
+    }
+
+    public function getTurnaroundTimeAttribute() {
+        if ($this->status == MissionStatus::Complete) {
+            $previousMission = Mission::previous()->first();
+
+            return $previousMission->launch_date_time->diffInSeconds($this->launch_date_time);
+        }
+        return null;
     }
 
     public function getArticleMdAttribute() {
@@ -209,8 +232,11 @@ class Mission extends Model {
     }
 
     public function setLaunchDateTimeAttribute($value) {
+        // Reorder launches
         $launchReorderer = new LaunchReorderer($this, $value);
         $launchReorderer->run();
+
+        // Also query an API to check the launch visibility (twilight, daytime, etc)
     }
 
     // Methods
