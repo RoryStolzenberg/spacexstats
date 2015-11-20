@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Presenters;
 
+use Carbon\Carbon;
+
 class MissionPresenter {
 
 	protected $entity;
@@ -9,10 +11,15 @@ class MissionPresenter {
 		$this->entity = $entity;
 	}
 
-    public function launchDateTime($format = 'j M Y G:i:s') {
+    public function launchDateTime() {
+        if ($this->entity->isLaunchPrecise()) {
+            return Carbon::parse($this->entity->launch_date_time)->format('g:i:sA F j, Y');
+        } else {
+
+        }
         if ($this->entity->launch_approximate === null) {
             $dt = new \DateTime($this->entity->launch_exact);
-            return $dt->format($format);
+            return $dt->format();
         } else {
             return $this->entity->launch_approximate;
         }

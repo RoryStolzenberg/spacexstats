@@ -24,6 +24,14 @@
                             <a href="#articles">Articles</a>
                         </li>
 
+                        <li class="gr-1 float-right">
+                            @if ($mission->status == 'In Progress')
+                                <span class="status in-progress"><i class="fa fa-check"></i> In Progress</span>
+                            @else
+                                <span class="status upcoming"><i class="fa fa-cross"></i> Upcoming</span>
+                            @endif
+                        </li>
+
                         <li class="gr-2 float-right actions">
                             @if (Auth::isAdmin())
                                 <a class="link" href="/missions/{{ $mission->slug }}/edit">
@@ -45,15 +53,6 @@
                             <a href="">
                                 <i class="fa fa-rss"></i>
                             </a>
-                        </li>
-                        <li class="gr-1 float-right">
-                            @if ($mission->status == 'Complete')
-                                <span class="status complete"><i class="fa fa-check"></i> Complete</span>
-                            @elseif ($mission->status == 'In Progress')
-                                <span class="status in-progress"><i class="fa fa-check"></i> In Progress</span>
-                            @else
-                                <span class="status upcoming"><i class="fa fa-cross"></i> Upcoming</span>
-                            @endif
                         </li>
                     </ul>
                 </nav>
@@ -102,7 +101,7 @@
                 <h2>Details</h2>
                 <section class="scrollto" id="details">
 
-                    @include('templates.missionCard', ['size' => 'large', 'mission' => $mission])
+                    @include('templates.cards.missionCard', ['size' => 'large', 'mission' => $mission])
 
                     @if ($mission->isNextToLaunch())
                         <h3>SpaceX Stats Live</h3>

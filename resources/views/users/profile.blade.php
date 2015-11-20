@@ -106,7 +106,7 @@
                             <td class="lowvisibility color">Favorite Mission</td>
                             <td>
                                 @if ($favoriteMission)
-                                    @include('templates.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
+                                    @include('templates.cards.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
                                 @else
                                     <p>No favorite mission. Add one!</p>
                                 @endif
@@ -138,7 +138,7 @@
             <h2><a href="/users/{{ $user->username }}/favorites">Favorites</a></h2>
             <section id="favorites" class="favorites container">
                     @foreach ($favorites as $favorite)
-                        @include('templates.objectCard', ['bias' => 'favorite', 'object' => $favorite->object])
+                        @include('templates.cards.objectCard', ['bias' => 'favorite', 'object' => $favorite->object])
                     @endforeach
                     @if ($favorites->count() == 0)
                         <p class="exclaim">Nothing to see here</p>
@@ -149,7 +149,7 @@
                 <h2>Notes</h2>
                 <section id="notes" class="notes">
                     @foreach ($notes as $note)
-                        @include('templates.objectCard', ['bias' => 'note', 'object' => $note->object])
+                        @include('templates.cards.objectCard', ['bias' => 'note', 'object' => $note->object])
                     @endforeach
                     @if ($notes->count() == 0)
                         <p class="exclaim">Nothing to see here</p>
@@ -160,7 +160,7 @@
             <h2>Uploads</h2>
             <section id="uploads" class="uploads">
                 @foreach ($objects as $object)
-                    @include('templates.objectCard', ['bias' => 'object', 'object' => $object])
+                    @include('templates.cards.objectCard', ['bias' => 'object', 'object' => $object])
                 @endforeach
                 @if ($objects->count() == 0)
                     <p class="exclaim">Nothing to see here.
@@ -174,7 +174,7 @@
             <h2>Comments</h2>
             <section id="comments" class="">
                 @foreach ($comments as $comment)
-                    @include('templates.objectCard', ['bias' => 'comment', 'object' => $comment->object])
+                    @include('templates.cards.objectCard', ['bias' => 'comment', 'object' => $comment->object])
                 @endforeach
                 @if ($comments->count() == 0)
                     <p class="exclaim">Nothing to see here</p>

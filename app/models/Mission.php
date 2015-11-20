@@ -1,7 +1,10 @@
 <?php
 namespace SpaceXStats\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\MissionOutcome;
@@ -156,7 +159,7 @@ class Mission extends Model {
 
 	// Attribute Accessors
 	public function getLaunchDateTimeAttribute() {
-		return $this->isLaunchPrecise() ? $this->attributes['launch_exact'] : $this->attributes['launch_approximate'];
+		return $this->isLaunchPrecise() ? $this->launch_exact: $this->launch_approximate;
 	}
 
 	public function getLaunchProbabilityAttribute() {
@@ -187,12 +190,13 @@ class Mission extends Model {
 
     public function getLaunchOfYearAttribute() {
         // Fetch the year of the current launch
-        $year = $this->isLaunchPrecise() ? $this->launch_date_time->year : preg_match('/\b\d{4}\b/', $this->launch_date_time, $matches)[0];
+        $year = $this->isLaunchPrecise() ? Carbon::parse($this->launch_date_time)->year : preg_match('/\b\d{4}\b/', $this->launch_date_time, $matches)[0];
 
         // Now find all other missions with that year
-        $missionsInYear = Mission::where('launch_approximate', 'LIKE', $year)->orWhere(DB::raw('YEAR(launch_exact)'), $year)->get();
-
-        return array_search($this, $missionsInYear) + 1;
+        return Mission::previous($this->launch_order_id)
+            ->where('launch_approximate', 'LIKE', $year)
+            ->orWhere(DB::raw('YEAR(launch_exact)'), $year)
+            ->orderBy('launch_order_id')->count();
     }
 
     public function getSuccessfulConsecutiveLaunchAttribute() {
@@ -216,7 +220,7 @@ class Mission extends Model {
         if ($this->status == MissionStatus::Complete) {
             $previousMission = Mission::previous()->first();
 
-            return $previousMission->launch_date_time->diffInSeconds($this->launch_date_time);
+            return Carbon::parse($previousMission->launch_date_time)->diffInSeconds(Carbon::parse($this->launch_date_time));
         }
         return null;
     }
@@ -241,7 +245,7 @@ class Mission extends Model {
 
     // Methods
     /**
-     *  Checks if the current mission is the next to launch .
+     *  Checks if the current mission is the next to launch.
      *
      * @return bool     Is the launch next or not?
      */
@@ -263,62 +267,115 @@ class Mission extends Model {
     }
 
 	// Scoped Queries
+    /**
+     * @param $query
+     * @param $slug
+     * @return mixed
+     */
     public function scopeWhereSlug($query, $slug) {
         return $query->where('slug', $slug);
     }
 
-	public function scopeWhereComplete($query, $inclusive = false) {
+    /**
+     * @param $query
+     * @param bool|false $inclusive
+     * @return mixed
+     */
+    public function scopeWhereComplete($query, $inclusive = false) {
         if ($inclusive) {
             return $query->where('status', MissionStatus::Complete)->orWhere('status', MissionStatus::InProgress);
         }
 		return $query->where('status', MissionStatus::Complete);
 	}
 
-	public function scopeWhereUpcoming($query, $inclusive = false) {
+    /**
+     * @param $query
+     * @param bool|false $inclusive
+     * @return mixed
+     */
+    public function scopeWhereUpcoming($query, $inclusive = false) {
         if ($inclusive) {
             return $query->where('status', MissionStatus::Upcoming)->orWhere('status', MissionStatus::InProgress);
         }
 		return $query->where('status', MissionStatus::Upcoming);
 	}
 
-	public function scopeFuture($query) {
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeFuture($query) {
 		return $query->whereUpcoming()->orderBy('launch_order_id');
 	}
 
-	public function scopePast($query) {
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopePast($query) {
 		return $query->whereComplete()->orderBy('launch_order_id', 'desc');
 	}
 
 	// Get 1 or more next launches relative to a current launch_order_id
-	public function scopeNext($query, $currentLaunchOrderId) {
+    /**
+     * @param $query
+     * @param $currentLaunchOrderId
+     * @return mixed
+     */
+    public function scopeNext($query, $currentLaunchOrderId) {
 		return $query->where('launch_order_id', '>', $currentLaunchOrderId)
 						->orderBy('launch_order_id');
 	}
 
 	// Get 1 or more previous launches relative to a current launch_order_id
-	public function scopePrevious($query, $currentLaunchOrderId) {
+    /**
+     * @param $query
+     * @param $currentLaunchOrderId
+     * @return mixed
+     */
+    public function scopePrevious($query, $currentLaunchOrderId) {
 		return $query->where('launch_order_id', '<', $currentLaunchOrderId)
 						->orderBy('launch_order_id', 'DESC');
 	}
 
-	public function scopePastFromLaunchSite($query, $site) {
+    /**
+     * @param $query
+     * @param $site
+     * @return mixed
+     */
+    public function scopePastFromLaunchSite($query, $site) {
 		return $query->whereComplete()->whereHas('launchSite', function($q) use($site) {
 			$q->where('name',$site);
 		})->orderBy('launch_order_id','DESC');
 	}
 
-	public function scopeFutureFromLaunchSite($query, $site) {
+    /**
+     * @param $query
+     * @param $site
+     * @return mixed
+     */
+    public function scopeFutureFromLaunchSite($query, $site) {
 		return $query->whereUpcoming()->whereHas('launchSite', function($q) use($site) {
 			$q->where('name',$site);
 		})->orderBy('launch_order_id','ASC');
 	}
 
+    /**
+     * @param $query
+     * @param $vehicle
+     * @return mixed
+     */
     public function scopeWhereSpecificVehicle($query, $vehicle) {
         return $query->whereHas('vehicle', function($q) use($vehicle) {
              $q->where('vehicle', $vehicle);
         });
     }
 
+    /**
+     * @param $query
+     * @param $vehicle
+     * @return mixed
+     */
     public function scopeWhereGenericVehicle($query, $vehicle) {
         return $query->whereHas('vehicle', function($q) use ($vehicle) {
             $q->where('vehicle', 'like', ($vehicle == 'Falcon 9') ? $vehicle . '%' : $vehicle);

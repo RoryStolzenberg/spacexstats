@@ -670,7 +670,7 @@
             <h2>Recent Additions</h2>
             <section>
                 @foreach($recentUploads as $recentUpload)
-                    @include('templates.objectCard', ['bias' => 'object', 'object' => $recentUpload])
+                    @include('templates.cards.objectCard', ['bias' => 'object', 'object' => $recentUpload])
                 @endforeach
             </section>
         </main>
