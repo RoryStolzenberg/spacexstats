@@ -4,6 +4,7 @@ namespace SpaceXStats\Models;
 use Illuminate\Database\Eloquent\Model;
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\MissionOutcome;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Library\Launch\LaunchReorderer;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
@@ -108,7 +109,7 @@ class Mission extends Model {
         return $this->hasMany('SpaceXStats\Models\Payload');
     }
 
-    public function telemetries() {
+    public function telemetry() {
         return $this->hasMany('SpaceXStats\Models\Telemetry');
     }
 
@@ -155,7 +156,7 @@ class Mission extends Model {
 
 	// Attribute Accessors
 	public function getLaunchDateTimeAttribute() {
-		return ($this->attributes['launch_specificity'] >= LaunchSpecificity::Day) ? $this->attributes['launch_exact'] : $this->attributes['launch_approximate'];
+		return $this->isLaunchPrecise() ? $this->attributes['launch_exact'] : $this->attributes['launch_approximate'];
 	}
 
 	public function getLaunchProbabilityAttribute() {
@@ -184,16 +185,40 @@ class Mission extends Model {
         }
     }
 
-    public function getFlightGraphAttribute() {
-
-    }
-
     public function getLaunchOfYearAttribute() {
+        // Fetch the year of the current launch
+        $year = $this->isLaunchPrecise() ? $this->launch_date_time->year : preg_match('/\b\d{4}\b/', $this->launch_date_time, $matches)[0];
 
+        // Now find all other missions with that year
+        $missionsInYear = Mission::where('launch_approximate', 'LIKE', $year)->orWhere(DB::raw('YEAR(launch_exact)'), $year)->get();
+
+        return array_search($this, $missionsInYear) + 1;
     }
 
     public function getSuccessfulConsecutiveLaunchAttribute() {
+        if ($this->status == MissionStatus::Complete && $this->outcome != MissionOutcome::Failure) {
 
+            try {
+                $lastFailedMissionLaunchOrderId = Mission::where('outcome', MissionOutcome::Failure)
+                    ->previous($this->launch_order_id)
+                    ->firstOrFail()->launch_order_id;
+
+            } catch (ModelNotFoundException $e) {
+                $lastFailedMissionLaunchOrderId = 0;
+            }
+
+            return $this->launch_order_id - $lastFailedMissionLaunchOrderId;
+        }
+        return null;
+    }
+
+    public function getTurnaroundTimeAttribute() {
+        if ($this->status == MissionStatus::Complete) {
+            $previousMission = Mission::previous()->first();
+
+            return $previousMission->launch_date_time->diffInSeconds($this->launch_date_time);
+        }
+        return null;
     }
 
     public function getArticleMdAttribute() {
@@ -207,21 +232,41 @@ class Mission extends Model {
     }
 
     public function setLaunchDateTimeAttribute($value) {
+        // Reorder launches
         $launchReorderer = new LaunchReorderer($this, $value);
         $launchReorderer->run();
+
+        // Also query an API to check the launch visibility (twilight, daytime, etc)
     }
 
-	// Slug helper
-	public function scopeWhereSlug($query, $slug) {
-		return $query->where('slug', $slug);
-	}
-
-    // Functions
+    // Methods
+    /**
+     *  Checks if the current mission is the next to launch .
+     *
+     * @return bool     Is the launch next or not?
+     */
     public function isNextToLaunch() {
         return $this->mission_id === Mission::future()->first()->mission_id;
     }
 
+    /**
+     * Checks whether the launch is precise enough to use a countdown.
+     *
+     * Note that this method doesn't check if the launch is precisely precise (i.e. down to the second),
+     * but rather whether the launch can be expressed as a DateTime object, any mission that returns true
+     * from this method will contain a launch date time at least as accurate as a day.
+     *
+     * @return bool     Is the launch precise or not?
+     */
+    public function isLaunchPrecise() {
+        return $this->attributes['launch_specificity'] >= LaunchSpecificity::Day;
+    }
+
 	// Scoped Queries
+    public function scopeWhereSlug($query, $slug) {
+        return $query->where('slug', $slug);
+    }
+
 	public function scopeWhereComplete($query, $inclusive = false) {
         if ($inclusive) {
             return $query->where('status', MissionStatus::Complete)->orWhere('status', MissionStatus::InProgress);

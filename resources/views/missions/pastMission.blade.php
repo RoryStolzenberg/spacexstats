@@ -153,23 +153,25 @@
 
             <h2>Images</h2>
             <section id="images" class="scrollto">
-                @if ($imageCount > 0)
+                @if ($images->count() > 0)
                     @foreach ($images as $image)
                         <div class="square">
                             <img src="" alt="" class="square" />
                         </div>
                     @endforeach
-                    @if ($imageCount > 20)
+                    @if ($images->count() > 20)
                         <div class="square">
-                            {{ $imageCount - 20 }} more...
+                            {{ $images->count() - 20 }} more...
                         </div>
                     @endif
+                @else
+                    <p class="exclaim">No public images</p>
                 @endif
             </section>
 
             <h2>Videos</h2>
             <section id="videos" class="scrollto container">
-                @if ($mission->launch_video != null)
+                @if ($mission->launch_video)
                     <div class="gr-8">
                         <h3>Launch Video</h3>
                     </div>

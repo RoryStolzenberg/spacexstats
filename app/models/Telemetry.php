@@ -8,7 +8,7 @@ class Telemetry extends Model {
 
     use ValidatableTrait;
 
-    protected $table = 'telemetries';
+    protected $table = 'telemetry';
     protected $primaryKey = 'telemetry_id';
     public $timestamps = true;
 

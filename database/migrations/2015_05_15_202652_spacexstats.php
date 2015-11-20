@@ -403,7 +403,7 @@ class Spacexstats extends Migration {
         Schema::create('prelaunch_events', function(Blueprint $table) {
             $table->increments('prelaunch_event_id');
             $table->integer('mission_id')->unsigned();
-            $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Static Fire', 'Launch Change'));
+            $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Launch Site Static Fire', 'Test Static Fire', 'Launch Change'));
             $table->date('occurred_at'); // Nonoptional values
             $table->datetime('scheduled_launch_exact')->nullable(); // Nonoptional values
             $table->string('scheduled_launch_approximate', Varchar::tiny)->nullable();
@@ -505,7 +505,7 @@ class Spacexstats extends Migration {
             $table->timestamps();
         });
 
-        Schema::create('telemetries', function(Blueprint $table) {
+        Schema::create('telemetry', function(Blueprint $table) {
             $table->increments('telemetry_id');
             $table->integer('mission_id')->unsigned();
             $table->smallInteger('timestamp')->unsigned();

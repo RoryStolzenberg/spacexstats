@@ -1,35 +1,59 @@
 (function() {
     var reviewApp = angular.module('app', []);
 
-    reviewApp.controller("reviewController", ["$scope", "$http", "ObjectToReview", function($scope, $http, ObjectToReview) {
+    reviewApp.controller("reviewController", ["$scope", 'reviewService', function($scope, reviewService) {
+        $scope.isLoading = true;
 
         $scope.visibilities = ['Default', 'Public', 'Hidden'];
 
-        $scope.objectsToReview = [];
+        $scope.action = function(object, status) {
 
-        $scope.action = function(object, queuedStatus) {
+            object.status = status;
+            object.isBeingActioned = true;
 
-            object.status = queuedStatus;
-
-            $http.post('/missioncontrol/review/update/' + object.object_id, {
-                visibility: object.visibility, status: object.status
-            }).then(function() {
+            reviewService.review(object).then(function() {
                 $scope.objectsToReview.splice($scope.objectsToReview.indexOf(object), 1);
 
             }, function(response) {
-                alert('An error occured');
+                alert('An error occurred');
+                console.log(response);
+            })
+        };
+
+        $scope.reviewPageSubheading = function() {
+            if ($scope.isLoading) {
+                return 'Loading Queued Objects...';
+            } else {
+                return '<span>' + $scope.objects.length + '</span> objects to review';
+            }
+        };
+
+        $scope.on('reviewPageLoaded', function() {
+            $scope.isLoading = false;
+        });
+
+        (function() {
+            $scope.objectsToReview = reviewService.fetch();
+        })();
+    }]);
+
+    reviewApp.service('reviewService', ["$http", "$rootScope", "ObjectToReview", function($http, $rootScope, ObjectToReview) {
+        this.fetch = function() {
+            return $http.get('/missioncontrol/review/get').then(function(response) {
+
+                $rootScope.broadcast('reviewPageLoaded');
+
+                return response.data.forEach(function(objectToReview) {
+                    return new ObjectToReview(objectToReview);
+                });
             });
         };
 
-        (function() {
-            $http.get('/missioncontrol/review/get').then(function(response) {
-                response.data.forEach(function(objectToReview) {
-                    $scope.objectsToReview.push(new ObjectToReview(objectToReview));
-                });
-                console.log($scope.objectsToReview);
+        this.review = function(object) {
+            return $http.post('/missioncontrol/review/update/' + object.object_id, {
+                visibility: object.visibility, status: object.status
             });
-        })();
-
+        };
     }]);
 
     reviewApp.factory("ObjectToReview", function() {
@@ -42,47 +66,9 @@
 
             self.linkToUser = 'users/' + self.user.username;
 
-            self.textType = function() {
-                switch(self.type) {
-                    case 1:
-                        return 'Image';
-                    case 2:
-                        return 'GIF';
-                    case 3:
-                        return 'Audio';
-                    case 4:
-                        return 'Video';
-                    case 5:
-                        return 'Document';
-                }
-            };
-
-            self.textSubtype = function() {
-                switch(self.subtype) {
-                    case 1:
-                        return 'MissionPatch';
-                    case 2:
-                        return 'Photo';
-                    case 3:
-                        return 'Telemetry';
-                    case 4:
-                        return 'Chart';
-                    case 5:
-                        return 'Screenshot';
-                    case 6:
-                        return 'LaunchVideo';
-                    case 7:
-                        return 'PressConference';
-                    case 8:
-                        return 'PressKit';
-                    case 9:
-                        return 'CargoManifest';
-                    default:
-                        return null;
-                }
-            };
-
             self.createdAtRelative = moment.utc(self.created_at).fromNow();
+
+            self.isBeingActioned = false;
 
             return self;
         }
