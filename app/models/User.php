@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Models;
 
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -21,6 +22,7 @@ use Carbon\Carbon;
 use Auth;
 use Hash;
 use Input;
+use SpaceXStats\Services\DeltaVCalculator;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, BillableContract
 {
@@ -97,7 +99,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         }
         return $this->hasMany('SpaceXStats\Models\Object')
             ->where('status', ObjectPublicationStatus::PublishedStatus)
-            ->where('visibility', VisibilityStatus::DefaultStatus);
+            ->where('visibility', '!=', VisibilityStatus::HiddenStatus);
     }
 
     public function unreadMessages() {
@@ -122,6 +124,15 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->awards()->sum('value');
     }
 
+    public function subscriptionExtendedBy($pretty = false) {
+        $secondsExtended = (new DeltaVCalculator())->toSeconds($this->totalDeltaV());
+
+        if ($pretty) {
+            return $secondsExtended;
+        }
+        return CarbonInterval::seconds($secondsExtended);
+    }
+
     public function setMobileDetails($number) {
         $this->mobile = $number->phone_number;
         $this->mobile_national_format = $number->national_format;
@@ -137,10 +148,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     // Attribute accessors
-    public function getDaysUntilSubscriptionExpiresAttribute() {
-        return Carbon::now()->diffInDays($this->subscription_ends_at);
-    }
-
     // Attribute mutators
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = Hash::make($value);

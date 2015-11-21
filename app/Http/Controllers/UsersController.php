@@ -13,6 +13,7 @@ use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Notification;
 use SpaceXStats\Models\User;
 use JavaScript;
+use SpaceXStats\Services\DeltaVCalculator;
 
 
 class UsersController extends Controller {
@@ -24,7 +25,7 @@ class UsersController extends Controller {
         $this->mailer = $mailer;
 	}
 
-	public function get($username = null) {
+	public function get(DeltaVCalculator $deltaV, $username = null) {
         $user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
 
         $params = array(
@@ -32,7 +33,8 @@ class UsersController extends Controller {
             'favoriteMission' => $user->profile->favoriteMission,
             'objects' => $user->objects()->inMissionControl()->take(10)->get(),
             'favorites' => $user->favorites->take(10),
-            'comments' => $user->comments->take(10)
+            'comments' => $user->comments->take(10),
+            'subscriptionExtendedBy' => $user->subscriptionExtendedBy(true)
         );
 
         // If the requesting user is logged in & if the requesting user is requesting themselves

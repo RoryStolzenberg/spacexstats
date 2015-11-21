@@ -54,7 +54,7 @@ class MissionsController extends Controller {
             $js['mission'] = $mission;
 
             if (Auth::isSubscriber()) {
-                $js['telemetry'] = $mission->telemetry->orderBy('timestamp', 'ASC')->get()->filter(function($readout) {
+                $js['telemetry'] = $mission->telemetry()->orderBy('timestamp', 'ASC')->get()->filter(function($readout) {
                     return $readout->hasPositionalData();
                 })->values();
                 $js['orbitalElements'] = $mission->orbitalElements->sortBy('epoch');

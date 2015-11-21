@@ -11,6 +11,10 @@
             },
             link: function($scope, elem, attrs) {
 
+                if (!angular.isDefined($scope.chartData) || $scope.chartData.length == 0) {
+                    return;
+                }
+
                 var d3 = $window.d3;
                 var svg = d3.select(elem[0]);
                 var width = elem.width();
@@ -34,7 +38,6 @@
 
                 // draw
                 var drawLineChart = (function() {
-
                     // Setup scales
                     var xScale = d3.scale.linear()
                         .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])

@@ -83,7 +83,7 @@
                     <div>
                         <p><span>{{ $user->totalDeltaV() }}</span><small>m/s</small><br/> of DeltaV</p>
 
-                        <p>{{ $user->username }} has extended their subscription by 22 minutes.</p>
+                        <p>{{ $user->username }} has extended their subscription by {{ $user->subscriptionExtendedBy() }}.</p>
                     </div>
                     <table>
                         <tr>

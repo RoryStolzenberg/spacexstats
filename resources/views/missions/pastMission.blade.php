@@ -47,7 +47,7 @@
                         @if ($mission->outcome == 'Success')
                             <span class="outcome success"><i class="fa fa-check"></i> Success</span>
                         @else
-                            <span class="outcome failure"><i class="fa fa-cross"></i> Failure</span>
+                            <span class="outcome failure"><i class="fa fa-times"></i> Failure</span>
                         @endif
                     </li>
                 </ul>
@@ -165,7 +165,11 @@
                         </div>
                     @endif
                 @else
-                    <p class="exclaim">No public images</p>
+                    @if (Auth::isSubscriber())
+                        <p class="exclaim">No images</p>
+                    @else
+                        <p class="exclaim">No public images</p>
+                    @endif
                 @endif
             </section>
 

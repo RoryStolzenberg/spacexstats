@@ -9,6 +9,7 @@ use SpaceXStats\Console\Commands\QuestionUpdaterCommand;
 use SpaceXStats\Console\Commands\WebcastCheckCommand;
 use SpaceXStats\Console\Commands\SpaceTrackDataFetchCommand;
 use SpaceXStats\Console\Commands\DeleteOrphanedFilesCommand;
+use SpaceXStats\Console\Commands\DatabaseBackupCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -22,7 +23,8 @@ class Kernel extends ConsoleKernel
         WebcastCheckCommand::class,
         SpaceTrackDataFetchCommand::class,
         MissionCountdownNotificationCommand::class,
-        DeleteOrphanedFilesCommand::class
+        DeleteOrphanedFilesCommand::class,
+        DatabaseBackupCommand::class
     ];
 
     /**
@@ -38,5 +40,6 @@ class Kernel extends ConsoleKernel
         $schedule->command('spacetrack:fetch')->dailyAt('19:37'); // Random time after 1700 to satisfy API request rules
         $schedule->command('mission:notify')->everyMinute();
         $schedule->command('objects:deleteOrphanedFiles')->weekly();
+        $schedule->command('db:backup')->hourly();
     }
 }

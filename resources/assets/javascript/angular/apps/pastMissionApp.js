@@ -7,10 +7,10 @@
             if (typeof laravel.telemetry !== 'undefined') {
 
                 $scope.altitudeVsTime = {
-                    data: laravel.telemetry.map(function(telemetry) {
-                        if (telemetry.altitude != null) {
+                    data: laravel.telemetry.filter(function(telemetry) {
+                            return telemetry.altitude != null;
+                        }).map(function(telemetry) {
                             return { timestamp: telemetry.timestamp, altitude: telemetry.altitude };
-                        }
                     }),
                     settings: {
                         extrapolate: true,
@@ -26,10 +26,10 @@
                 };
 
                 $scope.altitudeVsDownrange = {
-                    data: laravel.telemetry.map(function(telemetry) {
-                        if (telemetry.downrange != null && telemetry.altitude != null) {
+                    data: laravel.telemetry.filter(function(telemetry) {
+                            return (telemetry.downrange != null && telemetry.altitude != null);
+                        }).map(function(telemetry) {
                             return { downrange: telemetry.downrange, altitude: telemetry.altitude };
-                        }
                     }),
                     settings: {
                         extrapolate: true,
@@ -45,13 +45,13 @@
                             return d / 1000;
                         }
                     }
-                }
+                };
 
                 $scope.velocityVsTime = {
-                    data: laravel.telemetry.map(function(telemetry) {
-                        if (telemetry.velocity != null) {
+                    data: laravel.telemetry.filter(function(telemetry) {
+                            return telemetry.velocity != null;
+                        }).map(function(telemetry) {
                             return { timestamp: telemetry.timestamp, velocity: telemetry.velocity };
-                        }
                     }),
                     settings: {
                         extrapolate: true,
@@ -64,10 +64,10 @@
                 };
 
                 $scope.downrangeVsTime = {
-                    data: laravel.telemetry.map(function(telemetry) {
-                        if (telemetry.downrange != null) {
+                    data: laravel.telemetry.filter(function(telemetry) {
+                            return telemetry.downrange != null;
+                        }).map(function(telemetry) {
                             return { timestamp: telemetry.timestamp, downrange: telemetry.downrange };
-                        }
                     }),
                     settings: {
                         extrapolate: true,
@@ -80,7 +80,7 @@
                             return d / 1000;
                         }
                     }
-                }
+                };
             }
         })();
     }]);
