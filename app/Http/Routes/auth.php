@@ -21,4 +21,6 @@ Route::group(array('prefix' => 'auth', 'namespace' => 'Auth'), function() {
 
     Route::get('/resetpassword/{userId}/{key}', 'PasswordController@getResetPassword');
     Route::post('/resetpassword/{userId}/{key}', 'PasswordController@postResetPassword');
+
+    Route::get('/isusernametaken/{username}', 'AuthController@isUsernameTaken');
 });

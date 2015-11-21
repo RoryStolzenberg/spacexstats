@@ -7,7 +7,7 @@ form {
         font-size:14px;
         color:$lightblack;
         text-transform: uppercase;
-        font-weight:600;
+        font-weight:400;
         font-family:$segoeWP;
         line-height: 2;
         margin:0 10px;
@@ -68,7 +68,7 @@ form {
             span {
                 position: relative;
                 left: 50px;
-                min-width: 200px;
+                min-width: 400px;
                 display: block;
                 line-height: 1.5;
             }
@@ -190,6 +190,20 @@ form {
             width:calc(100% - 30px);
         }
     }
+
+    // Password toggle
+    .password-toggle {
+        position:relative;
+
+        i {
+            right: 20px;
+            position: absolute;
+            height: 32px;
+            line-height: 32px;
+            cursor:pointer;
+        }
+    }
+
 }
 
 button.icon-button {
@@ -207,6 +221,10 @@ button.wide-button {
 }
 
 input[type="submit"], input[type="reset"], button, .button {
+
+    font-family:$montserrat;
+    font-size:16px;
+
     height:32px;
     min-width:150px;
     padding:0 20px;
@@ -214,9 +232,6 @@ input[type="submit"], input[type="reset"], button, .button {
     border-radius:2px;
     border:none;
     color:$offwhite;
-    font-weight:bold;
-    text-transform: uppercase;
-    letter-spacing:1px;
     cursor:pointer;
     box-shadow:0;
     margin-top:10px;

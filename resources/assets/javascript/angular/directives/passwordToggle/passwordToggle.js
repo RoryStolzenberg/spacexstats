@@ -6,9 +6,11 @@
         return {
             restrict: 'A',
             scope:{},
-            link: function(scope,elem,attrs){
-                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
-                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
                 $compile(lnk)(scope);
                 elem.wrap('<div class="password-toggle"/>').after(lnk);
             }

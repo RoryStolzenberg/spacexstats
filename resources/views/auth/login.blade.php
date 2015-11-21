@@ -13,14 +13,14 @@
             <form action="/auth/login" method="post" class="container">
                 {!! csrf_field() !!}
 
-                <ul class="gr-4@large gr-12@small gr-centered">
+                <ul class="gr-6 gr-12@medium gr-12@small gr-centered">
                     <li>
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" />
                     </li>
                     <li>
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" />
+                        <input type="password" id="password" name="password" password-toggle />
                     </li>
                     <li>
                         <input type="checkbox" id="remember" name="remember" />

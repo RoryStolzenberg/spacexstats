@@ -28,6 +28,7 @@
                         <ul>
                             <li>SMS/Email Launch Notifications</li>
                             <li>Archive Access</li>
+                            <li>GBs of content</li>
                             <li>Indepth Statistics & DataViews</li>
                             <li>Mission Analytics</li>
                             <li>Community Access</li>

@@ -62,10 +62,11 @@ $red:           #C05B40;
 }
 
 /* --------------- FONT VARIABLES ----------------- */
-$brandonGrotesque: "Brandon Grotesque", "Brandon Grotesque-webfont";
-$notoSans: "Noto Sans", sans-serif;
-$segoeWP: "Segoe WP", sans-serif;
-$sourceCodePro: "Source Code Pro";
+$brandonGrotesque: "Brandon Grotesque", "Brandon Grotesque-webfont"; // Headings, stylish text
+$notoSans: "Noto Sans", sans-serif; // General text
+$segoeWP: "Segoe WP", sans-serif; // Labels, small markings
+$sourceCodePro: "Source Code Pro"; // Code
+$montserrat:  "Montserrat", sans-serif;
 
 $font-large:18px;
 $font-medium:14px;

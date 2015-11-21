@@ -2,6 +2,7 @@
 
 namespace SpaceXStats\Http\Controllers\Auth;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
@@ -110,24 +111,12 @@ class AuthController extends Controller
         return redirect("/users/{$user->username}");
     }
 
-    /*public function login() {
-        (Request::isMethod('post')) {
-
-            $isValidForLogin = $this->user->isValidForLogin();
-
-            if ($isValidForLogin === true) {
-                return Redirect::intended("/users/".Auth::user()->username);
-
-            } elseif ($isValidForLogin === false) {
-                return Redirect::back()
-                    ->with('flashMessage', $this->flashMessages['failedLoginCredentials'])
-                    ->withInput()
-                    ->withErrors($isValidForLogin);
-
-            } elseif ($isValidForLogin === 'authenticate') {
-                return Redirect::back()
-                    ->with('flashMessage', $this->flashMessages['failedLoginNotActivated']);
-            }
+    public function isUsernameTaken($usernameChallenge) {
+        try {
+            User::byUsername($usernameChallenge);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([ 'taken' => false ]);
         }
-    }*/
+        return response()->json([ 'taken' => true ]);
+    }
 }

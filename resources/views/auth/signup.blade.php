@@ -9,23 +9,36 @@
     <div class="content-wrapper single-page">
         <h1>Join SpaceX Stats</h1>
         <main>
-            <div class="gr-6" ng-hide="hasSignedUp">
+            <div class="gr-6@xlarge gr-12@medium gr-centered" ng-hide="hasSignedUp">
                 <form name="signUpForm" novalidate>
                     {!! csrf_field() !!}
-
-                    <label for="username">Username</label>
-                    <input type="text" name="username" id="username" min="6" ng-model="user.username" required />
-
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="email" ng-model="user.email" required />
-
-                    <label for="password">Password</label>
-                    <input type="password" password-toggle ng-model="user.password" required />
-
-                    <input type="checkbox" name="eula" id="eula" value="true" ng-model="user.eula" required>
-                    <label for="eula"><span>I have read & agree to the <a target="_blank" href="/about/rulesandtermsofservice">terms of service</a></span></label>
-
-                    <input type="submit" value="@{{ signUpButtonText }}" ng-disabled="signUpForm.$invalid || isSigningUp" ng-click="signUp()">
+                    <ul>
+                        <li>
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username"
+                                   ng-model="user.username" ng-model-options="{ debounce: 250 }"
+                                   unique-username required />
+                            <p ng-show="signUpForm.username.$error.username">That username is taken.</p>
+                            <p ng-show="signUpForm.username.$pending.username">Checking...</p>
+                            <p ng-show="signUpForm.username.$valid">Good to go!</p>
+                        </li>
+                        <li>
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" ng-model="user.email" required />
+                        </li>
+                        <li>
+                            <label for="password">Password</label>
+                            <input type="password" password-toggle ng-model="user.password" ng-minlength="6"
+                                   placeholder="6 characters or more" required />
+                        </li>
+                        <li>
+                            <input type="checkbox" name="eula" id="eula" value="true" ng-model="user.eula" required>
+                            <label for="eula"><span>I have read & agree to the <a target="_blank" href="/about/rulesandtermsofservice">terms of service</a></span></label>
+                        </li>
+                        <li>
+                            <input type="submit" value="@{{ signUpButtonText }}" ng-disabled="signUpForm.$invalid || signUpForm.$pending || isSigningUp" ng-click="signUp()">
+                        </li>
+                    </ul>
                 </form>
             </div>
             <div ng-show="hasSignedUp">

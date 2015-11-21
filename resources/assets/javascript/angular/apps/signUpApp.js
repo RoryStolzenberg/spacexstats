@@ -6,19 +6,16 @@
         $scope.isSigningUp = false;
         $scope.signUpButtonText = "Sign Up";
 
-        $scope.togglePassword = function() {
-            console.log('test');
-        }
-
         $scope.signUp = function() {
             $scope.isSigningUp = true;
-            $scope.signUpButtonText = "Signing Up";
+            $scope.signUpButtonText = "Signing Up...";
 
             signUpService.go($scope.user).then(function(response) {
                 $scope.hasSignedUp = true;
                 $scope.isSigningUp = false;
             }, function() {
                 // Otherwise show error
+                $scope.isSigningUp = false;
             });
         }
     }]);

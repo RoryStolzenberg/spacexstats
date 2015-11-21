@@ -7312,7 +7312,7 @@ html, body {
   height: 100%;
   width: 100%;
   font-family: "Noto Sans", sans-serif;
-  background-color: #F5F5F5; }
+  background-color: whitesmoke; }
 
 body {
   overflow-x: hidden;
@@ -7442,7 +7442,7 @@ small {
   line-height: 2; }
 
 .gold {
-  color: #CCAC55; }
+  color: #ccac55; }
 
 .code {
   font-family: "Source Code Pro"; }
@@ -7478,7 +7478,7 @@ table.data-table th {
   padding: 10px;
   font-weight: bold;
   background-color: #33495E;
-  color: #F5F5F5; }
+  color: whitesmoke; }
 
 blockquote {
   background-color: #8B939B; }
@@ -7614,7 +7614,7 @@ nav.in-page {
               transition: width 0.5s ease, background-color 0.5s ease; }
     nav.in-page li.active:after {
       width: 100%;
-      background: #CCAC55; }
+      background: #ccac55; }
 
 /* Sticky Bar Nav */
 nav.sticky-bar {
@@ -7645,7 +7645,7 @@ nav.sticky-bar {
   .actions a {
     padding: 0 5px; }
     .actions a:hover {
-      color: #CCAC55; }
+      color: #ccac55; }
 
 form ul li {
   padding: 10px; }
@@ -7654,7 +7654,7 @@ form label, form .label {
   font-size: 14px;
   color: #21272B;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: 400;
   font-family: "Segoe WP", sans-serif;
   line-height: 2;
   margin: 0 10px; }
@@ -7667,7 +7667,7 @@ form input, form textarea, form button, form select {
   form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched, form button.invalid, form button.ng-invalid.ng-touched, form select.invalid, form select.ng-invalid.ng-touched {
     border: 1px solid #C05B40; }
   form input:focus, form textarea:focus, form button:focus, form select:focus {
-    border: 1px solid #CCAC55;
+    border: 1px solid #ccac55;
     box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
 
 form input, form textarea {
@@ -7705,7 +7705,7 @@ form input[type="checkbox"] {
     form input[type="checkbox"] + label span {
       position: relative;
       left: 50px;
-      min-width: 200px;
+      min-width: 400px;
       display: block;
       line-height: 1.5; }
     form input[type="checkbox"] + label:after {
@@ -7792,6 +7792,15 @@ form .prepended-input {
     margin: 0;
     width: calc(100% - 30px); }
 
+form .password-toggle {
+  position: relative; }
+  form .password-toggle i {
+    right: 20px;
+    position: absolute;
+    height: 32px;
+    line-height: 32px;
+    cursor: pointer; }
+
 button.icon-button {
   width: 100px;
   height: 100px; }
@@ -7803,16 +7812,15 @@ button.wide-button {
   display: block; }
 
 input[type="submit"], input[type="reset"], button, .button {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
   height: 32px;
   min-width: 150px;
   padding: 0 20px;
   width: auto;
   border-radius: 2px;
   border: none;
-  color: #F5F5F5;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  color: whitesmoke;
   cursor: pointer;
   box-shadow: 0;
   margin-top: 10px;
@@ -8158,18 +8166,33 @@ section.comments {
   text-align: center;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   color: #FFF;
-  font-size: 18px;
-  vertical-align: top; }
+  font-size: 0; }
   .subscribe .plan {
-    background-color: #3569A4;
     display: inline-block;
-    border-radius: 8px; }
+    border-radius: 3px;
+    vertical-align: middle;
+    font-size: 18px; }
     .subscribe .plan.free {
-      width: 240px;
-      height: 400px; }
+      background-color: #33495E;
+      width: 250px;
+      height: 416.66667px;
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+      box-shadow: -10px 0 10px -10px #21272B inset; }
     .subscribe .plan.subscription {
       width: 300px;
-      height: 500px; }
+      height: 500px;
+      /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#51a4f7+0,3569a4+100 */
+      background: #3569A4;
+      /* Old browsers */
+      /* FF3.6-15 */
+      background: -webkit-linear-gradient(-45deg, #51a4f7 0%, #3569a4 100%);
+      /* Chrome10-25,Safari5.1-6 */
+      background: -webkit-linear-gradient(315deg, #51a4f7 0%, #3569a4 100%);
+      background: linear-gradient(135deg, #51a4f7 0%, #3569a4 100%);
+      /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#51a4f7', endColorstr='#3569a4',GradientType=1 );
+      /* IE6-9 fallback on horizontal gradient */ }
 
 .hero {
   height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
@@ -8332,9 +8355,9 @@ body.future-mission .highlights {
   color: #FFF;
   padding: 3px 5px; }
   .outcome.complete, .status.complete {
-    background-color: #CCAC55; }
+    background-color: #ccac55; }
   .outcome.in-progress, .status.in-progress {
-    background-color: #CCAC55; }
+    background-color: #ccac55; }
   .outcome.upcoming, .status.upcoming {
     background-color: #8B939B; }
   .outcome.success, .status.success {
@@ -8350,7 +8373,7 @@ body.future-mission .highlights {
   .display-date-time .launch {
     display: inline-block;
     text-align: right;
-    background-color: #CCAC55;
+    background-color: #ccac55;
     color: #FFF;
     height: 40px;
     line-height: 40px;
@@ -8386,7 +8409,7 @@ body.future-mission .highlights {
     .display-date-time .timezone:hover {
       -webkit-transition: background-color ease-in-out 0.5s;
               transition: background-color ease-in-out 0.5s;
-      background-color: #CCAC55; }
+      background-color: #ccac55; }
 
 #countdown > * {
   top: -7.5%; }
@@ -8412,7 +8435,7 @@ img#object {
     display: block;
     padding: 5px; }
   .actions.container .is-favorited {
-    color: #CCAC55; }
+    color: #ccac55; }
 
 .video-js {
   width: auto !important;
@@ -8518,7 +8541,7 @@ button.canned-response {
     display: inline-block;
     font-size: 12px; }
   .tagger-container .wrapper.active {
-    border: 1px solid #CCAC55;
+    border: 1px solid #ccac55;
     box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
 
 .tagger-container input {
@@ -8623,7 +8646,7 @@ button.canned-response {
   .object-card .thumb-holder {
     width: 100px;
     height: 100px;
-    background-color: #F5F5F5; }
+    background-color: whitesmoke; }
     .object-card .thumb-holder img.thumb {
       max-width: 100px;
       max-height: 100px;

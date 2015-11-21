@@ -1752,7 +1752,7 @@
                 messageType: 'update'
             },
             /*
-             * Send a launch update (message) via POST off to the server to be broadcast
+             * Send a launch update (message) via POST off to the server to be broadcast to everyone else
              */
             message: function(form) {
 
@@ -1892,19 +1892,16 @@
         $scope.isSigningUp = false;
         $scope.signUpButtonText = "Sign Up";
 
-        $scope.togglePassword = function() {
-            console.log('test');
-        }
-
         $scope.signUp = function() {
             $scope.isSigningUp = true;
-            $scope.signUpButtonText = "Signing Up";
+            $scope.signUpButtonText = "Signing Up...";
 
             signUpService.go($scope.user).then(function(response) {
                 $scope.hasSignedUp = true;
                 $scope.isSigningUp = false;
             }, function() {
                 // Otherwise show error
+                $scope.isSigningUp = false;
             });
         }
     }]);
@@ -1943,73 +1940,73 @@
 })();
 
 
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
+    app.directive('countdown', ['$interval', function($interval) {
         return {
             restrict: 'E',
             scope: {
-                size: '@',
-                mission: '='
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=',
+                type: '@',
+                callback: '&?'
             },
-            link: function($scope) {
+            link: function($scope, elem, attrs) {
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
+
+                var countdownProcessor = function() {
+
+                    var launchUnixSeconds = $scope.launchUnixSeconds;
+                    var currentUnixSeconds = Math.floor(Date.now() / 1000);
+
+                    if (launchUnixSeconds >= currentUnixSeconds) {
+                        $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                        var secondsBetween = $scope.secondsAwayFromLaunch;
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    } else {
+                    }
+
+                    if (attrs.callback) {
+                        $scope.callback();
+                    }
+                };
+
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
             },
-            templateUrl: '/js/templates/missionCard.html'
+            templateUrl: '/js/templates/countdown.html'
         }
-    });
+    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2141,71 +2138,71 @@
 })();
 
 
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
 (function() {
     var app = angular.module('app');
 
-    app.directive('countdown', ['$interval', function($interval) {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
             scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=',
-                type: '@',
-                callback: '&?'
+                size: '@',
+                mission: '='
             },
-            link: function($scope, elem, attrs) {
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
 
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
 
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
                 });
 
-                var countdownProcessor = function() {
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
 
-                    var launchUnixSeconds = $scope.launchUnixSeconds;
-                    var currentUnixSeconds = Math.floor(Date.now() / 1000);
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
 
-                    if (launchUnixSeconds >= currentUnixSeconds) {
-                        $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                        var secondsBetween = $scope.secondsAwayFromLaunch;
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    } else {
-                    }
-
-                    if (attrs.callback) {
-                        $scope.callback();
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
                 }
-            },
-            templateUrl: '/js/templates/countdown.html'
+            }
         }
     }]);
 })();
@@ -2514,6 +2511,119 @@
     }]);
 })();
 (function() {
+    var app = angular.module('app');
+
+    app.directive('chart', ["$window", function($window) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                chartData: '=data',
+                settings: "="
+            },
+            link: function($scope, elem, attrs) {
+
+                var d3 = $window.d3;
+                var svg = d3.select(elem[0]);
+                var width = elem.width();
+                var height = elem.height();
+
+                var settings = $scope.settings;
+
+                // check padding and set default
+                if (typeof settings.padding === 'undefined') {
+                    settings.padding = 50;
+                }
+
+                // extrapolate data
+                if (settings.extrapolate === true) {
+                    var originDatapoint = {};
+                    originDatapoint[settings.xAxisKey] = 0;
+                    originDatapoint[settings.yAxisKey] = 0;
+
+                    $scope.chartData.unshift(originDatapoint);
+                }
+
+                // draw
+                var drawLineChart = (function() {
+
+                    // Setup scales
+                    var xScale = d3.scale.linear()
+                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
+                        .range([settings.padding, width - settings.padding]);
+
+                    var yScale = d3.scale.linear()
+                        .domain([d3.max($scope.chartData, function(d) {
+                            return d[settings.yAxisKey];
+                        }), 0])
+                        .range([settings.padding, height - settings.padding]);
+
+                    // Generators
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
+                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
+                    });
+                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
+                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
+                    });
+
+                    // Line function
+                    var lineFunction = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d[settings.xAxisKey]);
+                        })
+                        .y(function(d) {
+                            return yScale(d[settings.yAxisKey]);
+                        })
+                        .interpolate("basis");
+
+                    // Element manipulation
+                    svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                        .call(xAxisGenerator);
+
+                    svg.append("svg:g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(" + settings.padding + ",0)")
+                        .attr("stroke-width", 2)
+                        .call(yAxisGenerator);
+
+                    svg.append("svg:path")
+                        .attr({
+                            d: lineFunction($scope.chartData),
+                            "stroke-width": 2,
+                            "fill": "none",
+                            "class": "path"
+                        });
+
+                    svg.append("text")
+                        .attr("class", "chart-title")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", settings.padding / 2)
+                        .text(settings.chartTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis x-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", height - (settings.padding / 2))
+                        .text(settings.xAxisTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis y-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("transform", "rotate(-90)")
+                        .attr("x", - (height / 2))
+                        .attr("y", settings.padding / 2)
+                        .text(settings.yAxisTitle);
+                })();
+            },
+            templateUrl: '/js/templates/chart.html'
+        }
+    }]);
+})();
+(function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
 	app.directive('search', ['searchService', 'conversionService', "$http", "$filter", function(searchService, conversionService, $http, $filter) {
@@ -2755,116 +2865,39 @@
         return self;
     });
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('chart', ["$window", function($window) {
+    app.directive('passwordToggle',function($compile){
         return {
-            replace: true,
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionProfile', [function() {
+        return {
             restrict: 'E',
             scope: {
-                chartData: '=data',
-                settings: "="
+                mission: '=ngModel'
             },
-            link: function($scope, elem, attrs) {
+            link: function($scope, element, attributes) {
 
-                var d3 = $window.d3;
-                var svg = d3.select(elem[0]);
-                var width = elem.width();
-                var height = elem.height();
-
-                var settings = $scope.settings;
-
-                // check padding and set default
-                if (typeof settings.padding === 'undefined') {
-                    settings.padding = 50;
-                }
-
-                // extrapolate data
-                if (settings.extrapolate === true) {
-                    var originDatapoint = {};
-                    originDatapoint[settings.xAxisKey] = 0;
-                    originDatapoint[settings.yAxisKey] = 0;
-
-                    $scope.chartData.unshift(originDatapoint);
-                }
-
-                // draw
-                var drawLineChart = (function() {
-
-                    // Setup scales
-                    var xScale = d3.scale.linear()
-                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
-                        .range([settings.padding, width - settings.padding]);
-
-                    var yScale = d3.scale.linear()
-                        .domain([d3.max($scope.chartData, function(d) {
-                            return d[settings.yAxisKey];
-                        }), 0])
-                        .range([settings.padding, height - settings.padding]);
-
-                    // Generators
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
-                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
-                    });
-                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
-                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
-                    });
-
-                    // Line function
-                    var lineFunction = d3.svg.line()
-                        .x(function(d) {
-                            return xScale(d[settings.xAxisKey]);
-                        })
-                        .y(function(d) {
-                            return yScale(d[settings.yAxisKey]);
-                        })
-                        .interpolate("basis");
-
-                    // Element manipulation
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                        .call(xAxisGenerator);
-
-                    svg.append("svg:g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + settings.padding + ",0)")
-                        .attr("stroke-width", 2)
-                        .call(yAxisGenerator);
-
-                    svg.append("svg:path")
-                        .attr({
-                            d: lineFunction($scope.chartData),
-                            "stroke-width": 2,
-                            "fill": "none",
-                            "class": "path"
-                        });
-
-                    svg.append("text")
-                        .attr("class", "chart-title")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", settings.padding / 2)
-                        .text(settings.chartTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis x-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", height - (settings.padding / 2))
-                        .text(settings.xAxisTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis y-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("transform", "rotate(-90)")
-                        .attr("x", - (height / 2))
-                        .attr("y", settings.padding / 2)
-                        .text(settings.yAxisTitle);
-                })();
             },
-            templateUrl: '/js/templates/chart.html'
+            templateUrl: '/js/templates/missionProfile.html'
         }
     }]);
 })();
@@ -2949,40 +2982,6 @@
     });
 })();
 
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope,elem,attrs){
-                scope.tgl = function(){ elem.attr('type',(elem.attr('type')==='text'?'password':'text')); }
-                var lnk = angular.element('<a data-ng-click="tgl()">Toggle</a>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionProfile', [function() {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-            },
-            templateUrl: '/js/templates/missionProfile.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -3015,6 +3014,24 @@
         }
     }]);
 })();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
+        }
+    }]);
+})();
+
 (function() {
     var app = angular.module('app');
 

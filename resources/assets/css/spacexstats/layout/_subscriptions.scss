@@ -5,22 +5,33 @@ $planWidth:300px;
     text-align:center;
     font-family: $brandonGrotesque;
     color:$white;
-    font-size:18px;
-    vertical-align: top;
+    font-size:0;
 
     .plan {
-        background-color:$blue;
         display:inline-block;
-        border-radius:$border-radius-large;
+        border-radius:$border-radius-small;
+        vertical-align: middle;
+        font-size:18px;
 
 		&.free {
-			width:($planWidth / 5) * 4;
-			height:($planHeight / 5) * 4;
+            background-color:$october;
+			width:($planWidth / 6) * 5;
+			height:($planHeight / 6) * 5;
+            border-bottom-right-radius:0;
+            border-top-right-radius:0;
+            box-shadow:-10px 0 10px -10px $lightblack inset
 		}
 
 		&.subscription {
 			width:$planWidth;
 			height:$planHeight;
+
+            /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#51a4f7+0,3569a4+100 */
+            background: $blue; /* Old browsers */
+            background: -moz-linear-gradient(-45deg,  #51a4f7 0%, #3569a4 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(-45deg,  #51a4f7 0%,#3569a4 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(135deg,  #51a4f7 0%,#3569a4 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#51a4f7', endColorstr='#3569a4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
 		}
 
 	}

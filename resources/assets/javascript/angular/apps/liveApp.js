@@ -102,7 +102,7 @@
                 messageType: 'update'
             },
             /*
-             * Send a launch update (message) via POST off to the server to be broadcast
+             * Send a launch update (message) via POST off to the server to be broadcast to everyone else
              */
             message: function(form) {
 

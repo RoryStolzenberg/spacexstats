@@ -141,4 +141,9 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function setPasswordAttribute($value) {
         $this->attributes['password'] = Hash::make($value);
     }
+
+    // Scope
+    public function scopeByUsername($q, $username) {
+        return $q->where('username', $username)->firstOrFail();
+    }
 }
