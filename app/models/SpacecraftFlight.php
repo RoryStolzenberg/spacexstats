@@ -44,4 +44,14 @@ class SpacecraftFlight extends Model {
     public function astronautFlights() {
         return $this->hasMany('SpaceXStats\Models\AstronautFlight');
     }
+
+    // Attribute Accessors
+    public function getFlightNumberForSpacecraftAttribute() {
+        $self = $this;
+        return SpacecraftFlight::whereHas('Spacecraft', function($q) use ($self) {
+            $q->find($self->spacecraft->id);
+        })->whereHas('Mission', function($q) use ($self) {
+            $q->before($self->mission->launch_order_id);
+        })->count();
+    }
 }

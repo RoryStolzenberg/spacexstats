@@ -1,6 +1,6 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
+    "name": "LukeNZ/SpaceXStats",
+    "description": "SpaceXStats",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
@@ -39,7 +39,10 @@
         ],
         "psr-4": {
             "SpaceXStats\\": "app/"
-        }
+        },
+        "files": [
+          "app/Library/helpers.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [

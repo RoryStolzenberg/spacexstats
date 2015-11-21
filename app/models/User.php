@@ -127,10 +127,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function subscriptionExtendedBy($pretty = false) {
         $secondsExtended = (new DeltaVCalculator())->toSeconds($this->totalDeltaV());
 
-        if ($pretty) {
-            return $secondsExtended;
-        }
-        return CarbonInterval::seconds($secondsExtended);
+        return $pretty ? $secondsExtended : CarbonInterval::seconds($secondsExtended);
     }
 
     public function setMobileDetails($number) {

@@ -83,7 +83,7 @@
 
                     @if(count($mission->spacecraftFlight))
                         <h3>{{ $mission->spacecraftFlight->spacecraft->name }}</h3>
-                        @include('templates.cards.spacecraftCard')
+                        @include('templates.cards.spacecraftCard', ['spacecraft' => $mission->spacecraftFlight])
                     @endif
                     <h3>Satellites</h3>
                     <h3>Upper Stage</h3>

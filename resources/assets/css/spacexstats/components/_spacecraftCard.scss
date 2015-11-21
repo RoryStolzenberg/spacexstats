@@ -1,0 +1,51 @@
+.spacecraft-card {
+    width:100%;
+
+    > div {
+        width:100%;
+        padding-top:50%; // 2:1
+        position:relative;
+    }
+
+    @mixin spacecraft-card-statistic() {
+        font-weight:100;
+        font-size:80px;
+        color:$white;
+    }
+
+    @mixin spacecraft-card-stat-description() {
+        font-size:50px;
+        text-transform: uppercase;
+        color:$bordergrey;
+    }
+
+    .content {
+        background-image:url('/images/cards/dragon.jpg');
+        background-size:cover;
+        position:absolute;
+        top:0;
+        right:0;
+        left:0;
+        bottom:0;
+        text-align:center;
+        font-family:$brandonGrotesque;
+    }
+
+    p {
+        padding:0;
+    }
+
+    .time-in-space {
+        position:relative;
+        top:10%;
+
+        p:first-child {
+            @include spacecraft-card-statistic();
+        }
+
+        p:last-child {
+            @include spacecraft-card-stat-description();
+        }
+    }
+}
+

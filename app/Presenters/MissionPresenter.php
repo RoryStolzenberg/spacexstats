@@ -25,14 +25,6 @@ class MissionPresenter {
         }
     }
 
-    public function launchOfYear() {
-        return $this->ordinal($this->entity->launch_of_year);
-    }
-
-    public function flightGraph() {
-
-    }
-
 	public function article() {
 		if (empty($this->entity->article)) {
 			return '<section id="article" class="scrollto">
@@ -48,21 +40,4 @@ class MissionPresenter {
 					</section>';
 		}
 	}
-
-    public function specificVehicleCount() {
-        return $this->ordinal($this->entity->specificVehicleCount);
-    }
-
-    public function genericVehicleCount() {
-        return $this->ordinal($this->entity->genericVehicleCount);
-    }
-
-    private function ordinal($number) {
-        $ends = array('th','st','nd','rd','th','th','th','th','th','th');
-        if (($number %100) >= 11 && ($number%100) <= 13) {
-            return $number. 'th';
-        } else {
-            return $number. $ends[$number % 10];
-        }
-    }
 }

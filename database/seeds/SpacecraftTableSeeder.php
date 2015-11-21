@@ -10,6 +10,7 @@ class SpacecraftTableSeeder extends Seeder {
             'type' => 'Dragon 1'
         ]);
 
+        // COTS2+
         Spacecraft::create([
             'name' => 'Dragon C2',
             'type' => 'Dragon 1'

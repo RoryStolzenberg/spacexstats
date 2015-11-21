@@ -193,7 +193,7 @@ class Mission extends Model {
         $year = $this->isLaunchPrecise() ? Carbon::parse($this->launch_date_time)->year : preg_match('/\b\d{4}\b/', $this->launch_date_time, $matches)[0];
 
         // Now find all other missions with that year
-        return Mission::previous($this->launch_order_id)
+        return Mission::before($this->launch_order_id)
             ->where('launch_approximate', 'LIKE', $year)
             ->orWhere(DB::raw('YEAR(launch_exact)'), $year)
             ->orderBy('launch_order_id')->count();
@@ -204,7 +204,7 @@ class Mission extends Model {
 
             try {
                 $lastFailedMissionLaunchOrderId = Mission::where('outcome', MissionOutcome::Failure)
-                    ->previous($this->launch_order_id)
+                    ->before($this->launch_order_id)
                     ->firstOrFail()->launch_order_id;
 
             } catch (ModelNotFoundException $e) {
@@ -218,7 +218,7 @@ class Mission extends Model {
 
     public function getTurnaroundTimeAttribute() {
         if ($this->status == MissionStatus::Complete) {
-            $previousMission = Mission::previous()->first();
+            $previousMission = Mission::before()->first();
 
             return Carbon::parse($previousMission->launch_date_time)->diffInSeconds(Carbon::parse($this->launch_date_time));
         }
@@ -322,7 +322,7 @@ class Mission extends Model {
      * @param $currentLaunchOrderId
      * @return mixed
      */
-    public function scopeNext($query, $currentLaunchOrderId) {
+    public function scopeAfter($query, $currentLaunchOrderId) {
 		return $query->where('launch_order_id', '>', $currentLaunchOrderId)
 						->orderBy('launch_order_id');
 	}
@@ -333,7 +333,7 @@ class Mission extends Model {
      * @param $currentLaunchOrderId
      * @return mixed
      */
-    public function scopePrevious($query, $currentLaunchOrderId) {
+    public function scopeBefore($query, $currentLaunchOrderId) {
 		return $query->where('launch_order_id', '<', $currentLaunchOrderId)
 						->orderBy('launch_order_id', 'DESC');
 	}

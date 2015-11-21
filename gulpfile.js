@@ -75,7 +75,7 @@ gulp.task('styles', function() {
 gulp.task('images', function() {
     var imagemin = require('gulp-imagemin');
 
-    gulp.src('resources/assets/javascript/images/**/*.{jpg,jpeg,png}')
+    gulp.src('resources/assets/images/**/*.{jpg,jpeg,png}')
         .pipe(imagemin())
         .pipe(gulp.dest('public/images'));
 });
