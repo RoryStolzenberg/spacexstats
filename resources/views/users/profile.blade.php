@@ -81,8 +81,9 @@
 
                 <div class="gr-4">
                     <div>
-                        <span>2154</span><small>m/s</small><br/>
-                        <span>of DeltaV</span>
+                        <p><span>{{ $user->totalDeltaV() }}</span><small>m/s</small><br/> of DeltaV</p>
+
+                        <p>{{ $user->username }} has extended their subscription by 22 minutes.</p>
                     </div>
                     <table>
                         <tr>

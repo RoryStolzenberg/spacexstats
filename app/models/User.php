@@ -118,6 +118,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->launch_controller_flag == true;
     }
 
+    public function totalDeltaV() {
+        return $this->awards()->sum('value');
+    }
+
     public function setMobileDetails($number) {
         $this->mobile = $number->phone_number;
         $this->mobile_national_format = $number->national_format;

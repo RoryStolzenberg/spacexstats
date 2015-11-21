@@ -64,10 +64,10 @@
         </main>
     </div>
     <div class="content-wrapper single-page background transparent">
-        <h1>Text & Email Notifications</h1>
+        <h1>We Have Liftoff</h1>
     </div>
     <div class="content-wrapper single-page background transparent">
-        <h1>Gigabytes Of Archived Content</h1>
+        <h1>Text & Email Notifications</h1>
     </div>
     <div class="content-wrapper single-page background">
         <h1>Heroic Search</h1>

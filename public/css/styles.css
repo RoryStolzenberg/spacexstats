@@ -8580,7 +8580,8 @@ button.canned-response {
 
 .dropdown {
   margin: 0 10px;
-  position: relative; }
+  position: relative;
+  font-family: "Montserrat", sans-serif; }
   .dropdown > .default {
     border: 1px solid #CCC;
     height: 40px;

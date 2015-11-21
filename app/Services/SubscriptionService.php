@@ -14,20 +14,33 @@ class SubscriptionService
 {
     protected $currentPlan = 'missioncontrol';
 
+    /**
+     * Creates a subscription for the currently Authenticated user, provided they are first
+     * at least a member of the site.
+     *
+     * Once a subscription is created, it also creates a payment model for that user and upgrades
+     * their role to 'Susbcriber'.
+     *
+     * @param string $token    The user subscription token from Stripe.
+     */
     public function createSubscription($token) {
 
-        // Subscribe the user
-        Auth::user()->subscription($this->currentPlan)->create($token);
+        // It makes no sense to try and give a subscription to someone who
+        // is not a member
+        if (Auth::isMember()) {
+            // Subscribe the user
+            Auth::user()->subscription($this->currentPlan)->create($token);
 
-        // Create a payment representation
-        Payment::create([
-            'user_id' => Auth::id(),
-            'price' => Plan::retrieve($this->currentPlan)->amount
-        ]);
+            // Create a payment representation
+            Payment::create([
+                'user_id' => Auth::id(),
+                'price' => Plan::retrieve($this->currentPlan)->amount
+            ]);
 
-        // Set the user to the subscriber role
-        Auth::user()->role_id = UserRole::Subscriber;
-        Auth::user()->save();
+            // Set the user to the subscriber role
+            Auth::user()->role_id = UserRole::Subscriber;
+            Auth::user()->save();
+        }
     }
 
     /**
@@ -54,7 +67,7 @@ class SubscriptionService
             $newEndDate = $endDate->addSeconds($seconds);
 
             // Extend trial by to that date
-            $user->subscription()->noProrate()->trialFor($newEndDate)->swap();
+            $user->subscription($this->currentPlan)->noProrate()->trialFor($newEndDate)->swap();
         }
     }
 
