@@ -12,18 +12,16 @@
             </div>
 
             <div class="reuse">
-                {{ $spacecraft->flight_number_for_spacecraft }}
+                {{ ordinal($spacecraftFlight->flight_number_for_spacecraft) }}
             </div>
 
-            @if (is_null($spacecraft->iss_berth))
+            @if ($spacecraftFlight->didVisitISS())
             <img src="iss" />
             @endif
 
             <div class="return-method">
 
             </div>
-
-
         </div>
     </div>
 </div>

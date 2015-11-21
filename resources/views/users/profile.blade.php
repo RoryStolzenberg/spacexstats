@@ -32,45 +32,46 @@
                     @endif
                 </ul>
             </nav>
+            @if (Auth::isAccessingSelf($user))
+                <section class="highlights">
+                    <ul>
+                        <li>SMS messages</li>
+                        <li>Launch changes</li>
+                        <li>Upcoming launches</li>
+                        <li>News Sumamries</li>
+                        <li>Favorite Mission</li>
+                        <li>Favorite Patch</li>
+                    </ul>
+                </section>
+            @endif
 
-            <section class="highlights">
-                <ul>
-                    <li>SMS messages</li>
-                    <li>Launch changes</li>
-                    <li>Upcoming launches</li>
-                    <li>News Sumamries</li>
-                    <li>Favorite Mission</li>
-                    <li>Favorite Patch</li>
-                </ul>
-            </section>
-
-            <section id="overview" class="overview container">
+            <section id="overview" class="overview scrollto container">
                 <div class="gr-8">
-                    <table>
+                    <table class="about-this-user">
                         <tr>
-                            <td class="lowvisibility color">Bio</td>
+                            <td>Bio</td>
                             <td><div class="backing">{{ $user->profile->summary or 'Nothing here' }}</div></td>
                         </tr>
                         @if (!is_null($user->profile->twitter_account))
                         <tr>
-                            <td class="lowvisibility color"><i class="fa fa-twitter"></i> Twitter</td>
-                            <td>{{ '@' . $user->profile->twitter_account }}</td>
+                            <td><i class="fa fa-twitter"></i> Twitter</td>
+                            <td><a href="https://twitter.com/{{ $user->profile->twitter_account }}">{{ '@' . $user->profile->twitter_account }}</a></td>
                         </tr>
                         @endif
                         @if (!is_null($user->profile->reddit_account))
                         <tr>
-                            <td class="lowvisibility color"><i class="fa fa-reddit"></i> Reddit</td>
-                            <td>{{ '/u/' . $user->profile->reddit_account }}</td>
+                            <td><i class="fa fa-reddit"></i> Reddit</td>
+                            <td><a href="http://reddit.com/u/{{ $user->profile->reddit_account }}">{{ '/u/' . $user->profile->reddit_account }}</a></td>
                         </tr>
                         @endif
                         <tr>
-                            <td class="lowvisibility color">Member Since</td>
+                            <td>Member Since</td>
                             <td>
                                 {{ $user->created_at->toFormattedDateString() }}
                             </td>
                         </tr>
                         <tr>
-                            <td class="lowvisibility color">Member Details</td>
+                            <td>Member Details</td>
                             <td>
                                 {{ $user->present()->role_id() }}
                             </td>
@@ -85,26 +86,26 @@
 
                         <p>{{ $user->username }} has extended their subscription by {{ $user->subscriptionExtendedBy() }}.</p>
                     </div>
-                    <table>
+                    <table class="about-this-user">
                         <tr>
-                            <td class="lowvisibility color">Uploads</td>
+                            <td>Uploads</td>
                             <td>{{ $user->objects()->inMissionControl()->count() }}</td>
                         </tr>
                         <tr>
-                            <td class="lowvisibility color">Favorites</td>
+                            <td>Favorites</td>
                             <td>{{ $user->favorites->count() }}</td>
                         </tr>
                         <tr>
-                            <td class="lowvisibility color">Comments</td>
+                            <td>Comments</td>
                             <td>{{ $user->comments->count() }}</td>
                         </tr>
                     </table>
                 </div>
 
                 <div class="gr-12">
-                    <table>
+                    <table class="about-this-user">
                         <tr>
-                            <td class="lowvisibility color">Favorite Mission</td>
+                            <td>Favorite Mission</td>
                             <td>
                                 @if ($favoriteMission)
                                     @include('templates.cards.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
@@ -115,13 +116,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="lowvisibility color">Favorite Mission Patch</td>
+                            <td>Favorite Mission Patch</td>
                             <td>
                                 {{ $user->profile->favorite_mission_patch or 'No Favorite Mission Patch. Add one!' }}
                             </td>
                         </tr>
                         <tr>
-                            <td class="lowvisibility color">Favorite Elon Musk Quote</td>
+                            <td>Favorite Elon Musk Quote</td>
                             <td>
                                 @if ($user->profile->favorite_quote)
                                     <blockquote>{{ $user->profile->favorite_quote }}</blockquote>
@@ -137,7 +138,7 @@
             </section>
 
             <h2><a href="/users/{{ $user->username }}/favorites">Favorites</a></h2>
-            <section id="favorites" class="favorites container">
+            <section id="favorites" class="favorites scrollto container">
                     @foreach ($favorites as $favorite)
                         @include('templates.cards.objectCard', ['bias' => 'favorite', 'object' => $favorite->object])
                     @endforeach
@@ -148,7 +149,7 @@
 
             @if (Auth::isAccessingSelf($user))
                 <h2>Notes</h2>
-                <section id="notes" class="notes">
+                <section id="notes" class="scrollto notes">
                     @foreach ($notes as $note)
                         @include('templates.cards.objectCard', ['bias' => 'note', 'object' => $note->object])
                     @endforeach
@@ -159,7 +160,7 @@
             @endif
 
             <h2>Uploads</h2>
-            <section id="uploads" class="uploads">
+            <section id="uploads" class="scrollto uploads">
                 @foreach ($objects as $object)
                     @include('templates.cards.objectCard', ['bias' => 'object', 'object' => $object])
                 @endforeach
@@ -173,7 +174,7 @@
             </section>
 
             <h2>Comments</h2>
-            <section id="comments" class="">
+            <section id="comments" class="scrollto">
                 @foreach ($comments as $comment)
                     @include('templates.cards.objectCard', ['bias' => 'comment', 'object' => $comment->object])
                 @endforeach

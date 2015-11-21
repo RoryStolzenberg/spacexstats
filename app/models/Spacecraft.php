@@ -27,7 +27,7 @@ class Spacecraft extends Model {
 
     // Relations
     public function spacecraftFlights() {
-        return $this->hasOneOrMany('SpaceXStats\Models\SpacecraftFlight');
+        return $this->hasMany('SpaceXStats\Models\SpacecraftFlight');
     }
 
 	public function missions() {

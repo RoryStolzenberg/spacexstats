@@ -7,42 +7,38 @@ use SpaceXStats\Library\Enums\UserRole;
 class ExtendedGuard extends \Illuminate\Auth\Guard {
 
     public function isAuthenticated() {
-        if (is_null($this->user())) {
-            return false;
-        } else {
-            return ($this->user()->role_id >= UserRole::Unauthenticated);
-        }
+        $this->nullCheck();
+        return ($this->user()->role_id == UserRole::Unauthenticated);
     }
 
     public function isMember() {
-        if (is_null($this->user())) {
-            return false;
-        } else {
-            return ($this->user()->role_id >= UserRole::Member);
-        }
+        $this->nullCheck();
+        return ($this->user()->role_id >= UserRole::Member);
     }
 
     public function isSubscriber() {
-        if (is_null($this->user())) {
-            return false;
-        } else {
-            return ($this->user()->role_id >= UserRole::Subscriber);
-        }
+        $this->nullCheck();
+        return ($this->user()->role_id >= UserRole::Subscriber);
+    }
+
+    public function isCharterSubscriber() {
+        $this->nullCheck();
+        return ($this->user()->role_id >= UserRole::CharterSubscriber);
     }
 
     public function isAdmin() {
-        if (is_null($this->user())) {
-            return false;
-        } else {
-            return ($this->user()->role_id >= UserRole::Administrator);
-        }
+        $this->nullCheck();
+        return ($this->user()->role_id >= UserRole::Administrator);
     }
 
     public function isAccessingSelf($user) {
+        $this->nullCheck();
+        return (Auth::id() == $user->user_id);
+    }
+
+    private function nullCheck() {
         if (is_null($this->user())) {
             return false;
-        } else {
-            return (Auth::id() == $user->user_id);
         }
     }
 }

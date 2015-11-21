@@ -20,8 +20,6 @@
     }
 
     .content {
-        background-image:url('/images/cards/dragon.jpg');
-        background-size:cover;
         position:absolute;
         top:0;
         right:0;
@@ -29,6 +27,21 @@
         bottom:0;
         text-align:center;
         font-family:$brandonGrotesque;
+        overflow:hidden;
+
+        &:before {
+            // Place the background image here instead so we can blur it
+            background-image:url('/images/cards/dragon.jpg');
+            background-size:cover;
+            filter:blur(2px);
+            content:"";
+            width:102%;
+            height:102%;
+            display:block;
+            position:absolute;
+            top: -1%;
+            left: -1%;
+        }
     }
 
     p {

@@ -10,17 +10,17 @@
     <div class="content-wrapper" ng-controller="editUserController" ng-strict-di>
         <h1>Editing Your Profile</h1>
         <main>
-            <nav class="sticky-bar">
+            <nav class="in-page sticky-bar">
                 <ul class="container">
-                    <li class="gr-2"><a href="/users/{{ $user->username }}">Profile</a></li>
-                    <li class="gr-2">Account</li>
-                    <li class="gr-2">Email Notifications</li>
-                    <li class="gr-2">Text/SMS Notifications</li>
-                    <li class="gr-2">Reddit Notifications</li>
+                    <li class="gr-2"><a href="/users/{{ $user->username }}">Your Profile</a></li>
+                    <li class="gr-2"><a href="#account">Account</a></li>
+                    <li class="gr-2"><a href="#email-notifications">Email Notifications</a></li>
+                    <li class="gr-2"><a href="#sms-notifications">Text/SMS Notifications</a></li>
+                    <li class="gr-2"><a href="#reddit-notifications">Reddit Notifications</a></li>
                 </ul>
             </nav>
             <h2>Profile</h2>
-            <section class="profile">
+            <section class="scrollto" id="profile">
                 <form>
                     <div class="gr-6">
                         <h3>You</h3>
@@ -62,13 +62,22 @@
             </section>
 
             <h2>Account</h2>
-            <section class="account">
+            <section id="account" class="scrollto">
+                @if(!Auth::isSubscriber())
+                    <p>You are not a Mission Control subscriber. Become one today!</p>
+                @else
+                    <h3>Current Subscription</h3>
+                    @if (Auth::isCharterSubscriber())
+                        Your subscription does not expire because you are a charter subscriber. Yay!
+                    @endif
+
+                    <h3>Past Payments</h3>
+                @endif
                 <!-- Change password -->
-                <!-- Buy More Mission Control -->
             </section>
 
             <h2>Email Notifications</h2>
-            <section class="email-notifications">
+            <section id="email-notifications" class="scrollto">
                 <p>You can turn on and off email notifications here.</p>
 
                 <form>
@@ -129,7 +138,7 @@
             </section>
 
             <h2>Text/SMS Notifications</h2>
-            <section class="text-sms-notifications">
+            <section id="sms-notifications" class="scrollto">
                 <p>Get upcoming launch notifications delivered directly to your mobile.</p>
                 @if (Auth::isSubscriber())
                 <form>
@@ -158,15 +167,16 @@
             </section>
 
             <h2>Reddit Notifications</h2>
-            <section class="reddit-notifications container">
-                <div class="gr-6">
+            <section id="reddit-notifications" class="scrollto container">
+                <p class="exclaim">Coming soon!</p>
+                <!--<div class="gr-6">
                     <h3>/r/SpaceX Notifications</h3>
                     <p>/r/SpaceX notifications allow you to automatically receive Reddit notifications about comments and posts with certain words made within the /r/SpaceX community via Personal Messages. Simply enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
                 </div>
                 <div class="gr-6">
                     <h3>Redditwide Notifications</h3>
                     <p>Get notified by Reddit private message when threads are created across all of Reddit with certain keywords. Enter up to 10 trigger words (these are case insensitive) and select how frequently you would like to be notified.</p>
-                </div>
+                </div>-->
             </section>
         </main>
     </div>

@@ -45,13 +45,18 @@ class SpacecraftFlight extends Model {
         return $this->hasMany('SpaceXStats\Models\AstronautFlight');
     }
 
+    // Methods
+    public function didVisitISS() {
+        return !is_null($this->iss_berth);
+    }
+
     // Attribute Accessors
     public function getFlightNumberForSpacecraftAttribute() {
         $self = $this;
-        return SpacecraftFlight::whereHas('Spacecraft', function($q) use ($self) {
-            $q->find($self->spacecraft->id);
-        })->whereHas('Mission', function($q) use ($self) {
+        return SpacecraftFlight::whereHas('spacecraft', function($q) use ($self) {
+            $q->where('spacecraft_id', $self->spacecraft->id);
+        })->whereHas('mission', function($q) use ($self) {
             $q->before($self->mission->launch_order_id);
-        })->count();
+        })->count() + 1;
     }
 }

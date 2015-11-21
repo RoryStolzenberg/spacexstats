@@ -8313,11 +8313,14 @@ section.comments {
   background-image: url("../images/backgrounds/dscovr2.jpg"); }
 
 body.future-mission .highlights {
-  padding-right: 250px; }
+  padding-right: 300px; }
 
 .mission-link {
   display: inline-block;
-  overflow: hidden; }
+  overflow: hidden;
+  font-family: "Montserrat", sans-serif;
+  line-height: 40px;
+  height: 40px; }
   .mission-link.future-mission-link {
     float: right;
     text-align: right; }
@@ -8344,7 +8347,7 @@ body.future-mission .highlights {
   .mission-link .placeholder {
     text-transform: uppercase;
     display: inline-block;
-    width: 140px;
+    width: 150px;
     opacity: 1;
     -webkit-transition: all ease-in-out 0.3s;
             transition: all ease-in-out 0.3s; }
@@ -8373,7 +8376,8 @@ body.future-mission .highlights {
   position: absolute;
   right: 0;
   top: 0;
-  width: 250px; }
+  width: 300px;
+  font-family: "Montserrat", sans-serif; }
   .display-date-time .launch {
     display: inline-block;
     text-align: right;
@@ -8403,8 +8407,6 @@ body.future-mission .highlights {
     font-size: 14px;
     color: #21272B;
     text-transform: uppercase;
-    font-weight: 600;
-    font-family: "Segoe WP", sans-serif;
     text-align: center;
     margin-left: 10px;
     padding: 0;
@@ -8535,6 +8537,10 @@ button.canned-response {
   padding: 0;
   font-size: smaller;
   letter-spacing: normal; }
+
+.about-this-user td:first-child {
+  color: #8B939B;
+  text-align: right; }
 
 .tagger-container .wrapper {
   border: 1px solid #CCC;
@@ -8686,6 +8692,8 @@ button.canned-response {
     padding: 10px;
     text-align: center;
     vertical-align: middle; }
+  .mission-card .keys {
+    font-family: "Montserrat", sans-serif; }
   .mission-card .thumb {
     background-size: cover;
     background-position: center center;
@@ -8714,15 +8722,26 @@ button.canned-response {
     padding-top: 50%;
     position: relative; }
   .spacecraft-card .content {
-    background-image: url("/images/cards/dragon.jpg");
-    background-size: cover;
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
     text-align: center;
-    font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
+    font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+    overflow: hidden; }
+    .spacecraft-card .content:before {
+      background-image: url("/images/cards/dragon.jpg");
+      background-size: cover;
+      -webkit-filter: blur(2px);
+              filter: blur(2px);
+      content: "";
+      width: 102%;
+      height: 102%;
+      display: block;
+      position: absolute;
+      top: -1%;
+      left: -1%; }
   .spacecraft-card p {
     padding: 0; }
   .spacecraft-card .time-in-space {

@@ -1,4 +1,4 @@
-$launch-date-time-width: 250px;
+$launch-date-time-width: 300px;
 
 body.future-mission .highlights {
     padding-right:$launch-date-time-width;
@@ -7,6 +7,9 @@ body.future-mission .highlights {
 .mission-link {
     display:inline-block;
     overflow:hidden;
+    font-family:$montserrat;
+    line-height: 40px;
+    height: 40px;
 
     &.future-mission-link {
         float:right;
@@ -42,7 +45,7 @@ body.future-mission .highlights {
     .placeholder {
         text-transform:uppercase;
         display:inline-block;
-        width:140px;
+        width:150px;
         opacity:1;
         @include transitionFast(all);
     }
@@ -85,6 +88,7 @@ body.future-mission .highlights {
     right:0;
     top:0;
     width:$launch-date-time-width;
+    font-family:$montserrat;
 
     .launch {
         display:inline-block;
@@ -123,8 +127,6 @@ body.future-mission .highlights {
         font-size:14px;
         color:$lightblack;
         text-transform: uppercase;
-        font-weight:600;
-        font-family:$segoeWP;
         text-align:center;
         margin-left:10px;
         padding:0;
