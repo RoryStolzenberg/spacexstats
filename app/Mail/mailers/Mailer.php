@@ -38,7 +38,6 @@ abstract class Mailer {
         } elseif ($typeofUser == 'Collection') {
 
             $this->sendEmails($user, $subject, $view, $data, $notificationType);
-
         }
 	}
 
