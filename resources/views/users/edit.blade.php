@@ -41,10 +41,10 @@
                     <div class="gr-6">
                         <h3>Favorites</h3>
                         <label>Favorite Mission</label>
-                        <dropdown options="missions" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_mission"></dropdown>
+                        <dropdown options="missions" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_mission" id-only="true"></dropdown>
 
                         <label>Favorite Mission Patch</label>
-                        <dropdown options="patches" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_patch"></dropdown>
+                        <dropdown options="patches" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_patch" id-only="true"></dropdown>
 
                         <label>Favorite Elon Musk Quote</label>
                         <textarea ng-model="profile.favorite_quote"></textarea>

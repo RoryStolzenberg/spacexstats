@@ -21,8 +21,12 @@
                     $scope.$eval(attributes.ngChange);
                 });
 
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.data.map(function(option) {
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
                         var props = {
                             id: option[$scope.uniqueKey],
                             name: option[$scope.titleKey],
@@ -35,11 +39,18 @@
 
                         return props;
                     });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
                 });
 
                 ngModelCtrl.$render = function() {
                     $scope.selectedOption = ngModelCtrl.$viewValue;
-                }
+                };
 
                 ngModelCtrl.$parsers.push(function(viewValue) {
                     if ($scope.idOnly === 'true') {
@@ -50,13 +61,13 @@
                 });
 
                 ngModelCtrl.$formatters.push(function(modelValue) {
-                    if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                        return $scope.options.filter(function(option) {
-                            return option.id = modelValue;
-                        });
-                    } else {
-                        return modelValue;
-                    }
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
                 });
 
                 $scope.selectOption = function(option) {
@@ -68,7 +79,7 @@
                 $scope.toggleDropdown = function() {
                     $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
                     if (!$scope.dropdownIsVisible) {
-                        $scope.search = null;
+                        $scope.search.name = null;
                     }
                 };
 
