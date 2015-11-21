@@ -4,6 +4,8 @@ namespace SpaceXStats\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
+use SpaceXStats\Notifications\EmailMissionCountdownNotifier;
+use SpaceXStats\Notifications\SMSMissionCountdownNotifier;
 
 class MissionCountdownNotificationCommand extends Command
 {
@@ -34,9 +36,17 @@ class MissionCountdownNotificationCommand extends Command
     /**
      * Execute the console command.
      *
+     * @param SMSMissionCountdownNotifier $smsNotifier
+     * @param EmailMissionCountdownNotifier $emailNotifier
      * @return mixed
      */
-    public function handle()
+    public function handle(SMSMissionCountdownNotifier $smsNotifier, EmailMissionCountdownNotifier $emailNotifier)
     {
+        if ($smsNotifier->notificationIsNeeded()) {
+            $smsNotifier->notify();
+        }
+        if ($emailNotifier->notificationIsNeeded()) {
+            $emailNotifier->notify();
+        }
     }
 }

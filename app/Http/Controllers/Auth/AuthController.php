@@ -3,19 +3,17 @@
 namespace SpaceXStats\Http\Controllers\Auth;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use SpaceXStats\Extensions\Auth\AuthenticatesUsers;
 use SpaceXStats\Extensions\Auth\SignsUpUsers;
 use SpaceXStats\Extensions\Auth\VerifiesUsers;
-use SpaceXStats\Jobs\SendSignUpEmailJob;
 use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Mail\Mailers\UserMailer;
 use SpaceXStats\Models\Profile;
 use SpaceXStats\Models\User;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 use SpaceXStats\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 
@@ -33,7 +31,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
  */
 class AuthController extends Controller
 {
-    use ThrottlesLogins, AuthenticatesUsers, DispatchesJobs;
+    use ThrottlesLogins, AuthenticatesUsers;
 
     use VerifiesUsers {
         AuthenticatesUsers::redirectPath insteadof VerifiesUsers;
@@ -75,7 +73,7 @@ class AuthController extends Controller
      * @param  array $data
      * @return User
      */
-    protected function create(array $data)
+    protected function create(UserMailer $mailer, array $data)
     {
         $user = new User();
         $user->username     = $data['username'];
@@ -93,8 +91,7 @@ class AuthController extends Controller
         });
 
         // Add a welcome email to the queue
-        $job = (new SendSignUpEmailJob($user))->onQueue('emails');
-        $this->dispatch($job);
+        $mailer->welcome($user);
 
         return $user;
     }

@@ -28,7 +28,6 @@ class SMSSender {
         foreach ($users as $user) {
             if (!is_null($user->mobile)) {
                 try {
-
                     // Send the message
                     $this->client->account->messages->sendMessage(Config::get('services.twilio.fromNumber'), $user->mobile, $message);
 
@@ -37,10 +36,13 @@ class SMSSender {
                     $sms->user_id = $user->user_id;
                     $sms->message = $message;
 
-                    // Associate notification type
-                    $sms->notification()->associate($user->notifications()->whereHas('notificationType', function($q) {
-                        $q->where('name', NotificationType::TMinus24HoursSMS)->orWhere('name', NotificationType::TMinus3HoursSMS)->orWhere('name', NotificationType::TMinus1HourSMS);
-                    })->first());
+                    // Associate notification type. We can use an orWhere query here because currently a user cannot have more than
+                    // one SMS notification concurrently.
+                    $sms->notification()->associate($user->notifications()
+                        ->where('notification_type_id', NotificationType::TMinus24HoursSMS)
+                        ->orWhere('notification_type_id', NotificationType::TMinus3HoursSMS)
+                        ->orWhere('notification_type_id', NotificationType::TMinus1HourSMS)
+                        ->first);
 
                     $sms->save();
 

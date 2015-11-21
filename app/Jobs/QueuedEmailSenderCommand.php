@@ -8,6 +8,10 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use \SpaceXStats\Library\Enums\EmailStatus;
 
+/**
+ * Class QueuedEmailSenderCommand
+ * @deprecated replacing with real queues
+ */
 class QueuedEmailSenderCommand extends ScheduledCommand {
 
 	/**
