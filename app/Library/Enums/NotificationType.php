@@ -2,15 +2,15 @@
 namespace SpaceXStats\Library\Enums;
 
 abstract class NotificationType extends Enum {
-    const newMission = 1;
-    const launchTimeChange = 2;
-    const tMinus24HoursEmail = 3;
-    const tMinus3HoursEmail = 4;
-    const tMinus1HourEmail = 5;
-    const newsSummaries = 6;
-    const tMinus24HoursSMS = 7;
-    const tMinus3HoursSMS = 8;
-    const tMinus1HourSMS = 9;
+    const NewMission = 1;
+    const LaunchChange = 2;
+    const TMinus24HoursEmail = 3;
+    const TMinus3HoursEmail = 4;
+    const TMinus1HourEmail = 5;
+    const NewsSummaries = 6;
+    const TMinus24HoursSMS = 7;
+    const TMinus3HoursSMS = 8;
+    const TMinus1HourSMS = 9;
 
-    const deorbit = 10;
+    const Deorbit = 10;
 }

@@ -114,9 +114,9 @@ class UsersController extends Controller {
         // Delete any previous SMS notification
         Notification::where('user_id', $user->user_id)
             ->whereIn('notification_type_id', array(
-                NotificationType::tMinus24HoursSMS,
-                NotificationType::tMinus3HoursSMS,
-                NotificationType::tMinus1HourSMS
+                NotificationType::TMinus24HoursSMS,
+                NotificationType::TMinus3HoursSMS,
+                NotificationType::TMinus1HourSMS
             ))->delete();
 
         // If the number is blank, assume the user wants their SMS setup deleted

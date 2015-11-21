@@ -50,7 +50,7 @@ class Mission extends Model {
             // If  the launch date time has changed
             /*if ($) {
                 // Send out a new email
-                $missionMailQueuer->launchTimeChange($mission);
+                $missionMailQueuer->LaunchChange($mission);
 
                 // Add to RSS
 

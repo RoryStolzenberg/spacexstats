@@ -2,13 +2,16 @@
 
 namespace SpaceXStats\SMS;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Config;
 use SpaceXStats\Library\Enums\NotificationType;
+use SpaceXStats\Models\SMS;
 
 class SMSSender {
     private $client, $sentCount = 0, $errorCount = 0;
 
     public function __construct() {
-        $this->client = new \Services_Twilio(\Credential::TwilioSID, \Credential::TwilioToken);
+        $this->client = new \Services_Twilio(Config::get('services.twilio.sid'), Config::get('services.twilio.token'));
     }
 
     /**
@@ -16,8 +19,8 @@ class SMSSender {
      *
      * Given an collection of users, send the provided $message to each user via SMS.
      *
-     * @param collection $users Collection of users to send a message to.
-     * @param string $message Message to send to each user.
+     * @param Collection $users     Collection of users to send a message to.
+     * @param string $message       Message to send to each user.
      * @return bool
      */
     public function send($users, $message) {
@@ -27,16 +30,16 @@ class SMSSender {
                 try {
 
                     // Send the message
-                    $this->client->account->messages->sendMessage(\Credential::TwilioFromNumber, $user->mobile, $message);
+                    $this->client->account->messages->sendMessage(Config::get('services.twilio.fromNumber'), $user->mobile, $message);
 
                     // Add an indication the message has been sent to the db
-                    $sms = new \SMS();
+                    $sms = new SMS();
                     $sms->user_id = $user->user_id;
                     $sms->message = $message;
 
                     // Associate notification type
                     $sms->notification()->associate($user->notifications()->whereHas('notificationType', function($q) {
-                        $q->where('name', NotificationType::tMinus24HoursSMS)->orWhere('name', NotificationType::tMinus3HoursSMS)->orWhere('name', NotificationType::tMinus1HourSMS);
+                        $q->where('name', NotificationType::TMinus24HoursSMS)->orWhere('name', NotificationType::TMinus3HoursSMS)->orWhere('name', NotificationType::TMinus1HourSMS);
                     })->first());
 
                     $sms->save();

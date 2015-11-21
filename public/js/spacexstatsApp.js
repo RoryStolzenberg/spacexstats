@@ -1,32 +1,4 @@
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-
-        this.addError = function(message) {
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        }
-    });
-})();
-
-
-(function() {
     var missionsListApp = angular.module('app', []);
 
     missionsListApp.controller("missionsListController", ['$scope', function($scope) {
@@ -1153,101 +1125,6 @@
     ]);
 })();
 (function() {
-    var userApp = angular.module('app', []);
-
-    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', function($http, $scope, editUserService) {
-
-        $scope.username = laravel.user.username;
-
-        $scope.missions = laravel.missions;
-
-        $scope.patches = laravel.patches;
-
-        $scope.profile = {
-            summary: laravel.user.profile.summary,
-            twitter_account: laravel.user.profile.twitter_account,
-            reddit_account: laravel.user.profile.reddit_account,
-            favorite_quote: laravel.user.profile.favorite_quote,
-            favorite_mission: laravel.user.profile.favorite_mission,
-            favorite_patch: laravel.user.profile.favorite_patch
-        };
-
-        $scope.updateProfile = function() {
-            $http.patch('/users/' + $scope.username + '/edit', $scope.profile)
-                .then(function(response) {
-                    flashMessage.addOK(response.data);
-                });
-        }
-
-        $scope.emailNotifications = {
-            launchTimeChange: laravel.notifications.launchTimeChange,
-            newMission: laravel.notifications.newMission,
-            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
-            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
-            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
-            newsSummaries: laravel.notifications.newsSummaries
-        }
-
-        $scope.updateEmailNotifications = function() {
-            editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
-                // Reset form?
-            });
-        }
-
-        $scope.SMSNotification = {
-            mobile: laravel.user.mobile
-        };
-
-        if (laravel.notifications.tMinus24HoursSMS === true) {
-            $scope.SMSNotification.status = "tMinus24HoursSMS";
-        } else if (laravel.notifications.tMinus3HoursSMS === true) {
-            $scope.SMSNotification.status = "tMinus3HoursSMS";
-        } else if (laravel.notifications.tMinus1HourSMS === true) {
-            $scope.SMSNotification.status = "tMinus1HourSMS";
-        } else {
-            $scope.SMSNotification.status = "false";
-        }
-
-        $scope.updateSMSNotifications = function() {
-            editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
-                // Reset the form or something
-            });
-        }
-
-    }]);
-
-    userApp.service('editUserService', ["$http", "flashMessage", function($http, flashMessage) {
-        this.updateSMS = function(username, notification) {
-            return $http.patch('/users/' + username + '/edit/smsnotifications',
-
-                { 'SMSNotification': notification }
-
-            ).then(function(response) {
-                return flashMessage.addOK(response.data);
-            }, function(response) {
-                return flashMessage.addError(response.data);
-            });
-        };
-
-        this.updateEmails = function(username, notification) {
-            return $http.patch('/users/' + username + '/edit/emailnotifications',
-
-                { 'emailNotifications': notification }
-
-            ).then(function(response) {
-                return flashMessage.addOK(response.data);
-            }, function(response) {
-                return flashMessage.addError(response.data);
-            });
-        };
-
-        this.updateProfile = function() {
-
-        };
-    }]);
-
-})();
-(function() {
     var dataViewApp = angular.module('app', []);
 
     dataViewApp.controller('dataViewController', ['DataView', 'dataViewService', '$scope', '$http', function(DataView, dataViewService, $scope, $http) {
@@ -1913,6 +1790,101 @@
     });
 })();
 (function() {
+    var userApp = angular.module('app', []);
+
+    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', function($http, $scope, editUserService) {
+
+        $scope.username = laravel.user.username;
+
+        $scope.missions = laravel.missions;
+
+        $scope.patches = laravel.patches;
+
+        $scope.profile = {
+            summary: laravel.user.profile.summary,
+            twitter_account: laravel.user.profile.twitter_account,
+            reddit_account: laravel.user.profile.reddit_account,
+            favorite_quote: laravel.user.profile.favorite_quote,
+            favorite_mission: laravel.user.profile.favorite_mission,
+            favorite_patch: laravel.user.profile.favorite_patch
+        };
+
+        $scope.updateProfile = function() {
+            $http.patch('/users/' + $scope.username + '/edit', $scope.profile)
+                .then(function(response) {
+                    flashMessage.addOK(response.data);
+                });
+        }
+
+        $scope.emailNotifications = {
+            launchTimeChange: laravel.notifications.launchTimeChange,
+            newMission: laravel.notifications.newMission,
+            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
+            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
+            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+            newsSummaries: laravel.notifications.newsSummaries
+        }
+
+        $scope.updateEmailNotifications = function() {
+            editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
+                // Reset form?
+            });
+        }
+
+        $scope.SMSNotification = {
+            mobile: laravel.user.mobile
+        };
+
+        if (laravel.notifications.tMinus24HoursSMS === true) {
+            $scope.SMSNotification.status = "TMinus24HoursSMS";
+        } else if (laravel.notifications.tMinus3HoursSMS === true) {
+            $scope.SMSNotification.status = "TMinus3HoursSMS";
+        } else if (laravel.notifications.tMinus1HourSMS === true) {
+            $scope.SMSNotification.status = "TMinus1HourSMS";
+        } else {
+            $scope.SMSNotification.status = "false";
+        }
+
+        $scope.updateSMSNotifications = function() {
+            editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
+                // Reset the form or something
+            });
+        }
+
+    }]);
+
+    userApp.service('editUserService', ["$http", "flashMessage", function($http, flashMessage) {
+        this.updateSMS = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/smsnotifications',
+
+                { 'SMSNotification': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateEmails = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/emailnotifications',
+
+                { 'emailNotifications': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateProfile = function() {
+
+        };
+    }]);
+
+})();
+(function() {
     var signUpApp = angular.module('app', []);
 
     signUpApp.controller("signUpController", ["$scope", "signUpService", "flashMessage", function($scope, signUpService, flashMessage) {
@@ -1939,6 +1911,50 @@
             return $http.post('/auth/signup', credentials);
         };
     }]);
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+
+        this.addError = function(message) {
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+    });
+})();
+
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
 })();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -2011,18 +2027,54 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
+    app.directive('upload', ['$parse', function($parse) {
         return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
         }
-    });
+    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2336,58 +2388,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('tweet', ["$http", function($http) {
         return {
             restrict: 'E',
@@ -2422,6 +2422,38 @@
                 }
             },
             templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
         }
     }]);
 })();
@@ -2478,58 +2510,6 @@
         }
     });
 })();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
@@ -2888,6 +2868,26 @@
         }
     }]);
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
 (function() {
     var app = angular.module('app', []);
 
@@ -2983,22 +2983,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionProfile', [function() {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-            },
-            templateUrl: '/js/templates/missionProfile.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('creditCardValidator', [function() {
         return {
             restrict: 'A',
@@ -3025,6 +3009,22 @@
                     ctrl.$validate();
                 });*/
             }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionProfile', [function() {
+        return {
+            restrict: 'E',
+            scope: {
+                mission: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+            },
+            templateUrl: '/js/templates/missionProfile.html'
         }
     }]);
 })();

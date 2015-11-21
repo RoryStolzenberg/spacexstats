@@ -45,11 +45,11 @@
         };
 
         if (laravel.notifications.tMinus24HoursSMS === true) {
-            $scope.SMSNotification.status = "tMinus24HoursSMS";
+            $scope.SMSNotification.status = "TMinus24HoursSMS";
         } else if (laravel.notifications.tMinus3HoursSMS === true) {
-            $scope.SMSNotification.status = "tMinus3HoursSMS";
+            $scope.SMSNotification.status = "TMinus3HoursSMS";
         } else if (laravel.notifications.tMinus1HourSMS === true) {
-            $scope.SMSNotification.status = "tMinus1HourSMS";
+            $scope.SMSNotification.status = "TMinus1HourSMS";
         } else {
             $scope.SMSNotification.status = "false";
         }

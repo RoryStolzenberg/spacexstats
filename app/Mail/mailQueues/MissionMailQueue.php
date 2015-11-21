@@ -15,6 +15,6 @@ class MissionMailQueue extends MailQueue {
     public function launchTimeChange(Mission $mission, $oldLaunchTime, $newLaunchTime, $emailStatus) {
         $subject = "SpaceX Launch Change: {$mission->name} rescheduled";
         $body = "Body text";
-        $this->updateAndQueue($subject, $body, NotificationType::launchTimeChange, $emailStatus);
+        $this->updateAndQueue($subject, $body, NotificationType::LaunchChange, $emailStatus);
     }
 }

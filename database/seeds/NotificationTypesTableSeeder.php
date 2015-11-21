@@ -6,14 +6,14 @@ class NotificationTypesTableSeeder extends Seeder {
     public function run() {
         NotificationType::insert(array(
             array('name' => 'newMission'),
-            array('name' => 'launchTimeChange'),
-            array('name' => 'tMinus24HoursEmail'),
-            array('name' => 'tMinus3HoursEmail'),
-            array('name' => 'tMinus1HourEmail'),
-            array('name' => 'newsSummaries'),
-            array('name' => 'tMinus24HoursSMS'),
-            array('name' => 'tMinus3HoursSMS'),
-            array('name' => 'tMinus1HourSMS')
+            array('name' => 'LaunchChange'),
+            array('name' => 'TMinus24HoursEmail'),
+            array('name' => 'TMinus3HoursEmail'),
+            array('name' => 'TMinus1HourEmail'),
+            array('name' => 'NewsSummaries'),
+            array('name' => 'TMinus24HoursSMS'),
+            array('name' => 'TMinus3HoursSMS'),
+            array('name' => 'TMinus1HourSMS')
         ));
     }
 }

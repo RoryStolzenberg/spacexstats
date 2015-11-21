@@ -6,16 +6,16 @@ use SpaceXStats\Models\Object;
 
 class NewsSummariesController extends Controller {
 
-    // GET: /newsSummaries
+    // GET: /NewsSummaries
     public function index() {
         $newsSummaries = Object::where('subtype', MissionControlSubtype::NewsSummary)->get();
 
-        return view('newsSummaries', array(
-            'newsSummaries' => $newsSummaries
+        return view('NewsSummaries', array(
+            'NewsSummaries' => $newsSummaries
         ));
     }
 
-    // GET: /newsSummaries/2015/07
+    // GET: /NewsSummaries/2015/07
     public function get($year, $month) {
 
     }

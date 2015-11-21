@@ -3,12 +3,14 @@
 namespace SpaceXStats\Http\Controllers\Auth;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use SpaceXStats\Extensions\Auth\AuthenticatesUsers;
 use SpaceXStats\Extensions\Auth\SignsUpUsers;
 use SpaceXStats\Extensions\Auth\VerifiesUsers;
+use SpaceXStats\Jobs\SendSignUpEmailJob;
 use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Mail\Mailers\UserMailer;
 use SpaceXStats\Models\Profile;
@@ -31,7 +33,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
  */
 class AuthController extends Controller
 {
-    use ThrottlesLogins, AuthenticatesUsers;
+    use ThrottlesLogins, AuthenticatesUsers, DispatchesJobs;
 
     use VerifiesUsers {
         AuthenticatesUsers::redirectPath insteadof VerifiesUsers;
@@ -45,12 +47,9 @@ class AuthController extends Controller
 
     /**
      * Create a new authentication controller instance.
-     *
-     * @param UserMailer $mailer
      */
-    public function __construct(UserMailer $mailer)
+    public function __construct()
     {
-        $this->mailer = $mailer;
         $this->middleware('guest', ['except' => ['logout', 'getLogout']]);
     }
 
@@ -93,8 +92,9 @@ class AuthController extends Controller
             $profile->user()->associate($user)->save();
         });
 
-        // Send a welcome email
-        $this->mailer->welcome($user);
+        // Add a welcome email to the queue
+        $job = (new SendSignUpEmailJob($user))->onQueue('emails');
+        $this->dispatch($job);
 
         return $user;
     }
@@ -111,6 +111,12 @@ class AuthController extends Controller
         return redirect("/users/{$user->username}");
     }
 
+    /**
+     * Endpoint to check if the username exists asynchronously from the signup form.
+     *
+     * @param $usernameChallenge
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function isUsernameTaken($usernameChallenge) {
         try {
             User::byUsername($usernameChallenge);

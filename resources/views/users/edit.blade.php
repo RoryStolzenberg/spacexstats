@@ -87,7 +87,7 @@
                         <ul class="container">
                             <li class="gr-2">
                                 <span>A launch time has changed</span>
-                                <input type="checkbox" id="launchTimeChange" value="true" ng-model="emailNotifications.launchTimeChange" />
+                                <input type="checkbox" id="launchTimeChange" value="true" ng-model="emailNotifications.LaunchChange" />
                                 <label for="launchTimeChange"></label>
                             </li>
                             <li class="gr-2">
@@ -106,17 +106,17 @@
                         <ul class="container">
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 24 hours</span>
-                                <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.tMinus24HoursEmail" />
+                                <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.TMinus24HoursEmail" />
                                 <label for="tMinus24HoursEmail"></label>
                             </li>
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 3 hours</span>
-                                <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.tMinus3HoursEmail" />
+                                <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.TMinus3HoursEmail" />
                                 <label for="tMinus3HoursEmail"></label>
                             </li>
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 1 hour</span>
-                                <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.tMinus1HourEmail" />
+                                <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.TMinus1HourEmail" />
                                 <label for="tMinus1HourEmail"></label>
                             </li>
                         </ul>
@@ -127,7 +127,7 @@
                             <ul class="container">
                                 <li class="gr-2">
                                     <span>Monthly SpaceXStats News Summaries</span>
-                                    <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.newsSummaries" />
+                                    <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.NewsSummaries" />
                                     <label for="newsSummaries"></label>
                                 </li>
                             </ul>
@@ -150,13 +150,13 @@
                     <input type="radio" name="status" ng-model="SMSNotification.status" id="off" value="false" />
                     <label for="off">Off</label>
 
-                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus24HoursSMS" value="tMinus24HoursSMS" />
+                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus24HoursSMS" value="TMinus24HoursSMS" />
                     <label for="tMinus24HoursSMS">24 Hours Before</label>
 
-                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus3HoursSMS" value="tMinus3HoursSMS" />
+                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus3HoursSMS" value="TMinus3HoursSMS" />
                     <label for="tMinus3HoursSMS">3 Hours Before</label>
 
-                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus1HourSMS" value="tMinus1HourSMS" />
+                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus1HourSMS" value="TMinus1HourSMS" />
                     <label for="tMinus1HourSMS">1 Hour Before</label>
 
                     <input type="submit" ng-click="updateSMSNotifications()" value="Update SMS Notifications" />

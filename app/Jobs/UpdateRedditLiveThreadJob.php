@@ -2,14 +2,14 @@
 
 namespace SpaceXStats\Jobs;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
 use Illuminate\Contracts\Bus\SelfHandling;
 use SpaceXStats\Facades\BladeRenderer;
-use SpaceXStats\Live\LiveUpdate;
 
-class UpdateRedditLiveThreadJob extends Job implements SelfHandling
+class UpdateRedditLiveThreadJob extends Job implements SelfHandling, ShouldQueue
 {
     /**
      * Create a new job instance.
