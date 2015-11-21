@@ -14,7 +14,7 @@
 			<div class="container">
 				<div class="gr-4"><span class="launch-count">{{ ordinal($mission->generic_vehicle_count) }}</span></div>
 				<div class="gr-4">{{ $mission->present()->launchDateTime() }}</div>
-				<div class="gr-4">{{ $mission->launchSite->fullLocation }}</div>
+				<div class="gr-4">{{ $mission->launchSite->full_location }}</div>
 			</div>
 			<div class="container">
 				<div class="gr-4 smallcaps">{{ $mission->vehicle->generic_vehicle }}<br/>Launch</div>
@@ -26,14 +26,14 @@
 				<div class="gr-1on9"><span class="launch-count">{{ ordinal($mission->generic_vehicle_count) }}</span></div>
 				<div class="gr-1on9">{{ $mission->present()->launchDateTime() }}</div>
                 @if ($mission->status !== 'Upcoming')
-                    <div class="gr-1on9 smallcaps">{{ $mission->present()->launchOfYear() }}</div>
+                    <div class="gr-1on9 smallcaps">{{ ordinal($mission->launch_of_year) }}</div>
                 @endif
 				@if ($mission->status == 'Upcoming')
 					<div class="gr-1on9">42%</div>
 				@endif
-				<div class="gr-1on9">{{ $mission->vehicle->specificVehicle }}</div>
+				<div class="gr-1on9">{{ $mission->vehicle->specific_vehicle }}</div>
 				<div class="gr-1on9">{{ $mission->destination->destination }}</div>
-				<div class="gr-1on9">{{ $mission->launchSite->fullLocation }}</div>
+				<div class="gr-1on9">{{ $mission->launchSite->full_location }}</div>
 				@if ($mission->status == 'Upcoming')
 					<div class="gr-1on9"></div>
 				@endif
