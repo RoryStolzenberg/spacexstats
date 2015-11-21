@@ -5,6 +5,7 @@ namespace SpaceXStats\Notifications;
 
 use SpaceXStats\Library\Enums\NotificationType;
 use SpaceXStats\Mail\Mailers\MissionCountdownMailer;
+use SpaceXStats\Models\Email;
 
 class EmailMissionCountdownNotifier extends MissionCountdownNotifier {
 
@@ -25,6 +26,6 @@ class EmailMissionCountdownNotifier extends MissionCountdownNotifier {
 
         // Prepare to send
         $missionCountdownMailer = new MissionCountdownMailer();
-        $missionCountdownMailer->send($usersToNotify, $this->nextMission, $this->timeRemaining);
+        $missionCountdownMailer->send($usersToNotify, $this->nextMission, $this->timeRemaining, $notificationType);
     }
 }

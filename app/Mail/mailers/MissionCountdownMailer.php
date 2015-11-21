@@ -16,7 +16,7 @@ class MissionCountdownMailer extends Mailer
      * @param Mission $nextMission          The mission they are receiving the notification about.
      * @param CarbonInterval $timeToLaunch  The specific time to launch.
      */
-    public function send($users, $nextMission, $timeToLaunch) {
+    public function send($users, $nextMission, $timeToLaunch, $notificationType) {
         $view = 'emails.missionCountdown';
         $data = ['mission' => $nextMission, 'timeToLaunch' => $timeToLaunch];
         $subject = "SpaceXStats Countdown Notification: {$nextMission->name} launching in {$timeToLaunch}";

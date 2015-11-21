@@ -20,6 +20,10 @@ class Email extends Model {
         return $this->belongsTo('SpaceXStats\Models\Notification');
     }
 
+    public function user() {
+        return $this->belongsTo('SpaceXStats\Models\User');
+    }
+
     // Attribute Mutators
     public function setContentAttribute($value) {
         if (array_key_exists('content', $this->attributes)) {

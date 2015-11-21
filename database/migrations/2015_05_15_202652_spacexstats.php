@@ -106,6 +106,7 @@ class Spacexstats extends Migration {
 
         Schema::create('emails', function(Blueprint $table) {
             $table->increments('email_id');
+            $table->integer('user_id')->unsigned();
             $table->integer('notification_id')->unsigned()->nullable();
             $table->string('subject', Varchar::small)->nullable();
             $table->string('body', Varchar::large)->nullable();
@@ -586,6 +587,7 @@ class Spacexstats extends Migration {
         });
 
         Schema::table('emails', function(Blueprint $table) {
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null'); // When a user is deleted, set the user id of the email to null
             $table->foreign('notification_id')->references('notification_id')->on('notifications')->onDelete('set null'); // When a notification is deleted, set the notification id of the email to null
         });
 

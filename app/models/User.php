@@ -73,7 +73,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     }
 
     public function emails() {
-        return $this->hasManyThrough('SpaceXStats\Models\Email', 'SpaceXStats\Models\Notification');
+        return $this->hasMany('SpaceXStats\Models\Email'); // Could also be retrieved by 'hasManyThrough' notifications
     }
 
     public function messages() {

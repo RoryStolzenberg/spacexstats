@@ -22,7 +22,6 @@
         "predis/predis": "^1.0",
         "filp/whoops": "^1.1",
         "erusev/parsedown": "^1.6",
-        "windwalker/renderer": "^2.1",
         "aws/aws-sdk-php-laravel": "^3.0",
         "laravel/cashier": "~5.0"
     },

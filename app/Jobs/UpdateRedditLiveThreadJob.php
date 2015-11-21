@@ -28,11 +28,11 @@ class UpdateRedditLiveThreadJob extends Job implements SelfHandling, ShouldQueue
     public function handle()
     {
         // Rerender content
-        $templatedOutput = BladeRenderer::render('livethreadcontents', array(
+        $templatedOutput = View::make('livethreadcontents', [
             'updates' => collect(Redis::lrange('live:updates', 0, -1))->reverse()->map(function($update) {
                 return json_decode($update);
             })
-        ));
+        ])->render();
 
         // Connect to Reddit
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
