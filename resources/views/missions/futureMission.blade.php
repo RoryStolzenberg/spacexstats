@@ -112,10 +112,17 @@
 
                     <h3>Recent Tweets</h3>
                     <div id="recent-tweets">
+                        @if ($recentTweets)
 
+                        @else
+                            <p class="exclaim">No tweets for this mission</p>
+                        @endif
                     </div>
 
-                    <h3>Satellites</h3>
+                    @if ($mission->payloads->count() > 0)
+                        <h3>Satellites To Be Launched</h3>
+                        @include('templates.cards.payloadsCard', ['mission' => $mission])
+                    @endif
                 </section>
 
                 <h2>Timeline</h2>

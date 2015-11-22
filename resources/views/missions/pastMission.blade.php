@@ -80,37 +80,43 @@
                 <div class="gr-8">
                     <h3>Flight Details</h3>
 
-                    @if(count($mission->spacecraftFlight))
+                    @if ($mission->spacecraftFlight)
                         <h3>{{ $mission->spacecraftFlight->spacecraft->name }}</h3>
                         @include('templates.cards.spacecraftCard', ['spacecraftFlight' => $mission->spacecraftFlight])
                     @endif
 
                     @if ($mission->payloads->count() > 0)
-                        <h3>Satellites launched</h3>
+                        <h3>Satellites Launched</h3>
                         @include('templates.cards.payloadsCard', ['mission' => $mission])
                     @endif
 
-                    <h3>{{ $mission->upperStage->part->name }} Upper Stage</h3>
-                    @include('templates.cards.upperStageCard', ['mission' => $mission])
+                    @if ($mission->upperStage)
+                        <h3>{{ $mission->upperStage->part->name }} Upper Stage</h3>
+                        @include('templates.cards.upperStageCard', ['mission' => $mission])
+                    @endif
                 </div>
                 <div class="gr-4">
                     <h3>Library</h3>
                     <ul class="library">
 
-                        <li id="launch-video">
-                            <span>Watch the Launch</span>
-                        </li>
+                        @if ($mission->launchVideo)
+                            <li id="launch-video">
+                                <span>Watch the Launch</span>
+                            </li>
+                        @endif
 
-                        @if($mission->missionPatch()->count() == 1)
+                        @if ($mission->missionPatch)
                             <li id="mission-patch">
                                 <img src="{{ $mission->missionPatch->thumb_small }}"/>
                                 <span>{{ $mission->name }} Mission Patch</span>
                             </li>
                         @endif
 
-                        <li id="press-kit">
-                            <span>Press Kit</span>
-                        </li>
+                        @if ($mission->pressKit)
+                            <li id="press-kit">
+                                <span>Press Kit</span>
+                            </li>
+                        @endif
 
                         @if($mission->spacecraftFlight()->count() == 1)
                             <li id="cargo-manifest">
@@ -118,33 +124,37 @@
                             </li>
                         @endif
 
-                        <li id="prelaunch-press-conference">
-                            <span>Prelaunch Press Conference</span>
-                        </li>
+                        @if ($mission->prelaunchPressConference)
+                            <li id="prelaunch-press-conference">
+                                <span>Prelaunch Press Conference</span>
+                            </li>
+                        @endif
 
-                        <li id="postlaunch-press-conference">
+                        @if ($mission->postlaunchPressConference)
+                            <li id="postlaunch-press-conference">
                             <span>Postlaunch Press Conference</span>
                         </li>
+                        @endif
 
-                        @if ($mission->reddit_discussion != null)
+                        @if ($mission->redditDiscussiob)
                             <li id="reddit-discussion">
                                 <span>/r/SpaceX Reddit Live Thread</span>
                             </li>
                         @endif
 
-                        @if ($mission->flightclub != null)
+                        @if ($mission->flightclub)
                             <li id="flightclub-link">
                                 <span>FlightClub Simulation</span>
                             </li>
                         @endif
 
+                        <li id="mission-collection">
+                            <a href="/missioncontrol/collections/mission/{{ $mission->slug }}">{{ $mission->name }} Mission Collection</a>
+                        </li>
+
                         @if (Auth::isMember())
                             <li id="raw-data-download">
                                 <span><a href="/missions/{{ $mission->slug }}/raw">Raw Data Download</a></span>
-                            </li>
-
-                            <li id="mission-collection">
-                                <span>{{ $mission->name }} Mission Collection</span>
                             </li>
                         @endif
                     </ul>
