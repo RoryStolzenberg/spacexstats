@@ -42,11 +42,6 @@
                 $scope.searchResults = response.data;
             });
         };
-
-        $scope.reset = function() {
-            $rootScope.$broadcast('exitSearchMode');
-            $scope.currentSearch.rawQuery = '';
-        };
     }]);
 
     missionControlApp.service("missionControlService", ["$http", function($http) {

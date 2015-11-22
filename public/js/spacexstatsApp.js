@@ -69,11 +69,6 @@
                 $scope.searchResults = response.data;
             });
         };
-
-        $scope.reset = function() {
-            $rootScope.$broadcast('exitSearchMode');
-            $scope.currentSearch.rawQuery = '';
-        };
     }]);
 
     missionControlApp.service("missionControlService", ["$http", function($http) {
@@ -1943,18 +1938,54 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
+    app.directive('upload', ['$parse', function($parse) {
         return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
         }
-    });
+    }]);
 })();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -2027,54 +2058,18 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
+    app.directive('missionCard', function() {
         return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
         }
-    }]);
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2428,38 +2423,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('deltaV', function() {
         return {
             restrict: 'E',
@@ -2513,11 +2476,11 @@
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
-	app.directive('search', ['searchService', 'conversionService', "$http", "$filter", function(searchService, conversionService, $http, $filter) {
+	app.directive('search', ['searchService', 'conversionService', "$rootScope", "$http", "$filter", function(searchService, conversionService, $rootScope, $http, $filter) {
 		return {
 			restrict: 'E',
             transclude: true,
-			link: function($scope, element, attributes) {
+			link: function($scope, element, attributes, ngModelCtrl) {
 
                 $scope.data = {
                     missions: [],
@@ -2543,6 +2506,12 @@
 
                 $scope.onFilterUpdate = function(filterType) {
                     conversionService.filtersToSearches($scope.brokerFilters, $scope.currentSearch, filterType);
+                };
+
+                $scope.reset = function() {
+                    $rootScope.$broadcast('exitSearchMode');
+                    $scope.currentSearch.rawQuery = '';
+                    $scope.onSearchChange();
                 };
 
                 (function() {
@@ -2599,11 +2568,15 @@
                     search.rawQuery = search.rawQuery.replace(search.regex.mission, '');
                 } else {
                     if (search.filters().mission() === null) {
-                        if (/\s/.test(brokerFilters.mission.name)) {
-                            search.rawQuery = search.rawQuery.concat('mission:"' + brokerFilters.mission.name + '"');
-                        } else {
-                            search.rawQuery = search.rawQuery.concat('mission:' + brokerFilters.mission.name);
-                        }
+
+                        // Test whether the name of the mission contains a string. If it does, we need to append
+                        // quotes around it
+                        var whatToConcatenate = /\s/.test(brokerFilters.mission.name) ?
+                            'mission:"' + brokerFilters.mission.name + '"' :
+                            'mission:' + brokerFilters.mission.name;
+
+                        this.contextualConcat(search, whatToConcatenate);
+
                     } else {
                         if (/\s/.test(brokerFilters.mission.name)) {
                             search.rawQuery = search.rawQuery.replace(search.regex.mission, 'mission:"' + brokerFilters.mission.name + '"');
@@ -2628,7 +2601,7 @@
 
             else if (filterType === 'favorited') {
                 if (search.filters().favorited() === null) {
-                    search.rawQuery = search.rawQuery.concat('favorited:true');
+                    this.contextualConcat(search, 'favorited:true');
                 } else {
                     search.rawQuery = search.rawQuery.replace(search.regex.favorited, '');
                 }
@@ -2636,7 +2609,7 @@
 
             else if (filterType === 'noted') {
                 if (search.filters().noted() === null) {
-                    search.rawQuery = search.rawQuery.concat('noted:true');
+                    this.contextualConcat(search, 'noted:true');
                 } else {
                     search.rawQuery = search.rawQuery.replace(search.regex.noted, '');
                 }
@@ -2644,11 +2617,23 @@
 
             else if (filterType === 'downloaded') {
                 if (search.filters().downloaded() === null) {
-                    search.rawQuery = search.rawQuery.concat('downloaded:true');
+                    this.contextualConcat(search, 'downloaded:true');
                 } else {
                     search.rawQuery = search.rawQuery.replace(search.regex.downloaded, '');
                 }
             }
+        };
+
+        this.contextualConcat = function(search, whatToConcatenate) {
+            // Add a space so that we can make the search look cleaner (but only if it's not empty and the last character is not a string)
+            if (search.rawQuery != "" && search.rawQuery.slice(-1) != ' ') {
+                whatToConcatenate = ' ' + whatToConcatenate;
+            }
+            search.rawQuery = search.rawQuery.concat(whatToConcatenate);
+        };
+
+        this.contextualRemove = function(search, whatToRemove) {
+
         };
     });
 
@@ -2662,7 +2647,7 @@
         self.rawQuery = "";
 
         self.searchTerm = function () {
-            return self.rawQuery.replace(self.regex.tags, "").replace(self.regex.all, "");
+            return self.rawQuery.replace(self.regex.tags, "").replace(self.regex.all, "").trim();
         };
 
         // https://regex101.com/r/uL9jN5/1
@@ -2733,7 +2718,7 @@
                     downloaded: self.filters().downloaded()
                 }
             }
-        }
+        };
 
         self.regex = {
             tags: /\[([^)]+?)\]/gi,
@@ -2747,10 +2732,42 @@
             noted: /noted:(true|yes|y|1)/i,
             downloaded: /downloaded:(true|yes|y|1)/i,
             all: /([a-z,-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi
-        }
+        };
 
         return self;
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2868,26 +2885,6 @@
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
 (function() {
     var app = angular.module('app', []);
 
@@ -2980,6 +2977,26 @@
     });
 })();
 
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
 (function() {
     var app = angular.module('app');
 
@@ -3009,22 +3026,6 @@
                     ctrl.$validate();
                 });*/
             }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionProfile', [function() {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-            },
-            templateUrl: '/js/templates/missionProfile.html'
         }
     }]);
 })();

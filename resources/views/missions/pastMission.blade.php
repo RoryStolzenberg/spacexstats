@@ -85,15 +85,13 @@
                         @include('templates.cards.spacecraftCard', ['spacecraftFlight' => $mission->spacecraftFlight])
                     @endif
 
-                    <h3>Satellites</h3>
-                    @include('templates.cards.payloadsCard', ['mission' => $mission])
+                    @if ($mission->payloads->count() > 0)
+                        <h3>Satellites launched</h3>
+                        @include('templates.cards.payloadsCard', ['mission' => $mission])
+                    @endif
 
-                    <h3>Upper Stage</h3>
-                    In Orbit / Deorbited / Decayed / Did Not Reach Oribt
-
-                    Time in Orbit (countup)
-
-                    Current Orbit (646km x 321km, inclined 9.4deg)
+                    <h3>{{ $mission->upperStage->part->name }} Upper Stage</h3>
+                    @include('templates.cards.upperStageCard', ['mission' => $mission])
                 </div>
                 <div class="gr-4">
                     <h3>Library</h3>
@@ -245,21 +243,25 @@
             <section id="analytics" class="scrollto">
                 @if(Auth::isSubscriber())
                     <h3>Dataplots</h3>
-                    <p>These dataplots are based on kinematic data extracted from the countdown net during launch, and are only approximate. For more detailed simulations, refer to the FlightClub entry for this launch.</p>
-                    <ul class="container">
-                        <li class="gr-4 gr-12@small">
-                            <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
-                        </li>
-                        <li class="gr-4 gr-12@small">
-                            <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
-                        </li>
-                        <li class="gr-4 gr-12@small">
-                            <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
-                        </li>
-                        <li class="gr-4 gr-12@small">
-                            <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
-                        </li>
-                    </ul>
+                    @if ($mission->positionalTelemetry->count() > 0)
+                        <p>These dataplots are based on kinematic data extracted from the countdown net during launch, and are only approximate. For more detailed simulations, refer to the FlightClub entry for this launch.</p>
+                        <ul class="container">
+                            <li class="gr-4 gr-12@small">
+                                <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
+                            </li>
+                            <li class="gr-4 gr-12@small">
+                                <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
+                            </li>
+                            <li class="gr-4 gr-12@small">
+                                <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
+                            </li>
+                            <li class="gr-4 gr-12@small">
+                                <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
+                            </li>
+                        </ul>
+                    @else
+                        <p class="exclaim">This launch does not have positional telemetry.</p>
+                    @endif
 
                     <h3>Interpolation Queries</h3>
 

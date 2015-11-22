@@ -125,6 +125,22 @@ class Mission extends Model {
         return $this->belongsTo('SpaceXStats\Models\Location', 'launch_site_id');
     }
 
+    public function firstStage() {
+        return $this->hasOne('SpaceXStats\Models\PartFlight')->whereHas('part', function($q) {
+            $q->where('type', 'First Stage');
+        });
+    }
+
+    public function upperStage() {
+        return $this->hasOne('SpaceXStats\Models\PartFlight')->whereHas('part', function($q) {
+            $q->where('type', 'Upper Stage');
+        });
+    }
+
+    public function positionalTelemetry() {
+        return $this->hasMany('SpaceXStats\Models\Telemetry')->whereNotNull('velocity')->whereNotNull('altitude')->whereNotNull('downrange');
+    }
+
     public function articles() {
         return $this->hasMany('SpaceXStats\Models\Object')->where('type', MissionControlType::Article);
     }

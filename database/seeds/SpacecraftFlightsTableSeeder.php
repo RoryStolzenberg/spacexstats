@@ -5,11 +5,20 @@ use SpaceXStats\Models\SpacecraftFlight;
 
 class SpacecraftFlightsTableSeeder extends Seeder {
     public function run() {
+        // COTS-1
+        SpacecraftFlight::create([
+            'mission_id' => 8,
+            'spacecraft_id' => 1,
+            'flight_name' => 'COTS Demo 1',
+            'return_method' => 'Splashdown',
+            'end_of_mission' => Carbon::create(2010, 12, 8, 19, 2, 52)
+        ]);
+
         // COTS-2+
         SpacecraftFlight::create([
             'mission_id' => 8,
             'spacecraft_id' => 2,
-            'flight_name' => 'COTS-2+',
+            'flight_name' => 'COTS Demo 2+',
             'return_method' => 'Splashdown',
             'upmass' => 520,
             'downmass' => 660,

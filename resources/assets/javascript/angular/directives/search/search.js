@@ -1,11 +1,11 @@
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
-	app.directive('search', ['searchService', 'conversionService', "$http", "$filter", function(searchService, conversionService, $http, $filter) {
+	app.directive('search', ['searchService', 'conversionService', "$rootScope", "$http", "$filter", function(searchService, conversionService, $rootScope, $http, $filter) {
 		return {
 			restrict: 'E',
             transclude: true,
-			link: function($scope, element, attributes) {
+			link: function($scope, element, attributes, ngModelCtrl) {
 
                 $scope.data = {
                     missions: [],
@@ -31,6 +31,12 @@
 
                 $scope.onFilterUpdate = function(filterType) {
                     conversionService.filtersToSearches($scope.brokerFilters, $scope.currentSearch, filterType);
+                };
+
+                $scope.reset = function() {
+                    $rootScope.$broadcast('exitSearchMode');
+                    $scope.currentSearch.rawQuery = '';
+                    $scope.onSearchChange();
                 };
 
                 (function() {
@@ -87,11 +93,15 @@
                     search.rawQuery = search.rawQuery.replace(search.regex.mission, '');
                 } else {
                     if (search.filters().mission() === null) {
-                        if (/\s/.test(brokerFilters.mission.name)) {
-                            search.rawQuery = search.rawQuery.concat('mission:"' + brokerFilters.mission.name + '"');
-                        } else {
-                            search.rawQuery = search.rawQuery.concat('mission:' + brokerFilters.mission.name);
-                        }
+
+                        // Test whether the name of the mission contains a string. If it does, we need to append
+                        // quotes around it
+                        var whatToConcatenate = /\s/.test(brokerFilters.mission.name) ?
+                            'mission:"' + brokerFilters.mission.name + '"' :
+                            'mission:' + brokerFilters.mission.name;
+
+                        this.contextualConcat(search, whatToConcatenate);
+
                     } else {
                         if (/\s/.test(brokerFilters.mission.name)) {
                             search.rawQuery = search.rawQuery.replace(search.regex.mission, 'mission:"' + brokerFilters.mission.name + '"');
@@ -116,7 +126,7 @@
 
             else if (filterType === 'favorited') {
                 if (search.filters().favorited() === null) {
-                    search.rawQuery = search.rawQuery.concat('favorited:true');
+                    this.contextualConcat(search, 'favorited:true');
                 } else {
                     search.rawQuery = search.rawQuery.replace(search.regex.favorited, '');
                 }
@@ -124,7 +134,7 @@
 
             else if (filterType === 'noted') {
                 if (search.filters().noted() === null) {
-                    search.rawQuery = search.rawQuery.concat('noted:true');
+                    this.contextualConcat(search, 'noted:true');
                 } else {
                     search.rawQuery = search.rawQuery.replace(search.regex.noted, '');
                 }
@@ -132,11 +142,23 @@
 
             else if (filterType === 'downloaded') {
                 if (search.filters().downloaded() === null) {
-                    search.rawQuery = search.rawQuery.concat('downloaded:true');
+                    this.contextualConcat(search, 'downloaded:true');
                 } else {
                     search.rawQuery = search.rawQuery.replace(search.regex.downloaded, '');
                 }
             }
+        };
+
+        this.contextualConcat = function(search, whatToConcatenate) {
+            // Add a space so that we can make the search look cleaner (but only if it's not empty and the last character is not a string)
+            if (search.rawQuery != "" && search.rawQuery.slice(-1) != ' ') {
+                whatToConcatenate = ' ' + whatToConcatenate;
+            }
+            search.rawQuery = search.rawQuery.concat(whatToConcatenate);
+        };
+
+        this.contextualRemove = function(search, whatToRemove) {
+
         };
     });
 
@@ -150,7 +172,7 @@
         self.rawQuery = "";
 
         self.searchTerm = function () {
-            return self.rawQuery.replace(self.regex.tags, "").replace(self.regex.all, "");
+            return self.rawQuery.replace(self.regex.tags, "").replace(self.regex.all, "").trim();
         };
 
         // https://regex101.com/r/uL9jN5/1
@@ -221,7 +243,7 @@
                     downloaded: self.filters().downloaded()
                 }
             }
-        }
+        };
 
         self.regex = {
             tags: /\[([^)]+?)\]/gi,
@@ -235,7 +257,7 @@
             noted: /noted:(true|yes|y|1)/i,
             downloaded: /downloaded:(true|yes|y|1)/i,
             all: /([a-z,-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi
-        }
+        };
 
         return self;
     });

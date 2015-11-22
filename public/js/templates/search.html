@@ -1,10 +1,10 @@
 <div class="search" id="search">
 
     <div class="search-controls container">
-        <div class="gr-9">
+        <div class="gr-10">
             <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-change="onSearchChange($event)" placeholder="Search Mission Control" class="gr-8" />
         </div>
-        <div class="gr-3">
+        <div class="gr-2">
             <button class="search submit" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
             <button class="reset warning" ng-click="reset()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-close"></i></button>
         </div>
@@ -14,7 +14,7 @@
 		<dropdown class="gr-2 filter missions" ng-change="onFilterUpdate('mission')" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
 
         <dropdown class="gr-2 filter types" options="data.types" unique-key="type" title-key="type" has-default-option="false"
-        ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Type"></dropdown>
+        ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Resource type"></dropdown>
 
         <div class="gr-2 filter before after search-datepicker">
             <div ng-click="isDatepickerVisible = !isDatepickerVisible">
