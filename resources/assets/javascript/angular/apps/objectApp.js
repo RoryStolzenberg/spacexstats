@@ -9,7 +9,7 @@
         $scope.$watch("note", function(noteValue) {
             if (noteValue === "" || noteValue === null) {
                 $scope.noteButtonText = "Create Note";
-                $scope.noteReadText = "Create a Note!";
+                $scope.noteReadText = '<p class="exclaim">Create a note!</p>';
             } else {
                 $scope.noteButtonText = "Edit Note";
                 $scope.noteReadText = noteValue;
@@ -101,7 +101,7 @@
             commentService.addTopLevel($scope.object, $scope.newComment).then(function(response) {
                 $scope.comments.push(new Comment(response.data));
                 $scope.newComment = null;
-                form.$setPristine();
+                form.$setUntouched();
             });
         };
 
