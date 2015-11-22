@@ -8573,7 +8573,7 @@ button.canned-response {
   border: 1px solid #C05B40; }
 
 .tag {
-  font-family: "Segoe WP", sans-serif;
+  font-family: "Montserrat", sans-serif;
   display: inline-block;
   background-color: #33495E;
   color: #FFF;
@@ -8720,7 +8720,8 @@ button.canned-response {
   .object-card .thumb-holder {
     width: 100px;
     height: 100px;
-    background-color: whitesmoke; }
+    background-color: whitesmoke;
+    margin-right: 5px; }
     .object-card .thumb-holder img.thumb {
       max-width: 100px;
       max-height: 100px;
@@ -8728,7 +8729,12 @@ button.canned-response {
       vertical-align: middle;
       margin: 0 auto; }
   .object-card .object-overview {
-    height: 100px; }
+    height: 100px;
+    vertical-align: top; }
+    .object-card .object-overview .title {
+      font-size: 20px;
+      padding: 0;
+      font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
 
 .flight-profile-card > div {
   padding-top: 66.7%; }
