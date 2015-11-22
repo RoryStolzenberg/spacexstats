@@ -79,13 +79,15 @@
                 @include('templates.cards.missionCard', ['size' => 'large', 'mission' => $mission])
                 <div class="gr-8">
                     <h3>Flight Details</h3>
-                    <mission-profile></mission-profile>
 
                     @if(count($mission->spacecraftFlight))
                         <h3>{{ $mission->spacecraftFlight->spacecraft->name }}</h3>
                         @include('templates.cards.spacecraftCard', ['spacecraftFlight' => $mission->spacecraftFlight])
                     @endif
+
                     <h3>Satellites</h3>
+                    @include('templates.cards.payloadsCard', ['mission' => $mission])
+
                     <h3>Upper Stage</h3>
                     In Orbit / Deorbited / Decayed / Did Not Reach Oribt
 

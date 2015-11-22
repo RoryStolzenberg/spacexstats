@@ -8649,23 +8649,20 @@ button.canned-response {
     width: 60px;
     margin: 0 2px; }
 
-.object-card {
-  margin: 10px 0;
-  height: 100px; }
-  .object-card div {
-    display: inline-block; }
-  .object-card .thumb-holder {
-    width: 100px;
-    height: 100px;
-    background-color: whitesmoke; }
-    .object-card .thumb-holder img.thumb {
-      max-width: 100px;
-      max-height: 100px;
-      display: block;
-      vertical-align: middle;
-      margin: 0 auto; }
-  .object-card .object-overview {
-    height: 100px; }
+.proportional {
+  width: 100%; }
+  .proportional > div {
+    width: 100%;
+    position: relative; }
+  .proportional .content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: hidden; }
+    .proportional .content > * {
+      position: relative; }
 
 .mission-card {
   box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
@@ -8715,53 +8712,88 @@ button.canned-response {
     text-align: center;
     margin: 0 auto; }
 
-.spacecraft-card {
-  width: 100%; }
-  .spacecraft-card > div {
-    width: 100%;
-    padding-top: 50%;
-    position: relative; }
-  .spacecraft-card .content {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    text-align: center;
-    font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
-    overflow: hidden; }
-    .spacecraft-card .content:before {
-      background-image: url("/images/cards/dragon.jpg");
-      background-size: cover;
-      -webkit-filter: blur(2px);
-              filter: blur(2px);
-      content: "";
-      width: 102%;
-      height: 102%;
+.object-card {
+  margin: 10px 0;
+  height: 100px; }
+  .object-card div {
+    display: inline-block; }
+  .object-card .thumb-holder {
+    width: 100px;
+    height: 100px;
+    background-color: whitesmoke; }
+    .object-card .thumb-holder img.thumb {
+      max-width: 100px;
+      max-height: 100px;
       display: block;
-      position: absolute;
-      top: -1%;
-      left: -1%; }
-  .spacecraft-card p {
-    padding: 0; }
-  .spacecraft-card .time-in-space {
-    position: relative;
-    top: 10%; }
-    .spacecraft-card .time-in-space p:first-child {
-      font-weight: 100;
-      font-size: 80px;
-      color: #FFF; }
-    .spacecraft-card .time-in-space p:last-child {
-      font-size: 50px;
-      text-transform: uppercase;
-      color: #CCC; }
+      vertical-align: middle;
+      margin: 0 auto; }
+  .object-card .object-overview {
+    height: 100px; }
 
-.flight-profile-card {
-  width: 100%; }
-  .flight-profile-card > div {
-    width: 100%;
-    padding-top: 66.7%;
-    position: relative; }
+.flight-profile-card > div {
+  padding-top: 66.7%; }
+
+.spacecraft-card > div {
+  padding-top: 50%; }
+
+.spacecraft-card .content {
+  text-align: center;
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
+  .spacecraft-card .content:before {
+    background-image: url("/images/cards/dragon.jpg");
+    background-size: cover;
+    -webkit-filter: blur(2px);
+            filter: blur(2px);
+    content: "";
+    width: 102%;
+    height: 102%;
+    display: block;
+    position: absolute;
+    top: -1%;
+    left: -1%; }
+
+.spacecraft-card p {
+  padding: 0; }
+
+.spacecraft-card .time-in-space {
+  top: 10%; }
+  .spacecraft-card .time-in-space p:first-child {
+    font-weight: 100;
+    font-size: 80px;
+    color: #FFF; }
+  .spacecraft-card .time-in-space p:last-child {
+    font-size: 50px;
+    text-transform: uppercase;
+    color: #CCC; }
+
+.payloads-card > div {
+  padding-top: 56.25%; }
+
+.payloads-card .content {
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  color: #FFF; }
+  .payloads-card .content:before {
+    background-image: url("/images/cards/glorysatellite.jpg");
+    background-size: cover;
+    -webkit-filter: blur(3px);
+            filter: blur(3px);
+    content: "";
+    width: 102%;
+    height: 102%;
+    display: block;
+    position: absolute;
+    top: -1%;
+    left: -1%; }
+
+.payloads-card p:first-child {
+  font-weight: 100;
+  font-size: 80px;
+  color: #FFF; }
+
+.payloads-card p:last-child {
+  font-size: 50px;
+  text-transform: uppercase;
+  color: #CCC; }
 
 .twitter-card {
   border-radius: 3px;

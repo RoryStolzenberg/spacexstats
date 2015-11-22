@@ -1,4 +1,4 @@
-<div class="card spacecraft-card">
+<div class="card spacecraft-card proportional">
     <div>
         <div class="content">
             <div class="time-in-space">
