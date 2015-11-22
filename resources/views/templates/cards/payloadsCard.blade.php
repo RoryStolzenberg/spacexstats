@@ -2,11 +2,15 @@
     <div>
         <div class="content container">
             <div class="gr-4">
-                <p>{{ $mission->payloads()->count() }}</p>
-                <p>Satellites</p>
+                <p>{{ $mission->payloads->count() }}</p>
+                @if ($mission->payloads->count() == 1)
+                    <p>Satellite</p>
+                @else
+                    <p>Satellites</p>
+                @endif
             </div>
             <div class="gr-4">
-                <p>{{ $mission->payloads()->sum('mass') }} kg</p>
+                <p>{{ round($mission->payloads()->sum('mass')) }} kg</p>
                 <p>Launched</p>
             </div>
             <div class="gr-4">

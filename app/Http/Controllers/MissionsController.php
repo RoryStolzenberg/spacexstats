@@ -30,7 +30,7 @@ class MissionsController extends Controller {
      */
     public function get($slug) {
 
-        $mission = Mission::with(['telemetry', 'orbitalElements'])->whereSlug($slug)->first();
+        $mission = Mission::with(['telemetry', 'orbitalElements', 'payloads'])->whereSlug($slug)->first();
 
         $pastMission = Mission::before($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
         $futureMission = Mission::after($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);

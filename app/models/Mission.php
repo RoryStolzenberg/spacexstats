@@ -226,11 +226,17 @@ class Mission extends Model {
     }
 
     public function getPayloadMassRankingAttribute() {
-        $missionsOrderedByPayloadMass = Mission::join('payloads', 'missions.mission_id', '=', 'payloads.mission_id')->groupBy('payloads.mass')->orderBy('payloads.mass')->get();
+        $missionsOrderedByPayloadMass = DB::table('missions')
+            ->select('missions.mission_id')
+            ->join('payloads', 'missions.mission_id', '=', 'payloads.mission_id')
+            ->groupBy('missions.mission_id')->orderBy('payloads.mass', 'DESC')->get();
 
-        return $missionsOrderedByPayloadMass->first(function($mission) {
-            return $this->mission_id == $mission->mission_id;
-        });
+        foreach ($missionsOrderedByPayloadMass as $ranking => $mission) {
+            if ($this->mission_id == $mission->mission_id) {
+                return $ranking + 1;
+            }
+        }
+        return null;
     }
 
     public function getArticleMdAttribute() {

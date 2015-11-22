@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2ee510f59aa859dbe404ecbf1411fb56",
-    "content-hash": "5605d728de0bc0503aa8016914fce1a8",
+    "hash": "fb975fe3ddb8154dd3a2b7cebce1a465",
+    "content-hash": "2a4edf9212d5a4b49defb3e961926673",
     "packages": [
         {
             "name": "abraham/twitteroauth",
@@ -120,16 +120,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.10.1",
+            "version": "3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "16258334537e989a65b682141cc027e1c3464017"
+                "reference": "d886f97f1bd18f99463dda09bf71ddf2b2a8364e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/16258334537e989a65b682141cc027e1c3464017",
-                "reference": "16258334537e989a65b682141cc027e1c3464017",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d886f97f1bd18f99463dda09bf71ddf2b2a8364e",
+                "reference": "d886f97f1bd18f99463dda09bf71ddf2b2a8364e",
                 "shasum": ""
             },
             "require": {
@@ -194,7 +194,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2015-11-13 00:45:01"
+            "time": "2015-11-19 21:27:23"
         },
         {
             "name": "aws/aws-sdk-php-laravel",
@@ -1288,16 +1288,16 @@
         },
         {
             "name": "laravel/cashier",
-            "version": "v5.0.13",
+            "version": "v5.0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/cashier.git",
-                "reference": "49653283ff5d1168575486aa7e219a6a4b84ef7f"
+                "reference": "1aa5aaadb293e2c97517bc4dcd322d6a76339292"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/cashier/zipball/49653283ff5d1168575486aa7e219a6a4b84ef7f",
-                "reference": "49653283ff5d1168575486aa7e219a6a4b84ef7f",
+                "url": "https://api.github.com/repos/laravel/cashier/zipball/1aa5aaadb293e2c97517bc4dcd322d6a76339292",
+                "reference": "1aa5aaadb293e2c97517bc4dcd322d6a76339292",
                 "shasum": ""
             },
             "require": {
@@ -1341,7 +1341,7 @@
                 "laravel",
                 "stripe"
             ],
-            "time": "2015-10-14 15:18:12"
+            "time": "2015-11-21 19:36:09"
         },
         {
             "name": "laravel/framework",
@@ -1562,12 +1562,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/LukeNZ/ephemeris.git",
-                "reference": "0da0303cbe4f6c49e64ce513d33d1e40519033c2"
+                "reference": "84afe13aafe0c112a0e56e39eb519670720acf47"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/LukeNZ/ephemeris/zipball/0da0303cbe4f6c49e64ce513d33d1e40519033c2",
-                "reference": "0da0303cbe4f6c49e64ce513d33d1e40519033c2",
+                "url": "https://api.github.com/repos/LukeNZ/ephemeris/zipball/84afe13aafe0c112a0e56e39eb519670720acf47",
+                "reference": "84afe13aafe0c112a0e56e39eb519670720acf47",
                 "shasum": ""
             },
             "require": {
@@ -1598,7 +1598,7 @@
                 "satellite",
                 "space-track"
             ],
-            "time": "2015-11-19 07:41:36"
+            "time": "2015-11-20 03:41:24"
         },
         {
             "name": "luke-nz/phpreddit",
@@ -3338,156 +3338,6 @@
                 "environment"
             ],
             "time": "2015-05-30 15:59:26"
-        },
-        {
-            "name": "windwalker/data",
-            "version": "2.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ventoviro/windwalker-data.git",
-                "reference": "d812df5796cfe62a88cfec26cb35d509d45c47e7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ventoviro/windwalker-data/zipball/d812df5796cfe62a88cfec26cb35d509d45c47e7",
-                "reference": "d812df5796cfe62a88cfec26cb35d509d45c47e7",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.10"
-            },
-            "require-dev": {
-                "windwalker/test": "~2.0"
-            },
-            "type": "windwalker-package",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Windwalker\\Data\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.0+"
-            ],
-            "description": "Windwalker Data package",
-            "homepage": "https://github.com/ventoviro/windwalker-data",
-            "keywords": [
-                "data",
-                "framework",
-                "windwalker"
-            ],
-            "time": "2015-08-16 13:51:01"
-        },
-        {
-            "name": "windwalker/registry",
-            "version": "2.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ventoviro/windwalker-registry.git",
-                "reference": "4e586405163f85d27f7da3564d1ec39a9cb74fe5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ventoviro/windwalker-registry/zipball/4e586405163f85d27f7da3564d1ec39a9cb74fe5",
-                "reference": "4e586405163f85d27f7da3564d1ec39a9cb74fe5",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.10"
-            },
-            "require-dev": {
-                "symfony/yaml": "2.*",
-                "windwalker/test": "~2.0"
-            },
-            "suggest": {
-                "symfony/yaml": "Install 2.* if you require YAML support."
-            },
-            "type": "windwalker-package",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Windwalker\\Registry\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.0+"
-            ],
-            "description": "Windwalker Registry package",
-            "homepage": "https://github.com/ventoviro/windwalker-registry",
-            "keywords": [
-                "framework",
-                "registry",
-                "windwalker"
-            ],
-            "time": "2015-09-07 03:21:18"
-        },
-        {
-            "name": "windwalker/renderer",
-            "version": "2.1.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/ventoviro/windwalker-renderer.git",
-                "reference": "a39c6d16a0abd61b4caa34d896bbea22255b91a0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/ventoviro/windwalker-renderer/zipball/a39c6d16a0abd61b4caa34d896bbea22255b91a0",
-                "reference": "a39c6d16a0abd61b4caa34d896bbea22255b91a0",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.10",
-                "windwalker/data": "~2.0",
-                "windwalker/registry": "~2.0"
-            },
-            "require-dev": {
-                "illuminate/view": "4.1.*",
-                "league/plates": "3.*",
-                "mustache/mustache": "2.*",
-                "twig/twig": "1.*",
-                "windwalker/dom": "~2.0",
-                "windwalker/filesystem": "~2.0",
-                "windwalker/test": "~2.0"
-            },
-            "suggest": {
-                "illuminate/view": "Install 4.1.*(PHP 5.3) or 5.*(PHP 5.4) if you require Laravel Blade engine.",
-                "league/plates": "Install 3.* if you require Plates template engine.",
-                "mustache/mustache": "Install 2.* if you require Mustache engine.",
-                "twig/twig": "Install 1.* if you require Twig engine."
-            },
-            "type": "windwalker-package",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Windwalker\\Renderer\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.0+"
-            ],
-            "description": "Windwalker Renderer package",
-            "homepage": "https://github.com/ventoviro/windwalker-renderer",
-            "keywords": [
-                "framework",
-                "renderer",
-                "windwalker"
-            ],
-            "time": "2015-09-07 03:21:18"
         }
     ],
     "packages-dev": [

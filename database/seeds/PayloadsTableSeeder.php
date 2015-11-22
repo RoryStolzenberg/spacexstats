@@ -57,5 +57,94 @@ class PayloadsTableSeeder extends Seeder {
             'mass' => 200,
             'link' => 'http://space.skyrocket.de/doc_sdat/razaksat.htm'
         ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'SMDC-ONE 1',
+            'operator' => "U.S. Army SMDC",
+            'primary' => false,
+            'mass' => 4,
+            'link' => 'http://space.skyrocket.de/doc_sdat/smdc-one.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'QbX 1',
+            'operator' => "NRL Naval Center for Space for NRO",
+            'primary' => false,
+            'mass' => 5,
+            'link' => 'http://space.skyrocket.de/doc_sdat/qbx-1.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'QbX 2',
+            'operator' => "NRL Naval Center for Space for NRO",
+            'primary' => false,
+            'mass' => 5,
+            'link' => 'http://space.skyrocket.de/doc_sdat/qbx-1.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'Mayflower-Caerus',
+            'operator' => "Northrop Grumman, University of Southern California",
+            'primary' => false,
+            'mass' => 5,
+            'link' => 'http://space.skyrocket.de/doc_sdat/mayflower-caerus.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'Perseus 000',
+            'operator' => "Los Alamos National Laboratory",
+            'primary' => false,
+            'mass' => 1.5,
+            'link' => 'http://space.skyrocket.de/doc_sdat/perseus-000.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'Perseus 001',
+            'operator' => "Los Alamos National Laboratory",
+            'primary' => false,
+            'mass' => 1.5,
+            'link' => 'http://space.skyrocket.de/doc_sdat/perseus-000.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'Perseus 002',
+            'operator' => "Los Alamos National Laboratory",
+            'primary' => false,
+            'mass' => 1.5,
+            'link' => 'http://space.skyrocket.de/doc_sdat/perseus-000.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 7,
+            'name' => 'Perseus 003',
+            'operator' => "Los Alamos National Laboratory",
+            'primary' => false,
+            'mass' => 1.5,
+            'link' => 'http://space.skyrocket.de/doc_sdat/perseus-000.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 8,
+            'name' => 'Celestis 11',
+            'operator' => "Celestis",
+            'primary' => false,
+            'link' => 'http://space.skyrocket.de/doc_sdat/celestis-11.htm'
+        ]);
+
+        Payload::create([
+            'mission_id' => 9,
+            'name' => 'Orbcomm OG2 1 (H1)',
+            'operator' => "Orbcomm",
+            'primary' => false,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
     }
 }
