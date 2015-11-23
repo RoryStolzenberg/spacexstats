@@ -29,7 +29,7 @@
             </div>
 
             <section ng-show="!hasSearchResults && !isCurrentlySearching">
-                <div class="gr-8">
+                <div class="gr-8 gr-12@small">
                     <h2>Uploads</h2>
                     <ul class="container">
                         <li class="gr-2">Latest</li>
@@ -39,7 +39,7 @@
                     </ul>
                 </div>
 
-                <div class="gr-4">
+                <div class="gr-4 gr-12@small">
                     <h2>Community Leaderboards</h2>
                     <ul class="container">
                         <li class="gr-3">Last Week</li>
@@ -49,23 +49,23 @@
                     </ul>
                 </div>
 
-                <div class="gr-6">
+                <div class="gr-6 gr-12@small">
                     <h2>Recent Collections</h2>
                 </div>
 
-                <div class="gr-6">
+                <div class="gr-6 gr-12@small">
                     <h2>Random Uploads</h2>
                 </div>
 
-                <div class="gr-4">
+                <div class="gr-4 gr-6@medium gr-12@small">
                     <h2>Recent Comments</h2>
                 </div>
 
-                <div class="gr-4">
+                <div class="gr-4 gr-6@medium gr-12@small">
                     <h2>Recent Favorites</h2>
                 </div>
 
-                <div class="gr-4">
+                <div class="gr-4 gr-6@medium gr-12@small">
                     <h2>Recent Downloads</h2>
                 </div>
             </section>

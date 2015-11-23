@@ -202,7 +202,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 12,
-            'launch_exact' => Carbon::now()->addWeek(),
+            'launch_exact' => Carbon::create(2013, 12, 3, 22, 41, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
             'name' => 'SES-8',
@@ -210,31 +210,33 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::SupersynchronousGTO)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => 'default summary',
-            'article' => "default summary",
-            'status' => MissionStatus::Upcoming,
+            'summary' => 'Second Falcon 9v1.1 launch, first from Cape Canaveral. Other firsts include achieving a GTO orbit, a Merlin 1D upper stage restart, and a communications satellite payload. ',
+            'article' => "default article",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
         ]);
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 13,
-            'launch_exact' => Carbon::now()->addMonth(),
+            'launch_exact' => Carbon::create(2014, 1, 6, 22, 6, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
-            'name' => 'Thaicom-6',
+            'name' => 'Thaicom 6',
             'contractor' => 'Thaicom',
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::SupersynchronousGTO)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => 'default summary',
+            'summary' => 'Third Falcon 9v1.1 launch, 8th Falcon 9. Delivered the communications satellite Thaicom 6 into a "supersynchronous" GTO orbit similar to SES-8. ',
             'article' => "default summary",
-            'status' => MissionStatus::Upcoming,
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
         ]);
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 14,
-            'launch_exact' => Carbon::now()->addMonths(2),
+            'launch_exact' => Carbon::create(2014, 4, 18, 19, 25, 21),
             'launch_approximate' => null,
             'launch_specificity' => 7,
             'name' => 'SpaceX CRS-3',
@@ -242,15 +244,16 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => 'default summary',
+            'summary' => 'Third Dragon CRS mission to the ISS. First resupply utilizing a Falcon 9v1.1, allowing Dragon to carry a larger capacity of cargo.',
             'article' => "default summary",
-            'status' => MissionStatus::Upcoming,
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
         ]);
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 15,
-            'launch_exact' => Carbon::now()->addMonths(3),
+            'launch_exact' => Carbon::create(2014, 7, 14, 15, 15, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
             'name' => 'Orbcomm OG2 Launch 1',
@@ -258,9 +261,163 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => 'default summary',
+            'summary' => 'A Falcon 9 flew the first 6 Orbcomm G2 satellites into a Low Earth Orbit as part of a multi-mission contract for the communications corporation.',
             'article' => "default summary",
-            'status' => MissionStatus::Upcoming,
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 16,
+            'launch_exact' => Carbon::create(2014, 8, 5, 8, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'AsiaSat 8',
+            'contractor' => 'Asia Satellite Telecommunications Company',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => 'AsiaSat 8 is a communications satellite that Falcon 9 propelled into a GTO orbit, and will be located at 105.5 degrees East.',
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 17,
+            'launch_exact' => Carbon::create(2014, 9, 7, 5, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'AsiaSat 6',
+            'contractor' => 'Asia Satellite Telecommunications Company',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => 'AsiaSat 6 is a communications satellite being launched for Asia Satellite Telecommunications Company Ltd. Once in orbit, it will be renamed AsiaSat 6 / Thaicom 7.',
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 18,
+            'launch_exact' => Carbon::create(2014, 9, 21, 5, 52, 3),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'SpaceX CRS-4',
+            'contractor' => 'NASA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => 'Fourth of twelve Dragon ISS resupply missions. It is carrying over 5000 pounds to the station, including 20 mousetronauts, and the SpinSat satellite.',
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 19,
+            'launch_exact' => Carbon::create(2015, 1, 10, 9, 47, 10),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'SpaceX CRS-5',
+            'contractor' => 'NASA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => 'The fifth CRS mission to the ISS will carry pressurized and unpressurized cargo to the station. Secondary payloads include 2 small satellites to be deployed from the ISS airlock.',
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 20,
+            'launch_exact' => Carbon::create(2015, 2, 11, 23, 3, 32),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'DSCOVR',
+            'contractor' => 'NOAA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::EarthSunL1)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => 'Falcon 9 will loft the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it will function as an Earth & Solar Observation satellite.',
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 21,
+            'launch_exact' => Carbon::create(2015, 3, 2, 3, 50, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'Eutelsat 115W B & ABS-3A',
+            'contractor' => 'Asia Broadcast Satellite',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "This marks SpaceX's first dual comm. satellite launch, of Eutelsat 115W B & ABS-3A. The satellites, built by Boeing, use Solar Electric Propulsion, making it feasible to fit both on a single Falcon 9 and removing the need for weighty Hydrazine.",
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 22,
+            'launch_exact' => Carbon::create(2015, 4, 14, 20, 10, 41),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'SpaceX CRS-6',
+            'contractor' => 'NASA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "The sixth of fourteen Dragon ISS resupply missions to the ISS. Will attempt a barge landing on ASDS.",
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 23,
+            'launch_exact' => Carbon::create(2015, 4, 27, 23, 3, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'TurkmenÄlem 52E',
+            'contractor' => 'Thales Alenia Space (Turkmenistan)',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 24,
+            'launch_exact' => Carbon::create(2015, 6, 28, 14, 21, 11),
+            'launch_approximate' => null,
+            'launch_specificity' => 7,
+            'name' => 'SpaceX CRS-7',
+            'contractor' => 'NASA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
+            'article' => "default summary",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success
         ]);
     }
 }

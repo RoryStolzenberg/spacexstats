@@ -114,13 +114,18 @@
         height:100px;
         background-color:$offwhite;
         margin-right:5px;
+        position:relative;
 
         img.thumb {
             max-width: 100px;
             max-height: 100px;
             display: block;
-            vertical-align: middle;
-            margin:0 auto;
+            margin: auto;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            position: absolute;
         }
     }
 

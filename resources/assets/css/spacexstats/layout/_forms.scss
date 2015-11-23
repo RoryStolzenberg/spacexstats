@@ -206,22 +206,7 @@ form {
 
 }
 
-button.icon-button {
-    width:100px;
-    height:100px;
-
-    img {
-        text-align:center;
-    }
-}
-
-button.wide-button {
-    width:100%;
-    display:block;
-}
-
 input[type="submit"], input[type="reset"], button, .button {
-
     font-family:$montserrat;
     font-size:16px;
 
@@ -237,6 +222,9 @@ input[type="submit"], input[type="reset"], button, .button {
     margin-top:10px;
     margin-bottom:10px;
 
+    // Remove iOS styling
+    -webkit-appearance: none;
+
     // Other buttons
     background-color:$spacesuitgreen;
 
@@ -247,6 +235,20 @@ input[type="submit"], input[type="reset"], button, .button {
 
     &.warning {
         background-color:$red;
+    }
+
+    &.wide-button {
+        width:100%;
+        display:block;
+    }
+
+    &.icon-button {
+        width:100px;
+        height:100px;
+
+        img {
+            text-align:center;
+        }
     }
 
     // Disabled buttons

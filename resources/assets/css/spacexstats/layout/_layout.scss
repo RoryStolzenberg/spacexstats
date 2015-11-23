@@ -62,6 +62,10 @@ body {
 }
 
 // CONTENT HOLDERS
+main, section, div, aside {
+    outline:0;
+}
+
 h1, main {
     width:100%;
     max-width:1400px;
