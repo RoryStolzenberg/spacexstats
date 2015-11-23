@@ -1,5 +1,6 @@
 <?php
 use Illuminate\Database\Seeder;
+use SpaceXStats\Models\Part;
 use SpaceXStats\Models\PartFlight;
 use SpaceXStats\Library\Enums\Engine;
 
