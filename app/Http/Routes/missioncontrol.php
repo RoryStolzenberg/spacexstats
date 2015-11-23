@@ -18,8 +18,6 @@ Route::group(['prefix' => 'missioncontrol', 'namespace' => 'MissionControl'], fu
 
     Route::group(['middleware' => 'mustBe:Subscriber'], function() {
 
-        Route::get('/fetch', 'MissionControlController@fetch');
-
         Route::post('/search', 'SearchController@search');
         Route::get('/search/fetch', 'SearchController@fetch');
 

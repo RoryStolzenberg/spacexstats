@@ -102,8 +102,9 @@
 
 // Object Card
 .object-card {
-    margin:10px 0;
+    margin:20px 0;
     height:100px;
+    position:relative;
 
     div {
         display:inline-block;
@@ -138,6 +139,17 @@
             padding:0;
             font-family:$brandonGrotesque;
         }
+
+        .type.creator.date, .comments {
+            font-size:small;
+            padding:5px 0;
+        }
+    }
+
+    .publication-status {
+        position:absolute;
+        right:0;
+        top:0;
     }
 }
 

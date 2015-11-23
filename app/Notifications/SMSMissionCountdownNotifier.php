@@ -8,7 +8,7 @@ use SpaceXStats\SMS\SMSSender;
 
 class SMSMissionCountdownNotifier extends MissionCountdownNotifier {
 
-    private $message = "SpaceX is launching %s aboard %s in %s at %s UTC from %s. Watch live at spacexstats.com/live. More info at spacexstats.com/mission/%s.";
+    private $message = "SpaceX is launching %s aboard %s in %s at %s UTC from %s. Watch live at spacexstats.com/live. More info at spacexstats.com/missions/%s.";
 
     public function notify() {
         // What notification type is this

@@ -5,13 +5,8 @@
         <li class="gr-2"><a href="#comments">Comments</a></li>
         @if (Auth::isAdmin())
             <li class="gr-2">
-                <a class="link" href="/missioncontrol/objects/{{ $object->object_id }}/edit">
-                    <i class="fa fa-pencil"></i>
-                </a>
+                <a class="link" href="/missioncontrol/objects/{{ $object->object_id }}/edit"><i class="fa fa-pencil"></i></a>
             </li>
         @endif
     </ul>
 </nav>
-<section class="highlights">
-
-</section>

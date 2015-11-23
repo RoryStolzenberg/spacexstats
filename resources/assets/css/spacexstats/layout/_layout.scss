@@ -145,15 +145,22 @@ p {
 }
 
 // Text
+a:link, a:visited, a:hover, a:active {
+    color:inherit;
+    text-decoration:inherit;
+}
+
+span, p {
+    a:link, a:visited {
+        color:$october;
+        text-decoration: underline;
+    }
+}
+
 p {
     padding-top:10px;
     padding-bottom:10px;
     font-size:14px;
-}
-
-a:link, a:visited, a:hover, a:active {
-    color:inherit;
-    text-decoration:inherit;
 }
 
 small {

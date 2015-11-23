@@ -7346,6 +7346,9 @@ body {
     background: none;
     box-shadow: none; }
 
+main, section, div, aside {
+  outline: 0; }
+
 h1, main {
   width: 100%;
   max-width: 1400px;
@@ -7411,14 +7414,18 @@ p {
 .border-bottom {
   border-bottom: 1px solid #CCC; }
 
+a:link, a:visited, a:hover, a:active {
+  color: inherit;
+  text-decoration: inherit; }
+
+span a:link, span a:visited, p a:link, p a:visited {
+  color: #33495E;
+  text-decoration: underline; }
+
 p {
   padding-top: 10px;
   padding-bottom: 10px;
   font-size: 14px; }
-
-a:link, a:visited, a:hover, a:active {
-  color: inherit;
-  text-decoration: inherit; }
 
 small {
   font-size: smaller;
@@ -7524,7 +7531,9 @@ blockquote {
   width: 8.33333%;
   font-weight: 800;
   font-size: 20px;
-  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  color: white;
+  text-decoration: none; }
 
 .flash-message {
   position: fixed;
@@ -7801,16 +7810,6 @@ form .password-toggle {
     line-height: 32px;
     cursor: pointer; }
 
-button.icon-button {
-  width: 100px;
-  height: 100px; }
-  button.icon-button img {
-    text-align: center; }
-
-button.wide-button {
-  width: 100%;
-  display: block; }
-
 input[type="submit"], input[type="reset"], button, .button {
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
@@ -7825,11 +7824,20 @@ input[type="submit"], input[type="reset"], button, .button {
   box-shadow: 0;
   margin-top: 10px;
   margin-bottom: 10px;
+  -webkit-appearance: none;
   background-color: #1FA67A; }
   input[type="submit"].submit, input[type="reset"].submit, button.submit, .button.submit {
     background-color: #3569A4; }
   input[type="submit"].warning, input[type="reset"].warning, button.warning, .button.warning {
     background-color: #C05B40; }
+  input[type="submit"].wide-button, input[type="reset"].wide-button, button.wide-button, .button.wide-button {
+    width: 100%;
+    display: block; }
+  input[type="submit"].icon-button, input[type="reset"].icon-button, button.icon-button, .button.icon-button {
+    width: 100px;
+    height: 100px; }
+    input[type="submit"].icon-button img, input[type="reset"].icon-button img, button.icon-button img, .button.icon-button img {
+      text-align: center; }
   input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled, .button[disabled], .button.disabled {
     background-color: #CCC; }
 
@@ -8433,14 +8441,14 @@ body.object .aside {
 img#object {
   max-width: 100%; }
 
-.actions.container {
+.object-actions.container {
   text-align: center; }
-  .actions.container i {
+  .object-actions.container i {
     color: #33495E;
     cursor: pointer;
     display: block;
     padding: 5px; }
-  .actions.container .is-favorited {
+  .object-actions.container .is-favorited {
     color: #ccac55; }
 
 .video-js {
@@ -8541,6 +8549,12 @@ button.canned-response {
 .about-this-user td:first-child {
   color: #8B939B;
   text-align: right; }
+
+#missioncontrol > div {
+  padding-top: 0px;
+  padding-right: 10px;
+  padding-bottom: 0px;
+  padding-left: 10px; }
 
 .tagger-container .wrapper {
   border: 1px solid #CCC;
@@ -8713,21 +8727,27 @@ button.canned-response {
     margin: 0 auto; }
 
 .object-card {
-  margin: 10px 0;
-  height: 100px; }
+  margin: 20px 0;
+  height: 100px;
+  position: relative; }
   .object-card div {
     display: inline-block; }
   .object-card .thumb-holder {
     width: 100px;
     height: 100px;
     background-color: whitesmoke;
-    margin-right: 5px; }
+    margin-right: 5px;
+    position: relative; }
     .object-card .thumb-holder img.thumb {
       max-width: 100px;
       max-height: 100px;
       display: block;
-      vertical-align: middle;
-      margin: 0 auto; }
+      margin: auto;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      position: absolute; }
   .object-card .object-overview {
     height: 100px;
     vertical-align: top; }
@@ -8735,6 +8755,13 @@ button.canned-response {
       font-size: 20px;
       padding: 0;
       font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
+    .object-card .object-overview .type.creator.date, .object-card .object-overview .comments {
+      font-size: small;
+      padding: 5px 0; }
+  .object-card .publication-status {
+    position: absolute;
+    right: 0;
+    top: 0; }
 
 .flight-profile-card > div {
   padding-top: 66.7%; }

@@ -10,7 +10,7 @@
         <h1>Upload to Mission Control</h1>
         <main>
             <!-- List of methods to upload -->
-            <nav class="in-page">
+            <nav class="in-page" ng-hide="areSubmissionMethodsHidden">
                 <ul class="upload-type text-center">
                     <li ng-click="changeSection('upload')"><i class="fa fa-upload"></i> Upload</li>
                     <li ng-click="changeSection('post')"><i class="fa fa-paperclip"></i> Post</li>
@@ -73,7 +73,8 @@
                                                     ng-model="file.mission_id"
                                                     unique-key="mission_id"
                                                     title-key="name"
-                                                    searchable="true">
+                                                    searchable="true"
+                                                    id-only="true">
                                             </dropdown>
                                         </label>
                                     </li>
@@ -155,7 +156,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true" id-only="true"></dropdown>
                                         </label>
                                     </li>
 
@@ -226,7 +227,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" id-only="true" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
                                         </label>
                                     </li>
 
@@ -306,7 +307,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" id-only="true" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
                                         </label>
                                     </li>
 
@@ -386,7 +387,7 @@
                                     <li class="gr-4">
                                         <label>
                                             <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
+                                            <dropdown options="data.missions" ng-model="file.mission_id" id-only="true" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
                                         </label>
                                     </li>
 

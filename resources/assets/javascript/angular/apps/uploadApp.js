@@ -39,9 +39,13 @@
             $scope.showRecentAdditions = section == 'upload';
         };
 
+        $scope.$on('hideSubmissionMethods', function() {
+            $scope.areSubmissionMethodsHidden = true;
+        });
+
     }]);
 
-    uploadApp.controller("uploadController", ["$scope", "objectFromFile", "uploadService", function($scope, objectFromFile, uploadService) {
+    uploadApp.controller("uploadController", ["$rootScope", "$scope", "objectFromFile", "uploadService", function($rootScope, $scope, objectFromFile, uploadService) {
         $scope.activeUploadSection = "dropzone";
         $scope.isSubmitting = false;
         $scope.isUploading = false;
@@ -56,7 +60,7 @@
         };
 
         $scope.uploadCallback = function() {
-            $scope.isUplading = false;
+            $scope.isUploading = false;
 
             // Once files have been successfully upload, convert to Objects
             $scope.files.forEach(function(file, index) {
@@ -70,6 +74,7 @@
 
             // Change the upload section
             $scope.activeUploadSection = "data";
+            $rootScope.$broadcast('hideSubmissionMethods');
             $scope.showRecentAdditions = false;
             $scope.$apply();
         };

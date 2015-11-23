@@ -15,11 +15,13 @@
 
             <section class="details">
                 <div class="gr-9 content">
+                    <section class="highlights">
+                    </section>
                     <img id="object" src="{{ $object->media }}" />
                 </div>
 
                 <aside class="gr-3 aside">
-                    <div class="actions container">
+                    <div class="object-actions container">
                         <span class="gr-4">
                             <i class="fa fa-eye fa-2x"></i> {{ $object->views }} Views
                         </span>

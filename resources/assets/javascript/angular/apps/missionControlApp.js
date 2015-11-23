@@ -23,9 +23,20 @@
             $scope.pageTitle = "Mission Control";
         });
 
-        (function() {
-            missionControlService.fetch();
-        })();
+        $scope.missioncontrol = {
+            objects: {
+                visibleSection: 'latest',
+                show: function(sectionToShow) {
+                    $scope.missioncontrol.objects.visibleSection = sectionToShow;
+                }
+            },
+            leaderboards: {
+                visibleSection: 'week',
+                show: function(sectionToShow) {
+                    $scope.missioncontrol.visibleSection.visibleSection = sectionToShow;
+                }
+            }
+        }
     }]);
 
     missionControlApp.controller("searchController", ["$scope", "$rootScope", "missionControlService", function($scope, $rootScope, missionControlService) {
@@ -47,10 +58,6 @@
     missionControlApp.service("missionControlService", ["$http", function($http) {
         this.search = function(currentQuery) {
             return $http.post('/missioncontrol/search', { search: currentQuery });
-        };
-
-        this.fetch = function() {
-            return $http.get('/missioncontrol/fetch');
         };
     }]);
 })();

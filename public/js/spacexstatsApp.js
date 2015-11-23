@@ -1,32 +1,4 @@
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-
-        this.addError = function(message) {
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        }
-    });
-})();
-
-
-(function() {
     var missionsListApp = angular.module('app', []);
 
     missionsListApp.controller("missionsListController", ['$scope', function($scope) {
@@ -78,9 +50,20 @@
             $scope.pageTitle = "Mission Control";
         });
 
-        (function() {
-            missionControlService.fetch();
-        })();
+        $scope.missioncontrol = {
+            objects: {
+                visibleSection: 'latest',
+                show: function(sectionToShow) {
+                    $scope.missioncontrol.objects.visibleSection = sectionToShow;
+                }
+            },
+            leaderboards: {
+                visibleSection: 'week',
+                show: function(sectionToShow) {
+                    $scope.missioncontrol.visibleSection.visibleSection = sectionToShow;
+                }
+            }
+        }
     }]);
 
     missionControlApp.controller("searchController", ["$scope", "$rootScope", "missionControlService", function($scope, $rootScope, missionControlService) {
@@ -102,10 +85,6 @@
     missionControlApp.service("missionControlService", ["$http", function($http) {
         this.search = function(currentQuery) {
             return $http.post('/missioncontrol/search', { search: currentQuery });
-        };
-
-        this.fetch = function() {
-            return $http.get('/missioncontrol/fetch');
         };
     }]);
 })();
@@ -281,9 +260,13 @@
             $scope.showRecentAdditions = section == 'upload';
         };
 
+        $scope.$on('hideSubmissionMethods', function() {
+            $scope.areSubmissionMethodsHidden = true;
+        });
+
     }]);
 
-    uploadApp.controller("uploadController", ["$scope", "objectFromFile", "uploadService", function($scope, objectFromFile, uploadService) {
+    uploadApp.controller("uploadController", ["$rootScope", "$scope", "objectFromFile", "uploadService", function($rootScope, $scope, objectFromFile, uploadService) {
         $scope.activeUploadSection = "dropzone";
         $scope.isSubmitting = false;
         $scope.isUploading = false;
@@ -298,7 +281,7 @@
         };
 
         $scope.uploadCallback = function() {
-            $scope.isUplading = false;
+            $scope.isUploading = false;
 
             // Once files have been successfully upload, convert to Objects
             $scope.files.forEach(function(file, index) {
@@ -312,6 +295,7 @@
 
             // Change the upload section
             $scope.activeUploadSection = "data";
+            $rootScope.$broadcast('hideSubmissionMethods');
             $scope.showRecentAdditions = false;
             $scope.$apply();
         };
@@ -1935,6 +1919,34 @@
         };
     }]);
 })();
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+
+        this.addError = function(message) {
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+    });
+})();
+
+
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2000,6 +2012,58 @@
                 }
             },
             templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
         }
     }]);
 })();
@@ -2371,52 +2435,32 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
+    app.directive('redditComment', ["$http", function($http) {
         return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
 
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
                     }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
                 }
-            }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
         }
     }]);
 })();
@@ -2472,38 +2516,6 @@
             templateUrl: '/js/templates/deltaV.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -2906,56 +2918,6 @@
 })();
 
 (function() {
-    var app = angular.module('app');
-
-    app.directive('creditCardValidator', [function() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            scope: {
-                componentToValidate: '@',
-                model: '=ngModel'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-                if ($scope.componentToValidate == 'cvc') {
-                    ctrl.$validators.cvc = function(modelValue, viewValue) {
-                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
-                    };
-                }
-
-                else if ($scope.componentToValidate == 'expiry') {
-                }
-
-                else if ($scope.componentToValidate == 'number') {
-
-                }
-
-                /*$scope.$watch('model', function() {
-                    ctrl.$validate();
-                });*/
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
-})();
-
-(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -3058,4 +3020,54 @@
            return null;
        }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('creditCardValidator', [function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: {
+                componentToValidate: '@',
+                model: '=ngModel'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+                if ($scope.componentToValidate == 'cvc') {
+                    ctrl.$validators.cvc = function(modelValue, viewValue) {
+                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
+                    };
+                }
+
+                else if ($scope.componentToValidate == 'expiry') {
+                }
+
+                else if ($scope.componentToValidate == 'number') {
+
+                }
+
+                /*$scope.$watch('model', function() {
+                    ctrl.$validate();
+                });*/
+            }
+        }
+    }]);
 })();
