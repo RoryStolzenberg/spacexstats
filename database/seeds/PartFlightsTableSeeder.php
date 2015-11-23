@@ -92,14 +92,14 @@ class PartFlightsTableSeeder extends Seeder {
         // DSQU
         PartFlight::create(array(
             'mission_id' => 6,
-            'part_id' => Part::where('name', 'F9-001')->part_id,
+            'part_id' => Part::where('name', 'F9-001')->first()->part_id,
             'firststage_engine' => Engine::Merlin1CF9,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 6,
-            'part_id' => Part::where('name', 'F9-001-US')->part_id,
+            'part_id' => Part::where('name', 'F9-001-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
             'landed' => false
         ));
@@ -107,14 +107,14 @@ class PartFlightsTableSeeder extends Seeder {
         // COTS1
         PartFlight::create(array(
             'mission_id' => 7,
-            'part_id' => Part::where('name', 'F9-002')->part_id,
+            'part_id' => Part::where('name', 'F9-002')->first()->part_id,
             'firststage_engine' => Engine::Merlin1CF9,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 7,
-            'part_id' => Part::where('name', 'F9-002-US')->part_id,
+            'part_id' => Part::where('name', 'F9-002-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
             'landed' => false
         ));
@@ -122,14 +122,14 @@ class PartFlightsTableSeeder extends Seeder {
         // COTS2+
         PartFlight::create(array(
             'mission_id' => 8,
-            'part_id' => Part::where('name', 'F9-003')->part_id,
+            'part_id' => Part::where('name', 'F9-003')->first()->part_id,
             'firststage_engine' => Engine::Merlin1CF9,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 8,
-            'part_id' => Part::where('name', 'F9-003-US')->part_id,
+            'part_id' => Part::where('name', 'F9-003-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
             'landed' => false
         ));
@@ -137,14 +137,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CRS-1
         PartFlight::create(array(
             'mission_id' => 9,
-            'part_id' => Part::where('name', 'F9-004')->part_id,
+            'part_id' => Part::where('name', 'F9-004')->first()->part_id,
             'firststage_engine' => Engine::Merlin1CF9,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 9,
-            'part_id' => Part::where('name', 'F9-004-US')->part_id,
+            'part_id' => Part::where('name', 'F9-004-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
             'landed' => false
         ));
@@ -152,14 +152,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CRS-2
         PartFlight::create(array(
             'mission_id' => 10,
-            'part_id' => Part::where('name', 'F9-005')->part_id,
+            'part_id' => Part::where('name', 'F9-005')->first()->part_id,
             'firststage_engine' => Engine::Merlin1CF9,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 10,
-            'part_id' => Part::where('name', 'F9-005-US')->part_id,
+            'part_id' => Part::where('name', 'F9-005-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
             'landed' => false
         ));
@@ -167,14 +167,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CASSIOPE
         PartFlight::create(array(
             'mission_id' => 11,
-            'part_id' => Part::where('name', 'F9-006')->part_id,
+            'part_id' => Part::where('name', 'F9-006')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 11,
-            'part_id' => Part::where('name', 'F9-006-US')->part_id,
+            'part_id' => Part::where('name', 'F9-006-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -182,14 +182,14 @@ class PartFlightsTableSeeder extends Seeder {
         // SES-8
         PartFlight::create(array(
             'mission_id' => 12,
-            'part_id' => Part::where('name', 'F9-007')->part_id,
+            'part_id' => Part::where('name', 'F9-007')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 12,
-            'part_id' => Part::where('name', 'F9-007-US')->part_id,
+            'part_id' => Part::where('name', 'F9-007-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -197,14 +197,14 @@ class PartFlightsTableSeeder extends Seeder {
         // Thaicom 6
         PartFlight::create(array(
             'mission_id' => 13,
-            'part_id' => Part::where('name', 'F9-008')->part_id,
+            'part_id' => Part::where('name', 'F9-008')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 13,
-            'part_id' => Part::where('name', 'F9-008-US')->part_id,
+            'part_id' => Part::where('name', 'F9-008-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -212,14 +212,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CRS-3
         PartFlight::create(array(
             'mission_id' => 14,
-            'part_id' => Part::where('name', 'F9-009')->part_id,
+            'part_id' => Part::where('name', 'F9-009')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 14,
-            'part_id' => Part::where('name', 'F9-009-US')->part_id,
+            'part_id' => Part::where('name', 'F9-009-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -227,14 +227,14 @@ class PartFlightsTableSeeder extends Seeder {
         // OG1
         PartFlight::create(array(
             'mission_id' => 15,
-            'part_id' => Part::where('name', 'F9-010')->part_id,
+            'part_id' => Part::where('name', 'F9-010')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 15,
-            'part_id' => Part::where('name', 'F9-010-US')->part_id,
+            'part_id' => Part::where('name', 'F9-010-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -242,14 +242,14 @@ class PartFlightsTableSeeder extends Seeder {
         // AsiaSat 8
         PartFlight::create(array(
             'mission_id' => 16,
-            'part_id' => Part::where('name', 'F9-011')->part_id,
+            'part_id' => Part::where('name', 'F9-011')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 16,
-            'part_id' => Part::where('name', 'F9-011-US')->part_id,
+            'part_id' => Part::where('name', 'F9-011-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -257,14 +257,14 @@ class PartFlightsTableSeeder extends Seeder {
         // AsiaSat 6
         PartFlight::create(array(
             'mission_id' => 17,
-            'part_id' => Part::where('name', 'F9-013')->part_id,
+            'part_id' => Part::where('name', 'F9-013')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 17,
-            'part_id' => Part::where('name', 'F9-013-US')->part_id,
+            'part_id' => Part::where('name', 'F9-013-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -272,14 +272,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CRS-4
         PartFlight::create(array(
             'mission_id' => 18,
-            'part_id' => Part::where('name', 'F9-012')->part_id,
+            'part_id' => Part::where('name', 'F9-012')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 18,
-            'part_id' => Part::where('name', 'F9-012-US')->part_id,
+            'part_id' => Part::where('name', 'F9-012-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -287,14 +287,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CRS-5
         PartFlight::create(array(
             'mission_id' => 19,
-            'part_id' => Part::where('name', 'F9-014')->part_id,
+            'part_id' => Part::where('name', 'F9-014')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 19,
-            'part_id' => Part::where('name', 'F9-014-US')->part_id,
+            'part_id' => Part::where('name', 'F9-014-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -302,14 +302,14 @@ class PartFlightsTableSeeder extends Seeder {
         // DSCOVR
         PartFlight::create(array(
             'mission_id' => 20,
-            'part_id' => Part::where('name', 'F9-015')->part_id,
+            'part_id' => Part::where('name', 'F9-015')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 20,
-            'part_id' => Part::where('name', 'F9-015-US')->part_id,
+            'part_id' => Part::where('name', 'F9-015-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -317,14 +317,14 @@ class PartFlightsTableSeeder extends Seeder {
         // EutelSat 115W B & ABS-3A
         PartFlight::create(array(
             'mission_id' => 21,
-            'part_id' => Part::where('name', 'F9-016')->part_id,
+            'part_id' => Part::where('name', 'F9-016')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 21,
-            'part_id' => Part::where('name', 'F9-016-US')->part_id,
+            'part_id' => Part::where('name', 'F9-016-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -332,14 +332,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CRS-6
         PartFlight::create(array(
             'mission_id' => 22,
-            'part_id' => Part::where('name', 'F9-018')->part_id,
+            'part_id' => Part::where('name', 'F9-018')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 22,
-            'part_id' => Part::where('name', 'F9-018-US')->part_id,
+            'part_id' => Part::where('name', 'F9-018-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -347,14 +347,14 @@ class PartFlightsTableSeeder extends Seeder {
         // TurkmenAlem
         PartFlight::create(array(
             'mission_id' => 23,
-            'part_id' => Part::where('name', 'F9-017')->part_id,
+            'part_id' => Part::where('name', 'F9-017')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 23,
-            'part_id' => Part::where('name', 'F9-017-US')->part_id,
+            'part_id' => Part::where('name', 'F9-017-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
@@ -362,14 +362,14 @@ class PartFlightsTableSeeder extends Seeder {
         // CRS-7
         PartFlight::create(array(
             'mission_id' => 23,
-            'part_id' => Part::where('name', 'F9-020')->part_id,
+            'part_id' => Part::where('name', 'F9-020')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
             'mission_id' => 23,
-            'part_id' => Part::where('name', 'F9-020-US')->part_id,
+            'part_id' => Part::where('name', 'F9-020-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
         ));
