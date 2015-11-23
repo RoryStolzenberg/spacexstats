@@ -392,7 +392,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_exact' => Carbon::create(2015, 4, 27, 23, 3, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
-            'name' => 'TurkmenÄlem 52E',
+            'name' => utf8_encode('TurkmenÄlem 52E'),
             'contractor' => 'Thales Alenia Space (Turkmenistan)',
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
@@ -417,7 +417,7 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
             'article' => "default summary",
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Failure
         ]);
     }
 }

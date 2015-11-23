@@ -211,6 +211,7 @@
             <h2>Timeline</h2>
             <section id="timeline" class="scrollto">
                 <h3>Prelaunch</h3>
+                @if ($mission->prelaunchEvents->count() > 0)
                     <table>
                         <tr>
                             <th>Occurred At</th>
@@ -227,6 +228,9 @@
                             </tr>
                         @endforeach
                     </table>
+                @else
+                    <p class="exclaim">No Prelaunch Events</p>
+                @endif
 
                 <h3>Launch</h3>
                     @if ($mission->telemetry->count() > 0)

@@ -71,6 +71,7 @@ class PartFlightsTableSeeder extends Seeder {
             'part_id' => 8,
             'upperstage_engine' => Engine::Kestrel,
             'upperstage_norad_id' => 33393,
+            'upperstage_intl_designator' => '2008-048A',
             'landed' => false
         ));
 
@@ -86,6 +87,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 5,
             'part_id' => 10,
             'upperstage_engine' => Engine::Kestrel,
+            'upperstage_norad_id' => 35579,
+            'upperstage_intl_designator' => '2009-037B',
             'landed' => false
         ));
 
@@ -101,6 +104,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 6,
             'part_id' => Part::where('name', 'F9-001-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
+            'upperstage_norad_id' => 36595,
+            'upperstage_intl_designator' => '2010-026A',
             'landed' => false
         ));
 
@@ -116,6 +121,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 7,
             'part_id' => Part::where('name', 'F9-002-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
+            'upperstage_norad_id' => 37253,
+            'upperstage_intl_designator' => '2010-066K',
             'landed' => false
         ));
 
@@ -131,6 +138,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 8,
             'part_id' => Part::where('name', 'F9-003-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
+            'upperstage_norad_id' => 38349,
+            'upperstage_intl_designator' => '2012-027B',
             'landed' => false
         ));
 
@@ -146,6 +155,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 9,
             'part_id' => Part::where('name', 'F9-004-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
+            'upperstage_norad_id' => 38848,
+            'upperstage_intl_designator' => '2012-054C',
             'landed' => false
         ));
 
@@ -161,6 +172,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 10,
             'part_id' => Part::where('name', 'F9-005-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1CVac,
+            'upperstage_norad_id' => 39116,
+            'upperstage_intl_designator' => '2013-010B',
             'landed' => false
         ));
 
@@ -176,6 +189,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 11,
             'part_id' => Part::where('name', 'F9-006-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
+            'upperstage_norad_id' => 39271,
+            'upperstage_intl_designator' => '2013-055G',
             'landed' => false
         ));
 
@@ -191,6 +206,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 12,
             'part_id' => Part::where('name', 'F9-007-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
+            'upperstage_norad_id' => 39461,
+            'upperstage_intl_designator' => '2013-071B',
             'landed' => false
         ));
 
@@ -206,6 +223,8 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 13,
             'part_id' => Part::where('name', 'F9-008-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
+            'upperstage_norad_id' => 39501,
+            'upperstage_intl_designator' => '2014-002B',
             'landed' => false
         ));
 
