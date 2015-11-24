@@ -31,7 +31,7 @@ class StatisticResultBuilder {
             return 0;
         }
 
-		return Mission::whereComplete()->whereGenericVehicle($parameter)->count();
+		return Mission::whereComplete()->whereGenericVehicle($substatistic)->count();
 	}
 
 	/**
@@ -43,23 +43,23 @@ class StatisticResultBuilder {
     }
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return mixed
      */
-	public static function dragon($parameter) {
-		if ($parameter === 'Missions') {
+	public static function dragon($substatistic) {
+		if ($substatistic === 'Missions') {
 			return SpacecraftFlight::whereHas('mission', function($q) {
 				$q->whereComplete();
 			})->count();
 		}
 
-        if ($parameter === 'ISS Resupplies') {
+        if ($substatistic === 'ISS Resupplies') {
 			return SpacecraftFlight::whereNotNull('iss_berth')->whereHas('mission', function($q) {
 				$q->whereComplete();
             })->count();
 		}
 
-        if ($parameter === 'Total Flight Time') {
+        if ($substatistic === 'Total Flight Time') {
 			//SELECT SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) as duration FROM spacecraft INNER JOIN missions ON spacecraft.mission_id=missions.mission_id
 			return SpacecraftFlight::select(DB::raw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration'))
                 ->where('missions.status','Complete')
@@ -67,19 +67,19 @@ class StatisticResultBuilder {
                 ->first();
 		}
 
-        if ($parameter === 'Flight Time (Graph)') {
+        if ($substatistic === 'Flight Time (Graph)') {
 			return SpacecraftFlight::select('missions.name',DB::raw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration'))
                 ->where('missions.status','Complete')
                 ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')->first();
 		}
 
-        if ($parameter === 'Cargo') {
+        if ($substatistic === 'Cargo') {
 			return SpacecraftFlight::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
 				$q->whereComplete();
 			})->groupBy('upmass')->first();
 		}
 
-        if ($parameter === 'Reflights') {
+        if ($substatistic === 'Reflights') {
 /*SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM spacecraft
   JOIN spacecraft_flights_pivot ON spacecraft.spacecraft_id = spacecraft_flights_pivot.spacecraft_id
   WHERE spacecraft.spacecraft_id=spacecraft_flights_pivot.spacecraft_id
@@ -88,15 +88,15 @@ GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights*
 	}
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return mixed
      */
-	public static function vehicles($parameter) {
-        if ($parameter == 'Landed') {
+	public static function vehicles($substatistic) {
+        if ($substatistic == 'Landed') {
             return PartFlight::where('landed', true)->count();
         }
 
-        if ($parameter == 'Reflown') {
+        if ($substatistic == 'Reflown') {
             /* SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts
   JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id
   WHERE parts.part_id=part_flights_pivot.part_id
@@ -107,23 +107,23 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 	/**
 	 * Fetch the number of firststage Merlin 1D engines (both normal and fullthrust) flown on operational missions
 	 *
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return int
      */
-	public static function engines($parameter) {
-        if ($parameter === 'Flown') {
+	public static function engines($substatistic) {
+        if ($substatistic === 'Flown') {
             return PartFlight::whereHas('mission', function($q) {
 				$q->whereSpecificVehicle('Falcon 9 v1.1');
 			})->count() * 9;
         }
 
-		if ($parameter === 'Flight Time') {
+		if ($substatistic === 'Flight Time') {
 			// SELECT SUM(vehicles.firststage_meco) AS flight_time FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
 			return Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first();
 		
 		}
 
-        if ($parameter === 'Success Rate') {
+        if ($substatistic === 'Success Rate') {
 			// SELECT SUM(vehicles.firststage_engine_failures) AS engine_failures, ROUND(100 - (SUM(vehicles.firststage_engine_failures) / (COUNT(vehicles.vehicle_id) * 9) * 100)) AS success_rate 
 			// FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
 			return Vehicle::select(DB::raw('SUM(vehicles.firststage_engine_failures) AS engine_failures, ROUND(100 - (SUM(vehicles.firststage_engine_failures) / (COUNT(vehicles.mission_id) * 9) * 100)) AS success_rate'))
@@ -132,16 +132,16 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 	}
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return string
      */
-	public static function capeCanaveral($parameter) {
-		if ($parameter === 'Launch Count') {
+	public static function capeCanaveral($substatistic) {
+		if ($substatistic === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','SLC-40');
 			})->count();
 
-		} else if ($parameter === 'Last Launch') {
+		} else if ($substatistic === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('SLC-40')->firstOrFail();
 			} catch (ModelNotFoundException $e) {
@@ -149,7 +149,7 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 			}
 			return $lastLaunch;
 
-		} else if ($parameter === 'Next Launch') {
+		} else if ($substatistic === 'Next Launch') {
 			try {
 				$nextLaunch = Mission::nextFromLaunchSite('SLC-40')->firstOrFail();
 			} catch (ModelNotFoundException $e) {
@@ -160,16 +160,16 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 	}
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return string
      */
-	public static function capeKennedy($parameter) {
-        if ($parameter === 'Launch Count') {
+	public static function capeKennedy($substatistic) {
+        if ($substatistic === 'Launch Count') {
             return Mission::whereComplete()->whereHas('launchSite', function($q) {
                 $q->where('name','LC-39A');
             })->count();
 
-        } else if ($parameter === 'Last Launch') {
+        } else if ($substatistic === 'Last Launch') {
             try {
                 $lastLaunch = Mission::lastFromLaunchSite('LC-39A')->firstOrFail();
             } catch (ModelNotFoundException $e) {
@@ -177,7 +177,7 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
             }
             return $lastLaunch;
 
-        } else if ($parameter === 'Next Launch') {
+        } else if ($substatistic === 'Next Launch') {
             try {
                 $nextLaunch = Mission::nextFromLaunchSite('LC-39A')->firstOrFail();
             } catch (ModelNotFoundException $e) {
@@ -188,16 +188,16 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
     }
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return string
      */
-	public static function vandenberg($parameter) {
-		if ($parameter === 'Launch Count') {
+	public static function vandenberg($substatistic) {
+		if ($substatistic === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','SLC-4E');
 			})->count();
 
-		} else if ($parameter === 'Last Launch') {
+		} else if ($substatistic === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('SLC-4E')->firstOrFail();
 			} catch (ModelNotFoundException $e) {
@@ -205,7 +205,7 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 			}
 			return $lastLaunch;
 
-		} else if ($parameter === 'Next Launch') {
+		} else if ($substatistic === 'Next Launch') {
 			try {
 				$nextLaunch = Mission::nextFromLaunchSite('SLC-4E')->firstOrFail();
 			} catch (ModelNotFoundException $e) {
@@ -216,16 +216,16 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 	}
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return string
      */
-	public static function bocaChica($parameter) {
-		if ($parameter === 'Launch Count') {
+	public static function bocaChica($substatistic) {
+		if ($substatistic === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','Boca Chica');
 			})->count();
 
-		} else if ($parameter === 'Last Launch') {
+		} else if ($substatistic === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('Boca Chica')->firstOrFail();
 			} catch (ModelNotFoundException $e) {
@@ -233,7 +233,7 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 			}
 			return $lastLaunch;
 
-		} else if ($parameter === 'Next Launch') {
+		} else if ($substatistic === 'Next Launch') {
 			try {
 				$nextLaunch = Mission::nextFromLaunchSite('Boca Chica')->firstOrFail();
 			} catch (ModelNotFoundException $e) {
@@ -244,16 +244,16 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 	}
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return string
      */
-	public static function kwajalein($parameter) {
-		if ($parameter === 'Launch Count') {
+	public static function kwajalein($substatistic) {
+		if ($substatistic === 'Launch Count') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','Omelek Island');
 			})->count();
 
-		} else if ($parameter === 'Last Launch') {
+		} else if ($substatistic === 'Last Launch') {
 			try {
 				$lastLaunch = Mission::lastFromLaunchSite('Omelek Island')->firstOrFail();
 			} catch (ModelNotFoundException $e) {
@@ -318,17 +318,21 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
     }
 
 	/**
+	 * Return the current population of Mars.
+	 *
 	 * @return int
      */
 	public static function marsPopulationCount() {
-        return 0;
+        return 0; // We can safely return 0 for a few years at least
     }
 
 	/**
+	 * Retrieve the number of hours SpaceX employees have worked.
+	 *
 	 * @return int
      */
 	public static function hoursWorked() {
-        return 0;
+        return 'countless'; // It's true
     }
 }
 ?>
