@@ -419,5 +419,21 @@ class MissionsTableSeeder extends Seeder {
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure
         ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 25,
+            'launch_exact' => Carbon::create(2015, 12, 11, 0, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => 6,
+            'name' => 'Orbcomm OG2 Launch 2',
+            'contractor' => 'Orbcomm',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SpaceX's Return To Flight Mission",
+            'article' => "default summary",
+            'status' => MissionStatus::Upcoming
+        ]);
     }
 }

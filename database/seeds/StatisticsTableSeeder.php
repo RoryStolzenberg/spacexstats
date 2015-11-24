@@ -115,9 +115,9 @@ class StatisticsTableSeeder extends Seeder {
         Statistic::create(array(
             'order' => 13,
             'type' => 'Dragon',
-            'name' => 'Reused',
+            'name' => 'Reflights',
             'description' => "",
-            'unit' => "Reused",
+            'unit' => "Reflights",
             'display' => 'single'
         ));
 
