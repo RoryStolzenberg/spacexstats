@@ -4,6 +4,7 @@ namespace SpaceXStats\Services;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\PartFlight;
 use SpaceXStats\Models\Spacecraft;
 use SpaceXStats\Models\SpacecraftFlight;
 use SpaceXStats\Models\Vehicle;
