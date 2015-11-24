@@ -251,6 +251,7 @@
                         <p class="exclaim">No telemetry yet!</p>
                     @endif
                 <h3>Postlaunch</h3>
+                <p class="exlcaim">Postlaunch information coming soon!</p>
             </section>
 
             <h2>Analytics</h2>
@@ -273,15 +274,16 @@
                                 <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
                             </li>
                         </ul>
+
+                        <h3>Interpolation Queries</h3>
+                        <p class="exclaim">Interpolation Queries coming soon!</p>
                     @else
                         <p class="exclaim">This launch does not have positional telemetry.</p>
                     @endif
 
-                    <h3>Interpolation Queries</h3>
-
                     <h3>Upper Stage</h3>
                     @if ($mission->orbitalElements->count() != 0)
-                        {{ $orbitalElements->first()->perigee }}km x {{ $orbitalElements->first()->apogee }}km, inclined {{ $orbitalElements->first()->inclination }}deg
+                        {{ $orbitalElements->first()->apogee }}km x {{ $orbitalElements->first()->perigee }}km, inclined {{ $orbitalElements->first()->inclination }}deg
 
                         <h4>Latest TLE</h4>
                         <div class="tle">
@@ -305,6 +307,7 @@
                     @endif
 
                     <h3>Maps</h3>
+                    <p>Maps coming soon!</p>
                 @else
                     <p class="should-subscribe exclaim">Subscribe to Mission Control to see mission analytics.</p>
                 @endif

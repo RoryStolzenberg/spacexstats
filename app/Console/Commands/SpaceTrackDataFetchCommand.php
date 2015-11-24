@@ -46,34 +46,34 @@ class SpaceTrackDataFetchCommand extends Command
     public function handle()
     {
         // Mass assignment in Laravel doesn't set timestamps, manually create them instead
-        $timestamps['created_at'] = $timestamps['updated_at'] = Carbon::now();
+        $now = Carbon::now();
 
         // Fetch all the missions we want to query orbital elements for.
         $missions = Mission::with(['orbitalElements', 'partFlights'])
             ->whereComplete()->where('outcome', MissionOutcome::Success)
-            ->whereHas('partFlights', function($q) {
+            ->whereHas('upperStage', function($q) {
                 $q->whereNotNull('upperstage_norad_id');
             })->get();
 
         // Login to SpaceTrack
         $ephemeris = new Ephemeris(Config::get('services.spacetrack.identity'), Config::get('services.spacetrack.password'));
 
-        $allOrbitalElements = [];
+        $allOrbitalElements = collect();
 
         foreach ($missions as $mission) {
 
             // Create the identifier
-            $identifier = new NoradID($mission->norad_id);
+            $identifier = new NoradID($mission->upperStage->upperstage_norad_id);
 
             if ($mission->orbitalElements->count() == 0) {
                 // Attempt to fetch all TLE's as we presume the mission was just recently completed or added and we cannot
                 // place a reasonable boundary on when to start fetching TLE's.
-                $tles = collect($ephemeris->tles()->satellite($identifier)->all());
+                $tles = collect($ephemeris->tles()->latest()->satellite($identifier)->fetch());
 
             } else {
                 // Only fetch TLE's from the past 30 days because we know this query runs every day (why not
                 // fetch from the past day? SpaceTrack clarifies: "Note that in rare cases space-track may
-                // receive a TLE with an earlier EPOCH than the most recently uploaded TLE."
+                // receive a TLE with an earlier EPOCH than the most recently uploaded TLE.")
                 $tles = $ephemeris->tles()->satellite($identifier)->lastMonth()->fetch();
 
                 $tles = collect($tles)->filter(function($tle) use ($mission) {
@@ -82,40 +82,42 @@ class SpaceTrackDataFetchCommand extends Command
             }
 
             // Turn the TLE's into OrbitalElements
-            $missionOrbitalElements = $tles->map(function($tle) {
+            $missionOrbitalElements = $tles->map(function($tle) use ($mission, $now) {
                 $orbitalElement = new OrbitalElement();
-                //$orbitalElement->part_flight_id = $mission->partFlights->
-                $orbitalElement->object_name = $tle->object_name;
-                $orbitalElement->object_type = $tle->object_type;
-                $orbitalElement->classification_type = $tle->classification_type;
-                $orbitalElement->epoch = $tle->epoch;
-                $orbitalElement->mean_motion = $tle->mean_motion;
-                $orbitalElement->eccentricity = $tle->eccentricity;
-                $orbitalElement->inclination = $tle->inclination;
-                $orbitalElement->ra_of_asc_node = $tle->ra_of_asc_node;
-                $orbitalElement->arg_of_pericenter = $tle->arg_of_pericenter;
-                $orbitalElement->mean_anomaly = $tle->mean_anomaly;
-                $orbitalElement->ephemeris_type = $tle->ephemeris_type;
-                $orbitalElement->element_set_no = $tle->element_set_no;
-                $orbitalElement->rev_at_epoch = $tle->rev_at_epoch;
-                $orbitalElement->bstar = $tle->bstar;
-                $orbitalElement->mean_motion_dot = $tle->mean_motion_dot;
-                $orbitalElement->mean_motion_ddot = $tle->mean_motion_ddot;
-                $orbitalElement->file = $tle->file;
-                $orbitalElement->tle_line0 = $tle->tle_line0;
-                $orbitalElement->tle_line1 = $tle->tle_line1;
-                $orbitalElement->tle_line2 = $tle->tle_line2;
-                $orbitalElement->semimajor_axis = $tle->semimajor_axis;
-                $orbitalElement->period = $tle->period;
-                $orbitalElement->apogee = $tle->apogee;
-                $orbitalElement->perigee = $tle->perigee;
+                $orbitalElement->part_flight_id = $mission->upperStage->part_flight_id;
+                $orbitalElement->object_name = $tle->OBJECT_NAME;
+                $orbitalElement->object_type = $tle->OBJECT_TYPE;
+                $orbitalElement->classification_type = $tle->CLASSIFICATION_TYPE;
+                $orbitalElement->epoch = $tle->EPOCH;
+                $orbitalElement->mean_motion = $tle->MEAN_MOTION;
+                $orbitalElement->eccentricity = $tle->ECCENTRICITY;
+                $orbitalElement->inclination = $tle->INCLINATION;
+                $orbitalElement->ra_of_asc_node = $tle->RA_OF_ASC_NODE;
+                $orbitalElement->arg_of_pericenter = $tle->ARG_OF_PERICENTER;
+                $orbitalElement->mean_anomaly = $tle->MEAN_ANOMALY;
+                $orbitalElement->ephemeris_type = $tle->EPHEMERIS_TYPE;
+                $orbitalElement->element_set_no = $tle->ELEMENT_SET_NO;
+                $orbitalElement->rev_at_epoch = $tle->REV_AT_EPOCH;
+                $orbitalElement->bstar = $tle->BSTAR;
+                $orbitalElement->mean_motion_dot = $tle->MEAN_MOTION_DOT;
+                $orbitalElement->mean_motion_ddot = $tle->MEAN_MOTION_DDOT;
+                $orbitalElement->file = $tle->FILE;
+                $orbitalElement->tle_line0 = $tle->TLE_LINE0;
+                $orbitalElement->tle_line1 = $tle->TLE_LINE1;
+                $orbitalElement->tle_line2 = $tle->TLE_LINE2;
+                $orbitalElement->semimajor_axis = $tle->SEMIMAJOR_AXIS;
+                $orbitalElement->period = $tle->PERIOD;
+                $orbitalElement->apogee = $tle->APOGEE;
+                $orbitalElement->perigee = $tle->PERIGEE;
+                $orbitalElement->created_at = $orbitalElement->updated_at = $now;
+
                 return $orbitalElement;
             });
 
-            $allOrbitalElements = array_merge($allOrbitalElements, $missionOrbitalElements);
+            $allOrbitalElements = $allOrbitalElements->merge($missionOrbitalElements);
         }
 
-        OrbitalElement::insert($allOrbitalElements);
+        OrbitalElement::insert($allOrbitalElements->toArray());
     }
 
     public function isTLENew($tle, $orbitalElements) {

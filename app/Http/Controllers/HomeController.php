@@ -2,6 +2,7 @@
 namespace SpaceXStats\Http\Controllers;
 
 use JavaScript;
+use SpaceXStats\Console\Commands\SpaceTrackDataFetchCommand;
 use SpaceXStats\Models\Statistic;
 
 class HomeController extends Controller {

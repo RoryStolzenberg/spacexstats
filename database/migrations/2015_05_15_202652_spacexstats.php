@@ -292,7 +292,8 @@ class Spacexstats extends Migration {
 
             $table->enum('status', array('New', 'Queued', 'Published'));
             $table->enum('visibility', array('Default', 'Public', 'Hidden'));
-            $table->boolean('anonymous');
+            $table->boolean('anonymous')->default(false);
+            $table->boolean('self_created')->default(false);
             $table->datetime('actioned_at')->nullable(); // Nonoptional values
             $table->timestamps();
         });

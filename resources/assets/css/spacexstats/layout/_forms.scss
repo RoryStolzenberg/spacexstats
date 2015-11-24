@@ -1,7 +1,4 @@
 form {
-    ul li {
-        padding:10px;
-    }
 
     label, .label {
         font-size:14px;
@@ -29,7 +26,6 @@ form {
 
     input, textarea {
         width:calc(100% - 20px);
-        margin:0 10px;
         padding:5px;
         border:1px solid $bordergrey;
         font-family:$notoSans;
@@ -266,7 +262,7 @@ input[value="Logout"], input[value="Logout"]:focus {
     outline:none;
     cursor:pointer;
     border:none !important;
-    font-family: "Noto Sans";
+    font-family:$notoSans;
     font-size: 100%;
     letter-spacing:normal;
     text-transform:none;
@@ -278,4 +274,3 @@ input[value="Logout"], input[value="Logout"]:focus {
     height:auto;
     line-height:50px;
 }
-

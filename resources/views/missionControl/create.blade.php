@@ -45,88 +45,80 @@
                         <div ng-if="file.type == 'Image'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
-                                <ul class="container">
-                                    <li class="gr-4">
-                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
-                                    </li>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this image" minlength="10" required />
-                                        </label>
-                                    </li>
+                                <!-- New Form -->
+                                <fieldset class="gr-8 upload-basic-info">
+                                    <legend>Basic Info</legend>
 
-                                    <li class="gr-8">
-                                        <label>
-                                            <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" minlength="100" required></textarea>
-                                        </label>
-                                    </li>
+                                    <label>
+                                        <p>Title</p>
+                                        <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this image" minlength="10" required />
+                                    </label>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Related to Mission</p>
-                                            <dropdown
-                                                    name="mission"
-                                                    options="data.missions"
-                                                    ng-model="file.mission_id"
-                                                    unique-key="mission_id"
-                                                    title-key="name"
-                                                    searchable="true"
-                                                    id-only="true">
-                                            </dropdown>
-                                        </label>
-                                    </li>
+                                    <label>
+                                        <p>Summary</p>
+                                        <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" minlength="100" required></textarea>
+                                    </label>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" placeholder="Who took this image?" required />
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-4 upload-preview">
+                                    <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-attribution">
+                                    <legend>Attribution</legend>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Tags</p>
-                                            <tags available-tags="data.tags" ng-model="file.tags" ></tags>
-                                        </label>
-                                    </li>
+                                    <label>
+                                        <p>Author</p>
+                                        <input type="text" name="author" ng-model="file.author" placeholder="Who took this image? SpaceX, Elon Musk, etc." required />
+                                    </label>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Type</p>
-                                            <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.images">
-                                                <option value="">None</option>
-                                            </select>
-                                        </label>
-                                    </li>
+                                    <label>
+                                        <p>Attribution/Copyright</p>
+                                        <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
+                                    </label>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>When was this created?</p>
-                                            <datetime type="@{{ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') }}"
-                                                      ng-model="file.originated_at"
-                                                      is-null="::file.datetimeExtractedFromEXIF"
-                                                      nullable-toggle="false"></datetime>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-4 upload-metadata">
+                                    <legend>Metadata</legend>
 
-                                    <li class="gr-12">
-                                        <label>
-                                            <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
-                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
-                                        </label>
-                                    </li>
-                                </ul>
+                                    <label>
+                                        <p>Related to Mission</p>
+                                        <dropdown
+                                                name="mission"
+                                                options="data.missions"
+                                                ng-model="file.mission_id"
+                                                unique-key="mission_id"
+                                                title-key="name"
+                                                searchable="true"
+                                                id-only="true">
+                                        </dropdown>
+                                    </label>
+
+                                    <label>
+                                        <p>Type of @{{ file.type }}</p>
+                                        <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.images">
+                                            <option value="">None</option>
+                                        </select>
+                                    </label>
+
+                                    <label>
+                                        <p>When was this created?</p>
+                                        <datetime type="@{{ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') }}"
+                                                  ng-model="file.originated_at"
+                                                  is-null="::file.datetimeExtractedFromEXIF"
+                                                  nullable-toggle="false"></datetime>
+                                    </label>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Tags</legend>
+
+                                    <label>
+                                        <p>Tags</p>
+                                        <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                    </label>
+                                </fieldset>
                             </form>
                         </div>
 

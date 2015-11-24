@@ -65,18 +65,6 @@ class Object extends Model implements UploadableInterface {
         'camera_model' => 'varchar:small'
     );
 
-    // Observers
-    public static function boot() {
-        parent::boot();
-
-        // Delete any files before deleting the object
-        static::deleting(function($object) {
-            $object->deleteFromlocal();
-            $object->deleteFromCloud();
-            return true;
-        });
-    }
-
 	// Relations
 	public function mission() {
 		return $this->belongsTo('SpaceXStats\Models\Mission');
@@ -127,17 +115,32 @@ class Object extends Model implements UploadableInterface {
         return $this->hasMany('SpaceXStats\Models\Mission', 'featured_image', 'object_id');
     }
 
-    // Scoped Queries
-    public function scopeInMissionControl($query) {
-        return $query->where('status', '!=', ObjectPublicationStatus::NewStatus);
+    // Custom methods
+    public function isVisibleToUser() {
+        if (Auth::isAdmin()) {
+            return true;
+        } else if (Auth::isSubscriber()) {
+            return $this->visibility != VisibilityStatus::HiddenStatus;
+        } else {
+            return $this->visibility == VisibilityStatus::PublicStatus;
+        }
     }
 
+    public function isInMissionControl() {
+        return $this->status != ObjectPublicationStatus::NewStatus;
+    }
+
+    // Scoped Queries
     public function scopeWherePublic($query) {
         return $query->where('visibility', VisibilityStatus::PublicStatus);
     }
 
     public function scopeWhereDefault($query) {
         return $query->where('visiblility', VisibilityStatus::DefaultStatus);
+    }
+
+    public function scopeInMissionControl($query) {
+        return $query->where('status', '!=', ObjectPublicationStatus::NewStatus);
     }
 
     /**

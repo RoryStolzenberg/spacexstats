@@ -48,6 +48,8 @@ class MissionsController extends Controller {
                 'webcast' => Redis::hgetall('webcast')
             ]);
 
+            $data['recentTweets'] = Object::inMissionControl()->where('type', MissionControlType::Tweet)->take(10)->get();
+
 			return view('missions.futureMission', $data);
 		} else {
 

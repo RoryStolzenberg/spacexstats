@@ -24,14 +24,7 @@ class ObjectsController extends Controller {
     public function get($object_id) {
         $object = Object::findOrFail($object_id);
 
-        // Item has been viewed, increment!
-        $object->incrementViewCounter();
-
-        // Determine what type of object it is to show the correct view
-        $viewType = strtolower(MissionControlType::getKey($object->type));
-
-        // Object is visible to everyone and is published
-        if ($object->visibility == VisibilityStatus::PublicStatus && $object->status == ObjectPublicationStatus::PublishedStatus) {
+        if ($object->isVisibleToUser() && $object->isInMissionControl()) {
 
             if (Auth::isSubscriber()) {
                 JavaScript::put([
@@ -42,23 +35,16 @@ class ObjectsController extends Controller {
                 ]);
             }
 
+            // Item has been viewed, increment!
+            $object->incrementViewCounter();
+
+            // Determine what type of object it is to show the correct view
+            $viewType = strtolower(MissionControlType::getKey($object->type));
+
             return view('missionControl.objects.' . $viewType , ['object' => $object]);
-
-        // Object is visible to subscribers, is published, and the logged in user is also a subscriber
-        // or the user is an admin
-        } elseif (($object->visibility == VisibilityStatus::DefaultStatus && $object->status == ObjectPublicationStatus::PublishedStatus && Auth::isSubscriber()) || Auth::isAdmin()) {
-
-                // Inject dynamic data into page
-                JavaScript::put([
-                    'totalFavorites' => $object->favorites()->count(),
-                    'isFavorited' => Auth::user()->favorites()->where('object_id', $object_id)->first(),
-                    'userNote' => Auth::user()->notes()->where('object_id', $object_id)->first(),
-                    'object' => $object
-                ]);
-
-                return view('missionControl.objects.' . $viewType , ['object' => $object]);
         }
 
+        // Item cannot be viewed
         return App::abort(401);
     }
 
