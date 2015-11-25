@@ -18,9 +18,17 @@
                             <input type="text" name="username" id="username"
                                    ng-model="user.username" ng-model-options="{ debounce: 250 }"
                                    unique-username required />
-                            <p ng-show="signUpForm.username.$error.username">That username is taken.</p>
-                            <p ng-show="signUpForm.username.$pending.username">Checking...</p>
-                            <p ng-show="signUpForm.username.$valid">Good to go!</p>
+                            <p ng-show="signUpForm.username.$error.username">
+                                <i class="fa fa-times"></i> That username is taken.
+                            </p>
+
+                            <p ng-show="signUpForm.username.$pending.username">
+                                <i class="fa fa-circle-o-notch fa-spin"></i> Checking...
+                            </p>
+
+                            <p ng-show="signUpForm.username.$valid">
+                                <i class="fa fa-check"></i> Good to go!
+                            </p>
                         </li>
                         <li>
                             <label for="email">Email</label>
@@ -38,11 +46,15 @@
                         <li>
                             <input type="submit" value="@{{ signUpButtonText }}" ng-disabled="signUpForm.$invalid || signUpForm.$pending || isSigningUp" ng-click="signUp()">
                         </li>
+                        <li>
+                            <p class="lowvisibility opacity">Already have an account? <a href="/auth/login">Log in</a>.</p>
+                        </li>
                     </ul>
                 </form>
             </div>
             <div ng-show="hasSignedUp">
-                <p>Thanks for signing up! You can activate your account by clicking the confirmation link in the email we just sent you.</p>
+                <p class="exclaim">Thanks for signing up!</p>
+                <p>You can activate your account by clicking the confirmation link in the email we just sent you.</p>
             </div>
         </main>
     </div>

@@ -1,5 +1,11 @@
 form {
 
+   ul li {
+       padding:10px 0;
+   }
+
+    margin:0 10px;
+
     label, .label {
         font-size:14px;
         color:$lightblack;
@@ -7,7 +13,6 @@ form {
         font-weight:400;
         font-family:$segoeWP;
         line-height: 2;
-        margin:0 10px;
     }
 
     input, textarea, button, select {
@@ -192,11 +197,16 @@ form {
         position:relative;
 
         i {
-            right: 20px;
+            right: 30px;
             position: absolute;
             height: 32px;
             line-height: 32px;
             cursor:pointer;
+            @include transitionFast('color');
+
+            &:hover {
+                color:$gold;
+            }
         }
     }
 
@@ -207,6 +217,7 @@ input[type="submit"], input[type="reset"], button, .button {
     font-size:16px;
 
     height:32px;
+    line-height:32px;
     min-width:150px;
     padding:0 20px;
     width:auto;

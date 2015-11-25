@@ -4,5 +4,27 @@
 
 // MISSIONCONTROL ABOUT PAGE
 .missioncontrol-about {
+    h1 {
+        line-height:100px;
+        height:100px;
+    }
+
+    p {
+        font-size:24px;
+    }
+
+    @media all and (min-aspect-ratio: 16/9) {
+        #herovideo {
+            width:100%;
+            height:auto;
+        }
+    }
+
+    @media all and (max-aspect-ratio: 16/9) {
+        #herovideo {
+            width:auto;
+            height:100%;
+        }
+    }
 
 }

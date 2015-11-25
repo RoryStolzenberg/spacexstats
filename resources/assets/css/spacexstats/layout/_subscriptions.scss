@@ -1,5 +1,5 @@
-$planHeight:500px;
-$planWidth:300px;
+$planHeight:450px;
+$planWidth:350px;
 
 .subscribe {
     text-align:center;
@@ -11,7 +11,8 @@ $planWidth:300px;
         display:inline-block;
         border-radius:$border-radius-small;
         vertical-align: middle;
-        font-size:18px;
+        padding:0 20px;
+        margin: 20px 0;
 
 		&.free {
             background-color:$october;
@@ -35,4 +36,21 @@ $planWidth:300px;
 		}
 
 	}
+
+    h2 {
+        color:$white;
+        border-bottom:1px solid rgba($white, 0.5);
+        margin:10px 0;
+        padding-bottom:10px;
+        font-size:24px;
+    }
+
+    p, ul li {
+        font-size:18px;
+    }
+
+    li {
+        list-style-type: disc;
+        text-align: left;
+    }
 }

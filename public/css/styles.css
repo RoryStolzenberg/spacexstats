@@ -7656,164 +7656,159 @@ nav.sticky-bar {
     .actions a:hover {
       color: #ccac55; }
 
-form ul li {
-  padding: 10px; }
-
-form label, form .label {
-  font-size: 14px;
-  color: #21272B;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-family: "Segoe WP", sans-serif;
-  line-height: 2;
+form {
   margin: 0 10px; }
-
-form input, form textarea, form button, form select {
-  -webkit-transition: border ease-in-out 0.3s;
-          transition: border ease-in-out 0.3s;
-  -webkit-transition: box-shadow ease-in-out 0.3s;
-          transition: box-shadow ease-in-out 0.3s; }
-  form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched, form button.invalid, form button.ng-invalid.ng-touched, form select.invalid, form select.ng-invalid.ng-touched {
-    border: 1px solid #C05B40; }
-  form input:focus, form textarea:focus, form button:focus, form select:focus {
-    border: 1px solid #ccac55;
-    box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
-
-form input, form textarea {
-  width: calc(100% - 20px);
-  margin: 0 10px;
-  padding: 5px;
-  border: 1px solid #CCC;
-  font-family: "Noto Sans", sans-serif;
-  font-size: 14px;
-  box-shadow: 0 0 0px rgba(51, 73, 94, 0.2); }
-
-form select {
-  padding: 5px;
-  border: 1px solid #CCC; }
-
-form textarea {
-  resize: vertical;
-  min-height: 200px; }
-
-form input[type="checkbox"] {
-  display: none;
-  margin: 10px; }
-  form input[type="checkbox"] + label {
-    position: relative;
-    display: block;
-    height: 20px;
-    width: 44px;
-    margin: 10px;
-    padding: 0;
-    background: #898989;
-    border-radius: 100px;
-    cursor: pointer;
-    -webkit-transition: all 0.3s ease;
-            transition: all 0.3s ease; }
-    form input[type="checkbox"] + label span {
+  form ul li {
+    padding: 10px 0; }
+  form label, form .label {
+    font-size: 14px;
+    color: #21272B;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-family: "Segoe WP", sans-serif;
+    line-height: 2; }
+  form input, form textarea, form button, form select {
+    -webkit-transition: border ease-in-out 0.3s;
+            transition: border ease-in-out 0.3s;
+    -webkit-transition: box-shadow ease-in-out 0.3s;
+            transition: box-shadow ease-in-out 0.3s; }
+    form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched, form button.invalid, form button.ng-invalid.ng-touched, form select.invalid, form select.ng-invalid.ng-touched {
+      border: 1px solid #C05B40; }
+    form input:focus, form textarea:focus, form button:focus, form select:focus {
+      border: 1px solid #ccac55;
+      box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
+  form input, form textarea {
+    width: calc(100% - 20px);
+    padding: 5px;
+    border: 1px solid #CCC;
+    font-family: "Noto Sans", sans-serif;
+    font-size: 14px;
+    box-shadow: 0 0 0px rgba(51, 73, 94, 0.2); }
+  form select {
+    padding: 5px;
+    border: 1px solid #CCC; }
+  form textarea {
+    resize: vertical;
+    min-height: 200px; }
+  form input[type="checkbox"] {
+    display: none;
+    margin: 10px; }
+    form input[type="checkbox"] + label {
       position: relative;
-      left: 50px;
-      min-width: 400px;
       display: block;
-      line-height: 1.5; }
-    form input[type="checkbox"] + label:after {
-      position: absolute;
-      left: -2px;
-      top: -3px;
-      display: block;
-      width: 26px;
-      height: 26px;
+      height: 20px;
+      width: 44px;
+      margin: 10px;
+      padding: 0;
+      background: #898989;
       border-radius: 100px;
-      background: #CCC;
-      box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05);
-      content: '';
+      cursor: pointer;
       -webkit-transition: all 0.3s ease;
               transition: all 0.3s ease; }
-    form input[type="checkbox"] + label:active:after {
-      -webkit-transform: scale(1.15, 0.85);
-          -ms-transform: scale(1.15, 0.85);
-              transform: scale(1.15, 0.85); }
-  form input[type="checkbox"]:checked + label {
-    background: #3569A4; }
-    form input[type="checkbox"]:checked + label:after {
-      left: 20px;
-      background: #33495E; }
-  form input[type="checkbox"]:disabled + label {
-    background: #D5D5D5;
-    pointer-events: none; }
-    form input[type="checkbox"]:disabled + label:after {
-      background: #BCBDBC; }
-
-form input[type="radio"] {
-  display: none; }
-  form input[type="radio"] + label {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    position: relative;
-    border: 2px solid #CCC;
-    border-radius: 50%;
-    cursor: pointer;
-    -webkit-transition: all 0.3s ease;
-            transition: all 0.3s ease;
-    box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05); }
-    form input[type="radio"] + label span {
-      position: relative;
-      left: 25px;
-      min-width: 200px;
-      display: block;
-      line-height: 1.5; }
-    form input[type="radio"] + label:after {
-      background-color: transparent; }
-  form input[type="radio"]:checked + label {
-    border-color: #3569A4; }
-    form input[type="radio"]:checked + label:after {
-      content: "";
+      form input[type="checkbox"] + label span {
+        position: relative;
+        left: 50px;
+        min-width: 400px;
+        display: block;
+        line-height: 1.5; }
+      form input[type="checkbox"] + label:after {
+        position: absolute;
+        left: -2px;
+        top: -3px;
+        display: block;
+        width: 26px;
+        height: 26px;
+        border-radius: 100px;
+        background: #CCC;
+        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05);
+        content: '';
+        -webkit-transition: all 0.3s ease;
+                transition: all 0.3s ease; }
+      form input[type="checkbox"] + label:active:after {
+        -webkit-transform: scale(1.15, 0.85);
+            -ms-transform: scale(1.15, 0.85);
+                transform: scale(1.15, 0.85); }
+    form input[type="checkbox"]:checked + label {
+      background: #3569A4; }
+      form input[type="checkbox"]:checked + label:after {
+        left: 20px;
+        background: #33495E; }
+    form input[type="checkbox"]:disabled + label {
+      background: #D5D5D5;
+      pointer-events: none; }
+      form input[type="checkbox"]:disabled + label:after {
+        background: #BCBDBC; }
+  form input[type="radio"] {
+    display: none; }
+    form input[type="radio"] + label {
       display: inline-block;
-      position: absolute;
+      width: 20px;
+      height: 20px;
+      position: relative;
+      border: 2px solid #CCC;
       border-radius: 50%;
-      top: 2px;
-      left: 2px;
-      width: 12px;
-      height: 12px;
-      background-color: #33495E;
+      cursor: pointer;
       -webkit-transition: all 0.3s ease;
               transition: all 0.3s ease;
       box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05); }
-  form input[type="radio"]:disabled + label {
-    border-color: #CCC; }
-  form input[type="radio"]:checked:disabled + label {
-    border-color: #CCC; }
-
-form legend {
-  font-size: 18px;
-  line-height: 2; }
-
-form .prepended-input {
-  margin: 0 10px; }
-  form .prepended-input span, form .prepended-input input {
-    display: inline-block; }
-  form .prepended-input span {
-    width: 30px;
-    text-align: center; }
-  form .prepended-input input {
-    margin: 0;
-    width: calc(100% - 30px); }
-
-form .password-toggle {
-  position: relative; }
-  form .password-toggle i {
-    right: 20px;
-    position: absolute;
-    height: 32px;
-    line-height: 32px;
-    cursor: pointer; }
+      form input[type="radio"] + label span {
+        position: relative;
+        left: 25px;
+        min-width: 200px;
+        display: block;
+        line-height: 1.5; }
+      form input[type="radio"] + label:after {
+        background-color: transparent; }
+    form input[type="radio"]:checked + label {
+      border-color: #3569A4; }
+      form input[type="radio"]:checked + label:after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        border-radius: 50%;
+        top: 2px;
+        left: 2px;
+        width: 12px;
+        height: 12px;
+        background-color: #33495E;
+        -webkit-transition: all 0.3s ease;
+                transition: all 0.3s ease;
+        box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05); }
+    form input[type="radio"]:disabled + label {
+      border-color: #CCC; }
+    form input[type="radio"]:checked:disabled + label {
+      border-color: #CCC; }
+  form legend {
+    font-size: 18px;
+    line-height: 2; }
+  form .prepended-input {
+    margin: 0 10px; }
+    form .prepended-input span, form .prepended-input input {
+      display: inline-block; }
+    form .prepended-input span {
+      width: 30px;
+      text-align: center; }
+    form .prepended-input input {
+      margin: 0;
+      width: calc(100% - 30px); }
+  form .password-toggle {
+    position: relative; }
+    form .password-toggle i {
+      right: 30px;
+      position: absolute;
+      height: 32px;
+      line-height: 32px;
+      cursor: pointer;
+      -webkit-transition: color ease-in-out 0.3s;
+              transition: color ease-in-out 0.3s; }
+      form .password-toggle i:hover {
+        color: #ccac55; }
 
 input[type="submit"], input[type="reset"], button, .button {
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
   height: 32px;
+  line-height: 32px;
   min-width: 150px;
   padding: 0 20px;
   width: auto;
@@ -7849,7 +7844,7 @@ input[value="Logout"], input[value="Logout"]:focus {
   outline: none;
   cursor: pointer;
   border: none !important;
-  font-family: "Noto Sans";
+  font-family: "Noto Sans", sans-serif;
   font-size: 100%;
   letter-spacing: normal;
   text-transform: none;
@@ -8183,17 +8178,18 @@ section.comments {
     display: inline-block;
     border-radius: 3px;
     vertical-align: middle;
-    font-size: 18px; }
+    padding: 0 20px;
+    margin: 20px 0; }
     .subscribe .plan.free {
       background-color: #33495E;
-      width: 250px;
-      height: 416.66667px;
+      width: 291.66667px;
+      height: 375px;
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
       box-shadow: -10px 0 10px -10px #21272B inset; }
     .subscribe .plan.subscription {
-      width: 300px;
-      height: 500px;
+      width: 350px;
+      height: 450px;
       /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#51a4f7+0,3569a4+100 */
       background: #3569A4;
       /* Old browsers */
@@ -8205,6 +8201,17 @@ section.comments {
       /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#51a4f7', endColorstr='#3569a4',GradientType=1 );
       /* IE6-9 fallback on horizontal gradient */ }
+  .subscribe h2 {
+    color: #FFF;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    margin: 10px 0;
+    padding-bottom: 10px;
+    font-size: 24px; }
+  .subscribe p, .subscribe ul li {
+    font-size: 18px; }
+  .subscribe li {
+    list-style-type: disc;
+    text-align: left; }
 
 .hero {
   height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
@@ -8555,6 +8562,23 @@ button.canned-response {
   padding-right: 10px;
   padding-bottom: 0px;
   padding-left: 10px; }
+
+.missioncontrol-about h1 {
+  line-height: 100px;
+  height: 100px; }
+
+.missioncontrol-about p {
+  font-size: 24px; }
+
+@media all and (min-aspect-ratio: 16/9) {
+  .missioncontrol-about #herovideo {
+    width: 100%;
+    height: auto; } }
+
+@media all and (max-aspect-ratio: 16/9) {
+  .missioncontrol-about #herovideo {
+    width: auto;
+    height: 100%; } }
 
 .tagger-container .wrapper {
   border: 1px solid #CCC;

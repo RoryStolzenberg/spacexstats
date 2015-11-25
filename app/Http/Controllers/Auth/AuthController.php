@@ -45,9 +45,11 @@ class AuthController extends Controller
 
     /**
      * Create a new authentication controller instance.
+     * @param UserMailer $mailer
      */
-    public function __construct()
+    public function __construct(UserMailer $mailer)
     {
+        $this->mailer = $mailer;
         $this->middleware('guest', ['except' => ['logout', 'getLogout']]);
     }
 
@@ -70,10 +72,10 @@ class AuthController extends Controller
     /**
      * Create a new user instance after a valid registration, also send them a welcome email.
      *
-     * @param  array $data
+     * @param array $data
      * @return User
      */
-    protected function create(UserMailer $mailer, array $data)
+    protected function create(array $data)
     {
         $user = new User();
         $user->username     = $data['username'];
@@ -91,7 +93,7 @@ class AuthController extends Controller
         });
 
         // Add a welcome email to the queue
-        $mailer->welcome($user);
+        $this->mailer->welcome($user);
 
         return $user;
     }

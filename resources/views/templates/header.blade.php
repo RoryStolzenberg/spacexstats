@@ -72,7 +72,7 @@
 								</li>
 							</ul>
 						@else
-							My Account
+							<a href="/auth/login">My Account</a>
 							<ul class="nav-second-tier">
                                 <li><a href="/auth/login">Log In</a></li>
                                 <li><a href="/auth/signup">Sign Up</a></li>

@@ -5,6 +5,7 @@ namespace SpaceXStats\Mail\Mailers;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Mail;
 use SpaceXStats\Library\Enums\EmailStatus;
 use SpaceXStats\Library\Enums\NotificationType;
@@ -44,6 +45,7 @@ abstract class Mailer {
     private function sendEmail($user, $subject, $view, $data, $queue) {
 
         Mail::queueOn($queue, $view, $data, function($message) use($user, $subject) {
+            $message->from(Config::get('mail.from.address'), Config::get('mail.from.name'));
             $message->to($user->email)->subject($subject);
         });
 
@@ -52,7 +54,7 @@ abstract class Mailer {
         Email::create([
             'user_id' => $user->user_id,
             'subject' => $subject,
-            'body' => View::make($view, $data)->render(),
+            'body' => view($view)->with($data)->render(),
             'status' => EmailStatus::Sent,
             'sent_at' => $now
         ]);

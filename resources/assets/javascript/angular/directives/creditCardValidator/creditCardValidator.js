@@ -20,7 +20,9 @@
                 }
 
                 else if ($scope.componentToValidate == 'number') {
+                    ctrl.$parsers.addSpacesToNumber = function() {
 
+                    };
                 }
 
                 /*$scope.$watch('model', function() {

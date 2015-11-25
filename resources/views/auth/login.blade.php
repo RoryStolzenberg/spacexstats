@@ -29,6 +29,9 @@
                     <li>
                         <input type="submit" value="Log In" />
                     </li>
+                    <li>
+                        <p class="lowvisibility opacity">I forgot my password. Don't have an account yet? <a href="/auth/signup">Sign up</a>.</p>
+                    </li>
                 </ul>
 
             </form>

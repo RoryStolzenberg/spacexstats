@@ -1132,6 +1132,59 @@
     ]);
 })();
 (function() {
+    var aboutMissionControlApp = angular.module('app', []);
+
+    aboutMissionControlApp.controller("subscriptionController", ["$scope", "subscriptionService", function($scope, subscriptionService) {
+        $scope.subscriptionButtonText = "Pay $9";
+        $scope.subscriptionState = {
+            isLooking: true,
+            isEnteringDetails: false,
+            isSubscribing: false,
+            hasSubscribed: false
+        };
+
+        $scope.subscription = {
+            showSubscribeForm: function() {
+                $scope.subscriptionState.isLooking = false;
+                $scope.subscriptionState.isEnteringDetails = true;
+            },
+            subscribe: function($event) {
+                $scope.subscriptionState.isEnteringDetails = false;
+                $scope.subscriptionState.isSubscribing = true;
+                $scope.subscriptionButtonText = "Paying...";
+
+                var form = $event.target.parentElement;
+                Stripe.card.createToken(form, $scope.subscription.stripeResponseHandler);
+            },
+            stripeResponseHandler: function(stripeStatus, stripeResponse) {
+                if (stripeResponse.error) {
+                    // Stripe Failure
+                } else {
+                    // Fetch the token from Stripe's response.
+                    var token = stripeResponse.id;
+
+                    // Subscribe
+                    subscriptionService.subscribe(token).then(function() {
+                        // Success!
+                        $scope.subscriptionState.isSubscribing = false;
+                        $scope.subscriptionState.hasSubscribed = true;
+                    });
+                }
+            }
+        };
+    }]);
+
+    aboutMissionControlApp.service("subscriptionService", ["$http", function($http) {
+        this.subscribe = function(token) {
+            return $http.post('/missioncontrol/payments/subscribe', { creditCardToken: token });
+        };
+    }]);
+
+    aboutMissionControlApp.service("aboutMissionControlService", ["$http", function($http) {
+    }]);
+})();
+
+(function() {
     var dataViewApp = angular.module('app', []);
 
     dataViewApp.controller('dataViewController', ['DataView', 'dataViewService', '$scope', '$http', function(DataView, dataViewService, $scope, $http) {
@@ -1525,42 +1578,6 @@
 })();
 
 (function() {
-    var aboutMissionControlApp = angular.module('app', []);
-
-    aboutMissionControlApp.controller("subscriptionController", ["$scope", "subscriptionService", function($scope, subscriptionService) {
-        $scope.subscription = {
-            subscribe: function($event) {
-                $scope.isSubscribing = true;
-
-                var form = $event.target.parentElement;
-                Stripe.card.createToken(form, $scope.subscription.stripeResponseHandler);
-            },
-            stripeResponseHandler: function(stripeStatus, stripeResponse) {
-                if (stripeResponse.error) {
-                    // Stripe Failure
-                } else {
-                    var token = stripeResponse.id;
-
-                    // Subscribe
-                    subscriptionService.subscribe(token).then(function() {
-                        // Success!
-                    });
-                }
-            }
-        };
-    }]);
-
-    aboutMissionControlApp.service("subscriptionService", ["$http", function($http) {
-        this.subscribe = function(token) {
-            return $http.post('/missioncontrol/payments/subscribe', { creditCardToken: token });
-        };
-    }]);
-
-    aboutMissionControlApp.service("aboutMissionControlService", ["$http", function($http) {
-    }]);
-})();
-
-(function() {
     var liveApp = angular.module('app', []);
 
     liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
@@ -1909,6 +1926,8 @@
             }, function() {
                 // Otherwise show error
                 $scope.isSigningUp = false;
+                $scope.signUpButtonText = "Sign Up";
+                flashMessage.addError('Your account could not be created. Please contact us.');
             });
         }
     }]);
@@ -1947,6 +1966,18 @@
 })();
 
 
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2018,6 +2049,152 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+        return {
+            require: 'ngModel',
+            replace: true,
+            restrict: 'E',
+            scope: {
+                availableTags: '=',
+                currentTags: '=ngModel'
+            },
+            link: function($scope, element, attributes, ctrl) {
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
+
+                ctrl.$options = {
+                    allowInvalid: true
+                };
+
+                $scope.createTag = function(createdTag) {
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
+                        });
+
+                        if (tagIsPresentInAvailableTags.length === 1) {
+                            // grab tag
+                            var newTag = tagIsPresentInAvailableTags[0];
+                        } else {
+                            // trim and convert the text to lowercase, then create!
+                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
+                        }
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
+                    }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        // Remove any rulebreaking chars
+                        var tag = $scope.tagInput;
+                        tag = tag.replace(/["']/g, "");
+                        // Remove whitespace if present
+                        tag = tag.trim();
+
+                        $scope.createTag(tag);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
+
+            },
+            templateUrl: '/js/templates/tags.html'
+        }
+    }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+            return self;
+        }
+    });
+})();
+
+
+(function() {
+    var app = angular.module('app');
+
     app.directive('upload', ['$parse', function($parse) {
         return {
             restrict: 'A',
@@ -2070,18 +2247,42 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
+    app.directive('tweet', ["$http", function($http) {
         return {
             restrict: 'E',
             scope: {
-                size: '@',
-                mission: '='
+                action: '@',
+                tweet: '='
             },
-            link: function($scope) {
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
             },
-            templateUrl: '/js/templates/missionCard.html'
+            templateUrl: '/js/templates/tweet.html'
         }
-    });
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2263,208 +2464,6 @@
     });
 })();
 (function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.createTag = function(createdTag) {
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
-                        }
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        // Remove any rulebreaking chars
-                        var tag = $scope.tagInput;
-                        tag = tag.replace(/["']/g, "");
-                        // Remove whitespace if present
-                        tag = tag.trim();
-
-                        $scope.createTag(tag);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-            return self;
-        }
-    });
-})();
-
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
     var app = angular.module('app');
 
     app.directive('deltaV', function() {
@@ -2516,6 +2515,38 @@
             templateUrl: '/js/templates/deltaV.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -2781,6 +2812,152 @@
         return self;
     });
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('creditCardValidator', [function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: {
+                componentToValidate: '@',
+                model: '=ngModel'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+                if ($scope.componentToValidate == 'cvc') {
+                    ctrl.$validators.cvc = function(modelValue, viewValue) {
+                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
+                    };
+                }
+
+                else if ($scope.componentToValidate == 'expiry') {
+                }
+
+                else if ($scope.componentToValidate == 'number') {
+                    ctrl.$parsers.addSpacesToNumber = function() {
+                          
+                    };
+                }
+
+                /*$scope.$watch('model', function() {
+                    ctrl.$validate();
+                });*/
+            }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = null;
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
 (function() {
     var app = angular.module('app');
 
@@ -2897,130 +3074,6 @@
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = null;
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
-})();
 (function() {
     var app = angular.module('app');
 
@@ -3039,35 +3092,4 @@
     }]);
 })();
 
-(function() {
-    var app = angular.module('app');
 
-    app.directive('creditCardValidator', [function() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            scope: {
-                componentToValidate: '@',
-                model: '=ngModel'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-                if ($scope.componentToValidate == 'cvc') {
-                    ctrl.$validators.cvc = function(modelValue, viewValue) {
-                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
-                    };
-                }
-
-                else if ($scope.componentToValidate == 'expiry') {
-                }
-
-                else if ($scope.componentToValidate == 'number') {
-
-                }
-
-                /*$scope.$watch('model', function() {
-                    ctrl.$validate();
-                });*/
-            }
-        }
-    }]);
-})();

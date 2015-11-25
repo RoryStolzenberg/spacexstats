@@ -16,6 +16,8 @@
             }, function() {
                 // Otherwise show error
                 $scope.isSigningUp = false;
+                $scope.signUpButtonText = "Sign Up";
+                flashMessage.addError('Your account could not be created. Please contact us.');
             });
         }
     }]);

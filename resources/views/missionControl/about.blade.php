@@ -15,16 +15,16 @@
 
                 @if (!Auth::check())
                 <div class="plan free">
-                    <span>Sign Up For Free</span>
+                    <h2>Sign Up For Free</h2>
                     <div class="features">
                         <p>Just like before, email launch notifications remain free.</p>
-                        <a href="/auth/signup" class="button">Sign Up</a>
+                        <a href="/auth/signup" class="wide-button button">Sign Up</a>
                     </div>
                 </div>
                 @endif
                 <div class="plan subscription">
-                    <span>$9/year</span>
-                    <div class="features">
+                    <h2>Mission Control - $9/year</h2>
+                    <div class="features" ng-show="subscriptionState.isLooking">
                         <ul>
                             <li>SMS/Email Launch Notifications</li>
                             <li>Archive Access</li>
@@ -34,36 +34,37 @@
                             <li>Community Access</li>
                         </ul>
                         @if (Auth::isMember())
-                            <button ng-click="showSubscribeForm">Lets Go!</button>
+                            <button class="wide-button" ng-click="subscription.showSubscribeForm()">Lets Go!</button>
                         @else
-                            <a href="/auth/signup" class="button">Sign Up</a>
+                            <a href="/auth/signup" class="button wide-button">Sign Up</a>
                         @endif
                     </div>
                     @if (Auth::isMember())
-                        <form name="subscribeForm">
+                        <form name="subscribeForm" ng-show="subscriptionState.isEnteringDetails">
                             <label for="Card Number">Card Number</label>
                             <input type="text" name="creditcardnumber" ng-model="creditcard.number" credit-card-validator="number" data-stripe="number" />
-                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" credit-card-validator="expirymonth" placeholder="MM/YY" data-stripe="exp-month"/>
-                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="MM/YY" data-stripe="exp-year" />
+                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" credit-card-validator="expirymonth" placeholder="MM" data-stripe="exp-month"/>
+                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="YYYY" data-stripe="exp-year" />
                             <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" credit-card-validator="cvc" placeholder="CVC" data-stripe="cvc" />
 
-                            <button ng-click="subscription.subscribe($event)" ng-disabled="isSubscribing"><i class="fa fa-lock"></i> Pay $9</button>
+                            <button class="wide-button" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>
                         </form>
-                        <div class="response">
+                        <div class="response" ng-show="subscriptionState.hasSubscribed">
                             Payment Complete!
 
-                            <a class="button">Go To Mission Control</a> <!-- Make button text fade and change -->
+                            <a class="button wide-button">Go To Mission Control</a> <!-- Make button text fade and change -->
                         </div>
                     @endif
                 </div>
 
-                <p>You will never pay more for Mission Control, you will always be charged at the rate that was available when you signed up (excluding inflation).</p>
-                <p>At the end of the year or when your subscription expires (whichever is later), you will be automatically rebilled.</p>
+                <p>Scroll down to see why Mission Control is so awesome.</p>
             </section>
-            <p>Scroll down to see why Mission Control is so awesome.</p>
         </main>
     </div>
-    <div class="content-wrapper single-page background transparent">
+    <div class="content-wrapper single-page background transparent" style="position:relative;overflow:hidden;">
+        <video autoplay loop id="herovideo">
+            <source src="/videos/herovideo.mp4" type="video/mp4">
+        </video>
         <h1>We Have Liftoff</h1>
     </div>
     <div class="content-wrapper single-page background transparent">
@@ -83,6 +84,8 @@
     </div>
     <div class="content-wrapper single-page background">
         <h1>Convinced? Sign Me Up!</h1>
+        <p>You will never pay more for Mission Control, you will always be charged at the rate that was available when you signed up (excluding inflation).</p>
+        <p>At the end of the year or when your subscription expires (whichever is later), you will be automatically rebilled.</p>
     </div>
 
     @if (Auth::check())
