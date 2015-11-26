@@ -10,10 +10,10 @@
 			<span id="logo"><a href="/">SpaceX Stats</a></span>
 			<nav>
 				<ul>
-                    <li class="gr-1on8 gr-small-12">
+                    <li class="gr-1on8 gr-12@small">
                         <a href="/live">Live</a>
                     </li>
-					<li class="gr-1on8 gr-small-12">
+					<li class="gr-1on8 gr-12@small">
                         <a href="/missions/past">Past Missions</a>
 						<ul class="nav-second-tier wide">
 							@foreach ($nearbyMissions['past'] as $pastMission)
@@ -21,7 +21,7 @@
 							@endforeach
 						</ul>
 					</li>
-					<li class="gr-1on8 gr-small-12">
+					<li class="gr-1on8 gr-12@small">
                         <a href="/missions/future">Future Missions</a>
 						<ul class="nav-second-tier wide">
 							@foreach ($nearbyMissions['future'] as $futureMission)
@@ -29,7 +29,7 @@
 							@endforeach
 						</ul>
 					</li>
-					<li class="gr-1on8 gr-small-12">
+					<li class="gr-1on8 gr-12@small">
 						More...
 						<ul class="nav-second-tier wide">
                             <li><a href="/locations">Locations</a></li>
@@ -41,7 +41,7 @@
 							<li><a href="/about/contact">Contact & Tips</a></li>
 						</ul>
 					</li>
-					<li class="gr-1on8 gr-small-12 push-3">
+					<li class="gr-1on8 gr-12@small push-3">
                         <a href="/missioncontrol">Mission Control</a>
 						<ul class="nav-second-tier">
 							@if (Auth::isSubscriber())
@@ -57,7 +57,7 @@
                             @endif
 						</ul>
 					</li>
-					<li class="gr-1on8 gr-small-12 push-3">
+					<li class="gr-1on8 gr-12@small push-3">
 						@if (Auth::check())
                             <a href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a>
 							<ul class="nav-second-tier">

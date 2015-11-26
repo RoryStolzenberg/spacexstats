@@ -40,19 +40,21 @@
                         @endif
                     </div>
                     @if (Auth::isMember())
-                        <form name="subscribeForm" ng-show="subscriptionState.isEnteringDetails">
+                        <form name="subscribeForm" ng-show="subscriptionState.isEnteringDetails || subscriptionState.isSubscribing">
                             <label for="Card Number">Card Number</label>
-                            <input type="text" name="creditcardnumber" ng-model="creditcard.number" credit-card-validator="number" data-stripe="number" />
-                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" credit-card-validator="expirymonth" placeholder="MM" data-stripe="exp-month"/>
-                            <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="YYYY" data-stripe="exp-year" />
-                            <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" credit-card-validator="cvc" placeholder="CVC" data-stripe="cvc" />
+                            <fieldset ng-disabled="subscriptionState.isSubscribing">
+                                <input type="text" name="creditcardnumber" ng-model="creditcard.number" credit-card-validator="number" data-stripe="number" />
+                                <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" credit-card-validator="expirymonth" placeholder="MM" data-stripe="exp-month"/>
+                                <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="YYYY" data-stripe="exp-year" />
+                                <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" credit-card-validator="cvc" placeholder="CVC" data-stripe="cvc" />
+                            </fieldset>
+
 
                             <button class="wide-button" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>
                         </form>
                         <div class="response" ng-show="subscriptionState.hasSubscribed">
-                            Payment Complete!
-
-                            <a class="button wide-button">Go To Mission Control</a> <!-- Make button text fade and change -->
+                            <p>Payment Complete!</p>
+                            <a class="button wide-button" href="/missioncontrol">Go To Mission Control</a> <!-- Make button text fade and change -->
                         </div>
                     @endif
                 </div>

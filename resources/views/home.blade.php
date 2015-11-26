@@ -19,7 +19,7 @@
     </div>
 
     <!-- Navigation -->
-    <ul id="side-navigation">
+    <ul id="side-navigation" class="hide@small">
         <li class="statistic-holder">
             <a class="link" ng-class="{ 'active' : activeStatistic == null }" ng-click="goHome()"></a>
         </li>

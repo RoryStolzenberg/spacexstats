@@ -3,6 +3,8 @@ namespace SpaceXStats\Services;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use SpaceXStats\Library\Enums\Destination;
+use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\PartFlight;
 use SpaceXStats\Models\Spacecraft;
@@ -266,11 +268,21 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
 	}
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return int
      */
-	public static function dragonRiders($parameter) {
-        return 0;
+	public static function dragonRiders($substatistic) {
+        if ($substatistic == 'Current') {
+			/* SELECT COUNT(*) FROM astronauts_flights_pivot
+JOIN spacecraft_flights_pivot ON spacecraft_flights_pivot.spacecraft_flight_id = astronauts_flights_pivot.spacecraft_flight_id
+JOIN missions ON missions.mission_id = spacecraft_flights_pivot.mission_id
+WHERE missions.status='IN PROGRESS' */
+		} else if ($substatistic == 'Cumulative') {
+			/* SELECT COUNT(*) FROM astronauts_flights_pivot
+JOIN spacecraft_flights_pivot ON spacecraft_flights_pivot.spacecraft_flight_id = astronauts_flights_pivot.spacecraft_flight_id
+JOIN missions ON missions.mission_id = spacecraft_flights_pivot.mission_id
+WHERE missions.status='Complete' OR missions.status='In Progress' */
+		}
     }
 
 	/**
@@ -281,37 +293,74 @@ GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
     }
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return int
      */
-	public static function payloads($parameter) {
-        return 0;
+	public static function payloads($substatistic) {
+        if ($substatistic == 'Satellites Launched') {
+			return DB::table('payloads')->whereHas('mission', function($q) {
+				$q->where('mission', MissionStatus::Complete);
+			})->count();
+
+		} else if ($substatistic == 'Total Mass') {
+			return DB::table('payloads')->whereHas('mission', function($q) {
+				$q->where('mission', MissionStatus::Complete);
+			})->sum('mass');
+
+		} else if ($substatistic == 'Mass to GTO') {
+			return DB::table('payloads')->whereHas('mission', function($q) {
+				$q->where('mission', MissionStatus::Complete)->whereIn('destination', [
+					Destination::GeostationaryTransferOrbit, Destination::SubsynchronousGTO, Destination::SupersynchronousGTO
+				]);
+			})->sum('mass');
+
+		} else if ($substatistic == 'Heaviest Satellite') {
+			return DB::table('payloads')->whereHas('mission', function($q) {
+				$q->where('mission', MissionStatus::Complete);
+			})->max('mass');
+		}
     }
 
 	/**
 	 * @return int
      */
-	public static function upperStagesInOrbit() {
-        return 0;
+	public static function upperStagesInOrbit($substatistic) {
+		if ($substatistic == 'In Orbit') {
+
+		} else if ($substatistic == 'TLEs') {
+			return DB::table('orbital_elements')->count();
+		}
     }
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return int
      */
-	public static function distance($parameter) {
-        return 0;
+	public static function distance($substatistic) {
+		if ($substatistic == 'Earth Orbit') {
+			return DB::table('orbital_elements')->max('apogee');
+		} else if ($substatistic == 'Solar System') {
+			return 0;
+		}
     }
 
 	/**
-	 * @param $parameter
+	 * @param $substatistic
 	 * @return int
      */
-	public static function turnarounds($parameter) {
-        return 0;
+	public static function turnarounds($substatistic) {
+        if ($substatistic == 'Quickest') {
+
+		} else if ($substatistic == 'Since Last Launch') {
+
+		} else if ($substatistic == 'Over Time') {
+
+		}
     }
 
 	/**
+	 * Retrieve the number of SpaceX satellites that have been launched to support their internet constellation plans.
+	 *
 	 * @return int
      */
 	public static function internetConstellation() {
