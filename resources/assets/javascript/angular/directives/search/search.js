@@ -91,7 +91,7 @@
             var typeResult = search.filters().type();
             if (typeResult != null) {
                 var type = data.types.filter(function(type) {
-                    return type.name == typeResult;
+                    return type.type == typeResult;
                 });
 
                 if (type !== null) {

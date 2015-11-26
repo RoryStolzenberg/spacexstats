@@ -43,19 +43,12 @@
                         <form name="subscribeForm" ng-show="subscriptionState.isEnteringDetails || subscriptionState.isSubscribing" novalidate>
                             <label for="Card Number">Card Number</label>
                             <fieldset ng-disabled="subscriptionState.isSubscribing">
-<<<<<<< HEAD
-                                <input type="text" name="creditcardnumber" ng-model="creditcard.number" credit-card-validator="number" data-stripe="number" />
-                                <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" credit-card-validator="expirymonth" placeholder="MM" data-stripe="exp-month"/>
-                                <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="YYYY" full-year data-stripe="exp-year" />
-                                <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" credit-card-validator="cvc" placeholder="CVC" data-stripe="cvc" />
-=======
                                 <input type="text" name="creditcardnumber" ng-model="creditcard.number" cc-format cc-number data-stripe="number" />
                                 <div cc-exp>
                                     <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" cc-exp-month placeholder="MM" data-stripe="exp-month"/>
                                     <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" cc-exp-year placeholder="YYYY" data-stripe="exp-year" />
                                 </div>
                                 <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" placeholder="CVC" cc-cvc data-stripe="cvc" />
->>>>>>> origin/master
                             </fieldset>
 
                             <button class="wide-button" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing || subscribeForm.$invalid"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>

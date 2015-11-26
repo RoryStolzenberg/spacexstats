@@ -1,6 +1,7 @@
 <?php
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Models\Destination;
 use SpaceXStats\Models\Location;
 use SpaceXStats\Models\Mission;
@@ -432,7 +433,51 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'summary' => "SpaceX's Return To Flight Mission",
-            'article' => "default summary",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 26,
+            'launch_exact' => null,
+            'launch_approximate' => 'late December 2015',
+            'launch_specificity' => LaunchSpecificity::SubMonth,
+            'name' => 'SES-9',
+            'contractor' => 'SES',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SES's second launch",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 27,
+            'launch_exact' => Carbon::create(2016, 1, 4, 0, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => LaunchSpecificity::Day,
+            'name' => 'Jason 3',
+            'contractor' => 'NASA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Launching Jason-3 to polar",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 28,
+            'launch_exact' => null,
+            'launch_approximate' => 'January 2016',
+            'launch_specificity' => LaunchSpecificity::Month,
+            'name' => 'CRS-8',
+            'contractor' => 'NASA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "8th mission to the ISS",
             'status' => MissionStatus::Upcoming
         ]);
     }
