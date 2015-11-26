@@ -17,6 +17,10 @@
             },
             link: function($scope, element, attributes, ngModelCtrl) {
 
+                $scope.search = {
+                    name: ''
+                };
+
                 ngModelCtrl.$viewChangeListeners.push(function() {
                     $scope.$eval(attributes.ngChange);
                 });
@@ -79,7 +83,7 @@
                 $scope.toggleDropdown = function() {
                     $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
                     if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = null;
+                        $scope.search.name = '';
                     }
                 };
 

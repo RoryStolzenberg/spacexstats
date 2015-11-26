@@ -293,7 +293,7 @@ class Mission extends Model {
      * @return bool     Is the launch precise or not?
      */
     public function isLaunchPrecise() {
-        return $this->attributes['launch_specificity'] >= LaunchSpecificity::Day;
+        return $this->launch_specificity >= LaunchSpecificity::Day;
     }
 
 	// Scoped Queries

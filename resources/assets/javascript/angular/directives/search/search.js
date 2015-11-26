@@ -71,6 +71,7 @@
 
     app.service('conversionService', function() {
         this.searchesToFilters = function(brokerFilters, search, data) {
+            // Search for missions in the query string
             var missionResult = search.filters().mission();
             if (missionResult != null) {
                 var mission = data.missions.filter(function(mission) {
@@ -86,6 +87,22 @@
                 brokerFilters.mission = null;
             }
 
+            // Search for types of resources in the query string
+            var typeResult = search.filters().type();
+            if (typeResult != null) {
+                var type = data.types.filter(function(type) {
+                    return type.name == typeResult;
+                });
+
+                if (type !== null) {
+                    brokerFilters.type = type[0];
+                } else {
+                    brokerFilters.type = null;
+                }
+            } else {
+                brokerFilters.type = null;
+            }
+
             brokerFilters.favorited = search.filters().favorited() != null;
             brokerFilters.noted = search.filters().noted() != null;
             brokerFilters.downloaded = search.filters().downloaded() != null;
@@ -99,7 +116,7 @@
                 } else {
                     if (search.filters().mission() === null) {
 
-                        // Test whether the name of the mission contains a string. If it does, we need to append
+                        // Test whether the name of the mission contains a space. If it does, we need to append
                         // quotes around it
                         var whatToConcatenate = /\s/.test(brokerFilters.mission.name) ?
                             'mission:"' + brokerFilters.mission.name + '"' :
@@ -108,17 +125,33 @@
                         this.contextualConcat(search, whatToConcatenate);
 
                     } else {
-                        if (/\s/.test(brokerFilters.mission.name)) {
-                            search.rawQuery = search.rawQuery.replace(search.regex.mission, 'mission:"' + brokerFilters.mission.name + '"');
-                        } else {
-                            search.rawQuery = search.rawQuery.replace(search.regex.mission, 'mission:' + brokerFilters.mission.name);
-                        }
+                        search.rawQuery = /\s/.test(brokerFilters.mission.name) ?
+                            search.rawQuery.replace(search.regex.mission, 'mission:"' + brokerFilters.mission.name + '"') :
+                            search.rawQuery.replace(search.regex.mission, 'mission:' + brokerFilters.mission.name);
                     }
                 }
             }
 
             else if (filterType == 'type') {
+                if (brokerFilters.type === null) {
+                    search.rawQuery = search.rawQuery.replace(search.regex.type, '');
+                } else {
+                    if (search.filters().type() === null) {
 
+                        // Test whether the name of the type contains a space. If it does, we need to append
+                        // quotes around it
+                        var whatToConcatenate = /\s/.test(brokerFilters.type.name) ?
+                        'type:"' + brokerFilters.type.name + '"' :
+                        'type:' + brokerFilters.type.name;
+
+                        this.contextualConcat(search, whatToConcatenate);
+
+                    } else {
+                        search.rawQuery = /\s/.test(brokerFilters.type.name) ?
+                            search.rawQuery.replace(search.regex.type, 'type:"' + brokerFilters.type.name + '"') :
+                            search.rawQuery.replace(search.regex.type, 'type:' + brokerFilters.type.name);
+                    }
+                }
             }
 
             else if (filterType == 'before') {
@@ -252,8 +285,8 @@
 
         self.regex = {
             tags: /\[([^)]+?)\]/gi,
-            mission: /mission:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
-            type: /type:(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/i,
+            mission: /mission:(?:([^ "]+)|"(.+)")/i,
+            type: /type:(?:([^ "]+)|"(.+)")/i,
             before: /before:([0-9-]+)/i,
             after:/after:([0-9-]+)/i,
             year: /year:([0-9]{4})/i,
@@ -261,7 +294,7 @@
             favorited: /favorited:(true|yes|y|1)/i,
             noted: /noted:(true|yes|y|1)/i,
             downloaded: /downloaded:(true|yes|y|1)/i,
-            all: /([a-z,-]+):(?:([a-zA-Z0-9_-]+)|"([a-zA-Z0-9_ -]+)")/gi
+            all: /([a-z-]+):(?:([^ "]+)|"(.+)")/gi
         };
 
         return self;
