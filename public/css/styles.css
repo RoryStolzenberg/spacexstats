@@ -8556,6 +8556,11 @@ button.canned-response {
   font-size: smaller;
   letter-spacing: normal; }
 
+.interactions img {
+  width: 64px;
+  height: 64px;
+  margin: 0 10px; }
+
 .about-this-user td:first-child {
   color: #8B939B;
   text-align: right; }
