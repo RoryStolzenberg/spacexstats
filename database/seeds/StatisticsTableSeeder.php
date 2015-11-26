@@ -282,15 +282,25 @@ class StatisticsTableSeeder extends Seeder {
         // Upper Stages
         Statistic::create(array(
             'order' => 31,
-            'type' => "Upper Stages In Orbit",
+            'type' => "Upper Stages",
+            'name' => 'In Orbit',
             'description' => '',
             'unit' => 'upper stages',
             'display' => 'single'
         ));
 
-        // Distance
         Statistic::create(array(
             'order' => 32,
+            'type' => "Upper Stages",
+            'name' => "TLEs",
+            'description' => '',
+            'unit' => 'Two Line Elements',
+            'display' => 'single'
+        ));
+
+        // Distance
+        Statistic::create(array(
+            'order' => 33,
             'type' => "Distance",
             'name' => 'Earth Orbit',
             'description' => '',
@@ -299,7 +309,7 @@ class StatisticsTableSeeder extends Seeder {
         ));
 
         Statistic::create(array(
-            'order' => 33,
+            'order' => 34,
             'type' => "Distance",
             'name' => 'Solar System',
             'description' => '',
@@ -309,7 +319,7 @@ class StatisticsTableSeeder extends Seeder {
 
         // Turnaround time
         Statistic::create(array(
-            'order' => 34,
+            'order' => 35,
             'type' => 'Turnarounds',
             'name' => 'Quickest',
             'description' => "SpaceX's quickest turnaround between two launches has been between {{ firstLaunch }} on {{ firstLaunchDate }}, and {{ secondLaunch }} on {{ secondLaunchDate }}",
@@ -317,7 +327,7 @@ class StatisticsTableSeeder extends Seeder {
         ));
 
         Statistic::create(array(
-            'order' => 35,
+            'order' => 36,
             'type' => 'Turnarounds',
             'name' => 'Since Last Launch',
             'description' => "",
@@ -325,7 +335,7 @@ class StatisticsTableSeeder extends Seeder {
         ));
 
         Statistic::create(array(
-            'order' => 36,
+            'order' => 37,
             'type' => 'Turnarounds',
             'name' => 'Cumulative',
             'description' => "",
@@ -334,7 +344,7 @@ class StatisticsTableSeeder extends Seeder {
 
         // Internet Constellaiton
         Statistic::create(array(
-            'order' => 37,
+            'order' => 38,
             'type' => 'Internet Constellation',
             'description' => "",
             "unit" => "Total Launched", // 0/4025
@@ -343,7 +353,7 @@ class StatisticsTableSeeder extends Seeder {
 
         // Mars Population Count
         Statistic::create(array(
-            'order' => 38,
+            'order' => 39,
             'type' => 'Mars Population Count',
             'description' => "",
             "unit" => "People",
@@ -352,7 +362,7 @@ class StatisticsTableSeeder extends Seeder {
 
         // Hours worked
         Statistic::create(array(
-            'order' => 39,
+            'order' => 40,
             'type' => 'Hours Worked',
             'description' => "",
             'display' => 'gesture'

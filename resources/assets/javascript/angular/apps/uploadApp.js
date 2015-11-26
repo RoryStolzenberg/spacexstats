@@ -10,24 +10,24 @@
             tags: laravel.tags,
             subtypes: {
                 images: [
-                    {value: 1, display: 'Mission Patch' },
-                    {value: 2, display: 'Photo' },
-                    {value: 4, display: 'Chart' },
-                    {value: 5, display: 'Screenshot' },
-                    {value: 10, display: 'Infographic' },
-                    {value: 11, display: 'News Summary' },
-                    {value: 16, display: 'Hazard Map' },
-                    {value: 17, display: 'License' },
+                    'Mission Patch',
+                    'Photo',
+                    'Chart',
+                    'Screenshot',
+                    'Infographic',
+                    'News Summary',
+                    'Hazard Map',
+                    'License',
                 ],
                 video: [
-                    {value: 6, display: 'Launch Video' },
-                    {value: 7, display: 'Press Conference' }
+                    'Launch Video',
+                    'Press Conference'
                 ],
                 documents: [
-                    {value: 6, display: 'Press Kit' },
-                    {value: 7, display: 'Cargo Manifest' },
-                    {value: 15, display: 'Weather Forecast' },
-                    {value: 17, display: 'License' }
+                    'Press Kit',
+                    'Cargo Manifest',
+                    'Weather Forecast',
+                    'License'
                 ]
             },
             publishers: laravel.publishers,

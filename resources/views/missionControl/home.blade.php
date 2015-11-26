@@ -31,12 +31,12 @@
             <section id="missioncontrol" ng-show="!hasSearchResults && !isCurrentlySearching">
                 <div class="gr-8 gr-12@small">
                     <h2>Mission Control</h2>
-                    <ul class="container">
-                        <li class="gr-2" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'latest' }" ng-click="missioncontrol.objects.show('latest')">Latest</li>
-                        <li class="gr-2" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'hot' }" ng-click="missioncontrol.objects.show('hot')">Hot</li>
-                        <li class="gr-2" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'discussions' }" ng-click="missioncontrol.objects.show('discussions')">Discussions</li>
+                    <ul class="container missioncontrol-views">
+                        <li class="gr-3" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'latest' }" ng-click="missioncontrol.objects.show('latest')">Latest</li>
+                        <li class="gr-3" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'hot' }" ng-click="missioncontrol.objects.show('hot')">Hot</li>
+                        <li class="gr-3" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'discussions' }" ng-click="missioncontrol.objects.show('discussions')">Discussions</li>
                         @if ($upcomingMission)
-                            <li class="gr-2" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'mission' }" ng-click="missioncontrol.objects.show('mission')">From {{ $upcomingMission->name }}</li>
+                            <li class="gr-3" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'mission' }" ng-click="missioncontrol.objects.show('mission')">From {{ $upcomingMission->name }}</li>
                         @endif
                     </ul>
 
@@ -69,7 +69,7 @@
 
                 <div class="gr-4 gr-12@small">
                     <h2>Community Leaderboards</h2>
-                    <ul class="container">
+                    <ul class="container missioncontrol-views">
                         <li class="gr-3" ng-click="missioncontrol.leaderboards.show('week')">Last Week</li>
                         <li class="gr-3" ng-click="missioncontrol.leaderboards.show('month')">Last Month</li>
                         <li class="gr-3" ng-click="missioncontrol.leaderboards.show('year')">Last Year</li>

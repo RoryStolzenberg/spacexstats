@@ -1,12 +1,14 @@
 <?php
 namespace SpaceXStats\Services;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\Destination;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\PartFlight;
+use SpaceXStats\Models\Payload;
 use SpaceXStats\Models\Spacecraft;
 use SpaceXStats\Models\SpacecraftFlight;
 use SpaceXStats\Models\Vehicle;
@@ -298,35 +300,36 @@ WHERE missions.status='Complete' OR missions.status='In Progress' */
      */
 	public static function payloads($substatistic) {
         if ($substatistic == 'Satellites Launched') {
-			return DB::table('payloads')->whereHas('mission', function($q) {
-				$q->where('mission', MissionStatus::Complete);
+			return Payload::whereHas('mission', function($q) {
+				$q->where('status', MissionStatus::Complete);
 			})->count();
 
 		} else if ($substatistic == 'Total Mass') {
-			return DB::table('payloads')->whereHas('mission', function($q) {
-				$q->where('mission', MissionStatus::Complete);
+			return Payload::whereHas('mission', function($q) {
+				$q->where('status', MissionStatus::Complete);
 			})->sum('mass');
 
 		} else if ($substatistic == 'Mass to GTO') {
-			return DB::table('payloads')->whereHas('mission', function($q) {
-				$q->where('mission', MissionStatus::Complete)->whereIn('destination', [
-					Destination::GeostationaryTransferOrbit, Destination::SubsynchronousGTO, Destination::SupersynchronousGTO
-				]);
+			return Payload::whereHas('mission', function($q) {
+				$q->where('status', MissionStatus::Complete)->whereHas('destination', function($q) {
+                    $q->whereIn('name', [Destination::GeostationaryTransferOrbit, Destination::SupersynchronousGTO, Destination::SubsynchronousGTO]);
+                });
 			})->sum('mass');
 
 		} else if ($substatistic == 'Heaviest Satellite') {
-			return DB::table('payloads')->whereHas('mission', function($q) {
-				$q->where('mission', MissionStatus::Complete);
+			return Payload::whereHas('mission', function($q) {
+				$q->where('status', MissionStatus::Complete);
 			})->max('mass');
 		}
     }
 
-	/**
-	 * @return int
+    /**
+     * @param $substatistic
+     * @return int
      */
-	public static function upperStagesInOrbit($substatistic) {
+	public static function upperStages($substatistic) {
 		if ($substatistic == 'In Orbit') {
-
+            return PartFlight::where('upperstage_status', 'In Orbit')->count();
 		} else if ($substatistic == 'TLEs') {
 			return DB::table('orbital_elements')->count();
 		}
@@ -350,6 +353,20 @@ WHERE missions.status='Complete' OR missions.status='In Progress' */
      */
 	public static function turnarounds($substatistic) {
         if ($substatistic == 'Quickest') {
+
+            $lowestTurnaround = null;
+            $missions = Mission::past()->get()->keyBy('launch_order_id');
+
+            $missions->each(function($mission, $key) use ($missions, &$lowestTurnaround) {
+                if ($key == 1) {
+                    return null;
+                }
+
+                $turnaround = Carbon::parse($mission->launch_exact)->diffInSeconds(Carbon::parse($missions->get($key-1)->launch_exact));
+                $lowestTurnaround = $lowestTurnaround == null ? $turnaround : min($lowestTurnaround, $turnaround);
+            });
+
+            return $lowestTurnaround;
 
 		} else if ($substatistic == 'Since Last Launch') {
 

@@ -33,14 +33,25 @@
                 </ul>
             </nav>
             @if (Auth::isAccessingSelf($user))
-                <section class="highlights">
+                <section class="interactions">
+                    <div class="text-center">
+                        @foreach ($interactions as $interaction => $value)
+                            @if ($value)
+                                <img src="/images/icons/{{ $interaction }}active.png" />
+                            @else
+                                <img src="/images/icons/{{ $interaction }}.png" />
+                            @endif
+                        @endforeach
+                        @if (!in_array(true, $interactions, true))
+                            <p class="exclaim"><a href="/users/{{ $user->username }}/edit">Edit your profile</a> to setup SMS & email notifications, and more.</p>
+                        @endif
+
+                    </div>
                     <ul>
                         <li>SMS messages</li>
                         <li>Launch changes</li>
                         <li>Upcoming launches</li>
                         <li>News Sumamries</li>
-                        <li>Favorite Mission</li>
-                        <li>Favorite Patch</li>
                     </ul>
                 </section>
             @endif

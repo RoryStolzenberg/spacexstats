@@ -25,21 +25,28 @@ class UsersController extends Controller {
         $this->mailer = $mailer;
 	}
 
-	public function get(DeltaVCalculator $deltaV, $username = null) {
-        $user = User::where('username', $username)->with(['objects', 'notes', 'favorites'])->first();
+	public function get($username = null) {
+        $user = User::where('username', $username)->with(['awards', 'objects', 'notes', 'favorites', 'notifications'])->first();
 
-        $params = array(
+        $params = [
             'user' => $user,
             'favoriteMission' => $user->profile->favoriteMission,
             'objects' => $user->objects()->inMissionControl()->take(10)->get(),
             'favorites' => $user->favorites->take(10),
             'comments' => $user->comments->take(10),
+            'deltaV' => $user->totalDeltaV(),
             'subscriptionExtendedBy' => $user->subscriptionExtendedBy(true)
-        );
+        ];
 
         // If the requesting user is logged in & if the requesting user is requesting themselves
         if (Auth::isAccessingSelf($user)) {
             $params['notes'] = $user->notes->take(10);
+
+            // Fetch the status of their interactions
+            $params['interactions'] = [
+                'favoritemission' => $user->profile->favorite_mission != null,
+                'favoritepatch' => $user->profile->favorite_mission_patch != null
+            ];
         }
 
         return view('users.profile', $params);

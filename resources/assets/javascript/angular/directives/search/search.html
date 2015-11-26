@@ -11,12 +11,12 @@
     </div>
 
 	<div class="filters container">
-		<dropdown class="gr-2 filter missions" ng-change="onFilterUpdate('mission')" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
+		<dropdown class="gr-3 filter missions" ng-change="onFilterUpdate('mission')" searchable="true" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
 
-        <dropdown class="gr-2 filter types" options="data.types" unique-key="type" title-key="type" has-default-option="false"
+        <dropdown class="gr-3 filter types" options="data.types" unique-key="type" title-key="type" has-default-option="false"
         ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Resource type"></dropdown>
 
-        <div class="gr-2 filter before after search-datepicker">
+        <div class="gr-3 filter before after search-datepicker">
             <div ng-click="isDatepickerVisible = !isDatepickerVisible">
                 <span ng-bind="datepickerText()"></span>
             </div>
@@ -30,19 +30,27 @@
             </div>
         </div>
 
-        <div class="gr-2 filter favorited">
-            <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
-            <label for="favorited"><span>Favorited?</span></label>
-        </div>
-
-        <div class="gr-2 filter noted">
-            <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
-            <label for="noted"><span>Noted?</span></label>
-        </div>
-
-        <div class="gr-2 filter downloaded">
-            <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
-            <label for="downloaded"><span>Downloaded?</span></label>
+        <div class="gr-3 filter user-centric">
+            <ul>
+                <li>
+                    <div class="gr-2 filter noted">
+                        <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
+                        <label for="favorited"><span>Favorited?</span></label>
+                    </div>
+                </li>
+                <li>
+                    <div class="gr-2 filter noted">
+                        <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
+                        <label for="noted"><span>Noted?</span></label>
+                    </div>
+                </li>
+                <li>
+                    <div class="gr-2 filter downloaded">
+                        <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
+                        <label for="downloaded"><span>Downloaded?</span></label>
+                    </div>
+                </li>
+            </ul>
         </div>
 	</div>
 </div>

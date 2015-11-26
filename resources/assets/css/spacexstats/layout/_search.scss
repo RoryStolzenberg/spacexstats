@@ -3,6 +3,10 @@
 
     .filters {
         padding-top:10px;
+
+        .filter {
+            @include gridle_gutter(0 10px);
+        }
     }
 
     button {

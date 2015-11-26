@@ -116,7 +116,7 @@ class MissionsController extends Controller {
 
         JavaScript::put([
             'mission'           => Mission::whereSlug($slug)
-                ->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part', 'prelaunchEvents', 'telemetries')->first(),
+                ->with('payloads', 'spacecraftFlight.spacecraft', 'spacecraftFlight.astronautFlights.astronaut', 'partFlights.part', 'prelaunchEvents', 'telemetry')->first(),
             'destinations'      => Destination::all(['destination_id', 'destination'])->toArray(),
             'missionTypes'      => MissionType::all(['name', 'mission_type_id'])->toArray(),
             'launchSites'       => Location::where('type', 'Launch Site')->get()->toArray(),

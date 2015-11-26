@@ -17,7 +17,7 @@ class SearchController extends Controller {
 
     public function fetch() {
         return response()->json([
-            'missions' => Mission::all(),
+            'missions' => Mission::all(['name', 'mission_id', 'featured_image']),
             'types' => array_values(array_merge(MissionControlType::toArray(), MissionControlSubtype::toArray()))
         ]);
     }

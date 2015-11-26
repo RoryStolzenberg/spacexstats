@@ -340,7 +340,7 @@
                     <legend>Telemetry</legend>
                     <span>Add readouts and live statistics of the launch here.</span>
 
-                    <table ng-if="mission.telemetries.length > 0">
+                    <table ng-if="mission.telemetry.length > 0">
                         <tr>
                             <th>Timestamp (T+ s)</th>
                             <th>Readout</th>
@@ -349,7 +349,7 @@
                             <th>Downrange (m)</th>
                             <th></th>
                         </tr>
-                        <tr ng-repeat="telemetry in mission.telemetries">
+                        <tr ng-repeat="telemetry in mission.telemetry">
                             <td><input type="number" ng-model="telemetry.timestamp" required /></td>
                             <td><input type="text" ng-model="telemetry.readout" /></td>
                             <td><input type="number" ng-model="telemetry.altitude" /></td>
