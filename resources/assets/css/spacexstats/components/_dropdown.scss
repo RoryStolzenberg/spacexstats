@@ -3,6 +3,7 @@ $dropdownSize: 40px;
 .dropdown {
     position: relative;
     font-family:$montserrat;
+    cursor:pointer;
 
     >.default {
         border:1px solid $bordergrey;
@@ -27,6 +28,8 @@ $dropdownSize: 40px;
         margin:5px 0;
         padding:0;
         height:$dropdownSize;
+        overflow:hidden;
+        text-overflow: ellipsis;
 
         &.hover {
             background-color:$bordergrey;

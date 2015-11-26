@@ -111,7 +111,7 @@
                                         <li>
                                             <label>
                                                 <p>Type of @{{ file.type }}</p>
-                                                <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.images">
+                                                <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.images">
                                                     <option value="">None</option>
                                                 </select>
                                             </label>
@@ -349,7 +349,7 @@
                                     <li class="gr-6">
                                         <label>
                                             <p>Type</p>
-                                            <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.video">
+                                            <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.video">
                                                 <option value="">None</option>
                                             </select>
                                         </label>
@@ -429,7 +429,7 @@
                                     <li class="gr-6">
                                         <label>
                                             <p>Type</p>
-                                            <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.documents">
+                                            <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.documents">
                                                 <option value="">None</option>
                                             </select>
                                         </label>

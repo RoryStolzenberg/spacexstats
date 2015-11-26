@@ -7974,6 +7974,9 @@ section.comments {
   padding: 30px 0; }
   #search-form .filters {
     padding-top: 10px; }
+    #search-form .filters .filter {
+      padding-right: 5px;
+      padding-left: 5px; }
   #search-form button {
     margin: 0; }
     #search-form button.reset {
@@ -8563,6 +8566,10 @@ button.canned-response {
   padding-bottom: 0px;
   padding-left: 10px; }
 
+.missioncontrol-views {
+  background-color: rgba(51, 73, 94, 0.2);
+  margin-top: -10px; }
+
 .missioncontrol-about h1 {
   line-height: 100px;
   height: 100px; }
@@ -8627,9 +8634,9 @@ button.canned-response {
     content: "x"; }
 
 .dropdown {
-  margin: 0 10px;
   position: relative;
-  font-family: "Montserrat", sans-serif; }
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer; }
   .dropdown > .default {
     border: 1px solid #CCC;
     height: 40px;
@@ -8649,7 +8656,9 @@ button.canned-response {
   .dropdown li {
     margin: 5px 0;
     padding: 0;
-    height: 40px; }
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis; }
     .dropdown li.hover {
       background-color: #CCC; }
     .dropdown li.selected {

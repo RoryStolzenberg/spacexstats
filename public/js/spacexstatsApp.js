@@ -1,4 +1,32 @@
 (function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+
+        this.addError = function(message) {
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+    });
+})();
+
+
+(function() {
     var missionsListApp = angular.module('app', []);
 
     missionsListApp.controller("missionsListController", ['$scope', function($scope) {
@@ -231,24 +259,24 @@
             tags: laravel.tags,
             subtypes: {
                 images: [
-                    {value: 1, display: 'Mission Patch' },
-                    {value: 2, display: 'Photo' },
-                    {value: 4, display: 'Chart' },
-                    {value: 5, display: 'Screenshot' },
-                    {value: 10, display: 'Infographic' },
-                    {value: 11, display: 'News Summary' },
-                    {value: 16, display: 'Hazard Map' },
-                    {value: 17, display: 'License' },
+                    'Mission Patch',
+                    'Photo',
+                    'Chart',
+                    'Screenshot',
+                    'Infographic',
+                    'News Summary',
+                    'Hazard Map',
+                    'License',
                 ],
                 video: [
-                    {value: 6, display: 'Launch Video' },
-                    {value: 7, display: 'Press Conference' }
+                    'Launch Video',
+                    'Press Conference'
                 ],
                 documents: [
-                    {value: 6, display: 'Press Kit' },
-                    {value: 7, display: 'Cargo Manifest' },
-                    {value: 15, display: 'Weather Forecast' },
-                    {value: 17, display: 'License' }
+                    'Press Kit',
+                    'Cargo Manifest',
+                    'Weather Forecast',
+                    'License'
                 ]
             },
             publishers: laravel.publishers,
@@ -1939,34 +1967,6 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-
-        this.addError = function(message) {
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        }
-    });
-})();
-
-
-(function() {
     var app = angular.module('app');
 
     app.filter('jsonPrettify', function() {
@@ -1976,90 +1976,6 @@
            }
            return null;
        }
-    });
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                var countdownProcessor = function() {
-
-                    var launchUnixSeconds = $scope.launchUnixSeconds;
-                    var currentUnixSeconds = Math.floor(Date.now() / 1000);
-
-                    if (launchUnixSeconds >= currentUnixSeconds) {
-                        $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                        var secondsBetween = $scope.secondsAwayFromLaunch;
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    } else {
-                    }
-
-                    if (attrs.callback) {
-                        $scope.callback();
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
     });
 })();
 (function() {
@@ -2247,40 +2163,137 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                size: '@',
+                mission: '='
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
 
-                $scope.retrieveTweet = function() {
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+                $scope.$watch("deltaV", function(objects) {
+                    console.log('called');
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
 
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
 
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
+                        $scope.setCalculatedValue();
                     }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.setCalculatedValue = function() {
+                    return 0;
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0,
+                };
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=',
+                type: '@',
+                callback: '&?'
+            },
+            link: function($scope, elem, attrs) {
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                $scope.$watch('specificity', function(newValue) {
+                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
+                });
+
+                var countdownProcessor = function() {
+
+                    var launchUnixSeconds = $scope.launchUnixSeconds;
+                    var currentUnixSeconds = Math.floor(Date.now() / 1000);
+
+                    if (launchUnixSeconds >= currentUnixSeconds) {
+                        $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
+
+                        var secondsBetween = $scope.secondsAwayFromLaunch;
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    } else {
+                    }
+
+                    if (attrs.callback) {
+                        $scope.callback();
+                    }
+                };
+
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $scope.launchUnixSeconds = moment($scope.countdownTo).unix();
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
                 }
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/countdown.html'
         }
     }]);
 })();
@@ -2466,55 +2479,42 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('deltaV', function() {
+    app.directive('tweet', ["$http", function($http) {
         return {
             restrict: 'E',
             scope: {
-                deltaV: '=ngModel'
+                action: '@',
+                tweet: '='
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-                $scope.$watch("deltaV", function(objects) {
-                    console.log('called');
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
+                $scope.retrieveTweet = function() {
 
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
-                        }
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
 
-                        $scope.setCalculatedValue();
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
                     }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.setCalculatedValue = function() {
-                    return 0;
-                };
-
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0,
-                };
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
             },
-            templateUrl: '/js/templates/deltaV.html'
+            templateUrl: '/js/templates/tweet.html'
         }
-    });
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2548,6 +2548,118 @@
         }
     }]);
 })();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = null;
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
@@ -2593,7 +2705,12 @@
                     $http.get('/missioncontrol/search/fetch').then(function(response) {
                         $scope.data = {
                             missions: response.data.missions,
-                            types: response.data.types
+                            types: response.data.types.map(function(type) {
+                                return {
+                                    type: type,
+                                    image: '/images/icons/' + type.replace(" ", "") + '.jpg'
+                                }
+                            })
                         }
                     });
                 })();
@@ -2812,152 +2929,6 @@
         return self;
     });
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('creditCardValidator', [function() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            scope: {
-                componentToValidate: '@',
-                model: '=ngModel'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-                if ($scope.componentToValidate == 'cvc') {
-                    ctrl.$validators.cvc = function(modelValue, viewValue) {
-                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
-                    };
-                }
-
-                else if ($scope.componentToValidate == 'expiry') {
-                }
-
-                else if ($scope.componentToValidate == 'number') {
-                    ctrl.$parsers.addSpacesToNumber = function() {
-                          
-                    };
-                }
-
-                /*$scope.$watch('model', function() {
-                    ctrl.$validate();
-                });*/
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = null;
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
 (function() {
     var app = angular.module('app');
 
@@ -3074,6 +3045,8 @@
         }
     }]);
 })();
+
+
 (function() {
     var app = angular.module('app');
 
@@ -3092,4 +3065,37 @@
     }]);
 })();
 
+(function() {
+    var app = angular.module('app');
 
+    app.directive('creditCardValidator', [function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: {
+                componentToValidate: '@',
+                model: '=ngModel'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+                if ($scope.componentToValidate == 'cvc') {
+                    ctrl.$validators.cvc = function(modelValue, viewValue) {
+                        return modelValue.length === 3 && /[0-9]{3}/.test(modelValue);
+                    };
+                }
+
+                else if ($scope.componentToValidate == 'expiry') {
+                }
+
+                else if ($scope.componentToValidate == 'number') {
+                    ctrl.$parsers.addSpacesToNumber = function() {
+
+                    };
+                }
+
+                /*$scope.$watch('model', function() {
+                    ctrl.$validate();
+                });*/
+            }
+        }
+    }]);
+})();

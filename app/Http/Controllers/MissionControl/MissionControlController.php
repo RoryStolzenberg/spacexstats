@@ -26,10 +26,6 @@ class MissionControlController extends Controller {
     public function home() {
 		if (Auth::isSubscriber()) {
 
-            JavaScript::put([
-                'missions' => Mission::all()
-            ]);
-
             // Fetch data
             $objects['latest'] = Object::authedVisibility()->inMissionControl()->orderBy('actioned_at')->take(10)->get();
 

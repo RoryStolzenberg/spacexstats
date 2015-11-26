@@ -2,6 +2,14 @@
     @if (Session::has('flashMessage'))
         <p class="flash-message success">{{ Session::get('flashMessage') }}</p>
     @endif
+
+    @if (Session::has('errors'))
+        <p class="flash-message failure">
+            @foreach ($errors->all() as $error)
+                {{ $error }}
+            @endforeach
+        </p>
+    @endif
 </div>
 
 <div class="header-wrapper {{ $class or null }}" style="background-image:url({{ $backgroundImage or null }})">

@@ -2,6 +2,11 @@
     @include gridle_gutter(0px 20px);
 }
 
+.missioncontrol-views {
+    background-color:rgba($october, 0.2);
+    margin-top:-10px;
+}
+
 // MISSIONCONTROL ABOUT PAGE
 .missioncontrol-about {
     h1 {

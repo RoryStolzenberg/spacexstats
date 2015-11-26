@@ -43,7 +43,12 @@
                     $http.get('/missioncontrol/search/fetch').then(function(response) {
                         $scope.data = {
                             missions: response.data.missions,
-                            types: response.data.types
+                            types: response.data.types.map(function(type) {
+                                return {
+                                    type: type,
+                                    image: '/images/icons/' + type.replace(" ", "") + '.jpg'
+                                }
+                            })
                         }
                     });
                 })();
