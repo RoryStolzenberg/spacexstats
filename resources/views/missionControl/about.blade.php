@@ -2,7 +2,7 @@
 @section('title', 'Mission Control')
 
 @section('content')
-<body class="missioncontrol-about" ng-app="aboutMissionControlApp">
+<body class="missioncontrol-about" ng-app="aboutMissionControlApp" ng-cloak>
 
     @include('templates.header', ['class' => 'no-background'])
 
@@ -45,13 +45,15 @@
                             <fieldset ng-disabled="subscriptionState.isSubscribing">
                                 <input type="text" name="creditcardnumber" ng-model="creditcard.number" cc-format cc-number data-stripe="number" />
                                 <div cc-exp>
-                                    <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" cc-exp-month placeholder="MM" data-stripe="exp-month"/>
-                                    <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" cc-exp-year placeholder="YYYY" data-stripe="exp-year" />
+                                    <input class="gr-6" type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" cc-exp-month placeholder="MM" data-stripe="exp-month"/>
+                                    <input class="gr-6" type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" cc-exp-year placeholder="YYYY" full-length-year data-stripe="exp-year" />
                                 </div>
                                 <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" placeholder="CVC" cc-cvc data-stripe="cvc" />
                             </fieldset>
 
                             <button class="wide-button" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing || subscribeForm.$invalid"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>
+
+                            <p ng-if="subscriptionState.failed">That didn't work. Try again?</p>
                         </form>
                         <div class="response" ng-show="subscriptionState.hasSubscribed">
                             <p>Payment Complete!</p>

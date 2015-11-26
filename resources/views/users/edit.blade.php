@@ -169,7 +169,7 @@
                     <input type="submit" ng-click="updateSMSNotifications()" value="Update SMS Notifications" />
                 </form>
                 @else
-                    <p>Sign up for mission control to enable this feature!</p>
+                    <p class="exclaim">Sign up for mission control to enable this feature!</p>
                 @endif
             </section>
 

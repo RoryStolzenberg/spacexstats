@@ -8,7 +8,7 @@
 
         <div class="content-wrapper" ng-controller="futureMissionController" ng-strict-di>
             <h1>{{ $mission->name }}</h1>
-            <main>
+            <main ng-cloak>
                 <nav class="in-page sticky-bar">
                     <ul class="container">
                         <li class="gr-1">
