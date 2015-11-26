@@ -106,11 +106,11 @@ class MissionManager {
         // Validate any prelaunch event models
 
         // Validate any telemetry models
-        if (array_key_exists('telemetries', $this->input['mission'])) {
-            foreach ($this->input['mission']['telemetries'] as $telemetry) {
+        if (array_key_exists('telemetry', $this->input['mission'])) {
+            foreach ($this->input['mission']['telemetry'] as $telemetry) {
                 $telemetryValidity = $this->telemetry->isValid($telemetry);
                 if ($telemetryValidity !== true) {
-                    $this->errors['telemetries'][] = $telemetryValidity;
+                    $this->errors['telemetry'][] = $telemetryValidity;
                 }
             }
         }
@@ -143,7 +143,7 @@ class MissionManager {
 
     public function update() {
 
-        $this->mission = Mission::with('payloads', 'partFlights.part', 'spacecraftFlight.astronautFlights.astronaut', 'telemetries')->find($this->input('mission')['mission_id']);
+        $this->mission = Mission::with('payloads', 'partFlights.part', 'spacecraftFlight.astronautFlights.astronaut', 'telemetry')->find($this->input('mission')['mission_id']);
 
         DB::beginTransaction();
         try {
@@ -169,7 +169,7 @@ class MissionManager {
     private function input($filter) {
         if ($filter == 'mission') {
             $mission = $this->input['mission'];
-            unset($mission['payloads'], $mission['part_flights'], $mission['spacecraft_flight'], $mission['prelaunch_events'], $mission['telemetries']);
+            unset($mission['payloads'], $mission['part_flights'], $mission['spacecraft_flight'], $mission['prelaunch_events'], $mission['telemetry']);
             return $mission;
 
         } else if ($filter == 'payloads') {

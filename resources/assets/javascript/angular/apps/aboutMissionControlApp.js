@@ -1,5 +1,5 @@
 (function() {
-    var aboutMissionControlApp = angular.module('app', []);
+    var aboutMissionControlApp = angular.module('app', ['credit-cards']);
 
     aboutMissionControlApp.controller("subscriptionController", ["$scope", "subscriptionService", function($scope, subscriptionService) {
         $scope.subscriptionButtonText = "Pay $9";
