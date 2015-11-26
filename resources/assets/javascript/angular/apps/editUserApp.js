@@ -1,7 +1,7 @@
 (function() {
     var userApp = angular.module('app', []);
 
-    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', function($http, $scope, editUserService) {
+    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', 'flashMessage', function($http, $scope, editUserService, flashMessage) {
 
         $scope.username = laravel.user.username;
 
@@ -23,7 +23,7 @@
                 .then(function(response) {
                     flashMessage.addOK(response.data);
                 });
-        }
+        };
 
         $scope.emailNotifications = {
             launchTimeChange: laravel.notifications.launchTimeChange,
@@ -32,13 +32,13 @@
             tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
             tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
             newsSummaries: laravel.notifications.newsSummaries
-        }
+        };
 
         $scope.updateEmailNotifications = function() {
             editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
                 // Reset form?
             });
-        }
+        };
 
         $scope.SMSNotification = {
             mobile: laravel.user.mobile

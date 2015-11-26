@@ -148,61 +148,102 @@
                         <div ng-if="file.type == 'GIF'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
-                                <ul class="container">
-                                    <li class="gr-4">
-                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
-                                    </li>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this GIF" minlength="10" required />
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-basic-info">
+                                    <legend>Basic Info</legend>
 
-                                    <li class="gr-8">
-                                        <label>
-                                            <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" minlength="100" required></textarea>
-                                        </label>
-                                    </li>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Title</p>
+                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this GIF" minlength="10" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Summary</p>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" minlength="100" required></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" unique-key="mission_id" title-key="name" searchable="true" id-only="true"></dropdown>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-4 upload-preview text-center">
+                                    <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" placeholder="Who made this GIF?" required />
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-attribution">
+                                    <legend>Attribution</legend>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution"  placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
-                                        </label>
-                                    </li>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Author</p>
+                                                <input type="text" name="author" ng-model="file.author" placeholder="Who made this GIF?" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Attribution/Copyright</p>
+                                                <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Tags</p>
-                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-4 upload-metadata">
+                                    <legend>Metadata</legend>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>When was this created?</p>
-                                            <datetime type="date"
-                                                      ng-model="file.originated_at"
-                                                      nullable-toggle="false"></datetime>
-                                        </label>
-                                    </li>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Related to Mission</p>
+                                                <dropdown
+                                                        name="mission"
+                                                        options="data.missions"
+                                                        ng-model="file.mission_id"
+                                                        unique-key="mission_id"
+                                                        title-key="name"
+                                                        searchable="true"
+                                                        id-only="true">
+                                                </dropdown>
+                                            </label>
+                                        </li>
+
+                                        <li>
+                                            <label>
+                                                <p>Type of @{{ file.type }}</p>
+                                                <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.images">
+                                                    <option value="">None</option>
+                                                </select>
+                                            </label>
+                                        </li>
+
+                                        <li>
+                                            <label>
+                                                <p>When was this created?</p>
+                                                <datetime type="date"
+                                                          ng-model="file.originated_at"
+                                                          nullable-toggle="false"></datetime>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Tags</legend>
+
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Tags</p>
+                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+
+
 
                                     <li class="gr-12">
                                         <label>
@@ -219,24 +260,6 @@
                         <div ng-if="file.type == 'Audio'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
-                                <ul class="container">
-                                    <li class="gr-4">
-                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
-                                    </li>
-
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this audio clip" minlength="10" required />
-                                        </label>
-                                    </li>
-
-                                    <li class="gr-8">
-                                        <label>
-                                            <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this audio clip" minlength="100" required></textarea>
-                                        </label>
-                                    </li>
 
                                     <li class="gr-4">
                                         <label>

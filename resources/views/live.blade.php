@@ -15,7 +15,7 @@
                 <div class="access-links"><a target="_blank" href="/auth/login">My Account</a></div>
             @endif
         </header>
-        <main>
+        <main ng-cloak>
             <!-- SpaceXStats live is not running -->
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section ng-if="!isActive">

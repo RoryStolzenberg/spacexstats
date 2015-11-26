@@ -145,19 +145,26 @@
                     <label for="mobile">Enter your mobile number</label>
                     <input type="tel" id="mobile" ng-model="SMSNotification.mobile" placeholder="If you are outside the U.S., please include your country code." />
 
-                    <p>How long before a launch would you like to recieve a notification?</p>
+                    <p>How long before a launch would you like to receive a notification?</p>
 
-                    <input type="radio" name="status" ng-model="SMSNotification.status" id="off" value="false" />
-                    <label for="off">Off</label>
-
-                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus24HoursSMS" value="TMinus24HoursSMS" />
-                    <label for="tMinus24HoursSMS">24 Hours Before</label>
-
-                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus3HoursSMS" value="TMinus3HoursSMS" />
-                    <label for="tMinus3HoursSMS">3 Hours Before</label>
-
-                    <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus1HourSMS" value="TMinus1HourSMS" />
-                    <label for="tMinus1HourSMS">1 Hour Before</label>
+                    <ul>
+                        <li>
+                            <input type="radio" name="status" ng-model="SMSNotification.status" id="off" value="false" />
+                            <label for="off"><span>Off</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus24HoursSMS" value="TMinus24HoursSMS" />
+                            <label for="tMinus24HoursSMS"><span>24 Hours Before</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus3HoursSMS" value="TMinus3HoursSMS" />
+                            <label for="tMinus3HoursSMS"><span>3 Hours Before</span></label>
+                        </li>
+                        <li>
+                            <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus1HourSMS" value="TMinus1HourSMS" />
+                            <label for="tMinus1HourSMS"><span>1 Hour Before</span></label>
+                        </li>
+                    </ul>
 
                     <input type="submit" ng-click="updateSMSNotifications()" value="Update SMS Notifications" />
                 </form>

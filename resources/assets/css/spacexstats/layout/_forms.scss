@@ -261,6 +261,7 @@ input[type="submit"], input[type="reset"], button, .button {
     // Disabled buttons
     &[disabled], &.disabled {
         background-color:$bordergrey;
+        cursor:auto;
     }
 }
 

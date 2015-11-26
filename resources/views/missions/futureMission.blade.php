@@ -131,6 +131,9 @@
                 </section>
                 <h2>Articles</h2>
                 <section class="scrollto" id="articles">
+                    @if ($mission->articles->count() == 0)
+                        <p class="exclaim">No articles yet.</p>
+                    @endif
                     @foreach ($mission->articles() as $article)
                     @endforeach
                 </section>

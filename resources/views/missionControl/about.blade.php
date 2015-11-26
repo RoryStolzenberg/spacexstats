@@ -45,7 +45,7 @@
                             <fieldset ng-disabled="subscriptionState.isSubscribing">
                                 <input type="text" name="creditcardnumber" ng-model="creditcard.number" credit-card-validator="number" data-stripe="number" />
                                 <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" credit-card-validator="expirymonth" placeholder="MM" data-stripe="exp-month"/>
-                                <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="YYYY" data-stripe="exp-year" />
+                                <input type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" credit-card-validator="expiryyear" placeholder="YYYY" full-year data-stripe="exp-year" />
                                 <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" credit-card-validator="cvc" placeholder="CVC" data-stripe="cvc" />
                             </fieldset>
 
