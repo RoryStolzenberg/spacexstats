@@ -141,6 +141,25 @@
                                         </li>
                                     </ul>
                                 </fieldset>
+
+                                <fieldset>
+                                    <legend>Finally...</legend>
+
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
+                                            <label for="@{{ 'anonymous-file' + $index }}">
+                                                <span>Submit anonymously?</span>
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="original_content" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.original_content" />
+                                            <label for="@{{ 'anonymous-file' + $index }}">
+                                                <span>Did you create this yourself?</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
                             </form>
                         </div>
 
