@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
 use SpaceXStats\Facades\Search;
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Jobs\PutObjectToCloudJob;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 use SpaceXStats\Services\DeltaVCalculator;
@@ -41,8 +42,8 @@ class ReviewController extends Controller {
                 if (Input::get('visibility') == VisibilityStatus::PublicStatus) {
                     $object->putToLocal();
                 }
-                $object->putToCloud();
-                $object->deleteFromTemporary();
+                $job = (new PutObjectToCloudJob($object))->onQueue('uploads');
+                $this->dispatch($job);
 
                 // Update the object properties
                 $object->fill(Input::only(['status', 'visibility']));

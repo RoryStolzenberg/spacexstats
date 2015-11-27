@@ -40,7 +40,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             'cryptographic_hash' => $this->getCryptographicHash(),
             'dimension_width' => $this->getDimensions('width'),
             'dimension_height' => $this->getDimensions('height'),
-            'length' => $this->getLength(),
+            'duration' => $this->getLength(),
             'status' => ObjectPublicationStatus::NewStatus
         ]);
     }

@@ -2,7 +2,7 @@
 namespace SpaceXStats\Models\Traits;
 
 use AWS;
-use Illuminate\Support\Facades\App;
+use Aws\S3\MultipartUploader;
 use Illuminate\Support\Facades\Config;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 
@@ -11,6 +11,9 @@ use SpaceXStats\Library\Enums\VisibilityStatus;
  * @package SpaceXStats\Models\Traits
  */
 trait UploadableTrait {
+
+    private $multipartUploadThreshold = 1000 * 1000 * 16; // 16MB
+
     /**
      * Checks whether the object has a file or not.
      *
@@ -87,17 +90,31 @@ trait UploadableTrait {
     /**
      *  Uploads the objects file and thumbnails, if they exist, to Amazon S3 from the temporary storage location.
      *  Does not delete any temporary files, call deleteFromTemporary() for this.
+     *
+     *  Preferentially uses Amazon's Multipart Upload functionality when the file size exceeds 100MB.
      */
     public function putToCloud() {
         $s3 = AWS::createClient('s3');
 
         if ($this->hasFile()) {
-            $s3->putObject([
-                'Bucket' => Config::get('filesystems.disks.s3.bucket'),
-                'Key' => $this->filename,
-                'Body' => file_get_contents(public_path() . $this->media),
-                'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
-            ]);
+
+            if ($this->exceedsMultipartUploadThreshold()) {
+                $uploader = new MultipartUploader($s3, public_path() . $this->media, [
+                    'Bucket' => Config::get('filesystems.disks.s3.bucket'),
+                    'Key' => $this->filename,
+                    'ACL' => $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private'
+                ]);
+
+            } else {
+                $s3->putObject([
+                    'Bucket' => Config::get('filesystems.disks.s3.bucket'),
+                    'Key' => $this->filename,
+                    'Body' => file_get_contents(public_path() . $this->media),
+                    'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
+                ]);
+            }
+
+
             $this->has_cloud_file = true;
         }
 
@@ -215,5 +232,9 @@ trait UploadableTrait {
             unlink(public_path() . '/media/temporary/large/' . $this->thumb_filename);
             $this->has_temporary_thumbs = false;
         }
+    }
+
+    private function exceedsMultipartUploadThreshold() {
+        return $this->size > $this->multipartUploadThreshold;
     }
 }

@@ -7358,7 +7358,7 @@ h1, main {
 
 main {
   background-color: #FFF;
-  box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
+  outline: 3px solid rgba(24, 28, 31, 0.2);
   color: #181c1f;
   min-height: calc(100% - 150px);
   display: block;
@@ -7495,7 +7495,6 @@ blockquote {
   background-color: #3569A4;
   height: 500px;
   position: absolute;
-  box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
   background-size: cover;
   background-position: 50%; }
   .header-wrapper.no-background {
@@ -7834,7 +7833,8 @@ input[type="submit"], input[type="reset"], button, .button {
     input[type="submit"].icon-button img, input[type="reset"].icon-button img, button.icon-button img, .button.icon-button img {
       text-align: center; }
   input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled, .button[disabled], .button.disabled {
-    background-color: #CCC; }
+    background-color: #CCC;
+    cursor: auto; }
 
 input[type="reset"] {
   min-width: 50px; }
@@ -8215,6 +8215,8 @@ section.comments {
   .subscribe li {
     list-style-type: disc;
     text-align: left; }
+  .subscribe input {
+    width: 100%; }
 
 .hero {
   height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
