@@ -21,7 +21,7 @@
         $scope.updateProfile = function() {
             $http.patch('/users/' + $scope.username + '/edit', $scope.profile)
                 .then(function(response) {
-                    flashMessage.addOK(response.data);
+                    window.location = '/users/' + $scope.username;
                 });
         };
 

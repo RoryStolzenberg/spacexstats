@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Uploads\Templates;
 
+use FFMpeg\Coordinate\TimeCode;
 use Illuminate\Support\Facades\Auth;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
@@ -53,7 +54,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
 
         // Open the video and extract a frame at 10% of the video's duration
         $video = $this->ffmpeg->open($this->directory['full'] . $this->fileinfo['filename']);
-        $frame = $video->frame(\FFMpeg\Coordinate\TimeCode::fromSeconds($frameExtractionPoint));
+        $frame = $video->frame(TimeCode::fromSeconds($frameExtractionPoint));
 
         // Save frame to temporary location
         $frame->save($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');

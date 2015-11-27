@@ -38,7 +38,7 @@
             parts: {
                 type: ''
             }
-        }
+        };
 
         $scope.selected = {
             astronaut: null
@@ -46,11 +46,11 @@
 
         $scope.createMission = function() {
             missionService.create($scope.mission);
-        }
+        };
 
         $scope.updateMission = function() {
             missionService.update($scope.mission);
-        }
+        };
 
     }]);
 

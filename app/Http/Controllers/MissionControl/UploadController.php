@@ -28,7 +28,7 @@ class UploadController extends Controller {
         ]);
 
 		return view('missionControl.create', [
-            'recentUploads' => Object::orderBy('created_at', 'desc')->take(10)->get()
+            'recentUploads' => Object::inMissionControl()->orderBy('created_at', 'desc')->take(10)->get()
         ]);
 	}	
 
