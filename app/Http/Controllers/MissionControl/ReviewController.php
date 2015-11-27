@@ -42,8 +42,12 @@ class ReviewController extends Controller {
                 if (Input::get('visibility') == VisibilityStatus::PublicStatus) {
                     $object->putToLocal();
                 }
-                $job = (new PutObjectToCloudJob($object))->onQueue('uploads');
-                $this->dispatch($job);
+                //$job = (new PutObjectToCloudJob($object))->onQueue('uploads');
+                //$this->dispatch($job);
+
+                $object->putToCloud();
+                $object->deleteFromTemporary();
+
 
                 // Update the object properties
                 $object->fill(Input::only(['status', 'visibility']));

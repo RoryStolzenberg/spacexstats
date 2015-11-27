@@ -2,8 +2,10 @@
 namespace SpaceXStats\Models\Traits;
 
 use AWS;
+use Aws\Exception\MultipartUploadException;
 use Aws\S3\MultipartUploader;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 
 /**
@@ -105,6 +107,13 @@ trait UploadableTrait {
                     'ACL' => $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private'
                 ]);
 
+                try {
+                    $uploader->upload();
+                } catch (MultipartUploadException $e) {
+                    Log::error('Item was not uploaded', ['message' => $e->getMessage() ]);
+                }
+
+
             } else {
                 $s3->putObject([
                     'Bucket' => Config::get('filesystems.disks.s3.bucket'),
@@ -113,7 +122,6 @@ trait UploadableTrait {
                     'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
                 ]);
             }
-
 
             $this->has_cloud_file = true;
         }
