@@ -1,37 +1,4 @@
 @charset "UTF-8";
-/* --------------- COLOR SWATCHES ----------------- */
-/* --------------- FONT VARIABLES ----------------- */
-@font-face {
-  font-family: 'Brandon Grotesque-webfont';
-  src: url("../fonts/brandon_bld-webfont.eot");
-  src: url("../fonts/brandon_bld-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_bld-webfont.woff2") format("woff2"), url("../fonts/brandon_bld-webfont.woff") format("woff"), url("../fonts/brandon_bld-webfont.ttf") format("truetype");
-  font-weight: 900;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Brandon Grotesque-webfont';
-  src: url("../fonts/brandon_med-webfont.eot");
-  src: url("../fonts/brandon_med-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_med-webfont.woff2") format("woff2"), url("../fonts/brandon_med-webfont.woff") format("woff"), url("../fonts/brandon_med-webfont.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Brandon Grotesque-webfont';
-  src: url("../fonts/brandon_reg-webfont.eot");
-  src: url("../fonts/brandon_reg-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_reg-webfont.woff2") format("woff2"), url("../fonts/brandon_reg-webfont.woff") format("woff"), url("../fonts/brandon_reg-webfont.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal; }
-
-@font-face {
-  font-family: 'Brandon Grotesque-webfont';
-  src: url("../fonts/brandon_thin-webfont.eot");
-  src: url("../fonts/brandon_thin-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_thin-webfont.woff2") format("woff2"), url("../fonts/brandon_thin-webfont.woff") format("woff"), url("../fonts/brandon_thin-webfont.ttf") format("truetype");
-  font-weight: 100;
-  font-style: normal; }
-
-/* --------------- FONT VARIABLES ----------------- */
-/* ------------------- DESIGN --------------------- */
-/* ------------------ GENERAL MIXINS ----------------- */
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
@@ -76,7 +43,7 @@ table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-.state-default .container:after, .container:after, .header-wrapper header:after, header > nav ul:after, section.details:after, .upload-type:after {
+.state-default .container:after, .container:after, .header-wrapper header:after, section.details:after, .upload-type:after {
   content: "";
   display: table;
   clear: both; }
@@ -95,7 +62,7 @@ table {
 .state-default .row, .state-default .row-reverse, .row, .row-reverse {
   zoom: 1; }
 
-.state-default .gr-1on5, .state-default .gr-1on8, .state-default .gr-1on9, .state-default .gr-0, .state-default .gr-1, .state-default .gr-2, .state-default .gr-3, .state-default .gr-4, .state-default .gr-5, .state-default .gr-6, .state-default .gr-7, .state-default .gr-8, .state-default .gr-9, .state-default .gr-10, .state-default .gr-11, .state-default .gr-12, .gr-1on5, .gr-1on8, .gr-1on9, .gr-0, .gr-1, .gr-2, .gr-3, .gr-4, .gr-5, .gr-6, .gr-7, .gr-8, .gr-9, .gr-10, .gr-11, .gr-12, .header-wrapper header i, #logo, header > nav, section.details #live-tweets, .upload-type li, body.live .access-links#logo {
+.state-default .gr-1on5, .state-default .gr-1on8, .state-default .gr-1on9, .state-default .gr-0, .state-default .gr-1, .state-default .gr-2, .state-default .gr-3, .state-default .gr-4, .state-default .gr-5, .state-default .gr-6, .state-default .gr-7, .state-default .gr-8, .state-default .gr-9, .state-default .gr-10, .state-default .gr-11, .state-default .gr-12, .gr-1on5, .gr-1on8, .gr-1on9, .gr-0, .gr-1, .gr-2, .gr-3, .gr-4, .gr-5, .gr-6, .gr-7, .gr-8, .gr-9, .gr-10, .gr-11, .gr-12, #logo, header > nav, section.details #live-tweets, .upload-type li, body.live .access-links#logo {
   display: inline-block;
   min-height: 1px;
   float: left;
@@ -160,7 +127,7 @@ table {
     zoom: 1; } }
 
 @media (max-width: 640px) {
-  .state-small .gr-1on5\@small, .state-small .gr-1on8\@small, .state-small .gr-1on9\@small, .state-small .gr-0\@small, .state-small .gr-1\@small, .state-small .gr-2\@small, .state-small .gr-3\@small, .state-small .gr-4\@small, .state-small .gr-5\@small, .state-small .gr-6\@small, .state-small .gr-7\@small, .state-small .gr-8\@small, .state-small .gr-9\@small, .state-small .gr-10\@small, .state-small .gr-11\@small, .state-small .gr-12\@small, .gr-1on5\@small, .gr-1on8\@small, .gr-1on9\@small, .gr-0\@small, .gr-1\@small, .gr-2\@small, .gr-3\@small, .gr-4\@small, .gr-5\@small, .gr-6\@small, .gr-7\@small, .gr-8\@small, .gr-9\@small, .gr-10\@small, .gr-11\@small, .gr-12\@small {
+  .state-small .gr-1on5\@small, .state-small .gr-1on8\@small, .state-small .gr-1on9\@small, .state-small .gr-0\@small, .state-small .gr-1\@small, .state-small .gr-2\@small, .state-small .gr-3\@small, .state-small .gr-4\@small, .state-small .gr-5\@small, .state-small .gr-6\@small, .state-small .gr-7\@small, .state-small .gr-8\@small, .state-small .gr-9\@small, .state-small .gr-10\@small, .state-small .gr-11\@small, .state-small .gr-12\@small, .gr-1on5\@small, .gr-1on8\@small, .gr-1on9\@small, .gr-0\@small, .gr-1\@small, .gr-2\@small, .gr-3\@small, .gr-4\@small, .gr-5\@small, .gr-6\@small, .gr-7\@small, .gr-8\@small, .gr-9\@small, .gr-10\@small, .gr-11\@small, .gr-12\@small, .state-small .header-wrapper header i, .header-wrapper header i, .state-small #logo, #logo {
     display: inline-block;
     min-height: 1px;
     float: left;
@@ -7305,6 +7272,39 @@ body {
 .fa-fonticons:before {
   content: ""; }
 
+/* --------------- COLOR SWATCHES ----------------- */
+/* --------------- FONT VARIABLES ----------------- */
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_bld-webfont.eot");
+  src: url("../fonts/brandon_bld-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_bld-webfont.woff2") format("woff2"), url("../fonts/brandon_bld-webfont.woff") format("woff"), url("../fonts/brandon_bld-webfont.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_med-webfont.eot");
+  src: url("../fonts/brandon_med-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_med-webfont.woff2") format("woff2"), url("../fonts/brandon_med-webfont.woff") format("woff"), url("../fonts/brandon_med-webfont.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_reg-webfont.eot");
+  src: url("../fonts/brandon_reg-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_reg-webfont.woff2") format("woff2"), url("../fonts/brandon_reg-webfont.woff") format("woff"), url("../fonts/brandon_reg-webfont.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal; }
+
+@font-face {
+  font-family: 'Brandon Grotesque-webfont';
+  src: url("../fonts/brandon_thin-webfont.eot");
+  src: url("../fonts/brandon_thin-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/brandon_thin-webfont.woff2") format("woff2"), url("../fonts/brandon_thin-webfont.woff") format("woff"), url("../fonts/brandon_thin-webfont.ttf") format("truetype");
+  font-weight: 100;
+  font-style: normal; }
+
+/* --------------- FONT VARIABLES ----------------- */
+/* ------------------- DESIGN --------------------- */
+/* ------------------ GENERAL MIXINS ----------------- */
 *, *:before, *:after {
   box-sizing: border-box; }
 
@@ -7335,6 +7335,11 @@ body {
       min-height: initial;
       min-height: auto;
       height: calc(100% - 150px - 50px); }
+      .state-small .content-wrapper.single-page main {
+        height: calc(100% - 50px - 50px); }
+      @media (max-width: 640px) {
+        .content-wrapper.single-page main {
+          height: calc(100% - 50px - 50px); } }
   .content-wrapper.background {
     background-size: cover;
     background-position: center center; }
@@ -7392,6 +7397,15 @@ h1 {
   font-size: 50px;
   font-weight: lighter;
   text-transform: none; }
+  .state-small h1 {
+    line-height: 50px;
+    height: 50px;
+    font-size: 36px; }
+  @media (max-width: 640px) {
+    h1 {
+      line-height: 50px;
+      height: 50px;
+      font-size: 36px; } }
 
 h2 {
   font-size: 28px;
@@ -7524,28 +7538,31 @@ blockquote {
     height: 50px;
     text-align: center; }
     .header-wrapper header i {
-      width: 8.33333%;
       display: none;
       line-height: 50px;
       cursor: pointer; }
       .state-small .header-wrapper header i {
+        width: 8.33333%;
         display: block; }
       @media (max-width: 640px) {
         .header-wrapper header i {
+          width: 8.33333%;
           display: block; } }
     .header-wrapper header a {
       display: block; }
 
 #logo {
-  width: 50%;
-  width: 25%;
-  width: 16.66667%;
   width: 8.33333%;
   font-weight: 800;
   font-size: 20px;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
-  color: white;
-  text-decoration: none; }
+  color: #FFF !important;
+  text-decoration: none !important; }
+  .state-small #logo {
+    width: 83.33333%; }
+  @media (max-width: 640px) {
+    #logo {
+      width: 83.33333%; } }
 
 .flash-message {
   position: fixed;
@@ -7599,11 +7616,22 @@ header > nav {
     z-index: 300;
     position: relative;
     box-shadow: 10px 10px 15px rgba(33, 39, 43, 0.2); }
+    .state-small header > nav li:hover > ul.nav-second-tier, .state-small header > nav li > ul.nav-second-tier:hover {
+      color: #FFF;
+      background-color: #2e363c; }
+    @media (max-width: 640px) {
+      header > nav li:hover > ul.nav-second-tier, header > nav li > ul.nav-second-tier:hover {
+        color: #FFF;
+        background-color: #2e363c; } }
+    header > nav li:hover > ul.nav-second-tier .wide, header > nav li > ul.nav-second-tier:hover .wide {
+      width: 250%; }
+      .state-small header > nav li:hover > ul.nav-second-tier .wide, .state-small header > nav li > ul.nav-second-tier:hover .wide {
+        width: 100%; }
+      @media (max-width: 640px) {
+        header > nav li:hover > ul.nav-second-tier .wide, header > nav li > ul.nav-second-tier:hover .wide {
+          width: 100%; } }
   header > nav ul.nav-second-tier li:hover {
     background-color: rgba(53, 105, 164, 0.1); }
-
-.wide {
-  width: 250%; }
 
 body, nav {
   -webkit-transition: left ease-in-out 0.5s;
@@ -7680,24 +7708,23 @@ form label, form .label {
   font-family: "Segoe WP", sans-serif;
   line-height: 2; }
 
-form input, form textarea, form button, form select {
-  -webkit-transition: border ease-in-out 0.3s;
-          transition: border ease-in-out 0.3s;
-  -webkit-transition: box-shadow ease-in-out 0.3s;
-          transition: box-shadow ease-in-out 0.3s; }
-  form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched, form button.invalid, form button.ng-invalid.ng-touched, form select.invalid, form select.ng-invalid.ng-touched {
-    border: 1px solid #C05B40; }
-  form input:focus, form textarea:focus, form button:focus, form select:focus {
-    border: 1px solid #ccac55;
-    box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
-
 form input, form textarea {
   width: 100%;
   padding: 5px;
   border: 1px solid #CCC;
   font-family: "Noto Sans", sans-serif;
   font-size: 14px;
-  box-shadow: 0 0 0px rgba(51, 73, 94, 0.2); }
+  box-shadow: 0 0 0px rgba(51, 73, 94, 0.2);
+  -webkit-transition: border ease-in-out 0.3s;
+          transition: border ease-in-out 0.3s;
+  -webkit-transition: box-shadow ease-in-out 0.3s;
+          transition: box-shadow ease-in-out 0.3s;
+  -webkit-appearance: none; }
+  form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched {
+    border: 1px solid #C05B40; }
+  form input:focus, form textarea:focus {
+    border: 1px solid #ccac55;
+    box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
 
 form select {
   padding: 5px;
@@ -8337,6 +8364,11 @@ section.comments {
   border: none;
   padding: 0;
   color: #FFF; }
+  .state-small .previous-stat, .state-small .next-stat {
+    display: none; }
+  @media (max-width: 640px) {
+    .previous-stat, .next-stat {
+      display: none; } }
 
 .previous-stat {
   top: -60px; }

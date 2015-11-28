@@ -15,9 +15,7 @@ header > nav {
     height:100%;
 
     ul {
-        @include gridle_container();
         cursor:pointer;
-
     }
 
     li > ul.nav-second-tier {
@@ -35,15 +33,25 @@ header > nav {
         z-index:300;
         position:relative;
         box-shadow:10px 10px 15px rgba($lightblack, 0.2);
+
+        @include gridle_state('small') {
+            color:$white;
+            background-color:lighten($slateblack, 10%);
+        }
+
+        .wide {
+            width:250%;
+
+            @include gridle_state('small') {
+                width:100%;
+            }
+        }
+
     }
 
     ul.nav-second-tier li:hover {
         background-color:rgba($blue, 0.1);
     }
-}
-
-.wide {
-    width:250%;
 }
 
 body, nav {

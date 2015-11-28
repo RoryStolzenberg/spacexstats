@@ -39,6 +39,10 @@ body {
             min-height:initial;
             min-height:auto;
             height:calc(100% - #{$h1-height} - 50px); // Height of h1 and nav substracted
+
+            @include gridle_state('small') {
+                height:calc(100% - #{$h1-height-small} - 50px); // Height of h1 and nav substracted
+            }
         }
     }
 
@@ -88,6 +92,7 @@ main {
         color:$white;
     }
 
+    // Allow for a border around main
     &:after {
         content:"";
         position:absolute;
@@ -120,6 +125,12 @@ h1 {
     font-size:50px;
     font-weight:lighter;
     text-transform: none;
+
+    @include gridle_state('small') {
+        line-height:$h1-height-small;
+        height:$h1-height-small;
+        font-size:36px;
+    }
 }
 
 h2 {

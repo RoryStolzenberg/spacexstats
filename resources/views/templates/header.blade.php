@@ -15,7 +15,7 @@
 <div class="header-wrapper {{ $class or null }}" style="background-image:url({{ $backgroundImage or null }})">
 	<header>
 			<i class="fa fa-navicon toggleMobileNavigation gridle-show-small"></i>
-			<span id="logo"><a href="/">SpaceX Stats</a></span>
+			<a id="logo" href="/">SpaceX Stats</a>
 			<nav>
 				<ul>
                     <li class="gr-1on8 gr-12@small">
@@ -49,7 +49,7 @@
 							<li><a href="/about/contact">Contact & Tips</a></li>
 						</ul>
 					</li>
-					<li class="gr-1on8 gr-12@small push-3">
+					<li class="gr-1on8 gr-12@small push-3 push-0@small">
                         <a href="/missioncontrol">Mission Control</a>
 						<ul class="nav-second-tier">
 							@if (Auth::isSubscriber())
@@ -65,7 +65,7 @@
                             @endif
 						</ul>
 					</li>
-					<li class="gr-1on8 gr-12@small push-3">
+					<li class="gr-1on8 gr-12@small push-3 push-0@small">
 						@if (Auth::check())
                             <a href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a>
 							<ul class="nav-second-tier">

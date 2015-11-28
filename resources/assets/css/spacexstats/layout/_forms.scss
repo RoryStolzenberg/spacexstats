@@ -14,7 +14,14 @@ form {
         line-height: 2;
     }
 
-    input, textarea, button, select {
+    input, textarea {
+        width:100%;
+        padding:5px;
+        border:1px solid $bordergrey;
+        font-family:$notoSans;
+        font-size:14px;
+        box-shadow:0 0 0px rgba($october, 0.2);
+
         @include transitionFast(border);
         @include transitionFast(box-shadow);
 
@@ -26,15 +33,9 @@ form {
             border:1px solid $gold;
             box-shadow:0 0 5px rgba($october, 0.2);
         }
-    }
 
-    input, textarea {
-        width:100%;
-        padding:5px;
-        border:1px solid $bordergrey;
-        font-family:$notoSans;
-        font-size:14px;
-        box-shadow:0 0 0px rgba($october, 0.2);
+        // Remove iOS styling
+        -webkit-appearance: none;
     }
 
     select {

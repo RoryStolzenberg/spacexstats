@@ -1,3 +1,9 @@
+// Resets, dependencies, etc
+@import "reset";
+@import "gridle/grid";
+@import "dropzone/dropzone";
+@import 'fontawesome/font-awesome';
+
 /* --------------- COLOR SWATCHES ----------------- */
 $slateblack:    #181c1f;
 $lightblack:	#21272B;
@@ -79,6 +85,7 @@ $border-radius-small:3px;
 $border-radius-large:8px;
 
 $h1-height: 150px;
+$h1-height-small: 50px;
 
 /* ------------------ GENERAL MIXINS ----------------- */
 @mixin transition($property) {

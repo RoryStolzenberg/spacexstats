@@ -25,9 +25,9 @@
         text-align:center;
 
         i {
-            @include gridle(1);
             @include gridle_hide();
             @include gridle_state('small') {
+                @include gridle_grid(1);
                 @include gridle_show();
             }
             line-height:50px;
@@ -41,15 +41,15 @@
 }
 
 #logo {
-    @include gridle(6, small);
-    @include gridle(3, medium);
-    @include gridle(2, large);
-    @include gridle(1, xlarge);
+    @include gridle_grid(1);
+    @include gridle_state('small') {
+        @include gridle_grid(10); // 10 because it balances with the hamburger menu (which takes up a space of 1) to the left
+    }
     font-weight:800;
     font-size:20px;
     font-family:$brandonGrotesque;
-    color:white;
-    text-decoration: none;
+    color:$white !important;
+    text-decoration: none !important;
 }
 
 .flash-message {
