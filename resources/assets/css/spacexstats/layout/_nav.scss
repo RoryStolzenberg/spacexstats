@@ -78,6 +78,10 @@ nav.in-page {
         cursor:pointer;
         padding-bottom: 3px;
 
+        @include gridle_state('small') {
+            display:none;
+        }
+
         &:after {
             content: '';
             display: block;

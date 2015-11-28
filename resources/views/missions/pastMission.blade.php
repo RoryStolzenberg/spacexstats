@@ -40,10 +40,10 @@
                             <a class="link" href="/missions/{{ $mission->slug }}/edit"><i class="fa fa-pencil"></i></a>
                         </li>
                     @endif
-                    <li class="gr-1 float-right">
+                    <li class="gr-1 mission-status-outcomes">
                         <span class="status complete"><i class="fa fa-flag"></i> {{ $mission->status }}</span>
                     </li>
-                    <li class="gr-1 float-right">
+                    <li class="gr-1 mission-status-outcomes">
                         @if ($mission->outcome == 'Success')
                             <span class="outcome success"><i class="fa fa-check"></i> Success</span>
                         @else
@@ -77,7 +77,7 @@
             <h2>Details</h2>
             <section id="details" class="scrollto">
                 @include('templates.cards.missionCard', ['size' => 'large', 'mission' => $mission])
-                <div class="gr-8">
+                <div class="gr-8 gr-12@small">
                     <h3>Flight Details</h3>
 
                     @if ($mission->spacecraftFlight)
@@ -95,7 +95,7 @@
                         @include('templates.cards.upperStageCard', ['mission' => $mission])
                     @endif
                 </div>
-                <div class="gr-4">
+                <div class="gr-4 gr-12@small">
                     <h3>Library</h3>
                     <ul class="library">
 
@@ -251,7 +251,7 @@
                         <p class="exclaim">No telemetry yet!</p>
                     @endif
                 <h3>Postlaunch</h3>
-                <p class="exlcaim">Postlaunch information coming soon!</p>
+                <p class="exclaim">Postlaunch information coming soon!</p>
             </section>
 
             <h2>Analytics</h2>
@@ -307,7 +307,7 @@
                     @endif
 
                     <h3>Maps</h3>
-                    <p>Maps coming soon!</p>
+                    <p class="exclaim">Maps coming soon!</p>
                 @else
                     <p class="should-subscribe exclaim">Subscribe to Mission Control to see mission analytics.</p>
                 @endif

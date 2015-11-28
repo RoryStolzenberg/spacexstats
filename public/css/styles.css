@@ -127,7 +127,7 @@ table {
     zoom: 1; } }
 
 @media (max-width: 640px) {
-  .state-small .gr-1on5\@small, .state-small .gr-1on8\@small, .state-small .gr-1on9\@small, .state-small .gr-0\@small, .state-small .gr-1\@small, .state-small .gr-2\@small, .state-small .gr-3\@small, .state-small .gr-4\@small, .state-small .gr-5\@small, .state-small .gr-6\@small, .state-small .gr-7\@small, .state-small .gr-8\@small, .state-small .gr-9\@small, .state-small .gr-10\@small, .state-small .gr-11\@small, .state-small .gr-12\@small, .gr-1on5\@small, .gr-1on8\@small, .gr-1on9\@small, .gr-0\@small, .gr-1\@small, .gr-2\@small, .gr-3\@small, .gr-4\@small, .gr-5\@small, .gr-6\@small, .gr-7\@small, .gr-8\@small, .gr-9\@small, .gr-10\@small, .gr-11\@small, .gr-12\@small, .state-small .header-wrapper header i, .header-wrapper header i, .state-small #logo, #logo {
+  .state-small .gr-1on5\@small, .state-small .gr-1on8\@small, .state-small .gr-1on9\@small, .state-small .gr-0\@small, .state-small .gr-1\@small, .state-small .gr-2\@small, .state-small .gr-3\@small, .state-small .gr-4\@small, .state-small .gr-5\@small, .state-small .gr-6\@small, .state-small .gr-7\@small, .state-small .gr-8\@small, .state-small .gr-9\@small, .state-small .gr-10\@small, .state-small .gr-11\@small, .state-small .gr-12\@small, .gr-1on5\@small, .gr-1on8\@small, .gr-1on9\@small, .gr-0\@small, .gr-1\@small, .gr-2\@small, .gr-3\@small, .gr-4\@small, .gr-5\@small, .gr-6\@small, .gr-7\@small, .gr-8\@small, .gr-9\@small, .gr-10\@small, .gr-11\@small, .gr-12\@small, .state-small .header-wrapper header i, .header-wrapper header i, .state-small #logo, #logo, .state-small .mission-status-outcomes, .mission-status-outcomes {
     display: inline-block;
     min-height: 1px;
     float: left;
@@ -7649,6 +7649,11 @@ nav.in-page {
     height: 40px;
     cursor: pointer;
     padding-bottom: 3px; }
+    .state-small nav.in-page li {
+      display: none; }
+    @media (max-width: 640px) {
+      nav.in-page li {
+        display: none; } }
     nav.in-page li:after {
       content: '';
       display: block;
@@ -8433,24 +8438,24 @@ body.future-mission .highlights {
     float: right;
     text-align: right; }
     .mission-link.future-mission-link:hover .placeholder {
-      -webkit-transform: translateX(140px);
-          -ms-transform: translateX(140px);
-              transform: translateX(140px);
+      -webkit-transform: translateX(150px);
+          -ms-transform: translateX(150px);
+              transform: translateX(150px);
       opacity: 0; }
     .mission-link.future-mission-link:hover .link {
-      -webkit-transform: translateX(140px);
-          -ms-transform: translateX(140px);
-              transform: translateX(140px);
+      -webkit-transform: translateX(150px);
+          -ms-transform: translateX(150px);
+              transform: translateX(150px);
       opacity: 1; }
   .mission-link.past-mission-link:hover .placeholder {
-    -webkit-transform: translateX(-140px);
-        -ms-transform: translateX(-140px);
-            transform: translateX(-140px);
+    -webkit-transform: translateX(-150px);
+        -ms-transform: translateX(-150px);
+            transform: translateX(-150px);
     opacity: 0; }
   .mission-link.past-mission-link:hover .link {
-    -webkit-transform: translateX(-140px);
-        -ms-transform: translateX(-140px);
-            transform: translateX(-140px);
+    -webkit-transform: translateX(-150px);
+        -ms-transform: translateX(-150px);
+            transform: translateX(-150px);
     opacity: 1; }
   .mission-link .placeholder {
     text-transform: uppercase;
@@ -8464,6 +8469,16 @@ body.future-mission .highlights {
     display: inline-block;
     -webkit-transition: all ease-in-out 0.3s;
             transition: all ease-in-out 0.3s; }
+
+.mission-status-outcomes {
+  float: right; }
+  .state-small .mission-status-outcomes {
+    display: inline-block !important;
+    width: 50%; }
+  @media (max-width: 640px) {
+    .mission-status-outcomes {
+      display: inline-block !important;
+      width: 50%; } }
 
 .outcome, .status {
   border-radius: 3px;
