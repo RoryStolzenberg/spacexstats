@@ -269,11 +269,8 @@ table.data-table {
 }
 
 // Blockquotes
-blockquote {
-    background-color:$bordergrey;
-}
-
-.backing {
+blockquote, .backing {
     background-color:$bordergrey;
     padding:10px;
+    width:100%;
 }

@@ -36,7 +36,7 @@
                             var newTag = tagIsPresentInAvailableTags[0];
                         } else {
                             // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: $.trim(createdTag.toLowerCase()), description: null });
+                            var newTag = new Tag({ id: null, name: createdTag, description: null });
                         }
 
                         $scope.currentTags.push(newTag);
@@ -63,13 +63,7 @@
                     if (event.which == 32 || event.which == 13) {
                         event.preventDefault();
 
-                        // Remove any rulebreaking chars
-                        var tag = $scope.tagInput;
-                        tag = tag.replace(/["']/g, "");
-                        // Remove whitespace if present
-                        tag = tag.trim();
-
-                        $scope.createTag(tag);
+                        $scope.createTag($scope.tagInput);
 
                         // event.key == 'Backspace'
                     } else if (event.which == 8 && $scope.tagInput == "") {
@@ -122,6 +116,10 @@
     app.factory("Tag", function() {
         return function(tag) {
             var self = tag;
+
+            // Convert the tag to lowercase and replace all spaces present.
+            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
+
             return self;
         }
     });

@@ -7510,12 +7510,10 @@ table.data-table th {
   background-color: #33495E;
   color: whitesmoke; }
 
-blockquote {
-  background-color: #CCC; }
-
-.backing {
+blockquote, .backing {
   background-color: #CCC;
-  padding: 10px; }
+  padding: 10px;
+  width: 100%; }
 
 .header-wrapper {
   width: 100%;
@@ -7623,12 +7621,12 @@ header > nav {
       header > nav li:hover > ul.nav-second-tier, header > nav li > ul.nav-second-tier:hover {
         color: #FFF;
         background-color: #2e363c; } }
-    header > nav li:hover > ul.nav-second-tier .wide, header > nav li > ul.nav-second-tier:hover .wide {
+    header > nav li:hover > ul.nav-second-tier.wide, header > nav li > ul.nav-second-tier:hover.wide {
       width: 250%; }
-      .state-small header > nav li:hover > ul.nav-second-tier .wide, .state-small header > nav li > ul.nav-second-tier:hover .wide {
+      .state-small header > nav li:hover > ul.nav-second-tier.wide, .state-small header > nav li > ul.nav-second-tier:hover.wide {
         width: 100%; }
       @media (max-width: 640px) {
-        header > nav li:hover > ul.nav-second-tier .wide, header > nav li > ul.nav-second-tier:hover .wide {
+        header > nav li:hover > ul.nav-second-tier.wide, header > nav li > ul.nav-second-tier:hover.wide {
           width: 100%; } }
   header > nav ul.nav-second-tier li:hover {
     background-color: rgba(53, 105, 164, 0.1); }
@@ -7714,7 +7712,8 @@ form input, form textarea {
   border: 1px solid #CCC;
   font-family: "Noto Sans", sans-serif;
   font-size: 14px;
-  box-shadow: 0 0 0px rgba(51, 73, 94, 0.2);
+  box-shadow: 0 0 0 rgba(51, 73, 94, 0.2);
+  border-radius: 0;
   -webkit-transition: border ease-in-out 0.3s;
           transition: border ease-in-out 0.3s;
   -webkit-transition: box-shadow ease-in-out 0.3s;
@@ -7904,6 +7903,13 @@ input[value="Logout"], input[value="Logout"]:focus {
   box-shadow: none;
   height: auto;
   line-height: 50px; }
+
+.state-small input, .state-small select, .state-small textarea {
+  font-size: 16px; }
+
+@media (max-width: 640px) {
+  input, select, textarea {
+    font-size: 16px; } }
 
 section.comments {
   margin: 0 auto;

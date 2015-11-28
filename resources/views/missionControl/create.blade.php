@@ -129,7 +129,7 @@
                                     </ul>
                                 </fieldset>
 
-                                <fieldset>
+                                <fieldset class="gr-12">
                                     <legend>Tags</legend>
 
                                     <ul>
@@ -142,17 +142,17 @@
                                     </ul>
                                 </fieldset>
 
-                                <fieldset>
+                                <fieldset class="gr-12">
                                     <legend>Finally...</legend>
 
                                     <ul>
-                                        <li>
+                                        <li class="gr-6">
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
                                             <label for="@{{ 'anonymous-file' + $index }}">
                                                 <span>Submit anonymously?</span>
                                             </label>
                                         </li>
-                                        <li>
+                                        <li class="gr-6">
                                             <input type="checkbox" name="original_content" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.original_content" />
                                             <label for="@{{ 'anonymous-file' + $index }}">
                                                 <span>Did you create this yourself?</span>

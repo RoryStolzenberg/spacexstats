@@ -39,7 +39,7 @@ header > nav {
             background-color:lighten($slateblack, 10%);
         }
 
-        .wide {
+        &.wide {
             width:250%;
 
             @include gridle_state('small') {

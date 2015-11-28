@@ -20,7 +20,8 @@ form {
         border:1px solid $bordergrey;
         font-family:$notoSans;
         font-size:14px;
-        box-shadow:0 0 0px rgba($october, 0.2);
+        box-shadow:0 0 0 rgba($october, 0.2);
+        border-radius:0;
 
         @include transitionFast(border);
         @include transitionFast(box-shadow);
@@ -285,4 +286,12 @@ input[value="Logout"], input[value="Logout"]:focus {
     box-shadow:none;
     height:auto;
     line-height:50px;
+}
+
+// http://stackoverflow.com/questions/11064237/prevent-iphone-from-zooming-form
+// Prevent iOS zooming in forms by scaling up the fontsize
+@include gridle_state('small') {
+    input, select, textarea {
+        font-size: 16px;
+    }
 }
