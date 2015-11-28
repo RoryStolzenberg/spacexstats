@@ -2,6 +2,11 @@
     var userApp = angular.module('app', []);
 
     userApp.controller("editUserController", ['$http', '$scope', 'editUserService', 'flashMessage', function($http, $scope, editUserService, flashMessage) {
+        $scope.isUpdating = {
+            profile: false,
+            emailNotifications: false,
+            SMSNotifications: false
+        };
 
         $scope.username = laravel.user.username;
 
@@ -19,6 +24,7 @@
         };
 
         $scope.updateProfile = function() {
+            $scope.isUpdating.profile = true;
             $http.patch('/users/' + $scope.username + '/edit', $scope.profile)
                 .then(function(response) {
                     window.location = '/users/' + $scope.username;
@@ -35,8 +41,9 @@
         };
 
         $scope.updateEmailNotifications = function() {
+            $scope.isUpdating.emailNotifications = true;
             editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
-                // Reset form?
+                $scope.isUpdating.emailNotifications = false;
             });
         };
 
@@ -55,8 +62,9 @@
         }
 
         $scope.updateSMSNotifications = function() {
+            $scope.isUpdating.SMSNotifications = true;
             editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
-                // Reset the form or something
+                $scope.isUpdating.SMSNotifications = false;
             });
         }
 

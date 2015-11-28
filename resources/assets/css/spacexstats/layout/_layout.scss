@@ -76,7 +76,8 @@ h1, main {
 
 main {
     background-color:$white;
-    outline:3px solid rgba($slateblack, 0.2);
+    border:3px solid rgba($slateblack, 0.2);
+    background-clip: padding-box;
     color:$slateblack;
     min-height:calc(100% - #{$h1-height}); // Substract h1 height
     display:block; // Make IE happy

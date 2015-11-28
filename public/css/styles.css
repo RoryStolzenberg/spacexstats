@@ -7358,7 +7358,8 @@ h1, main {
 
 main {
   background-color: #FFF;
-  outline: 3px solid rgba(24, 28, 31, 0.2);
+  border: 3px solid rgba(24, 28, 31, 0.2);
+  background-clip: padding-box;
   color: #181c1f;
   min-height: calc(100% - 150px);
   display: block;

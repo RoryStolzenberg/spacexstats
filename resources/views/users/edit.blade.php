@@ -57,7 +57,7 @@
                         <p>If you're a Mission Control subscriber, you can change your banner from the default blue to a custom image.</p>
                     </div>-->
 
-                    <input type="submit" value="Update Profile" ng-click="updateProfile()" />
+                    <input type="submit" value="Update Profile" ng-click="updateProfile()" ng-disabled="isUpdating.profile" />
                 </form>
             </section>
 
@@ -133,7 +133,7 @@
                             </ul>
                         </fieldset>
                     @endif
-                    <input type="submit" ng-click="updateEmailNotifications()" value="Update Email Notifications" />
+                    <input type="submit" ng-click="updateEmailNotifications()" ng-disabled="isUpdating.emailNotifications" value="Update Email Notifications" />
                 </form>
             </section>
 
@@ -166,7 +166,7 @@
                         </li>
                     </ul>
 
-                    <input type="submit" ng-click="updateSMSNotifications()" value="Update SMS Notifications" />
+                    <input type="submit" ng-click="updateSMSNotifications()" ng-disabled="isUpdating.SMSNotifications" value="Update SMS Notifications" />
                 </form>
                 @else
                     <p class="exclaim">Sign up for mission control to enable this feature!</p>

@@ -931,7 +931,7 @@
             parts: {
                 type: ''
             }
-        }
+        };
 
         $scope.selected = {
             astronaut: null
@@ -939,11 +939,11 @@
 
         $scope.createMission = function() {
             missionService.create($scope.mission);
-        }
+        };
 
         $scope.updateMission = function() {
             missionService.update($scope.mission);
-        }
+        };
 
     }]);
 
@@ -1580,101 +1580,6 @@
 })();
 
 (function() {
-    var userApp = angular.module('app', []);
-
-    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', 'flashMessage', function($http, $scope, editUserService, flashMessage) {
-
-        $scope.username = laravel.user.username;
-
-        $scope.missions = laravel.missions;
-
-        $scope.patches = laravel.patches;
-
-        $scope.profile = {
-            summary: laravel.user.profile.summary,
-            twitter_account: laravel.user.profile.twitter_account,
-            reddit_account: laravel.user.profile.reddit_account,
-            favorite_quote: laravel.user.profile.favorite_quote,
-            favorite_mission: laravel.user.profile.favorite_mission,
-            favorite_patch: laravel.user.profile.favorite_patch
-        };
-
-        $scope.updateProfile = function() {
-            $http.patch('/users/' + $scope.username + '/edit', $scope.profile)
-                .then(function(response) {
-                    flashMessage.addOK(response.data);
-                });
-        };
-
-        $scope.emailNotifications = {
-            launchTimeChange: laravel.notifications.launchTimeChange,
-            newMission: laravel.notifications.newMission,
-            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
-            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
-            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
-            newsSummaries: laravel.notifications.newsSummaries
-        };
-
-        $scope.updateEmailNotifications = function() {
-            editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
-                // Reset form?
-            });
-        };
-
-        $scope.SMSNotification = {
-            mobile: laravel.user.mobile
-        };
-
-        if (laravel.notifications.tMinus24HoursSMS === true) {
-            $scope.SMSNotification.status = "TMinus24HoursSMS";
-        } else if (laravel.notifications.tMinus3HoursSMS === true) {
-            $scope.SMSNotification.status = "TMinus3HoursSMS";
-        } else if (laravel.notifications.tMinus1HourSMS === true) {
-            $scope.SMSNotification.status = "TMinus1HourSMS";
-        } else {
-            $scope.SMSNotification.status = "false";
-        }
-
-        $scope.updateSMSNotifications = function() {
-            editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
-                // Reset the form or something
-            });
-        }
-
-    }]);
-
-    userApp.service('editUserService', ["$http", "flashMessage", function($http, flashMessage) {
-        this.updateSMS = function(username, notification) {
-            return $http.patch('/users/' + username + '/edit/smsnotifications',
-
-                { 'SMSNotification': notification }
-
-            ).then(function(response) {
-                return flashMessage.addOK(response.data);
-            }, function(response) {
-                return flashMessage.addError(response.data);
-            });
-        };
-
-        this.updateEmails = function(username, notification) {
-            return $http.patch('/users/' + username + '/edit/emailnotifications',
-
-                { 'emailNotifications': notification }
-
-            ).then(function(response) {
-                return flashMessage.addOK(response.data);
-            }, function(response) {
-                return flashMessage.addError(response.data);
-            });
-        };
-
-        this.updateProfile = function() {
-
-        };
-    }]);
-
-})();
-(function() {
     var liveApp = angular.module('app', []);
 
     liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
@@ -1909,6 +1814,109 @@
             this.content = null;
         }
     });
+})();
+(function() {
+    var userApp = angular.module('app', []);
+
+    userApp.controller("editUserController", ['$http', '$scope', 'editUserService', 'flashMessage', function($http, $scope, editUserService, flashMessage) {
+        $scope.isUpdating = {
+            profile: false,
+            emailNotifications: false,
+            SMSNotifications: false
+        };
+
+        $scope.username = laravel.user.username;
+
+        $scope.missions = laravel.missions;
+
+        $scope.patches = laravel.patches;
+
+        $scope.profile = {
+            summary: laravel.user.profile.summary,
+            twitter_account: laravel.user.profile.twitter_account,
+            reddit_account: laravel.user.profile.reddit_account,
+            favorite_quote: laravel.user.profile.favorite_quote,
+            favorite_mission: laravel.user.profile.favorite_mission,
+            favorite_patch: laravel.user.profile.favorite_patch
+        };
+
+        $scope.updateProfile = function() {
+            $scope.isUpdating.profile = true;
+            $http.patch('/users/' + $scope.username + '/edit', $scope.profile)
+                .then(function(response) {
+                    window.location = '/users/' + $scope.username;
+                });
+        };
+
+        $scope.emailNotifications = {
+            launchTimeChange: laravel.notifications.launchTimeChange,
+            newMission: laravel.notifications.newMission,
+            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
+            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
+            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+            newsSummaries: laravel.notifications.newsSummaries
+        };
+
+        $scope.updateEmailNotifications = function() {
+            $scope.isUpdating.emailNotifications = true;
+            editUserService.updateEmails($scope.username, $scope.emailNotifications).then(function() {
+                $scope.isUpdating.emailNotifications = false;
+            });
+        };
+
+        $scope.SMSNotification = {
+            mobile: laravel.user.mobile
+        };
+
+        if (laravel.notifications.tMinus24HoursSMS === true) {
+            $scope.SMSNotification.status = "TMinus24HoursSMS";
+        } else if (laravel.notifications.tMinus3HoursSMS === true) {
+            $scope.SMSNotification.status = "TMinus3HoursSMS";
+        } else if (laravel.notifications.tMinus1HourSMS === true) {
+            $scope.SMSNotification.status = "TMinus1HourSMS";
+        } else {
+            $scope.SMSNotification.status = "false";
+        }
+
+        $scope.updateSMSNotifications = function() {
+            $scope.isUpdating.SMSNotifications = true;
+            editUserService.updateSMS($scope.username, $scope.SMSNotification).then(function() {
+                $scope.isUpdating.SMSNotifications = false;
+            });
+        }
+
+    }]);
+
+    userApp.service('editUserService', ["$http", "flashMessage", function($http, flashMessage) {
+        this.updateSMS = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/smsnotifications',
+
+                { 'SMSNotification': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateEmails = function(username, notification) {
+            return $http.patch('/users/' + username + '/edit/emailnotifications',
+
+                { 'emailNotifications': notification }
+
+            ).then(function(response) {
+                return flashMessage.addOK(response.data);
+            }, function(response) {
+                return flashMessage.addError(response.data);
+            });
+        };
+
+        this.updateProfile = function() {
+
+        };
+    }]);
+
 })();
 (function() {
     var signUpApp = angular.module('app', []);
@@ -2416,6 +2424,38 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('tweet', ["$http", function($http) {
         return {
             restrict: 'E',
@@ -2505,154 +2545,6 @@
             templateUrl: '/js/templates/deltaV.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('chart', ["$window", function($window) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                chartData: '=data',
-                settings: "="
-            },
-            link: function($scope, elem, attrs) {
-
-                if (!angular.isDefined($scope.chartData) || $scope.chartData.length == 0) {
-                    return;
-                }
-
-                var d3 = $window.d3;
-                var svg = d3.select(elem[0]);
-                var width = elem.width();
-                var height = elem.height();
-
-                var settings = $scope.settings;
-
-                // check padding and set default
-                if (typeof settings.padding === 'undefined') {
-                    settings.padding = 50;
-                }
-
-                // extrapolate data
-                if (settings.extrapolate === true) {
-                    var originDatapoint = {};
-                    originDatapoint[settings.xAxisKey] = 0;
-                    originDatapoint[settings.yAxisKey] = 0;
-
-                    $scope.chartData.unshift(originDatapoint);
-                }
-
-                // draw
-                var drawLineChart = (function() {
-                    // Setup scales
-                    var xScale = d3.scale.linear()
-                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
-                        .range([settings.padding, width - settings.padding]);
-
-                    var yScale = d3.scale.linear()
-                        .domain([d3.max($scope.chartData, function(d) {
-                            return d[settings.yAxisKey];
-                        }), 0])
-                        .range([settings.padding, height - settings.padding]);
-
-                    // Generators
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
-                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
-                    });
-                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
-                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
-                    });
-
-                    // Line function
-                    var lineFunction = d3.svg.line()
-                        .x(function(d) {
-                            return xScale(d[settings.xAxisKey]);
-                        })
-                        .y(function(d) {
-                            return yScale(d[settings.yAxisKey]);
-                        })
-                        .interpolate("basis");
-
-                    // Element manipulation
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                        .call(xAxisGenerator);
-
-                    svg.append("svg:g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + settings.padding + ",0)")
-                        .attr("stroke-width", 2)
-                        .call(yAxisGenerator);
-
-                    svg.append("svg:path")
-                        .attr({
-                            d: lineFunction($scope.chartData),
-                            "stroke-width": 2,
-                            "fill": "none",
-                            "class": "path"
-                        });
-
-                    svg.append("text")
-                        .attr("class", "chart-title")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", settings.padding / 2)
-                        .text(settings.chartTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis x-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", height - (settings.padding / 2))
-                        .text(settings.xAxisTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis y-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("transform", "rotate(-90)")
-                        .attr("x", - (height / 2))
-                        .attr("y", settings.padding / 2)
-                        .text(settings.yAxisTitle);
-                })();
-            },
-            templateUrl: '/js/templates/chart.html'
-        }
-    }]);
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -2956,24 +2848,138 @@
         return self;
     });
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('passwordToggle',function($compile){
+    app.directive('chart', ["$window", function($window) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                chartData: '=data',
+                settings: "="
+            },
+            link: function($scope, elem, attrs) {
+
+                if (!angular.isDefined($scope.chartData) || $scope.chartData.length == 0) {
+                    return;
+                }
+
+                var d3 = $window.d3;
+                var svg = d3.select(elem[0]);
+                var width = elem.width();
+                var height = elem.height();
+
+                var settings = $scope.settings;
+
+                // check padding and set default
+                if (typeof settings.padding === 'undefined') {
+                    settings.padding = 50;
+                }
+
+                // extrapolate data
+                if (settings.extrapolate === true) {
+                    var originDatapoint = {};
+                    originDatapoint[settings.xAxisKey] = 0;
+                    originDatapoint[settings.yAxisKey] = 0;
+
+                    $scope.chartData.unshift(originDatapoint);
+                }
+
+                // draw
+                var drawLineChart = (function() {
+                    // Setup scales
+                    var xScale = d3.scale.linear()
+                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
+                        .range([settings.padding, width - settings.padding]);
+
+                    var yScale = d3.scale.linear()
+                        .domain([d3.max($scope.chartData, function(d) {
+                            return d[settings.yAxisKey];
+                        }), 0])
+                        .range([settings.padding, height - settings.padding]);
+
+                    // Generators
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
+                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
+                    });
+                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
+                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
+                    });
+
+                    // Line function
+                    var lineFunction = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d[settings.xAxisKey]);
+                        })
+                        .y(function(d) {
+                            return yScale(d[settings.yAxisKey]);
+                        })
+                        .interpolate("basis");
+
+                    // Element manipulation
+                    svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                        .call(xAxisGenerator);
+
+                    svg.append("svg:g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(" + settings.padding + ",0)")
+                        .attr("stroke-width", 2)
+                        .call(yAxisGenerator);
+
+                    svg.append("svg:path")
+                        .attr({
+                            d: lineFunction($scope.chartData),
+                            "stroke-width": 2,
+                            "fill": "none",
+                            "class": "path"
+                        });
+
+                    svg.append("text")
+                        .attr("class", "chart-title")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", settings.padding / 2)
+                        .text(settings.chartTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis x-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("x", width / 2)
+                        .attr("y", height - (settings.padding / 2))
+                        .text(settings.xAxisTitle);
+
+                    svg.append("text")
+                        .attr("class", "axis y-axis")
+                        .attr("text-anchor", "middle")
+                        .attr("transform", "rotate(-90)")
+                        .attr("x", - (height / 2))
+                        .attr("y", settings.padding / 2)
+                        .text(settings.yAxisTitle);
+                })();
+            },
+            templateUrl: '/js/templates/chart.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
         return {
             restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
                 };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
             }
         }
-    });
+    }]);
 })();
 
 (function() {
@@ -3072,24 +3078,38 @@
     });
 })();
 
+//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+    app.directive('passwordToggle',function($compile){
         return {
             restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
                 };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
             }
         }
-    }]);
+    });
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -3103,17 +3123,5 @@
             },
             template: '<p>{{ characterCounterOutput }}</p>'
         }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
     });
 })();
