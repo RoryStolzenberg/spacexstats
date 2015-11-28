@@ -8270,6 +8270,9 @@ section.comments {
   .subscribe p, .subscribe ul li {
     font-size: 18px; }
 
+form[name="subscribeForm"] .payment-options {
+  width: 200px; }
+
 form[name="subscribeForm"] label {
   float: left; }
 

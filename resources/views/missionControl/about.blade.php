@@ -44,6 +44,9 @@
                             <fieldset ng-disabled="subscriptionState.isSubscribing">
                                 <ul>
                                     <li>
+                                        <img src="/images/paymentoptions.png" class="payment-options" />
+                                    </li>
+                                    <li>
                                         <input type="text" name="creditcardnumber" ng-model="creditcard.number" cc-format cc-number data-stripe="number" placeholder="Card Number" />
                                     </li>
                                     <li class="container" cc-exp>
