@@ -122,4 +122,25 @@ class MissionControlController extends Controller {
             'stripePublicKey' => Config::get('services.stripe.public')
         ]);
     }
+
+    public function aboutNextLaunch() {
+        return response()->json([
+            'nextLaunch' => Mission::with(['vehicle'])->future()->first()
+        ]);
+    }
+
+    public function aboutTotalData() {
+        return response()->json([
+            'size'      => round(Object::inMissionControl()->sum('size') / 1000000000, 1) . ' GB',
+            'images'    => Object::where('type', MissionControlType::Image)->count(),
+            'videos'    => Object::where('type', MissionControlType::Video)->count(),
+            'documents' => Object::where('type', MissionControlType::Document)->count()
+        ]);
+    }
+
+    public function aboutSearch() {
+        return response()->json([
+            'result' => 1
+        ]);
+    }
 }

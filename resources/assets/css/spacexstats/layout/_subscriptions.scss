@@ -3,8 +3,6 @@ $planWidth:350px;
 
 .subscribe {
     text-align:center;
-    font-family: $brandonGrotesque;
-    color:$white;
     font-size:0;
 
     .plan {
@@ -33,6 +31,15 @@ $planWidth:350px;
             background: -webkit-linear-gradient(-45deg,  #51a4f7 0%,#3569a4 100%); /* Chrome10-25,Safari5.1-6 */
             background: linear-gradient(135deg,  #51a4f7 0%,#3569a4 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#51a4f7', endColorstr='#3569a4',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+            .features ul {
+                list-style-position: inside;
+
+                li {
+                    list-style-type: disc;
+                    text-align: left;
+                }
+            }
 		}
 
 	}
@@ -48,13 +55,44 @@ $planWidth:350px;
     p, ul li {
         font-size:18px;
     }
+}
 
-    li {
-        list-style-type: disc;
-        text-align: left;
+form[name="subscribeForm"] {
+
+    label {
+        float: left;
     }
 
-	input {
-		width:100%;
-	}
+    input {
+        border-radius: $border-radius-small;
+        border:1px solid $blue;
+        background-color:rgba($white, 0.25);
+        width:100%;
+        color:$white;
+    }
+
+    li[cc-exp] {
+        padding:10px 0;
+
+        input {
+            width:50%;
+            @include gridle_gutter(0 10px);
+
+            &:first-of-type {
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                border-right:none;
+            }
+
+            &:last-of-type {
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                border-left:none;
+            }
+        }
+    }
+
+    .subscription-failed {
+        color:$red;
+    }
 }

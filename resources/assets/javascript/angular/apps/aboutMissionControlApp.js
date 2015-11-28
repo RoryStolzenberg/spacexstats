@@ -19,15 +19,15 @@
             subscribe: function($event) {
                 $scope.subscriptionState.isEnteringDetails =  $scope.subscriptionState.failed = false;
                 $scope.subscriptionState.isSubscribing = true;
-                $scope.subscriptionButtonText = "Paying...";
+                $scope.subscriptionButtonText = "You're awesome";
 
-                var form = $event.target.parentElement;
+                var form = $('form[name="subscribeForm"]');
                 Stripe.card.createToken(form, $scope.subscription.stripeResponseHandler);
             },
             stripeResponseHandler: function(stripeStatus, stripeResponse) {
-                $scope.subscriptionState.isSubscribing = false;
 
                 if (stripeResponse.error) {
+                    $scope.subscriptionState.isSubscribing = false;
                     $scope.subscriptionState.isEnteringDetails = $scope.subscriptionState.failed = true;
                 } else {
                     // Fetch the token from Stripe's response.
@@ -36,11 +36,18 @@
                     // Subscribe
                     subscriptionService.subscribe(token).then(function() {
                         // Success!
+                        $scope.subscriptionState.isSubscribing = false;
                         $scope.subscriptionState.hasSubscribed = true;
                     });
                 }
+
+                $scope.$apply();
             }
         };
+    }]);
+
+    aboutMissionControlApp.controller('aboutController', ["$scope", function($scope) {
+
     }]);
 
     aboutMissionControlApp.service("subscriptionService", ["$http", function($http) {

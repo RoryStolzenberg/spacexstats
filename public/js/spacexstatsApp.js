@@ -1152,15 +1152,15 @@
             subscribe: function($event) {
                 $scope.subscriptionState.isEnteringDetails =  $scope.subscriptionState.failed = false;
                 $scope.subscriptionState.isSubscribing = true;
-                $scope.subscriptionButtonText = "Paying...";
+                $scope.subscriptionButtonText = "You're awesome";
 
-                var form = $event.target.parentElement;
+                var form = $('form[name="subscribeForm"]');
                 Stripe.card.createToken(form, $scope.subscription.stripeResponseHandler);
             },
             stripeResponseHandler: function(stripeStatus, stripeResponse) {
-                $scope.subscriptionState.isSubscribing = false;
 
                 if (stripeResponse.error) {
+                    $scope.subscriptionState.isSubscribing = false;
                     $scope.subscriptionState.isEnteringDetails = $scope.subscriptionState.failed = true;
                 } else {
                     // Fetch the token from Stripe's response.
@@ -1169,11 +1169,18 @@
                     // Subscribe
                     subscriptionService.subscribe(token).then(function() {
                         // Success!
+                        $scope.subscriptionState.isSubscribing = false;
                         $scope.subscriptionState.hasSubscribed = true;
                     });
                 }
+
+                $scope.$apply();
             }
         };
+    }]);
+
+    aboutMissionControlApp.controller('aboutController', ["$scope", function($scope) {
+
     }]);
 
     aboutMissionControlApp.service("subscriptionService", ["$http", function($http) {
@@ -2047,150 +2054,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.createTag = function(createdTag) {
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: createdTag, description: null });
-                        }
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        $scope.createTag($scope.tagInput);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-
-            // Convert the tag to lowercase and replace all spaces present.
-            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
-
-            return self;
-        }
-    });
-})();
-
-
-(function() {
-    var app = angular.module('app');
-
     app.directive('upload', ['$parse', function($parse) {
         return {
             restrict: 'A',
@@ -2243,42 +2106,18 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
             scope: {
-                action: '@',
-                tweet: '='
+                size: '@',
+                mission: '='
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/missionCard.html'
         }
-    }]);
+    });
 })();
 (function() {
     var app = angular.module('app');
@@ -2460,34 +2299,170 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
+    var app = angular.module('app', []);
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
+            require: 'ngModel',
             replace: true,
             restrict: 'E',
             scope: {
-                redditComment: '=ngModel'
+                availableTags: '=',
+                currentTags: '=ngModel'
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, element, attributes, ctrl) {
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
 
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                ctrl.$options = {
+                    allowInvalid: true
+                };
 
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                $scope.createTag = function(createdTag) {
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
                         });
+
+                        if (tagIsPresentInAvailableTags.length === 1) {
+                            // grab tag
+                            var newTag = tagIsPresentInAvailableTags[0];
+                        } else {
+                            // trim and convert the text to lowercase, then create!
+                            var newTag = new Tag({ id: null, name: createdTag, description: null });
+                        }
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
                     }
-                }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        $scope.createTag($scope.tagInput);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
 
             },
-            templateUrl: '/js/templates/redditComment.html'
+            templateUrl: '/js/templates/tags.html'
+        }
+    }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+
+            // Convert the tag to lowercase and replace all spaces present.
+            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
+
+            return self;
+        }
+    });
+})();
+
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
         }
     }]);
 })();
@@ -2544,26 +2519,38 @@
         }
     });
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('passwordToggle',function($compile){
+    app.directive('redditComment', ["$http", function($http) {
         return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
@@ -2866,22 +2853,24 @@
         return self;
     });
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+    app.directive('passwordToggle',function($compile){
         return {
             restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
                 };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
             }
         }
-    }]);
+    });
 })();
 
 (function() {
@@ -3099,18 +3088,21 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('characterCoutner', function() {
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
         return {
-            restrict: 'E',
-            scope: {
-                model: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-            },
-            template: '<p>{{ characterCounterOutput }}</p>'
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
         }
-    });
+    }]);
 })();
+
 (function() {
     var app = angular.module('app');
 
@@ -3121,5 +3113,20 @@
            }
            return null;
        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('characterCoutner', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                model: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+            },
+            template: '<p>{{ characterCounterOutput }}</p>'
+        }
     });
 })();

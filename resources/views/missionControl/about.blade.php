@@ -2,7 +2,7 @@
 @section('title', 'Mission Control')
 
 @section('content')
-<body class="missioncontrol-about" ng-app="aboutMissionControlApp" ng-cloak>
+<body class="missioncontrol-about" ng-app="aboutMissionControlApp" ng-controller="aboutController" ng-cloak>
 
     @include('templates.header', ['class' => 'no-background'])
 
@@ -41,19 +41,25 @@
                     </div>
                     @if (Auth::isMember())
                         <form name="subscribeForm" ng-show="subscriptionState.isEnteringDetails || subscriptionState.isSubscribing" novalidate>
-                            <label for="Card Number">Card Number</label>
                             <fieldset ng-disabled="subscriptionState.isSubscribing">
-                                <input type="text" name="creditcardnumber" ng-model="creditcard.number" cc-format cc-number data-stripe="number" />
-                                <div cc-exp>
-                                    <input class="gr-6" type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" cc-exp-month placeholder="MM" data-stripe="exp-month"/>
-                                    <input class="gr-6" type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" cc-exp-year placeholder="YYYY" full-length-year data-stripe="exp-year" />
-                                </div>
-                                <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" placeholder="CVC" cc-cvc data-stripe="cvc" />
+                                <ul>
+                                    <li>
+                                        <input type="text" name="creditcardnumber" ng-model="creditcard.number" cc-format cc-number data-stripe="number" placeholder="Card Number" />
+                                    </li>
+                                    <li class="container" cc-exp>
+                                        <label>Expiry Month & Year</label>
+                                        <input class="gr-6" type="text" name="creditcardexpiry" ng-model="creditcard.expiry.month" cc-exp-month placeholder="MM" data-stripe="exp-month"/>
+                                        <input class="gr-6" type="text" name="creditcardexpiry" ng-model="creditcard.expiry.year" cc-exp-year placeholder="YYYY" full-year data-stripe="exp-year" />
+                                    </li>
+                                    <li>
+                                        <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" placeholder="CVC" cc-cvc data-stripe="cvc" />
+                                    </li>
+                                    <li>
+                                        <button class="wide-button" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing || subscribeForm.$invalid"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>
+                                        <p class="subscription-failed text-left small" ng-show="subscriptionState.failed">That didn't work. Try again?</p>
+                                    </li>
+                                </ul>
                             </fieldset>
-
-                            <button class="wide-button" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing || subscribeForm.$invalid"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>
-
-                            <p ng-if="subscriptionState.failed">That didn't work. Try again?</p>
                         </form>
                         <div class="response" ng-show="subscriptionState.hasSubscribed">
                             <p>Payment Complete!</p>
@@ -72,8 +78,18 @@
         </video>
         <h1>We Have Liftoff</h1>
     </div>
-    <div class="content-wrapper single-page background transparent">
+    <div class="content-wrapper single-page background transparent notifications">
         <h1>Text & Email Notifications</h1>
+        <main>
+            <div class="gr-4">
+                <p>With Mission Control, you can receive SMS & email notifications at 24, 3, and 1 hour intervals before a launch. Don't ever miss a SpaceX launch again!</p>
+            </div>
+            <div class="gr-4 float-right">
+                <img class="sms-notification" src="/images/smsnotifications.png" alt="Receive SMS notifications about upcoming launches on your phone" />
+            </div>
+
+
+        </main>
     </div>
     <div class="content-wrapper single-page background">
         <h1>Heroic Search</h1>

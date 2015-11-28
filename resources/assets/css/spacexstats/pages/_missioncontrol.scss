@@ -9,6 +9,12 @@
 
 // MISSIONCONTROL ABOUT PAGE
 .missioncontrol-about {
+
+    p, span, ul {
+        color:$white;
+        font-family: $brandonGrotesque;
+    }
+
     h1 {
         line-height:100px;
         height:100px;
@@ -16,6 +22,11 @@
 
     p {
         font-size:24px;
+    }
+
+    #herovideo {
+        position: absolute;
+        top: 0;
     }
 
     @media all and (min-aspect-ratio: 16/9) {
@@ -32,4 +43,17 @@
         }
     }
 
+    // Individual page styles
+    .notifications {
+        background-image:url('/images/backgrounds/f9dragonlaunch.jpg');
+
+        p {
+            background-color:rgba($slateblack, 0.75);
+        }
+
+        img {
+            float:right;
+            max-width:500px;
+        }
+    }
 }

@@ -14,10 +14,10 @@ class Tag extends Model {
     protected $fillable = [];
     protected $guarded = [];
 
-    protected $rules = array(
-        'name' => 'required|string|varchar:tiny,unique:tags',
-        'description' => 'string|varchar:compact'
-    );
+    protected $rules = [
+        'name' => ['required', 'string', 'varchar:tiny', 'unique:tags', "regex:/[^\s'\"]+/i"],
+        'description' => ['string', 'varchar:compact']
+    ];
 
     public function isValid($input) {
         $validator = Validator::make($input, $this->rules);
