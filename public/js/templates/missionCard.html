@@ -1,0 +1,42 @@
+<div class="card mission-card" ng-class="size">
+    <div class="top">
+        <div class="thumb" style="background-image:url(/media/1454e6bb28540a77.93511822.jpeg);"></div>
+        <p><span><a ng-attr-href="{{mission.slug}}">{{ mission.name }}</a></span> for <span>{{ mission.contractor }}</span></p>
+    </div>
+    <div class="bottom" ng-if="size == 'small'">
+        <div class="container">
+            <div class="gr-4"><span class="launch-count">present GenericVehicleCount</span></div>
+            <div class="gr-4">present LaunchDateTime</div>
+            <div class="gr-4">launchSite FullLocation</div>
+        </div>
+        <div class="container">
+            <div class="gr-4 smallcaps">GenericVehicle<br/>Launch</div>
+            <div class="gr-4 smallcaps">Launch (UTC)</div>
+            <div class="gr-4 smallcaps">Launch Site</div>
+        </div>
+    </div>
+
+    <div class="bottom" ng-if="size == 'large'">
+        <div class="container">
+            <div class="gr-1on9"><span class="launch-count">present GenericVehicleCount</span></div>
+            <div class="gr-1on9">present LaunchDateTime</div>
+            <div class="gr-1on9 smallcaps" ng-if="mission.status == 'Upcoming'">present launchOfYear</div>
+            <div class="gr-1on9" ng-if="mission.status == 'Upcoming'">42%</div>
+            <div class="gr-1on9">vehicle specific vehicle</div>
+            <div class="gr-1on9">destination</div>
+            <div class="gr-1on9">launchsite fulllocation</div>
+            <div class="gr-1on9" ng-if="mission.status == 'Upcoming'"></div>
+        </div>
+        <div class="container">
+            <div class="gr-1on9 smallcaps">vehicle generic vehicle<br/>Launch</div>
+            <div class="gr-1on9 smallcaps">Launch (UTC)</div>
+            <div class="gr-1on9 smallcaps" ng-if="mission.status == 'Upcoming'">Launch of the Year</div>
+            <div class="gr-1on9 smallcaps" ng-if="mission.status == 'Upcoming'">Probability</div>
+            <div class="gr-1on9 smallcaps">Vehicle</div>
+            <div class="gr-1on9 smallcaps">Destination</div>
+            <div class="gr-1on9 smallcaps">Launch Site</div>
+            <div class="gr-1on9 smallcaps" ng-if="mission.status == 'Upcoming'">Where to watch</div>
+        </div>
+        <p><em>{{ mission.summary }}</em></p>
+    </div>
+</div>

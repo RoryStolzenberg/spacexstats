@@ -57,7 +57,9 @@ body {
 
     &.transparent main {
         background:none;
-        box-shadow:none;
+        &:after {
+            display:none;
+        }
     }
 }
 
@@ -257,5 +259,10 @@ table.data-table {
 
 // Blockquotes
 blockquote {
-    background-color:$grey;
+    background-color:$bordergrey;
+}
+
+.backing {
+    background-color:$bordergrey;
+    padding:10px;
 }

@@ -50,6 +50,19 @@ class UsersController extends Controller {
                         NotificationType::TMinus3HoursSMS,
                         NotificationType::TMinus1HourSMS
                     ]);
+                })->count() == 1,
+                'countdownemails' => $user->notifications->filter(function($notification) {
+                    return in_array($notification->notification_type_id, [
+                        NotificationType::TMinus1HourEmail,
+                        NotificationType::TMinus3HoursEmail,
+                        NotificationType::TMinus24HoursEmail
+                    ]);
+                })->count() > 0,
+                'launchupdates' => $user->notifications->filter(function($notification) {
+                    return $notification->notification_type_id == NotificationType::LaunchChange;
+                })->count() == 1,
+                'newssummaries' => $user->notifications->filter(function($notification) {
+                    return $notification->notification_type_id == NotificationType::NewsSummaries;
                 })->count() == 1
             ];
         }

@@ -7343,8 +7343,9 @@ body {
       .content-wrapper.background main.invert {
         background-color: rgba(24, 28, 31, 0.75); }
   .content-wrapper.transparent main {
-    background: none;
-    box-shadow: none; }
+    background: none; }
+    .content-wrapper.transparent main:after {
+      display: none; }
 
 main, section, div, aside {
   outline: 0; }
@@ -7496,7 +7497,11 @@ table.data-table th {
   color: whitesmoke; }
 
 blockquote {
-  background-color: #8B939B; }
+  background-color: #CCC; }
+
+.backing {
+  background-color: #CCC;
+  padding: 10px; }
 
 .header-wrapper {
   width: 100%;
@@ -7810,7 +7815,7 @@ form .prepended-input input {
 form .password-toggle {
   position: relative; }
   form .password-toggle i {
-    right: 30px;
+    right: 10px;
     position: absolute;
     height: 32px;
     line-height: 32px;
@@ -8575,12 +8580,16 @@ button.canned-response {
   font-size: smaller;
   letter-spacing: normal; }
 
-.interactions img {
+.profile .interactions img {
   width: 64px;
   height: 64px;
   margin: 0 10px; }
 
-.about-this-user td:first-child {
+.profile #overview > div {
+  padding-right: 5px;
+  padding-left: 5px; }
+
+.profile .about-this-user td:first-child {
   color: #8B939B;
   text-align: right; }
 

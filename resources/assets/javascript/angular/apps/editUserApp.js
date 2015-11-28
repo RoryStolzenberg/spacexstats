@@ -32,12 +32,12 @@
         };
 
         $scope.emailNotifications = {
-            launchTimeChange: laravel.notifications.launchTimeChange,
-            newMission: laravel.notifications.newMission,
-            tMinus24HoursEmail: laravel.notifications.TMinus24HoursEmail,
-            tMinus3HoursEmail: laravel.notifications.TMinus3HoursEmail,
-            tMinus1HourEmail: laravel.notifications.TMinus1HourEmail,
-            newsSummaries: laravel.notifications.newsSummaries
+            LaunchChange: laravel.notifications.LaunchChange,
+            NewMission: laravel.notifications.NewMission,
+            TMinus24HoursEmail: laravel.notifications.TMinus24HoursEmail,
+            TMinus3HoursEmail: laravel.notifications.TMinus3HoursEmail,
+            TMinus1HourEmail: laravel.notifications.TMinus1HourEmail,
+            NewsSummaries: laravel.notifications.NewsSummaries
         };
 
         $scope.updateEmailNotifications = function() {

@@ -33,6 +33,7 @@
                 </ul>
             </nav>
             @if (Auth::isAccessingSelf($user))
+                <h2>Your Interactions</h2>
                 <section class="interactions">
                     <div class="text-center">
                         @foreach ($interactions as $interaction => $value)
@@ -45,18 +46,13 @@
                         @if (!in_array(true, $interactions, true))
                             <p class="exclaim"><a href="/users/{{ $user->username }}/edit">Edit your profile</a> to setup SMS & email notifications, and more.</p>
                         @endif
-
                     </div>
-                    <ul>
-                        <li>SMS messages</li>
-                        <li>Launch changes</li>
-                        <li>Upcoming launches</li>
-                        <li>News Sumamries</li>
-                    </ul>
                 </section>
             @endif
 
+            <h2>Overview</h2>
             <section id="overview" class="overview scrollto container">
+                <!-- About this user -->
                 <div class="gr-8">
                     <table class="about-this-user">
                         <tr>
@@ -87,7 +83,6 @@
                                 {{ $user->present()->role_id() }}
                             </td>
                         </tr>
-
                     </table>
                 </div>
 
@@ -117,23 +112,20 @@
                     <table class="about-this-user">
                         <tr>
                             <td>Favorite Mission</td>
+                            <td>Favorite Mission Patch</td>
+                            <td>Favorite Elon Musk Quote</td>
+                        </tr>
+                        <tr>
                             <td>
                                 @if ($favoriteMission)
                                     @include('templates.cards.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
                                 @else
                                     <p>No favorite mission. Add one!</p>
                                 @endif
-
                             </td>
-                        </tr>
-                        <tr>
-                            <td>Favorite Mission Patch</td>
                             <td>
                                 {{ $user->profile->favorite_mission_patch or 'No Favorite Mission Patch. Add one!' }}
                             </td>
-                        </tr>
-                        <tr>
-                            <td>Favorite Elon Musk Quote</td>
                             <td>
                                 @if ($user->profile->favorite_quote)
                                     <blockquote>{{ $user->profile->favorite_quote }}</blockquote>
@@ -141,7 +133,6 @@
                                     No favorite quote. Add one!
                                 @endif
                             </td>
-
                         </tr>
                     </table>
 

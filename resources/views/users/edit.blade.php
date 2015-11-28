@@ -99,13 +99,13 @@
                         <ul class="container">
                             <li class="gr-2">
                                 <span>A launch time has changed</span>
-                                <input type="checkbox" id="launchTimeChange" value="true" ng-model="emailNotifications.LaunchChange" />
-                                <label for="launchTimeChange"></label>
+                                <input type="checkbox" id="LaunchTimeChange" value="true" ng-model="emailNotifications.LaunchChange" />
+                                <label for="LaunchTimeChange"></label>
                             </li>
                             <li class="gr-2">
                                 <span>When a new mission exists</span>
-                                <input type="checkbox" id="newMission" value="true" ng-model="emailNotifications.newMission" />
-                                <label for="newMission"></label>
+                                <input type="checkbox" id="NewMission" value="true" ng-model="emailNotifications.NewMission" />
+                                <label for="NewMission"></label>
                             </li>
                         </ul>
                     </fieldset>
@@ -118,8 +118,8 @@
                         <ul class="container">
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 24 hours</span>
-                                <input type="checkbox" id="tMinus24HoursEmail" value="true" ng-model="emailNotifications.TMinus24HoursEmail" />
-                                <label for="tMinus24HoursEmail"></label>
+                                <input type="checkbox" id="TMinus24HoursEmail" value="true" ng-model="emailNotifications.TMinus24HoursEmail" />
+                                <label for="TMinus24HoursEmail"></label>
                             </li>
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 3 hours</span>
@@ -139,8 +139,8 @@
                             <ul class="container">
                                 <li class="gr-2">
                                     <span>Monthly SpaceXStats News Summaries</span>
-                                    <input type="checkbox" id="newsSummaries" value="true" ng-model="emailNotifications.NewsSummaries" />
-                                    <label for="newsSummaries"></label>
+                                    <input type="checkbox" id="NewsSummaries" value="true" ng-model="emailNotifications.NewsSummaries" />
+                                    <label for="NewsSummaries"></label>
                                 </li>
                             </ul>
                         </fieldset>
@@ -166,15 +166,15 @@
                         </li>
                         <li>
                             <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus24HoursSMS" value="TMinus24HoursSMS" />
-                            <label for="tMinus24HoursSMS"><span>24 Hours Before</span></label>
+                            <label for="TMinus24HoursSMS"><span>24 Hours Before</span></label>
                         </li>
                         <li>
                             <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus3HoursSMS" value="TMinus3HoursSMS" />
-                            <label for="tMinus3HoursSMS"><span>3 Hours Before</span></label>
+                            <label for="TMinus3HoursSMS"><span>3 Hours Before</span></label>
                         </li>
                         <li>
                             <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus1HourSMS" value="TMinus1HourSMS" />
-                            <label for="tMinus1HourSMS"><span>1 Hour Before</span></label>
+                            <label for="TMinus1HourSMS"><span>1 Hour Before</span></label>
                         </li>
                     </ul>
 

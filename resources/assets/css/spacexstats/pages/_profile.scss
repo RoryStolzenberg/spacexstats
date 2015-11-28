@@ -1,18 +1,24 @@
-.interactions {
-    img {
-        width:64px;
-        height:64px;
-        margin:0 10px;
-    }
-}
-
-.about-this-user {
-    td:first-child {
-        color:$grey;
-        text-align:right;
+.profile {
+    .interactions {
+        img {
+            width:64px;
+            height:64px;
+            margin:0 10px;
+        }
     }
 
-    td:last-child {
+    #overview > div {
+        @include gridle_gutter(0 10px);
+    }
 
+    .about-this-user {
+        td:first-child {
+            color:$grey;
+            text-align:right;
+        }
+
+        td:last-child {
+
+        }
     }
 }

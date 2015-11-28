@@ -1849,12 +1849,12 @@
         };
 
         $scope.emailNotifications = {
-            launchTimeChange: laravel.notifications.launchTimeChange,
-            newMission: laravel.notifications.newMission,
-            tMinus24HoursEmail: laravel.notifications.TMinus24HoursEmail,
-            tMinus3HoursEmail: laravel.notifications.TMinus3HoursEmail,
-            tMinus1HourEmail: laravel.notifications.TMinus1HourEmail,
-            newsSummaries: laravel.notifications.newsSummaries
+            LaunchChange: laravel.notifications.LaunchChange,
+            NewMission: laravel.notifications.NewMission,
+            TMinus24HoursEmail: laravel.notifications.TMinus24HoursEmail,
+            TMinus3HoursEmail: laravel.notifications.TMinus3HoursEmail,
+            TMinus1HourEmail: laravel.notifications.TMinus1HourEmail,
+            NewsSummaries: laravel.notifications.NewsSummaries
         };
 
         $scope.updateEmailNotifications = function() {
@@ -2623,7 +2623,7 @@
             var missionResult = search.filters().mission();
             if (missionResult != null) {
                 var mission = data.missions.filter(function(mission) {
-                    return mission.name == missionResult;
+                    return mission.name.toLowerCase() == missionResult.toLowerCase();
                 });
 
                 if (mission !== null) {
@@ -2639,7 +2639,7 @@
             var typeResult = search.filters().type();
             if (typeResult != null) {
                 var type = data.types.filter(function(type) {
-                    return type.type == typeResult;
+                    return type.type.toLowerCase() == typeResult.toLowerCase();
                 });
 
                 if (type !== null) {
@@ -2848,26 +2848,6 @@
         return self;
     });
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle',function($compile){
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    });
-})();
-
 (function() {
     var app = angular.module('app');
 
@@ -2984,6 +2964,26 @@
         }
     }]);
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
 (function() {
     var app = angular.module('app', []);
 
@@ -3083,6 +3083,24 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
     app.directive('characterCoutner', function() {
         return {
             restrict: 'E',
@@ -3106,21 +3124,4 @@
            return null;
        }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
 })();
