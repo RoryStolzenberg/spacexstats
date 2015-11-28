@@ -13,8 +13,6 @@ use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Notification;
 use SpaceXStats\Models\User;
 use JavaScript;
-use SpaceXStats\Services\DeltaVCalculator;
-
 
 class UsersController extends Controller {
 
@@ -26,7 +24,7 @@ class UsersController extends Controller {
 	}
 
 	public function get($username = null) {
-        $user = User::where('username', $username)->with(['awards', 'objects', 'notes', 'favorites', 'notifications'])->first();
+        $user = User::where('username', $username)->with(['awards', 'objects', 'notes', 'favorites', 'notifications.notificationType'])->first();
 
         $params = [
             'user' => $user,
@@ -45,7 +43,14 @@ class UsersController extends Controller {
             // Fetch the status of their interactions
             $params['interactions'] = [
                 'favoritemission' => $user->profile->favorite_mission != null,
-                'favoritepatch' => $user->profile->favorite_mission_patch != null
+                'favoritepatch' => $user->profile->favorite_mission_patch != null,
+                'smsmessages' => $user->notifications->filter(function($notification) {
+                    return in_array($notification->notification_type_id, [
+                        NotificationType::TMinus24HoursSMS,
+                        NotificationType::TMinus3HoursSMS,
+                        NotificationType::TMinus1HourSMS
+                    ]);
+                })->count() == 1
             ];
         }
 
@@ -70,9 +75,9 @@ class UsersController extends Controller {
             'user' => $user
         ]);
 
-        return view('users.edit', array(
+        return view('users.edit', [
             'user' => $user,
-        ));
+        ]);
     }
 
 	public function patchEditProfile($username) {
@@ -95,10 +100,10 @@ class UsersController extends Controller {
             if ($notificationValue === true) {
 
                 // Check if that notification type does not exist for that user, create notification
-                if (!$currentNotificationsForUser->has(SpaceXStats\Library\Enums\NotificationType::fromString($notificationType))) {
+                if (!$currentNotificationsForUser->has(NotificationType::fromString($notificationType))) {
                     $notification = new Notification();
                     $notification->user()->associate($user);
-                    $notification->notification_type_id = SpaceXStats\Library\Enums\NotificationType::fromString($notificationType);
+                    $notification->notification_type_id = NotificationType::fromString($notificationType);
                     $notification->save();
                 }
 
@@ -120,11 +125,11 @@ class UsersController extends Controller {
 
         // Delete any previous SMS notification
         Notification::where('user_id', $user->user_id)
-            ->whereIn('notification_type_id', array(
+            ->whereIn('notification_type_id', [
                 NotificationType::TMinus24HoursSMS,
                 NotificationType::TMinus3HoursSMS,
                 NotificationType::TMinus1HourSMS
-            ))->delete();
+            ])->delete();
 
         // If the number is blank, assume the user wants their SMS setup deleted
         if ($sms['mobile'] == "") {
@@ -172,22 +177,20 @@ class UsersController extends Controller {
 
     // GET: /users/{username}/favorites
     public function favorites($username) {
-        $user = User::where('username', $username)->first();
+        $user = User::with('favorites.object')->where('username', $username)->first();
 
-        return view('users.profile.favorites', array(
+        return view('users.profile.favorites', [
             'user' => $user,
-            'favorites' => Favorite::where('user_id', $user)->with('object')->get()
-        ));
+        ]);
     }
 
     // GET: /users/{username}/notes
     public function notes($username) {
-        $user = User::where('username', $username)->first();
+        $user = User::with('notes.object')->where('username', $username)->first();
 
-        return view('users.profile.notes', array(
-            'user' => $user,
-            'favorites' => Note::where('user_id', $user)->with('object')->get()
-        ));
+        return view('users.profile.notes', [
+            'user' => $user
+        ]);
     }
 
     // GET: /users/{username}/uploads
@@ -197,11 +200,10 @@ class UsersController extends Controller {
 
     // GET: /users/{username}/comments
     public function comments($username) {
-        $user = User::where('username', $username)->first();
+        $user = User::with('comments.object')->where('username', $username)->first();
 
-        return view('users.profile.comments', array(
-            'user' => $user,
-            'favorites' => Comment::where('user_id', $user)->with('object')->get()
-        ));
+        return view('users.profile.comments', [
+            'user' => $user
+        ]);
     }
 }

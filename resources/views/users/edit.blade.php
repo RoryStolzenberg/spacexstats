@@ -24,31 +24,43 @@
                 <form>
                     <div class="gr-6">
                         <h3>You</h3>
-                        <label for="summary">Write about yourself</label>
-                        <textarea ng-model="profile.summary"></textarea>
-
-                        <label for="twitter_account">Twitter</label>
-                        <div class="prepended-input">
-                            <span>@</span><input type="text" ng-model="profile.twitter_account" />
-                        </div>
-
-                        <label>Reddit</label>
-                        <div class="prepended-input">
-                            <span>/u/</span><input type="text" ng-model="profile.reddit_account" />
-                        </div>
+                        <ul>
+                            <li>
+                                <label for="summary">Write about yourself</label>
+                                <textarea ng-model="profile.summary"></textarea>
+                            </li>
+                            <li>
+                                <label for="twitter_account">Twitter</label>
+                                <div class="prepended-input">
+                                    <span>@</span><input type="text" ng-model="profile.twitter_account" />
+                                </div>
+                            </li>
+                            <li>
+                                <label>Reddit</label>
+                                <div class="prepended-input">
+                                    <span>/u/</span><input type="text" ng-model="profile.reddit_account" />
+                                </div>
+                            </li>
+                        </ul>
                     </div>
 
                     <div class="gr-6">
                         <h3>Favorites</h3>
-                        <label>Favorite Mission</label>
-                        <dropdown options="missions" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_mission" id-only="true"></dropdown>
-
-                        <label>Favorite Mission Patch</label>
-                        <dropdown options="patches" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_patch" id-only="true"></dropdown>
-
-                        <label>Favorite Elon Musk Quote</label>
-                        <textarea ng-model="profile.favorite_quote"></textarea>
-                        <p>- Elon Musk.</p>
+                        <ul>
+                            <li>
+                                <label>Favorite Mission</label>
+                                <dropdown options="missions" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_mission" id-only="true"></dropdown>
+                            </li>
+                            <li>
+                                <label>Favorite Mission Patch</label>
+                                <dropdown options="patches" has-default-option="true" unique-key="mission_id" title-key="name" searchable="true" ng-model="profile.favorite_patch" id-only="true"></dropdown>
+                            </li>
+                            <li>
+                                <label>Favorite Elon Musk Quote</label>
+                                <textarea ng-model="profile.favorite_quote"></textarea>
+                                <p>- Elon Musk.</p>
+                            </li>
+                        </ul>
                     </div>
 
                     <!--<div class="gr-12">

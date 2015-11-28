@@ -75,7 +75,7 @@
             var missionResult = search.filters().mission();
             if (missionResult != null) {
                 var mission = data.missions.filter(function(mission) {
-                    return mission.name == missionResult;
+                    return mission.name.toLowerCase() == missionResult.toLowerCase();
                 });
 
                 if (mission !== null) {
@@ -91,7 +91,7 @@
             var typeResult = search.filters().type();
             if (typeResult != null) {
                 var type = data.types.filter(function(type) {
-                    return type.type == typeResult;
+                    return type.type.toLowerCase() == typeResult.toLowerCase();
                 });
 
                 if (type !== null) {

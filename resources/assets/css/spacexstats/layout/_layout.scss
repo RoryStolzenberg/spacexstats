@@ -76,8 +76,7 @@ h1, main {
 
 main {
     background-color:$white;
-    border:3px solid rgba($slateblack, 0.2);
-    background-clip: padding-box;
+
     color:$slateblack;
     min-height:calc(100% - #{$h1-height}); // Substract h1 height
     display:block; // Make IE happy
@@ -85,6 +84,17 @@ main {
 
     &.invert {
         color:$white;
+    }
+
+    &:after {
+        content:"";
+        position:absolute;
+        z-index:-1;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border:3px solid rgba($slateblack, 0.2);
     }
 }
 

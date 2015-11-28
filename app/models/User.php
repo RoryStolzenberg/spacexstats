@@ -12,6 +12,7 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Contracts\Billable as BillableContract;
 
+use SpaceXStats\Library\Enums\NotificationType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Library\Enums\VisibilityStatus;
@@ -26,9 +27,7 @@ use SpaceXStats\Services\DeltaVCalculator;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract, BillableContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, Billable;
-
-    use PresentableTrait;
+    use Authenticatable, Authorizable, CanResetPassword, Billable, PresentableTrait;
 
     /**
      * The database table used by the model.

@@ -1851,9 +1851,9 @@
         $scope.emailNotifications = {
             launchTimeChange: laravel.notifications.launchTimeChange,
             newMission: laravel.notifications.newMission,
-            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
-            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
-            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+            tMinus24HoursEmail: laravel.notifications.TMinus24HoursEmail,
+            tMinus3HoursEmail: laravel.notifications.TMinus3HoursEmail,
+            tMinus1HourEmail: laravel.notifications.TMinus1HourEmail,
             newsSummaries: laravel.notifications.newsSummaries
         };
 
@@ -1868,11 +1868,11 @@
             mobile: laravel.user.mobile
         };
 
-        if (laravel.notifications.tMinus24HoursSMS === true) {
+        if (laravel.notifications.TMinus24HoursSMS === true) {
             $scope.SMSNotification.status = "TMinus24HoursSMS";
-        } else if (laravel.notifications.tMinus3HoursSMS === true) {
+        } else if (laravel.notifications.TMinus3HoursSMS === true) {
             $scope.SMSNotification.status = "TMinus3HoursSMS";
-        } else if (laravel.notifications.tMinus1HourSMS === true) {
+        } else if (laravel.notifications.TMinus1HourSMS === true) {
             $scope.SMSNotification.status = "TMinus1HourSMS";
         } else {
             $scope.SMSNotification.status = "false";
@@ -2424,38 +2424,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('tweet', ["$http", function($http) {
         return {
             restrict: 'E',
@@ -2545,6 +2513,38 @@
             templateUrl: '/js/templates/deltaV.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -2848,6 +2848,26 @@
         return self;
     });
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
 (function() {
     var app = angular.module('app');
 
@@ -2965,24 +2985,6 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
-})();
-
-(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -3078,26 +3080,21 @@
     });
 })();
 
-//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('passwordToggle',function($compile){
+    app.directive('characterCoutner', function() {
         return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
+            restrict: 'E',
+            scope: {
+                model: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+            },
+            template: '<p>{{ characterCounterOutput }}</p>'
         }
     });
 })();
-
 (function() {
     var app = angular.module('app');
 
@@ -3113,15 +3110,17 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('characterCoutner', function() {
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
         return {
-            restrict: 'E',
-            scope: {
-                model: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-            },
-            template: '<p>{{ characterCounterOutput }}</p>'
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
         }
-    });
+    }]);
 })();

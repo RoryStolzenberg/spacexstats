@@ -34,9 +34,9 @@
         $scope.emailNotifications = {
             launchTimeChange: laravel.notifications.launchTimeChange,
             newMission: laravel.notifications.newMission,
-            tMinus24HoursEmail: laravel.notifications.tMinus24HoursEmail,
-            tMinus3HoursEmail: laravel.notifications.tMinus3HoursEmail,
-            tMinus1HourEmail: laravel.notifications.tMinus1HourEmail,
+            tMinus24HoursEmail: laravel.notifications.TMinus24HoursEmail,
+            tMinus3HoursEmail: laravel.notifications.TMinus3HoursEmail,
+            tMinus1HourEmail: laravel.notifications.TMinus1HourEmail,
             newsSummaries: laravel.notifications.newsSummaries
         };
 
@@ -51,11 +51,11 @@
             mobile: laravel.user.mobile
         };
 
-        if (laravel.notifications.tMinus24HoursSMS === true) {
+        if (laravel.notifications.TMinus24HoursSMS === true) {
             $scope.SMSNotification.status = "TMinus24HoursSMS";
-        } else if (laravel.notifications.tMinus3HoursSMS === true) {
+        } else if (laravel.notifications.TMinus3HoursSMS === true) {
             $scope.SMSNotification.status = "TMinus3HoursSMS";
-        } else if (laravel.notifications.tMinus1HourSMS === true) {
+        } else if (laravel.notifications.TMinus1HourSMS === true) {
             $scope.SMSNotification.status = "TMinus1HourSMS";
         } else {
             $scope.SMSNotification.status = "false";

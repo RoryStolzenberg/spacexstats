@@ -2,9 +2,8 @@ form {
 
    ul li {
        padding:10px 0;
+       margin:0 10px;
    }
-
-    margin:0 10px;
 
     label, .label {
         font-size:14px;
@@ -30,7 +29,7 @@ form {
     }
 
     input, textarea {
-        width:calc(100% - 20px);
+        width:100%;
         padding:5px;
         border:1px solid $bordergrey;
         font-family:$notoSans;
@@ -176,7 +175,7 @@ form {
     }
 
     .prepended-input {
-        margin:0 10px;
+
         span, input {
             display:inline-block;
         }
