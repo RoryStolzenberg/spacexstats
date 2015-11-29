@@ -18,6 +18,10 @@ header > nav {
         cursor:pointer;
     }
 
+    > ul > li {
+        position:relative;
+    }
+
     li > ul.nav-second-tier {
         display:none;
     }

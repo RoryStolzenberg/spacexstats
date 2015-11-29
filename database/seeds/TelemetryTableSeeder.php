@@ -763,6 +763,84 @@ class TelemetryTableSeeder extends Seeder {
 
     }
 
+    public function Falcon1Flight5() {
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 0,
+            'readout'       => '0'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 1,
+            'readout'       => 'Plus One'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 2,
+            'readout'       => 'Plus Two'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 3,
+            'readout'       => 'Plus Three'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 4,
+            'readout'       => 'Plus Four'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 5,
+            'readout'       => 'Plus Five'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 6,
+            'readout'       => 'Plus Six'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 7,
+            'readout'       => 'Plus Seven'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 8,
+            'readout'       => 'Plus Eight'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 9,
+            'readout'       => 'Plus Nine'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 10,
+            'readout'       => 'Plus Ten'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 13,
+            'readout'       => 'We have liftoff confirmed'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 16,
+            'readout'       => 'Copy'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 18,
+            'readout'       => 'Good signal strength'
+        ]);
+        Telemetry::create([
+            'mission_id'    => 1,
+            'timestamp'     => 25,
+            'readout'       => 'This is the LC on the countdown net, Falcon 1 is airborne at this time.'
+        ]);
+    }
+
     public function COTS2Plus() {
         Telemetry::create([
             'mission_id'    => 8,
