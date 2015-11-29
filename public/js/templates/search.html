@@ -11,16 +11,17 @@
     </div>
 
 	<div class="filters container">
-		<dropdown class="gr-3 filter missions" ng-change="onFilterUpdate('mission')" searchable="true" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false" ng-model="brokerFilters.mission" placeholder="Mission"></dropdown>
+		<dropdown class="gr-3 filter missions" ng-change="onFilterUpdate('mission')" searchable="true" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false"
+                  ng-model="brokerFilters.mission" placeholder="Filter by Mission"></dropdown>
 
-        <dropdown class="gr-3 filter types" options="data.types" unique-key="type" title-key="type" has-default-option="false"
-        ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Resource type"></dropdown>
+        <dropdown class="gr-3 filter types" options="data.types" unique-key="name" title-key="name" has-default-option="false"
+        ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Filter by Resource"></dropdown>
 
-        <div class="gr-3 filter before after search-datepicker">
-            <div ng-click="isDatepickerVisible = !isDatepickerVisible">
+        <div class="gr-3 filter before after search-datepicker dropdown">
+            <div class="selected-option default" ng-click="isDatepickerVisible = !isDatepickerVisible">
                 <span ng-bind="datepickerText()"></span>
             </div>
-            <div class="datepicker-dropdown" ng-show="isDatepickerVisible">
+            <div class="dropdown" ng-show="isDatepickerVisible">
                 <datepicker  date-format="MMM d, yyyy">
                     <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
                 </datepicker>
@@ -30,25 +31,22 @@
             </div>
         </div>
 
-        <div class="gr-3 filter user-centric">
-            <ul>
+        <div class="gr-3 filter user-centric dropdown">
+            <div class="more-filters selected-option default" ng-click="showMoreFilters = !showMoreFilters">
+                More Filters...
+            </div>
+            <ul class="more-filters dropdown" ng-show="showMoreFilters">
                 <li>
-                    <div class="gr-2 filter noted">
-                        <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
-                        <label for="favorited"><span>Favorited?</span></label>
-                    </div>
+                    <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
+                    <label for="favorited"><span>My Favorites</span></label>
                 </li>
                 <li>
-                    <div class="gr-2 filter noted">
-                        <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
-                        <label for="noted"><span>Noted?</span></label>
-                    </div>
+                    <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
+                    <label for="noted"><span>My Notes</span></label>
                 </li>
                 <li>
-                    <div class="gr-2 filter downloaded">
-                        <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
-                        <label for="downloaded"><span>Downloaded?</span></label>
-                    </div>
+                    <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
+                    <label for="downloaded"><span>My Downloads</span></label>
                 </li>
             </ul>
         </div>

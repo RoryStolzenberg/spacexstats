@@ -42,10 +42,15 @@
                 (function() {
                     $http.get('/missioncontrol/search/fetch').then(function(response) {
                         $scope.data = {
-                            missions: response.data.missions,
+                            missions: response.data.missions.map(function(mission) {
+                                return {
+                                    name: mission.name,
+                                    image: mission.featured_image
+                                }
+                            }),
                             types: response.data.types.map(function(type) {
                                 return {
-                                    type: type,
+                                    name: type,
                                     image: '/images/icons/' + type.replace(" ", "") + '.jpg'
                                 }
                             })
@@ -71,6 +76,8 @@
 
     app.service('conversionService', function() {
         this.searchesToFilters = function(brokerFilters, search, data) {
+            console.log('called');
+
             // Search for missions in the query string
             var missionResult = search.filters().mission();
             if (missionResult != null) {
@@ -91,8 +98,10 @@
             var typeResult = search.filters().type();
             if (typeResult != null) {
                 var type = data.types.filter(function(type) {
-                    return type.type.toLowerCase() == typeResult.toLowerCase();
+                    return type.name.toLowerCase() == typeResult.toLowerCase();
                 });
+
+                console.log(type);
 
                 if (type !== null) {
                     brokerFilters.type = type[0];

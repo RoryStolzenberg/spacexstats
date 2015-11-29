@@ -18,7 +18,7 @@
                             <input type="text" name="username" id="username"
                                    ng-model="user.username" ng-model-options="{ debounce: 250 }"
                                    unique-username required />
-                            <p ng-show="signUpForm.username.$error.username">
+                            <p ng-show="signUpForm.username.$error.username" class="red">
                                 <i class="fa fa-times"></i> That username is taken.
                             </p>
 
@@ -26,7 +26,7 @@
                                 <i class="fa fa-circle-o-notch fa-spin"></i> Checking...
                             </p>
 
-                            <p ng-show="signUpForm.username.$valid">
+                            <p ng-show="signUpForm.username.$valid" class="green">
                                 <i class="fa fa-check"></i> Good to go!
                             </p>
                         </li>

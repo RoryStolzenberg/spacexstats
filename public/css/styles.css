@@ -7473,6 +7473,12 @@ small {
 .gold {
   color: #ccac55; }
 
+.warning, .red {
+  color: #FB6473; }
+
+.green {
+  color: #40C085; }
+
 .code {
   font-family: "Source Code Pro"; }
 
@@ -7641,20 +7647,20 @@ body, nav {
     left: 0; }
 
 /* IN PAGE NAVIGATION */
-nav.in-page {
+.in-page {
   text-align: center;
   height: 40px;
   line-height: 40px; }
-  nav.in-page li {
+  .in-page li {
     height: 40px;
     cursor: pointer;
     padding-bottom: 3px; }
-    .state-small nav.in-page li {
+    .state-small .in-page li {
       display: none; }
     @media (max-width: 640px) {
-      nav.in-page li {
+      .in-page li {
         display: none; } }
-    nav.in-page li:after {
+    .in-page li:after {
       content: '';
       display: block;
       margin: auto;
@@ -7663,7 +7669,7 @@ nav.in-page {
       background: transparent;
       -webkit-transition: width 0.5s ease, background-color 0.5s ease;
               transition: width 0.5s ease, background-color 0.5s ease; }
-    nav.in-page li.active:after {
+    .in-page li.active:after {
       width: 100%;
       background: #ccac55; }
 
@@ -8682,9 +8688,13 @@ button.canned-response {
 
 .missioncontrol-views {
   background-color: rgba(51, 73, 94, 0.2);
-  margin-top: -10px; }
+  margin-top: -10px;
+  height: 40px;
+  line-height: 40px;
+  font-family: "Montserrat", sans-serif;
+  text-align: center; }
 
-.missioncontrol-about p, .missioncontrol-about span, .missioncontrol-about ul {
+.missioncontrol-about .content-wrapper p, .missioncontrol-about .content-wrapper span, .missioncontrol-about .content-wrapper ul {
   color: #FAFAFA;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
 

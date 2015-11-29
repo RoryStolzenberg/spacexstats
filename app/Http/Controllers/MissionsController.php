@@ -84,7 +84,7 @@ class MissionsController extends Controller {
         JavaScript::put([
             'missions' => Mission::future()->with(['vehicle', 'destination'])->get()->map(function($mission) {
                 $transformedMission = $mission->toArray();
-                
+
                 if ($mission->launch_specificity >= LaunchSpecificity::Day) {
                     $transformedMission['launch_date_time'] = $mission->present()->launchDateTime();
                 }

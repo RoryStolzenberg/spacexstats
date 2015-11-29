@@ -33,7 +33,7 @@
             leaderboards: {
                 visibleSection: 'week',
                 show: function(sectionToShow) {
-                    $scope.missioncontrol.visibleSection.visibleSection = sectionToShow;
+                    $scope.missioncontrol.leaderboards.visibleSection = sectionToShow;
                 }
             }
         }

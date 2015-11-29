@@ -109,33 +109,23 @@
                 </div>
 
                 <div class="gr-12">
-                    <table class="about-this-user">
-                        <tr>
-                            <td>Favorite Mission</td>
-                            <td>Favorite Mission Patch</td>
-                            <td>Favorite Elon Musk Quote</td>
-                        </tr>
-                        <tr>
-                            <td>
-                                @if ($favoriteMission)
-                                    @include('templates.cards.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
-                                @else
-                                    <p>No favorite mission. Add one!</p>
-                                @endif
-                            </td>
-                            <td>
-                                {{ $user->profile->favorite_mission_patch or 'No Favorite Mission Patch. Add one!' }}
-                            </td>
-                            <td>
-                                @if ($user->profile->favorite_quote)
-                                    <blockquote>{{ $user->profile->favorite_quote }}</blockquote>
-                                @else
-                                    No favorite quote. Add one!
-                                @endif
-                            </td>
-                        </tr>
-                    </table>
-
+                    <div class="gr-4 gr-6@medium gr-12@small">
+                        @if ($favoriteMission)
+                            @include('templates.cards.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
+                        @else
+                            <p>No favorite mission. Add one!</p>
+                        @endif
+                    </div>
+                    <div class="gr-4 gr-6@medium gr-12@small">
+                        {{ $user->profile->favorite_mission_patch or 'No Favorite Mission Patch. Add one!' }}
+                    </div>
+                    <div class="gr-4 gr-6@medium gr-12@small">
+                        @if ($user->profile->favorite_quote)
+                            <blockquote>{{ $user->profile->favorite_quote }}</blockquote>
+                        @else
+                            No favorite quote. Add one!
+                        @endif
+                    </div>
                 </div>
             </section>
 

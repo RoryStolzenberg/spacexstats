@@ -5,14 +5,20 @@
 .missioncontrol-views {
     background-color:rgba($october, 0.2);
     margin-top:-10px;
+    height: 40px;
+    line-height: 40px;
+    font-family:$montserrat;
+    text-align: center;
 }
 
 // MISSIONCONTROL ABOUT PAGE
 .missioncontrol-about {
 
-    p, span, ul {
-        color:$white;
-        font-family: $brandonGrotesque;
+    .content-wrapper {
+        p, span, ul {
+            color:$white;
+            font-family: $brandonGrotesque;
+        }
     }
 
     h1 {
