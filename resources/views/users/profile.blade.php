@@ -38,9 +38,9 @@
                     <div class="text-center">
                         @foreach ($interactions as $interaction => $value)
                             @if ($value)
-                                <img src="/images/icons/{{ $interaction }}active.png" />
+                                <img src="/images/icons/interactions/{{ $interaction }}active.png" />
                             @else
-                                <img src="/images/icons/{{ $interaction }}.png" />
+                                <img src="/images/icons/interactions/{{ $interaction }}.png" />
                             @endif
                         @endforeach
                         @if (!in_array(true, $interactions, true))

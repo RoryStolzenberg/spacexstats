@@ -71,15 +71,6 @@ gulp.task('styles', function() {
 
 });
 
-// Images Task. Minify all images in the src/images folder using imagemin
-gulp.task('images', function() {
-    var imagemin = require('gulp-imagemin');
-
-    gulp.src('resources/assets/images/**/*.{jpg,jpeg,png}')
-        .pipe(imagemin())
-        .pipe(gulp.dest('public/images'));
-});
-
 // Fonts Task.
 gulp.task('fonts', function() {
    gulp.src('resources/assets/fonts/*')

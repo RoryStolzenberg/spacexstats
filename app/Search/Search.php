@@ -57,6 +57,7 @@ class Search {
                 'status' => $model->status,
                 'visibility' => $model->visibility,
                 'anonymous' => $model->anonymous,
+                'orignal_content' => $model->originalContent,
                 'actioned_at' => $model->actioned_at->toDateTimeString(),
                 'tags' => $model->tags()->lists('name'),
                 'favorites' => $model->favorites()->lists('user_id'),

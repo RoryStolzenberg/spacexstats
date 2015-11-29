@@ -11,8 +11,14 @@
         </p>
     @endif
 </div>
-
-<div class="header-wrapper {{ $class or null }}" style="background-image:url({{ $backgroundImage or null }})">
+<div class="header-wrapper {{ $class or null }}">
+    <div class="img-background"></div>
+    <style scoped>
+        .header-wrapper:after {
+            background-image:url({{ $backgroundImage or null }});
+            background-position: 50% center;
+        }
+    </style>
 	<header>
 			<i class="fa fa-navicon toggleMobileNavigation gridle-show-small"></i>
 			<a id="logo" href="/">SpaceX Stats</a>

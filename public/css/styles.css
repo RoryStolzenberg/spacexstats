@@ -7525,11 +7525,20 @@ blockquote, .backing {
   background-color: #3569A4;
   height: 500px;
   position: absolute;
-  background-size: cover;
-  background-position: 50%; }
+  overflow: hidden; }
   .header-wrapper.no-background {
-    background-color: transparent;
-    box-shadow: none; }
+    background-color: transparent; }
+  .header-wrapper:after {
+    content: "";
+    background-size: cover;
+    -webkit-filter: blur(2px);
+            filter: blur(2px);
+    position: absolute;
+    display: block;
+    width: 102%;
+    height: 504px;
+    top: -2px;
+    left: -1%; }
   .header-wrapper header {
     max-width: 1400px;
     width: 100%;
@@ -7539,7 +7548,8 @@ blockquote, .backing {
     z-index: 100;
     line-height: 50px;
     height: 50px;
-    text-align: center; }
+    text-align: center;
+    position: relative; }
     .header-wrapper header i {
       display: none;
       line-height: 50px;
@@ -8561,14 +8571,15 @@ body.object .aside {
 img#object {
   max-width: 100%; }
 
-.object-actions.container {
-  text-align: center; }
-  .object-actions.container i {
+.object-actions {
+  text-align: center;
+  font-family: "Montserrat", sans-serif; }
+  .object-actions i {
     color: #4f708f;
     cursor: pointer;
     display: block;
     padding: 5px; }
-  .object-actions.container .is-favorited {
+  .object-actions .is-favorited {
     color: #ccac55; }
 
 .video-js {
@@ -8857,6 +8868,11 @@ button.canned-response {
   margin-top: 30px;
   background-color: #F2F2F2;
   border: 3px solid rgba(24, 28, 31, 0.2); }
+  .mission-card.large {
+    border-left: none;
+    border-right: none;
+    width: calc(100% + 20px);
+    left: -10px; }
   .mission-card .top {
     padding: 10px;
     padding-left: 120px;

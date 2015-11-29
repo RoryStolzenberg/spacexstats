@@ -40,4 +40,12 @@ class MissionPresenter {
 					</section>';
 		}
 	}
+
+    public function featuredImageUrl() {
+        if ($this->entity->featuredImage != null) {
+            return $this->entity->featuredImage->media;
+        } else {
+            return '/images/missionbanners/' . $this->entity->missionType->name . '.jpg';
+        }
+    }
 }

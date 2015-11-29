@@ -14,8 +14,9 @@ img#object {
     max-width:100%;
 }
 
-.object-actions.container {
+.object-actions {
     text-align:center;
+    font-family: $montserrat;
 
     i {
         color:$october;
@@ -26,7 +27,6 @@ img#object {
 
     .is-favorited {
         color:$gold;
-        animation
     }
 }
 

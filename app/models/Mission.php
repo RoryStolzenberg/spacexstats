@@ -259,14 +259,6 @@ class Mission extends Model {
         return Parsedown::instance()->text($this->attributes['article']);
     }
 
-    public function getFeaturedImageUrlAttribute() {
-        if ($this->featuredImage != null) {
-            return $this->featuredImage->media;
-        } else {
-            return 'images/missionbanners/' . $this->missionType->name . '.jpg';
-        }
-    }
-
     // Attribute Mutators
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;
