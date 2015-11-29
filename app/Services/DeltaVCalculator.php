@@ -14,16 +14,16 @@ class DeltaVCalculator {
     protected $score = 0;
 
     protected $baseTypeScores = [
-        MissionControlType::Image       => 50,
-        MissionControlType::GIF         => 50,
-        MissionControlType::Audio       => 10,
-        MissionControlType::Video       => 10,
-        MissionControlType::Document    => 10,
-        MissionControlType::Tweet       => 10,
+        MissionControlType::Image       => 25,
+        MissionControlType::GIF         => 25,
+        MissionControlType::Audio       => 50,
+        MissionControlType::Video       => 50,
+        MissionControlType::Document    => 50,
+        MissionControlType::Tweet       => 5,
         MissionControlType::Article     => 20,
         MissionControlType::Comment     => 5,
         MissionControlType::Webpage     => 50,
-        MissionControlType::Text        => 50
+        MissionControlType::Text        => 25
     ];
 
     protected $specialTypeMultiplier = [
@@ -36,11 +36,11 @@ class DeltaVCalculator {
 
     protected $resourceQuality = [
         'multipliers' => [
-            'perMegapixel' => 1,
-            'perMinute' => 1
+            'perMegapixel' => 10,
+            'perMinute' => 5
         ],
         'scores' => [
-            'perPage' => 1
+            'perPage' => 2.5
         ]
     ];
 
@@ -52,19 +52,19 @@ class DeltaVCalculator {
             'perCharacter' => 0.1
         ],
         'attribution' => [
-            'perCharacter' => 0.1
+            'perCharacter' => 0.05
         ]
     ];
 
     protected $dateAccuracyMultiplier = [
         'year' => 1,
-        'month' => 1.2,
-        'date' => 1.5,
-        'datetime' => 2,
+        'month' => 1.1,
+        'date' => 1.25,
+        'datetime' => 1.5,
     ];
 
     protected $dataSaverMultiplier = [
-        'hasExternalUrl' => 3
+        'hasExternalUrl' => 2
     ];
 
     /**
@@ -74,6 +74,7 @@ class DeltaVCalculator {
      * @return  int                                     The total worth of the object in deltaV.
      */
     public function calculate(Object $object) {
+        $this->score = 0; // Reset
         $this->object = $object;
 
         $this->typeRegime();
@@ -154,13 +155,13 @@ class DeltaVCalculator {
         $day = substr($this->object->originated_at, 8, 2);
         $datetime = substr($this->object->originated_at, 11, 8);
 
-        if ($datetime != '00:00:00') {
+        if ($datetime !== '00:00:00' || $datetime !== false) {
             $this->score *= $this->dateAccuracyMultiplier['datetime'];
-        } elseif ($day != '00') {
+        } elseif ($day !== '00') {
             $this->score *= $this->dateAccuracyMultiplier['day'];
-        } elseif ($month != '00') {
+        } elseif ($month !== '00') {
             $this->score *= $this->dateAccuracyMultiplier['month'];
-        } elseif ($year != '0000') {
+        } elseif ($year !== '0000') {
             $this->score *= $this->dateAccuracyMultiplier['year'];
         }
     }

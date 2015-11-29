@@ -3,8 +3,10 @@
 		<div class="thumb" style="background-image:url('{{ !is_null($mission->featuredImage) ? $mission->featuredImage->media_thumb_small : null }}');"></div>
 		<p>
             <a class="mission-name" href="/missions/{{ $mission->slug }}">{{ $mission->name }}</a>
-            <span class="for hide@small"> for </span>
-            <span class="mission-contractor hide@small">{{ $mission->contractor }}</span>
+            @if ($size == 'large')
+                <span class="for hide@small"> for </span>
+                <span class="mission-contractor hide@small">{{ $mission->contractor }}</span>
+            @endif
         </p>
 	</div>
 	<div class="bottom">
