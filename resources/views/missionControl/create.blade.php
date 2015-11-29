@@ -37,10 +37,7 @@
                         </li>
                     </ul>
 
-                    <delta-v ng-model="files"></delta-v>
-
                     <div class="files-details" ng-repeat="file in files">
-
                         <!-- IMAGE FILE TEMPLATE -->
                         <div ng-if="file.type == 'Image'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
@@ -68,6 +65,8 @@
 
                                 <fieldset class="gr-4 upload-preview text-center">
                                     <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
+
+                                    <delta-v ng-model="file"></delta-v>
                                 </fieldset>
 
                                 <fieldset class="gr-8 upload-attribution">
@@ -190,6 +189,8 @@
 
                                 <fieldset class="gr-4 upload-preview text-center">
                                     <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
+
+                                    <delta-v ng-model="file"></delta-v>
                                 </fieldset>
 
                                 <fieldset class="gr-8 upload-attribution">
@@ -336,6 +337,8 @@
                                 <ul class="container">
                                     <li class="gr-4">
                                         <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
+
+                                        <delta-v ng-model="file"></delta-v>
                                     </li>
 
                                     <li class="gr-4">

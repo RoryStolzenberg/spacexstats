@@ -59,8 +59,8 @@ class DeltaVCalculator {
     protected $dateAccuracyMultiplier = [
         'year' => 1,
         'month' => 1.1,
-        'date' => 1.25,
-        'datetime' => 1.5,
+        'date' => 1.2,
+        'datetime' => 1.4,
     ];
 
     protected $dataSaverMultiplier = [

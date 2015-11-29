@@ -7752,7 +7752,8 @@ form input, form textarea {
 
 form select {
   padding: 5px;
-  border: 1px solid #CCC; }
+  border: 1px solid #CCC;
+  text-transform: initial; }
 
 form textarea {
   resize: vertical;
@@ -9103,6 +9104,11 @@ button.canned-response {
     margin: 20px 0; }
   .twitter-card input:focus {
     border: 1px solid #4099FF; }
+
+.delta-v-badge {
+  text-align: center; }
+  .delta-v-badge .delta-v-count {
+    font-size: 40px; }
 
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {

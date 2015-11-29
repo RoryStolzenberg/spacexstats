@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\ModelManagers\Objects;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
@@ -27,7 +28,8 @@ class ObjectFromText extends ObjectCreator {
                 'summary'               => $this->input['content'],
                 'anonymous'             => array_get($this->input, 'anonymous', false),
                 'cryptographic_hash'    => hash('sha256', $this->input['content']),
-                'originated_at'         => \Carbon\Carbon::now(),
+                'originated_at'         => Carbon::now(),
+                'original_content'      => true,
                 'status'                => ObjectPublicationStatus::QueuedStatus
             ]);
 
