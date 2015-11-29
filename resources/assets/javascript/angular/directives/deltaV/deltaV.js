@@ -10,7 +10,6 @@
             link: function($scope, element, attributes) {
 
                 $scope.$watch("deltaV", function(objects) {
-                    console.log('called');
                     if (typeof objects !== 'undefined') {
                         $scope.newValue = 0;
 
@@ -31,7 +30,7 @@
                     Object.getOwnPropertyNames(object).forEach(function(key) {
                         if (key == 'mission_id') {
                             if (typeof key !== 'undefined') {
-                                internalValue
+                                //internalValue
                             }
                         }
                     });
@@ -44,7 +43,7 @@
 
                 $scope.calculatedValue = {
                     deltaV: 0,
-                    time: 0,
+                    time: 0
                 };
             },
             templateUrl: '/js/templates/deltaV.html'

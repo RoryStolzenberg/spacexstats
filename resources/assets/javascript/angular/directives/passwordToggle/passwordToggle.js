@@ -2,7 +2,7 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('passwordToggle',function($compile){
+    app.directive('passwordToggle', ["$compile", function($compile) {
         return {
             restrict: 'A',
             scope:{},
@@ -15,5 +15,5 @@
                 elem.wrap('<div class="password-toggle"/>').after(lnk);
             }
         }
-    });
+    }]);
 })();

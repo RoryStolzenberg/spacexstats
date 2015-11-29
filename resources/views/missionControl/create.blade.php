@@ -60,7 +60,7 @@
                                         <li>
                                             <label>
                                                 <p>Summary</p>
-                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" minlength="100" required></textarea>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" minlength="100" required character-counter></textarea>
                                             </label>
                                         </li>
                                     </ul>
@@ -182,7 +182,7 @@
                                         <li>
                                             <label>
                                                 <p>Summary</p>
-                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" minlength="100" required></textarea>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" minlength="100" required character-counter></textarea>
                                             </label>
                                         </li>
                                     </ul>
@@ -348,7 +348,7 @@
                                     <li class="gr-8">
                                         <label>
                                             <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this video" minlength="100" required></textarea>
+                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this video" minlength="100" required character-counter></textarea>
                                         </label>
                                     </li>
 
@@ -437,7 +437,7 @@
                                     <li class="gr-8">
                                         <label>
                                             <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this document" minlength="100" required></textarea>
+                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this document" minlength="100" required character-counter></textarea>
                                         </label>
                                     </li>
 
@@ -751,36 +751,47 @@
 
             <!-- Write -->
             <section class="upload-text" ng-controller="writeController" ng-show="activeSection == 'write'">
-                <form name="writeForm" novalidate>
+                <form name="writeForm" class="container" novalidate>
 
                     <p>Post a mission update, share some news, ask a question, discuss a topic!</p>
 
-                    <delta-v ng-model="text"></delta-v>
-
-                    <label>Title</label>
-                    <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" minlength="10" required/>
-
-                    <label>Content</label>
-                    <textarea name="content" ng-model="text.content" placeholder="Write your post" rows="10" minlength="100" required></textarea>
-
-                    <label>Select related mission</label>
-                    <dropdown
-                            name="mission"
-                            options="data.missions"
-                            ng-model="text.mission_id"
-                            unique-key="mission_id"
-                            title-key="name"
-                            searchable="true"
-                            placeholder="Select a related mission...">
-                    </dropdown>
-
-                    <p>Submit anonymously?</p>
-                    <input type="checkbox" name="anonymous" id="anonymous-text" value="true" ng-model="text.anonymous" />
-                    <label for="anonymous-text"></label>
-
-                    <label>Tags</label>
-                    <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>
-                    <span ng-show="writeForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                    <div class="gr-9">
+                        <ul>
+                            <li>
+                                <label>Title</label>
+                                <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" ng-minlength="10" required/>
+                            </li>
+                            <li>
+                                <label>Content</label>
+                                <textarea name="content" ng-model="text.content" placeholder="Write your post" rows="10" ng-minlength="100" required character-counter></textarea>
+                            </li>
+                            <li>
+                                <label>Select related mission</label>
+                                <dropdown
+                                        name="mission"
+                                        options="data.missions"
+                                        ng-model="text.mission_id"
+                                        unique-key="mission_id"
+                                        title-key="name"
+                                        searchable="true"
+                                        placeholder="Select a related mission...">
+                                </dropdown>
+                            </li>
+                            <li>
+                                <p>Submit anonymously?</p>
+                                <input type="checkbox" name="anonymous" id="anonymous-text" value="true" ng-model="text.anonymous" />
+                                <label for="anonymous-text"></label>
+                            </li>
+                            <li>
+                                <label>Tags</label>
+                                <tags available-tags="data.tags" name="tags" ng-model="text.tags"></tags>
+                                <span ng-show="writeForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="gr-3">
+                        <delta-v ng-model="text"></delta-v>
+                    </div>
 
                     <button name="submit" class="wide-button" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
                 </form>
