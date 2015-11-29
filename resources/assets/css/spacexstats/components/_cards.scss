@@ -36,10 +36,11 @@
 
 // Mission Card
 .mission-card {
-    box-shadow:0 0 15px rgba($slateblack, 0.5);
     width:100%;
     position:relative;
     margin-top:30px;
+    background-color:$offwhite;
+    border: 3px solid rgba($slateblack,0.2);
 
     .top {
         padding:10px;
@@ -53,15 +54,17 @@
             font-family:$brandonGrotesque;
             font-size:40px;
             text-transform:initial;
+            color:$lightblack !important;
+            text-decoration: none !important;
         }
 
         .for {
             padding:0 10px;
-            font-size:12px;
+            font-size:18px;
         }
 
         .mission-contractor {
-            font-size:14px;
+            font-size:24px;
         }
     }
 
@@ -97,6 +100,11 @@
         line-height:50px;
         text-align: center;
         margin:0 auto;
+    }
+
+    .launch-illumination {
+        width:48px;
+        height:48px;
     }
 }
 

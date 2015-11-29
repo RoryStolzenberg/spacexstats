@@ -118,7 +118,7 @@
                             </li>
                         @endif
 
-                        @if($mission->spacecraftFlight()->count() == 1)
+                        @if($mission->cargoManifest)
                             <li id="cargo-manifest">
                                 <span>Cargo Manifest</span>
                             </li>

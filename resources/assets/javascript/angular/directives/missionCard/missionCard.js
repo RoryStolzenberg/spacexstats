@@ -4,6 +4,7 @@
     app.directive('missionCard', function() {
         return {
             restrict: 'E',
+            replace: true,
             scope: {
                 size: '@',
                 mission: '='

@@ -2,11 +2,9 @@
 	<div class="top">
 		<div class="thumb" style="background-image:url('{{ !is_null($mission->featuredImage) ? $mission->featuredImage->media_thumb_small : null }}');"></div>
 		<p>
-            <span class="mission-name">
-                <a href="/missions/{{ $mission->slug }}">{{ $mission->name }}</a>
-            </span>
-            <span class="for"> for </span>
-            <span class="mission-contractor">{{ $mission->contractor }}</span>
+            <a class="mission-name" href="/missions/{{ $mission->slug }}">{{ $mission->name }}</a>
+            <span class="for hide@small"> for </span>
+            <span class="mission-contractor hide@small">{{ $mission->contractor }}</span>
         </p>
 	</div>
 	<div class="bottom">
@@ -37,6 +35,9 @@
 				@if ($mission->status == 'Upcoming')
 					<div class="gr-1on9"></div>
 				@endif
+                @if ($mission->status == 'Complete')
+                    <div class="gr-1on9"><img class="launch-illumination" src="/images/icons/illuminations/{{ $mission->launch_illumination }}.png" /></div>
+                @endif
 			</div>
 			<div class="container keys">
 				<div class="gr-1on9">{{ $mission->vehicle->generic_vehicle }}<br/>Launch</div>
@@ -53,6 +54,9 @@
 				@if ($mission->status == 'Upcoming')
 					<div class="gr-1on9">Where to watch</div>
 				@endif
+                @if ($mission->status == 'Complete')
+                    <div class="gr-1on9">{{ $mission->launch_illumination }} Launch</div>
+                @endif
 			</div>
 		@endif
 		<p><em>{{ $mission->summary }}</em></p>

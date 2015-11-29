@@ -8842,10 +8842,11 @@ button.canned-response {
       position: relative; }
 
 .mission-card {
-  box-shadow: 0 0 15px rgba(24, 28, 31, 0.5);
   width: 100%;
   position: relative;
-  margin-top: 30px; }
+  margin-top: 30px;
+  background-color: #F2F2F2;
+  border: 3px solid rgba(24, 28, 31, 0.2); }
   .mission-card .top {
     padding: 10px;
     padding-left: 120px;
@@ -8856,12 +8857,14 @@ button.canned-response {
     .mission-card .top .mission-name {
       font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
       font-size: 40px;
-      text-transform: initial; }
+      text-transform: initial;
+      color: #21272B !important;
+      text-decoration: none !important; }
     .mission-card .top .for {
       padding: 0 10px;
-      font-size: 12px; }
+      font-size: 18px; }
     .mission-card .top .mission-contractor {
-      font-size: 14px; }
+      font-size: 24px; }
   .mission-card .bottom {
     padding: 10px;
     text-align: center;
@@ -8888,6 +8891,9 @@ button.canned-response {
     line-height: 50px;
     text-align: center;
     margin: 0 auto; }
+  .mission-card .launch-illumination {
+    width: 48px;
+    height: 48px; }
 
 .object-card {
   margin: 20px 0;

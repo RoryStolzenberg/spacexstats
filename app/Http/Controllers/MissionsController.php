@@ -6,6 +6,7 @@ use Redis;
 use JavaScript;
 use SpaceXStats\Http\Requests\CreateMissionRequest;
 use SpaceXStats\Http\Requests\EditMissionRequest;
+use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
@@ -81,7 +82,19 @@ class MissionsController extends Controller {
     public function future() {
 
         JavaScript::put([
-            'missions' => Mission::future()->with('vehicle')->get()
+            'missions' => Mission::future()->with(['vehicle', 'destination'])->get()->map(function($mission) {
+                $transformedMission = $mission->toArray();
+                
+                if ($mission->launch_specificity >= LaunchSpecificity::Day) {
+                    $transformedMission['launch_date_time'] = $mission->present()->launchDateTime();
+                }
+                $transformedMission['generic_vehicle'] = $mission->vehicle->generic_vehicle;
+                $transformedMission['generic_vehicle_count'] = ordinal($mission->generic_vehicle_count);
+                $transformedMission['launch_of_year'] = ordinal($mission->launch_of_year);
+                $transformedMission['launch_site'] = $mission->launchSite->full_location;
+
+                return $transformedMission;
+            })
         ]);
 
 		return view('missions.future');
@@ -95,7 +108,17 @@ class MissionsController extends Controller {
     public function past() {
 
         JavaScript::put([
-            'missions' => Mission::past(true)->with('vehicle')->get()
+            'missions' => Mission::past(true)->with(['vehicle', 'destination'])->get()->map(function($mission) {
+                $transformedMission = $mission->toArray();
+
+                $transformedMission['launch_date_time'] = $mission->present()->launchDateTime();
+                $transformedMission['generic_vehicle'] = $mission->vehicle->generic_vehicle;
+                $transformedMission['generic_vehicle_count'] = ordinal($mission->generic_vehicle_count);
+                $transformedMission['launch_of_year'] = ordinal($mission->launch_of_year);
+                $transformedMission['launch_site'] = $mission->launchSite->full_location;
+
+                return $transformedMission;
+            })
         ]);
 
 		return view('missions.past');

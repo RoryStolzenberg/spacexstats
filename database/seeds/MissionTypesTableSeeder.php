@@ -12,7 +12,6 @@ class MissionTypesTableSeeder extends Seeder {
             array('name' => 'Communications Satellite'),
             array('name' => 'Constellation Mission'),
             array('name' => 'SpaceX Constellation Mission'),
-            array('name' => 'Experimental'),
             array('name' => 'Demo Flight'),
             array('name' => 'Military'),
             array('name' => 'Scientific')
