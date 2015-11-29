@@ -1983,6 +1983,23 @@
 })();
 
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2051,203 +2068,6 @@
         }
     }]);
 })();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.createTag = function(createdTag) {
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: createdTag, description: null });
-                        }
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        $scope.createTag($scope.tagInput);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-
-            // Convert the tag to lowercase and replace all spaces present.
-            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
-
-            return self;
-        }
-    });
-})();
-
-
 (function() {
     var app = angular.module('app');
 
@@ -2428,6 +2248,134 @@
     });
 })();
 (function() {
+    var app = angular.module('app', []);
+
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+        return {
+            require: 'ngModel',
+            replace: true,
+            restrict: 'E',
+            scope: {
+                availableTags: '=',
+                currentTags: '=ngModel'
+            },
+            link: function($scope, element, attributes, ctrl) {
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
+
+                ctrl.$options = {
+                    allowInvalid: true
+                };
+
+                $scope.createTag = function(createdTag) {
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
+                        });
+
+                        if (tagIsPresentInAvailableTags.length === 1) {
+                            // grab tag
+                            var newTag = tagIsPresentInAvailableTags[0];
+                        } else {
+                            // trim and convert the text to lowercase, then create!
+                            var newTag = new Tag({ id: null, name: createdTag, description: null });
+                        }
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
+                    }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        $scope.createTag($scope.tagInput);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
+
+            },
+            templateUrl: '/js/templates/tags.html'
+        }
+    }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+
+            // Convert the tag to lowercase and replace all spaces present.
+            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
+
+            return self;
+        }
+    });
+})();
+
+
+(function() {
     var app = angular.module('app');
 
     app.directive('tweet', ["$http", function($http) {
@@ -2470,55 +2418,54 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('deltaV', function() {
+    app.directive('upload', ['$parse', function($parse) {
         return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
 
-                $scope.$watch("deltaV", function(objects) {
-                    console.log('called');
-                    if (typeof objects !== 'undefined') {
-                        $scope.newValue = 0;
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
 
-                        if (Array.isArray(objects)) {
-                            objects.forEach(function(object) {
-                                $scope.newValue += $scope.calculate(object);
-                            });
-                        } else {
-                            $scope.newValue = $scope.calculate(objects);
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
                         }
-
-                        $scope.setCalculatedValue();
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
                     }
-                }, true);
+                });
 
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
 
-                $scope.setCalculatedValue = function() {
-                    return 0;
-                };
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
 
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0,
-                };
-            },
-            templateUrl: '/js/templates/deltaV.html'
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
         }
-    });
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2660,6 +2607,20 @@
                 }
             } else {
                 brokerFilters.type = null;
+            }
+
+            var afterResult = search.filters().after();
+            if (afterResult != null) {
+                brokerFilters.after = moment(afterResult, 'YYYY-MM-DD').format('MMM D, YYYY');
+            }  else {
+                brokerFilters.after = null;
+            }
+
+            var beforeResult = search.filters().before();
+            if (beforeResult != null) {
+                brokerFilters.before = moment(beforeResult, 'YYYY-MM-DD').format('MMM D, YYYY');
+            } else {
+                brokerFilters.before = null;
             }
 
             brokerFilters.favorited = search.filters().favorited() != null;
@@ -2882,6 +2843,175 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.$watch("deltaV", function(objects) {
+                    console.log('called');
+                    if (typeof objects !== 'undefined') {
+                        $scope.newValue = 0;
+
+                        if (Array.isArray(objects)) {
+                            objects.forEach(function(object) {
+                                $scope.newValue += $scope.calculate(object);
+                            });
+                        } else {
+                            $scope.newValue = $scope.calculate(objects);
+                        }
+
+                        $scope.setCalculatedValue();
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.setCalculatedValue = function() {
+                    return 0;
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0,
+                };
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle',function($compile){
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.search = {
+                    name: ''
+                };
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = '';
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
     app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
@@ -2996,121 +3126,20 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.search = {
-                    name: ''
-                };
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = '';
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
     var app = angular.module('app');
 
-    app.directive('passwordToggle',function($compile){
+    app.directive('characterCoutner', function() {
         return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
+            restrict: 'E',
+            scope: {
+                model: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+            },
+            template: '<p>{{ characterCounterOutput }}</p>'
         }
     });
 })();
-
 (function() {
     var app = angular.module('app');
 
@@ -3129,21 +3158,6 @@
     }]);
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('characterCoutner', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                model: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-            },
-            template: '<p>{{ characterCounterOutput }}</p>'
-        }
-    });
-})();
 (function() {
     var app = angular.module('app');
 

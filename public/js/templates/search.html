@@ -1,12 +1,14 @@
 <div class="search" id="search">
 
     <div class="search-controls container">
-        <div class="gr-10">
+        <div class="search-control gr-9 gr-7@medium gr-6@small">
             <input class="search" type="search" ng-model="currentSearch.rawQuery" ng-change="onSearchChange($event)" placeholder="Search Mission Control" class="gr-8" />
         </div>
-        <div class="gr-2">
-            <button class="search submit" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
-            <button class="reset warning" ng-click="reset()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-close"></i></button>
+        <div class="search-control gr-2 gr-3@medium gr-4@small">
+            <button class="search submit wide-button" ng-click="search()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-search"></i></button>
+        </div>
+        <div class="search-control gr-1 gr-2@medium gr-2@small">
+            <button class="reset warning wide-button" ng-click="reset()" ng-disabled="currentSearch.rawQuery == null || currentSearch.rawQuery == ''"><i class="fa fa-close"></i></button>
         </div>
     </div>
 
@@ -21,20 +23,20 @@
             <div class="selected-option default" ng-click="isDatepickerVisible = !isDatepickerVisible">
                 <span class="name" ng-bind="datepickerText()"></span>
             </div>
-            <div class="dropdown" ng-show="isDatepickerVisible">
-                    <div class="after">
+            <ul class="dropdown" ng-show="isDatepickerVisible">
+                    <li class="after">
                         <label>After</label>
-                        <datepicker  date-format="MMM d, yyyy" date-typer="true">
-                            <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
+                        <datepicker date-format="MMM d, yyyy">
+                            <input date-typer="true" ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
                         </datepicker>
-                    </div>
-                    <div class="before">
+                    </li>
+                    <li class="before">
                         <label>Before</label>
-                        <datepicker date-format="MMM d, yyyy" date-typer="true">
-                            <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
+                        <datepicker date-format="MMM d, yyyy">
+                            <input date-typer="true" ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
                         </datepicker>
-                    </div>
-            </div>
+                    </li>
+            </ul>
         </div>
 
         <div class="gr-3 filter user-centric">

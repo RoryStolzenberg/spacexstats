@@ -8037,15 +8037,17 @@ section.comments {
 
 #search-form {
   padding: 30px 0; }
+  #search-form .search-control {
+    padding-right: 5px;
+    padding-left: 5px; }
   #search-form .filters {
     padding-top: 10px; }
     #search-form .filters .filter {
       padding-right: 5px;
       padding-left: 5px; }
   #search-form button {
-    margin: 0; }
-    #search-form button.reset {
-      min-width: 40px; }
+    margin: 0;
+    min-width: 0; }
 
 .search-datepicker .datepicker-dropdown {
   position: absolute; }
@@ -8094,7 +8096,7 @@ section.comments {
   border-top: 0;
   visibility: hidden;
   overflow: hidden;
-  position: absolute; }
+  position: relative; }
 
 .search-datepicker ._720kb-datepicker-calendar._720kb-datepicker-open {
   visibility: visible; }

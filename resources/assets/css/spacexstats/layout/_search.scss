@@ -1,6 +1,10 @@
 #search-form {
     padding:30px 0;
 
+    .search-control {
+        @include gridle_gutter(0 10px);
+    }
+
     .filters {
         padding-top:10px;
 
@@ -11,10 +15,7 @@
 
     button {
         margin:0;
-
-        &.reset {
-            min-width:40px;
-        }
+        min-width:0;
     }
 }
 
@@ -70,7 +71,7 @@
         border-top:0;
         visibility: hidden;
         overflow:hidden;
-        position:absolute;
+        position:relative;
     }
     ._720kb-datepicker-calendar._720kb-datepicker-open {
         visibility: visible;

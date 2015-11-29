@@ -108,6 +108,20 @@
                 brokerFilters.type = null;
             }
 
+            var afterResult = search.filters().after();
+            if (afterResult != null) {
+                brokerFilters.after = moment(afterResult, 'YYYY-MM-DD').format('MMM D, YYYY');
+            }  else {
+                brokerFilters.after = null;
+            }
+
+            var beforeResult = search.filters().before();
+            if (beforeResult != null) {
+                brokerFilters.before = moment(beforeResult, 'YYYY-MM-DD').format('MMM D, YYYY');
+            } else {
+                brokerFilters.before = null;
+            }
+
             brokerFilters.favorited = search.filters().favorited() != null;
             brokerFilters.noted = search.filters().noted() != null;
             brokerFilters.downloaded = search.filters().downloaded() != null;

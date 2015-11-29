@@ -14,14 +14,16 @@
                     <search></search>
                 </form>
                 <section ng-show="isCurrentlySearching">
-
+                    <p class="exclaim">Searching...</p>
                 </section>
+
+                <h2 ng-show="hasSearchResults">Results</h2>
                 <section ng-show="hasSearchResults">
                     <p>@{{ searchResults.hits.total }} results</p>
                     <p>Search took: @{{ searchResults.took }} ms</p>
-                    <div ng-if="searchResults.hits.total == 0">
+                    <p class="exclaim" ng-if="searchResults.hits.total == 0">
                         No results :(
-                    </div>
+                    </p>
                     <div ng-repeat="result in searchResults.hits.hits">
                         @{{ result._source.title }}
                     </div>
@@ -29,7 +31,7 @@
             </div>
 
             <section id="missioncontrol" ng-show="!hasSearchResults && !isCurrentlySearching">
-                <div class="gr-8 gr-12@small">
+                <div class="gr-8 gr-12@small gr-12@medium">
                     <h2>Mission Control</h2>
                     <ul class="in-page container missioncontrol-views">
                         <li class="gr-3" ng-class="{ 'active': missioncontrol.objects.visibleSection == 'latest' }" ng-click="missioncontrol.objects.show('latest')">Latest</li>
@@ -67,7 +69,7 @@
                     @endif
                 </div>
 
-                <div class="gr-4 gr-12@small">
+                <div class="gr-4 gr-12@small gr-12@medium">
                     <h2>Community Leaderboards</h2>
                     <ul class="in-page container missioncontrol-views">
                         <li class="gr-3" ng-class="{ 'active': missioncontrol.leaderboards.visibleSection == 'week' }" ng-click="missioncontrol.leaderboards.show('week')">Last Week</li>
