@@ -1,5 +1,5 @@
 <h2>{{ $object->comments->count() }} Comments</h2>
-<section class="comments" ng-controller="commentsController" ng-strict-di>
+<section id="comments" class="comments scrollto" ng-controller="commentsController" ng-strict-di>
     @if (Auth::isSubscriber())
         <form name="commentForm">
             <textarea ng-model="newComment" minlength="10" required placeholder="You can use markdown here."></textarea>
@@ -12,7 +12,7 @@
             </ul>
         </div>
     @else
-        <p>You need to be a Mission Control subscriber to comment. Sign up today!</p>
+        <p>You need to be a Mission Control subscriber to comment. <a href="/missioncontrol">Sign up today!</a></p>
     @endif
 </section>
 

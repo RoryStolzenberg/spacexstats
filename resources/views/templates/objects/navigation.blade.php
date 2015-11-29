@@ -1,6 +1,6 @@
 <nav class="in-page sticky-bar">
     <ul class="container">
-        <li class="gr-2">{{ $object->present()->type() }}</li>
+        <li class="gr-2"><a href="#object">{{ $object->present()->type() }}</a></li>
         <li class="gr-2"><a href="#summary">Summary</a></li>
         <li class="gr-2"><a href="#comments">Comments</a></li>
         @if (Auth::isAdmin())

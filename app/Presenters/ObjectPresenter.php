@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Presenters;
 
+use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 
 class ObjectPresenter {

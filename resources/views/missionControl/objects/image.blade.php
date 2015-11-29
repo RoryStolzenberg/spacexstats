@@ -13,10 +13,8 @@
 
             @include('templates.objects.navigation')
 
-            <section class="details">
+            <section id="object" class="details scrollto">
                 <div class="gr-9 content">
-                    <section class="highlights">
-                    </section>
                     <img id="object" src="{{ $object->media }}" />
                 </div>
 
@@ -74,18 +72,19 @@
             </section>
 
             <h2>Summary</h2>
-            <section class="summary">
-                <h3>Tags</h3>
-                @foreach ($object->tags as $tag)
-                    <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
-                @endforeach
-
-                @include('templates.objects.notes')
-
+            <section id="summary" class="summary container scrollto">
+                <div class="gr-6">
+                    @include('templates.objects.notes')
+                </div>
+                <div class="gr-6">
+                    <h3>Tags</h3>
+                    @foreach ($object->tags as $tag)
+                        <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
+                    @endforeach
+                </div>
             </section>
 
             @include('templates.objects.comments')
-
         </main>
     </div>
 </body>

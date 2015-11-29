@@ -110,7 +110,7 @@ class Object extends Model implements UploadableInterface {
         return $this->hasMany('SpaceXStats\Models\ObjectRevision');
     }
 
-    // Custom relations
+    // conditional relations
     public function featuredImageOf() {
         return $this->hasMany('SpaceXStats\Models\Mission', 'featured_image', 'object_id');
     }

@@ -24,16 +24,16 @@
 
         <div class="tags">
             @foreach ($object->tags as $tag)
-                <div class="tag">{{ $tag->name }}</div>
+                <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}"> {{ $tag->name }}</a></div>
             @endforeach
         </div>
 
         @if ($object->status == \SpaceXStats\Library\Enums\ObjectPublicationStatus::PublishedStatus)
-            <i class="publication-status fa fa-check"></i>
+            <i class="publication-status published fa fa-check" title="Approved"></i>
         @elseif ($object->status == \SpaceXStats\Library\Enums\ObjectPublicationStatus::QueuedStatus)
-            <i class="publication-status fa fa-repeat"></i>
+            <i class="publication-status queued fa fa-repeat" title="Waiting for Review"></i>
         @else
-            <i class="publication-status fa fa-warning"></i>
+            <i class="publication-status deleted fa fa-warning" title="Deleted"></i>
         @endif
     </div>
 

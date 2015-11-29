@@ -7415,7 +7415,7 @@ h2 {
 
 h3 {
   font-size: 20px;
-  color: #33495E;
+  color: #4f708f;
   margin: 20px 0 10px 0; }
 
 section {
@@ -7441,7 +7441,7 @@ a:link, a:visited, a:hover, a:active {
   text-decoration: inherit; }
 
 span a:link, span a:visited, p a:link, p a:visited {
-  color: #33495E;
+  color: #4f708f;
   text-decoration: underline; }
 
 p {
@@ -7512,7 +7512,7 @@ table.data-table td, table.data-table th {
 table.data-table th {
   padding: 10px;
   font-weight: bold;
-  background-color: #33495E;
+  background-color: #4f708f;
   color: #F2F2F2; }
 
 blockquote, .backing {
@@ -7722,7 +7722,7 @@ form input, form textarea {
   border: 1px solid #CCC;
   font-family: "Noto Sans", sans-serif;
   font-size: 14px;
-  box-shadow: 0 0 0 rgba(51, 73, 94, 0.2);
+  box-shadow: 0 0 0 rgba(79, 112, 143, 0.2);
   border-radius: 0;
   -webkit-transition: border ease-in-out 0.3s;
           transition: border ease-in-out 0.3s;
@@ -7733,7 +7733,7 @@ form input, form textarea {
     border: 1px solid #FB6473; }
   form input:focus, form textarea:focus {
     border: 1px solid #ccac55;
-    box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
+    box-shadow: 0 0 5px rgba(79, 112, 143, 0.2); }
 
 form select {
   padding: 5px;
@@ -7785,7 +7785,7 @@ form input[type="checkbox"] {
     background: #3569A4; }
     form input[type="checkbox"]:checked + label:after {
       left: 20px;
-      background: #33495E; }
+      background: #4f708f; }
   form input[type="checkbox"]:disabled + label {
     background: #D5D5D5;
     pointer-events: none; }
@@ -7824,7 +7824,7 @@ form input[type="radio"] {
       left: 2px;
       width: 12px;
       height: 12px;
-      background-color: #33495E;
+      background-color: #4f708f;
       -webkit-transition: all 0.3s ease;
               transition: all 0.3s ease;
       box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.05); }
@@ -8246,7 +8246,7 @@ section.comments {
     padding: 0 20px;
     margin: 20px 0; }
     .subscribe .plan.free {
-      background-color: #33495E;
+      background-color: #4f708f;
       width: 291.66667px;
       height: 375px;
       border-bottom-right-radius: 0;
@@ -8564,7 +8564,7 @@ img#object {
 .object-actions.container {
   text-align: center; }
   .object-actions.container i {
-    color: #33495E;
+    color: #4f708f;
     cursor: pointer;
     display: block;
     padding: 5px; }
@@ -8654,7 +8654,7 @@ body.live {
 
 section.editing-settings {
   background-color: #CCC;
-  box-shadow: 0px 10px 10px -10px #33495E inset, 0px -10px 10px -10px #33495E inset; }
+  box-shadow: 0px 10px 10px -10px #4f708f inset, 0px -10px 10px -10px #4f708f inset; }
 
 .canned-responses textarea {
   min-height: 80px; }
@@ -8686,7 +8686,7 @@ button.canned-response {
   padding-left: 10px; }
 
 .missioncontrol-views {
-  background-color: rgba(51, 73, 94, 0.2);
+  background-color: rgba(79, 112, 143, 0.2);
   margin-top: -10px;
   height: 40px;
   line-height: 40px;
@@ -8736,7 +8736,7 @@ button.canned-response {
     font-size: 12px; }
   .tagger-container .wrapper.active {
     border: 1px solid #ccac55;
-    box-shadow: 0 0 5px rgba(51, 73, 94, 0.2); }
+    box-shadow: 0 0 5px rgba(79, 112, 143, 0.2); }
 
 .tagger-container input {
   display: inline-block;
@@ -8759,12 +8759,13 @@ button.canned-response {
 .tag {
   font-family: "Montserrat", sans-serif;
   display: inline-block;
-  background-color: #33495E;
+  background-color: #4f708f;
   color: #FAFAFA;
   border-radius: 15px;
   padding: 5px 10px;
   margin: 4px 3px;
-  line-height: 1; }
+  line-height: 1;
+  font-size: 12px; }
   .tag .remove {
     padding-left: 10px;
     width: 20px;
@@ -8907,7 +8908,9 @@ button.canned-response {
 .object-card {
   margin: 20px 0;
   height: 100px;
-  position: relative; }
+  position: relative;
+  background-color: #F2F2F2;
+  z-index: 1; }
   .object-card div {
     display: inline-block; }
   .object-card .thumb-holder {
@@ -8928,7 +8931,10 @@ button.canned-response {
       position: absolute; }
   .object-card .object-overview {
     height: 100px;
-    vertical-align: top; }
+    vertical-align: top;
+    padding: 5px;
+    position: relative;
+    width: calc(100% - 110px); }
     .object-card .object-overview .title {
       font-size: 20px;
       padding: 0;
@@ -8936,10 +8942,30 @@ button.canned-response {
     .object-card .object-overview .type.creator.date, .object-card .object-overview .comments {
       font-size: small;
       padding: 5px 0; }
+    .object-card .object-overview .tags {
+      position: absolute;
+      right: 0;
+      bottom: 0; }
   .object-card .publication-status {
     position: absolute;
     right: 0;
-    top: 0; }
+    top: 0;
+    color: white;
+    padding: 5px; }
+    .object-card .publication-status:after {
+      content: "";
+      border-left: 40px solid transparent;
+      width: 0;
+      height: 0;
+      position: absolute;
+      top: 0;
+      right: -1px;
+      font-size: 0;
+      z-index: -1; }
+    .object-card .publication-status.published:after {
+      border-top: 40px solid #40C085; }
+    .object-card .publication-status.queued:after {
+      border-top: 40px solid #ccac55; }
 
 .flight-profile-card > div {
   padding-top: 66.7%; }
@@ -9069,4 +9095,4 @@ section.question-list {
 
 /* --------------- LOCATIONS ----------------- */
 #location-nav {
-  background-color: #33495E; }
+  background-color: #4f708f; }

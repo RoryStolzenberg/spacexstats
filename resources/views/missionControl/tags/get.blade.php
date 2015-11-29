@@ -2,21 +2,14 @@
 @section('title', $tag->name . ' Tag')
 
 @section('content')
-    <body class="">
-
+    <body class="get-tag">
 
     @include('templates.header')
 
     <div class="content-wrapper">
         <h1>{{ $tag->name }} Tag</h1>
         <main>
-            <nav class="sticky-bar">
-                <ul class="container">
-                    <li class="gr-2">{{ $tag->name }}</li>
-                </ul>
-            </nav>
-
-            <p>The tag <span class="tag">{{ $tag->name }}</span> is used in {{ $tag->objects()->count() }} objects.</p>
+            <p>The tag <span class="tag">{{ $tag->name }}</span> is used in {{ $tag->objects->count() }} {{ str_plural('object', $tag->objects->count()) }}.</p>
 
             <section class="details">
                 {{ $tag->description or "No Description." }}
@@ -25,7 +18,7 @@
             <h2>Objects with the tag '{{ $tag->name }}'</h2>
             <section class="objects">
                 @foreach ($tag->objects as $object)
-                    <a href="/missioncontrol/objects/{{ $object->object_id }}">{{ $object->title }}</a>
+                    @include('templates.cards.objectCard', ['object' => $object])
                 @endforeach
             </section>
         </main>

@@ -113,6 +113,8 @@
     margin:20px 0;
     height:100px;
     position:relative;
+    background-color:$offwhite;
+    z-index:1;
 
     div {
         display:inline-block;
@@ -141,6 +143,9 @@
     .object-overview {
         height:100px;
         vertical-align: top;
+        padding:5px;
+        position:relative;
+        width:calc(100% - 110px);
 
         .title {
             font-size:20px;
@@ -152,12 +157,40 @@
             font-size:small;
             padding:5px 0;
         }
+
+        .tags {
+            position:absolute;
+            right:0;
+            bottom:0;
+        }
     }
 
     .publication-status {
         position:absolute;
         right:0;
         top:0;
+        color:white;
+        padding:5px;
+
+        &:after {
+            content:"";
+            border-left:40px solid transparent;
+            width:0;
+            height:0;
+            position:absolute;
+            top:0;
+            right:-1px; // no one knows why
+            font-size:0;
+            z-index:-1;
+        }
+
+        &.published:after {
+            border-top:40px solid $green;
+        }
+
+        &.queued:after {
+            border-top:40px solid $gold;
+        }
     }
 }
 
