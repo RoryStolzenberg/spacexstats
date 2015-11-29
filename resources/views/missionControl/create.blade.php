@@ -137,6 +137,7 @@
                                             <label>
                                                 <p>Tags</p>
                                                 <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                                             </label>
                                         </li>
                                     </ul>
@@ -153,8 +154,8 @@
                                             </label>
                                         </li>
                                         <li class="gr-6">
-                                            <input type="checkbox" name="original_content" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.original_content" />
-                                            <label for="@{{ 'anonymous-file' + $index }}">
+                                            <input type="checkbox" name="original_content" id="@{{ 'original-content' + $index }}" value="true" ng-model="file.original_content" />
+                                            <label for="@{{ 'original-content' + $index }}">
                                                 <span>Did you create this yourself?</span>
                                             </label>
                                         </li>
@@ -506,7 +507,7 @@
             <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
                 <form name="postForm">
                     <p>Select what type of resource you want to submit...</p>
-                    <fieldset class="post-type-selection container">
+                    <fieldset class="post-type-selection container text-center">
                         <div class="gr-2">
                             <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" ng-click="postType = 'tweet'" />
                             <label for="tweet"><span>Tweet</span></label>
@@ -535,150 +536,211 @@
 
                     <!-- Tweet -->
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
+                        <h3>Tweet</h3>
                         <delta-v ng-model="tweet"></delta-v>
                         <tweet action="write" tweet="tweet"></tweet>
                     </fieldset>
 
                     <!-- Article -->
                     <fieldset class="post-type article" ng-if="postType == 'article'">
-                        <delta-v ng-model="article"></delta-v>
+                        <h3>Article</h3>
+                        <div class="gr-9">
+                            <ul>
+                                <li>
+                                    <label>Article URL</label>
+                                    <input type="url" name="article-url" id="article-url" ng-model="article.external_url" required />
+                                </li>
+                                <li>
+                                    <label>Article Date</label>
+                                    <datetime ng-model="article.originated_at" type="date" is-null="false"></datetime>
+                                </li>
+                                <li>
+                                    <label>Publication</label>
+                                    <dropdown
+                                            name="publisher"
+                                            options="data.publishers"
+                                            ng-model="article.publisher_id"
+                                            unique-key="publisher_id"
+                                            title-key="name"
+                                            searchable="true"
+                                            placeholder="Select the publisher of the article">
+                                    </dropdown>
+                                    <p>Can't find the article publisher? <a href="/missioncontrol/publishers/create">Create them first</a>.</p>
+                                </li>
+                                <li class="container">
+                                    <div class="gr-8">
+                                        <label>Article Title</label>
+                                        <input type="text" name="article-title" id="article-title" ng-model="article.title" required />
+                                    </div>
+                                    <div class="gr-4">
+                                        <label>Article Author</label>
+                                        <input type="text" name="article-author" id="article-author" ng-model="article.author" />
+                                    </div>
+                                </li>
+                                <li>
+                                    <label>Article</label>
+                                    <textarea ng-model="article.article" required></textarea>
+                                </li>
+                                <li>
+                                    <label>Select Mission</label>
+                                    <dropdown
+                                            name="mission"
+                                            options="data.missions"
+                                            ng-model="article.mission_id"
+                                            unique-key="mission_id"
+                                            title-key="name"
+                                            searchable="true"
+                                            placeholder="Select a related mission...">
+                                    </dropdown>
+                                </li>
+                                <li>
+                                    <label>Tags</label>
+                                    <tags available-tags="data.tags" name="tags" ng-model="article.tags"></tags>
+                                    <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                                </li>
+                            </ul>
+                        </div>
 
-                        <label>Article URL</label>
-                        <input type="url" name="article-url" id="article-url" ng-model="article.external_url" required />
-
-                        <label>Article Date</label>
-                        <datetime ng-model="article.originated_at" type="date" is-null="false"></datetime>
-
-                        <label>Publication</label>
-                        <dropdown
-                                name="publisher"
-                                options="data.publishers"
-                                ng-model="article.publisher_id"
-                                unique-key="publisher_id"
-                                title-key="name"
-                                searchable="true"
-                                placeholder="Select the publisher of the article">
-                        </dropdown>
-                        <p>Can't find the article publisher? <a href="/missioncontrol/publishers/create">Create them first</a>.</p>
-
-                        <label>Article Author</label>
-                        <input type="text" name="article-author" id="article-author" ng-model="article.author" />
-
-                        <label>Article Title</label>
-                        <input type="text" name="article-title" id="article-title" ng-model="article.title" required />
-
-                        <label>Article</label>
-                        <textarea ng-model="article.article" required></textarea>
-
-                        <label>Select Mission</label>
-                        <dropdown
-                                name="mission"
-                                options="data.missions"
-                                ng-model="article.mission_id"
-                                unique-key="mission_id"
-                                title-key="name"
-                                searchable="true"
-                                placeholder="Select a related mission...">
-                        </dropdown>
-
-                        <label>Tags</label>
-                        <tags available-tags="data.tags" name="tags" ng-model="article.tags"></tags>
-                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                        <div class="gr-3">
+                            <delta-v ng-model="article"></delta-v>
+                        </div>
                     </fieldset>
 
                     <!-- Press Release -->
                     <fieldset class="post-type pressrelease" ng-if="postType == 'pressrelease'">
-                        <delta-v ng-model="pressrelease"></delta-v>
+                        <h3>SpaceX Press Release</h3>
+                        <div class="gr-9">
+                            <ul>
+                                <li>
+                                    <label>Press Release URL</label>
+                                    <input type="url" name="pressrelease-url" id="pressrelease-url" ng-model="pressrelease.external_url" required />
+                                </li>
+                                <li>
+                                    <label>Press Release Date</label>
+                                    <datetime ng-model="pressrelease.originated_at" type="date" start-year="2002" is-null="false"></datetime>
+                                </li>
+                                <li>
+                                    <label>Press Release Title</label>
+                                    <input type="text" name="pressrelease-author" id="pressrelease-author" ng-model="pressrelease.title" required />
+                                </li>
+                                <li>
+                                    <label>Press Release Text</label>
+                                    <textarea ng-model="pressrelease.article" required></textarea>
+                                </li>
+                                <li>
+                                    <label>Select Mission</label>
+                                    <dropdown
+                                            name="mission"
+                                            options="data.missions"
+                                            ng-model="pressrelease.mission_id"
+                                            unique-key="mission_id"
+                                            title-key="name"
+                                            searchable="true"
+                                            placeholder="Select a related mission...">
+                                    </dropdown>
+                                </li>
+                                <li>
+                                    <label>Tags</label>
+                                    <tags available-tags="data.tags" name="tags" ng-model="pressrelease.tags"></tags>
+                                    <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                                </li>
+                            </ul>
+                        </div>
 
-                        <label>Press Release URL</label>
-                        <input type="url" name="pressrelease-url" id="pressrelease-url" ng-model="pressrelease.external_url" required />
-
-                        <label>Press Release Date</label>
-                        <datetime ng-model="pressrelease.originated_at" type="date" start-year="2002" is-null="false"></datetime>
-
-                        <label>Press Release Title</label>
-                        <input type="text" name="pressrelease-author" id="pressrelease-author" ng-model="pressrelease.title" required />
-
-                        <label>Press Release Text</label>
-                        <textarea ng-model="pressrelease.article" required></textarea>
-
-                        <label>Select Mission</label>
-                        <dropdown
-                                name="mission"
-                                options="data.missions"
-                                ng-model="pressrelease.mission_id"
-                                unique-key="mission_id"
-                                title-key="name"
-                                searchable="true"
-                                placeholder="Select a related mission...">
-                        </dropdown>
-
-                        <label>Tags</label>
-                        <tags available-tags="data.tags" name="tags" ng-model="pressrelease.tags"></tags>
-                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                        <div class="gr-3">
+                            <delta-v ng-model="pressrelease"></delta-v>
+                        </div>
                     </fieldset>
 
                     <!-- Reddit Comment -->
                     <fieldset class="post-type redditcomment" ng-if="postType == 'redditcomment'" required>
-                        <delta-v ng-model="redditcomment"></delta-v>
+                        <h3>Reddit Comment</h3>
+                        <div class="gr-9">
+                            <ul>
+                                <li>
+                                    <label>Permalink URL</label>
+                                    <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
+                                </li>
+                                <li>
+                                    <label>Title Describing The Comment</label>
+                                    <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" placeholder="The title that appears on SpaceX Stats" required ng-minlength="10"  />
+                                </li>
+                                <li>
+                                    <reddit-comment ng-model="redditcomment"></reddit-comment>
+                                </li>
+                                <li>
+                                    <label>Select Mission</label>
+                                    <dropdown
+                                            name="mission"
+                                            options="data.missions"
+                                            ng-model="redditcomment.mission_id"
+                                            unique-key="mission_id"
+                                            title-key="name"
+                                            searchable="true"
+                                            placeholder="Select a related mission...">
+                                    </dropdown>
+                                </li>
+                                <li>
+                                    <label>Tags</label>
+                                    <tags available-tags="data.tags" name="tags" ng-model="redditcomment.tags"></tags>
+                                    <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                                </li>
+                            </ul>
+                        </div>
 
-                        <label>Permalink URL</label>
-                        <input type="url" name="redditcomment-url" id="redditcomment-url" ng-model="redditcomment.external_url" ng-change="retrieveRedditComment" required ng-pattern="/reddit.com\//" placeholder="Please ensure this is a Reddit permalink">
-
-                        <label>Title Describing The Comment</label>
-                        <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" required ng-minlength="10"  />
-
-                        <reddit-comment ng-model="redditcomment"></reddit-comment>
-
-                        <label>Select Mission</label>
-                        <dropdown
-                                name="mission"
-                                options="data.missions"
-                                ng-model="redditcomment.mission_id"
-                                unique-key="mission_id"
-                                title-key="name"
-                                searchable="true"
-                                placeholder="Select a related mission...">
-                        </dropdown>
-
-                        <label>Tags</label>
-                        <tags available-tags="data.tags" name="tags" ng-model="redditcomment.tags"></tags>
-                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                        <div class="gr-3">
+                            <delta-v ng-model="redditcomment"></delta-v>
+                        </div>
                     </fieldset>
 
                     <!-- NSF Comment -->
                     <fieldset class="post-type nsf-comment" ng-if="postType == 'NSFcomment'">
-                        <label>Comment URL</label>
-                        <input type="url" name="NSFcomment-url" id="article-url" ng-model="NSFcomment.external_url" placeholder="The direct URL to the comment" required ng-pattern="/nasaspaceflight.com\//" />
+                        <h3>NasaSpaceFlight Comment</h3>
+                        <div class="gr-9">
+                            <ul>
+                                <li>
+                                    <label>Comment URL</label>
+                                    <input type="url" name="NSFcomment-url" id="article-url" ng-model="NSFcomment.external_url" placeholder="The direct URL to the comment" required ng-pattern="/nasaspaceflight.com\//" />
+                                </li>
+                                <li>
+                                    <label>Title Describing The Comment</label>
+                                    <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" placeholder="The title that appears on SpaceX Stats" required minlength="10" />
+                                </li>
+                                <li>
+                                    <label>Comment Date</label>
+                                    <datetime ng-model="NSFcomment.originated_at" type="datetime" start-year="2000" is-null="false"></datetime>
+                                </li>
+                                <li>
+                                    <label>Comment Author</label>
+                                    <input type="author" name="NSFcomment-author" id="article-author" ng-model="NSFcomment.author" placeholder="The author of the comment" required />
+                                </li>
+                                <li>
+                                    <label>Comment</label>
+                                    <textarea ng-model="NSFcomment.comment" placeholder="Enter in the comment body here" required></textarea>
+                                </li>
+                                <li>
+                                    <label>Select Mission</label>
+                                    <dropdown
+                                            name="mission"
+                                            options="data.missions"
+                                            ng-model="NSFcomment.mission_id"
+                                            unique-key="mission_id"
+                                            title-key="name"
+                                            searchable="true"
+                                            placeholder="Select a related mission...">
+                                    </dropdown>
+                                </li>
+                                <li>
+                                    <label>Tags</label>
+                                    <tags available-tags="data.tags" name="tags" ng-model="NSFcomment.tags"></tags>
+                                    <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                                </li>
+                            </ul>
+                        </div>
 
-                        <label>Title Describing The Comment</label>
-                        <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" placeholder="The title that appears on SpaceX Stats" required minlength="10" />
-
-                        <label>Comment Date</label>
-                        <datetime ng-model="NSFcomment.originated_at" type="datetime" start-year="2000" is-null="false"></datetime>
-
-                        <label>Comment Author</label>
-                        <input type="author" name="NSFcomment-author" id="article-author" ng-model="NSFcomment.author" placeholder="The author of the comment" required />
-
-                        <label>Comment</label>
-                        <textarea ng-model="NSFcomment.comment" placeholder="Enter in the comment body here" required></textarea>
-
-                        <label>Select Mission</label>
-                        <dropdown
-                                name="mission"
-                                options="data.missions"
-                                ng-model="NSFcomment.mission_id"
-                                unique-key="mission_id"
-                                title-key="name"
-                                searchable="true"
-                                placeholder="Select a related mission...">
-                        </dropdown>
-
-                        <label>Tags</label>
-                        <tags available-tags="data.tags" name="tags" ng-model="NSFcomment.tags"></tags>
-                        <span ng-show="postForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
-
-                        <delta-v ng-model="NSFcomment"></delta-v>
+                        <div class="gr-3">
+                            <delta-v ng-model="NSFcomment"></delta-v>
+                        </div>
                     </fieldset>
 
                     <p class="exclaim" ng-if="postType == null">No Resource Selected</p>

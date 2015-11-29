@@ -7,6 +7,7 @@ abstract class MissionControlSubtype extends Enum {
 	const Telemetry 		= "Telemetry";
 	const Chart 			= "Chart";
 	const Screenshot		= "Screenshot";
+    const ConceptArt        = "Concept Art";
 	const LaunchVideo   	= "Launch Video";
 	const PressConference	= "Press Conference";
 	const PressKit 			= "Press Kit";

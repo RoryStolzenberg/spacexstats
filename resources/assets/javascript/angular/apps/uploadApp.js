@@ -1,4 +1,4 @@
-(function() {
+    (function() {
     var uploadApp = angular.module('app', []);
 
     uploadApp.controller("uploadAppController", ["$scope", function($scope) {
@@ -13,11 +13,11 @@
                     'Mission Patch',
                     'Photo',
                     'Chart',
+                    'Concept Art',
                     'Screenshot',
                     'Infographic',
                     'News Summary',
-                    'Hazard Map',
-                    'License',
+                    'Hazard Map'
                 ],
                 video: [
                     'Launch Video',

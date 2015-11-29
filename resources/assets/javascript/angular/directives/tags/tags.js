@@ -20,6 +20,10 @@
                 };
 
                 $scope.createTag = function(createdTag) {
+                    if ($scope.currentTags.length == 5) {
+                        return;
+                    }
+
                     var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
                         return tag.name == createdTag;
                     });

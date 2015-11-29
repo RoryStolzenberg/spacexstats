@@ -66,7 +66,7 @@
                 var mobileNavigation = $('.nav-mobile');
                 var contentToPush = $('body');
 
-                $('i.toggleMobileNavigation').on('click', function() {
+                $('i.mobile-hamburger').on('click', function() {
                     console.log('click');
                     contentToPush.toggleClass('nav-open');
                 });

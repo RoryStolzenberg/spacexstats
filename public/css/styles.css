@@ -8621,6 +8621,9 @@ img#object {
   font-size: 18px;
   cursor: pointer; }
 
+.post-type-selection {
+  padding: 10px 0; }
+
 .testquery {
   height: 300px;
   overflow: auto; }
@@ -8972,7 +8975,9 @@ button.canned-response {
     right: 0;
     top: 0;
     color: white;
-    padding: 5px; }
+    padding: 5px;
+    opacity: 0.5;
+    cursor: pointer; }
     .object-card .publication-status:after {
       content: "";
       border-left: 40px solid transparent;
