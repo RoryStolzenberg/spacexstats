@@ -7473,7 +7473,7 @@ small {
 .gold {
   color: #ccac55; }
 
-.warning, .red {
+.red {
   color: #FB6473; }
 
 .green {
@@ -8064,7 +8064,7 @@ section.comments {
   overflow: hidden;
   background: none;
   color: #fff;
-  background-color: #138EFA;
+  background-color: #3569A4;
   border-radius: 2px;
   border: 0;
   margin-top: 5px; }
@@ -8074,7 +8074,7 @@ section.comments {
 .search-datepicker ._720kb-datepicker-calendar-body,
 .search-datepicker ._720kb-datepicker-calendar-days-header,
 .search-datepicker ._720kb-datepicker-calendar-years-pagination-pages {
-  font-family: Helvetica Neue;
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   font-size: 13.5px;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
@@ -8086,18 +8086,15 @@ section.comments {
 
 .search-datepicker ._720kb-datepicker-calendar {
   background: white;
-  color: #333;
-  position: absolute;
+  color: #21272B;
   z-index: 999;
   min-width: 220px;
   margin: 0 auto;
-  width: 101%;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) inset;
+  border: 1px solid #CCC;
+  border-top: 0;
   visibility: hidden;
   overflow: hidden;
-  margin-left: -0.5%;
-  padding: 0 0 2% 0;
-  border-radius: 3px; }
+  position: absolute; }
 
 .search-datepicker ._720kb-datepicker-calendar._720kb-datepicker-open {
   visibility: visible; }
@@ -8108,10 +8105,10 @@ section.comments {
   line-height: 40px; }
 
 .search-datepicker ._720kb-datepicker-calendar-header:nth-child(odd) {
-  background: #138EFA; }
+  background: #3569A4; }
 
 .search-datepicker ._720kb-datepicker-calendar-header:nth-child(even) {
-  background: #7BC6FC; }
+  background: #4882c4; }
 
 .search-datepicker ._720kb-datepicker-calendar-header-left,
 .search-datepicker ._720kb-datepicker-calendar-header-middle,
@@ -8143,7 +8140,7 @@ section.comments {
   border-radius: 1px; }
 
 .search-datepicker ._720kb-datepicker-calendar-day:hover, .search-datepicker ._720kb-datepicker-calendar-day._720kb-datepicker-active {
-  background: rgba(0, 0, 0, 0.03); }
+  background-color: #e2ebf6; }
 
 .search-datepicker ._720kb-datepicker-calendar-header a, .search-datepicker ._720kb-datepicker-calendar-header a:hover {
   text-decoration: none;
@@ -8198,7 +8195,7 @@ section.comments {
   max-width: 100%;
   margin: 0 auto;
   padding: 0 2% 0 2%;
-  background: rgba(19, 142, 250, 0.08);
+  background-color: #e2ebf6;
   border-bottom: 1px solid rgba(0, 0, 0, 0.02); }
 
 .search-datepicker ._720kb-datepicker-calendar-days-header div {

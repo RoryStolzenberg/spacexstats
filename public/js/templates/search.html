@@ -19,36 +19,44 @@
 
         <div class="gr-3 filter before after search-datepicker dropdown">
             <div class="selected-option default" ng-click="isDatepickerVisible = !isDatepickerVisible">
-                <span ng-bind="datepickerText()"></span>
+                <span class="name" ng-bind="datepickerText()"></span>
             </div>
             <div class="dropdown" ng-show="isDatepickerVisible">
-                <datepicker  date-format="MMM d, yyyy">
-                    <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
-                </datepicker>
-                <datepicker date-format="MMM d, yyyy">
-                    <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
-                </datepicker>
+                    <div class="after">
+                        <label>After</label>
+                        <datepicker  date-format="MMM d, yyyy" date-typer="true">
+                            <input ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
+                        </datepicker>
+                    </div>
+                    <div class="before">
+                        <label>Before</label>
+                        <datepicker date-format="MMM d, yyyy" date-typer="true">
+                            <input ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
+                        </datepicker>
+                    </div>
             </div>
         </div>
 
-        <div class="gr-3 filter user-centric dropdown">
-            <div class="more-filters selected-option default" ng-click="showMoreFilters = !showMoreFilters">
-                More Filters...
+        <div class="gr-3 filter user-centric">
+            <div class="dropdown">
+                <div class="more-filters selected-option default" ng-click="showMoreFilters = !showMoreFilters">
+                    <span class="name">More Filters...</span>
+                </div>
+                <ul class="more-filters dropdown" ng-show="showMoreFilters">
+                    <li>
+                        <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
+                        <label for="favorited"><span>My Favorites</span></label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
+                        <label for="noted"><span>My Notes</span></label>
+                    </li>
+                    <li>
+                        <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
+                        <label for="downloaded"><span>My Downloads</span></label>
+                    </li>
+                </ul>
             </div>
-            <ul class="more-filters dropdown" ng-show="showMoreFilters">
-                <li>
-                    <input type="checkbox" name="favorited" id="favorited" ng-model="brokerFilters.favorited" ng-change="onFilterUpdate('favorited')" />
-                    <label for="favorited"><span>My Favorites</span></label>
-                </li>
-                <li>
-                    <input type="checkbox" name="noted" id="noted" ng-model="brokerFilters.noted" ng-change="onFilterUpdate('noted')" />
-                    <label for="noted"><span>My Notes</span></label>
-                </li>
-                <li>
-                    <input type="checkbox" name="downloaded" id="downloaded" ng-model="brokerFilters.downloaded" ng-change="onFilterUpdate('downloaded')" />
-                    <label for="downloaded"><span>My Downloads</span></label>
-                </li>
-            </ul>
         </div>
 	</div>
 </div>

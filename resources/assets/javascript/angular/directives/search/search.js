@@ -76,8 +76,6 @@
 
     app.service('conversionService', function() {
         this.searchesToFilters = function(brokerFilters, search, data) {
-            console.log('called');
-
             // Search for missions in the query string
             var missionResult = search.filters().mission();
             if (missionResult != null) {
@@ -100,8 +98,6 @@
                 var type = data.types.filter(function(type) {
                     return type.name.toLowerCase() == typeResult.toLowerCase();
                 });
-
-                console.log(type);
 
                 if (type !== null) {
                     brokerFilters.type = type[0];
@@ -163,12 +159,32 @@
                 }
             }
 
-            else if (filterType == 'before') {
+            else if (filterType == 'after') {
+                if (brokerFilters.after === null) {
+                    search.rawQuery = search.rawQuery.replace(search.regex.after, '');
+                } else {
 
+                    var dateToConcatenate = moment(brokerFilters.after, "MMM D, YYYY").format('YYYY-MM-DD');
+                    if (search.filters().after() === null) {
+                        this.contextualConcat(search, 'after:' + dateToConcatenate);
+                    } else {
+                        search.rawQuery = search.rawQuery.replace(search.regex.after, 'after:' + dateToConcatenate);
+                    }
+                }
             }
 
-            else if (filterType == 'after') {
+            else if (filterType == 'before') {
+                if (brokerFilters.before === null) {
+                    search.rawQuery = search.rawQuery.replace(search.regex.before, '');
+                } else {
 
+                    var dateToConcatenate = moment(brokerFilters.before, "MMM D, YYYY").format('YYYY-MM-DD');
+                    if (search.filters().before() === null) {
+                        this.contextualConcat(search, 'before:' + dateToConcatenate);
+                    } else {
+                        search.rawQuery = search.rawQuery.replace(search.regex.before, 'before:' + dateToConcatenate);
+                    }
+                }
             }
 
             else if (filterType === 'favorited') {
@@ -296,8 +312,8 @@
             tags: /\[([^)]+?)\]/gi,
             mission: /mission:(?:([^ "]+)|"(.+)")/i,
             type: /type:(?:([^ "]+)|"(.+)")/i,
-            before: /before:([0-9-]+)/i,
-            after:/after:([0-9-]+)/i,
+            before: /before:([0-9]{4}-[0-9]{2}-[0-9]{2})/i,
+            after:/after:([0-9]{4}-[0-9]{2}-[0-9]{2})/i,
             year: /year:([0-9]{4})/i,
             user: /uploaded-by:([a-zA-Z0-9_-]+)/i,
             favorited: /favorited:(true|yes|y|1)/i,
