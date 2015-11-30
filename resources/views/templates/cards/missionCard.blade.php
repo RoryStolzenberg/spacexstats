@@ -43,6 +43,7 @@
                         <div class="gr-1on9">{{ ordinal($mission->successful_consecutive_launch) }}</div>
                     @endif
                 @endif
+                <div class="gr-1on9">Mission Collection</div>
 			</div>
 			<div class="container keys">
 				<div class="gr-1on9">{{ $mission->vehicle->generic_vehicle }}<br/>Launch</div>
@@ -65,6 +66,7 @@
                         <div class="gr-1on9">Successful Consecutive Launch</div>
                     @endif
                 @endif
+                <div class="gr-1on9">Mission Collection</div>
 			</div>
 		@endif
 		<p><em>{{ $mission->summary }}</em></p>

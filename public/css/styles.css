@@ -8349,42 +8349,47 @@ form[name="subscribeForm"] .subscription-failed {
     .hero table td {
       min-width: 250px; }
       .state-small .hero table td {
-        font-size: 150px; }
+        min-width: 80px; }
       @media (max-width: 640px) {
         .hero table td {
-          font-size: 150px; } }
+          min-width: 80px; } }
       .state-medium .hero table td {
-        font-size: 150px; }
+        min-width: 120px; }
       @media (min-width: 641px) and (max-width: 1024px) {
         .hero table td {
-          font-size: 150px; } }
+          min-width: 120px; } }
       .state-large .hero table td {
-        font-size: 200px; }
+        min-width: 200px; }
       @media (min-width: 1025px) and (max-width: 1440px) {
         .hero table td {
-          font-size: 200px; } }
+          min-width: 200px; } }
     .hero table .value {
       font-size: 150px;
       font-weight: 300;
       line-height: 1; }
       .state-small .hero table .value {
-        font-size: 80px; }
+        font-size: 50px; }
       @media (max-width: 640px) {
         .hero table .value {
-          font-size: 80px; } }
+          font-size: 50px; } }
       .state-medium .hero table .value {
         font-size: 80px; }
       @media (min-width: 641px) and (max-width: 1024px) {
         .hero table .value {
           font-size: 80px; } }
       .state-large .hero table .value {
-        font-size: 120px; }
+        font-size: 100px; }
       @media (min-width: 1025px) and (max-width: 1440px) {
         .hero table .value {
-          font-size: 120px; } }
+          font-size: 100px; } }
     .hero table .unit {
       font-size: 30px;
       font-weight: 300; }
+      .state-small .hero table .unit {
+        font-size: 18px; }
+      @media (max-width: 640px) {
+        .hero table .unit {
+          font-size: 18px; } }
   .hero.statistic {
     height: calc(100% - 30px - 100px); }
     .hero.statistic .description {
@@ -8528,11 +8533,12 @@ body.future-mission .highlights {
     background-color: #ccac55;
     color: #FAFAFA;
     height: 40px;
-    line-height: 40px;
     width: 100%;
     padding: 0 20px 0 10px;
     position: relative;
     right: -10px; }
+    .display-date-time .launch p {
+      line-height: 20px; }
     .display-date-time .launch:after {
       width: 0px;
       height: 0px;
@@ -8543,23 +8549,30 @@ body.future-mission .highlights {
       right: 0;
       position: absolute;
       content: ""; }
+  .display-date-time .timezone-clip {
+    overflow: hidden; }
   .display-date-time .timezone-list {
-    display: none; }
-  .display-date-time:hover .timezone-list {
-    display: block; }
-  .display-date-time .timezone {
+    box-shadow: 0px 10px 10px -10px rgba(33, 39, 43, 0.5) inset;
+    background-color: #b79537;
+    line-height: 30px;
+    color: #FAFAFA;
+    -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+            transform: translateY(0);
+    -webkit-transition: -webkit-transform ease-in-out 0.5s;
+            transition: transform ease-in-out 0.5s; }
+    .display-date-time .timezone-list.ng-hide {
+      -webkit-transform: translateY(-120px);
+          -ms-transform: translateY(-120px);
+              transform: translateY(-120px); }
+  .display-date-time .timezone-option {
     font-size: 14px;
-    color: #21272B;
     text-transform: uppercase;
     text-align: center;
-    margin-left: 10px;
     padding: 0;
-    -webkit-transition: background-color ease-in-out 0.5s;
-            transition: background-color ease-in-out 0.5s; }
-    .display-date-time .timezone:hover {
-      -webkit-transition: background-color ease-in-out 0.5s;
-              transition: background-color ease-in-out 0.5s;
-      background-color: #ccac55; }
+    cursor: pointer; }
+    .display-date-time .timezone-option.active {
+      background-color: #40C085; }
 
 #countdown > * {
   top: -10%; }

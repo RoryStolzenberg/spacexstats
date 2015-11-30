@@ -298,25 +298,41 @@
                             </li>
                         </ul>
 
-                        {{ $orbitalElements->first()->apogee }}km x {{ $orbitalElements->first()->perigee }}km, inclined {{ $orbitalElements->first()->inclination }}deg
+                        <p>{{ $orbitalElements->first()->apogee }}km x {{ $orbitalElements->first()->perigee }}km, inclined {{ $orbitalElements->first()->inclination }}&deg;</p>
 
-                        <h4>Latest TLE</h4>
-                        <div class="tle">
-                            <p>{{ $orbitalElements->first()->object_name }}</p>
+                        <div class="gr-5">
+                            <h4>Latest TLE</h4>
+                            <div class="tle">
+                                <span>{{ $orbitalElements->first()->object_name }}</span><br/>
+                                <span>{{ $orbitalElements->first()->tle_line1 }}</span><br/>
+                                <span>{{ $orbitalElements->first()->tle_line2 }}</span><br/>
+                            </div>
                         </div>
-
-                        <h4>Last 5 Orbital Elements</h4>
-                        <table>
-                            <tr>
-                                <th>Epoch</th>
-                                <th>Perigee</th>
-                                <th>Apogee</th>
-                                <th>Inclination</th>
-                                <th>Eccentricity</th>
-                                <th>Semimajor Axis</th>
-                                <th>Orbital Period</th>
-                            </tr>
-                        </table>
+                        <div class="gr-7">
+                            <h4>Last 5 Orbital Elements</h4>
+                            <table class="data-table">
+                                <tr>
+                                    <th>Epoch (UTC)</th>
+                                    <th>Perigee</th>
+                                    <th>Apogee</th>
+                                    <th>Inclination</th>
+                                    <th>Eccentricity</th>
+                                    <th>Semimajor Axis</th>
+                                    <th>Orbital Period</th>
+                                </tr>
+                                @foreach ($orbitalElements->take(5) as $orbitalElement)
+                                    <tr>
+                                        <td>{{ $orbitalElement->epoch->toFormattedDateString() }} <small>({{ $orbitalElement->epoch->diffForHumans() }})</small></td>
+                                        <td>{{ $orbitalElement->perigee }} km</td>
+                                        <td>{{ $orbitalElement->apogee }} km</td>
+                                        <td>{{ $orbitalElement->inclination }}&deg;</td>
+                                        <td>{{ $orbitalElement->eccentricity }}</td>
+                                        <td>{{ $orbitalElement->semimajor_axis }} km</td>
+                                        <td>{{ $orbitalElement->period }} min</td>
+                                    </tr>
+                                @endforeach
+                            </table>
+                        </div>
                     @else
                         <p class="exclaim">No orbital element data at this time.</p>
                     @endif

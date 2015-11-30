@@ -38,7 +38,7 @@
                                     <i class="fa fa-pencil"></i>
                                 </a>
                             @endif
-                            <i class="fa fa-twitter"></i>
+                            <a href="https://twitter.com/spacexstats"><i class="fa fa-twitter"></i></a>
                             @if (Auth::isMember())
                                 <a class="link" href="/users/{{Auth::user()->username}}/edit#email-notifications"><i class="fa fa-envelope-o"></i></a>
                             @else
@@ -80,16 +80,26 @@
                     @endif
 
                     <div class="display-date-time">
-                        <div class="launch">@{{ displayDateTime() }}</div>
-                        <div class="timezone" ng-if="isLaunchExact == true">
-                            <span class="timezone-current">@{{ currentTimezoneFormatted }}</span>
-                            <ul class="timezone-list">
-                                <li class="timezone-option" ng-click="setTimezone('local')">Local (@{{ localTimezone }})</li>
-                                <li class="timezone-option" ng-click="setTimezone('ET')">Eastern</li>
-                                <li class="timezone-option" ng-click="setTimezone('PT')">Pacific</li>
-                                <li class="timezone-option" ng-click="setTimezone('UTC')">UTC</li>
-                            </ul>
+                        <div class="launch" ng-mouseover="showingTimezoneOptions = true" ng-mouseleave="showingTimezoneOptions = false">
+                            <p>@{{ displayDateTime() }}</p>
+                            <div class="timezone-clip">
+                                <ul class="timezone-list" ng-if="isLaunchExact == true" ng-show="showingTimezoneOptions">
+                                    <li class="timezone-option" ng-click="setTimezone('local')" ng-class="{ 'active': currentTimezone == null }">
+                                        Local (@{{ localTimezone }})
+                                    </li>
+                                    <li class="timezone-option" ng-click="setTimezone('ET')" ng-class="{ 'active': currentTimezone == 'EST' || currentTimezone == 'EDT' }">
+                                        Eastern
+                                    </li>
+                                    <li class="timezone-option" ng-click="setTimezone('PT')" ng-class="{ 'active': currentTimezone == 'PST' || currentTimezone == 'PDT' }">
+                                        Pacific
+                                    </li>
+                                    <li class="timezone-option" ng-click="setTimezone('UTC')" ng-class="{ 'active': currentTimezone == 'UTC' }">
+                                        UTC
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
+
                     </div>
                 </section>
 

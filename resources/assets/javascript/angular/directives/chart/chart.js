@@ -13,13 +13,16 @@
 
                 $scope.$watch('data', function(newValue) {
                     render(newValue);
-                });
+                }, true);
 
-                function render(data) {
-                    var untouched = data;
-                    if (!angular.isDefined(untouched) || untouched.length == 0) {
+                function render(chartData) {
+                    if (!angular.isDefined(chartData) || chartData.length == 0) {
                         return;
                     }
+
+                    // Make a deep copy of the object as we may be doing manipulation
+                    // which would cause the watcher to fire
+                    var data = jQuery.extend(true, [], chartData);
 
                     var d3 = $window.d3;
                     var svg = d3.select(elem[0]);
@@ -39,7 +42,7 @@
                         originDatapoint[settings.xAxis.key] = 0;
                         originDatapoint[settings.yAxis.key] = 0;
 
-                        untouched.unshift(originDatapoint);
+                        //data.unshift(originDatapoint);
                     }
 
                     // draw
@@ -47,27 +50,27 @@
                         // Setup scales
                         if (settings.xAxis.type == 'linear') {
                             var xScale = d3.scale.linear()
-                                .domain([0, untouched[untouched.length-1][settings.xAxis.key]])
+                                .domain([0, data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
 
                         } else if (settings.xAxis.type == 'timescale') {
                             var xScale = d3.time.scale.utc()
-                                .domain([untouched[0][settings.xAxis.key], untouched[untouched.length-1][settings.xAxis.key]])
+                                .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
                         }
 
                         if (settings.yAxis.type == 'linear') {
                             var yScale = d3.scale.linear()
-                                .domain([d3.max(untouched, function(d) {
+                                .domain([d3.max(data, function(d) {
                                     return d[settings.yAxis.key];
-                                }), d3.min(untouched, function(d) {
+                                }), d3.min(data, function(d) {
                                     return d[settings.yAxis.key];
                                 })])
                                 .range([settings.padding, height - settings.padding]);
 
                         } else if (settings.yAxis.type == 'timescale') {
                             var yScale = d3.time.scale.utc()
-                                .domain([d3.max(untouched, function(d) {
+                                .domain([d3.max(data, function(d) {
                                     return d[settings.yAxis.key];
                                 }), 0])
                                 .range([settings.padding, height - settings.padding]);
@@ -105,7 +108,7 @@
 
                         svg.append("svg:path")
                             .attr({
-                                d: lineFunction(untouched),
+                                d: lineFunction(data),
                                 "stroke-width": 2,
                                 "fill": "none",
                                 "class": "path"

@@ -26,21 +26,27 @@
         text-align:center;
 
         td {
-            @include gridle_state("small" "medium") {
-                font-size:150px;
+            @include gridle_state("small") {
+                min-width:80px;
+            }
+            @include gridle_state("medium") {
+                min-width:120px;
             }
             @include gridle_state("large") {
-                font-size:200px;
+                min-width:200px;
             }
             min-width:250px;
         }
 
         .value {
-            @include gridle_state("small" "medium") {
+            @include gridle_state("small") {
+                font-size:50px;
+            }
+            @include gridle_state("medium") {
                 font-size:80px;
             }
             @include gridle_state("large") {
-                font-size:120px;
+                font-size:100px;
             }
             font-size:150px;
             font-weight:300;
@@ -48,6 +54,9 @@
         }
 
         .unit {
+            @include gridle_state("small") {
+                font-size:18px;
+            }
             font-size:30px;
             font-weight:300;
         }

@@ -4,11 +4,16 @@
     app.controller("futureMissionController", ['$http', '$scope', '$filter', 'flashMessage', function($http, $scope, $filter, flashMessage) {
 
         $scope.missionSlug = laravel.mission.slug;
-        $scope.launchDateTime = moment(laravel.mission.launch_date_time).toDate();
         $scope.launchSpecificity = laravel.mission.launch_specificity;
 
+        if ($scope.launchSpecificity >= 6) {
+            $scope.launchDateTime = moment.utc(laravel.mission.launch_date_time).toDate();
+        } else {
+            $scope.launchDateTime = laravel.mission.launch_date_time;
+        }
+
         $scope.$watch("launchSpecificity", function(newValue) {
-            $scope.isLaunchExact =  (newValue == 6 || newValue == 7);
+            $scope.isLaunchExact = newValue >= 6;
         });
 
         $scope.$watchCollection('[isLaunchExact, launchDateTime]', function(newValues) {
@@ -19,9 +24,7 @@
         });
 
         $scope.lastRequest = moment().unix();
-        $scope.secondsSinceLastRequest = 0;
-
-        $scope.secondsToLaunch;
+        $scope.secondsSinceLastRequest = $scope.secondsToLaunch = 0;
 
         $scope.requestFrequencyManager = function() {
             $scope.secondsSinceLastRequest = Math.floor($.now() / 1000) - $scope.lastRequest;
@@ -45,7 +48,7 @@
                 $scope.requestWebcastStatus();
                 $scope.lastRequest = moment().unix();
             }
-        }
+        };
 
         $scope.requestLaunchDateTime = function() {
             $http.get('/missions/' + $scope.missionSlug + '/requestlaunchdatetime')
@@ -58,7 +61,7 @@
                         flashMessage.addOK('Launch time updated!');
                     }
                 });
-        }
+        };
 
         $scope.requestWebcastStatus = function() {
             $http.get('/webcast/getstatus')
@@ -66,12 +69,12 @@
                     $scope.webcast.isLive = response.data.isLive;
                     $scope.webcast.viewers = response.data.viewers;
                 });
-        }
+        };
 
         $scope.webcast = {
             isLive: laravel.webcast.isLive,
             viewers: laravel.webcast.viewers
-        }
+        };
 
         $scope.$watchCollection('[webcast.isLive, secondsToLaunch]', function(newValues) {
             if (newValues[1] < (60 * 60 * 24) && newValues[0] == 'true') {
