@@ -46,13 +46,16 @@ class DeltaVCalculator {
 
     protected $metadataScore = [
         'summary' => [
-            'perCharacter' => 0.01
+            'perCharacter' => 0.02
         ],
         'author' => [
-            'perCharacter' => 0.1
+            'perCharacter' => 0.2
         ],
         'attribution' => [
-            'perCharacter' => 0.05
+            'perCharacter' => 0.1
+        ],
+        'tags' => [
+            'perTag' => 1
         ]
     ];
 
@@ -144,6 +147,7 @@ class DeltaVCalculator {
         $this->score += strlen($this->object->summary) * $this->metadataScore['summary']['perCharacter'];
         $this->score += strlen($this->object->author) * $this->metadataScore['author']['perCharacter'];
         $this->score += strlen($this->object->attribution) * $this->metadataScore['attribution']['perCharacter'];
+        $this->score += $this->object()->tags()->count() * $this->metadataScore['tags']['perTag'];
     }
 
     /**
