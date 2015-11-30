@@ -12,6 +12,8 @@ class OrbitalElement extends Model {
     protected $fillable = [];
     protected $guarded = [];
 
+    public $dates = ['epoch'];
+
     // Relationships
     public function mission() {
         return $this->belongsTo('SpaceXStats\Models\Mission');

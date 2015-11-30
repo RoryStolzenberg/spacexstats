@@ -26,28 +26,31 @@
                     var launchUnixSeconds = $scope.launchUnixSeconds;
                     var currentUnixSeconds = Math.floor(Date.now() / 1000);
 
+                    // Countdown
                     if (launchUnixSeconds >= currentUnixSeconds) {
                         $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-
-                        var secondsBetween = $scope.secondsAwayFromLaunch;
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    // Countup
                     } else {
+                        $scope.secondsAwayFromLaunch = currentUnixSeconds - launchUnixSeconds;
                     }
+
+                    var secondsBetween = $scope.secondsAwayFromLaunch;
+                    // Calculate the number of days, hours, minutes, seconds
+                    $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                    secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                    $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                    secondsBetween -= $scope.hours * 60 * 60;
+
+                    $scope.minutes = Math.floor(secondsBetween / 60);
+                    secondsBetween -= $scope.minutes * 60;
+
+                    $scope.seconds = secondsBetween;
+
+                    $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                    $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                    $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                    $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
 
                     if (attrs.callback) {
                         $scope.callback();

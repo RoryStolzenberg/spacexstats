@@ -91,7 +91,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_exact' => Carbon::create(2009, 7, 14, 3, 35, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
-            'name' => 'RAZAKSat',
+            'name' => 'RazakSAT',
             'contractor' => 'SpaceX',
             'vehicle_id' => 1,
             'destination_id' => Destination::where('destination', 'Low Earth Orbit')->firstOrFail()->destination_id,

@@ -1,10 +1,7 @@
 <?php
 Route::group(array('prefix' => 'missions'), function() {
-    Route::get('/future', 'MissionsController@future');
-
-    Route::get('/past', 'MissionsController@past');
-
-    Route::get('/all', 'MissionsController@all')->before('mustBe:Subscriber');
+    Route::get('/future', 'MissionsController@allFutureMissions');
+    Route::get('/past', 'MissionsController@allPastMissions');
 
     Route::group(array('middleware' => 'mustBe:Administrator'), function() {
         Route::get('/create', 'MissionsController@getCreate');

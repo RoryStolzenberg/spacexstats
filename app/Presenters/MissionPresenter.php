@@ -11,15 +11,12 @@ class MissionPresenter {
 		$this->entity = $entity;
 	}
 
-    public function launchDateTime() {
+    public function launchDateTime($customFormat = null) {
         if ($this->entity->isLaunchPrecise()) {
+            if ($customFormat) {
+                return Carbon::parse($this->entity->launch_date_time)->format($customFormat);
+            }
             return Carbon::parse($this->entity->launch_date_time)->format('g:i:sA F j, Y');
-        } else {
-
-        }
-        if ($this->entity->launch_approximate === null) {
-            $dt = new \DateTime($this->entity->launch_exact);
-            return $dt->format();
         } else {
             return $this->entity->launch_approximate;
         }

@@ -76,6 +76,7 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 4,
             'part_id' => 8,
             'upperstage_engine' => Engine::Kestrel,
+            'upperstage_status' => 'Earth Orbit',
             'upperstage_seco' => 573,
             'upperstage_norad_id' => 33393,
             'upperstage_intl_designator' => '2008-048A',

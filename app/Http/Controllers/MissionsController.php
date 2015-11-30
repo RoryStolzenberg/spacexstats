@@ -2,7 +2,7 @@
 namespace SpaceXStats\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
-use Redis;
+use Illuminate\Support\Facades\Redis;
 use JavaScript;
 use SpaceXStats\Http\Requests\CreateMissionRequest;
 use SpaceXStats\Http\Requests\EditMissionRequest;
@@ -33,53 +33,56 @@ class MissionsController extends Controller {
 
         $mission = Mission::with(['telemetry', 'orbitalElements', 'payloads'])->whereSlug($slug)->first();
 
-        $pastMission = Mission::before($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
-        $futureMission = Mission::after($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']);
-
-        $data = array(
+        $data = [
             'mission' => $mission,
-            'pastMission' => $pastMission,
-            'futureMission' => $futureMission
-        );
+            'pastMission' => Mission::before($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']),
+            'futureMission' => Mission::after($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name'])
+        ];
 
 		if ($mission->status === MissionStatus::Upcoming || $mission->status === MissionStatus::InProgress) {
-
-            JavaScript::put([
-                'mission' => $mission,
-                'webcast' => Redis::hgetall('webcast')
-            ]);
-
-            $data['recentTweets'] = Object::inMissionControl()->where('type', MissionControlType::Tweet)->take(10)->get();
-
-			return view('missions.futureMission', $data);
+            return $this->getFutureMission($data);
 		} else {
-
-            $js['mission'] = $mission;
-
-            if (Auth::isSubscriber()) {
-                $js['telemetry'] = $mission->telemetry()->orderBy('timestamp', 'ASC')->get()->filter(function($readout) {
-                    return $readout->hasPositionalData();
-                })->values();
-                $js['orbitalElements'] = $mission->orbitalElements->sortBy('epoch');
-            }
-
-            JavaScript::put($js);
-
-            $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
-            $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
-            $data['launchVideo'] = $mission->launchVideo();
-            $data['orbitalElements'] = $mission->orbitalElements->sortBy('epoch');
-
-            return view('missions.pastMission', $data);
+            return $this->getPastMission($data);
         }
 	}
+
+    protected function getFutureMission($data) {
+        JavaScript::put([
+            'mission' => $data['mission'],
+            'webcast' => Redis::hgetall('webcast')
+        ]);
+
+        $data['recentTweets'] = Object::inMissionControl()->where('type', MissionControlType::Tweet)->take(10)->get();
+
+        return view('missions.futureMission', $data);
+    }
+
+    protected function getPastMission($data) {
+        $js['mission'] = $data['mission'];
+
+        if (Auth::isSubscriber()) {
+            $js['telemetry'] = $data['mission']->telemetry()->orderBy('timestamp', 'ASC')->get()->filter(function($readout) {
+                return $readout->hasPositionalData();
+            })->values();
+            $js['orbitalElements'] = $data['mission']->orbitalElements->sortBy('epoch');
+        }
+
+        JavaScript::put($js);
+
+        $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
+        $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
+        $data['launchVideo'] = $data['mission']->launchVideo();
+        $data['orbitalElements'] = $data['mission']->orbitalElements->sortBy('epoch');
+
+        return view('missions.pastMission', $data);
+    }
 
     /**
      * GET, /missions/future. Shows all future missions in a list.
      *
      * @return \Illuminate\View\View
      */
-    public function future() {
+    public function allFutureMissions() {
 
         JavaScript::put([
             'missions' => Mission::future()->with(['vehicle', 'destination'])->get()->map(function($mission) {
@@ -106,7 +109,7 @@ class MissionsController extends Controller {
      *
      * @return \Illuminate\View\View
      */
-    public function past() {
+    public function allPastMissions() {
 
         JavaScript::put([
             'missions' => Mission::past(true)->with(['vehicle', 'destination'])->get()->map(function($mission) {
@@ -277,7 +280,7 @@ class MissionsController extends Controller {
             'mission_created_at' => $mission->created_at->toDateTimeString()
         ];
 
-        return Response::make(json_encode($json), 200, array(
+        return response()->json($json, 200, array(
             'Content-type' => 'application/json',
             'Content-Disposition' => 'attachment;filename="'.$slug.'.json"'
         ));
