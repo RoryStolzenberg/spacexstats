@@ -210,9 +210,10 @@ class Mission extends Model {
 
         // Now find all other missions with that year
         return Mission::before($this->launch_order_id)
-            ->where('launch_approximate', 'LIKE', $year)
-            ->orWhere(DB::raw('YEAR(launch_exact)'), $year)
-            ->orderBy('launch_order_id')->count();
+            ->where(function($q) use ($year) {
+                $q->where('launch_approximate', 'LIKE', $year)
+                    ->orWhere(DB::raw('YEAR(launch_exact)'), $year);
+            })->count() + 1;
     }
 
     public function getSuccessfulConsecutiveLaunchAttribute() {

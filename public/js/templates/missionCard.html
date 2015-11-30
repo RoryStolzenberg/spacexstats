@@ -1,6 +1,6 @@
 <div class="card mission-card" ng-class="size">
     <div class="top">
-        <div class="thumb"></div>
+        <div class="thumb" ng-style="{ backgroundImage:'url(' + mission.featured_image_url + ')' }"></div>
         <p>
             <a class="mission-name" ng-attr-href="{{mission.slug}}">{{ mission.name }}</a>
             <span class="for hide@small"> for </span>
@@ -31,6 +31,9 @@
             <div class="gr-1on9">{{ mission.launch_site }}</div>
             <div class="gr-1on9" ng-if="mission.status == 'Upcoming'"></div>
             <div class="gr-1on9" ng-if="mission.status == 'Complete'"><img class="launch-illumination" ng-src="/images/icons/illuminations/{{ mission.launch_illumination }}.png" /></div>
+            <div class="gr-1on9" ng-if="mission.status == 'Complete' && mission.outcome == 'Success'">{{ mission.successful_consecutive_launch }}</div>
+            <div class="gr-1on9"><a ng-href="/missioncontrol/collections/mission/{{ mission.slug }}">Mission Collection</a></div>
+
         </div>
         <div class="container keys">
             <div class="gr-1on9">{{ mission.generic_vehicle }}<br/>Launch</div>
@@ -42,6 +45,9 @@
             <div class="gr-1on9">Launch Site</div>
             <div class="gr-1on9" ng-if="mission.status == 'Upcoming'">Where to watch</div>
             <div class="gr-1on9" ng-if="mission.status == 'Complete'">{{ mission.launch_illumination }} Launch</div>
+            <div class="gr-1on9" ng-if="mission.status == 'Complete' && mission.outcome == 'Success'">Successful Consecutive Launch</div>
+            <div class="gr-1on9">Mission Collection</div>
+
         </div>
         <p><em>{{ mission.summary }}</em></p>
     </div>

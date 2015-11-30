@@ -2,7 +2,7 @@
 namespace SpaceXStats\Presenters;
 
 trait PresentableTrait {
-	protected static $presenterInstance;
+	protected $presenterInstance;
 
 	public function present() {
 
@@ -10,10 +10,10 @@ trait PresentableTrait {
 			throw new \Exception('Please set the protected $presenter property, or if it is set, run \'composer dump-autoload\'.');
 		}
 
-		if (!isset(static::$presenterInstance)) {
-			static::$presenterInstance = new $this->presenter($this);	
+		if (!$this->presenterInstance) {
+			$this->presenterInstance = new $this->presenter($this);
 		}
 
-		return static::$presenterInstance; 
+		return $this->presenterInstance;
 	}
 }

@@ -92,6 +92,7 @@ class MissionsController extends Controller {
                 $transformedMission['generic_vehicle_count'] = ordinal($mission->generic_vehicle_count);
                 $transformedMission['launch_of_year'] = ordinal($mission->launch_of_year);
                 $transformedMission['launch_site'] = $mission->launchSite->full_location;
+                $transformedMission['featured_image_url'] = $mission->present()->featuredImageUrl();
 
                 return $transformedMission;
             })
@@ -109,13 +110,16 @@ class MissionsController extends Controller {
 
         JavaScript::put([
             'missions' => Mission::past(true)->with(['vehicle', 'destination'])->get()->map(function($mission) {
+
                 $transformedMission = $mission->toArray();
 
                 $transformedMission['launch_date_time'] = $mission->present()->launchDateTime();
                 $transformedMission['generic_vehicle'] = $mission->vehicle->generic_vehicle;
                 $transformedMission['generic_vehicle_count'] = ordinal($mission->generic_vehicle_count);
                 $transformedMission['launch_of_year'] = ordinal($mission->launch_of_year);
+                $transformedMission['successful_consecutive_launch'] = ordinal($mission->successful_consecutive_launch);
                 $transformedMission['launch_site'] = $mission->launchSite->full_location;
+                $transformedMission['featured_image_url'] = $mission->present()->featuredImageUrl();
 
                 return $transformedMission;
             })

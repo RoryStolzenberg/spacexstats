@@ -1,6 +1,6 @@
 <div class="card mission-card {{ $size }}">
 	<div class="top">
-		<div class="thumb" style="background-image:url('{{ !is_null($mission->featuredImage) ? $mission->featuredImage->media_thumb_small : null }}');"></div>
+		<div class="thumb" style="background-image:url('{{ $mission->present()->featuredImageUrl() }}');"></div>
 		<p>
             <a class="mission-name" href="/missions/{{ $mission->slug }}">{{ $mission->name }}</a>
             @if ($size == 'large')
@@ -39,6 +39,9 @@
 				@endif
                 @if ($mission->status == 'Complete')
                     <div class="gr-1on9"><img class="launch-illumination" src="/images/icons/illuminations/{{ $mission->launch_illumination }}.png" /></div>
+                    @if ($mission->outcome == 'Success')
+                        <div class="gr-1on9">{{ ordinal($mission->successful_consecutive_launch) }}</div>
+                    @endif
                 @endif
 			</div>
 			<div class="container keys">
@@ -58,6 +61,9 @@
 				@endif
                 @if ($mission->status == 'Complete')
                     <div class="gr-1on9">{{ $mission->launch_illumination }} Launch</div>
+                    @if ($mission->outcome == 'Success')
+                        <div class="gr-1on9">Successful Consecutive Launch</div>
+                    @endif
                 @endif
 			</div>
 		@endif
