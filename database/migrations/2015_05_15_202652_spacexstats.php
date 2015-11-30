@@ -366,7 +366,7 @@ class Spacexstats extends Migration {
             $table->enum('upperstage_engine', array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'))->nullable();
             $table->smallInteger('upperstage_seco')->unsigned()->nullable();
             $table->enum('upperstage_status', array('Did not achieve orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'))->nullable();
-            $table->date('upperstage_decay_date')->nullable(); // Nonoptional Values
+            $table->datetime('upperstage_decay_date')->nullable(); // Nonoptional Values
             $table->smallInteger('upperstage_norad_id')->unsigned()->nullable();
             $table->char('upperstage_intl_designator', 9)->nullable();
 

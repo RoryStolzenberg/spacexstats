@@ -30,6 +30,7 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 2,
             'part_id' => 3,
             'firststage_engine' => Engine::Merlin1A,
+            'firststage_meco' => 172,
             'landed' => false,
             'note' => 'Destroyed on reentry'
         ));
@@ -48,14 +49,18 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 3,
             'part_id' => 5,
             'firststage_engine' => Engine::Merlin1CF1,
-            'landed' => false
+            'firststage_meco' => 156,
+            'landed' => false,
+            'note' => 'Residual thrust caused recontact if the first and second stages'
         ));
 
         PartFlight::create(array(
             'mission_id' => 3,
             'part_id' => 6,
             'upperstage_engine' => Engine::Kestrel,
-            'landed' => false
+            'upperstage_status' => 'Did not achieve orbit',
+            'landed' => false,
+            'note' => 'Residual thrust caused recontact if the first and second stages'
         ));
 
         // Falcon 1 Flight 4
@@ -63,6 +68,7 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 4,
             'part_id' => 7,
             'firststage_engine' => Engine::Merlin1CF1,
+            'firststage_meco' => 151,
             'landed' => false
         ));
 
@@ -70,9 +76,11 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 4,
             'part_id' => 8,
             'upperstage_engine' => Engine::Kestrel,
+            'upperstage_seco' => 573,
             'upperstage_norad_id' => 33393,
             'upperstage_intl_designator' => '2008-048A',
-            'landed' => false
+            'landed' => false,
+            'note' => 'First piece of SpaceX hardware to make it to orbit'
         ));
 
         // Falcon 1 Flight 5
@@ -80,6 +88,7 @@ class PartFlightsTableSeeder extends Seeder {
             'mission_id' => 5,
             'part_id' => 9,
             'firststage_engine' => Engine::Merlin1CF1,
+            'firststage_meco' => 151,
             'landed' => false
         ));
 

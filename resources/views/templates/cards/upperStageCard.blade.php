@@ -1,6 +1,7 @@
 <div class="card upper-stage-card proportional">
     <div>
         <div class="content container">
+            <span class="outcome">{{ $mission->upperStage->upperstage_status }}</span>
             @if ($mission->upperStage->upperstage_status == 'Did not achieve orbit')
                 <p>Did not achieve orbit.</p>
             @elseif ($mission->upperStage->upperstage_status == 'Decayed' || $mission->upperStage->upperstage_status == 'Deorbited')
