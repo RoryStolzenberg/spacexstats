@@ -6,109 +6,137 @@
             replace: true,
             restrict: 'E',
             scope: {
-                chartData: '=data',
+                data: '=data',
                 settings: "="
             },
             link: function($scope, elem, attrs) {
 
-                if (!angular.isDefined($scope.chartData) || $scope.chartData.length == 0) {
-                    return;
-                }
+                $scope.$watch('data', function(newValue) {
+                    render(newValue);
+                });
 
-                var d3 = $window.d3;
-                var svg = d3.select(elem[0]);
-                var width = elem.width();
-                var height = elem.height();
+                function render(data) {
+                    var untouched = data;
+                    if (!angular.isDefined(untouched) || untouched.length == 0) {
+                        return;
+                    }
 
-                var settings = $scope.settings;
+                    var d3 = $window.d3;
+                    var svg = d3.select(elem[0]);
+                    var width = elem.width();
+                    var height = elem.height();
 
-                // check padding and set default
-                if (typeof settings.padding === 'undefined') {
-                    settings.padding = 50;
-                }
+                    var settings = $scope.settings;
 
-                // extrapolate data
-                if (settings.extrapolate === true) {
-                    var originDatapoint = {};
-                    originDatapoint[settings.xAxisKey] = 0;
-                    originDatapoint[settings.yAxisKey] = 0;
+                    // check padding and set default
+                    if (typeof settings.padding === 'undefined') {
+                        settings.padding = 50;
+                    }
 
-                    $scope.chartData.unshift(originDatapoint);
-                }
+                    // extrapolate data
+                    if (settings.extrapolation === true) {
+                        var originDatapoint = {};
+                        originDatapoint[settings.xAxis.key] = 0;
+                        originDatapoint[settings.yAxis.key] = 0;
 
-                // draw
-                var drawLineChart = (function() {
-                    // Setup scales
-                    var xScale = d3.scale.linear()
-                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
-                        .range([settings.padding, width - settings.padding]);
+                        untouched.unshift(originDatapoint);
+                    }
 
-                    var yScale = d3.scale.linear()
-                        .domain([d3.max($scope.chartData, function(d) {
-                            return d[settings.yAxisKey];
-                        }), 0])
-                        .range([settings.padding, height - settings.padding]);
+                    // draw
+                    var drawLineChart = function() {
+                        // Setup scales
+                        if (settings.xAxis.type == 'linear') {
+                            var xScale = d3.scale.linear()
+                                .domain([0, untouched[untouched.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
 
-                    // Generators
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
-                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
-                    });
-                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
-                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
-                    });
+                        } else if (settings.xAxis.type == 'timescale') {
+                            var xScale = d3.time.scale.utc()
+                                .domain([untouched[0][settings.xAxis.key], untouched[untouched.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
+                        }
 
-                    // Line function
-                    var lineFunction = d3.svg.line()
-                        .x(function(d) {
-                            return xScale(d[settings.xAxisKey]);
-                        })
-                        .y(function(d) {
-                            return yScale(d[settings.yAxisKey]);
-                        })
-                        .interpolate("basis");
+                        if (settings.yAxis.type == 'linear') {
+                            var yScale = d3.scale.linear()
+                                .domain([d3.max(untouched, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), d3.min(untouched, function(d) {
+                                    return d[settings.yAxis.key];
+                                })])
+                                .range([settings.padding, height - settings.padding]);
 
-                    // Element manipulation
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                        .call(xAxisGenerator);
+                        } else if (settings.yAxis.type == 'timescale') {
+                            var yScale = d3.time.scale.utc()
+                                .domain([d3.max(untouched, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), 0])
+                                .range([settings.padding, height - settings.padding]);
+                        }
 
-                    svg.append("svg:g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + settings.padding + ",0)")
-                        .attr("stroke-width", 2)
-                        .call(yAxisGenerator);
-
-                    svg.append("svg:path")
-                        .attr({
-                            d: lineFunction($scope.chartData),
-                            "stroke-width": 2,
-                            "fill": "none",
-                            "class": "path"
+                        // Generators
+                        var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
+                            return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
+                        });
+                        var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
+                            return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
                         });
 
-                    svg.append("text")
-                        .attr("class", "chart-title")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", settings.padding / 2)
-                        .text(settings.chartTitle);
+                        // Line function
+                        var lineFunction = d3.svg.line()
+                            .x(function(d) {
+                                return xScale(d[settings.xAxis.key]);
+                            })
+                            .y(function(d) {
+                                return yScale(d[settings.yAxis.key]);
+                            })
+                            .interpolate(settings.interpolation);
 
-                    svg.append("text")
-                        .attr("class", "axis x-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", height - (settings.padding / 2))
-                        .text(settings.xAxisTitle);
+                        // Element manipulation
+                        svg.append("svg:g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                            .call(xAxisGenerator);
 
-                    svg.append("text")
-                        .attr("class", "axis y-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("transform", "rotate(-90)")
-                        .attr("x", - (height / 2))
-                        .attr("y", settings.padding / 2)
-                        .text(settings.yAxisTitle);
-                })();
+                        svg.append("svg:g")
+                            .attr("class", "y axis")
+                            .attr("transform", "translate(" + settings.padding + ",0)")
+                            .attr("stroke-width", 2)
+                            .call(yAxisGenerator);
+
+                        svg.append("svg:path")
+                            .attr({
+                                d: lineFunction(untouched),
+                                "stroke-width": 2,
+                                "fill": "none",
+                                "class": "path"
+                            });
+
+                        svg.append("text")
+                            .attr("class", "chart-title")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", settings.padding / 2)
+                            .text(settings.chartTitle);
+
+                        svg.append("text")
+                            .attr("class", "axis x-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", height - (settings.padding / 2))
+                            .text(settings.xAxis.title);
+
+                        svg.append("text")
+                            .attr("class", "axis y-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("transform", "rotate(-90)")
+                            .attr("x", - (height / 2))
+                            .attr("y", settings.padding / 2)
+                            .text(settings.yAxis.title);
+                    };
+
+                    drawLineChart();
+                }
+
             },
             templateUrl: '/js/templates/chart.html'
         }

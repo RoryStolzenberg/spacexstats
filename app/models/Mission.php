@@ -138,7 +138,9 @@ class Mission extends Model {
     }
 
     public function positionalTelemetry() {
-        return $this->hasMany('SpaceXStats\Models\Telemetry')->whereNotNull('velocity')->whereNotNull('altitude')->whereNotNull('downrange');
+        return $this->hasMany('SpaceXStats\Models\Telemetry')->where(function($q) {
+            $q->orWhereNotNull('velocity')->orWhereNotNull('altitude')->orWhereNotNull('downrange');
+        });
     }
 
     public function articles() {

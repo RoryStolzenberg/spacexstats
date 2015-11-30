@@ -1,9 +1,9 @@
 <?php
-Route::group(array('prefix' => 'missions'), function() {
+Route::group(['prefix' => 'missions'], function() {
     Route::get('/future', 'MissionsController@allFutureMissions');
     Route::get('/past', 'MissionsController@allPastMissions');
 
-    Route::group(array('middleware' => 'mustBe:Administrator'), function() {
+    Route::group(['middleware' => 'mustBe:Administrator'], function() {
         Route::get('/create', 'MissionsController@getCreate');
         Route::post('/create', 'MissionsController@postCreate');
 
@@ -15,6 +15,11 @@ Route::group(array('prefix' => 'missions'), function() {
 
     Route::get('/{slug}/launchdatetime', 'MissionsController@launchDateTime')->before('doesExist:Mission');
 
-    Route::get('/{slug}/telemetry', 'MissionsController@telemetry')->before(['mustBe:Subscriber', 'doesExist:Mission']);
-    Route::get('/{slug}/raw', 'MissionsController@raw')->before(['mustBe:Subscriber', 'doesExist:Mission']);
+    Route::get('/{slug}/telemetry', 'MissionsController@telemetry')->before('doesExist:Mission');
+
+    Route::group(['middleware' => ['mustBe:Subscriber', 'doesExist:Mission']], function() {
+        Route::get('/{slug}/orbitalelements', 'MissionsController@orbitalElements');
+        Route::get('/{slug}/raw', 'MissionsController@raw');
+    });
+
 });

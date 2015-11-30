@@ -15,11 +15,7 @@ class OrbitalElement extends Model {
     public $dates = ['epoch'];
 
     // Relationships
-    public function mission() {
-        return $this->belongsTo('SpaceXStats\Models\Mission');
-    }
-
-    public function partFlight() {
+   public function partFlight() {
         return $this->belongsTo('SpaceXStats\Models\PartFlight');
     }
 }

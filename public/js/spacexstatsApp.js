@@ -1274,88 +1274,215 @@
 (function() {
     var app = angular.module('app', []);
 
-    app.controller('pastMissionController', ["$scope", function($scope) {
+    app.controller('pastMissionController', ["$scope", "missionService", "telemetryPlotCreator", "ephemerisPlotCreator", function($scope, missionService, telemetryPlotCreator, ephemerisPlotCreator) {
         $scope.mission = laravel.mission;
+
         (function() {
-            if (typeof laravel.telemetry !== 'undefined') {
-
-                $scope.altitudeVsTime = {
-                    data: laravel.telemetry.filter(function(telemetry) {
-                            return telemetry.altitude != null;
-                        }).map(function(telemetry) {
-                            return { timestamp: telemetry.timestamp, altitude: telemetry.altitude };
-                    }),
-                    settings: {
-                        extrapolate: true,
-                        xAxisKey: 'timestamp',
-                        xAxisTitle: 'Time (T+s)',
-                        yAxisKey: 'altitude',
-                        yAxisTitle: 'Altitude (km)',
-                        chartTitle: 'Altitude vs. Time',
-                        yAxisFormatter: function(d) {
-                            return d / 1000;
-                        }
-                    }
-                };
-
-                $scope.altitudeVsDownrange = {
-                    data: laravel.telemetry.filter(function(telemetry) {
-                            return (telemetry.downrange != null && telemetry.altitude != null);
-                        }).map(function(telemetry) {
-                            return { downrange: telemetry.downrange, altitude: telemetry.altitude };
-                    }),
-                    settings: {
-                        extrapolate: true,
-                        xAxisKey: 'downrange',
-                        xAxisTitle: 'Downrange Distance (km)',
-                        yAxisKey: 'altitude',
-                        yAxisTitle: 'Altitude (km)',
-                        chartTitle: 'Altitude vs. Downrange Distance',
-                        yAxisFormatter: function(d) {
-                            return d / 1000;
-                        },
-                        xAxisFormatter: function(d) {
-                            return d / 1000;
-                        }
-                    }
-                };
-
-                $scope.velocityVsTime = {
-                    data: laravel.telemetry.filter(function(telemetry) {
-                            return telemetry.velocity != null;
-                        }).map(function(telemetry) {
-                            return { timestamp: telemetry.timestamp, velocity: telemetry.velocity };
-                    }),
-                    settings: {
-                        extrapolate: true,
-                        xAxisKey: 'timestamp',
-                        xAxisTitle: 'Time (T+s)',
-                        yAxisKey: 'velocity',
-                        yAxisTitle: 'Velocity (m/s)',
-                        chartTitle: 'Velocity vs. Time'
-                    }
-                };
-
-                $scope.downrangeVsTime = {
-                    data: laravel.telemetry.filter(function(telemetry) {
-                            return telemetry.downrange != null;
-                        }).map(function(telemetry) {
-                            return { timestamp: telemetry.timestamp, downrange: telemetry.downrange };
-                    }),
-                    settings: {
-                        extrapolate: true,
-                        xAxisKey: 'timestamp',
-                        xAxisTitle: 'Time (T+s)',
-                        yAxisKey: 'downrange',
-                        yAxisTitle: 'Downrange Distance (km)',
-                        chartTitle: 'Downrange Distance vs. Time',
-                        yAxisFormatter: function(d) {
-                            return d / 1000;
-                        }
-                    }
-                };
-            }
+            missionService.telemetry($scope.mission.slug).then(function(response) {
+                $scope.telemetryPlots = {
+                    altitudeVsTime:         telemetryPlotCreator.altitudeVsTime(response.data),
+                    altitudeVsDownrange:    telemetryPlotCreator.altitudeVsDownrange(response.data),
+                    velocityVsTime:         telemetryPlotCreator.velocityVsTime(response.data),
+                    downrangeVsTime:        telemetryPlotCreator.downrangeVsTime(response.data)
+                }
+            });
+            missionService.orbitalElements($scope.mission.slug).then(function(response) {
+                $scope.orbitalPlots = {
+                    apogeeVsTime:           ephemerisPlotCreator.apogeeVsTime(response.data),
+                    perigeeVsTime:          ephemerisPlotCreator.perigeeVsTime(response.data)
+                }
+            });
         })();
+    }]);
+
+    app.service('telemetryPlotCreator', [function() {
+        this.altitudeVsTime = function(telemetryCollection) {
+            return {
+                data: telemetryCollection.filter(function(telemetry) {
+                    return telemetry.altitude != null;
+                }).map(function(telemetry) {
+                    return { timestamp: telemetry.timestamp, altitude: telemetry.altitude };
+                }),
+                settings: {
+                    extrapolation: true,
+                    interpolation: 'cardinal',
+                    xAxis: {
+                        type: 'linear',
+                        key: 'timestamp',
+                        title: 'Time (T+s)'
+                    },
+                    yAxis: {
+                        type: 'linear',
+                        key: 'altitude',
+                        title: 'Altitude (km)',
+                        formatter: function(d) {
+                            return d / 1000;
+                        }
+                    },
+                    chartTitle: 'Altitude vs. Time'
+                }
+            }
+        };
+
+        this.altitudeVsDownrange = function(telemetryCollection) {
+            return {
+                data: telemetryCollection.filter(function(telemetry) {
+                    return (telemetry.downrange != null && telemetry.altitude != null);
+                }).map(function(telemetry) {
+                    return { downrange: telemetry.downrange, altitude: telemetry.altitude };
+                }),
+                settings: {
+                    extrapolation: true,
+                    interpolation: 'cardinal',
+                    xAxis: {
+                        type: 'linear',
+                        key: 'downrange',
+                        title: 'Downrange Distance (km)',
+                        formatter: function(d) {
+                            return d / 1000;
+                        }
+                    },
+                    yAxis: {
+                        type: 'linear',
+                        key: 'altitude',
+                        title: 'Altitude (km)',
+                        formatter: function(d) {
+                            return d / 1000;
+                        }
+                    },
+                    chartTitle: 'Altitude vs. Downrange Distance'
+                }
+            }
+        };
+
+        this.velocityVsTime = function(telemetryCollection) {
+            return {
+                data: telemetryCollection.filter(function(telemetry) {
+                    return telemetry.velocity != null;
+                }).map(function(telemetry) {
+                    return { timestamp: telemetry.timestamp, velocity: telemetry.velocity };
+                }),
+                settings: {
+                    extrapolation: true,
+                    interpolation: 'cardinal',
+                    xAxis: {
+                        type: 'linear',
+                        key: 'timestamp',
+                        title: 'Time (T+s)'
+                    },
+                    yAxis: {
+                        type: 'linear',
+                        key: 'velocity',
+                        title: 'Velocity (m/s)'
+                    },
+                    chartTitle: 'Velocity vs. Time'
+                }
+            }
+        };
+
+        this.downrangeVsTime = function(telemetryCollection) {
+            return {
+                data: telemetryCollection.filter(function(telemetry) {
+                    return telemetry.downrange != null;
+                }).map(function(telemetry) {
+                    return { timestamp: telemetry.timestamp, downrange: telemetry.downrange };
+                }),
+                settings: {
+                    extrapolation: true,
+                    interpolation: 'cardinal',
+                    xAxis: {
+                        type: 'linear',
+                        key: 'timestamp',
+                        title: 'Time (T+s)'
+                    },
+                    yAxis: {
+                        type: 'linear',
+                        key: 'downrange',
+                        title: 'Downrange Distance (km)',
+                        formatter: function(d) {
+                            return d / 1000;
+                        }
+                    },
+                    chartTitle: 'Downrange Distance vs. Time'
+                }
+            }
+        };
+    }]);
+
+    app.service('ephemerisPlotCreator', [function() {
+        this.apogeeVsTime = function(orbitalElements) {
+            return {
+                data: orbitalElements.map(function(orbitalElement) {
+                        return {
+                            timestamp: moment(orbitalElement.epoch).toDate(),
+                            apogee: orbitalElement.apogee
+                        };
+                }),
+                settings: {
+                    extrapolation: false,
+                    interpolation: 'linear',
+                    xAxis: {
+                        type: 'timescale',
+                        key: 'timestamp',
+                        title: 'Epoch Date',
+                        formatter: function(d) {
+                            return moment(d).format('MMM D, YYYY');
+                        }
+                    },
+                    yAxis: {
+                        type: 'linear',
+                        key: 'apogee',
+                        title: 'Apogee (km)',
+                        formatter: function(d) {
+                            return Math.round(d * 10) / 10; // Round to 1dp
+                        }
+                    },
+                    chartTitle: 'Apogee (km) vs. Time'
+                }
+            }
+        };
+
+        this.perigeeVsTime = function(orbitalElements) {
+            return {
+                data: orbitalElements.map(function(orbitalElement) {
+                    return {
+                        timestamp: moment(orbitalElement.epoch).toDate(),
+                        perigee: orbitalElement.perigee
+                    };
+                }),
+                settings: {
+                    extrapolation: false,
+                    interpolation: 'linear',
+                    xAxis: {
+                        type: 'timescale',
+                        key: 'timestamp',
+                        title: 'Epoch Date',
+                        formatter: function(d) {
+                            return moment(d).format('MMM D, YYYY');
+                        }
+                    },
+                    yAxis: {
+                        type: 'linear',
+                        key: 'perigee',
+                        title: 'Perigee (km)',
+                        formatter: function(d) {
+                            return Math.round(d * 10) / 10; // Round to 1dp
+                        }
+                    },
+                    chartTitle: 'Perigee (km) vs. Time'
+                }
+            }
+        };
+    }]);
+
+    app.service('missionService', ["$http", function($http) {
+        this.telemetry = function(name) {
+            return $http.get('/missions/'+ name + '/telemetry');
+        };
+
+        this.orbitalElements = function(name) {
+            return $http.get('/missions/' + name + '/orbitalelements');
+        };
     }]);
 })();
 (function() {
@@ -1983,23 +2110,6 @@
 })();
 
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2074,6 +2184,23 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('upload', ['$parse', function($parse) {
         return {
             restrict: 'A',
@@ -2120,178 +2247,6 @@
                     dropzone.processQueue();
                 }
             }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.createTag = function(createdTag) {
-                    if ($scope.currentTags.length == 5) {
-                        return;
-                    }
-
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: createdTag, description: null });
-                        }
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        $scope.createTag($scope.tagInput);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-
-            // Convert the tag to lowercase and replace all spaces present.
-            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
-
-            return self;
-        }
-    });
-})();
-
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
         }
     }]);
 })();
@@ -2477,6 +2432,46 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('deltaV', function() {
         return {
             restrict: 'E',
@@ -2528,34 +2523,278 @@
     });
 })();
 (function() {
+    var app = angular.module('app', []);
+
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
+        return {
+            require: 'ngModel',
+            replace: true,
+            restrict: 'E',
+            scope: {
+                availableTags: '=',
+                currentTags: '=ngModel'
+            },
+            link: function($scope, element, attributes, ctrl) {
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
+
+                ctrl.$options = {
+                    allowInvalid: true
+                };
+
+                $scope.createTag = function(createdTag) {
+                    if ($scope.currentTags.length == 5) {
+                        return;
+                    }
+
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
+
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
+
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
+                        });
+
+                        if (tagIsPresentInAvailableTags.length === 1) {
+                            // grab tag
+                            var newTag = tagIsPresentInAvailableTags[0];
+                        } else {
+                            // trim and convert the text to lowercase, then create!
+                            var newTag = new Tag({ id: null, name: createdTag, description: null });
+                        }
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
+                    }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        $scope.createTag($scope.tagInput);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
+
+            },
+            templateUrl: '/js/templates/tags.html'
+        }
+    }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+
+            // Convert the tag to lowercase and replace all spaces present.
+            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
+
+            return self;
+        }
+    });
+})();
+
+
+(function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
             restrict: 'E',
             scope: {
-                redditComment: '=ngModel'
+                data: '=data',
+                settings: "="
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, elem, attrs) {
 
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                $scope.$watch('data', function(newValue) {
+                    render(newValue);
+                });
 
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
+                function render(data) {
+                    var untouched = data;
+                    if (!angular.isDefined(untouched) || untouched.length == 0) {
+                        return;
                     }
+
+                    var d3 = $window.d3;
+                    var svg = d3.select(elem[0]);
+                    var width = elem.width();
+                    var height = elem.height();
+
+                    var settings = $scope.settings;
+
+                    // check padding and set default
+                    if (typeof settings.padding === 'undefined') {
+                        settings.padding = 50;
+                    }
+
+                    // extrapolate data
+                    if (settings.extrapolation === true) {
+                        var originDatapoint = {};
+                        originDatapoint[settings.xAxis.key] = 0;
+                        originDatapoint[settings.yAxis.key] = 0;
+
+                        untouched.unshift(originDatapoint);
+                    }
+
+                    // draw
+                    var drawLineChart = function() {
+                        // Setup scales
+                        if (settings.xAxis.type == 'linear') {
+                            var xScale = d3.scale.linear()
+                                .domain([0, untouched[untouched.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
+
+                        } else if (settings.xAxis.type == 'timescale') {
+                            var xScale = d3.time.scale.utc()
+                                .domain([untouched[0][settings.xAxis.key], untouched[untouched.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
+                        }
+
+                        if (settings.yAxis.type == 'linear') {
+                            var yScale = d3.scale.linear()
+                                .domain([d3.max(untouched, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), d3.min(untouched, function(d) {
+                                    return d[settings.yAxis.key];
+                                })])
+                                .range([settings.padding, height - settings.padding]);
+
+                        } else if (settings.yAxis.type == 'timescale') {
+                            var yScale = d3.time.scale.utc()
+                                .domain([d3.max(untouched, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), 0])
+                                .range([settings.padding, height - settings.padding]);
+                        }
+
+                        // Generators
+                        var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
+                            return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
+                        });
+                        var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
+                            return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
+                        });
+
+                        // Line function
+                        var lineFunction = d3.svg.line()
+                            .x(function(d) {
+                                return xScale(d[settings.xAxis.key]);
+                            })
+                            .y(function(d) {
+                                return yScale(d[settings.yAxis.key]);
+                            })
+                            .interpolate(settings.interpolation);
+
+                        // Element manipulation
+                        svg.append("svg:g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                            .call(xAxisGenerator);
+
+                        svg.append("svg:g")
+                            .attr("class", "y axis")
+                            .attr("transform", "translate(" + settings.padding + ",0)")
+                            .attr("stroke-width", 2)
+                            .call(yAxisGenerator);
+
+                        svg.append("svg:path")
+                            .attr({
+                                d: lineFunction(untouched),
+                                "stroke-width": 2,
+                                "fill": "none",
+                                "class": "path"
+                            });
+
+                        svg.append("text")
+                            .attr("class", "chart-title")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", settings.padding / 2)
+                            .text(settings.chartTitle);
+
+                        svg.append("text")
+                            .attr("class", "axis x-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", height - (settings.padding / 2))
+                            .text(settings.xAxis.title);
+
+                        svg.append("text")
+                            .attr("class", "axis y-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("transform", "rotate(-90)")
+                            .attr("x", - (height / 2))
+                            .attr("y", settings.padding / 2)
+                            .text(settings.yAxis.title);
+                    };
+
+                    drawLineChart();
                 }
 
             },
-            templateUrl: '/js/templates/redditComment.html'
+            templateUrl: '/js/templates/chart.html'
         }
     }]);
 })();
@@ -2900,122 +3139,6 @@
         return self;
     });
 })();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('chart', ["$window", function($window) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                chartData: '=data',
-                settings: "="
-            },
-            link: function($scope, elem, attrs) {
-
-                if (!angular.isDefined($scope.chartData) || $scope.chartData.length == 0) {
-                    return;
-                }
-
-                var d3 = $window.d3;
-                var svg = d3.select(elem[0]);
-                var width = elem.width();
-                var height = elem.height();
-
-                var settings = $scope.settings;
-
-                // check padding and set default
-                if (typeof settings.padding === 'undefined') {
-                    settings.padding = 50;
-                }
-
-                // extrapolate data
-                if (settings.extrapolate === true) {
-                    var originDatapoint = {};
-                    originDatapoint[settings.xAxisKey] = 0;
-                    originDatapoint[settings.yAxisKey] = 0;
-
-                    $scope.chartData.unshift(originDatapoint);
-                }
-
-                // draw
-                var drawLineChart = (function() {
-                    // Setup scales
-                    var xScale = d3.scale.linear()
-                        .domain([0, $scope.chartData[$scope.chartData.length-1][settings.xAxisKey]])
-                        .range([settings.padding, width - settings.padding]);
-
-                    var yScale = d3.scale.linear()
-                        .domain([d3.max($scope.chartData, function(d) {
-                            return d[settings.yAxisKey];
-                        }), 0])
-                        .range([settings.padding, height - settings.padding]);
-
-                    // Generators
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(5).tickFormat(function(d) {
-                        return typeof settings.xAxisFormatter !== 'undefined' ? settings.xAxisFormatter(d) : d;
-                    });
-                    var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(5).tickFormat(function(d) {
-                        return typeof settings.yAxisFormatter !== 'undefined' ? settings.yAxisFormatter(d) : d;
-                    });
-
-                    // Line function
-                    var lineFunction = d3.svg.line()
-                        .x(function(d) {
-                            return xScale(d[settings.xAxisKey]);
-                        })
-                        .y(function(d) {
-                            return yScale(d[settings.yAxisKey]);
-                        })
-                        .interpolate("basis");
-
-                    // Element manipulation
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                        .call(xAxisGenerator);
-
-                    svg.append("svg:g")
-                        .attr("class", "y axis")
-                        .attr("transform", "translate(" + settings.padding + ",0)")
-                        .attr("stroke-width", 2)
-                        .call(yAxisGenerator);
-
-                    svg.append("svg:path")
-                        .attr({
-                            d: lineFunction($scope.chartData),
-                            "stroke-width": 2,
-                            "fill": "none",
-                            "class": "path"
-                        });
-
-                    svg.append("text")
-                        .attr("class", "chart-title")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", settings.padding / 2)
-                        .text(settings.chartTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis x-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("x", width / 2)
-                        .attr("y", height - (settings.padding / 2))
-                        .text(settings.xAxisTitle);
-
-                    svg.append("text")
-                        .attr("class", "axis y-axis")
-                        .attr("text-anchor", "middle")
-                        .attr("transform", "rotate(-90)")
-                        .attr("x", - (height / 2))
-                        .attr("y", settings.padding / 2)
-                        .text(settings.yAxisTitle);
-                })();
-            },
-            templateUrl: '/js/templates/chart.html'
-        }
-    }]);
-})();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
@@ -3031,6 +3154,56 @@
                 var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
                 $compile(lnk)(scope);
                 elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
             }
         }
     }]);
@@ -3130,24 +3303,6 @@
             templateUrl: '/js/templates/dropdown.html'
         }
     });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
 })();
 
 (function() {

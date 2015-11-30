@@ -262,16 +262,16 @@
                         <p>These dataplots are based on kinematic data extracted from the countdown net during launch, and are only approximate. For more detailed simulations, refer to the FlightClub entry for this launch.</p>
                         <ul class="container">
                             <li class="gr-4 gr-12@small">
-                                <chart class="dataplot" data="altitudeVsTime.data" settings="altitudeVsTime.settings" width="100%" height="400px"></chart>
+                                <chart class="dataplot" data="telemetryPlots.altitudeVsTime.data" settings="telemetryPlots.altitudeVsTime.settings" width="100%" height="400px"></chart>
                             </li>
                             <li class="gr-4 gr-12@small">
-                                <chart class="dataplot" data="velocityVsTime.data" settings="velocityVsTime.settings" width="100%" height="400px"></chart>
+                                <chart class="dataplot" data="telemetryPlots.velocityVsTime.data" settings="telemetryPlots.velocityVsTime.settings" width="100%" height="400px"></chart>
                             </li>
                             <li class="gr-4 gr-12@small">
-                                <chart class="dataplot" data="downrangeVsTime.data" settings="downrangeVsTime.settings" width="100%" height="400px"></chart>
+                                <chart class="dataplot" data="telemetryPlots.downrangeVsTime.data" settings="telemetryPlots.downrangeVsTime.settings" width="100%" height="400px"></chart>
                             </li>
                             <li class="gr-4 gr-12@small">
-                                <chart class="dataplot" data="altitudeVsDownrange.data" settings="altitudeVsDownrange.settings" width="100%" height="400px"></chart>
+                                <chart class="dataplot" data="telemetryPlots.altitudeVsDownrange.data" settings="telemetryPlots.altitudeVsDownrange.settings" width="100%" height="400px"></chart>
                             </li>
                         </ul>
 
@@ -283,6 +283,21 @@
 
                     <h3>Upper Stage</h3>
                     @if ($mission->orbitalElements->count() != 0)
+                        <ul>
+                            <li class="gr-6 gr-12@small">
+                                <chart class="dataplot" data="orbitalPlots.apogeeVsTime.data" settings="orbitalPlots.apogeeVsTime.settings" width="100%" height="400px"></chart>
+                            </li>
+                            <li class="gr-6 gr-12@small">
+                                <chart class="dataplot" data="orbitalPlots.perigeeVsTime.data" settings="orbitalPlots.perigeeVsTime.settings" width="100%" height="400px"></chart>
+                            </li>
+                            <li>
+
+                            </li>
+                            <li>
+
+                            </li>
+                        </ul>
+
                         {{ $orbitalElements->first()->apogee }}km x {{ $orbitalElements->first()->perigee }}km, inclined {{ $orbitalElements->first()->inclination }}deg
 
                         <h4>Latest TLE</h4>

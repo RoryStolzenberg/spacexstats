@@ -17,8 +17,10 @@ use SpaceXStats\Models\Location;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\MissionType;
 use SpaceXStats\Models\Object;
+use SpaceXStats\Models\OrbitalElement;
 use SpaceXStats\Models\Part;
 use SpaceXStats\Models\Spacecraft;
+use SpaceXStats\Models\Telemetry;
 use SpaceXStats\Models\Vehicle;
 
 class MissionsController extends Controller {
@@ -58,21 +60,14 @@ class MissionsController extends Controller {
     }
 
     protected function getPastMission($data) {
-        $js['mission'] = $data['mission'];
-
-        if (Auth::isSubscriber()) {
-            $js['telemetry'] = $data['mission']->telemetry()->orderBy('timestamp', 'ASC')->get()->filter(function($readout) {
-                return $readout->hasPositionalData();
-            })->values();
-            $js['orbitalElements'] = $data['mission']->orbitalElements->sortBy('epoch');
-        }
-
-        JavaScript::put($js);
+        JavaScript::put([
+            'mission' => $data['mission']
+        ]);
 
         $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
         $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
         $data['launchVideo'] = $data['mission']->launchVideo();
-        $data['orbitalElements'] = $data['mission']->orbitalElements->sortBy('epoch');
+        $data['orbitalElements'] = $data['mission']->orbitalElements->sortByDesc('epoch');
 
         return view('missions.pastMission', $data);
     }
@@ -248,11 +243,23 @@ class MissionsController extends Controller {
      * @return \Illuminate\Http\JsonResponse
      */
     public function telemetry($slug) {
-        $telemetry = Telemetry::whereHas('mission', function($q) use ($slug) {
+        $telemetryQuery = Telemetry::whereHas('mission', function($q) use ($slug) {
             $q->whereSlug($slug);
-        })->orderBy('timestamp', 'ASC')->get();
+        })->orderBy('timestamp', 'ASC');
 
-        return response()->json($telemetry);
+        if (Auth::isSubscriber()) {
+            return response()->json($telemetryQuery->get());
+        } else {
+            return response()->json($telemetryQuery->get(['telemetry_id', 'timestamp', 'readout']));
+        }
+    }
+
+    public function orbitalElements($slug) {
+        $orbitalElements = OrbitalElement::whereHas('partFlight.mission', function($q) use ($slug) {
+            $q->whereSlug($slug);
+        })->orderBy('epoch', 'asc')->get();
+
+        return response()->json($orbitalElements);
     }
 
     /**
