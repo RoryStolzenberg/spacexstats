@@ -2679,6 +2679,6 @@ class TelemetryTableSeeder extends Seeder {
     }
 
     public function CRS2() {
-        
+
     }
 }

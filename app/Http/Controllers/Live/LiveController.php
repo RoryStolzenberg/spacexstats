@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
@@ -74,8 +75,9 @@ class LiveController extends Controller {
         // Push into Websockets
         event(new LiveUpdateCreatedEvent($liveUpdate));
 
+        Log::info('push2queue');
         // Push to queue for Reddit
-        $job = (new UpdateRedditLiveThreadJob())->onQueue('live');
+        $job = (new UpdateRedditLiveThreadJob());
         $this->dispatch($job);
 
         // Add to DB

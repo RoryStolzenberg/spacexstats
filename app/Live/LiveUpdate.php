@@ -83,7 +83,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
     private function constructTimestamp() {
         // Check if paused
         if (!Redis::hget('live:countdown', 'isPaused')) {
-            $countdownTo = Carbon::createFromFormat('Y-m-d H:i:s', Redis::get('live:countdownTo'));
+            $countdownTo = Carbon::createFromFormat('Y-m-d H:i:s', Redis::hget('live:countdown', 'to'));
             $diffInSeconds = $this->createdAt->diffInSeconds($countdownTo);
             $absDiffInSeconds = abs($diffInSeconds);
             $sign = $diffInSeconds < 0 ? '+' : '-';

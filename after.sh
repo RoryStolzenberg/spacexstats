@@ -56,7 +56,7 @@ echo "[7/7] Creating queue listeners"
 apt-get install supervisor
 
 echo [program:laravel-worker] >> /etc/supervisor/conf.d/laravel-worker.conf
-echo command=php /home/vagrant/spacexstats/artisan queue:work redis --queue=live,email,uploads --sleep=3 --tries=3 --daemon >> /etc/supervisor/conf.d/laravel-worker.conf
+echo command=php /home/vagrant/spacexstats/artisan queue:work redis --queue=default,live,email,uploads --sleep=3 --tries=3 --daemon >> /etc/supervisor/conf.d/laravel-worker.conf
 echo autostart=true >> /etc/supervisor/conf.d/laravel-worker.conf
 echo autorestart=true >> /etc/supervisor/conf.d/laravel-worker.conf
 echo user=root >> /etc/supervisor/conf.d/laravel-worker.conf
