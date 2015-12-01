@@ -72,10 +72,12 @@
             },
             isPausingCountdown: false,
             pauseCountdown: function() {
+                $scope.settings.isPausingCountdown = true;
                 liveService.pauseCountdown();
             },
             isResumingCountdown: false,
             resumeCountdown: function() {
+                $scope.settings.isResumingCountdown = true;
                 liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime);
             }
         };
@@ -92,11 +94,18 @@
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
-            streams: {
-                nasa: false,
-                spacex: false
+            stream: {
+                userSelectedStream: 'spacex',
+                spacex: {
+                    isAvailable: false,
+                    youtubeVideoId: null,
+                    isActive: false
+                },
+                nasa: {
+                    isAvailable: false,
+                    isActive: false
+                }
             },
-            selectedStream: 'spacex',
             description: {
                 raw: laravel.description.raw,
                 markdown: laravel.description.markdown
@@ -196,6 +205,10 @@
             $scope.isActive = false;
             $scope.$apply();
         });
+
+        socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
+
+        });
     }]);
 
     liveApp.service('liveService', ["$http", function($http) {
@@ -213,7 +226,7 @@
         };
 
         this.resumeCountdown = function(data) {
-            return $http.patch('live/send/countdown/resume', data);
+            return $http.patch('live/send/countdown/resume', { newLaunchDate: data});
         };
 
         this.updateSettings = function(settings) {

@@ -7909,6 +7909,9 @@ input[type="submit"], input[type="reset"], button, .button {
   input[type="submit"][disabled], input[type="submit"].disabled, input[type="reset"][disabled], input[type="reset"].disabled, button[disabled], button.disabled, .button[disabled], .button.disabled {
     background-color: #CCC;
     cursor: auto; }
+  input[type="submit"]:focus, input[type="reset"]:focus, button:focus, .button:focus {
+    border: none;
+    box-shadow: none; }
 
 input[type="reset"] {
   min-width: 50px; }
