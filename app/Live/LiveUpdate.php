@@ -75,49 +75,53 @@ class LiveUpdate implements JsonSerializable, Arrayable {
 
     /**
      * Constructs a human readable relative timestamp relative to when the event is being counted down to.
+     * If a launch is paused, we will instead show a timestamp which reads "Paused".
      *
      * @internal
      * @return string
      */
     private function constructTimestamp() {
-        // Setup
-        $countdownTo = Carbon::createFromFormat('Y-m-d H:i:s', Redis::get('live:countdownTo'));
-        $diffInSeconds = $this->createdAt->diffInSeconds($countdownTo);
-        $absDiffInSeconds = abs($diffInSeconds);
-        $sign = $diffInSeconds < 0 ? '+' : '-';
+        // Check if paused
+        if (!Redis::hget('live:countdown', 'isPaused')) {
+            $countdownTo = Carbon::createFromFormat('Y-m-d H:i:s', Redis::get('live:countdownTo'));
+            $diffInSeconds = $this->createdAt->diffInSeconds($countdownTo);
+            $absDiffInSeconds = abs($diffInSeconds);
+            $sign = $diffInSeconds < 0 ? '+' : '-';
 
-        if ($absDiffInSeconds > 86400) {
-            $days = floor($absDiffInSeconds / 86400);
-            $hours = round(($absDiffInSeconds % 86400) / 3600);
+            if ($absDiffInSeconds > 86400) {
+                $days = floor($absDiffInSeconds / 86400);
+                $hours = round(($absDiffInSeconds % 86400) / 3600);
 
-            $timestamp = "T{$sign}{$days}d";
+                $timestamp = "T{$sign}{$days}d";
 
-            if ($hours !== 0) {
-                $timestamp .= " {$hours}h";
+                if ($hours !== 0) {
+                    $timestamp .= " {$hours}h";
+                }
+            } elseif ($absDiffInSeconds > 3600) {
+                $hours = floor($absDiffInSeconds / 3600);
+                $minutes = round(($absDiffInSeconds % 3600) / 60);
+
+                $timestamp = "T{$sign}{$hours}h";
+
+                if ($minutes !== 0) {
+                    $timestamp .= " {$minutes}m";
+                }
+            } elseif ($absDiffInSeconds > 60) {
+                $minutes = floor($absDiffInSeconds / 60);
+                $seconds = round($absDiffInSeconds % 60);
+
+                $timestamp = "T{$sign}{$minutes}m";
+
+                if ($seconds !== 0) {
+                    $timestamp .= " {$seconds}s";
+                }
+            } else {
+                $timestamp = "T{$sign}{$absDiffInSeconds}s";
             }
-        } elseif ($absDiffInSeconds > 3600) {
-            $hours = floor($absDiffInSeconds / 3600);
-            $minutes = round(($absDiffInSeconds % 3600) / 60);
 
-            $timestamp = "T{$sign}{$hours}h";
-
-            if ($minutes !== 0) {
-                $timestamp .= " {$minutes}m";
-            }
-        } elseif ($absDiffInSeconds > 60) {
-            $minutes = floor($absDiffInSeconds / 60);
-            $seconds = round($absDiffInSeconds % 60);
-
-            $timestamp = "T{$sign}{$minutes}m";
-
-            if ($seconds !== 0) {
-                $timestamp .= " {$seconds}s";
-            }
-        } else {
-            $timestamp = "T{$sign}{$absDiffInSeconds}s";
+            return $timestamp;
         }
-
-        return $timestamp;
+        return 'Paused';
     }
 
     /**

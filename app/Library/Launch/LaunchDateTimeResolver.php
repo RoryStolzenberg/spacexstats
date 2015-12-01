@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Library\Launch;
 
+use Carbon\Carbon;
 use SpaceXStats\Library\Enums\LaunchSpecificity;
 
 abstract class LaunchDateTimeResolver {
@@ -49,31 +50,25 @@ abstract class LaunchDateTimeResolver {
                 )
             );
             // Check if it matches the SubMonth or SubYear specificities
-            foreach (array('early','mid','late') as $subClause) {
+            foreach (array('Early','Mid','Late') as $subClause) {
                 // If the string contains a 'early'/'mid'/'late' clause...
                 if (stripos($dateToBeParsed, $subClause) !== false) {
-                    // If the string also contains a year after the clause...
+                    // If the string also contains a year directly after the sub clause... (Early 2017)
                     if (ctype_digit(substr($dateToBeParsed, strlen($subClause) + 1))) {
 
                         $creationString = substr($dateToBeParsed, strlen($subClause) + 1).$dateMappings['SubYear'][$subClause];
                         return new LaunchDateTime($creationString, LaunchSpecificity::SubYear);
 
-                        // Assume the string is "submonth"
+                    // Assume the string is "submonth" (Early May 2015)
                     } else {
-                        $parsedMonth = substr($dateToBeParsed, strlen($subClause) + 1);
-
-                        $parsedNumericalMonth = \DateTime::CreateFromFormat('F',$parsedMonth)->format('m');
-                        $currentNumericalMonth = (new \DateTime())->format('m');
-
-                        // If the month in the string is greater than the current month, assume current year or otherwise assume next year
-                        $year = ($parsedNumericalMonth >= $currentNumericalMonth) ? date("Y") : date("Y") + 1;
+                        $monthYear = Carbon::createFromFormat('F Y', substr($dateToBeParsed, strlen($subClause) + 1));
 
                         // Get the number of days in the month for the year
-                        if ($subClause === 'late') {
-                            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $parsedNumericalMonth, $year);
-                            $creationString = $year.'-'.$parsedNumericalMonth.'-'.$daysInMonth.$dateMappings['SubMonth'][$subClause];
+                        if ($subClause === 'Late') {
+                            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $monthYear->format('m'), $monthYear->format('Y'));
+                            $creationString = $monthYear->format('Y').'-'.$monthYear->format('m').'-'.$daysInMonth.$dateMappings['SubMonth'][$subClause];
                         } else {
-                            $creationString = $year.'-'.$parsedNumericalMonth.$dateMappings['SubMonth'][$subClause];
+                            $creationString = $monthYear->format('Y').'-'.$monthYear->format('m').'-'.$dateMappings['SubMonth'][$subClause];
                         }
 
                         return new LaunchDateTime($creationString, LaunchSpecificity::SubMonth);
@@ -85,40 +80,30 @@ abstract class LaunchDateTimeResolver {
             foreach ($dateMappings['Month'] as $month => $monthDate) {
                 if (stripos($dateToBeParsed, $month) !== false) {
 
-                    // Either take the year from the string explicitly or...
-                    $parsedYear = substr($dateToBeParsed, strlen($month) + 1) ?: false;
-
-                    // assume either the current year or the next year based on the current month and the given month
-                    if ($parsedYear === false) {
-                        $parsedNumericalMonth = \DateTime::CreateFromFormat('F',$month)->format('m');
-                        $currentNumericalMonth = (new \DateTime())->format('m');
-
-                        // If the month in the string is greater than the current month, assume current year or otherwise assume next year
-                        $parsedYear = ($parsedNumericalMonth >= $currentNumericalMonth) ? date("Y") : date("Y") + 1;
-                    }
+                    $monthYear = Carbon::createFromFormat('F Y', $dateToBeParsed);
 
                     // Special case for February because leapyears are a thing
                     if ($month === 'February') {
-                        $monthDate = '-02-'.cal_days_in_month(CAL_GREGORIAN, 2, $parsedYear).$monthDate;
+                        $monthDate = '-02-'.cal_days_in_month(CAL_GREGORIAN, 2, $monthYear->format('Y')).$monthDate;
                     }
 
-                    $creationString = $parsedYear.$monthDate;
+                    $creationString = $monthYear->format('Y').$monthDate;
                     return new LaunchDateTime($creationString, LaunchSpecificity::Month);
                 }
             }
 
-            // Check if the dateToBeParsed matches a quarterly specificity
+            // Check if the dateToBeParsed matches a quarterly specificity (Q1 2015)
             foreach (array('Q1', 'Q2', 'Q3', 'Q4') as $quarter) {
                 if (strpos($dateToBeParsed, $quarter) !== false) {
-                    $creationString = substr($dateToBeParsed, 3).$dateMappings['Quarter'][$quarter];
-                    return new LaunchDateTime($creationString, LaunchSpecificity::Half);
+                    $creationString = substr($dateToBeParsed, -4).$dateMappings['Quarter'][$quarter];
+                    return new LaunchDateTime($creationString, LaunchSpecificity::Quarter);
                 }
             }
 
-            // Check if the dateToBeParsed matches a half specificity
+            // Check if the dateToBeParsed matches a half specificity (H2 2015)
             foreach (array('H1','H2') as $half) {
                 if (strpos($dateToBeParsed, $half) !== false) {
-                    $creationString = substr($dateToBeParsed, 3).$dateMappings['Half'][$half];
+                    $creationString = substr($dateToBeParsed, -4).$dateMappings['Half'][$half];
                     return new LaunchDateTime($creationString, LaunchSpecificity::Half);
                 }
             }

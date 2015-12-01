@@ -224,7 +224,7 @@ class MissionsController extends Controller {
     }
 
     /**
-     * GET (AJAX), /missions/{slug}/launchdatetime. Get the launch datetime of the current mission.
+     * GET (AJAX), /missions/{slug}/requestlaunchdatetime. Get the launch datetime of the current mission.
      *
      * @param $slug
      * @return \Illuminate\Http\JsonResponse
@@ -232,7 +232,11 @@ class MissionsController extends Controller {
     public function launchDateTime($slug) {
         $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
-        return response()->json(array('launchDateTime' => $mission->present()->launch_exact()));
+        return response()->json([
+            'launchDateTime' => $mission->present()->launchDateTime(),
+            'launchSpecificity' => $mission->launch_specificity,
+            'launchPaused' => $mission->launch_paused
+        ]);
     }
 
     /**

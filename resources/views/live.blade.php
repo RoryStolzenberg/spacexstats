@@ -119,10 +119,7 @@
                             <ul>
                                 <li>
                                     <label>Description</label>
-                                    <texarea name="description" ng-model="liveParameters.description.raw" required></texarea>
-                                </li>
-                                <li>
-
+                                    <textarea name="description" ng-model="liveParameters.description.raw" required></textarea>
                                 </li>
                             </ul>
                         </form>
@@ -131,7 +128,7 @@
                         <div ng-if="!liveParameters.countdown.isPaused">
                             <h3>Pause Countdown</h3>
                             <p>In the event of a hold, you can pause the countdown below. Come back here once the launch has resumed to enter a new launch time.</p>
-                            <button ng-click="settings.pauseCountdown()">Pause Countdown</button>
+                            <button ng-click="settings.pauseCountdown()" ng-disabled="settings.isPausingCountdown">Pause Countdown</button>
                         </div>
 
                         <div ng-if="liveParameters.countdown.isPaused">
@@ -143,7 +140,7 @@
                                         <datetime type="datetime" ng-model="liveParameters.countdown.newLaunchTime"></datetime>
                                     </li>
                                     <li>
-                                        <button ng-click="settings.resumeCountdown()">Resume Countdown</button>
+                                        <button ng-click="settings.resumeCountdown()" ng-disabled="settings.isResumingCountdown">Resume Countdown</button>
                                     </li>
                                 </ul>
                             </form>

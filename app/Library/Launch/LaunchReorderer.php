@@ -15,6 +15,7 @@ class LaunchReorderer {
 
     // Returns a launch date time instance
 	public function run() {
+
         // Grab all missions as an array, pass them through
         if (is_null($this->mission->mission_id)) {
             $allMissions = Mission::orderBy('launch_order_id', 'ASC')->get();
@@ -41,12 +42,15 @@ class LaunchReorderer {
             // If the context is from the current mission, set the current mission properties
             if (array_key_exists('context', $arrayedMission)) {
                 $this->setMissionProperties($index);
+                $this->mission->save();
 
             // Else, update the mission properties if it needs updating
             } else {
                 // Check to see if it actually needs updating in the db
                 if ($arrayedMission['launch_order_id'] !== $index + 1) {
-                    $missionModel = $allMissions->keyBy('launch_order_id')->find($arrayedMission['launch_order_id']);
+                    $missionModel = $allMissions->first(function($key, $value) use ($arrayedMission) {
+                        return $value->launch_order_id == $arrayedMission['launch_order_id'];
+                    });
                     $missionModel->launch_order_id = $index + 1;
                     $missionModel->save();
                 }
@@ -55,7 +59,7 @@ class LaunchReorderer {
     }
 
     private function setMissionProperties($index) {
-        if ($this->currentMissionDt->getSpecificity() == LaunchSpecificity::Precise || $this->currentMissionDt->getSpecificity() == LaunchSpecificity::Day) {
+        if ($this->currentMissionDt->isPrecise()) {
             $this->mission->launch_exact = $this->scheduledLaunch;
             $this->mission->launch_approximate = null;
         } else {

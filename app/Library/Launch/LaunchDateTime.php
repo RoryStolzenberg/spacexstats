@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Library\Launch;
 
+use SpaceXStats\Library\Enums\LaunchSpecificity;
+
 class LaunchDateTime {
     protected $launchDateTime, $launchSpecificity;
 
@@ -26,6 +28,10 @@ class LaunchDateTime {
         return $this->launchSpecificity;
     }
 
+    public function isPrecise() {
+        return $this->launchSpecificity >= LaunchSpecificity::Day;
+    }
+
     // comparison function for usort()
     public static function compare($firstLaunchDateTime, $secondLaunchDateTime) {
         // first launch will occur before the second launch
@@ -35,16 +41,16 @@ class LaunchDateTime {
         } elseif ($firstLaunchDateTime->getDateTime() > $secondLaunchDateTime->getDateTime()) {
             return 1;
             // both launches are at the same time; resolve via launch specificity!
-        } elseif ($firstLaunchDateTime->getDateTIme() == $secondLaunchDateTime->getDateTime()) {
+        } elseif ($firstLaunchDateTime->getDateTime() == $secondLaunchDateTime->getDateTime()) {
             // First launch has a greater specificity than the second launch, occurs first
-            if ($firstLaunchDateTime->getSpecificity() > $secondLaunchDateTime->getSpecificity()) {
+            if ($firstLaunchDateTime->getSpecificity() < $secondLaunchDateTime->getSpecificity()) {
                 return -1;
                 // First launch has a lower specificity than the second launch, occurs after
-            } elseif ($firstLaunchDateTime->getSpecificity() < $secondLaunchDateTime->getSpecificity()) {
+            } elseif ($firstLaunchDateTime->getSpecificity() > $secondLaunchDateTime->getSpecificity()) {
                 return 1;
-                // Same specificities, same dates. Use name of launch to resolve
+                // Same specificities, same dates. For now, be arbitray, later, use name of launch to resolve
             } elseif ($firstLaunchDateTime->getSpecificity() == $secondLaunchDateTime->getSpecificity()) {
-
+                return 1;
             }
         }
     }

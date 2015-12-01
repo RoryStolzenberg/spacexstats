@@ -49,6 +49,7 @@
         };
 
         $scope.updateMission = function() {
+            console.log(missionService);
             missionService.update($scope.mission);
         };
 
@@ -75,7 +76,7 @@
 
             self.removePartFlight = function(part) {
                 self.part_flights.splice(self.part_flights.indexOf(part), 1);
-            }
+            };
 
             self.addPayload = function() {
                 self.payloads.push(new Payload());
@@ -136,7 +137,7 @@
         return function(type, part) {
 
             if (typeof part === 'undefined') {
-                var self = this
+                var self = this;
                 self.type = type;
             } else {
                 var self = part;
@@ -216,25 +217,23 @@
         }
     });
 
-    app.service("missionService", ["$http", "CSRF_TOKEN",
-        function($http, CSRF_TOKEN) {
-            this.create = function (mission) {
-                $http.post('/missions/create', {
-                    mission: mission,
-                    _token: CSRF_TOKEN
-                }).then(function (response) {
-                    window.location = '/missions/' + response.data;
-                });
-            };
+    app.service("missionService", ["$http", "CSRF_TOKEN", function($http, CSRF_TOKEN) {
+        this.create = function (mission) {
+            return $http.post('/missions/create', {
+                mission: mission,
+                _token: CSRF_TOKEN
+            }).then(function (response) {
+                window.location = '/missions/' + response.data;
+            });
+        };
 
-            this.update = function (mission) {
-                $http.patch('/missions/' + mission.slug + '/edit', {
-                    mission: mission,
-                    _token: CSRF_TOKEN
-                }).then(function (response) {
-                    window.location = '/missions/' + response.data;
-                });
-            };
-        }
-    ]);
+        this.update = function (mission) {
+            return $http.patch('/missions/' + mission.slug + '/edit', {
+                mission: mission,
+                _token: CSRF_TOKEN
+            }).then(function (response) {
+                window.location = '/missions/' + response.data;
+            });
+        };
+    }]);
 })();

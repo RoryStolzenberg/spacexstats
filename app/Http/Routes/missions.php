@@ -3,6 +3,8 @@ Route::group(['prefix' => 'missions'], function() {
     Route::get('/future', 'MissionsController@allFutureMissions');
     Route::get('/past', 'MissionsController@allPastMissions');
 
+    Route::get('/all', 'MissionsController@all');
+
     Route::group(['middleware' => 'mustBe:Administrator'], function() {
         Route::get('/create', 'MissionsController@getCreate');
         Route::post('/create', 'MissionsController@postCreate');

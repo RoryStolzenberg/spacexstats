@@ -5,6 +5,7 @@
 
         $scope.missionSlug = laravel.mission.slug;
         $scope.launchSpecificity = laravel.mission.launch_specificity;
+        $scope.isLaunchPaused = laravel.mission.launch_paused;
 
         if ($scope.launchSpecificity >= 6) {
             $scope.launchDateTime = moment.utc(laravel.mission.launch_date_time).toDate();
@@ -57,6 +58,7 @@
                     if ($scope.launchDateTime !== response.data.launchDateTime) {
                         $scope.launchDateTime = response.data.launchDateTime;
                         $scope.launchSpecificity = response.data.launchSpecificity;
+                        $scope.isLaunchPaused = response.data.launchPaused;
 
                         flashMessage.addOK('Launch time updated!');
                     }

@@ -95,6 +95,7 @@
 
         $scope.missionSlug = laravel.mission.slug;
         $scope.launchSpecificity = laravel.mission.launch_specificity;
+        $scope.isLaunchPaused = laravel.mission.launch_paused;
 
         if ($scope.launchSpecificity >= 6) {
             $scope.launchDateTime = moment.utc(laravel.mission.launch_date_time).toDate();
@@ -147,6 +148,7 @@
                     if ($scope.launchDateTime !== response.data.launchDateTime) {
                         $scope.launchDateTime = response.data.launchDateTime;
                         $scope.launchSpecificity = response.data.launchSpecificity;
+                        $scope.isLaunchPaused = response.data.launchPaused;
 
                         flashMessage.addOK('Launch time updated!');
                     }
@@ -945,6 +947,7 @@
         };
 
         $scope.updateMission = function() {
+            console.log(missionService);
             missionService.update($scope.mission);
         };
 
@@ -971,7 +974,7 @@
 
             self.removePartFlight = function(part) {
                 self.part_flights.splice(self.part_flights.indexOf(part), 1);
-            }
+            };
 
             self.addPayload = function() {
                 self.payloads.push(new Payload());
@@ -1032,7 +1035,7 @@
         return function(type, part) {
 
             if (typeof part === 'undefined') {
-                var self = this
+                var self = this;
                 self.type = type;
             } else {
                 var self = part;
@@ -1112,27 +1115,25 @@
         }
     });
 
-    app.service("missionService", ["$http", "CSRF_TOKEN",
-        function($http, CSRF_TOKEN) {
-            this.create = function (mission) {
-                $http.post('/missions/create', {
-                    mission: mission,
-                    _token: CSRF_TOKEN
-                }).then(function (response) {
-                    window.location = '/missions/' + response.data;
-                });
-            };
+    app.service("missionService", ["$http", "CSRF_TOKEN", function($http, CSRF_TOKEN) {
+        this.create = function (mission) {
+            return $http.post('/missions/create', {
+                mission: mission,
+                _token: CSRF_TOKEN
+            }).then(function (response) {
+                window.location = '/missions/' + response.data;
+            });
+        };
 
-            this.update = function (mission) {
-                $http.patch('/missions/' + mission.slug + '/edit', {
-                    mission: mission,
-                    _token: CSRF_TOKEN
-                }).then(function (response) {
-                    window.location = '/missions/' + response.data;
-                });
-            };
-        }
-    ]);
+        this.update = function (mission) {
+            return $http.patch('/missions/' + mission.slug + '/edit', {
+                mission: mission,
+                _token: CSRF_TOKEN
+            }).then(function (response) {
+                window.location = '/missions/' + response.data;
+            });
+        };
+    }]);
 })();
 (function() {
     var aboutMissionControlApp = angular.module('app', ['credit-cards']);
@@ -1277,11 +1278,11 @@
 (function() {
     var app = angular.module('app', []);
 
-    app.controller('pastMissionController', ["$scope", "missionService", "telemetryPlotCreator", "ephemerisPlotCreator", function($scope, missionService, telemetryPlotCreator, ephemerisPlotCreator) {
+    app.controller('pastMissionController', ["$scope", "missionDataService", "telemetryPlotCreator", "ephemerisPlotCreator", function($scope, missionDataService, telemetryPlotCreator, ephemerisPlotCreator) {
         $scope.mission = laravel.mission;
 
         (function() {
-            missionService.telemetry($scope.mission.slug).then(function(response) {
+            missionDataService.telemetry($scope.mission.slug).then(function(response) {
                 $scope.telemetryPlots = {
                     altitudeVsTime:         telemetryPlotCreator.altitudeVsTime(response.data),
                     altitudeVsDownrange:    telemetryPlotCreator.altitudeVsDownrange(response.data),
@@ -1289,7 +1290,7 @@
                     downrangeVsTime:        telemetryPlotCreator.downrangeVsTime(response.data)
                 }
             });
-            missionService.orbitalElements($scope.mission.slug).then(function(response) {
+            missionDataService.orbitalElements($scope.mission.slug).then(function(response) {
                 $scope.orbitalPlots = {
                     apogeeVsTime:           ephemerisPlotCreator.apogeeVsTime(response.data),
                     perigeeVsTime:          ephemerisPlotCreator.perigeeVsTime(response.data)
@@ -1478,7 +1479,7 @@
         };
     }]);
 
-    app.service('missionService', ["$http", function($http) {
+    app.service('missionDataService', ["$http", function($http) {
         this.telemetry = function(name) {
             return $http.get('/missions/'+ name + '/telemetry');
         };
@@ -1788,9 +1789,11 @@
                     $scope.settings.isEditingSettings = false;
                 });
             },
+            isPausingCountdown: false,
             pauseCountdown: function() {
                 liveService.pauseCountdown();
             },
+            isResumingCountdown: false,
             resumeCountdown: function() {
                 liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime);
             }
@@ -1805,7 +1808,7 @@
             },
             countdown: {
                 to: $scope.data.upcomingMission.launch_date_time,
-                isPaused: false,
+                isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
             streams: {
@@ -1872,7 +1875,6 @@
 
         // Websocket listeners
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveStartedEvent', function(data) {
-            console.log(data);
             $scope.isActive = true;
             $scope.liveParameters.description = data.data.description;
             $scope.liveParameters.sections = data.data.sections;
@@ -1883,7 +1885,16 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveCountdownEvent', function(data) {
+            // Countdown is being resumed
+            if (data.newLaunchTime != null) {
+                $scope.liveParameters.countdown.isPaused = true;
+                $scope.liveParameters.countdown.newLaunchTime = data.newLaunchTime;
 
+            // Countdown is being paused
+            } else {
+                $scope.liveParameters.countdown.isPaused = true;
+            }
+            $scope.$apply();
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
@@ -2261,6 +2272,23 @@
     }]);
 })();
 (function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
     var app = angular.module('app', []);
 
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
@@ -2392,63 +2420,6 @@
 })();
 
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -2631,6 +2602,46 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('deltaV', function() {
         return {
             restrict: 'E',
@@ -2680,6 +2691,38 @@
             templateUrl: '/js/templates/deltaV.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -3025,38 +3068,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
@@ -3201,69 +3212,6 @@
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    }]);
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
-                    }
-                    return viewValue;
-                });
-            }
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app', []);
 
@@ -3360,6 +3308,69 @@
     });
 })();
 
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 

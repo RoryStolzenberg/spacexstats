@@ -1,11 +1,11 @@
 (function() {
     var app = angular.module('app', []);
 
-    app.controller('pastMissionController', ["$scope", "missionService", "telemetryPlotCreator", "ephemerisPlotCreator", function($scope, missionService, telemetryPlotCreator, ephemerisPlotCreator) {
+    app.controller('pastMissionController', ["$scope", "missionDataService", "telemetryPlotCreator", "ephemerisPlotCreator", function($scope, missionDataService, telemetryPlotCreator, ephemerisPlotCreator) {
         $scope.mission = laravel.mission;
 
         (function() {
-            missionService.telemetry($scope.mission.slug).then(function(response) {
+            missionDataService.telemetry($scope.mission.slug).then(function(response) {
                 $scope.telemetryPlots = {
                     altitudeVsTime:         telemetryPlotCreator.altitudeVsTime(response.data),
                     altitudeVsDownrange:    telemetryPlotCreator.altitudeVsDownrange(response.data),
@@ -13,7 +13,7 @@
                     downrangeVsTime:        telemetryPlotCreator.downrangeVsTime(response.data)
                 }
             });
-            missionService.orbitalElements($scope.mission.slug).then(function(response) {
+            missionDataService.orbitalElements($scope.mission.slug).then(function(response) {
                 $scope.orbitalPlots = {
                     apogeeVsTime:           ephemerisPlotCreator.apogeeVsTime(response.data),
                     perigeeVsTime:          ephemerisPlotCreator.perigeeVsTime(response.data)
@@ -202,7 +202,7 @@
         };
     }]);
 
-    app.service('missionService', ["$http", function($http) {
+    app.service('missionDataService', ["$http", function($http) {
         this.telemetry = function(name) {
             return $http.get('/missions/'+ name + '/telemetry');
         };

@@ -1,6 +1,7 @@
 <?php 
 namespace SpaceXStats\Http\Controllers\Live;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
@@ -8,6 +9,7 @@ use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
 use Parsedown;
+use SpaceXStats\Events\Live\LiveCountdownEvent;
 use SpaceXStats\Events\Live\LiveStartedEvent;
 use SpaceXStats\Events\Live\LiveUpdateCreatedEvent;
 use SpaceXStats\Events\Live\LiveUpdateUpdatedEvent;
@@ -16,6 +18,7 @@ use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Jobs\UpdateRedditLiveThreadJob;
 use SpaceXStats\Live\LiveUpdate;
 use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\PrelaunchEvent;
 
 class LiveController extends Controller {
 
@@ -33,6 +36,7 @@ class LiveController extends Controller {
             'updates' => collect(Redis::lrange('live:updates', 0, -1))->map(function($update) {
                 return json_decode($update);
             }),
+            'countdown' => Redis::hgetall('live:countdown'),
             'title' => Redis::get('live:title'),
             'reddit' => Redis::hgetall('live:reddit'),
             'sections' => json_decode(Redis::get('live:sections')),
@@ -125,11 +129,51 @@ class LiveController extends Controller {
     }
 
     public function pauseCountdown() {
+        // Update Redis
+        Redis::hset('live:countdown', 'isPaused', true);
 
+        // If it relates to a mission (and not a miscellaneous webcast)
+        if (Redis::get('live:isForLaunch')) {
+            $nextMission = Mission::future()->first();
+
+            // Update mission
+            $nextMission->launch_paused = true;
+            $nextMission->save();
+        }
+
+        event(new LiveCountdownEvent(false));
+        return response()->json(null, 204);
     }
 
     public function resumeCountdown() {
+        // Parse launch date
+        $newLaunchDate = Carbon::parse(Input::get('newLaunchDate'));
 
+        // Update Redis
+        Redis::hset('live:countdown', 'isPaused', false);
+
+        // If it relates to a mission (and not a miscellaneous webcast)
+        if (Redis::get('live:isForLaunch')) {
+            $nextMission = Mission::future()->first();
+
+            // Create a Prelaunch event
+            PrelaunchEvent::create([
+                'mission_id' => $nextMission->mission_id,
+                'event' => 'Launch Change',
+                'occurred_at' => Carbon::now(),
+                'scheduled_launch_exact' => $newLaunchDate
+            ]);
+
+            // Update mission
+            $nextMission->launch_paused = false;
+            $nextMission->launch_date_time = $newLaunchDate;
+            $nextMission->save();
+        }
+
+        // Event
+        event (new LiveCountdownEvent(true, $newLaunchDate));
+
+        return response()->json(null, 204);
     }
 
     public function create() {

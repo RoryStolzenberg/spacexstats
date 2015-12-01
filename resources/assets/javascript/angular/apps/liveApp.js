@@ -70,9 +70,11 @@
                     $scope.settings.isEditingSettings = false;
                 });
             },
+            isPausingCountdown: false,
             pauseCountdown: function() {
                 liveService.pauseCountdown();
             },
+            isResumingCountdown: false,
             resumeCountdown: function() {
                 liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime);
             }
@@ -87,7 +89,7 @@
             },
             countdown: {
                 to: $scope.data.upcomingMission.launch_date_time,
-                isPaused: false,
+                isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
             streams: {
@@ -154,7 +156,6 @@
 
         // Websocket listeners
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveStartedEvent', function(data) {
-            console.log(data);
             $scope.isActive = true;
             $scope.liveParameters.description = data.data.description;
             $scope.liveParameters.sections = data.data.sections;
@@ -165,7 +166,16 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveCountdownEvent', function(data) {
+            // Countdown is being resumed
+            if (data.newLaunchTime != null) {
+                $scope.liveParameters.countdown.isPaused = true;
+                $scope.liveParameters.countdown.newLaunchTime = data.newLaunchTime;
 
+            // Countdown is being paused
+            } else {
+                $scope.liveParameters.countdown.isPaused = true;
+            }
+            $scope.$apply();
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {

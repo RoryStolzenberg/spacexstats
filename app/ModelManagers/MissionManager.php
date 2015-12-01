@@ -250,7 +250,7 @@ class MissionManager {
         $currentSpacecraftFlight = $this->mission->spacecraftFlight;
         $spacecraftInput = array_pull($this->input['mission']['spacecraft_flight'], 'spacecraft');
 
-        // If the input spacecraft flight exists (create/update)
+        // If the spacecraft flight input exists (create/update)
         if (!is_null($this->input['mission']['spacecraft_flight'])) {
             $spacecraftFlight = $currentSpacecraftFlight->count() == true ? $this->mission->spacecraftFlight->fill($spacecraftInput) : new SpacecraftFlight($spacecraftInput);
 
@@ -266,7 +266,7 @@ class MissionManager {
 
 
         // If the input spacecraft flight does not exist and the current spacecraft flight does (delete)
-        } elseif (is_null($this->input['mission']['spacecraft_flight']) && $currentSpacecraftFlight->count() == true) {
+        } elseif (is_null($this->input['mission']['spacecraft_flight']) && !is_null($currentSpacecraftFlight)) {
             $this->mission->spacecraftFlight->delete();
 
             // Also delete any astronaut flights & spacecraft (Maybe manage with database cascading?)
