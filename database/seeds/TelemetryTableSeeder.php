@@ -1281,353 +1281,605 @@ class TelemetryTableSeeder extends Seeder {
             'timestamp'     => 0,
             'readout'       => 'Liftoff!'
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => 'We have [inaudible]'
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => 'Liftoff of the Falcon 9'
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => 'Falcon 9 has cleared the towers'
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => 'Pitch kick'
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "[inaudible] on the countdown net, have [inaudible] on net A please."
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Gravity turn"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "First stage propulsion is performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "We have telemetry lock on both stages and power systems are go"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Guidance is nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Vehicle is moving at 430m/s [inaudible], altitude 3km"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "As Falcon 9 ascends into the atmosphere, we are getting a little bit of audio trouble from the launch site. The vehicle is quickly approaching its Max-Q, where its increasing speed and the atmospheric density create the maximum resistance to the vehicle's flight, after Max-Q the forces acting on the vehicle will decrease dramatically, and the vehicle will begin to gain speed substantially"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "As the atmosphere thins, the exhaust plume will begin to expand greatly and begin to take on a darker color, [inaudible] plume"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Guidance nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Approaching MECO 2"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And we have stage separation!"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And stage separation is confirmed. Mvac chamb-"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And we have a clean stage separation and second stage ignition. The Merlin Vacuum engine has begun lifting the second stage and Dragon into orbit. As you saw, on the MVac nozzle expansion skirt, that fell away as designed."
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "MVac performance nominal, and we have [inaudible]"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Vehicle has an inertial velocity of 3500m/s, altitude of 140km. Let's turn off-"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "MVac is performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "[inaudible] back on."
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Guidance is nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And we have nominal avionics operation at this point"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Stage 2 [inaudible]"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "As the second stage continues its flight, you will see one of the roll-control actuators wiggle back and forth. That's simply the vehicle correcting its trajectory as it continues to orbit"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Second stage continues to perform nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Second stage avionics looking nominal, and we have telemetry lock."
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Guidance is nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "We are flying at 4000m/s at an altitude of 189km"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And this is prop, still performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "New Hampshire station has acquired."
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "As expected the radiatively cooled expansion nozzle on the engine is glowing red hot, and in some places even white hot, and are designed to operate just like our Falcon 1 vehicle"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And second stage avionics [inaudible] power systems are nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Second stage is preparing to trim propellants"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "[inaudible] is good"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "MVac actively trimming performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And we have / power systems are nominal."
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Guidance is still nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Vehicle's currently travelling at almost 5000m/s and an alt of [inaudible]39km"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "New Hampshire telemetry as cleaned up"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "MVac and second stage are performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "LC we got grassfires all the way by the hanger"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "[inaudible] camera"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Propulsion is performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And avionics systems are nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "MVac performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "We have nominal avionics operation and telemetry lock"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Guidance is nominal"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "As the vehicle is approaching the horizon as viewed from the launch site, we may lose video signal-"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "1 minute of nominal SECO 1 time. MVac and the second stage continue to perform nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Vehicle's at an interial altitude of 7000m/s, 400km altitude"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Second stage is approaching SECO 1"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "MVac still performing nominally"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And engine shutdown"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Falcon 9 stage two and the Dragon capsule are now in orbit around the Earth"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "And with the shutdown of the second stage engine, SpaceX's Falcon 9 has achieved Earth orbit"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "Stage 2 attitude control systems are now active, during coast, second stage will perform [inaudible]"
         ]);
-
         Telemetry::create([
             'mission_id'    => 6,
             'timestamp'     => 0,
             'readout'       => "As expected it looks like we have lost the signal- the video signal, from the Falcon 9 second stage as it passed over the horizon, but from here, everything looks every clean. In the time ahead our team will be reviewing- all in all this has been a good day for SpaceX-"
+        ]);
+    }
+
+    public function COTS1() {
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "We have liftoff of the Falcon 9"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Pitchkick"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the tower"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "First stage engines and tanks, looking good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Beginning gravity turn"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Telemetry lock on both stages, power systems nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "First stage propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "OK"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "The vehicle's now supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Telemetry lock still on both stages, power systems continue to be nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance is nominal at Max-Q"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "And propulsion is also nominal on the first stage"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "First stage propulsion performing nominally"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "We have telemetry lock, and power systems are still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "First stage tank pressures and engines still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Stage two MVac engine chilling in. First two M9 engines shut down"
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "First stage MECO 2"
+        ]);
+
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "First stage engine shutdown"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Second stage has separated"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Inertial velocity at MECO was approximately 3.2km/s, nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "MVac ignition confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Power systems look nominal, we have GPS lock"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "MVac stage and engine performance looking good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Dragon nosecone has been jettisoned"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Second stage propulsion performance is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Power system looks nominal, GPS and telemetry lock confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "MVac stiffening ring has been jettisoned"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "MVac engine power looks good, stage is healthy, propulsion nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Stage two guidance is looking nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is currently at 210km, and 3.7km/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "AOS New Hampshire"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Second stage power systems functioning nominally"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "The vehicle is now approximately 450km downrange"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "All second stage propulsion parameters are nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "We currently lock on both stages, power systems look healthy on both stages"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Propulsion is also nominal on the second stage"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "The vehicle is currently at an altitude of 264km, inertial velocity 4300m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "There are approximately 3 minutes left in stage two burn"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "All second stage propulsion performance parameters are nominal, both stage and engine look good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "We have nominal RF system status, we have perfect power systems, and uh- telemetry lock is confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Second stage propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance is nominal, approximately 2 minutes remaining left in second stage burn"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "AVI reporting: RF telemetry nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "The vehicle's at approximately 300km altitude, 5500m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "All second stage propulsion performance parameters are within bounds"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "We have nominal lock on both telemetry streams, and we have charged recovery systems"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Guidance is nominal, approximately 50 seconds remaining in this burn"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Propulsion is also nominal, all systems are go"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is in terminal guidance."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Second stage propulsion is performing nominally"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "MVac shutdown"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Dragon is in orbit"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "Dragon deploy verified!"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] approximately 288km perigee, 301km apogee. Inclination 34.53 degrees."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 7,
+            'timestamp'     => 0,
+            'readout'       => "And as you can see, with separation of the Dragon spacecraft, it is on its way to begin 2 or possibly 3 orbits of the Earth. Great day here at SpaceX, looks like we had a great flight, we are probably going to go and join the employees now and celebrate. This will conclude this portion of our webcast, but as you know, the mission will be continuing for the next few hours. We will continue to post to post updates on the website, on Twitter, on Facebook; and let you know how the recovery and reentry efforts go. So this marks the end of our webcast, for the Falcon 9 Flight 2 Demonstration rocket carrying the first operational Dragon into orbit."
         ]);
     }
 
@@ -2051,5 +2303,382 @@ class TelemetryTableSeeder extends Seeder {
             'timestamp'     => 183,
             'readout'       => "So, on behalf of the 1800 people here at SpaceX, we thank you so much for watching this amazing mission today. It's a great day, it's almost surreal, so cool. Yeah, and just please continue to watch as Dragon makes its progress to the space station. Thank you."
         ]);*/
+    }
+
+    public function CRS1() {
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Liftoff of the Falcon 9"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the tower"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Starting pitchkick"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "All systems at full power"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Starting gravity turn"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "JDMTA acquisition of signal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "We have a solid telemetry lock on stage one and stage two"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "First stage propellant utilization is active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is on a nominal trajectory at 5km in altitude, velocity of 230m/s, and downrange distance of 700m."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle has reached maximum aerodynamic pressure"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Second stage has started engine chill"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Dragon power systems are nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Approaching MECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Passed the min-MECO point"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "First stage shutdown"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Stage separation confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "MVac ignition confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "The Dragon nosecone has been jettisoned"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle remains on a nominal trajectory"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude is 150km, velocity is 3.1km/s, and downrange distance of 350km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Second stage propellant utilization active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Avionics systems nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "New Hampshire acquisition of singal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle remains on a nominal trajectory. Altitude is 163km, velocity is 3.5km/s, downrange distance of 770km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "MVac and stage two propulsion systems healthy"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Avionics system and RF link are solid"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "LC this is OSM"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Go Ahead"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Uhh, yes sir. I've looked around the pad, it looks like- the only place we have any- even a small fire, is on the T/E- on the deck. Uhh, [inaudible] fire department gets here they can go ahead and do there sweep, over"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Copy that, pad secured, they can go on"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "The vehicle remains on a nominal trajectory, Altitude is 186km, velocity is 4km/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "MVac and stage performance is good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "The vehicle remains on a nominal trajectory. Altitude of 200km, and velocity of 4.9km/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "LC this is OSM, I recommend we go ahead and [fade out]"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is passing through the head-on gate"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Propulsion systems nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "FTS has been safed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is in terminal guidance mode"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Avionic systems are nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Nominal LOS from the Cape"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "IIP left"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "MVac shutdown confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Dragon's in separation"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Prop-rate is in prime"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 and Dragon are in orbit, perigee 197km, apogee 328km."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "All stations, MD, we're on step one dot two and step one dot four with nav-one and sys-two"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Manifolds venting"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] open"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] open"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Got a console arm on software"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Dragon's in post-prime"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Priming complete"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Nominal AOS New Foundland"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] to deploy attitude"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Flight software, you got on this software global?"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Yeah, we're looking into it. I'm acknowledging."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Thruster firings confirmed, props[inaudible] nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Dragon's in array deploy attitude"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Slew looked good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Nominal LOS Wallops"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Dragon's in array deploy state"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "It's expected MD"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Copy, [inaudible]"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Dragon's in array deploy"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Array deploy"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "All stations MD, we're on one dot one zero"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Nice work"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "As expected, Dragon has now passed beyond the viewable range of the New Foundland, Canada ground station. SpaceX mission control here in Hawthorne will continue to communicate with Dragon as it circles the globe"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "yay, and as always we're super excited we had a great launch today. This is the fourth successful flight of the Falcon 9 rocket, and our third operational Dragon spacecraft put into orbit. This- let's see- Dragon is going to spend the next, about, three days catching up with the International Space Station so it plans to arrive there Wednesday October 10th, around 2AM Pacific Time, 5AM Eastern Time. So- oh yes! And happy birthday John! Always good! Yes. A launch- a successful launch is the best-"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "A great candle!"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "Exactly. So be sure to stay tuned to our Facebook and Twitter pages and spacex.com and you can follow Dragon's entire mission from now until it actually attaches to the space station, and you can see a ton of live footage on our pages and nasa, of the astronauts inside the space station, unloading cargo. There's gonna' to be lots of cool stuff to watch over the next few weeks."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "And here at SpaceX we want to extend our special thanks to NASA for their partnership and support on the CRS program."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 9,
+            'timestamp'     => 0,
+            'readout'       => "And we have uhh, over 1800 people here at SpaceX. We thank you so much for tuning in, and yes, we'll look forward to a great rest of the mission, so thank you all again and bub bye!"
+        ]);
+    }
+
+    public function CRS2() {
+        
     }
 }

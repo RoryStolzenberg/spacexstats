@@ -46,11 +46,27 @@ cd /home/vagrant/spacexstats
 php artisan migrate
 php artisan db:seed
 
-echo "[6/7] Setting up Node.js"
+echo "[6/7] Setting up Node.js server"
 # --no-bin-links is not required if you are not using Vagrant for Windows
 npm install socket.io ioredis express --save --no-bin-links
 npm install -g forever
 forever start socket.js
 
-echo "[7/7] Restarting nginx..."
+echo "[7/7] Creating queue listeners"
+apt-get install supervisor
+
+echo [program:laravel-worker] >> /etc/supervisor/conf.d/laravel-worker.conf
+echo command=php /home/vagrant/spacexstats/artisan queue:work redis --queue=live,email,uploads --sleep=3 --tries=3 --daemon >> /etc/supervisor/conf.d/laravel-worker.conf
+echo autostart=true >> /etc/supervisor/conf.d/laravel-worker.conf
+echo autorestart=true >> /etc/supervisor/conf.d/laravel-worker.conf
+echo user=root >> /etc/supervisor/conf.d/laravel-worker.conf
+echo numprocs=1 >> /etc/supervisor/conf.d/laravel-worker.conf
+echo redirect_stderr=true >> /etc/supervisor/conf.d/laravel-worker.conf
+echo stdout_logfile=/home/vagrant/spacexstats/worker.log >> /etc/supervisor/conf.d/laravel-worker.conf
+
+supervisorctl reread
+supervisorctl update
+supervisorctl start laravel-worker:*
+
+echo "[8/8] Restarting nginx..."
 service nginx restart
