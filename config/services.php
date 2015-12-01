@@ -54,5 +54,9 @@ return [
     'spacetrack' => [
         'identity' => env('SPACETRACK_IDENTITY'),
         'password' => env('SPACETRACK_PASSWORD')
+    ],
+
+    'youtube' => [
+        'key' => env('YOUTUBE_DATA_API_KEY')
     ]
 ];

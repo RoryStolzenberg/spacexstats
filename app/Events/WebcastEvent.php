@@ -10,9 +10,10 @@ class WebcastEvent extends Event implements ShouldBroadcast
 {
     public $isActive;
 
-    public function __construct(bool $isActive)
+    public function __construct($isActive, $videoId = null)
     {
         $this->isActive = $isActive;
+        $this->videoId = $videoId;
     }
 
     /**

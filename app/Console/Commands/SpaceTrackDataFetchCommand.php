@@ -70,6 +70,8 @@ class SpaceTrackDataFetchCommand extends Command
                 // place a reasonable boundary on when to start fetching TLE's.
                 $tles = collect($ephemeris->tles()->latest()->satellite($identifier)->fetch());
 
+                $this->info('Got' . $tles->count() . ' tles for ' . $identifier->identify());
+
             } else {
                 // Only fetch TLE's from the past 30 days because we know this query runs every day (why not
                 // fetch from the past day? SpaceTrack clarifies: "Note that in rare cases space-track may

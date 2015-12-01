@@ -567,6 +567,12 @@ class Spacexstats extends Migration {
             $table->string('vehicle', Varchar::tiny);
         });
 
+        Schema::create('webcast_statuses', function(Blueprint $table) {
+            $table->increments('webcast_status_id');
+            $table->integer('viewers');
+            $table->timestamps();
+        });
+
         // Add foreign keys
         Schema::table('astronauts_flights_pivot', function(Blueprint $table) {
             $table->foreign('astronaut_id')->references('astronaut_id')->on('astronauts')->onDelete('restrict'); // Restrict deletion of an astronaut if that astronaut has astronaut flights

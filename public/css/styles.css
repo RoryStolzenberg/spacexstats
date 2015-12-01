@@ -8667,6 +8667,8 @@ body.live {
     text-align: center; }
   body.live .content-wrapper {
     height: auto; }
+    body.live .content-wrapper header {
+      margin: 0 auto; }
     body.live .content-wrapper main {
       min-height: calc(100vh - 150px + 50px); }
   body.live .access-links {

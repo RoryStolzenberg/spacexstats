@@ -11,6 +11,10 @@ body.live {
     .content-wrapper {
         height:auto;
 
+        header {
+            margin:0 auto;
+        }
+
         main {
             min-height:calc(100vh - #{$h1-height} + 50px);
         }
