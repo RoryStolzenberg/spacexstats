@@ -23,50 +23,52 @@
 			</div>
 		@elseif ($size == 'large')
 			<div class="container values">
-				<div class="gr-1on9"><span class="launch-count">{{ ordinal($mission->generic_vehicle_count) }}</span></div>
-				<div class="gr-1on9">{{ $mission->present()->launchDateTime() }}</div>
+				<div>
+					<span class="launch-count">{{ ordinal($mission->generic_vehicle_count) }}</span>
+				</div>
+				<div>{{ $mission->present()->launchDateTime() }}</div>
                 @if ($mission->status !== 'Upcoming')
-                    <div class="gr-1on9 smallcaps">{{ ordinal($mission->launch_of_year) }}</div>
+                    <div>{{ ordinal($mission->launch_of_year) }}</div>
                 @endif
 				@if ($mission->status == 'Upcoming')
-					<div class="gr-1on9">42%</div>
+					<div>42%</div>
 				@endif
-				<div class="gr-1on9">{{ $mission->vehicle->specific_vehicle }}</div>
-				<div class="gr-1on9">{{ $mission->destination->destination }}</div>
-				<div class="gr-1on9">{{ $mission->launchSite->full_location }}</div>
+				<div>{{ $mission->vehicle->specific_vehicle }}</div>
+				<div>{{ $mission->destination->destination }}</div>
+				<div>{{ $mission->launchSite->full_location }}</div>
 				@if ($mission->status == 'Upcoming')
-					<div class="gr-1on9"></div>
+					<div></div>
 				@endif
                 @if ($mission->status == 'Complete')
-                    <div class="gr-1on9"><img class="launch-illumination" src="/images/icons/illuminations/{{ $mission->launch_illumination }}.png" /></div>
+                    <div><img class="launch-illumination" src="/images/icons/illuminations/{{ $mission->launch_illumination }}.png" /></div>
                     @if ($mission->outcome == 'Success')
-                        <div class="gr-1on9">{{ ordinal($mission->successful_consecutive_launch) }}</div>
+                        <div>{{ ordinal($mission->successful_consecutive_launch) }}</div>
                     @endif
                 @endif
-                <div class="gr-1on9">Mission Collection</div>
+                <div>Mission Collection</div>
 			</div>
 			<div class="container keys">
-				<div class="gr-1on9">{{ $mission->vehicle->generic_vehicle }}<br/>Launch</div>
-				<div class="gr-1on9">Launch (UTC)</div>
+				<div>{{ $mission->vehicle->generic_vehicle }}<br/>Launch</div>
+				<div>Launch (UTC)</div>
                 @if ($mission->status !== 'Upcoming')
-                    <div class="gr-1on9">Launch of the Year</div>
+                    <div>Launch of the Year</div>
                 @endif
                 @if ($mission->status == 'Upcoming')
-				    <div class="gr-1on9">Probability of Launch</div>
+				    <div>Probability of Launch</div>
                 @endif
-				<div class="gr-1on9">Vehicle</div>
-				<div class="gr-1on9">Destination</div>
-				<div class="gr-1on9">Launch Site</div>
+				<div>Vehicle</div>
+				<div>Destination</div>
+				<div>Launch Site</div>
 				@if ($mission->status == 'Upcoming')
-					<div class="gr-1on9">Where to watch</div>
+					<div>Where to watch</div>
 				@endif
                 @if ($mission->status == 'Complete')
-                    <div class="gr-1on9">{{ $mission->launch_illumination }} Launch</div>
+                    <div>{{ $mission->launch_illumination }} Launch</div>
                     @if ($mission->outcome == 'Success')
-                        <div class="gr-1on9">Successful Consecutive Launch</div>
+                        <div>Successful Consecutive Launch</div>
                     @endif
                 @endif
-                <div class="gr-1on9">Mission Collection</div>
+                <div>Mission Collection</div>
 			</div>
 		@endif
 		<p><em>{{ $mission->summary }}</em></p>

@@ -115,6 +115,19 @@ body.future-mission .highlights {
             line-height:20px;
         }
 
+        &:before {
+            content: "";
+            position: absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            top: 0;
+            left: -30px;
+            border-right: 30px solid $gold;
+            border-bottom: 40px solid transparent;
+            z-index: -1;
+        }
+
         &:after {
             width: 0px;
             height: 0px;
@@ -151,12 +164,14 @@ body.future-mission .highlights {
         text-align:center;
         padding:0;
         cursor:pointer;
+        @include transitionFast(background-color);
 
         &.active {
             background-color:$green;
         }
 
         &:hover {
+            background-color:$darken($gold 5%);
         }
     }
 }

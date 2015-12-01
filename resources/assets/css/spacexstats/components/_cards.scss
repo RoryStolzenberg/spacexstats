@@ -57,6 +57,18 @@
         text-transform:uppercase;
         font-family:$segoeWP;
 
+        .thumb {
+            background-size:cover;
+            background-position:center center;
+            border-radius:$border-radius-large;
+            width:100px;
+            height:100px;
+            position:absolute;
+            top:-20px;
+            left:20px;
+            display: inline-block;
+        }
+
         .mission-name {
             font-family:$brandonGrotesque;
             font-size:40px;
@@ -79,39 +91,40 @@
         padding:10px;
         text-align:center;
         vertical-align: middle;
-    }
 
-    .keys {
-        font-family:$montserrat;
-    }
+        .keys {
+            font-family:$montserrat;
+        }
 
-    .thumb {
-        background-size:cover;
-        background-position:center center;
-        border-radius:$border-radius-large;
-        width:100px;
-        height:100px;
-        position:absolute;
-        top:-20px;
-        left:20px;
-        display: inline-block;
-    }
+        .keys, .values {
+            @include gridle_grid(6 small);
 
-    .launch-count {
-        width:50px;
-        height:50px;
-        border-radius:50%; // Make it circular
-        background-color:$blue;
-        display:block;
-        color:$white;
-        line-height:50px;
-        text-align: center;
-        margin:0 auto;
-    }
+            > div {
+                @include gridle_grid(1on9);
 
-    .launch-illumination {
-        width:48px;
-        height:48px;
+                @include gridle_state(small) {
+                    @include gride_grid(12);
+                    height:100px;
+                }
+            }
+        }
+
+        .launch-count {
+            width:50px;
+            height:50px;
+            border-radius:50%; // Make it circular
+            background-color:$blue;
+            display:block;
+            color:$white;
+            line-height:50px;
+            text-align: center;
+            margin:0 auto;
+        }
+
+        .launch-illumination {
+            width:48px;
+            height:48px;
+        }
     }
 }
 
