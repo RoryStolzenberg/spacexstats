@@ -1,6 +1,6 @@
 # Welcome to the {{ \Redis::hget('live:reddit', 'title') }}!
 
-{{ \Redis::get('live:description') }}
+{{ \Redis::hget('live:description', 'raw') }}
 
 ### Watching the launch live
 

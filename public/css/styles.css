@@ -8252,6 +8252,9 @@ section.comments {
 .md em {
   font-style: italic; }
 
+.md strong {
+  font-weight: bold; }
+
 .subscribe {
   text-align: center;
   font-size: 0; }
@@ -8700,6 +8703,18 @@ button.canned-response {
   padding: 0;
   font-size: smaller;
   letter-spacing: normal; }
+
+.live-updates .update {
+  border-bottom: 1px solid #CCC;
+  padding: 20px 0; }
+  .live-updates .update .update-timestamp {
+    font-size: 18px;
+    font-family: "Montserrat", sans-serif; }
+  .live-updates .update i.fa-edit {
+    cursor: pointer;
+    float: right; }
+    .live-updates .update i.fa-edit:hover {
+      color: #ccac55; }
 
 .profile .interactions img {
   width: 64px;

@@ -7,8 +7,8 @@
     <div class="content-wrapper">
         <header class="container">
             <div class="access-links" id="logo"><a href="/">SpaceX Stats <span class="gold">Live</span></a></div>
-            <h1 class="gr-8" ng-if="isActive == false">@{{ liveParameters.pageTitle() }}</h1>
-            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdownTo" type="live"></countdown></div>
+            <h1 class="gr-8" ng-if="!isActive">SpaceX Stats Live</h1>
+            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdown.to" is-paused="liveParameters.countdown.isPaused" type="live"></countdown></div>
             @if (Auth::check())
                 <div class="access-links"><a target="_blank" href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a></div>
             @else
@@ -49,13 +49,13 @@
 
                         <h3>What streams should be shown?</h3>
 
-                        <input type="checkbox" id="spacexstream" name="spacexstream" value="true" ng-model="liveParameters.streamingSources.spacex" />
+                        <input type="checkbox" id="spacexstream" name="spacexstream" value="true" ng-model="liveParameters.streams.spacex" />
                         <label for="spacexstream"><span>SpaceX Stream</span></label>
 
-                        <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streamingSources.nasa" />
+                        <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streams.nasa" />
                         <label for="nasastream"><span>NASA Stream</span></label>
 
-                        <textarea ng-model="liveParameters.description" id="description" name="description" required
+                        <textarea ng-model="liveParameters.description.raw" id="description" name="description" required
                                   placeholder="Write a small introduction about the launch here. 500 < chars, use markdown just like you would on Reddit. This is shown at the top of the Reddit thread.">
                         </textarea>
 
@@ -92,14 +92,21 @@
             <!-- If SpaceXStats live is running -->
             <nav class="in-page" ng-if="isActive">
                 <ul class="container highlights">
-                    <li class="gr-4">@{{ liveParameters.title }} Event</li>
-                    <li class="gr-1">No video</li>
-                    <li class="gr-1">SpaceX</li>
-                    <li class="hidden">NASA Only</li>
-                    <li class="hidden">Split-screen</li>
+                    <li class="gr-5">
+                        @{{ liveParameters.title }} Event
+                        <span ng-if="liveParameters.isForLaunch || liveParameters.reddit.thing !== null">
+                            (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}">Mission Page</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{liveParameters.reddit.thing}}">Reddit Discussion</a></span>)
+                        </span>
+                    </li>
+                    <li class="gr-2 stream-options">
+                        <span ng-click="liveParameters.selectedStream = null">No Video</span>
+                        <span ng-click="liveParameters.selectedStream = 'spacex'">SpaceX</span>
+                        <span class="hidden">NASA Only</span>
+                        <span class="hidden">Split-screen</span>
+                    </li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                        <li class="gr-1"><i class="fa fa-cog" ng-click="settings.isEditingSettings = !settings.isEditingSettings"></i></li>
+                        <li class="gr-1 float-right"><i class="fa fa-cog" ng-click="settings.isEditingSettings = !settings.isEditingSettings"></i></li>
                     @endif
                 </ul>
             </nav>
@@ -108,7 +115,40 @@
                 <section class="editing-settings container" ng-if="isActive && settings.isEditingSettings">
                     <div class="gr-7">
                         <h3>Settings</h3>
+                        <form name="settingsForm">
+                            <ul>
+                                <li>
+                                    <label>Description</label>
+                                    <texarea name="description" ng-model="liveParameters.description.raw" required></texarea>
+                                </li>
+                                <li>
+
+                                </li>
+                            </ul>
+                        </form>
                         <button ng-click="settings.updateSettings()">Save Settings</button>
+
+                        <div ng-if="!liveParameters.countdown.isPaused">
+                            <h3>Pause Countdown</h3>
+                            <p>In the event of a hold, you can pause the countdown below. Come back here once the launch has resumed to enter a new launch time.</p>
+                            <button ng-click="settings.pauseCountdown()">Pause Countdown</button>
+                        </div>
+
+                        <div ng-if="liveParameters.countdown.isPaused">
+                            <h3>Resume Countdown</h3>
+                            <p>In the event of a hold, you can pause the countdown below. Come back here once the launch has resumed to enter a new launch time.</p>
+                            <form name="resumeLaunchForm">
+                                <ul>
+                                    <li>
+                                        <datetime type="datetime" ng-model="liveParameters.countdown.newLaunchTime"></datetime>
+                                    </li>
+                                    <li>
+                                        <button ng-click="settings.resumeCountdown()">Resume Countdown</button>
+                                    </li>
+                                </ul>
+                            </form>
+                        </div>
+
                     </div>
                     <div class="gr-5 canned-responses" ng-if="liveParameters.isForLaunch">
                         <h3>Canned Responses</h3>
@@ -164,7 +204,7 @@
                         <p>Are you sure?</p>
                         <p>What will this do? It will set SpaceXStats Live back to the original state when you created the event. It will archive all updates, and destroy any miscellaneous data. Once done, you will be unset as launch controller.</p>
                         <p>The Reddit Live Thread will remain visible and stickied, but you will no longer be able to edit the thread. </p>
-                        <button class="warning" ng-click="settings.turnOffSpaceXStatsLive()">Turn Off</button>
+                        <button class="warning" ng-click="settings.turnOffSpaceXStatsLive()" ng-disabled="settings.isTurningOff">Turn Off</button>
                     </div>
                 </section>
             @endif
@@ -214,15 +254,19 @@
                 </section>
             @endif
 
-            <section ng-if="isActive" id="content" class="container">
+            <section ng-if="isActive" id="content" class="live-updates container">
                 <div class="gr-9">
-                    Sections, maps
+                    <!--<h3>Information & Maps</h3>
+                    <div class="description" ng-bind="liveParameters.description"></div>-->
 
                     <h3>Updates</h3>
-                    <div ng-repeat="update in updates | orderBy:'id':true">
+                    <div class="update" ng-repeat="update in updates | orderBy:'id':true">
                         <div>
-                            <p><span>@{{ update.timestamp }}</span> @{{ update.createdAt }}</p>
-                            <i class="fa fa-edit" ng-if="auth == true" ng-click="update.isEditFormVisible = true"></i>
+                            <p><span class="update-timestamp" ng-mouseover="update.isShowingTimestamp = true" ng-mouseleave="update.isShowingTimestamp = false">@{{ update.timestamp }}</span>
+                                <small class="update-datetime" ng-show="update.isShowingTimestamp">@{{ update.createdAt }} UTC</small>
+                                <i class="fa fa-edit" ng-if="auth == true" ng-click="update.isEditFormVisible = true"></i>
+                            </p>
+
                         </div>
 
                         <div class="md" ng-bind-html="update.updateMd"></div>

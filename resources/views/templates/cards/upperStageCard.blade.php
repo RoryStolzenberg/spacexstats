@@ -25,7 +25,7 @@
 
             @elseif ($mission->upperStage->upperstage_status == 'Earth Orbit')
                 <span class="outcome">In Orbit</span>
-                <countdown specificity="7" countdown-to="'{{ $mission->launch_date_time }}'" type="classic"></countdown>
+                <countdown specificity="7" countdown-to="'{{ $mission->launch_date_time }}'" is-paused="false" type="classic"></countdown>
                 <p>Launched {{ $mission->present()->launchDateTime('M j, Y') }} - Now</p>
                 <p>Time In Orbit</p>
 

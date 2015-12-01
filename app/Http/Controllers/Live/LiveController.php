@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Input;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
+use Parsedown;
 use SpaceXStats\Events\Live\LiveStartedEvent;
 use SpaceXStats\Events\Live\LiveUpdateCreatedEvent;
 use SpaceXStats\Events\Live\LiveUpdateUpdatedEvent;
 use SpaceXStats\Events\Live\LiveEndedEvent;
-use SpaceXStats\Facades\BladeRenderer;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Jobs\UpdateRedditLiveThreadJob;
 use SpaceXStats\Live\LiveUpdate;
@@ -37,7 +37,8 @@ class LiveController extends Controller {
             'reddit' => Redis::hgetall('live:reddit'),
             'sections' => json_decode(Redis::get('live:sections')),
             'resources' => json_decode(Redis::get('live:resources')),
-            'description' => Redis::get('live:description')
+            'description' => Redis::hgetall('live:description'),
+            'streams' => Redis::hgetall('live:streams')
         ];
 
         if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::IsAdmin()) {
@@ -123,24 +124,43 @@ class LiveController extends Controller {
         return response()->json(null, 204);
     }
 
+    public function pauseCountdown() {
+
+    }
+
+    public function resumeCountdown() {
+
+    }
+
     public function create() {
         // Turn on SpaceXStats Live
         Redis::set('live:active', true);
 
         // Establish redis parameters
-        Redis::hmset('live:streams', array(
-            'nasastream' => Input::get('nasastream'),
-            'spacexstream' => Input::get('spacexstream')
-        ));
+        Redis::hmset('live:streams', [
+            'nasa' => Input::get('nasa'),
+            'spacex' => Input::get('spacex')
+        ]);
 
-        Redis::set('live:countdownTo', Input::get('countdownTo'));
+        Redis::hmset('live:countdown', [
+            'to' => Input::get('countdown.to'),
+            'isPaused' => false
+        ]);
 
         Redis::set('live:title', Input::get('title'));
-        Redis::set('live:description', Input::get('description'));
+        Redis::hmset('live:description', [
+            'raw' => Input::get('description.raw'),
+            'markdown' => Parsedown::instance()->parse(Input::get('description.raw'))
+        ]);
         Redis::set('live:isForLaunch', Input::get('isForLaunch'));
 
         Redis::set('live:resources', json_encode(Input::get('resources')));
         Redis::set('live:sections', json_encode(Input::get('sections')));
+
+        // Set the Reddit redis parameters
+        Redis::hmset('live:reddit', [
+            'title' => Input::get('reddit.title')
+        ]);
 
         // Create the canned responses
         Redis::hmset('live:cannedResponses', [
@@ -157,7 +177,7 @@ class LiveController extends Controller {
         ]);
 
         // Render the Reddit thread template
-        $templatedOutput = BladeRenderer::render('livethreadcontents', array());
+        $templatedOutput = view('templates.livethreadcontents')->with(array())->render();
 
         // Create the Reddit thread (create a service for this)
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
@@ -171,26 +191,28 @@ class LiveController extends Controller {
             'title' => Input::get('reddit.title')
         ]);
 
-        // error check reddit here
-
-        // Set the Reddit redis parameters
-        Redis::hmset('live:streams', array(
+        Redis::hmset('live:reddit', [
             'thing' => $response->data->name,
-            'title' => Input::get('redditTitle')
-        ));
+        ]);
 
         // Broadcast event to turn on spacexstats live
         event(new LiveStartedEvent([
             'active' => true,
-            'spacexstream' => Input::get('spacexstream'),
-            'nasastream' => Input::get('nasastream'),
+            'streams' => [
+                'spacex' => Input::get('streams.spacex'),
+                'nasa' => Input::get('streams.nasa'),
+            ],
+            'countdown' => [
+                'to' => Input::get('countdown.to'),
+                'isPaused' => false,
+            ],
             'countdownTo' => Input::get('countdownTo'),
             'title' => Input::get('title'),
             'reddit' => [
                 'title' => Input::get('reddit.title'),
                 'thing' => Input::get('reddit.thing'),
             ],
-            'description' => Input::get('description'),
+            'description' => Redis::hgetall('live:description'),
             'isForLaunch' => Input::get('isForLaunch'),
             'resources' => Input::get('resources'),
             'sections' => Input::get('sections'),

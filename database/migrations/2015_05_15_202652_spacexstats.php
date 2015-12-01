@@ -159,6 +159,7 @@ class Spacexstats extends Migration {
             $table->smallInteger('launch_specificity')->unsigned();
             $table->datetime('launch_exact')->nullable(); // Nonoptional Values
             $table->string('launch_approximate', Varchar::tiny)->nullable();
+            $table->boolean('launch_paused')->default(false);
             $table->string('name', Varchar::tiny);
             $table->string('slug', Varchar::tiny);
             $table->string('contractor', Varchar::compact);

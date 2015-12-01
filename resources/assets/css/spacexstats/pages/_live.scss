@@ -59,3 +59,24 @@ button.canned-response {
     font-size:smaller;
     letter-spacing: normal;
 }
+
+.live-updates {
+    .update {
+        border-bottom:1px solid $bordergrey;
+        padding:20px 0;
+
+        .update-timestamp {
+            font-size:18px;
+            font-family: $montserrat;
+        }
+
+        i.fa-edit {
+            cursor:pointer;
+            float:right;
+
+            &:hover {
+                color:$gold;
+            }
+        }
+    }
+}

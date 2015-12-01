@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
 use Illuminate\Contracts\Bus\SelfHandling;
-use SpaceXStats\Facades\BladeRenderer;
 
 class UpdateRedditLiveThreadJob extends Job implements SelfHandling, ShouldQueue
 {
@@ -28,7 +27,7 @@ class UpdateRedditLiveThreadJob extends Job implements SelfHandling, ShouldQueue
     public function handle()
     {
         // Rerender content
-        $templatedOutput = View::make('livethreadcontents', [
+        /*$templatedOutput = view('templates.livethreadcontents')->with([
             'updates' => collect(Redis::lrange('live:updates', 0, -1))->reverse()->map(function($update) {
                 return json_decode($update);
             })
@@ -39,8 +38,8 @@ class UpdateRedditLiveThreadJob extends Job implements SelfHandling, ShouldQueue
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         // Update Thread
-        if (Redis::exists('live:reddit:thing')) {
-            $reddit->thing(Redis::get('live:reddit:thing'))->edit($templatedOutput);
-        }
+        $reddit->thing(Redis::hget('live:reddit', 'thing'))->edit($templatedOutput);*/
+
+        print_r('done!');
     }
 }

@@ -74,7 +74,7 @@ abstract class Mailer {
             $email->user_id = $user->user_id;
             $email->notification_id = $notificationType;
             $email->subject = $subject;
-            $email->body = View::make($view, $data)->render();
+            $email->body = view($view)->with($data)->render();
             $email->status = EmailStatus::Sent;
             $email->sent_at = $email->created_at = $email->updated_at = $now;
         });

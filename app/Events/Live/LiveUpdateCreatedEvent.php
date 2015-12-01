@@ -13,7 +13,7 @@ class LiveUpdateCreatedEvent extends Event implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @return void
+     * @param LiveUpdate $liveUpdate
      */
     public function __construct(LiveUpdate $liveUpdate)
     {

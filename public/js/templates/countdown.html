@@ -1,4 +1,4 @@
-<table class="countdown" ng-if="isLaunchExact && type == 'classic'">
+<table class="countdown" ng-if="isLaunchExact && type == 'classic' && !isPaused">
     <tr>
         <td class="value days">{{ days }}</td>
         <td class="value hours">{{ hours }}</td>
@@ -12,7 +12,7 @@
         <td class="unit seconds">{{ secondsText }}</td>
     </tr>
 </table>
-<table class="single" ng-if="!isLaunchExact && type == 'classic'">
+<table class="single" ng-if="!isLaunchExact && type == 'classic' && !isPaused">
     <tr>
         <td class="value">{{ countdownText }}</td>
     </tr>
@@ -29,3 +29,6 @@
         <td>{{ seconds }}<small>s</small></td>
     </tr>
 </table>
+<div class="countdown" ng-if="isPaused">
+    <p class="value">Paused</p>
+</div>

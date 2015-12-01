@@ -23,6 +23,7 @@
                 this.getStartedHeroText = 'Awesome. We just need a bit of info first.'
             },
             isCreating: false,
+            isTurningOff: false,
             turnOnSpaceXStatsLive: function() {
                 $scope.settings.isCreating = true;
                 liveService.create($scope.liveParameters).then(function() {
@@ -32,6 +33,7 @@
                 });
             },
             turnOffSpaceXStatsLive: function() {
+                $scope.settings.isTurningOff = true;
                 liveService.destroy().then(function() {
                     $scope.isActive = $scope.auth = false;
                 });
@@ -67,6 +69,12 @@
                 liveService.updateSettings($scope.liveParameters).then(function(response) {
                     $scope.settings.isEditingSettings = false;
                 });
+            },
+            pauseCountdown: function() {
+                liveService.pauseCountdown();
+            },
+            resumeCountdown: function() {
+                liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime);
             }
         };
 
@@ -75,23 +83,22 @@
             title: laravel.title ? laravel.title : $scope.data.upcomingMission.name,
             reddit: {
                 title: laravel.reddit.title ? laravel.reddit.title : '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread',
-                thing: laravel.reddit.thing ? laravel.reddit.thing : null,
+                thing: laravel.reddit.thing ? laravel.reddit.thing : null
             },
-            pageTitle: function() {
-                if (!$scope.settings.isActive) {
-                    return 'SpaceXStats Live';
-                } else {
-                    return 'countdown here';
-                }
+            countdown: {
+                to: $scope.data.upcomingMission.launch_date_time,
+                isPaused: false,
+                newLaunchTime: null
             },
-            countdownTo: $scope.data.upcomingMission.launch_date_time,
-            isCountdownPaused: false,
-            streamingSources: {
+            streams: {
                 nasa: false,
                 spacex: false
             },
-            selectedStreamingSource: 'none',
-            description: laravel.description,
+            selectedStream: 'spacex',
+            description: {
+                raw: laravel.description.raw,
+                markdown: laravel.description.markdown
+            },
             sections: laravel.sections ? laravel.sections : [],
             resources: laravel.resources ? laravel.resources : []
         };
@@ -147,11 +154,18 @@
 
         // Websocket listeners
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveStartedEvent', function(data) {
+            console.log(data);
             $scope.isActive = true;
+            $scope.liveParameters.description = data.data.description;
             $scope.liveParameters.sections = data.data.sections;
             $scope.liveParameters.resources = data.data.resources;
             $scope.liveParameters.title = data.data.title;
+            $scope.liveParameters.reddit = data.data.reddit;
             $scope.$apply();
+        });
+
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveCountdownEvent', function(data) {
+
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
@@ -184,12 +198,20 @@
             return $http.patch('/live/send/message', message);
         };
 
+        this.pauseCountdown = function() {
+            return $http.patch('live/send/countdown/pause');
+        };
+
+        this.resumeCountdown = function(data) {
+            return $http.patch('live/send/countdown/resume', data);
+        };
+
         this.updateSettings = function(settings) {
             return $http.post('/live/send/settings', settings);
         };
 
         this.updateCannedResponses = function(cannedResponses) {
-            return $http.patch('/live/sent/cannedresponses', cannedResponses);
+            return $http.patch('/live/send/cannedresponses', cannedResponses);
         };
 
         this.create = function(createThreadParameters) {
