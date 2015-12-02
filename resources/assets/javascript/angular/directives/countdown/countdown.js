@@ -9,7 +9,7 @@
             scope: {
                 specificity: '=',
                 countdownTo: '=',
-                isPaused: '=',
+                isPaused: '=?',
                 type: '@',
                 callback: '&?'
             },
@@ -23,7 +23,7 @@
 
                 var countdownProcessor = function() {
 
-                    if (!$scope.isPaused) {
+                    if (!$scope.isPaused || angular.isUndefined($scope.isPaused)) {
                         var launchUnixSeconds = $scope.launchUnixSeconds;
                         var currentUnixSeconds = Math.floor(Date.now() / 1000);
 
