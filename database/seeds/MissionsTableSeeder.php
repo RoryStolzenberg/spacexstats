@@ -600,7 +600,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Rideshare)->firstOrFail()->mission_type_id,
             'launch_order_id' => 35,
-            'launch_exact' => Carbon::parse(2016, 9, 15, 0, 0, 0),
+            'launch_exact' => Carbon::create(2016, 9, 15, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
             'name' => 'STP-2',
@@ -615,7 +615,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 36,
-            'launch_exact' => Carbon::parse(2016, 10, 31, 0, 0, 0),
+            'launch_exact' => Carbon::create(2016, 10, 31, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
             'name' => 'SES-10',
@@ -645,7 +645,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CrewDragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 38,
-            'launch_exact' => Carbon::parse(2016, 12, 31, 0, 0, 0),
+            'launch_exact' => Carbon::create(2016, 12, 31, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
             'name' => 'EchoStar 105/SES-11',
@@ -945,7 +945,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 58,
-            'launch_exact' => Carbon::parse(2017, 10, 1, 0, 0, 0),
+            'launch_exact' => Carbon::create(2017, 10, 1, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
             'name' => 'SES-14/GOLD',
