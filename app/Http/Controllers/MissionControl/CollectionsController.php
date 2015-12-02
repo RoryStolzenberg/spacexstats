@@ -1,7 +1,6 @@
 <?php 
  namespace SpaceXStats\Http\Controllers\MissionControl;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use SpaceXStats\Http\Controllers\Controller;
@@ -22,7 +21,7 @@ class CollectionsController extends Controller {
 
     // GET /missioncontrol/collections/{collection_id}
     public function get($collection_id) {
-        $collection = Collection::findOrFail($collection_id);
+        $collection = Collection::with('objects')->findOrFail($collection_id);
 
         return view('missionControl.collections.get', array(
             'collection' => $collection
@@ -49,8 +48,13 @@ class CollectionsController extends Controller {
         return response()->json(null, 400);
     }
 
-    // PUT /missioncontrol/collections/{collection_id}
+    // DELETE /missioncontrol/collections/{collection_id}
     public function delete($collection_id) {
+        return response()->json();
+    }
+
+    // PATCH /missioncontrol/collections/merge/{first_collection_id}/into/{second_collection_id}
+    public function merge() {
         return response()->json();
     }
 

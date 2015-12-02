@@ -62,7 +62,7 @@ table {
 .state-default .row, .state-default .row-reverse, .row, .row-reverse {
   zoom: 1; }
 
-.state-default .gr-1on5, .state-default .gr-1on8, .state-default .gr-1on9, .state-default .gr-0, .state-default .gr-1, .state-default .gr-2, .state-default .gr-3, .state-default .gr-4, .state-default .gr-5, .state-default .gr-6, .state-default .gr-7, .state-default .gr-8, .state-default .gr-9, .state-default .gr-10, .state-default .gr-11, .state-default .gr-12, .gr-1on5, .gr-1on8, .gr-1on9, .gr-0, .gr-1, .gr-2, .gr-3, .gr-4, .gr-5, .gr-6, .gr-7, .gr-8, .gr-9, .gr-10, .gr-11, .gr-12, #logo, header > nav, section.details #live-tweets, .upload-type li, body.live .access-links#logo {
+.state-default .gr-1on5, .state-default .gr-1on8, .state-default .gr-1on9, .state-default .gr-0, .state-default .gr-1, .state-default .gr-2, .state-default .gr-3, .state-default .gr-4, .state-default .gr-5, .state-default .gr-6, .state-default .gr-7, .state-default .gr-8, .state-default .gr-9, .state-default .gr-10, .state-default .gr-11, .state-default .gr-12, .gr-1on5, .gr-1on8, .gr-1on9, .gr-0, .gr-1, .gr-2, .gr-3, .gr-4, .gr-5, .gr-6, .gr-7, .gr-8, .gr-9, .gr-10, .gr-11, .gr-12, #logo, header > nav, section.details #live-tweets, .upload-type li, body.live .access-links#logo, .mission-card .bottom .keys > div, .mission-card .bottom .values > div {
   display: inline-block;
   min-height: 1px;
   float: left;
@@ -127,7 +127,7 @@ table {
     zoom: 1; } }
 
 @media (max-width: 640px) {
-  .state-small .gr-1on5\@small, .state-small .gr-1on8\@small, .state-small .gr-1on9\@small, .state-small .gr-0\@small, .state-small .gr-1\@small, .state-small .gr-2\@small, .state-small .gr-3\@small, .state-small .gr-4\@small, .state-small .gr-5\@small, .state-small .gr-6\@small, .state-small .gr-7\@small, .state-small .gr-8\@small, .state-small .gr-9\@small, .state-small .gr-10\@small, .state-small .gr-11\@small, .state-small .gr-12\@small, .gr-1on5\@small, .gr-1on8\@small, .gr-1on9\@small, .gr-0\@small, .gr-1\@small, .gr-2\@small, .gr-3\@small, .gr-4\@small, .gr-5\@small, .gr-6\@small, .gr-7\@small, .gr-8\@small, .gr-9\@small, .gr-10\@small, .gr-11\@small, .gr-12\@small, .state-small .header-wrapper header i, .header-wrapper header i, .state-small #logo, #logo, .state-small .mission-status-outcomes, .mission-status-outcomes {
+  .state-small .gr-1on5\@small, .state-small .gr-1on8\@small, .state-small .gr-1on9\@small, .state-small .gr-0\@small, .state-small .gr-1\@small, .state-small .gr-2\@small, .state-small .gr-3\@small, .state-small .gr-4\@small, .state-small .gr-5\@small, .state-small .gr-6\@small, .state-small .gr-7\@small, .state-small .gr-8\@small, .state-small .gr-9\@small, .state-small .gr-10\@small, .state-small .gr-11\@small, .state-small .gr-12\@small, .gr-1on5\@small, .gr-1on8\@small, .gr-1on9\@small, .gr-0\@small, .gr-1\@small, .gr-2\@small, .gr-3\@small, .gr-4\@small, .gr-5\@small, .gr-6\@small, .gr-7\@small, .gr-8\@small, .gr-9\@small, .gr-10\@small, .gr-11\@small, .gr-12\@small, .state-small .header-wrapper header i, .header-wrapper header i, .state-small #logo, #logo, .state-small .mission-status-outcomes, .mission-status-outcomes, .state-small .mission-card .bottom .keys, .state-small .mission-card .bottom .values, .mission-card .bottom .keys, .mission-card .bottom .values, .state-small .mission-card .bottom .keys > div, .state-small .mission-card .bottom .values > div, .mission-card .bottom .keys > div, .mission-card .bottom .values > div {
     display: inline-block;
     min-height: 1px;
     float: left;
@@ -8545,6 +8545,17 @@ body.future-mission .highlights {
     right: -10px; }
     .display-date-time .launch p {
       line-height: 20px; }
+    .display-date-time .launch:before {
+      content: "";
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      top: 0;
+      left: -30px;
+      border-right: 30px solid #ccac55;
+      border-bottom: 40px solid transparent;
+      z-index: -1; }
     .display-date-time .launch:after {
       width: 0px;
       height: 0px;
@@ -8576,7 +8587,11 @@ body.future-mission .highlights {
     text-transform: uppercase;
     text-align: center;
     padding: 0;
-    cursor: pointer; }
+    cursor: pointer;
+    -webkit-transition: background-color ease-in-out 0.3s;
+            transition: background-color ease-in-out 0.3s; }
+    .display-date-time .timezone-option:hover {
+      background-color: #c6a241; }
     .display-date-time .timezone-option.active {
       background-color: #40C085; }
 
@@ -8922,6 +8937,16 @@ button.canned-response {
     color: #8B939B;
     text-transform: uppercase;
     font-family: "Segoe WP", sans-serif; }
+    .mission-card .top .thumb {
+      background-size: cover;
+      background-position: center center;
+      border-radius: 8px;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      top: -20px;
+      left: 20px;
+      display: inline-block; }
     .mission-card .top .mission-name {
       font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
       font-size: 40px;
@@ -8937,31 +8962,37 @@ button.canned-response {
     padding: 10px;
     text-align: center;
     vertical-align: middle; }
-  .mission-card .keys {
-    font-family: "Montserrat", sans-serif; }
-  .mission-card .thumb {
-    background-size: cover;
-    background-position: center center;
-    border-radius: 8px;
-    width: 100px;
-    height: 100px;
-    position: absolute;
-    top: -20px;
-    left: 20px;
-    display: inline-block; }
-  .mission-card .launch-count {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #3569A4;
-    display: block;
-    color: #FAFAFA;
-    line-height: 50px;
-    text-align: center;
-    margin: 0 auto; }
-  .mission-card .launch-illumination {
-    width: 48px;
-    height: 48px; }
+    .mission-card .bottom .keys {
+      font-family: "Montserrat", sans-serif; }
+    .state-small .mission-card .bottom .keys, .state-small .mission-card .bottom .values {
+      width: 50%; }
+    @media (max-width: 640px) {
+      .mission-card .bottom .keys, .mission-card .bottom .values {
+        width: 50%; } }
+    .mission-card .bottom .keys > div, .mission-card .bottom .values > div {
+      width: 11.11111%; }
+      .state-small .mission-card .bottom .keys > div, .state-small .mission-card .bottom .values > div {
+        width: 100%;
+        display: inline-block;
+        height: 100px; }
+      @media (max-width: 640px) {
+        .mission-card .bottom .keys > div, .mission-card .bottom .values > div {
+          width: 100%;
+          display: inline-block;
+          height: 100px; } }
+    .mission-card .bottom .launch-count {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-color: #3569A4;
+      display: block;
+      color: #FAFAFA;
+      line-height: 50px;
+      text-align: center;
+      margin: 0 auto; }
+    .mission-card .bottom .launch-illumination {
+      width: 48px;
+      height: 48px; }
 
 .object-card {
   margin: 20px 0;

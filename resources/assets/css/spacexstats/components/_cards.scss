@@ -97,13 +97,15 @@
         }
 
         .keys, .values {
-            @include gridle_grid(6 small);
+            @include gridle_state(small) {
+                @include gridle_grid(6);
+            }
 
             > div {
-                @include gridle_grid(1on9);
+                @include gridle_grid('1on9');
 
                 @include gridle_state(small) {
-                    @include gride_grid(12);
+                    @include gridle_grid(12);
                     height:100px;
                 }
             }

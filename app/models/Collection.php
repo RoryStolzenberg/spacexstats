@@ -1,11 +1,13 @@
 <?php
 namespace SpaceXStats\Models;
 use Illuminate\Database\Eloquent\Model;
+use SpaceXStats\Presenters\CollectionPresenter;
+use SpaceXStats\Presenters\PresentableTrait;
 use SpaceXStats\Validators\ValidatableTrait;
 
 class Collection extends Model {
 
-    use ValidatableTrait;
+    use ValidatableTrait, PresentableTrait;
 
     protected $table = 'collections';
     protected $primaryKey = 'collection_id';
@@ -16,10 +18,12 @@ class Collection extends Model {
     protected $fillable = [];
     protected $guarded = [];
 
+    protected $presenter = CollectionPresenter::class;
+
     // Validation
     protected $rules = array(
-        'title' => 'varchar:small',
-        'summary' => 'varchar:large'
+        'title' => ['min:10', 'varchar:small'],
+        'summary' => ['min:100', 'varchar:large']
     );
 
     protected $messages = [];

@@ -46,18 +46,17 @@
                                 <!-- New Form -->
                                 <fieldset class="gr-8 upload-basic-info">
                                     <legend>Basic Info</legend>
-
                                     <ul>
                                         <li>
                                             <label>
                                                 <p>Title</p>
-                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this image" minlength="10" required />
+                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this image" ng-minlength="10" required />
                                             </label>
                                         </li>
                                         <li>
                                             <label>
                                                 <p>Summary</p>
-                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" minlength="100" required character-counter></textarea>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this image" ng-minlength="100" required character-counter></textarea>
                                             </label>
                                         </li>
                                     </ul>
@@ -71,7 +70,6 @@
 
                                 <fieldset class="gr-8 upload-attribution">
                                     <legend>Attribution</legend>
-
                                     <ul>
                                         <li>
                                             <label>
@@ -90,7 +88,6 @@
 
                                 <fieldset class="gr-4 upload-metadata">
                                     <legend>Metadata</legend>
-
                                     <ul>
                                         <li>
                                             <label>
@@ -130,7 +127,6 @@
 
                                 <fieldset class="gr-12">
                                     <legend>Tags</legend>
-
                                     <ul>
                                         <li>
                                             <label>
@@ -144,7 +140,6 @@
 
                                 <fieldset class="gr-12">
                                     <legend>Finally...</legend>
-
                                     <ul>
                                         <li class="gr-6">
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
@@ -170,18 +165,17 @@
 
                                 <fieldset class="gr-8 upload-basic-info">
                                     <legend>Basic Info</legend>
-
                                     <ul>
                                         <li>
                                             <label>
                                                 <p>Title</p>
-                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this GIF" minlength="10" required />
+                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this GIF" ng-minlength="10" required />
                                             </label>
                                         </li>
                                         <li>
                                             <label>
                                                 <p>Summary</p>
-                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" minlength="100" required character-counter></textarea>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this GIF" ng-minlength="100" required character-counter></textarea>
                                             </label>
                                         </li>
                                     </ul>
@@ -234,7 +228,7 @@
                                         <li>
                                             <label>
                                                 <p>Type of @{{ file.type }}</p>
-                                                <select ng-model="file.subtype" ng-options="subtype.value as subtype.display for subtype in data.subtypes.images">
+                                                <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.images">
                                                     <option value="">None</option>
                                                 </select>
                                             </label>
@@ -251,29 +245,36 @@
                                     </ul>
                                 </fieldset>
 
-                                <fieldset>
+                                <fieldset class="gr-12">
                                     <legend>Tags</legend>
-
                                     <ul>
                                         <li>
                                             <label>
                                                 <p>Tags</p>
                                                 <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                                             </label>
                                         </li>
                                     </ul>
                                 </fieldset>
 
-
-
-                                    <li class="gr-12">
-                                        <label>
-                                            <p>Submit anonymously?</p>
+                                <fieldset class="gr-12">
+                                    <legend>Finally...</legend>
+                                    <ul>
+                                        <li class="gr-6">
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
-                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
-                                        </label>
-                                    </li>
-                                </ul>
+                                            <label for="@{{ 'anonymous-file' + $index }}">
+                                                <span>Submit anonymously?</span>
+                                            </label>
+                                        </li>
+                                        <li class="gr-6">
+                                            <input type="checkbox" name="original_content" id="@{{ 'original-content' + $index }}" value="true" ng-model="file.original_content" />
+                                            <label for="@{{ 'original-content' + $index }}">
+                                                <span>Did you create this yourself?</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
                             </form>
                         </div>
 
@@ -282,51 +283,109 @@
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" id-only="true" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-basic-info">
+                                    <legend>Basic Info</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Title</p>
+                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this audio clip" ng-minlength="10" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Summary</p>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this audio clip" ng-minlength="100" required character-counter></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" placeholder="Who authored this audio clip?" required />
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-4 upload-preview text-center">
+                                    <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
-                                        </label>
-                                    </li>
+                                    <delta-v ng-model="file"></delta-v>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Tags</p>
-                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-attribution">
+                                    <legend>Attribution</legend>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>When was this created?</p>
-                                            <datetime type="date"
-                                                      ng-model="file.originated_at"
-                                                      nullable-toggle="false"></datetime>
-                                        </label>
-                                    </li>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Author</p>
+                                                <input type="text" name="author" ng-model="file.author" placeholder="Who authored this audio clip?" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Attribution/Copyright</p>
+                                                <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-12">
-                                        <label>
-                                            <p>Submit anonymously?</p>
+                                <fieldset class="gr-4 upload-metadata">
+                                    <legend>Metadata</legend>
+
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Related to Mission</p>
+                                                <dropdown
+                                                        name="mission"
+                                                        options="data.missions"
+                                                        ng-model="file.mission_id"
+                                                        unique-key="mission_id"
+                                                        title-key="name"
+                                                        searchable="true"
+                                                        id-only="true">
+                                                </dropdown>
+                                            </label>
+                                        </li>
+
+                                        <li>
+                                            <label>
+                                                <p>When was this created?</p>
+                                                <datetime type="date"
+                                                          ng-model="file.originated_at"
+                                                          nullable-toggle="false"></datetime>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+
+                                <fieldset class="gr-12">
+                                    <legend>Tags</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Tags</p>
+                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+
+                                <fieldset class="gr-12">
+                                    <legend>Finally...</legend>
+                                    <ul>
+                                        <li class="gr-6">
                                             <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
-                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
-                                        </label>
-                                    </li>
-                                </ul>
+                                            <label for="@{{ 'anonymous-file' + $index }}">
+                                                <span>Submit anonymously?</span>
+                                            </label>
+                                        </li>
+                                        <li class="gr-6">
+                                            <input type="checkbox" name="original_content" id="@{{ 'original-content' + $index }}" value="true" ng-model="file.original_content" />
+                                            <label for="@{{ 'original-content' + $index }}">
+                                                <span>Did you create this yourself?</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
                             </form>
                         </div>
 
@@ -334,90 +393,125 @@
                         <div ng-if="file.type == 'Video'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
-                                <ul class="container">
-                                    <li class="gr-4">
-                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
+                                <fieldset class="gr-8 upload-basic-info">
+                                    <legend>Basic Info</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Title</p>
+                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this video" ng-minlength="10" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Summary</p>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this video" ng-minlength="100" required character-counter></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                        <delta-v ng-model="file"></delta-v>
-                                    </li>
+                                <fieldset class="gr-4 upload-preview text-center">
+                                    <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this video" minlength="10" required />
-                                        </label>
-                                    </li>
+                                    <delta-v ng-model="file"></delta-v>
+                                </fieldset>
 
-                                    <li class="gr-8">
-                                        <label>
-                                            <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this video" minlength="100" required character-counter></textarea>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-attribution">
+                                    <legend>Attribution</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Author</p>
+                                                <input type="text" name="author" ng-model="file.author" placeholder="Who created this video?" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Attribution/Copyright</p>
+                                                <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Youtube/Vimeo Link</p>
-                                            <span>Adding a link to this video gains you extra deltaV and keeps site costs down.</span>
-                                            <input type="text" name="external_url" ng-model="file.external_url" />
-                                        </label>
+                                <fieldset class="gr-4 upload-metadata">
+                                    <legend>Metadata</legend>
 
-                                    </li>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Related to Mission</p>
+                                                <dropdown
+                                                        name="mission"
+                                                        options="data.missions"
+                                                        ng-model="file.mission_id"
+                                                        unique-key="mission_id"
+                                                        title-key="name"
+                                                        searchable="true"
+                                                        id-only="true">
+                                                </dropdown>
+                                            </label>
+                                        </li>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" id-only="true" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
-                                        </label>
-                                    </li>
+                                        <li>
+                                            <label>
+                                                <p>Youtube/Vimeo Link</p>
+                                                <span>Adding a link to this video gains you extra deltaV and keeps site costs down.</span>
+                                                <input type="text" name="external_url" ng-model="file.external_url" />
+                                            </label>
+                                        </li>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" placeholder="Who created this video?" required/>
-                                        </label>
-                                    </li>
+                                        <li>
+                                            <label>
+                                                <p>Type of @{{ file.type }}</p>
+                                                <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.videos">
+                                                    <option value="">None</option>
+                                                </select>
+                                            </label>
+                                        </li>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
-                                        </label>
-                                    </li>
+                                        <li>
+                                            <label>
+                                                <p>When was this created?</p>
+                                                <datetime type="date"
+                                                          ng-model="file.originated_at"
+                                                          nullable-toggle="false"></datetime>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Tags</p>
-                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-12">
+                                    <legend>Tags</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Tags</p>
+                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Type</p>
-                                            <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.video">
-                                                <option value="">None</option>
-                                            </select>
-                                        </label>
-                                    </li>
-
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>When was this created?</p>
-                                            <datetime type="date"
-                                                      ng-model="file.originated_at"
-                                                      nullable-toggle="false"></datetime>
-                                        </label>
-                                    </li>
-
-                                    <li class="gr-12">
-                                        <label>
-                                            <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous"/>
-                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
-                                        </label>
-                                    </li>
-                                </ul>
+                                <fieldset class="gr-12">
+                                    <legend>Finally...</legend>
+                                    <ul>
+                                        <li class="gr-6">
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
+                                            <label for="@{{ 'anonymous-file' + $index }}">
+                                                <span>Submit anonymously?</span>
+                                            </label>
+                                        </li>
+                                        <li class="gr-6">
+                                            <input type="checkbox" name="original_content" id="@{{ 'original-content' + $index }}" value="true" ng-model="file.original_content" />
+                                            <label for="@{{ 'original-content' + $index }}">
+                                                <span>Did you create this yourself?</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
                             </form>
                         </div>
 
@@ -425,79 +519,118 @@
                         <div ng-if="file.type == 'Document'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
-                                <ul class="container">
-                                    <li class="gr-4">
-                                        <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
-                                    </li>
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Title</p>
-                                            <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this document" minlength="10" required />
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-basic-info">
+                                    <legend>Basic Info</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Title</p>
+                                                <input type="text" name="title" ng-model="file.title" placeholder="Enter a title for this document" ng-minlength="10" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Summary</p>
+                                                <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this document" ng-minlength="100" required character-counter></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-8">
-                                        <label>
-                                            <p>Summary</p>
-                                            <textarea name="summary" ng-model="file.summary" placeholder="Write a summary about this document" minlength="100" required character-counter></textarea>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-4 upload-preview text-center">
+                                    <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <li class="gr-4">
-                                        <label>
-                                            <p>Related to Mission</p>
-                                            <dropdown options="data.missions" ng-model="file.mission_id" id-only="true" unique-key="mission_id" title-key="name" searchable="true"></dropdown>
-                                        </label>
-                                    </li>
+                                    <delta-v ng-model="file"></delta-v>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Author</p>
-                                            <input type="text" name="author" ng-model="file.author" placeholder="Who produced this document?" required />
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-8 upload-attribution">
+                                    <legend>Attribution</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Author</p>
+                                                <input type="text" name="author" ng-model="file.author" placeholder="Who created this document?" required />
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <p>Attribution/Copyright</p>
+                                                <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Attribution/Copyright</p>
-                                            <textarea name="attribution" ng-model="file.attribution" placeholder="Include any license and author details here. CC-BY-SA, Public Domain, etc."></textarea>
-                                        </label>
-                                    </li>
+                                <fieldset class="gr-4 upload-metadata">
+                                    <legend>Metadata</legend>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Tags</p>
-                                            <tags available-tags="data.tags" ng-model="file.tags"></tags>
-                                        </label>
-                                    </li>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Related to Mission</p>
+                                                <dropdown
+                                                        name="mission"
+                                                        options="data.missions"
+                                                        ng-model="file.mission_id"
+                                                        unique-key="mission_id"
+                                                        title-key="name"
+                                                        searchable="true"
+                                                        id-only="true">
+                                                </dropdown>
+                                            </label>
+                                        </li>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>Type</p>
-                                            <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.documents">
-                                                <option value="">None</option>
-                                            </select>
-                                        </label>
-                                    </li>
+                                        <li>
+                                            <label>
+                                                <p>Type of @{{ file.type }}</p>
+                                                <select ng-model="file.subtype" ng-options="subtype as subtype for subtype in data.subtypes.documents">
+                                                    <option value="">None</option>
+                                                </select>
+                                            </label>
+                                        </li>
 
-                                    <li class="gr-6">
-                                        <label>
-                                            <p>When was this created?</p>
-                                            <datetime type="date"
-                                                      ng-model="file.originated_at"
-                                                      nullable-toggle="false"></datetime>
-                                        </label>
-                                    </li>
+                                        <li>
+                                            <label>
+                                                <p>When was this created?</p>
+                                                <datetime type="date"
+                                                          ng-model="file.originated_at"
+                                                          nullable-toggle="false"></datetime>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
 
-                                    <li class="gr-12">
-                                        <label>
-                                            <p>Submit anonymously?</p>
-                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous"/>
-                                            <label for="@{{ 'anonymous-file' + $index }}"></label>
-                                        </label>
-                                    </li>
-                                </ul>
+                                <fieldset class="gr-12">
+                                    <legend>Tags</legend>
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <p>Tags</p>
+                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
+
+                                <fieldset class="gr-12">
+                                    <legend>Finally...</legend>
+                                    <ul>
+                                        <li class="gr-6">
+                                            <input type="checkbox" name="anonymous" id="@{{ 'anonymous-file' + $index }}" value="true" ng-model="file.anonymous" />
+                                            <label for="@{{ 'anonymous-file' + $index }}">
+                                                <span>Submit anonymously?</span>
+                                            </label>
+                                        </li>
+                                        <li class="gr-6">
+                                            <input type="checkbox" name="original_content" id="@{{ 'original-content' + $index }}" value="true" ng-model="file.original_content" />
+                                            <label for="@{{ 'original-content' + $index }}">
+                                                <span>Did you create this yourself?</span>
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </fieldset>
                             </form>
                         </div>
 
@@ -666,7 +799,7 @@
                                 </li>
                                 <li>
                                     <label>Title Describing The Comment</label>
-                                    <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" placeholder="The title that appears on SpaceX Stats" required ng-minlength="10"  />
+                                    <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" placeholder="The title that appears on SpaceX Stats" required ng-ng-minlength="10"  />
                                 </li>
                                 <li>
                                     <reddit-comment ng-model="redditcomment"></reddit-comment>
@@ -707,7 +840,7 @@
                                 </li>
                                 <li>
                                     <label>Title Describing The Comment</label>
-                                    <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" placeholder="The title that appears on SpaceX Stats" required minlength="10" />
+                                    <input type="text" name="NSFcomment-title" id="article-author" ng-model="NSFcomment.title" placeholder="The title that appears on SpaceX Stats" required ng-minlength="10" />
                                 </li>
                                 <li>
                                     <label>Comment Date</label>
@@ -762,11 +895,11 @@
                         <ul>
                             <li>
                                 <label>Title</label>
-                                <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" ng-minlength="10" required/>
+                                <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" ng-ng-minlength="10" required/>
                             </li>
                             <li>
                                 <label>Content</label>
-                                <textarea name="content" ng-model="text.content" placeholder="Write your post" rows="10" ng-minlength="100" required character-counter></textarea>
+                                <textarea name="content" ng-model="text.content" placeholder="Write your post" rows="10" ng-ng-minlength="100" required character-counter></textarea>
                             </li>
                             <li>
                                 <label>Select related mission</label>

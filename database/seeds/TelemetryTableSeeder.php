@@ -2971,6 +2971,7 @@ class TelemetryTableSeeder extends Seeder {
         ]);
     }
 
+    // Watch this for more telemetry: https://www.youtube.com/watch?v=RtDbDMRG3q8
     public function CASSIOPE() {
         Telemetry::create([
             'mission_id'    => 11,

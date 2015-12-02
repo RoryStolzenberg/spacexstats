@@ -166,12 +166,12 @@ body.future-mission .highlights {
         cursor:pointer;
         @include transitionFast(background-color);
 
-        &.active {
-            background-color:$green;
+        &:hover {
+            background-color:darken($gold, 5%);
         }
 
-        &:hover {
-            background-color:$darken($gold 5%);
+        &.active {
+            background-color:$green;
         }
     }
 }
