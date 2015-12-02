@@ -6,6 +6,7 @@ namespace SpaceXStats\Library\Enums;
 class MissionType extends Enum
 {
     const DragonISS = "Dragon (ISS)";
+    const CrewDragonISS = "Crew Dragon (ISS)";
     const DragonFreeflight = "Dragon (Freeflight)";
     const CommunicationsSatellite = "Communications Satellite";
     const ConstellationMission = "Constellation Mission";
@@ -14,4 +15,5 @@ class MissionType extends Enum
     const Military = "Military";
     const Scientific = "Scientific";
     const Mars = "Mars";
+    const Rideshare = "Rideshare";
 }

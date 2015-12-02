@@ -13,6 +13,7 @@ abstract class Destination extends Enum
     const SupersynchronousGTO = "Supersynchronous GTO";
     const HighEarthOrbit = "High Earth Orbit";
     const EarthSunL1 = "Earth-Sun L1";
-    const LunarOrbit = "Lunar Orbit";
+    const Lunar = "Lunar";
     const Mars = "Mars";
+    const Suborbital = "Suborbital";
 }

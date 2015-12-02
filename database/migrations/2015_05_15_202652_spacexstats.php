@@ -155,7 +155,7 @@ class Spacexstats extends Migration {
         Schema::create('missions', function(Blueprint $table) {
             $table->increments('mission_id');
             $table->integer('mission_type_id')->unsigned();
-            $table->smallInteger('launch_order_id')->unsigned();
+            $table->smallInteger('launch_order_id')->unsigned()->unique();
             $table->smallInteger('launch_specificity')->unsigned();
             $table->datetime('launch_exact')->nullable(); // Nonoptional Values
             $table->string('launch_approximate', Varchar::tiny)->nullable();
