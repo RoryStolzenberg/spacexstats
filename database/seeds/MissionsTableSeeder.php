@@ -445,6 +445,7 @@ class MissionsTableSeeder extends Seeder {
             'outcome' => MissionOutcome::Failure
         ]);
 
+        // Upcoming below
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 25,
@@ -475,6 +476,7 @@ class MissionsTableSeeder extends Seeder {
             'status' => MissionStatus::Upcoming
         ]);
 
+
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
             'launch_order_id' => 27,
@@ -489,14 +491,14 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "Launching Jason-3 to polar",
             'status' => MissionStatus::Upcoming
         ]);
-
+        // Ordered above
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 28,
             'launch_exact' => null,
             'launch_approximate' => 'January 2016',
             'launch_specificity' => LaunchSpecificity::Month,
-            'name' => 'CRS-8',
+            'name' => 'SpaceX CRS-8',
             'contractor' => 'NASA',
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
@@ -506,8 +508,38 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 29,
+            'launch_exact' => Carbon::create(2016, 3, 21, 0, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => LaunchSpecificity::Day,
+            'name' => 'SpaceX CRS-9',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SpaceX CRS-9",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Rideshare)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 30,
+            'launch_exact' => null,
+            'launch_approximate' => 'Q1 2016',
+            'launch_specificity' => LaunchSpecificity::Quarter,
+            'name' => 'SHERPA Flight 1',
+            'contractor' => 'Spaceflight Industries',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "SHERPA Flight 1",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 31,
             'launch_exact' => null,
             'launch_approximate' => 'May 2016',
             'launch_specificity' => LaunchSpecificity::Month,
@@ -521,263 +553,8 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 30,
-            'launch_exact' => null,
-            'launch_approximate' => 'Mid 2016',
-            'launch_specificity' => LaunchSpecificity::SubYear,
-            'name' => 'AMOS-6',
-            'contractor' => 'Spacecom Ltd',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "AMOS-6",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 31,
-            'launch_exact' => null,
-            'launch_approximate' => '2016',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'Eutelsat 117W B & ABS-2A',
-            'contractor' => 'Asia Broadcast Satellite',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::CommunicationsSatellite)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Eutelsat 117W B & ABS-2A",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 32,
-            'launch_exact' => null,
-            'launch_approximate' => '2016',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'JCSAT-14',
-            'contractor' => 'SKY Perfect JSAT Corparation',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::CommunicationsSatellite)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "JCSAT-14",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 33,
-            'launch_exact' => null,
-            'launch_approximate' => '2016',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'SAOCOM 1A',
-            'contractor' => 'CONAE (Argentina)',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SAOCOM 1A",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 34,
-            'launch_exact' => null,
-            'launch_approximate' => '2018',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'SAOCOM 1B',
-            'contractor' => 'CONAE (Argentina)',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SAOCOM 1A",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 35,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'Dragon Inflight Abort',
-            'contractor' => 'SpaceX / NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::Suborbital)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Dragon Inflight Abort",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 36,
-            'launch_exact' => null,
-            'launch_approximate' => '2018',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'Radarsat Constellation',
-            'contractor' => 'Canada',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Radarsat Constellation",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Rideshare)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 37,
-            'launch_exact' => null,
-            'launch_approximate' => 'Q1 2016',
-            'launch_specificity' => LaunchSpecificity::Quarter,
-            'name' => 'SHERPA Flight 1',
-            'contractor' => 'Spaceflight Industries',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SHERPA Flight 1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Rideshare)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 37,
-            'launch_exact' => null,
-            'launch_approximate' => 'Q1 2016',
-            'launch_specificity' => LaunchSpecificity::Quarter,
-            'name' => 'SHERPA Flight 1',
-            'contractor' => 'Spaceflight Industries',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SHERPA Flight 1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Rideshare)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 37,
-            'launch_exact' => null,
-            'launch_approximate' => 'Q1 2016',
-            'launch_specificity' => LaunchSpecificity::Quarter,
-            'name' => 'SHERPA Flight 1',
-            'contractor' => 'Spaceflight Industries',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SHERPA Flight 1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 38,
-            'launch_exact' => null,
-            'launch_approximate' => 'December 2016',
-            'launch_specificity' => LaunchSpecificity::Month,
-            'name' => 'CCtCap Demo Mission 1',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CCtCap Demo Mission 1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 39,
-            'launch_exact' => null,
-            'launch_approximate' => 'Late 2017',
-            'launch_specificity' => LaunchSpecificity::SubYear,
-            'name' => 'HISPASAT-1F',
-            'contractor' => 'HISPASAT Group',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "HISPASAT-1F",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 40,
-            'launch_exact' => null,
-            'launch_approximate' => '2018',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'Arabsat 6A',
-            'contractor' => 'Arab Satellite Communications Organization',
-            'vehicle_id' => 5,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "Arabsat 6A",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 41,
-            'launch_exact' => null,
-            'launch_approximate' => '2016',
-            'launch_specificity' => LaunchSpecificity::SubYear,
-            'name' => 'BulgariaSat-1',
-            'contractor' => 'Bulgaria Sat',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "BulgariaSat-1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 41,
-            'launch_exact' => null,
-            'launch_approximate' => '2016',
-            'launch_specificity' => LaunchSpecificity::SubYear,
-            'name' => 'BulgariaSat-1',
-            'contractor' => 'Bulgaria Sat',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "BulgariaSat-1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 42,
-            'launch_exact' => Carbon::create(2016, 3, 21, 0, 0, 0),
-            'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
-            'name' => 'SpaceX CRS-9',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-9",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 43,
-            'launch_exact' => Carbon::create(2016, 3, 21, 0, 0, 0),
-            'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
-            'name' => 'SpaceX CRS-9',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-9",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 44,
             'launch_exact' => Carbon::create(2016, 6, 10, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
@@ -792,7 +569,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 45,
+            'launch_order_id' => 33,
             'launch_exact' => Carbon::create(2016, 8, 15, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
@@ -806,98 +583,23 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 46,
-            'launch_exact' => Carbon::create(2016, 12, 19, 0, 0, 0),
-            'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
-            'name' => 'SpaceX CRS-12',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-12",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 47,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 34,
             'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'SpaceX CRS-13',
-            'contractor' => 'NASA',
+            'launch_approximate' => 'Mid 2016',
+            'launch_specificity' => LaunchSpecificity::SubYear,
+            'name' => 'AMOS-6',
+            'contractor' => 'Spacecom Ltd',
             'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-13",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 48,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'SpaceX CRS-14',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-14",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 49,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'SpaceX CRS-15',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-15",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CrewDragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 50,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'Demonstration Mission 2',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Demonstration Mission 2",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CrewDragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 50,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'Demonstration Mission 2',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Demonstration Mission 2",
+            'summary' => "AMOS-6",
             'status' => MissionStatus::Upcoming
         ]);
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Rideshare)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 51,
+            'launch_order_id' => 35,
             'launch_exact' => Carbon::parse(2016, 9, 15, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
@@ -911,8 +613,38 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 36,
+            'launch_exact' => Carbon::parse(2016, 10, 31, 0, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => LaunchSpecificity::Day,
+            'name' => 'SES-10',
+            'contractor' => 'SES World Skies',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SES-10",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 37,
+            'launch_exact' => Carbon::create(2016, 12, 19, 0, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => LaunchSpecificity::Day,
+            'name' => 'SpaceX CRS-12',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SpaceX CRS-12",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CrewDragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 52,
+            'launch_order_id' => 38,
             'launch_exact' => Carbon::parse(2016, 12, 31, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
@@ -926,8 +658,23 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 39,
+            'launch_exact' => null,
+            'launch_approximate' => 'December 2016',
+            'launch_specificity' => LaunchSpecificity::Month,
+            'name' => 'CCtCap Demo Mission 1',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "CCtCap Demo Mission 1",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 53,
+            'launch_order_id' => 40,
             'launch_exact' => null,
             'launch_approximate' => 'Late 2016',
             'launch_specificity' => LaunchSpecificity::SubYear,
@@ -942,7 +689,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 54,
+            'launch_order_id' => 41,
             'launch_exact' => null,
             'launch_approximate' => 'Late 2016',
             'launch_specificity' => LaunchSpecificity::SubYear,
@@ -957,7 +704,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 55,
+            'launch_order_id' => 42,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -972,7 +719,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 56,
+            'launch_order_id' => 43,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -987,7 +734,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 57,
+            'launch_order_id' => 44,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1002,7 +749,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 58,
+            'launch_order_id' => 45,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1017,7 +764,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 59,
+            'launch_order_id' => 46,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1032,7 +779,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 60,
+            'launch_order_id' => 47,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1046,68 +793,83 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 61,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 48,
             'launch_exact' => null,
-            'launch_approximate' => '2017',
+            'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
-            'name' => "Iridium NEXT Flight 4",
-            'contractor' => "Iridium",
+            'name' => 'Eutelsat 117W B & ABS-2A',
+            'contractor' => 'Asia Broadcast Satellite',
             'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 4",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 62,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => "Iridium NEXT Flight 5",
-            'contractor' => "Iridium",
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 5",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 63,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => "Iridium NEXT Flight 6",
-            'contractor' => "Iridium",
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 6",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 64,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => "Iridium NEXT Flight 7",
-            'contractor' => "Iridium",
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 7",
+            'destination_id' => Destination::where('destination', DestinationEnum::CommunicationsSatellite)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "Eutelsat 117W B & ABS-2A",
             'status' => MissionStatus::Upcoming
         ]);
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 65,
+            'launch_order_id' => 49,
+            'launch_exact' => null,
+            'launch_approximate' => '2016',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'JCSAT-14',
+            'contractor' => 'SKY Perfect JSAT Corparation',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::CommunicationsSatellite)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "JCSAT-14",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 50,
+            'launch_exact' => null,
+            'launch_approximate' => '2016',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'SAOCOM 1A',
+            'contractor' => 'CONAE (Argentina)',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "SAOCOM 1A",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 51,
+            'launch_exact' => null,
+            'launch_approximate' => '2016',
+            'launch_specificity' => LaunchSpecificity::SubYear,
+            'name' => 'BulgariaSat-1',
+            'contractor' => 'Bulgaria Sat',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "BulgariaSat-1",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 52,
+            'launch_exact' => null,
+            'launch_approximate' => '2016',
+            'launch_specificity' => LaunchSpecificity::SubYear,
+            'name' => 'BulgariaSat-1',
+            'contractor' => 'Bulgaria Sat',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "BulgariaSat-1",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 53,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1122,7 +884,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 66,
+            'launch_order_id' => 54,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1137,112 +899,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 67,
-            'launch_exact' => null,
-            'launch_approximate' => '2017',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'PSN 6',
-            'contractor' => 'PT Pasifik Satelit Nusantara (PSN)',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "PSN 6",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Military)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 68,
-            'launch_exact' => null,
-            'launch_approximate' => '2018',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'SARah 1',
-            'contractor' => 'Bundeswehr (German Intelligence)',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SARah 1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Military)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 69,
-            'launch_exact' => null,
-            'launch_approximate' => '2018',
-            'launch_specificity' => LaunchSpecificity::Year,
-            'name' => 'SARah 2 & SARah 3',
-            'contractor' => 'Bundeswehr (German Intelligence)',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SARah 2 & SARah 3",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 70,
-            'launch_exact' => Carbon::parse(2016, 10, 31, 0, 0, 0),
-            'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
-            'name' => 'SES-10',
-            'contractor' => 'SES World Skies',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES-10",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 71,
-            'launch_exact' => Carbon::parse(2016, 10, 31, 0, 0, 0),
-            'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
-            'name' => 'SES-10',
-            'contractor' => 'SES World Skies',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES-10",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 72,
-            'launch_exact' => Carbon::parse(2017, 10, 1, 0, 0, 0),
-            'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
-            'name' => 'SES-14/GOLD',
-            'contractor' => 'SES World Skies',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES-14/GOLD",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 73,
-            'launch_exact' => null,
-            'launch_approximate' => 'August 2017',
-            'launch_specificity' => LaunchSpecificity::Month,
-            'name' => 'Transiting Exoplanet Survey Satellite (TESS)',
-            'contractor' => 'NASA',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::Lunar)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Transiting Exoplanet Survey Satellite (TESS)",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 74,
+            'launch_order_id' => 55,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1257,7 +914,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 75,
+            'launch_order_id' => 56,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1272,7 +929,52 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 76,
+            'launch_order_id' => 57,
+            'launch_exact' => null,
+            'launch_approximate' => 'August 2017',
+            'launch_specificity' => LaunchSpecificity::Month,
+            'name' => 'Transiting Exoplanet Survey Satellite (TESS)',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::Lunar)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "Transiting Exoplanet Survey Satellite (TESS)",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 58,
+            'launch_exact' => Carbon::parse(2017, 10, 1, 0, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => LaunchSpecificity::Day,
+            'name' => 'SES-14/GOLD',
+            'contractor' => 'SES World Skies',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SES-14/GOLD",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 59,
+            'launch_exact' => null,
+            'launch_approximate' => 'Late 2017',
+            'launch_specificity' => LaunchSpecificity::SubYear,
+            'name' => 'HISPASAT-1F',
+            'contractor' => 'HISPASAT Group',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "HISPASAT-1F",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 60,
             'launch_exact' => null,
             'launch_approximate' => 'H2 2017',
             'launch_specificity' => LaunchSpecificity::Half,
@@ -1282,6 +984,231 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::Lunar)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'summary' => "SpaceIL Lunar Lander (GLXP)",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 61,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'Dragon Inflight Abort',
+            'contractor' => 'SpaceX / NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::Suborbital)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Dragon Inflight Abort",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 62,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'SpaceX CRS-13',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SpaceX CRS-13",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 63,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'SpaceX CRS-14',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SpaceX CRS-14",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 64,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'SpaceX CRS-15',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SpaceX CRS-15",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CrewDragonISS)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 65,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'Demonstration Mission 2',
+            'contractor' => 'NASA',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "Demonstration Mission 2",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 66,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => "Iridium NEXT Flight 4",
+            'contractor' => "Iridium",
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Iridium NEXT Flight 4",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 67,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => "Iridium NEXT Flight 5",
+            'contractor' => "Iridium",
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Iridium NEXT Flight 5",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 68,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => "Iridium NEXT Flight 6",
+            'contractor' => "Iridium",
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Iridium NEXT Flight 6",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 69,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => "Iridium NEXT Flight 7",
+            'contractor' => "Iridium",
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Iridium NEXT Flight 7",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 70,
+            'launch_exact' => null,
+            'launch_approximate' => '2017',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'PSN 6',
+            'contractor' => 'PT Pasifik Satelit Nusantara (PSN)',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "PSN 6",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 71,
+            'launch_exact' => null,
+            'launch_approximate' => '2018',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'SAOCOM 1B',
+            'contractor' => 'CONAE (Argentina)',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "SAOCOM 1A",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 72,
+            'launch_exact' => null,
+            'launch_approximate' => '2018',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'Radarsat Constellation',
+            'contractor' => 'Canada',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Radarsat Constellation",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 73,
+            'launch_exact' => null,
+            'launch_approximate' => '2018',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'Arabsat 6A',
+            'contractor' => 'Arab Satellite Communications Organization',
+            'vehicle_id' => 5,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
+            'summary' => "Arabsat 6A",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Military)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 74,
+            'launch_exact' => null,
+            'launch_approximate' => '2018',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'SARah 1',
+            'contractor' => 'Bundeswehr (German Intelligence)',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "SARah 1",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Military)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 75,
+            'launch_exact' => null,
+            'launch_approximate' => '2019',
+            'launch_specificity' => LaunchSpecificity::Year,
+            'name' => 'SARah 2 & SARah 3',
+            'contractor' => 'Bundeswehr (German Intelligence)',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "SARah 2 & SARah 3",
             'status' => MissionStatus::Upcoming
         ]);
     }
