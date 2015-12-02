@@ -14,7 +14,8 @@ class DestinationsTableSeeder extends Seeder {
         Destination::create(array('destination' => DestinationEnum::SupersynchronousGTO));
         Destination::create(array('destination' => DestinationEnum::HighEarthOrbit));
         Destination::create(array('destination' => DestinationEnum::EarthSunL1));
-        Destination::create(array('destination' => DestinationEnum::LunarOrbit));
+        Destination::create(array('destination' => DestinationEnum::Lunar));
         Destination::create(array('destination' => DestinationEnum::Mars));
+        Destination::create(array('destination' => DestinationEnum::Suborbital));
     }
 }
