@@ -144,6 +144,8 @@ trait UploadableTrait {
             ]);
             $this->has_cloud_thumbs = true;
         }
+
+        return $this;
     }
 
     /**
@@ -163,6 +165,8 @@ trait UploadableTrait {
 
         $this->has_cloud_file = false;
         $this->has_cloud_thumbs = false;
+
+        return $this;
     }
 
     /**
@@ -208,6 +212,8 @@ trait UploadableTrait {
             }
             $this->has_local_thumbs = true;
         }
+
+        return $this;
     }
 
     /**
@@ -224,6 +230,8 @@ trait UploadableTrait {
             unlink(public_path() . '/media/local/large/' . $this->thumb_filename);
             $this->has_local_thumbs = false;
         }
+
+        return $this;
     }
 
     /**
@@ -240,6 +248,8 @@ trait UploadableTrait {
             unlink(public_path() . '/media/temporary/large/' . $this->thumb_filename);
             $this->has_temporary_thumbs = false;
         }
+
+        return $this;
     }
 
     private function exceedsMultipartUploadThreshold() {

@@ -39,5 +39,7 @@ class ObjectFromNSFComment extends ObjectCreator {
 
             $this->object->push();
         });
+
+        return $this->object;
     }
 }

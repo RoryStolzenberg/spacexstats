@@ -57,12 +57,12 @@ class ReviewController extends Controller {
                 $object->save();
 
                 // Create an award wih DeltaV
-                $award = Award::create(array(
+                $award = Award::create([
                     'user_id'   => $object->user_id,
                     'object_id' => $object->object_id,
                     'type'      => 'Created',
                     'value'     => $deltaV->calculate($object)
-                ));
+                ]);
 
                 // Once done, extend subscription
                 $subscriptionService->incrementSubscription($object->user, $award);

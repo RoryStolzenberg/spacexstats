@@ -38,5 +38,7 @@ class ObjectFromPressRelease extends ObjectCreator {
 
             $this->createPublisherRelation();
         });
+
+        return $this->object;
     }
 }

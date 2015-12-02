@@ -79,9 +79,11 @@
             $scope.$apply();
         };
 
+        $scope.optionalCollection = null;
+
         $scope.fileSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
-            uploadService.postToMissionControl($scope.files, 'files');
+            uploadService.postToMissionControl($scope.files, $scope.optionalCollection, 'files');
         }
     }]);
 
@@ -98,11 +100,11 @@
         $scope.postSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
             switch ($scope.postType) {
-                case 'NSFcomment': uploadService.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
-                case 'redditcomment': uploadService.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
-                case 'pressrelease' : uploadService.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
-                case 'article': uploadService.postToMissionControl($scope.article, 'article'); break;
-                case 'tweet': uploadService.postToMissionControl($scope.tweet, 'tweet'); break;
+                case 'NSFcomment': uploadService.postToMissionControl($scope.NSFcomment, null, 'NSFcomment'); break;
+                case 'redditcomment': uploadService.postToMissionControl($scope.redditcomment, null, 'redditcomment'); break;
+                case 'pressrelease' : uploadService.postToMissionControl($scope.pressrelease, null, 'pressrelease'); break;
+                case 'article': uploadService.postToMissionControl($scope.article, null, 'article'); break;
+                case 'tweet': uploadService.postToMissionControl($scope.tweet, null, 'tweet'); break;
             }
         }
     }]);
@@ -121,12 +123,12 @@
 
         $scope.writeSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
-            uploadService.postToMissionControl($scope.text, 'text');
+            uploadService.postToMissionControl($scope.text, null, 'text');
         }
     }]);
 
     uploadApp.service('uploadService', ['$http', 'CSRF_TOKEN', function($http, CSRF_TOKEN) {
-        this.postToMissionControl = function(dataToUpload, submissionHeader) {
+        this.postToMissionControl = function(dataToUpload, optionalCollection, submissionHeader) {
             var req = {
                 method: 'POST',
                 url: '/missioncontrol/create/submit',
@@ -135,6 +137,7 @@
                 },
                 data: {
                     data: dataToUpload,
+                    collection: optionalCollection,
                     _token: CSRF_TOKEN
                 }
             };

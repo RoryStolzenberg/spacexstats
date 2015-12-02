@@ -55,5 +55,7 @@ class ObjectFromFile extends ObjectCreator {
 
             $this->object->push();
         });
+
+        return $this->object;
     }
 }

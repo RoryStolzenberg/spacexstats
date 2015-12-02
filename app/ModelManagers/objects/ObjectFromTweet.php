@@ -12,6 +12,6 @@ class ObjectFromTweet extends ObjectCreator {
     }
 
     public function create() {
-
+        return $this->object;
     }
 }

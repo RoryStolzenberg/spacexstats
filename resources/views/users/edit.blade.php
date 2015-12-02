@@ -123,13 +123,13 @@
                             </li>
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 3 hours</span>
-                                <input type="checkbox" id="tMinus3HoursEmail" value="true" ng-model="emailNotifications.TMinus3HoursEmail" />
-                                <label for="tMinus3HoursEmail"></label>
+                                <input type="checkbox" id="TMinus3HoursEmail" value="true" ng-model="emailNotifications.TMinus3HoursEmail" />
+                                <label for="TMinus3HoursEmail"></label>
                             </li>
                             <li class="gr-2">
                                 <span>There's a SpaceX launch in 1 hour</span>
-                                <input type="checkbox" id="tMinus1HourEmail" value="true" ng-model="emailNotifications.TMinus1HourEmail" />
-                                <label for="tMinus1HourEmail"></label>
+                                <input type="checkbox" id="TMinus1HourEmail" value="true" ng-model="emailNotifications.TMinus1HourEmail" />
+                                <label for="TMinus1HourEmail"></label>
                             </li>
                         </ul>
 

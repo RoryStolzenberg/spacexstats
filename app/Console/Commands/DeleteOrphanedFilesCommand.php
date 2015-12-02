@@ -42,10 +42,10 @@ class DeleteOrphanedFilesCommand extends Command
     {
         $orphanedObjects = Object::where('status', ObjectPublicationStatus::NewStatus)->where('created_at', '<', Carbon::now()->subWeek())->get();
 
-        $orphanedObjects->foreach(function($orphanedObject) {
+        $trashedObjectsByKey = $orphanedObjects->each(function($orphanedObject) {
             $orphanedObject->deleteFromTemporary();
-        });
+        })->keyBy('object_id');
 
-        Object::destroy(array_keys($orphanedObjects));
+        Object::destroy($trashedObjectsByKey->keys());
     }
 }

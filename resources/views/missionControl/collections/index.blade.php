@@ -13,11 +13,16 @@
             <h2>Create</h2>
             <section ng-controller="createCollectionController">
                 <form name="createCollectionForm" novalidate>
-                    <label>Title</label>
-                    <input type="text" name="title" ng-model="newCollection.title" minlength="10" placeholder="A descriptive title for the collection" required>
-                    <label>Summary</label>
-                    <textarea name="description" ng-model="newCollection.summary" ng-minlength="100" placeholder="A short summary of what this collection is about" required character-counter>
-                    </textarea>
+                    <ul>
+                        <li>
+                            <label>Title</label>
+                            <input type="text" name="title" ng-model="newCollection.title" minlength="10" placeholder="A descriptive title for the collection" required>
+                        </li>
+                        <li>
+                            <label>Summary</label>
+                            <textarea name="description" ng-model="newCollection.summary" ng-minlength="100" placeholder="A short summary of what this collection is about" required character-counter></textarea>
+                        </li>
+                    </ul>
 
                     <input type="submit" ng-click="createCollection()" ng-disabled="createCollectionForm.$invalid || is.creatingCollection" value="Create & Add Items" />
                 </form>

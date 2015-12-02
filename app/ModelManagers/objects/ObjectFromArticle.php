@@ -34,5 +34,7 @@ class ObjectFromArticle extends ObjectCreator {
 
             $this->createPublisherRelation();
         });
+
+        return $this->object;
     }
 }

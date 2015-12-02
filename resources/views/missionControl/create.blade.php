@@ -39,7 +39,7 @@
 
                     <div class="files-details" ng-repeat="file in files">
                         <!-- IMAGE FILE TEMPLATE -->
-                        <div ng-if="file.type == 'Image'" ng-show="isVisibleFile(file)">
+                        <div ng-if="file.type == 'Image'" class="container" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
                             <form name="@{{'fileForm' + $index}}" novalidate>
 
@@ -161,7 +161,7 @@
                         <!-- GIF FILE TEMPLATE -->
                         <div ng-if="file.type == 'GIF'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
-                            <form name="@{{'fileForm' + $index}}" novalidate>
+                            <form name="@{{'fileForm' + $index}}" class="container" novalidate>
 
                                 <fieldset class="gr-8 upload-basic-info">
                                     <legend>Basic Info</legend>
@@ -281,7 +281,7 @@
                         <!-- AUDIO FILE TEMPLATE -->
                         <div ng-if="file.type == 'Audio'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
-                            <form name="@{{'fileForm' + $index}}" novalidate>
+                            <form name="@{{'fileForm' + $index}}" class="container" novalidate>
 
                                 <fieldset class="gr-8 upload-basic-info">
                                     <legend>Basic Info</legend>
@@ -392,7 +392,7 @@
                         <!-- VIDEO FILE TEMPLATE -->
                         <div ng-if="file.type == 'Video'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
-                            <form name="@{{'fileForm' + $index}}" novalidate>
+                            <form name="@{{'fileForm' + $index}}" class="container" novalidate>
                                 <fieldset class="gr-8 upload-basic-info">
                                     <legend>Basic Info</legend>
                                     <ul>
@@ -518,7 +518,7 @@
                         <!-- DOCUMENT FILE TEMPLATE -->
                         <div ng-if="file.type == 'Document'" ng-show="isVisibleFile(file)">
                             <h2>@{{ file.original_name }}</h2>
-                            <form name="@{{'fileForm' + $index}}" novalidate>
+                            <form name="@{{'fileForm' + $index}}" class="container" novalidate>
 
                                 <fieldset class="gr-8 upload-basic-info">
                                     <legend>Basic Info</legend>
@@ -633,7 +633,23 @@
                                 </fieldset>
                             </form>
                         </div>
+                    </div>
 
+                    <div class="make-collection-from-upload" ng-if="files.length > 1">
+                        <h3><input id="make-collection" ng-model="isMakingCollection" value="true" type="checkbox" /><label for="make-collection">Make these items a collection</label></h3>
+                        <p>If these items are similar, you can group them into a collection for easy access and sharing. Collections can always have items added or removed later.</p>
+                        <form name="optionalCollectionForm" ng-if="isMakingCollection">
+                            <ul>
+                                <li>
+                                    <label>Collection Title</label>
+                                    <input type="text" name="title" ng-model="optionalCollection.title" minlength="10" placeholder="A descriptive title for the collection">
+                                </li>
+                                <li>
+                                    <label>Collection Summary</label>
+                                    <textarea name="description" ng-model="optionalCollection.summary" ng-minlength="100" placeholder="A short summary of what this collection is about" required character-counter></textarea>
+                                </li>
+                            </ul>
+                        </form>
                     </div>
                     <button id="files-submit" class="wide-button" ng-disabled="uploadForm.$invalid || isSubmitting" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit'  }}</button>
                 </div>

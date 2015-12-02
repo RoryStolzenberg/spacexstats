@@ -10,6 +10,7 @@ use SpaceXStats\Facades\Upload;
 use SpaceXStats\Http\Controllers\Controller;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use LukeNZ\Reddit\Reddit;
+use SpaceXStats\Models\Collection;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Object;
 use SpaceXStats\Models\Publisher;
@@ -35,19 +36,19 @@ class UploadController extends Controller {
 	// AJAX POST
 	public function upload()
     {
-        if (!empty(Input::all())) {
-
-            $files = Input::file('file');
-            $upload = Upload::check($files);
-
-            if ($upload->hasErrors()) {
-                return response()->json(['errors' => $upload->getErrors()], 400);
-            }
-
-            $objects = $upload->create();
-            return response()->json(['objects' => $objects]);
+        if (empty(Input::all())) {
+            return response()->json(null, 400);
         }
-        return response()->json(false, 400);
+
+        $files = Input::file('file');
+        $upload = Upload::check($files);
+
+        if ($upload->hasErrors()) {
+            return response()->json(['errors' => $upload->getErrors()], 400);
+        }
+
+        $objects = $upload->create();
+        return response()->json(['objects' => $objects]);
     }
 
 	// AJAX POST
@@ -55,7 +56,7 @@ class UploadController extends Controller {
     	// File Submissions
 		if ($request->header('Submission-Type') == 'files') {
             $files = Input::get('data');
-            $objectValidities = [];
+            $objectValidities = $objectManagers = $queuedObjects = [];
             $doesNotContainErrors = true;
 
             // Find each object from file
@@ -73,8 +74,21 @@ class UploadController extends Controller {
             if ($doesNotContainErrors) {
                 // add all objects to db
                 for ($i = 0; $i < count($files); $i++) {
-                    $objectManagers[$i]->create();
+                    $queuedObjects[$i] = $objectManagers[$i]->create();
                 }
+
+                // nothing bad happened, let's also create an optional collection if asked to
+                if (Input::get('collection') != null) {
+                    $collection = Collection::create([
+                        'creating_user_id' =>   Auth::id(),
+                        'title' =>              Input::get('collection.title'),
+                        'summary' =>            Input::get('collection.summary')
+                    ]);
+
+                    // and associate it with the given files
+                    $collection->objects()->saveMany($queuedObjects);
+                }
+
             } else {
                 return response()->json($objectValidities, 400);
             }
@@ -100,6 +114,8 @@ class UploadController extends Controller {
                 case 'text':
                     $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromText');
                     break;
+                default:
+                    return response()->json(null, 400);
             }
 
             if ($objectCreator->isValid(Input::get('data'))) {
@@ -115,6 +131,10 @@ class UploadController extends Controller {
         Session::flash('flashMessage', 'Done!');
         return response()->json(null, 204);
 	}
+
+    protected function submitPost() {
+
+    }
 
     // AJAX GET
     public function retrieveTweet() {

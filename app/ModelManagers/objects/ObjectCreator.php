@@ -39,7 +39,7 @@ abstract class ObjectCreator {
     protected function createTagRelations() {
         $tagIds = [];
         foreach ($this->input['tags'] as $tag) {
-            $tagId = Tag::firstOrCreate(array('name' => $tag['name']))->tag_id;
+            $tagId = Tag::firstOrCreate(['name' => $tag['name']])->tag_id;
             array_push($tagIds, $tagId);
         }
 

@@ -38,5 +38,7 @@ class ObjectFromText extends ObjectCreator {
 
             $this->object->push();
         });
+
+        return $this->object;
     }
 }
