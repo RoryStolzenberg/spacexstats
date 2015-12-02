@@ -801,7 +801,7 @@ class MissionsTableSeeder extends Seeder {
             'name' => 'Eutelsat 117W B & ABS-2A',
             'contractor' => 'Asia Broadcast Satellite',
             'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::CommunicationsSatellite)->firstOrFail()->destination_id,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'summary' => "Eutelsat 117W B & ABS-2A",
             'status' => MissionStatus::Upcoming
@@ -816,7 +816,7 @@ class MissionsTableSeeder extends Seeder {
             'name' => 'JCSAT-14',
             'contractor' => 'SKY Perfect JSAT Corparation',
             'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::CommunicationsSatellite)->firstOrFail()->destination_id,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'summary' => "JCSAT-14",
             'status' => MissionStatus::Upcoming
