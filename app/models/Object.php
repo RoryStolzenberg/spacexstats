@@ -19,7 +19,7 @@ use SpaceXStats\Models\Interfaces\UploadableInterface;
 use SpaceXStats\Presenters\PresentableTrait as Presentable;
 use SpaceXStats\Presenters\ObjectPresenter;
 
-class Object extends Model implements UploadableInterface {
+class Object extends Model implements UploadableInterface, SearchableInterface {
 
     use Presentable, Commentable, Uploadable, CountsViews;
 

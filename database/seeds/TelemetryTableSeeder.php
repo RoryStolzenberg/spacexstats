@@ -3353,6 +3353,194 @@ class TelemetryTableSeeder extends Seeder {
     }
 
     public function Thaicom6() {
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "We have liftoff of the Falcon 9"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the towers"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "First stage propulsion healthy"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "OSM TC report to Net A"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Reporting"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "First stage propellant utilization active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Good telemetry, power systems nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+60 seconds, altitude 6km, velocity 266m/s, downrange distance 1.9km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's reached maximum aerodynamic pressure"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Good telemetry lock"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+2 minutes. Altitude 30km, speed 1.1km/s, downrange distance 30km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 chilling in"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+2 minutes 30 seconds, vehicle's on the nominal trajectory"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "MECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Stage sep confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "MVac ignition confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Stage two propellant utilization active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Fairing separation confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+270 seconds, alttiude 135km, speed 3km/s, downrange distance 383km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Good telemetry lock, power systems nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion looking good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+325 seconds, altitude 160km, speed 3.8km/s, downrange distance 582km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Power systems still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+400 seconds, vehicle remains on the nominal. Antigua AOS"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+410 seconds, altitude 175km, speed 4.8km/s, downrange distance 920km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Stage propulsion performance is good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+460 seconds, altitude 178km, speed 5.6km/s, downrange distance 1200km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Started terminal guidance"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "FTS is safed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "[garbled] loss of signal. SpaceX operating on Antigua data at this time"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "T+515 seconds, altitude 178km, distance- downrange distance 1 point- 1500km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "MVac shutdown confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Park orbit insertion, looks like a good orbit insertion. 497 by 173km inclined 27.73 degrees to the equator"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "As you can see we're very excited here at SpaceX for another successful launch as the team continues to look intently into Mission Control right behind me. We hope you enjoyed watching from home too. We'll see you next time!"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "Thanks so much for joining us, everyone at SpaceX wishes you a very happy new year."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 13,
+            'timestamp'     => 0,
+            'readout'       => "And it looks like we have another successful launch of the Falcon 9 rocket to geosynchronous orbit. Now remember, you can follow SpaceX on our social media pages, spacex.com, look at our Twitter, see what future events we've got, as well as get further updates on today's flight. But right now that's going to end our webcast, we'd like to thank everybody including our Thaicom partners, and again, another great afternoon-evening for SpaceX and the Falcon 9 mission, and we'll see you next time for the flight of the CRS-3 Dragon to the International Space Station. Thanks, and goodnight everybody."
+        ]);
+    }
 
+    public function CRS3() {
+        
     }
 }

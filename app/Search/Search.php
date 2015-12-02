@@ -6,6 +6,7 @@ use Credential;
 use Elasticsearch\ClientBuilder;
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
+use SpaceXStats\Models\User;
 
 class Search {
 
@@ -106,7 +107,7 @@ class Search {
         $requestBody['query'] = [
             'multi_match' => [
                 'query'     => $search['searchTerm'],
-                'fields'    => ['title^2', 'summary', 'tweet_text', 'article']
+                'fields'    => ['title^2', 'summary', 'tweet_text^0.5', 'article^0.5']
             ]
         ];
 
@@ -123,26 +124,6 @@ class Search {
     }
 
     public function reindex(Model $model) {
-
-    }
-
-    public function addFavorite(Model $model) {
-
-    }
-
-    public function removeFavorite(Model $model) {
-
-    }
-
-    public function addNote(Model $model) {
-
-    }
-
-    public function removeNote(Model $model) {
-
-    }
-
-    public function addDownload(Model $model) {
 
     }
 
