@@ -26,7 +26,7 @@ class MissionPresenter {
 		if (empty($this->entity->article)) {
 			return '<section id="article" class="scrollto">
 						<article class="in-progress">
-							<i class="fa fa-newspaper-o fa-5x"></i> <span>Article in progress. Check back soon!</span>
+							<p class="exclaim"><i class="fa fa-newspaper-o fa-4x"></i> Article in progress. Check back soon!</p>
 						</article>
 					</section>';
 		} else {

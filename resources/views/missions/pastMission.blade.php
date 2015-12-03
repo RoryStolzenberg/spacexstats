@@ -248,7 +248,7 @@
                             @endforeach
                         </table>
                     @else
-                        <p class="exclaim">No telemetry yet!</p>
+                        <p class="exclaim">This launch does not have telemetry.</p>
                     @endif
                 <h3>Postlaunch</h3>
                 <p class="exclaim">Postlaunch information coming soon!</p>
@@ -334,7 +334,7 @@
                             </table>
                         </div>
                     @else
-                        <p class="exclaim">No orbital element data at this time.</p>
+                        <p class="exclaim">This launch does not have orbital element data.</p>
                     @endif
 
                     <h3>Maps</h3>

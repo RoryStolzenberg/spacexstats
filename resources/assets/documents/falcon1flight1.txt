@@ -1,0 +1,7 @@
+Falcon 1 was a small rocket. Fueled by RP-1 and Liquid Oxygen, it only had the ability to place 670kg into Low Earth Orbit, yet at a cost of $7 million per launch, was much cheaper than competitor offerings. It's first flight was to carry the FalconSAT-2 satellite, built by the United States Air Force Academy.
+
+Liftoff occurred at 2230 UTC, and appeared to proceed nominally until T+25 seconds, when the rocket pitched over and control was lost. The launch was filmed from at least three locations, on the rocket itself, on a ground camera pointing at the pad, and remotely off-island from a large distance away - only the onboard rocket camera shows the ground impact. All three of these videos have credit given to Branden Spikes, who was Chief Information Officer of SpaceX at the time. Impact occurred at T+41s  when the rocket smashed into a shallow, dead reef on the ocean side of Omelek Island about 80 metres from the launch pad in four feet of water.
+
+> "I spent the day picking up rocket pieces from the reef, which sucked." - Elon Musk.
+
+Amazingly, the satellite was blown free from the rocket, and was discovered in a storage shed (albeit damaged) a few metres away from the shipping container than had been used to send it from Colorado to the launch site. The failure was originally attributed to an improperly tightened nut on the first stage engine, but later evidence showed the nut had failed due to corrosion from Kwajalein's intense oceanic environment.

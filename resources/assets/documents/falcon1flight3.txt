@@ -1,0 +1,17 @@
+Falcon 1 Flight 3 took off from Omelek Island on Kwajalein in August 2008, nearly one and a half years after the second failed attempt of Falcon 1. Unlike flight 2, flight 3 carried a myriad of 4 small satellites: Trailblazer for the U.S. Air Force; the 4kg satellite NanoSail-D which had an solar sail area of 10 square metres; the breadloaf sized PRESat, which was to study yeast in a controlled environment in micro-gravity, and a orbital burial capsule for Celestis.
+
+Flight 3 of Falcon 1 was the first to feature the all new more powerful Merlin 1C engine which would go on to power the first five Falcon 9 launches and generate a thrust of 480kN in a vacuum with a vacuum specific impulse of 304.8 seconds, and an extended body to accommodate extra propellant.
+
+Liftoff occurred at 3:34 UTC on the 3rd of August after 2 recycle attempts, and the new Merlin 1C engine performed perfectly. Taking in a wealth of improvements that were made after the second flight, the flight went well until at stage separation, some residual fuel in the new Merlin 1C engine evaporated, providing enough transient thrust for the first stage to recontact the second stage, which prevented successful mission completion resulting in all payloads being lost. The vehicle ultimately reached a top velocity of 3.2km/s and a peak altitude of 217km. This seemingly laughable mistake was discovered in a matter of hours and deemed fixable by simply increasing the duration between first stage shutdown and stage separation - one line of code.
+
+At this point, SpaceX was near bankruptcy, and barely had the funds to make a fourth flight. After the failure of the flight, Elon Musk walked out and addressed the company, revealing that funding had been secured for another 2 launches if needed, and that SpaceX would pick itself back up. It did.
+
+> It was obviously a big disappointment not to reach orbit on this flight [Falcon 1, Flight 3]. On the plus side, the flight of our first stage, with the new Merlin 1C engine that will be used in Falcon 9, was picture perfect. Unfortunately, a problem occurred with stage separation, causing the stages to be held together. This is under investigation and I will send out a note as soon as we understand exactly what happened.
+
+> The most important message I'd like to send right now is that SpaceX will not skip a beat in execution going forward. We have flight four of Falcon 1 almost ready for flight and flight five right behind that. I have also given the go ahead to begin fabrication of flight six. Falcon 9 development will also continue unabated, taking into account the lessons learned with Falcon 1. We have made great progress this past week with the successful nine engine firing.
+
+> As a precautionary measure to guard against the possibility of flight 3 not reaching orbit, SpaceX recently accepted a significant investment. Combined with our existing cash reserves, that ensures we will have more than sufficient funding on hand to continue launching Falcon 1 and develop Falcon 9 and Dragon. There should be absolutely zero question that SpaceX will prevail in reaching orbit and demonstrating reliable space transport. For my part, I will never give up and I mean never.
+
+> Thanks for your hard work and now on to flight four.
+
+- Elon Musk.

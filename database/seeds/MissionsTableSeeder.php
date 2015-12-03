@@ -26,7 +26,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'Omelek Island')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "SpaceX's first launch, which ended in disaster 25 seconds after launch due to an engine issue.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight1.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure
         ]);
@@ -44,7 +44,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'Omelek Island')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "The second launch of Falcon 1, attempted (and failed to) carry a mass simulator into orbit.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight2.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure
         ]);
@@ -62,7 +62,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'Omelek Island')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "Flight 3 of Falcon 1 was to place a quadro of small satellites into Earth orbit, but again failed.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight3.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure
         ]);
@@ -80,7 +80,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'Omelek Island')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "The first privately-developed liquid fueled rocket to reach orbit.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight4.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -98,7 +98,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'Omelek Island')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "Final launch of Falcon 1 and SpaceX's second successful flight and first satellite in orbit.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight5.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -116,7 +116,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "First launch of the new Falcon 9 from Cape Canaveral delivering the Dragon Spacecraft Qualification Unit into orbit.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/dsqu.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -134,7 +134,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "Second launch of Falcon 9, and first launch of Dragon spacecraft into Low Earth Orbit.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/cots1.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -152,7 +152,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => "First night Falcon 9 liftoff, and first private spacecraft to dock with the International Space Station.",
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/cots2+.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -170,7 +170,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => 'First of twelve initially contracted International Space Station resupply missions with Dragon. Demonstration of engine out capability.',
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/crs1.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -188,7 +188,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => 'Second contracted flight of Dragon, and the fifth and last flight of Falcon 9 v1.0',
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/crs2.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ));
@@ -206,7 +206,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => 'First Falcon 9v1.1 launch from Vandenberg delivering CASSIOPE satellite into a polar orbit with a new payload fairing. Attempt at propulsive over-water soft landing.',
-            'article' => "Here's an article",
+            'article' => file_get_contents(base_path('resources/assets/documents/cassiope.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ));
@@ -224,7 +224,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Twilight',
             'summary' => 'Second Falcon 9v1.1 launch, first from Cape Canaveral. Other firsts include achieving a GTO orbit, a Merlin 1D upper stage restart, and a communications satellite payload. ',
-            'article' => "default article",
+            'article' => file_get_contents(base_path('resources/assets/documents/ses8.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -242,7 +242,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => 'Third Falcon 9v1.1 launch, 8th Falcon 9. Delivered the communications satellite Thaicom 6 into a "supersynchronous" GTO orbit similar to SES-8. ',
-            'article' => "default summary",
+            'article' => file_get_contents(base_path('resources/assets/documents/thaicom6.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -260,7 +260,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => 'Third Dragon CRS mission to the ISS. First resupply utilizing a Falcon 9v1.1, allowing Dragon to carry a larger capacity of cargo.',
-            'article' => "default summary",
+            'article' => file_get_contents(base_path('resources/assets/documents/crs3.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -278,7 +278,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => 'A Falcon 9 flew the first 6 Orbcomm G2 satellites into a Low Earth Orbit as part of a multi-mission contract for the communications corporation.',
-            'article' => "default summary",
+            'article' => file_get_contents(base_path('resources/assets/documents/orbcommog2launch1.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -296,7 +296,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => 'AsiaSat 8 is a communications satellite that Falcon 9 propelled into a GTO orbit, and will be located at 105.5 degrees East.',
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -314,7 +313,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => 'AsiaSat 6 is a communications satellite being launched for Asia Satellite Telecommunications Company Ltd. Once in orbit, it will be renamed AsiaSat 6 / Thaicom 7.',
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -332,7 +330,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => 'Fourth of twelve Dragon ISS resupply missions. It is carrying over 5000 pounds to the station, including 20 mousetronauts, and the SpinSat satellite.',
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -349,9 +346,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => 'The fifth CRS mission to the ISS will carry pressurized and unpressurized cargo to the station. Secondary payloads include 2 small satellites to be deployed from the ISS airlock.',
-            'article' => "default summary",
-            'status' => MissionStatus::Complete,
+            'summary' => 'The fifth CRS mission to the ISS will carry pressurized and unpressurized cargo to the station. Secondary payloads include 2 small satellites to be deployed from the ISS airlock.', 'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
 
@@ -368,7 +363,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => 'Falcon 9 will loft the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it will function as an Earth & Solar Observation satellite.',
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -386,7 +380,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => "This marks SpaceX's first dual comm. satellite launch, of Eutelsat 115W B & ABS-3A. The satellites, built by Boeing, use Solar Electric Propulsion, making it feasible to fit both on a single Falcon 9 and removing the need for weighty Hydrazine.",
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -404,7 +397,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "The sixth of fourteen Dragon ISS resupply missions to the ISS. Will attempt a barge landing on ASDS.",
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -422,7 +414,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success
         ]);
@@ -440,7 +431,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
-            'article' => "default summary",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure
         ]);
