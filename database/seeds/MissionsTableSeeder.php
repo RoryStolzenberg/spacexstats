@@ -678,21 +678,6 @@ class MissionsTableSeeder extends Seeder {
             'launch_exact' => null,
             'launch_approximate' => 'Late 2016',
             'launch_specificity' => LaunchSpecificity::SubYear,
-            'name' => 'EchoStar 105/SES-11',
-            'contractor' => 'SES World Skies',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "EchoStar 105/SES-11",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 41,
-            'launch_exact' => null,
-            'launch_approximate' => 'Late 2016',
-            'launch_specificity' => LaunchSpecificity::SubYear,
             'name' => "Es'hail 2",
             'contractor' => "Es’hailSat",
             'vehicle_id' => 4,
@@ -704,7 +689,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 42,
+            'launch_order_id' => 41,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -719,7 +704,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 43,
+            'launch_order_id' => 42,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -734,7 +719,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 44,
+            'launch_order_id' => 43,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -749,7 +734,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 45,
+            'launch_order_id' => 44,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -764,7 +749,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 46,
+            'launch_order_id' => 45,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -779,7 +764,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 47,
+            'launch_order_id' => 46,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -794,7 +779,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 48,
+            'launch_order_id' => 47,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -809,7 +794,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 49,
+            'launch_order_id' => 48,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -824,7 +809,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 50,
+            'launch_order_id' => 49,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -839,37 +824,22 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 50,
+            'launch_exact' => null,
+            'launch_approximate' => '2016',
+            'launch_specificity' => LaunchSpecificity::SubYear,
+            'name' => 'BulgariaSat-1',
+            'contractor' => 'Bulgaria Sat',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "BulgariaSat-1",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 51,
-            'launch_exact' => null,
-            'launch_approximate' => '2016',
-            'launch_specificity' => LaunchSpecificity::SubYear,
-            'name' => 'BulgariaSat-1',
-            'contractor' => 'Bulgaria Sat',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "BulgariaSat-1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 52,
-            'launch_exact' => null,
-            'launch_approximate' => '2016',
-            'launch_specificity' => LaunchSpecificity::SubYear,
-            'name' => 'BulgariaSat-1',
-            'contractor' => 'Bulgaria Sat',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "BulgariaSat-1",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 53,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -884,7 +854,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 54,
+            'launch_order_id' => 52,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -899,7 +869,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 55,
+            'launch_order_id' => 53,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -914,7 +884,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 56,
+            'launch_order_id' => 54,
             'launch_exact' => null,
             'launch_approximate' => '2016',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -929,7 +899,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 57,
+            'launch_order_id' => 55,
             'launch_exact' => null,
             'launch_approximate' => 'August 2017',
             'launch_specificity' => LaunchSpecificity::Month,
@@ -944,7 +914,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 58,
+            'launch_order_id' => 56,
             'launch_exact' => Carbon::create(2017, 10, 1, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
@@ -959,7 +929,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 59,
+            'launch_order_id' => 57,
             'launch_exact' => null,
             'launch_approximate' => 'Late 2017',
             'launch_specificity' => LaunchSpecificity::SubYear,
@@ -974,7 +944,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 60,
+            'launch_order_id' => 58,
             'launch_exact' => null,
             'launch_approximate' => 'H2 2017',
             'launch_specificity' => LaunchSpecificity::Half,
@@ -989,7 +959,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DemoFlight)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 61,
+            'launch_order_id' => 59,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1004,7 +974,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 62,
+            'launch_order_id' => 60,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1019,7 +989,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 63,
+            'launch_order_id' => 61,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1034,7 +1004,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 64,
+            'launch_order_id' => 62,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1049,7 +1019,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CrewDragonISS)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 65,
+            'launch_order_id' => 63,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1064,7 +1034,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 66,
+            'launch_order_id' => 64,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1079,7 +1049,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 67,
+            'launch_order_id' => 65,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1094,7 +1064,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 68,
+            'launch_order_id' => 66,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1109,7 +1079,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 69,
+            'launch_order_id' => 67,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1124,7 +1094,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 70,
+            'launch_order_id' => 68,
             'launch_exact' => null,
             'launch_approximate' => '2017',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1139,7 +1109,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 71,
+            'launch_order_id' => 69,
             'launch_exact' => null,
             'launch_approximate' => '2018',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1154,7 +1124,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 72,
+            'launch_order_id' => 70,
             'launch_exact' => null,
             'launch_approximate' => '2018',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1169,7 +1139,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 73,
+            'launch_order_id' => 71,
             'launch_exact' => null,
             'launch_approximate' => '2018',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1184,7 +1154,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Military)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 74,
+            'launch_order_id' => 72,
             'launch_exact' => null,
             'launch_approximate' => '2018',
             'launch_specificity' => LaunchSpecificity::Year,
@@ -1199,7 +1169,7 @@ class MissionsTableSeeder extends Seeder {
 
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Military)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 75,
+            'launch_order_id' => 73,
             'launch_exact' => null,
             'launch_approximate' => '2019',
             'launch_specificity' => LaunchSpecificity::Year,

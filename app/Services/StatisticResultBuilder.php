@@ -44,7 +44,7 @@ class StatisticResultBuilder {
      */
 	public static function launchesPerYear() {
 		// SELECT COUNT(mission_id) as missions, YEAR(launch_exact) as year FROM missions GROUP BY year
-		return Mission::select(DB::raw('*, COUNT(mission_id) AS missions, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get()->toArray();
+		return Mission::select(DB::raw('COUNT(mission_id) AS missions, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get()->toArray();
     }
 
 	/**

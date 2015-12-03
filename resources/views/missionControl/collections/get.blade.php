@@ -11,13 +11,15 @@
         <main>
             <nav class="in-page sticky-bar">
                 <ul class="container">
-                    <li class="gr-2" ng-click="editCollection()">
+                    <li class="gr-2" ng-click="is.editingCollection = true">
                         <i class="fa fa-pencil"></i> Edit this Collection
                     </li>
-                    @if(Auth::isAdmin())
+                    @if (Auth::isAdmin() || $collection->user_id == Auth::id())
                         <li class="gr-2" ng-click="deleteCollection()">
                             <a href="">Delete</a>
                         </li>
+                    @endif
+                    @if(Auth::isAdmin())
                         <li class="gr-2" ng-click="mergeCollection()">
                             <a href="">Merge</a>
                         </li>
@@ -26,11 +28,16 @@
             </nav>
 
             <section ng-if="is.editingCollection">
-
+                <h3>Add items to this collection</h3>
+                <form name="editingCollectionForm">
+                    <button ng-click="editCollection()">Add</button>
+                </form>
             </section>
 
             <section ng-if="is.deletingCollection">
-
+                <h3>Delete this collection</h3>
+                <p>Warning: this action is permanent and cannot be undone!</p>
+                <button class="warning">Delete</button>
             </section>
 
             <section ng-if="is.mergingCollection">
@@ -38,10 +45,10 @@
             </section>
 
             <p>{{ $collection->summary }}</p>
-            <h2>Objects in this Collection</h2>
+            <h2>{{ $collection->objects->count() }} resources in this Collection</h2>
             <section>
                 @if($collection->objects->count() == 0)
-                    <p class="exclaim">No objects in this collection. Add some!</p>
+                    <p class="exclaim">No resources in this collection. <a ng-click="is.editingCollection = true">Add some!</a></p>
                 @endif
             </section>
         </main>
