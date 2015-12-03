@@ -64,7 +64,7 @@
                     </tr>
                 </table>
 
-                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
+                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
 
                 <table class="interval" ng-if="substatistic.display == 'interval'">
                     <tr>

@@ -1,32 +1,4 @@
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-
-        this.addError = function(message) {
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        }
-    });
-})();
-
-
-(function() {
     var missionsListApp = angular.module('app', []);
 
     missionsListApp.controller("missionsListController", ['$scope', function($scope) {
@@ -126,7 +98,7 @@
         $scope.isLaunchPaused = laravel.mission.launch_paused;
 
         if ($scope.launchSpecificity >= 6) {
-            $scope.launchDateTime = moment.utc(laravel.mission.launch_date_time).toDate();
+            $scope.launchDateTime = moment.utc(laravel.mission.launch_date_time);
         } else {
             $scope.launchDateTime = laravel.mission.launch_date_time;
         }
@@ -135,19 +107,12 @@
             $scope.isLaunchExact = newValue >= 6;
         });
 
-        $scope.$watchCollection('[isLaunchExact, launchDateTime]', function(newValues) {
-            if (newValues[0] === true) {
-                $scope.launchUnixSeconds =  (moment(newValues[1]).unix());
-            }
-            $scope.launchUnixSeconds =  null;
-        });
-
-        $scope.lastRequest = moment().unix();
+        $scope.lastRequest = moment().utc();
         $scope.secondsSinceLastRequest = $scope.secondsToLaunch = 0;
 
         $scope.requestFrequencyManager = function() {
-            $scope.secondsSinceLastRequest = Math.floor($.now() / 1000) - $scope.lastRequest;
-            $scope.secondsToLaunch = $scope.launchUnixSeconds - Math.floor($.now() / 1000);
+            $scope.secondsSinceLastRequest = moment.utc().diff($scope.lastRequest, 'second');
+            $scope.secondsToLaunch = moment.utc().diff(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss'), 'second');
 
             /*
              Make requests to the server for launchdatetime and webcast updates at the following frequencies:
@@ -165,7 +130,7 @@
                 // Make both requests then update the time since last request
                 $scope.requestLaunchDateTime();
                 $scope.requestWebcastStatus();
-                $scope.lastRequest = moment().unix();
+                $scope.lastRequest = moment().utc();
             }
         };
 
@@ -244,7 +209,7 @@
 
         $scope.displayDateTime = function() {
             if ($scope.isLaunchExact) {
-                return $filter('date')($scope.launchDateTime, $scope.currentFormat, $scope.currentTimezone);
+                return $filter('date')($scope.launchDateTime.toDate(), $scope.currentFormat, $scope.currentTimezone);
             } else {
                 return $scope.launchDateTime;
             }
@@ -2190,6 +2155,34 @@
         };
     }]);
 })();
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        };
+
+        this.addError = function(message) {
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+    });
+})();
+
+
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2209,18 +2202,11 @@
 
                 $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
 
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                $
-
                 var countdownProcessor = function() {
 
                     if (angular.isUndefined($scope.isPaused) || !$scope.isPaused) {
-                        var timeToLaunch = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'seconds');
+                        var secondsBetween = Math.abs(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second'));
 
-                        var secondsBetween = timeToLaunch;
                         // Calculate the number of days, hours, minutes, seconds
                         $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
                         secondsBetween -= $scope.days * 60 * 60 * 24;
@@ -2638,6 +2624,59 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.constants = {
+                    SECONDS_PER_DAY: 86400,
+                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
+                };
+
+                $scope.$watch("deltaV", function(object) {
+                    if (typeof object !== 'undefined') {
+                        var calculatedValue = $scope.calculate(object);
+                        $scope.setCalculatedValue(calculatedValue);
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    console.log(object);
+                    var internalValue = 0;
+                    Object.getOwnPropertyNames(object).forEach(function(key) {
+                        if (key == 'mission_id') {
+                            if (typeof key !== 'undefined') {
+                                //internalValue
+                            }
+                        }
+                    });
+                    return internalValue;
+                };
+
+                $scope.setCalculatedValue = function(calculatedValue) {
+                    $scope.calculatedValue.deltaV = calculatedValue;
+
+                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
+
+                    $scope.calculatedValue.time = seconds + ' seconds';
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0
+                };
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('tweet', ["$http", function($http) {
         return {
             restrict: 'E',
@@ -3048,59 +3087,26 @@
         return self;
     });
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('deltaV', function() {
+    app.directive('passwordToggle', ["$compile", function($compile) {
         return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.constants = {
-                    SECONDS_PER_DAY: 86400,
-                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
                 };
-
-                $scope.$watch("deltaV", function(object) {
-                    if (typeof object !== 'undefined') {
-                        var calculatedValue = $scope.calculate(object);
-                        $scope.setCalculatedValue(calculatedValue);
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    console.log(object);
-                    var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                //internalValue
-                            }
-                        }
-                    });
-                    return internalValue;
-                };
-
-                $scope.setCalculatedValue = function(calculatedValue) {
-                    $scope.calculatedValue.deltaV = calculatedValue;
-
-                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
-
-                    $scope.calculatedValue.time = seconds + ' seconds';
-                };
-
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0
-                };
-            },
-            templateUrl: '/js/templates/deltaV.html'
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
         }
-    });
+    }]);
 })();
+
 (function() {
     var app = angular.module('app');
 
@@ -3251,6 +3257,24 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
     app.directive('characterCounter', ["$compile", function($compile) {
         return {
             restrict: 'A',
@@ -3367,44 +3391,6 @@
             templateUrl: '/js/templates/dropdown.html'
         }
     });
-})();
-
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    }]);
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
 })();
 
 (function() {

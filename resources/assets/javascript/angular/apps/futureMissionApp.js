@@ -8,7 +8,7 @@
         $scope.isLaunchPaused = laravel.mission.launch_paused;
 
         if ($scope.launchSpecificity >= 6) {
-            $scope.launchDateTime = moment.utc(laravel.mission.launch_date_time).toDate();
+            $scope.launchDateTime = moment.utc(laravel.mission.launch_date_time);
         } else {
             $scope.launchDateTime = laravel.mission.launch_date_time;
         }
@@ -17,19 +17,12 @@
             $scope.isLaunchExact = newValue >= 6;
         });
 
-        $scope.$watchCollection('[isLaunchExact, launchDateTime]', function(newValues) {
-            if (newValues[0] === true) {
-                $scope.launchUnixSeconds =  (moment(newValues[1]).unix());
-            }
-            $scope.launchUnixSeconds =  null;
-        });
-
-        $scope.lastRequest = moment().unix();
+        $scope.lastRequest = moment().utc();
         $scope.secondsSinceLastRequest = $scope.secondsToLaunch = 0;
 
         $scope.requestFrequencyManager = function() {
-            $scope.secondsSinceLastRequest = Math.floor($.now() / 1000) - $scope.lastRequest;
-            $scope.secondsToLaunch = $scope.launchUnixSeconds - Math.floor($.now() / 1000);
+            $scope.secondsSinceLastRequest = moment.utc().diff($scope.lastRequest, 'second');
+            $scope.secondsToLaunch = moment.utc().diff(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss'), 'second');
 
             /*
              Make requests to the server for launchdatetime and webcast updates at the following frequencies:
@@ -47,7 +40,7 @@
                 // Make both requests then update the time since last request
                 $scope.requestLaunchDateTime();
                 $scope.requestWebcastStatus();
-                $scope.lastRequest = moment().unix();
+                $scope.lastRequest = moment().utc();
             }
         };
 
@@ -126,7 +119,7 @@
 
         $scope.displayDateTime = function() {
             if ($scope.isLaunchExact) {
-                return $filter('date')($scope.launchDateTime, $scope.currentFormat, $scope.currentTimezone);
+                return $filter('date')($scope.launchDateTime.toDate(), $scope.currentFormat, $scope.currentTimezone);
             } else {
                 return $scope.launchDateTime;
             }

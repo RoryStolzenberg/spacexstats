@@ -17,18 +17,11 @@
 
                 $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
 
-                $scope.$watch('specificity', function(newValue) {
-                    $scope.isLaunchExact = (newValue == 6 || newValue == 7);
-                });
-
-                $
-
                 var countdownProcessor = function() {
 
                     if (angular.isUndefined($scope.isPaused) || !$scope.isPaused) {
-                        var timeToLaunch = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'seconds');
+                        var secondsBetween = Math.abs(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second'));
 
-                        var secondsBetween = timeToLaunch;
                         // Calculate the number of days, hours, minutes, seconds
                         $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
                         secondsBetween -= $scope.days * 60 * 60 * 24;
