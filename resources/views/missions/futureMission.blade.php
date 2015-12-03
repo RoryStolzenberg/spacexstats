@@ -103,7 +103,7 @@
                     </div>
                 </section>
 
-                <section class="hero" id="countdown">
+                <section class="hero scrollto" id="countdown">
                     <countdown specificity="launchSpecificity" is-paused="isLaunchPaused" countdown-to="launchDateTime" callback="requestFrequencyManager" type="classic"></countdown>
                 </section>
                 <p>{{ $mission->summary }}</p>
@@ -116,7 +116,7 @@
                     @if ($mission->isNextToLaunch())
                         <h3>SpaceX Stats Live</h3>
                         <div>
-                            <p>Watch & follow the launch in real time with SpaceX Stats Live</p>
+                            <p class="exclaim">Watch & follow the launch in real time with <a href="/live">SpaceX Stats Live</a></p>
                         </div>
                     @endif
 

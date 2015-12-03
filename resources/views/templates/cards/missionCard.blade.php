@@ -27,9 +27,7 @@
 					<span class="launch-count">{{ ordinal($mission->generic_vehicle_count) }}</span>
 				</div>
 				<div>{{ $mission->present()->launchDateTime() }}</div>
-                @if ($mission->status !== 'Upcoming')
-                    <div>{{ ordinal($mission->launch_of_year) }}</div>
-                @endif
+                <div>{{ ordinal($mission->launch_of_year) }}</div>
 				@if ($mission->status == 'Upcoming')
 					<div>42%</div>
 				@endif
@@ -50,9 +48,7 @@
 			<div class="container keys">
 				<div>{{ $mission->vehicle->generic_vehicle }}<br/>Launch</div>
 				<div>Launch (UTC)</div>
-                @if ($mission->status !== 'Upcoming')
-                    <div>Launch of the Year</div>
-                @endif
+                <div>Launch of the Year</div>
                 @if ($mission->status == 'Upcoming')
 				    <div>Probability of Launch</div>
                 @endif

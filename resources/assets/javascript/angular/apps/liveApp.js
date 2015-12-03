@@ -82,6 +82,7 @@
             }
         };
 
+        // Set the default parameters here
         $scope.liveParameters = {
             isForLaunch: true,
             title: laravel.title ? laravel.title : $scope.data.upcomingMission.name,
@@ -94,12 +95,13 @@
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
-            stream: {
-                userSelectedStream: 'spacex',
+            userSelectedStream: 'spacex',
+            userStreamSize: 'smaller',
+            streams: {
                 spacex: {
-                    isAvailable: false,
-                    youtubeVideoId: null,
-                    isActive: false
+                    isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
+                    youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
+                    isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
                 },
                 nasa: {
                     isAvailable: false,
@@ -112,6 +114,11 @@
             },
             sections: laravel.sections ? laravel.sections : [],
             resources: laravel.resources ? laravel.resources : []
+        };
+
+        $scope.isLivestreamVisible = function() {
+            return $scope.liveParameters.userSelectedStream != null && $scope.liveParameters.streams
+                    [$scope.liveParameters.userSelectedStream].isAvailable;
         };
 
         $scope.send = {
@@ -171,14 +178,19 @@
             $scope.liveParameters.resources = data.data.resources;
             $scope.liveParameters.title = data.data.title;
             $scope.liveParameters.reddit = data.data.reddit;
+            $scope.liveParameters.streams = data.data.streams;
             $scope.$apply();
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveCountdownEvent', function(data) {
+            console.log(data);
             // Countdown is being resumed
             if (data.newLaunchTime != null) {
-                $scope.liveParameters.countdown.isPaused = true;
-                $scope.liveParameters.countdown.newLaunchTime = data.newLaunchTime;
+                $scope.liveParameters.countdown = {
+                    isPaused: false,
+                    to: moment.utc(data.newLaunchDate),
+                    newLaunchDate: null
+                };
 
             // Countdown is being paused
             } else {
@@ -211,7 +223,7 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
-
+            console.log(data);
         });
     }]);
 

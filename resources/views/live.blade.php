@@ -49,10 +49,10 @@
 
                         <h3>What streams should be shown?</h3>
 
-                        <input type="checkbox" id="spacexstream" name="spacexstream" value="true" ng-model="liveParameters.streams.spacex" />
+                        <input type="checkbox" id="spacexstream" name="spacexstream" value="true" ng-model="liveParameters.streams.spacex.isAvailable" />
                         <label for="spacexstream"><span>SpaceX Stream</span></label>
 
-                        <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streams.nasa" />
+                        <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streams.nasa.isAvailable" />
                         <label for="nasastream"><span>NASA Stream</span></label>
 
                         <textarea ng-model="liveParameters.description.raw" id="description" name="description" required
@@ -90,7 +90,7 @@
             </section>
 
             <!-- If SpaceXStats live is running -->
-            <nav class="in-page" ng-if="isActive">
+            <nav class="in-page" ng-if="isActive" ng-class="{ 'dark':liveParameters.userSelectedStream != null }">
                 <ul class="container highlights">
                     <li class="gr-5">
                         @{{ liveParameters.title }} Event
@@ -99,10 +99,15 @@
                         </span>
                     </li>
                     <li class="gr-2 stream-options">
-                        <span ng-click="liveParameters.selectedStream = null">No Video</span>
-                        <span ng-click="liveParameters.selectedStream = 'spacex'">SpaceX</span>
+                        <span ng-click="liveParameters.userSelectedStream = null">No Video</span>
+                        <span ng-click="liveParameters.userSelectedStream = 'spacex'">SpaceX</span>
                         <span class="hidden">NASA Only</span>
                         <span class="hidden">Split-screen</span>
+                    </li>
+
+                    <li class="gr-2 stream-size-options">
+                        <span ng-click="liveParameters.userStreamSize = 'smaller'">Smaller</span>
+                        <span ng-click="liveParameters.userStreamSize = 'larger'">Larger</span>
                     </li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
@@ -206,7 +211,9 @@
                 </section>
             @endif
 
-            <!-- add streams here -->
+            <section id="streams" ng-if="isLivestreamVisible()" class="dark @{{ liveParameters.userStreamSize }}">
+                <iframe src="https://www.youtube.com/embed/OvHJSIKP0Hg?VQ=HD720" frameborder="0" allowfullscreen></iframe>
+            </section>
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section class="live-message-form" ng-if="isActive && liveParameters.isForLaunch">
@@ -243,7 +250,7 @@
                                 <button class="canned-response" ng-click="buttons.click('Mission Failure')" ng-if="buttons.isVisible('Mission Failure')">Mission Failure</button>
                             </li>
                         </ul>
-                        <textarea name="message" ng-model="send.new.message"
+                        <textarea class="new-live-update" name="message" ng-model="send.new.message"
                                   placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown" required>
                         </textarea>
                         <input type="submit" ng-click="send.message(cannedResponsePostForm)" ng-disabled="cannedResponsePostForm.$invalid" value="Post" />
@@ -256,7 +263,7 @@
                     <!--<h3>Information & Maps</h3>
                     <div class="description" ng-bind="liveParameters.description"></div>-->
 
-                    <h3>Updates</h3>
+                    <h3>Live Updates</h3>
                     <div class="update" ng-repeat="update in updates | orderBy:'id':true">
                         <div>
                             <p><span class="update-timestamp" ng-mouseover="update.isShowingTimestamp = true" ng-mouseleave="update.isShowingTimestamp = false">@{{ update.timestamp }}</span>

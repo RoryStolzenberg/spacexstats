@@ -27,6 +27,7 @@ class WebcastCheckCommand extends Command
 
     protected $channelName = 'spacexchannel';
     protected $channelID = 'UCtI0Hodo5o5dUb67FeUjDeA'; // https://developers.google.com/youtube/v3/docs/channels/list#try-it
+    //protected $channelID = 'UCoMdktPbSTixAyNGwb-UYkQ';
     /**
      * Create a new command instance.
      *
@@ -52,6 +53,7 @@ class WebcastCheckCommand extends Command
             Config::get('services.youtube.key'))->getBody());
 
         $isLive = $searchResponse->pageInfo->totalResults != 0;
+        $this->info($isLive ? 'true' : 'false');
 
         // Determine the total number of viewers
         if ($isLive) {
@@ -66,11 +68,15 @@ class WebcastCheckCommand extends Command
             $viewers = 0;
         }
 
+        $this->info('viewers:'. $viewers);
+
         // If the livestream is active now, and wasn't before, or vice versa, send an event
         if ($isLive && Redis::hget('webcast', 'isLive') == 'false') {
+            $this->info($searchResponse->items[0]->id->videoId);
             event(new WebcastEvent(true, $searchResponse->items[0]->id->videoId));
 
         } elseif (!$isLive &&  Redis::hget('webcast', 'isLive') == 'true') {
+            $this->info('webcast event: finished');
             event(new WebcastEvent(false));
         }
 

@@ -22,7 +22,10 @@ class LiveCountdownEvent extends Event  implements ShouldBroadcast
     public function __construct($isResuming, $newLaunchTime = null)
     {
         $this->isResuming = $isResuming;
-        $this->newLaunchTime = $newLaunchTime;
+        if ($newLaunchTime != null) {
+            $this->newLaunchTime = $newLaunchTime->format('Y-m-d H:i:s');
+        }
+
     }
 
     /**

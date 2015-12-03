@@ -5,7 +5,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Log;
 use JavaScript;
 use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
@@ -31,8 +30,10 @@ class LiveController extends Controller {
      */
     public function live() {
 
+        $isAuthed = (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin();
+
         $js = [
-            'auth' => (Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin(),
+            'auth' => $isAuthed,
             'mission' => Mission::future()->first(),
             'isActive' => Redis::get('live:active') == true,
             'updates' => collect(Redis::lrange('live:updates', 0, -1))->map(function($update) {
@@ -44,10 +45,13 @@ class LiveController extends Controller {
             'sections' => json_decode(Redis::get('live:sections')),
             'resources' => json_decode(Redis::get('live:resources')),
             'description' => Redis::hgetall('live:description'),
-            'streams' => Redis::hgetall('live:streams')
+            'streams' => [
+                'spacex' => json_decode(Redis::hget('live:streams', 'spacex')),
+                'nasa' => json_decode(Redis::hget('live:streams', 'nasa')),
+            ]
         ];
 
-        if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::IsAdmin()) {
+        if ($isAuthed) {
             $js['cannedResponses'] = Redis::hgetall('live:cannedResponses');
         }
 
@@ -173,6 +177,7 @@ class LiveController extends Controller {
 
         // Update Redis
         Redis::hset('live:countdown', 'isPaused', false);
+        Redis::hset('live:countdown', 'to', $newLaunchDate->toDateTimeString());
 
         // If it relates to a mission (and not a miscellaneous webcast)
         if (Redis::get('live:isForLaunch')) {
@@ -208,28 +213,29 @@ class LiveController extends Controller {
         // Turn on SpaceXStats Live
         Redis::set('live:active', true);
 
-        // Establish redis parameters
+        // Set the streams available
         Redis::hmset('live:streams', [
-            'nasa' => Input::get('nasa'),
-            'spacex' => Input::get('spacex')
+            'spacex' => json_encode(Input::get('streams.spacex')),
+            'nasa' => json_encode(Input::get('streams.nasa'))
         ]);
 
+        // Set the countdown
         Redis::hmset('live:countdown', [
             'to' => Input::get('countdown.to'),
             'isPaused' => false
         ]);
 
+        // Set the details
         Redis::set('live:title', Input::get('title'));
         Redis::hmset('live:description', [
             'raw' => Input::get('description.raw'),
             'markdown' => Parsedown::instance()->parse(Input::get('description.raw'))
         ]);
         Redis::set('live:isForLaunch', Input::get('isForLaunch'));
-
         Redis::set('live:resources', json_encode(Input::get('resources')));
         Redis::set('live:sections', json_encode(Input::get('sections')));
 
-        // Set the Reddit redis parameters
+        // Set the Reddit parameters
         Redis::hmset('live:reddit', [
             'title' => Input::get('reddit.title')
         ]);
@@ -272,13 +278,12 @@ class LiveController extends Controller {
             'active' => true,
             'streams' => [
                 'spacex' => Input::get('streams.spacex'),
-                'nasa' => Input::get('streams.nasa'),
+                'nasa' => Input::get('streams.nasa')
             ],
             'countdown' => [
                 'to' => Input::get('countdown.to'),
                 'isPaused' => false,
             ],
-            'countdownTo' => Input::get('countdownTo'),
             'title' => Input::get('title'),
             'reddit' => [
                 'title' => Input::get('reddit.title'),

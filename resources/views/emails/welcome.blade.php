@@ -1,7 +1,10 @@
 @extends('emails.template')
 
-Welcome to SpaceXStats!
+@section('emailType', 'Signup Request')
+@section('EmailBody')
+<h2>Welcome to SpaceX Stats!</h2>
 
-You're one step away from access to the world's largest collection of SpaceX news, information, and resources. 
+<p>You're one step away from access to the world's largest collection of SpaceX news, information, and resources.
 
-Confirm your account details <a href="http://spacexstats.app/auth/verify/{{ $id }}/{{ $key }}">here</a>.
+<a href="http://spacexstats.com/auth/verify/{{ $id }}/{{ $key }}">Confirm your account details here</a>. Then, head on over and grab a subscription to <a href="http://spacexstats.com/missioncontrol">Mission Control</a>!
+@stop

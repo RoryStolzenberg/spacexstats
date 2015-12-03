@@ -8695,7 +8695,9 @@ body.live {
   body.live .content-wrapper {
     height: auto; }
     body.live .content-wrapper header {
-      margin: 0 auto; }
+      margin: 0 auto;
+      height: 100px;
+      overflow: hidden; }
     body.live .content-wrapper main {
       min-height: calc(100vh - 150px + 50px); }
   body.live .access-links {
@@ -8704,6 +8706,13 @@ body.live {
     text-align: center; }
     body.live .access-links#logo {
       width: 16.66667%; }
+  body.live .new-live-update {
+    height: 100px;
+    min-height: 0; }
+
+.dark {
+  background-color: #21272B;
+  color: #F2F2F2; }
 
 .countdown.live {
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
@@ -8714,7 +8723,7 @@ body.live {
   .countdown.live td {
     min-width: 125px; }
 
-section.editing-settings {
+section.editing-details {
   background-color: #CCC;
   box-shadow: 0px 10px 10px -10px #4f708f inset, 0px -10px 10px -10px #4f708f inset; }
 
@@ -8728,9 +8737,49 @@ button.canned-response {
   font-size: smaller;
   letter-spacing: normal; }
 
+#streams iframe {
+  margin: 0 auto;
+  display: block; }
+
+@media screen and (max-height: 719px) {
+  #streams.smaller {
+    height: 360px; }
+    #streams.smaller iframe {
+      height: 360px;
+      width: 640px; }
+  #streams.larger {
+    height: 432px; }
+    #streams.larger iframe {
+      height: 432px;
+      width: 768px; } }
+
+@media screen and (min-height: 720px) and (max-height: 1080px) {
+  #streams.smaller {
+    height: 576px; }
+    #streams.smaller iframe {
+      height: 576px;
+      width: 1024px; }
+  #streams.larger {
+    height: 648px; }
+    #streams.larger iframe {
+      height: 648px;
+      width: 1152px; } }
+
+@media screen and (min-height: 1081px) {
+  #streams.smaller {
+    height: 648px; }
+    #streams.smaller iframe {
+      height: 648px;
+      width: 1152px; }
+  #streams.larger {
+    height: 720px; }
+    #streams.larger iframe {
+      height: 720px;
+      width: 1280px; } }
+
 .live-updates .update {
   border-bottom: 1px solid #CCC;
-  padding: 20px 0; }
+  padding: 10px 0; }
   .live-updates .update .update-timestamp {
     font-size: 18px;
     font-family: "Montserrat", sans-serif; }

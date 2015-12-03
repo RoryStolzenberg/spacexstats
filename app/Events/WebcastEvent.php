@@ -2,18 +2,29 @@
 
 namespace SpaceXStats\Events;
 
-use SpaceXStats\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class WebcastEvent extends Event implements ShouldBroadcast
+class WebcastEvent extends Event  implements ShouldBroadcast
 {
-    public $isActive;
+    use SerializesModels;
 
+    public $isActive;
+    public $videoId;
+
+    /**
+     * Create a new event instance.
+     *
+     * @param $isActive
+     * @param null $videoId
+     */
     public function __construct($isActive, $videoId = null)
     {
         $this->isActive = $isActive;
-        $this->videoId = $videoId;
+        if ($videoId != null) {
+            $this->videoId = $videoId;
+        }
+
     }
 
     /**
@@ -23,6 +34,6 @@ class WebcastEvent extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return ['live-updates', 'webcast'];
+        return ['live-updates'];
     }
 }

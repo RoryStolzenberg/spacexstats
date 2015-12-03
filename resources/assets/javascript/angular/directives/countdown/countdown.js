@@ -20,7 +20,11 @@
                 var countdownProcessor = function() {
 
                     if (angular.isUndefined($scope.isPaused) || !$scope.isPaused) {
-                        var secondsBetween = Math.abs(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second'));
+                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
+                        $scope.tMinusZero = secondsBetween == 0;
 
                         // Calculate the number of days, hours, minutes, seconds
                         $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));

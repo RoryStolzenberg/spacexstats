@@ -4,6 +4,7 @@ namespace SpaceXStats\Live;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use JsonSerializable;
 
@@ -84,7 +85,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
         // Check if paused
         if (!Redis::hget('live:countdown', 'isPaused')) {
             $countdownTo = Carbon::createFromFormat('Y-m-d H:i:s', Redis::hget('live:countdown', 'to'));
-            $diffInSeconds = $this->createdAt->diffInSeconds($countdownTo);
+            $diffInSeconds = $this->createdAt->diffInSeconds($countdownTo, false);
             $absDiffInSeconds = abs($diffInSeconds);
             $sign = $diffInSeconds < 0 ? '+' : '-';
 
