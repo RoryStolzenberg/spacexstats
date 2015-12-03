@@ -168,7 +168,7 @@ class Spacexstats extends Migration {
             $table->integer('launch_site_id')->unsigned();
             $table->enum('launch_illumination', array('Day', 'Night', 'Twilight'))->nullable();
             $table->string('summary', Varchar::compact);
-            $table->string('article', Varchar::large)->nullable();
+            $table->string('article', Varchar::xxlarge)->nullable();
 
             // States
             $table->enum('status', array('Upcoming', 'Complete', 'In Progress'));
