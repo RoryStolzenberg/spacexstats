@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Redis;
 use LukeNZ\Reddit\Reddit;
 use Parsedown;
 use SpaceXStats\Events\Live\LiveCountdownEvent;
+use SpaceXStats\Events\Live\LiveDetailsUpdatedEvent;
 use SpaceXStats\Events\Live\LiveStartedEvent;
 use SpaceXStats\Events\Live\LiveUpdateCreatedEvent;
 use SpaceXStats\Events\Live\LiveUpdateUpdatedEvent;
@@ -75,19 +76,21 @@ class LiveController extends Controller {
         // Push into Websockets
         event(new LiveUpdateCreatedEvent($liveUpdate));
 
-        Log::info('push2queue');
         // Push to queue for Reddit
         $job = (new UpdateRedditLiveThreadJob());
         $this->dispatch($job);
 
         // Add to DB
-        //\SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
+        \SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
 
         // Respond
         return response()->json(null, 204);
     }
 
     // /send/message, PATCH.
+    /**
+     * @return mixed
+     */
     public function editMessage() {
         // Find message in Redis
         $id = Input::get('id');
@@ -107,29 +110,43 @@ class LiveController extends Controller {
         $this->dispatch($job);
 
         // Repush to DB
+        $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::find($id);
+        $liveUpdateModel->update = Input::get('update');
 
         return response()->json(null, 204);
     }
 
-    // /live/send/settings, POST.
-    public function editSettings() {
-        // Fetch settings
+    // /live/send/details, PATCH.
+    /**
+     * @return mixed
+     */
+    public function editDetails() {
+        // Fetch details
 
         // patch
 
         // Websockets
+        event(new LiveDetailsUpdatedEvent());
 
         // Push to queue for Reddit
+        $job = (new UpdateRedditLiveThreadJob());
+        $this->dispatch($job);
 
         return response()->json(null, 204);
     }
 
+    /**
+     * @return mixed
+     */
     public function editCannedResponses() {
         // Reset Canned Responses
 
         return response()->json(null, 204);
     }
 
+    /**
+     * @return mixed
+     */
     public function pauseCountdown() {
         // Update Redis
         Redis::hset('live:countdown', 'isPaused', true);
@@ -147,6 +164,9 @@ class LiveController extends Controller {
         return response()->json(null, 204);
     }
 
+    /**
+     * @return mixed
+     */
     public function resumeCountdown() {
         // Parse launch date
         $newLaunchDate = Carbon::parse(Input::get('newLaunchDate'));
@@ -178,6 +198,12 @@ class LiveController extends Controller {
         return response()->json(null, 204);
     }
 
+    /**
+     * Create a SpaceXStats Live event. Set all the necessary Redis parameters, render a Reddit Thread template,
+     * publish it, then broadcast a LiveStartedEvent to notify websocket listeners.
+     *
+     * @return mixed
+     */
     public function create() {
         // Turn on SpaceXStats Live
         Redis::set('live:active', true);
@@ -268,6 +294,9 @@ class LiveController extends Controller {
         return response()->json(null, 204);
     }
 
+    /**
+     * @return mixed
+     */
     public function destroy() {
         // Disable access
         if (Auth::user()->isLaunchController()) {

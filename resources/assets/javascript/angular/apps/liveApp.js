@@ -46,7 +46,7 @@
                     $scope.liveParameters.title = $scope.liveParameters.reddit.title = null;
                 }
             },
-            isEditingSettings: false,
+            isEditingDetails: false,
             addSection: function() {
                 if (!$scope.liveParameters.sections) {
                     $scope.liveParameters.sections = [];
@@ -65,9 +65,9 @@
             removeResource: function(resource) {
                 $scope.liveParameters.resources.splice($scope.liveParameters.resources.indexOf(resource), 1);
             },
-            updateSettings: function() {
-                liveService.updateSettings($scope.liveParameters).then(function(response) {
-                    $scope.settings.isEditingSettings = false;
+            updateDetails: function() {
+                liveService.updateDetails($scope.liveParameters).then(function(response) {
+                    $scope.settings.isEditingDetails = false;
                 });
             },
             isPausingCountdown: false,
@@ -206,6 +206,10 @@
             $scope.$apply();
         });
 
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveDetailsUpdatedEvent', function(data) {
+
+        });
+
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
 
         });
@@ -229,8 +233,8 @@
             return $http.patch('live/send/countdown/resume', { newLaunchDate: data});
         };
 
-        this.updateSettings = function(settings) {
-            return $http.post('/live/send/settings', settings);
+        this.updateDetails = function(details) {
+            return $http.post('/live/send/details', details);
         };
 
         this.updateCannedResponses = function(cannedResponses) {

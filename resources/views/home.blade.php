@@ -52,7 +52,7 @@
                     </tr>
                 </table>
 
-                <countdown ng-if="substatistic.display == 'count'" is-paused="false" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
+                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
             </div>
 
             <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>

@@ -11,8 +11,7 @@ Route::group(array('namespace' => 'Live'), function() {
         Route::post('live/send/message', 'LiveController@message');
         Route::patch('/live/send/message', 'LiveController@editMessage');
 
-        Route::post('live/send/settings', 'LiveController@settings');
-        Route::patch('live/send/settings', 'LiveController@editSettings');
+        Route::patch('live/send/details', 'LiveController@editDetails');
 
         Route::patch('/live/send/countdown/pause', 'LiveController@pauseCountdown');
         Route::patch('/live/send/countdown/resume', 'LiveController@resumeCountdown');

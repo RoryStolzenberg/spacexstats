@@ -106,16 +106,16 @@
                     </li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                        <li class="gr-1 float-right"><i class="fa fa-cog" ng-click="settings.isEditingSettings = !settings.isEditingSettings"></i></li>
+                        <li class="gr-1 float-right"><i class="fa fa-cog" ng-click="settings.isEditingDetails = !settings.isEditingDetails"></i></li>
                     @endif
                 </ul>
             </nav>
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                <section class="editing-settings container" ng-if="isActive && settings.isEditingSettings">
+                <section class="editing-details container" ng-if="isActive && settings.isEditingDetails">
                     <div class="gr-7">
-                        <h3>Settings</h3>
-                        <form name="settingsForm">
+                        <h3>Details</h3>
+                        <form name="detailsForm">
                             <ul>
                                 <li>
                                     <label>Description</label>
@@ -123,7 +123,7 @@
                                 </li>
                             </ul>
                         </form>
-                        <button ng-click="settings.updateSettings()">Save Settings</button>
+                        <button ng-click="settings.updateDetails()">Save Details</button>
 
                         <div ng-if="!liveParameters.countdown.isPaused">
                             <h3>Pause Countdown</h3>
