@@ -3670,6 +3670,220 @@ class TelemetryTableSeeder extends Seeder {
     }
 
     public function CRS3() {
-        
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "We have liftoff of the Falcon 9"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the tower"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "First stage propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Solid [inaudible], power systems nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "First stage propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Power systems nominal, solid telemetry lock on both stages"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "T+110s, altitude 24km, speed 775m/s, downrange distance [inaudible]"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "MVac is chilling in"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's flying down the nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "T+2 minutes 30 seconds, vehicle- correction- vehicle 63km altitude, speed 1.8km/s, downrange distance 55km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Stage separation confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "And we have MECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "And MVac ignition"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "T+3 minutes. Vehicle altitude 103km, speed 2km/s, downrange distance 103km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Stage two propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Falcon power systems nominal, solid telemetry lock on both stages"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "T+4 minutes 45 seconds, vehicle altitude 205km, speed 2.4km/s, downrange distance 285km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle continues to fly down the nominal trajectory"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "All Dragon tracking stations nominal, TDRS nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Falcon power systems nominal, solid telemetry lock on both stages"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "T+6 minutes 40 seconds, trajectory status. 284km altitude, speed 3.6km/s, downrange distance 600km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "T+8 minutes 15 seconds. Altitude 322km, speed 5.3km/s, downrange distance 980km. Still getting excellent video of the first stage having performed its entry burn, and excellent video from the Air Force New Hampshire tracking station on the second stage"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle continues to fly down the nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Terminal guidance has begun"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "And we're in terminal guidance"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Standby for engine cutoff"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "FTS is safed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Dragon flight computers in separation"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "And we have SECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "New Foundland ground station has acquired Dragon"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Dragon deploy confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Enabling New Foundland telemetry"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Dragon loss of signal [inaudible]"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "And this is John Insprucker, and you're looking at the live shot of Dragon, successfully separated from the Falcon 9, we're in a good orbit, we're watching Dragon slowly drift away, now right now the second stage is beginning to turn, that's a normal event, so we're probably not gonna' get to see the solar arrays come out on Dragon from the second stage but we'll try to see what the cameras can bring you, we'll follow along and go back in just a minute to see if we've still got coverage, but right now, it's a great mission, we're where we want to be, so let's go back and just take a look and wait and see if we can maybe get video coverage of the arrays coming out on Dragon"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Dragon is in array deploy"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Dragon has good solar array deploy"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Dragon has nominal command and telemetry from TDRS"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "Prop global"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "As you can see, we're all very excited here for, at SpaceX for another successful launch and we hope you enjoyed watching from home. Today was an incredible day for me and the rest of the Dragon team and we can't wait for the cargo to arrive at the station in just a few days. Well, that concludes our webcast, and on behalf of all of us here at SpaceX, thanks for tuning in."
+        ]);
+        Telemetry::create([
+            'mission_id'    => 14,
+            'timestamp'     => 0,
+            'readout'       => "And as you can hear, a lot of applause in the background. Looks like we've got another successful launch of the Falcon 9, we'll be releasing updates on how Dragon is doing, and also maybe we'll also get some insight on what happened at the first stage recovery, tune in for us, on the web, so we can see how Dragon is doing as it makes its quick flight to the International Space Station, but right now for Sarah and myself, great afternoon at the Cape, successful flight, and with that, we are going to sign off. Check our social media webpages for updates, and we'd like to also thank our NASA customer for the confidence in us, and hanging with us through the bad weather today as everything cleared up, and everything came together, and it looked great Sarah, and with that, thanks to all of you for watching us on the web, and as I said, check on our media pages for updates, and with that, we're going to sign off and say good afternoon, good evening, or good morning wherever you are around the world, goobye from SpaceX headquarters here in Hawthorne."
+        ]);
     }
 }

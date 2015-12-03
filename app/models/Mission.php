@@ -208,7 +208,12 @@ class Mission extends Model {
 
     public function getLaunchOfYearAttribute() {
         // Fetch the year of the current launch
-        $year = $this->isLaunchPrecise() ? Carbon::parse($this->launch_date_time)->year : preg_match('/\b\d{4}\b/', $this->launch_date_time, $matches)[0];
+        if ($this->isLaunchPrecise()) {
+            $year = Carbon::parse($this->launch_date_time)->year;
+        } else {
+            preg_match('/\b\d{4}\b/', $this->launch_date_time, $year);
+            $year = $year[0];
+        }
 
         // Now find all other missions with that year
         return Mission::before($this->launch_order_id)
