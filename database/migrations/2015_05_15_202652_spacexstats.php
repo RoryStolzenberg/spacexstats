@@ -391,6 +391,7 @@ class Spacexstats extends Migration {
             $table->string('operator', Varchar::small);
             $table->decimal('mass', 6, 1)->nullable();
             $table->boolean('primary');
+            $table->boolean('as_cargo')->default(false);
             $table->string('link', Varchar::small)->nullable();
 
             $table->timestamps();
