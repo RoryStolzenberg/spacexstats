@@ -28,6 +28,12 @@ class Statistic extends Model {
 	}
 
     public function getFullTitleAttribute() {
+        // Dynamically set the next launch title
+        if ($this->type == 'Next Launch') {
+            return 'Next Launch - ' . Mission::future(1)->first()->name;
+        }
+
+        // Otherwise simply concatenate the name to the type if not a duplicate
         if ($this->type === $this->name || is_null($this->name)) {
             return $this->type;
         } else {
@@ -44,7 +50,7 @@ class Statistic extends Model {
         $description = $this->attributes['description'];
 
         $dynamicData = array();
-        preg_match_all("/\{\{\s?(.*)\s?\}\}/U", $description, $dynamicData);
+        preg_match_all("/\{\{\s?([^ ]*)\s?\}\}/", $description, $dynamicData);
 
         foreach ($dynamicData[0] as $match => $dynamicString) {
             $description = str_replace($dynamicString, StatisticDescriptionBuilder::$type($this->name, $dynamicData[1][$match]), $description);

@@ -21,21 +21,14 @@
                     $scope.isLaunchExact = (newValue == 6 || newValue == 7);
                 });
 
+                $
+
                 var countdownProcessor = function() {
 
                     if (angular.isUndefined($scope.isPaused) || !$scope.isPaused) {
-                        var launchUnixSeconds = $scope.launchUnixSeconds;
-                        var currentUnixSeconds = Math.floor(Date.now() / 1000);
+                        var timeToLaunch = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'seconds');
 
-                        // Countdown
-                        if (launchUnixSeconds >= currentUnixSeconds) {
-                            $scope.secondsAwayFromLaunch = launchUnixSeconds - currentUnixSeconds;
-                            // Countup
-                        } else {
-                            $scope.secondsAwayFromLaunch = currentUnixSeconds - launchUnixSeconds;
-                        }
-
-                        var secondsBetween = $scope.secondsAwayFromLaunch;
+                        var secondsBetween = timeToLaunch;
                         // Calculate the number of days, hours, minutes, seconds
                         $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
                         secondsBetween -= $scope.days * 60 * 60 * 24;
@@ -61,7 +54,6 @@
 
                 // Countdown here
                 if ($scope.isLaunchExact) {
-                    $scope.launchUnixSeconds = moment.utc($scope.countdownTo).unix();
                     $interval(countdownProcessor, 1000);
                 } else {
                     $scope.countdownText = $scope.countdownTo;

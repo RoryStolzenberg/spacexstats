@@ -85,10 +85,7 @@ class StatisticResultBuilder {
 		}
 
         if ($substatistic === 'Reflights') {
-/*SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM spacecraft
-  JOIN spacecraft_flights_pivot ON spacecraft.spacecraft_id = spacecraft_flights_pivot.spacecraft_id
-  WHERE spacecraft.spacecraft_id=spacecraft_flights_pivot.spacecraft_id
-GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights*/
+			return DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM spacecraft JOIN spacecraft_flights_pivot ON spacecraft.spacecraft_id = spacecraft_flights_pivot.spacecraft_id WHERE spacecraft.spacecraft_id=spacecraft_flights_pivot.spacecraft_id GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights");
         }
 	}
 
@@ -102,10 +99,7 @@ GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights*
         }
 
         if ($substatistic == 'Reflown') {
-            /* SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts
-  JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id
-  WHERE parts.part_id=part_flights_pivot.part_id
-GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights */
+			return DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id WHERE parts.part_id=part_flights_pivot.part_id GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights");
         }
     }
 

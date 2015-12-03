@@ -74,11 +74,12 @@ body, nav {
 /* IN PAGE NAVIGATION */
 .in-page {
     text-align:center;
-    height:40px; // Includes the 10px padding of the parent element
-    line-height:40px;
+    height:50px; // Includes the 10px padding of the parent element
+    line-height:50px;
+    font-family: $montserrat;
 
     li {
-        height:40px;
+        height:50px;
         cursor:pointer;
         padding-bottom: 3px;
 

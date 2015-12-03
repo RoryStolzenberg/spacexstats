@@ -1,6 +1,9 @@
 <?php
 namespace SpaceXStats\Http\Controllers;
 
+use SpaceXStats\Models\Mission;
+use SpaceXStats\Services\CalendarBuilder;
+
 class CalendarController extends Controller {
 	// GET All Calendars for mission
 	public function getAll() {
@@ -18,14 +21,14 @@ class CalendarController extends Controller {
 
 	private function returnCalendarOrRedirect($missions, $filename) {
 		if (!$missions->isEmpty()) {
-			$calendar = new SpaceXStats\Library\CalendarBuilder($missions);
+			$calendar = new CalendarBuilder($missions);
 
-			return Response::make($calendar->getContent(), 200, array(
+			return response()->make($calendar->getContent(), 200, array(
 				'Content-type' => 'text/calendar',
 				'Content-Disposition' => 'inline;filename="'.$filename.'.ics"'
 			));			
 		} else {
-			return Redirect::route('home');
+			return redirect('/');
 		}
 	}
 }

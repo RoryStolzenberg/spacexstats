@@ -106,10 +106,10 @@ body.future-mission .highlights {
         background-color:$gold;
         color:$white;
         height:40px;
-        width:100%;
+        width:calc(100% - 10px);
         padding:0 20px 0 10px;
         position:relative;
-        right:-10px;
+        right:-20px;
 
         p {
             line-height:20px;
@@ -147,7 +147,7 @@ body.future-mission .highlights {
 
     .timezone-list {
         box-shadow:0px 10px 10px -10px rgba($lightblack, 0.5) inset;
-        background-color:darken($gold, 10%);
+        background-color:darken($gold, 15%);
         line-height:30px;
         color:$white;
         transform:translateY(0);
@@ -167,11 +167,11 @@ body.future-mission .highlights {
         @include transitionFast(background-color);
 
         &:hover {
-            background-color:darken($gold, 5%);
+            background-color:darken($gold, 10%);
         }
 
         &.active {
-            background-color:$green;
+            background-color:darken($gold, 5%);
         }
     }
 }

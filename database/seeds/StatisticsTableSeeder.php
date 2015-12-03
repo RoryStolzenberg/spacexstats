@@ -64,6 +64,7 @@ class StatisticsTableSeeder extends Seeder {
         Statistic::create(array(
             'order' => 7,
             'type' => 'Launches Per Year',
+            'name' => 'Launches Per Year',
             'description' => "",
             'display' => 'graph'
         ));
@@ -346,6 +347,7 @@ class StatisticsTableSeeder extends Seeder {
         Statistic::create(array(
             'order' => 38,
             'type' => 'Internet Constellation',
+            'name' => 'Internet Constellation',
             'description' => "",
             "unit" => "Total Launched", // 0/4025
             'display' => 'single'
@@ -355,6 +357,7 @@ class StatisticsTableSeeder extends Seeder {
         Statistic::create(array(
             'order' => 39,
             'type' => 'Mars Population Count',
+            'name' => 'Mars Population Count',
             'description' => "",
             "unit" => "People",
             'display' => 'single'
@@ -364,6 +367,7 @@ class StatisticsTableSeeder extends Seeder {
         Statistic::create(array(
             'order' => 40,
             'type' => 'Hours Worked',
+            'name' => 'Hours Worked',
             'description' => "",
             'display' => 'gesture'
         ));

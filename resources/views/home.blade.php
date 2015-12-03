@@ -43,7 +43,8 @@
             </nav>
 
             <div class="hero fade-in-out statistic" ng-repeat="substatistic in statistic.substatistics" ng-show="statistic.activeSubstatistic == substatistic && statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">
-                <table style="color:inherit;" ng-if="substatistic.display == 'single'">
+
+                <table class="single" ng-if="substatistic.display == 'single'">
                     <tr class="value">
                         <td>@{{ substatistic.result }}</td>
                     </tr>
@@ -52,7 +53,33 @@
                     </tr>
                 </table>
 
+                <table class="double" ng-if="substatistic.display == 'double'">
+                    <tr>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>@{{ substatistic.unit[0] }}</td>
+                        <td>@{{ substatistic.unit[1] }}</td>
+                    </tr>
+                </table>
+
                 <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launchDateTime" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
+
+                <table class="interval" ng-if="substatistic.display == 'interval'">
+                    <tr>
+                        <td>@{{ substatistic.result[0] }}</td>
+                        <td>@{{ substatistic.result[1] }}</td>
+                        <td>@{{ substatistic.result[2] }}</td>
+                        <td>@{{ substatistic.result[3] }}</td>
+                    </tr>
+                    <tr>
+                        <td>Days</td>
+                        <td>Hours</td>
+                        <td>Minutes</td>
+                        <td>Seconds</td>
+                    </tr>
+                </table>
             </div>
 
             <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>
