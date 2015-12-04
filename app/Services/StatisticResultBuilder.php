@@ -305,14 +305,14 @@ JOIN spacecraft_flights_pivot ON spacecraft_flights_pivot.spacecraft_flight_id =
 JOIN missions ON missions.mission_id = spacecraft_flights_pivot.mission_id
 WHERE missions.status='IN PROGRESS' */
 			return DB::table('astronauts_flights_pivot')
-				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
+				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_flight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
 				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
 				->where('missions.status', MissionStatus::InProgress)
 				->count();
 
 		} else if ($substatistic == 'Cumulative') {
 			return DB::table('astronauts_flights_pivot')
-				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
+				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_flight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
 				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
 				->where('missions.status', MissionStatus::InProgress)
 				->orWhere('missions.status', MissionStatus::Complete)
@@ -374,9 +374,9 @@ WHERE missions.status='IN PROGRESS' */
      */
 	public static function distance($substatistic) {
 		if ($substatistic == 'Earth Orbit') {
-			return round(DB::table('orbital_elements')->max('apogee')) + ' km';
+			return round(DB::table('orbital_elements')->max('apogee'));
 		} else if ($substatistic == 'Solar System') {
-			return 0 + ' km';
+			return 0;
 		}
     }
 
