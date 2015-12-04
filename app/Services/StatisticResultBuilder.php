@@ -304,15 +304,15 @@ class StatisticResultBuilder {
 JOIN spacecraft_flights_pivot ON spacecraft_flights_pivot.spacecraft_flight_id = astronauts_flights_pivot.spacecraft_flight_id
 JOIN missions ON missions.mission_id = spacecraft_flights_pivot.mission_id
 WHERE missions.status='IN PROGRESS' */
-			return DB::table('astronaut_flights_pivot')
-				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronaut_flights_pivot.spacecraft_flight_id')
+			return DB::table('astronauts_flights_pivot')
+				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
 				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
 				->where('missions.raw', MissionStatus::InProgress)
 				->count();
 
 		} else if ($substatistic == 'Cumulative') {
-			return DB::table('astronaut_flights_pivot')
-				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronaut_flights_pivot.spacecraft_flight_id')
+			return DB::table('astronauts_flights_pivot')
+				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
 				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
 				->where('missions.raw', MissionStatus::InProgress)
 				->orWhere('missions.raw', MissionStatus::Complete)
@@ -324,7 +324,7 @@ WHERE missions.status='IN PROGRESS' */
 	 * @return int
      */
 	public static function elonMusksBetExpires() {
-        return 0;
+        return Carbon::create(2026, 1, 1, 0, 0, 0);
     }
 
 	/**
@@ -374,9 +374,9 @@ WHERE missions.status='IN PROGRESS' */
      */
 	public static function distance($substatistic) {
 		if ($substatistic == 'Earth Orbit') {
-			return DB::table('orbital_elements')->max('apogee');
+			return round(DB::table('orbital_elements')->max('apogee')) + ' km';
 		} else if ($substatistic == 'Solar System') {
-			return 0;
+			return 0 + ' km';
 		}
     }
 
@@ -402,9 +402,9 @@ WHERE missions.status='IN PROGRESS' */
             return $lowestTurnaround;
 
 		} else if ($substatistic == 'Since Last Launch') {
+			return Mission::past()->first()->launch_date_time;
 
 		} else if ($substatistic == 'Over Time') {
-
 		}
     }
 
