@@ -70,7 +70,7 @@ class StatisticResultBuilder {
 				->selectRaw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration')
                 ->where('missions.status','Complete')
                 ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')
-                ->first();
+                ->first()->duration;
 
 			$stat[0] = floor($seconds / (60 * 60 * 24));
 			$seconds -= $stat[0] * 60 * 60 * 24;

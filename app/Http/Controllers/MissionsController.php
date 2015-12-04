@@ -69,6 +69,7 @@ class MissionsController extends Controller {
         $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
         $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
         $data['launchVideo'] = $data['mission']->launchVideo();
+        $data['orbitalElements'] = $data['mission']->orbitalElements()->orderBy('epoch', 'desc')->take(5);
 
         return view('missions.pastMission', $data);
     }
