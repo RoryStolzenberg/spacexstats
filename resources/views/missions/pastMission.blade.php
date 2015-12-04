@@ -320,7 +320,7 @@
                                     <th>Semimajor Axis</th>
                                     <th>Orbital Period</th>
                                 </tr>
-                                @foreach ($mission->orbitalElemen->take(5) as $orbitalElement)
+                                @foreach ($mission->orbitalElements->take(5) as $orbitalElement)
                                     <tr>
                                         <td>{{ $orbitalElement->epoch->toFormattedDateString() }} <small>({{ $orbitalElement->epoch->diffForHumans() }})</small></td>
                                         <td>{{ $orbitalElement->perigee }} km</td>
