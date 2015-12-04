@@ -7431,7 +7431,7 @@ section {
     clear: both; }
 
 p {
-  line-height: 1.2; }
+  line-height: 1.5; }
 
 .border-bottom {
   border-bottom: 1px solid #CCC; }
@@ -7478,6 +7478,9 @@ small {
 
 .green {
   color: #40C085; }
+
+.white {
+  color: #F2F2F2; }
 
 .code {
   font-family: "Source Code Pro"; }
@@ -8515,6 +8518,7 @@ body.future-mission .highlights {
 
 .outcome, .status {
   border-radius: 3px;
+  font-family: "Montserrat", sans-serif;
   color: #FAFAFA;
   padding: 3px 5px; }
   .outcome.complete, .status.complete {
@@ -8622,6 +8626,18 @@ img#object {
     padding: 5px; }
   .object-actions .is-favorited {
     color: #ccac55; }
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden; }
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
 
 .video-js {
   width: auto !important;
@@ -9116,6 +9132,21 @@ button.canned-response {
 .flight-profile-card > div {
   padding-top: 66.7%; }
 
+.flight-profile-card .content .status {
+  top: 20px;
+  left: 20px; }
+
+.flight-profile-card .content table.countdown {
+  margin: 0px auto;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.3); }
+  .flight-profile-card .content table.countdown td {
+    min-width: 120px; }
+    .flight-profile-card .content table.countdown td.value {
+      font-size: 80px; }
+    .flight-profile-card .content table.countdown td.unit {
+      font-size: 20px; }
+
 .spacecraft-card > div {
   padding-top: 50%; }
 
@@ -9228,6 +9259,9 @@ button.canned-response {
   text-align: center; }
   .delta-v-badge .delta-v-count {
     font-size: 40px; }
+
+countdown {
+  display: block; }
 
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {

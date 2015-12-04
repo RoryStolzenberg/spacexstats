@@ -15,11 +15,16 @@
             <section class="details">
                 <div class="gr-9 content">
                     @if ($object->present()->youtubeExternalUrl() !== false)
-                        <iframe width="100%" src="https://www.youtube.com/embed/{{ $object->present()->youtubeExternalUrl() }}" frameborder="0"
-                                webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <div class="video-container">
+                            <iframe width="100%" src="https://www.youtube.com/embed/{{ $object->present()->youtubeExternalUrl() }}" frameborder="0"
+                                    webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        </div>
+
                     @elseif ($object->present()->vimeoExternalUrl() !== false)
-                        <iframe width="100%" src="https://player.vimeo.com/video/{{ $object->present()->vimeoExternalUrl() }}?title=0&byline=0&portrait=0"
-                                 frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        <div class="video-container">
+                            <iframe width="100%" src="https://player.vimeo.com/video/{{ $object->present()->vimeoExternalUrl() }}?title=0&byline=0&portrait=0"
+                                    frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                        </div>
                     @else
                         <video id="object" class="video-js vjs-default-skin" controls
                                preload="none" data-setup="{}" width="auto" height="auto">
