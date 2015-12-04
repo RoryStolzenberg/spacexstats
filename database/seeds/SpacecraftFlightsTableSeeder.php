@@ -7,7 +7,7 @@ class SpacecraftFlightsTableSeeder extends Seeder {
     public function run() {
         // COTS-1
         SpacecraftFlight::create([
-            'mission_id' => 8,
+            'mission_id' => 7,
             'spacecraft_id' => 1,
             'flight_name' => 'COTS Demo 1',
             'return_method' => 'Splashdown',
@@ -113,7 +113,7 @@ class SpacecraftFlightsTableSeeder extends Seeder {
             'return_method' => 'Did not return',
             'upmass' => 1952,
             'downmass' => 675,
-            'end_of_mission' => Carbon::create(2015, 6, 28, 14, 21, 11)
+            'end_of_mission' => Carbon::create(2015, 6, 28, 14, 23, 30)
         ]);
     }
 }

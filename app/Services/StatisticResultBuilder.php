@@ -66,10 +66,24 @@ class StatisticResultBuilder {
 
         if ($substatistic === 'Total Flight Time') {
 			//SELECT SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) as duration FROM spacecraft INNER JOIN missions ON spacecraft.mission_id=missions.mission_id
-			return SpacecraftFlight::select(DB::raw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration'))
+			$seconds = DB::table('spacecraft_flights_pivot')
+				->select('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration')
                 ->where('missions.status','Complete')
                 ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')
                 ->first();
+
+			$stat[0] = floor($seconds / (60 * 60 * 24));
+			$seconds -= $stat[0] * 60 * 60 * 24;
+
+			$stat[1] = floor($seconds / (60 * 60));
+			$seconds -= $stat[0] * 60 * 60;
+
+			$stat[2] = floor($seconds / 60);
+			$seconds -= $stat[0] * 60;
+
+			$stat[3] = $seconds;
+
+			return $stat;
 		}
 
         if ($substatistic === 'Flight Time (Graph)') {
@@ -79,9 +93,14 @@ class StatisticResultBuilder {
 		}
 
         if ($substatistic === 'Cargo') {
-			return SpacecraftFlight::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
+			$cargo = SpacecraftFlight::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
 				$q->whereComplete();
 			})->groupBy('upmass')->first();
+
+			$stat[0] = $cargo->upmass;
+			$stat[1] = $cargo->downmass;
+
+			return $stat;
 		}
 
         if ($substatistic === 'Reflights') {
@@ -118,8 +137,20 @@ class StatisticResultBuilder {
 
 		if ($substatistic === 'Flight Time') {
 			// SELECT SUM(vehicles.firststage_meco) AS flight_time FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
-			return Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first();
-		
+			$seconds = Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first();
+
+			$stat[0] = floor($seconds / (60 * 60 * 24));
+			$seconds -= $stat[0] * 60 * 60 * 24;
+
+			$stat[1] = floor($seconds / (60 * 60));
+			$seconds -= $stat[0] * 60 * 60;
+
+			$stat[2] = floor($seconds / 60);
+			$seconds -= $stat[0] * 60;
+
+			$stat[3] = $seconds;
+
+			return $stat;
 		}
 
         if ($substatistic === 'Success Rate') {
@@ -273,11 +304,19 @@ class StatisticResultBuilder {
 JOIN spacecraft_flights_pivot ON spacecraft_flights_pivot.spacecraft_flight_id = astronauts_flights_pivot.spacecraft_flight_id
 JOIN missions ON missions.mission_id = spacecraft_flights_pivot.mission_id
 WHERE missions.status='IN PROGRESS' */
+			return DB::table('astronaut_flights_pivot')
+				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronaut_flights_pivot.spacecraft_flight_id')
+				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
+				->where('missions.raw', MissionStatus::InProgress)
+				->count();
+
 		} else if ($substatistic == 'Cumulative') {
-			/* SELECT COUNT(*) FROM astronauts_flights_pivot
-JOIN spacecraft_flights_pivot ON spacecraft_flights_pivot.spacecraft_flight_id = astronauts_flights_pivot.spacecraft_flight_id
-JOIN missions ON missions.mission_id = spacecraft_flights_pivot.mission_id
-WHERE missions.status='Complete' OR missions.status='In Progress' */
+			return DB::table('astronaut_flights_pivot')
+				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronaut_flights_pivot.spacecraft_flight_id')
+				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
+				->where('missions.raw', MissionStatus::InProgress)
+				->orWhere('missions.raw', MissionStatus::Complete)
+				->count();
 		}
     }
 
