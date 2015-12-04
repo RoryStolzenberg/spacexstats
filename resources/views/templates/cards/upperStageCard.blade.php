@@ -32,7 +32,7 @@
                         <span>As of {{ $mission->orbitalElements->first()->epoch->toFormattedDateString() }}</span>
                     </p>
 
-                    <span class="tle-count">{{ $mission->orbitalElements->count() }} TLE's</span>
+                    <span class="tle-count">{{ $mission->orbitalElements()->count() }} TLE's</span>
                 @endif
             @endif
         </div>

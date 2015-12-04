@@ -76,10 +76,10 @@ class StatisticResultBuilder {
 			$seconds -= $stat[0] * 60 * 60 * 24;
 
 			$stat[1] = floor($seconds / (60 * 60));
-			$seconds -= $stat[0] * 60 * 60;
+			$seconds -= $stat[1] * 60 * 60;
 
 			$stat[2] = floor($seconds / 60);
-			$seconds -= $stat[0] * 60;
+			$seconds -= $stat[2] * 60;
 
 			$stat[3] = $seconds;
 
@@ -118,7 +118,7 @@ class StatisticResultBuilder {
         }
 
         if ($substatistic == 'Reflown') {
-			return DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id WHERE parts.part_id=part_flights_pivot.part_id GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights");
+			return DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id WHERE parts.part_id=part_flights_pivot.part_id GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights")->total_flights;
         }
     }
 
