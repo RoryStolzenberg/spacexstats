@@ -20,7 +20,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launch Count',
             'name' => 'Total',
             'description' => 'SpaceX has launched {{ n }} vehicles in total',
-            'unit' => 'Flights',
+            'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
 
@@ -29,7 +29,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launch Count',
             'name' => 'Falcon 9',
             'description' => 'Falcon 9 has launched {{n}} times',
-            'unit' => 'Flights',
+            'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
 
@@ -38,7 +38,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launch Count',
             'name' => 'Falcon Heavy',
             'description' => 'Falcon Heavy has launched {{n}} times',
-            'unit' => 'Flights',
+            'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
 
@@ -47,7 +47,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launch Count',
             'name' => 'Falcon 1',
             'description' => 'Falcon 1 has launched {{n}} times',
-            'unit' => 'Flights',
+            'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
 
@@ -56,7 +56,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launch Count',
             'name' => 'MCT',
             'description' => "Mars Colonial Transporter hasn't launched yet :(",
-            'unit' => 'Flights',
+            'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
 
@@ -75,7 +75,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Dragon',
             'name' => 'Missions',
             'description' => "Dragon has flown {{ n }} times.",
-            'unit' => 'Flights',
+            'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
 
@@ -84,7 +84,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Dragon',
             'name' => 'ISS Resupplies',
             'description' => "Dragon has flown {{ n }} times to the ISS.",
-            'unit' => 'Flights',
+            'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
 
@@ -109,7 +109,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Dragon',
             'name' => 'Cargo',
             'description' => "Dragon remains the only spacecraft in service capable of returning large quantities of cargo from the Station to Earth.",
-            'unit' => "['kg Up', 'kg Down']",
+            'unit' => json_encode(['Kilograms Up', 'Kilograms Down']),
             'display' => 'double'
         ));
 
@@ -118,7 +118,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Dragon',
             'name' => 'Reflights',
             'description' => "",
-            'unit' => "Reflights",
+            'unit' => json_encode('Reflights'),
             'display' => 'single'
         ));
 
@@ -128,7 +128,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Vehicles',
             'name' => 'Landed',
             'description' => "",
-            'unit' => "Landed",
+            'unit' => json_encode('Landed'),
             'display' => 'single'
         ));
 
@@ -137,7 +137,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Vehicles',
             'name' => 'Reflown',
             'description' => "",
-            'unit' => "Reflown",
+            'unit' => json_encode('Reflown'),
             'display' => 'single'
         ));
 
@@ -147,7 +147,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Engines',
             'name' => 'Flown',
             'description' => "SpaceX have in total, launched {{ n }} engines from all their missions.",
-            'unit' => "Flown",
+            'unit' => json_encode('Flown'),
             'display' => 'single'
         ));
 
@@ -164,7 +164,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Engines',
             'name' => 'M1D Success Rate',
             'description' => "100%",
-            'unit' => 'Percent',
+            'unit' => json_encode('Percent'),
             'display' => 'single'
         ));
 
@@ -174,7 +174,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Cape Canaveral',
             'name' => 'Launches',
             'description' => "Launches from Florida",
-            'unit' => "Launches",
+            'unit' => json_encode('Launches'),
             'display' => 'single'
         ));
 
@@ -183,7 +183,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Cape Kennedy',
             'name' => 'Launches',
             'description' => "Launches from Florida",
-            'unit' => "Launches",
+            'unit' => json_encode('Launches'),
             'display' => 'single'
         ));
 
@@ -193,7 +193,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Vandenberg',
             'name' => 'Launches',
             'description' => "Launches from Vandenberg",
-            'unit' => "Launches",
+            'unit' => json_encode('Launches'),
             'display' => 'single'
         ));
 
@@ -202,7 +202,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Boca Chica',
             'name' => 'Launches',
             'description' => "Launches from Boca Chica",
-            'unit' => "Launches",
+            'unit' => json_encode('Launches'),
             'display' => 'single'
         ));
 
@@ -211,7 +211,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Kwajalein',
             'name' => 'Launches',
             'description' => "Launches from Kwajalein",
-            'unit' => "Launches",
+            'unit' => json_encode('Launches'),
             'display' => 'single'
         ));
 
@@ -221,7 +221,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'DragonRiders',
             'name' => 'In Space',
             'description' => "",
-            'unit' => 'DragonRiders',
+            'unit' => json_encode('DragonRiders'),
             'display' => 'single'
         ));
 
@@ -230,7 +230,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'DragonRiders',
             'name' => 'Cumulative',
             'description' => "",
-            'unit' => 'DragonRiders',
+            'unit' => json_encode('DragonRiders'),
             'display' => 'single'
         ));
 
@@ -238,7 +238,7 @@ class StatisticsTableSeeder extends Seeder {
         Statistic::create(array(
             'order' => 26,
             'type' => "Elon Musk's Bet Expires",
-            'name' => 'Cumulative',
+            'name' => "Elon Musk's Bet Expires",
             'description' => '',
             'display' => 'count'
         ));
@@ -249,7 +249,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Payloads",
             'name' => 'Satellites Launched',
             'description' => '',
-            'unit' => '["Primary", "Total"]',
+            'unit' => json_encode(['Primary', 'Total']),
             'display' => 'double'
         ));
 
@@ -258,7 +258,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Payloads",
             'name' => 'Total Mass',
             'description' => '',
-            'unit' => 'KG',
+            'unit' => json_encode('Kilograms'),
             'display' => 'single'
         ));
 
@@ -267,7 +267,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Payloads",
             'name' => 'Mass to GTO',
             'description' => '',
-            'unit' => 'KG',
+            'unit' => json_encode('Kilograms'),
             'display' => 'single'
         ));
 
@@ -276,7 +276,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Payloads",
             'name' => 'Heaviest Satellite',
             'description' => '',
-            'unit' => 'KG',
+            'unit' => json_encode('Kilograms'),
             'display' => 'single'
         ));
 
@@ -286,7 +286,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Upper Stages",
             'name' => 'In Orbit',
             'description' => '',
-            'unit' => 'upper stages',
+            'unit' => json_encode('Upper Stages'),
             'display' => 'single'
         ));
 
@@ -295,7 +295,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Upper Stages",
             'name' => "TLEs",
             'description' => '',
-            'unit' => 'Two Line Elements',
+            'unit' => json_encode('Two Line Elements'),
             'display' => 'single'
         ));
 
@@ -305,7 +305,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Distance",
             'name' => 'Earth Orbit',
             'description' => '',
-            'unit' => 'KM',
+            'unit' => json_encode('Kilometres'),
             'display' => 'single'
         ));
 
@@ -314,7 +314,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => "Distance",
             'name' => 'Solar System',
             'description' => '',
-            'unit' => 'KM',
+            'unit' => json_encode('Kilometres'),
             'display' => 'single'
         ));
 
@@ -349,7 +349,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Internet Constellation',
             'name' => 'Internet Constellation',
             'description' => "",
-            "unit" => "Total Launched", // 0/4025
+            "unit" => json_encode('Total Launched'), // 0/4025
             'display' => 'single'
         ));
 
@@ -359,7 +359,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Mars Population Count',
             'name' => 'Mars Population Count',
             'description' => "",
-            "unit" => "People",
+            "unit" => json_encode('People'),
             'display' => 'single'
         ));
 

@@ -19,7 +19,7 @@
                     'News Summary',
                     'Hazard Map'
                 ],
-                video: [
+                videos: [
                     'Launch Video',
                     'Press Conference'
                 ],

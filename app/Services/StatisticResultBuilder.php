@@ -86,25 +86,26 @@ class StatisticResultBuilder {
 			return $stat;
 		}
 
-        if ($substatistic === 'Flight Time (Graph)') {
+        if ($substatistic === 'Flight Time') {
 			return SpacecraftFlight::selectRaw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration')
                 ->where('missions.status','Complete')
                 ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')->first();
 		}
 
         if ($substatistic === 'Cargo') {
-			$cargo = SpacecraftFlight::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
+			$query = SpacecraftFlight::select(DB::raw('SUM(upmass) AS upmass, SUM(downmass) AS downmass'))->whereHas('mission', function($q) {
 				$q->whereComplete();
-			})->groupBy('upmass')->first();
+			})->first();
 
-			$stat[0] = $cargo->upmass;
-			$stat[1] = $cargo->downmass;
+			$stat[0] = $query->upmass;
+			$stat[1] = $query->downmass;
 
 			return $stat;
 		}
 
         if ($substatistic === 'Reflights') {
-			return DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM spacecraft JOIN spacecraft_flights_pivot ON spacecraft.spacecraft_id = spacecraft_flights_pivot.spacecraft_id WHERE spacecraft.spacecraft_id=spacecraft_flights_pivot.spacecraft_id GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights");
+			$query = DB::select(DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM spacecraft JOIN spacecraft_flights_pivot ON spacecraft.spacecraft_id = spacecraft_flights_pivot.spacecraft_id WHERE spacecraft.spacecraft_id=spacecraft_flights_pivot.spacecraft_id GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights"))[0];
+            return $query->total_flights;
         }
 	}
 
@@ -118,7 +119,8 @@ class StatisticResultBuilder {
         }
 
         if ($substatistic == 'Reflown') {
-			return DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id WHERE parts.part_id=part_flights_pivot.part_id GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights")->total_flights;
+            $query =  DB::select(DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id WHERE parts.part_id=part_flights_pivot.part_id GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights"))[0];
+            return $query->total_flights;
         }
     }
 
@@ -153,11 +155,11 @@ class StatisticResultBuilder {
 			return $stat;
 		}
 
-        if ($substatistic === 'Success Rate') {
+        if ($substatistic === 'M1D Success Rate') {
 			// SELECT SUM(vehicles.firststage_engine_failures) AS engine_failures, ROUND(100 - (SUM(vehicles.firststage_engine_failures) / (COUNT(vehicles.vehicle_id) * 9) * 100)) AS success_rate 
 			// FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
-			return Vehicle::select(DB::raw('SUM(vehicles.firststage_engine_failures) AS engine_failures, ROUND(100 - (SUM(vehicles.firststage_engine_failures) / (COUNT(vehicles.mission_id) * 9) * 100)) AS success_rate'))
-				->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first();
+			return PartFlight::select(DB::raw('ROUND(100 - (SUM(part_flights_pivot.firststage_engine_failures) / (COUNT(part_flights_pivot.mission_id) * 9) * 100)) AS success_rate'))
+				->where('missions.status','Complete')->join('missions','missions.mission_id','=','part_flights_pivot.mission_id')->first()->success_rate;
 		}
 	}
 
@@ -166,7 +168,7 @@ class StatisticResultBuilder {
 	 * @return string
      */
 	public static function capeCanaveral($substatistic) {
-		if ($substatistic === 'Launch Count') {
+		if ($substatistic === 'Launches') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','SLC-40');
 			})->count();
@@ -194,7 +196,7 @@ class StatisticResultBuilder {
 	 * @return string
      */
 	public static function capeKennedy($substatistic) {
-        if ($substatistic === 'Launch Count') {
+        if ($substatistic === 'Launches') {
             return Mission::whereComplete()->whereHas('launchSite', function($q) {
                 $q->where('name','LC-39A');
             })->count();
@@ -222,7 +224,7 @@ class StatisticResultBuilder {
 	 * @return string
      */
 	public static function vandenberg($substatistic) {
-		if ($substatistic === 'Launch Count') {
+		if ($substatistic === 'Launches') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','SLC-4E');
 			})->count();
@@ -250,7 +252,7 @@ class StatisticResultBuilder {
 	 * @return string
      */
 	public static function bocaChica($substatistic) {
-		if ($substatistic === 'Launch Count') {
+		if ($substatistic === 'Launches') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','Boca Chica');
 			})->count();
@@ -278,7 +280,7 @@ class StatisticResultBuilder {
 	 * @return string
      */
 	public static function kwajalein($substatistic) {
-		if ($substatistic === 'Launch Count') {
+		if ($substatistic === 'Launches') {
 			return Mission::whereComplete()->whereHas('launchSite', function($q) {
 				$q->where('name','Omelek Island');
 			})->count();
@@ -299,7 +301,7 @@ class StatisticResultBuilder {
 	 * @return int
      */
 	public static function dragonRiders($substatistic) {
-        if ($substatistic == 'Current') {
+        if ($substatistic == 'In Space') {
 			/* SELECT COUNT(*) FROM astronauts_flights_pivot
 JOIN spacecraft_flights_pivot ON spacecraft_flights_pivot.spacecraft_flight_id = astronauts_flights_pivot.spacecraft_flight_id
 JOIN missions ON missions.mission_id = spacecraft_flights_pivot.mission_id
@@ -333,26 +335,33 @@ WHERE missions.status='IN PROGRESS' */
      */
 	public static function payloads($substatistic) {
         if ($substatistic == 'Satellites Launched') {
-			return Payload::whereHas('mission', function($q) {
+			$payloads = Payload::whereHas('mission', function($q) {
 				$q->where('status', MissionStatus::Complete);
-			})->count();
+			})->get();
+
+            $stat[1] = $payloads->count();
+            $stat[0] = $payloads->filter(function($payload) {
+                return $payload->primary;
+            })->count();
+
+            return $stat;
 
 		} else if ($substatistic == 'Total Mass') {
-			return Payload::whereHas('mission', function($q) {
-				$q->where('status', MissionStatus::Complete);
-			})->sum('mass');
+			return number_format(round(Payload::whereHas('mission', function($q) {
+				$q->whereComplete();
+			})->sum('mass')));
 
 		} else if ($substatistic == 'Mass to GTO') {
-			return Payload::whereHas('mission', function($q) {
-				$q->where('status', MissionStatus::Complete)->whereHas('destination', function($q) {
-                    $q->whereIn('name', [Destination::GeostationaryTransferOrbit, Destination::SupersynchronousGTO, Destination::SubsynchronousGTO]);
+			return number_format(round(Payload::whereHas('mission', function($q) {
+				$q->whereComplete()->whereHas('destination', function($q) {
+                    $q->whereIn('destination', [Destination::GeostationaryTransferOrbit, Destination::SupersynchronousGTO, Destination::SubsynchronousGTO]);
                 });
-			})->sum('mass');
+			})->sum('mass')));
 
 		} else if ($substatistic == 'Heaviest Satellite') {
-			return Payload::whereHas('mission', function($q) {
-				$q->where('status', MissionStatus::Complete);
-			})->max('mass');
+			return number_format(round(Payload::whereHas('mission', function($q) {
+				$q->whereComplete();
+			})->max('mass')));
 		}
     }
 

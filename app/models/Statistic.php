@@ -58,4 +58,8 @@ class Statistic extends Model {
 
         return $description;
     }
+
+    public function getUnitAttribute() {
+        return json_decode($this->attributes['unit']);
+    }
 }

@@ -55,8 +55,8 @@
 
                 <table class="double" ng-if="substatistic.display == 'double'">
                     <tr>
-                        <td></td>
-                        <td></td>
+                        <td>@{{ substatistic.result[0] }}</td>
+                        <td>@{{ substatistic.result[1] }}</td>
                     </tr>
                     <tr>
                         <td>@{{ substatistic.unit[0] }}</td>
@@ -66,20 +66,7 @@
 
                 <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
 
-                <table class="interval" ng-if="substatistic.display == 'interval'">
-                    <tr>
-                        <td>@{{ substatistic.result[0] }}</td>
-                        <td>@{{ substatistic.result[1] }}</td>
-                        <td>@{{ substatistic.result[2] }}</td>
-                        <td>@{{ substatistic.result[3] }}</td>
-                    </tr>
-                    <tr>
-                        <td>Days</td>
-                        <td>Hours</td>
-                        <td>Minutes</td>
-                        <td>Seconds</td>
-                    </tr>
-                </table>
+                <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="classic" is-paused="{{ true }}" is-visible-when-paused="{{ true }}"></countdown>
             </div>
 
             <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>

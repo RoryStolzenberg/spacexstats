@@ -95,7 +95,6 @@
                 $scope.activeStatistic = statistic;
                 $document.scrollToElement(angular.element(document.getElementById(statistic.camelCaseType)), 0, 1000);
             }
-
             return $scope.activeStatistic;
         };
 
