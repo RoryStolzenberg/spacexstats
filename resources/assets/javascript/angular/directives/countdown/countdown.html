@@ -1,4 +1,4 @@
-<table class="countdown" ng-class="{ 't-minus-zero': tMinusZero }" ng-if="isLaunchExact && type == 'classic' && !isPaused">
+<table class="countdown" ng-class="{ 't-minus-zero': tMinusZero }" ng-if="isLaunchExact && type == 'classic' && (!isPaused || isVisibleWhenPaused)">
     <tr>
         <td class="value days">{{ days }}</td>
         <td class="value hours">{{ hours }}</td>
@@ -12,7 +12,7 @@
         <td class="unit seconds">{{ secondsText }}</td>
     </tr>
 </table>
-<table class="single" ng-if="!isLaunchExact && type == 'classic'  && !isPaused">
+<table class="single" ng-if="!isLaunchExact && type == 'classic' && (!isPaused || isVisibleWhenPaused)">
     <tr>
         <td class="value">{{ countdownText }}</td>
     </tr>
@@ -20,12 +20,12 @@
         <td class="unit">Expected Launch</td>
     </tr>
 </table>
-<table class="countdown" ng-if="type == 'classic' && isPaused">
+<table class="countdown" ng-if="type == 'classic' && isPaused && !isVisibleWhenPaused">
     <tr>
         <td class="value">Paused</td>
     </tr>
 </table>
-<table class="countdown live" ng-class="{ 't-minus-zero': tMinusZero }" ng-if="type == 'live' && !isPaused">
+<table class="countdown live" ng-class="{ 't-minus-zero': tMinusZero }" ng-if="type == 'live' && (!isPaused || isVisibleWhenPaused)">
     <tr>
         <td>T{{ sign }}</td>
         <td>{{ days }}<small>d</small></td>

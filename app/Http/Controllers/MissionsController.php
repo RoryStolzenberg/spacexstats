@@ -33,7 +33,9 @@ class MissionsController extends Controller {
      */
     public function get($slug) {
 
-        $mission = Mission::with(['telemetry', 'orbitalElements', 'payloads'])->whereSlug($slug)->first();
+        $mission = Mission::with(['telemetry', 'orbitalElements' => function($query) {
+            $query->orderBy('epoch', 'desc')->take(5);
+        }, 'payloads'])->whereSlug($slug)->first();
 
         $data = [
             'mission' => $mission,
@@ -67,7 +69,6 @@ class MissionsController extends Controller {
         $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
         $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
         $data['launchVideo'] = $data['mission']->launchVideo();
-        $data['orbitalElements'] = $data['mission']->orbitalElements->sortByDesc('epoch');
 
         return view('missions.pastMission', $data);
     }

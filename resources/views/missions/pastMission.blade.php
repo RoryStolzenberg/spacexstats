@@ -77,7 +77,7 @@
             <h2>Details</h2>
             <section id="details" class="scrollto">
                 @include('templates.cards.missionCard', ['size' => 'large', 'mission' => $mission])
-                <div class="gr-8 gr-12@small">
+                <div class="gr-8 gr-12@small gr-12@medium">
                     <h3>Flight Details</h3>
 
                     @if ($mission->spacecraftFlight)
@@ -90,12 +90,12 @@
                         @include('templates.cards.payloadsCard', ['mission' => $mission])
                     @endif
 
-                    @if ($mission->upperStage)
+                    @if ($mission->upperStage->status != 'Did not achieve orbit')
                         <h3>{{ $mission->upperStage->part->name }} Upper Stage</h3>
                         @include('templates.cards.upperStageCard', ['mission' => $mission])
                     @endif
                 </div>
-                <div class="gr-4 gr-12@small">
+                <div class="gr-4 gr-12@small gr-12@medium">
                     <h3>Library</h3>
                     <ul class="library">
 
@@ -284,10 +284,10 @@
                     <h3>Upper Stage</h3>
                     @if ($mission->orbitalElements->count() != 0)
                         <ul>
-                            <li class="gr-6 gr-12@small">
+                            <li>
                                 <chart class="dataplot" data="orbitalPlots.apogeeVsTime.data" settings="orbitalPlots.apogeeVsTime.settings" width="100%" height="400px"></chart>
                             </li>
-                            <li class="gr-6 gr-12@small">
+                            <li>
                                 <chart class="dataplot" data="orbitalPlots.perigeeVsTime.data" settings="orbitalPlots.perigeeVsTime.settings" width="100%" height="400px"></chart>
                             </li>
                             <li>
@@ -320,7 +320,7 @@
                                     <th>Semimajor Axis</th>
                                     <th>Orbital Period</th>
                                 </tr>
-                                @foreach ($orbitalElements->take(5) as $orbitalElement)
+                                @foreach ($mission->orbitalElemen->take(5) as $orbitalElement)
                                     <tr>
                                         <td>{{ $orbitalElement->epoch->toFormattedDateString() }} <small>({{ $orbitalElement->epoch->diffForHumans() }})</small></td>
                                         <td>{{ $orbitalElement->perigee }} km</td>

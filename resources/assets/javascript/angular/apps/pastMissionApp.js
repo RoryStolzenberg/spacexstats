@@ -141,7 +141,7 @@
             return {
                 data: orbitalElements.map(function(orbitalElement) {
                         return {
-                            timestamp: moment(orbitalElement.epoch).toDate(),
+                            timestamp: orbitalElement.epoch,
                             apogee: orbitalElement.apogee
                         };
                 }),
@@ -152,6 +152,7 @@
                         type: 'timescale',
                         key: 'timestamp',
                         title: 'Epoch Date',
+                        ticks: 10,
                         formatter: function(d) {
                             return moment(d).format('MMM D, YYYY');
                         }
@@ -173,7 +174,7 @@
             return {
                 data: orbitalElements.map(function(orbitalElement) {
                     return {
-                        timestamp: moment(orbitalElement.epoch).toDate(),
+                        timestamp: orbitalElement.epoch,
                         perigee: orbitalElement.perigee
                     };
                 }),
@@ -184,6 +185,7 @@
                         type: 'timescale',
                         key: 'timestamp',
                         title: 'Epoch Date',
+                        ticks: 10,
                         formatter: function(d) {
                             return moment(d).format('MMM D, YYYY');
                         }
@@ -200,6 +202,39 @@
                 }
             }
         };
+
+        this.inclinationVsTime = function(orbitalElements) {
+            return {
+                data: orbitalElements.map(function(orbitalElement) {
+                    return {
+                        timestamp: orbitalElement.epoch,
+                        inclination: orbitalElement.perigee
+                    };
+                }),
+                settings: {
+                    extrapolation: false,
+                    interpolation: 'linear',
+                    xAxis: {
+                        type: 'timescale',
+                        key: 'timestamp',
+                        title: 'Epoch Date',
+                        ticks: 10,
+                        formatter: function(d) {
+                            return moment(d).format('MMM D, YYYY');
+                        }
+                    },
+                    yAxis: {
+                        type: 'linear',
+                        key: 'inclination',
+                        title: 'Inclination (km)',
+                        formatter: function(d) {
+                            return Math.round(d * 10) / 10 + '°'; // Round to 1dp
+                        }
+                    },
+                    chartTitle: 'Inclination (°) vs. Time'
+                }
+            }
+        };
     }]);
 
     app.service('missionDataService', ["$http", function($http) {
@@ -208,7 +243,13 @@
         };
 
         this.orbitalElements = function(name) {
-            return $http.get('/missions/' + name + '/orbitalelements');
+            return $http.get('/missions/' + name + '/orbitalelements').then(function(response) {
+                // premap the dates of the timestamps because otherwise we'll do it too many times
+                return response.data.map(function(orbitalElement) {
+                    orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
+                    return orbitalElement;
+                });
+            });
         };
     }]);
 })();

@@ -10,16 +10,20 @@
                 specificity: '=',
                 countdownTo: '=',
                 isPaused: '=?',
+                isVisibleWhenPaused: '=?',
                 type: '@',
                 callback: '&?'
             },
             link: function($scope, elem, attrs) {
 
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
+
                 $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
 
                 var countdownProcessor = function() {
 
-                    if (angular.isUndefined($scope.isPaused) || !$scope.isPaused) {
+                    if (!$scope.isPaused) {
                         var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
                         var secondsBetween = Math.abs(relativeSecondsBetween);
 
