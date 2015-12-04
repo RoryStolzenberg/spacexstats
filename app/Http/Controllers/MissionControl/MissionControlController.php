@@ -118,6 +118,10 @@ class MissionControlController extends Controller {
 	}
 
     public function about() {
+        if (Auth::isSubscriber()) {
+            return redirect('/missioncontrol');
+        }
+
         return view('missionControl.about', [
             'stripePublicKey' => Config::get('services.stripe.public')
         ]);

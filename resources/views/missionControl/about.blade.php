@@ -34,9 +34,9 @@
                             <li>Community Access</li>
                         </ul>
                         @if (Auth::isMember())
-                            <button class="wide-button" ng-click="subscription.showSubscribeForm()">Sign Up!</button>
+                            <button class="wide-button white" ng-click="subscription.showSubscribeForm()">Sign Up!</button>
                         @else
-                            <a href="/auth/signup" class="button wide-button">Sign Up</a>
+                            <a href="/auth/signup" class="button wide-button white">Sign Up</a>
                         @endif
                     </div>
                     @if (Auth::isMember())
@@ -58,7 +58,7 @@
                                         <input type="text" name="creditcardcvc" ng-model="creditcard.cvc" placeholder="CVC" cc-cvc data-stripe="cvc" />
                                     </li>
                                     <li>
-                                        <button class="wide-button" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing || subscribeForm.$invalid"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>
+                                        <button class="wide-button white" ng-click="subscription.subscribe($event)" ng-disabled="subscriptionState.isSubscribing || subscribeForm.$invalid"><i class="fa fa-lock"></i> @{{ subscriptionButtonText }}</button>
                                         <p class="subscription-failed text-left small" ng-show="subscriptionState.failed">That didn't work. Try again?</p>
                                     </li>
                                 </ul>
