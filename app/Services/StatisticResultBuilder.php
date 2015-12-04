@@ -87,7 +87,7 @@ class StatisticResultBuilder {
 		}
 
         if ($substatistic === 'Flight Time (Graph)') {
-			return SpacecraftFlight::select('missions.name',DB::raw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration'))
+			return SpacecraftFlight::select('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration')
                 ->where('missions.status','Complete')
                 ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')->first();
 		}

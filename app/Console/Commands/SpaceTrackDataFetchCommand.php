@@ -71,7 +71,6 @@ class SpaceTrackDataFetchCommand extends Command
                 $tles = collect($ephemeris->tles()->latest()->satellite($identifier)->fetch());
 
                 $this->info('Got ' . $tles->count() . ' tles for ' . $identifier->identify());
-                $this->info('Got ' . $tles->count() . ' tles for ' . $identifier->identify());
 
             } else {
                 // Only fetch TLE's from the past 30 days because we know this query runs every day (why not
@@ -117,7 +116,9 @@ class SpaceTrackDataFetchCommand extends Command
                 return $orbitalElement;
             });
 
-            OrbitalElement::insert($missionOrbitalElements->toArray());
+            $missionOrbitalElements->each(function($orbitalElement) {
+                OrbitalElement::create($orbitalElement->toArray());
+            });
         }
     }
 
