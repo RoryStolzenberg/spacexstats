@@ -307,15 +307,15 @@ WHERE missions.status='IN PROGRESS' */
 			return DB::table('astronauts_flights_pivot')
 				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
 				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
-				->where('missions.raw', MissionStatus::InProgress)
+				->where('missions.status', MissionStatus::InProgress)
 				->count();
 
 		} else if ($substatistic == 'Cumulative') {
 			return DB::table('astronauts_flights_pivot')
 				->join('spacecraft_flights_pivot', 'spacecraft_flights_pivot.spacecraft_fight_id','=','astronauts_flights_pivot.spacecraft_flight_id')
 				->join('missions', 'missions.mission_id', '=', 'spacecraft_flights_pivot.mission_id')
-				->where('missions.raw', MissionStatus::InProgress)
-				->orWhere('missions.raw', MissionStatus::Complete)
+				->where('missions.status', MissionStatus::InProgress)
+				->orWhere('missions.status', MissionStatus::Complete)
 				->count();
 		}
     }
