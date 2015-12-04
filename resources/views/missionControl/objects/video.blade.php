@@ -14,8 +14,12 @@
 
             <section class="details">
                 <div class="gr-9 content">
-                    @if ($object->external_url != null)
-                        <iframe width="100%" src="{{ $object->external_url }}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    @if ($object->present()->youtubeExternalUrl() !== false)
+                        <iframe width="100%" src="https://www.youtube.com/embed/{{ $object->present()->youtubeExternalUrl() }}" frameborder="0"
+                                webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    @elseif ($object->present()->vimeoExternalUrl() !== false)
+                        <iframe width="100%" src="https://player.vimeo.com/video/{{ $object->present()->vimeoExternalUrl() }}?title=0&byline=0&portrait=0"
+                                 frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                     @else
                         <video id="object" class="video-js vjs-default-skin" controls
                                preload="none" data-setup="{}" width="auto" height="auto">

@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Presenters;
 
+use Carbon\Carbon;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 
@@ -43,6 +44,24 @@ class ObjectPresenter {
         } else if ($day == '00') {
             return jdmonthname($month, 0) . " " . $year;
         }
-        return \Carbon\Carbon::parse($this->entity->originated_at)->toFormattedDateString();
+        return Carbon::parse($this->entity->originated_at)->toFormattedDateString();
+    }
+
+    public function youtubeExternalUrl() {
+        if (!is_null($this->entity->external_url)) {
+            if (preg_match('/https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s]+)\/?/', $this->entity->external_url, $externalUrl) === 1) {
+                return $externalUrl[1];
+            }
+        }
+        return false;
+    }
+
+    public function vimeoExternalUrl() {
+        if (!is_null($this->entity->external_url)) {
+            if (preg_match('/https?:\/\/(?:www\.)?vimeo\.com\/([^\s]+)\/?/', $this->entity->external_url, $externalUrl) === 1) {
+                return $externalUrl[1];
+            }
+        }
+        return false;
     }
 }

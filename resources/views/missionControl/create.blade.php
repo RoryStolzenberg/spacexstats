@@ -458,7 +458,10 @@
                                             <label>
                                                 <p>Youtube/Vimeo Link</p>
                                                 <span>Adding a link to this video gains you extra deltaV and keeps site costs down.</span>
-                                                <input type="text" name="external_url" ng-model="file.external_url" />
+                                                <input type="text" name="external_url"
+                                                       ng-model="file.external_url"
+                                                       ng-pattern="/https?:\/\/(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|vimeo\.com\/)([^\s]+)\/?/"
+                                                       placeholder="YouTube or Vimeo URL here" />
                                             </label>
                                         </li>
 
