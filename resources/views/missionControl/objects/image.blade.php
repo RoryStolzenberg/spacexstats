@@ -20,7 +20,7 @@
 
                 <aside class="gr-3 aside">
 
-                    @include('templates.objects.actions', ['object' => $object])
+                    @include('templates.objects.actions')
 
                     <div class="more">
                         @if ($object->anonymous == false || Auth::isAdmin())

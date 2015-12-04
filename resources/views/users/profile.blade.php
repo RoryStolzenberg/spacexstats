@@ -87,8 +87,10 @@
                 </div>
 
                 <div class="gr-4">
-                    <div>
-                        <p class="delta-v-badge"><span>{{ $user->totalDeltaV() }}</span><small>m/s</small><br/> of DeltaV</p>
+                    <div class="delta-v-badge">
+                        <p class="delta-v-count">{{ $user->totalDeltaV() }} <br/>
+                            <small>m/s of deltaV</small>
+                        </p>
 
                         @if ($user->subscriptionExtendedBy() > 0)
                             <p>{{ $user->username }} has extended their subscription by {{ $user->subscriptionExtendedBy(true) }}.</p>
