@@ -7762,6 +7762,8 @@ form select {
 form textarea {
   resize: vertical;
   min-height: 200px; }
+  form textarea.half {
+    min-height: 100px; }
 
 form input[type="checkbox"] {
   display: none;
@@ -7949,89 +7951,89 @@ section.comments {
   max-width: 800px; }
 
 .comment-depth-0 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-1 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-2 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-3 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-4 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-5 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-6 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-7 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-8 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-9 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-depth-10 {
-  margin-left: 20px;
+  margin-left: 10px;
   margin-top: 20px;
   margin-bottom: 20px;
   border-left: 1px solid #CCC;
   padding-left: 10px; }
 
 .comment-owner {
-  font-size: small;
-  text-decoration: underline;
-  color: #3569A4; }
+  font-size: small; }
+  .comment-owner .deleted {
+    color: #CCC; }
 
 .comment-body {
-  padding: 20px 0; }
+  padding: 10px 0; }
 
 .comment-actions {
   font-size: smaller;
@@ -8261,6 +8263,24 @@ section.comments {
 
 .md strong {
   font-weight: bold; }
+
+.md p {
+  padding: 0;
+  margin: 10px 0; }
+
+.md ul, .md ol {
+  margin: 10px 0;
+  list-style-position: inside; }
+  .md ul ul, .md ol ul {
+    list-style-type: circle; }
+  .md ul ol, .md ol ol {
+    list-style-type: lower-alpha; }
+
+.md ul {
+  list-style-type: disc; }
+
+.md ol {
+  list-style-type: decimal; }
 
 .subscribe {
   text-align: center;
@@ -8722,9 +8742,6 @@ body.live {
     text-align: center; }
     body.live .access-links#logo {
       width: 16.66667%; }
-  body.live .new-live-update {
-    height: 100px;
-    min-height: 0; }
 
 .dark {
   background-color: #21272B;

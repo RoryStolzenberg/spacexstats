@@ -169,6 +169,12 @@
             self.isEditing = false;
             self.isDeleting = false;
 
+            self.isSending = {
+                reply: false,
+                edit: false,
+                deletion: false
+            };
+
             self.toggleReplyState = function() {
                 if (self.isReplying === false) {
                     self.isReplying = true;
@@ -199,27 +205,30 @@
             self.editText = self.comment;
 
             self.reply = function() {
+                self.isSending.reply = true;
                 commentService.addReply(laravel.object, self.replyText, self).then(function(response) {
                     self.replyText = null;
-                    self.isReplying = false;
+                    self.isReplying = self.isSending.reply = false;
 
                     self.children.push(new Comment(response.data));
                 });
             };
 
             self.edit = function() {
+                self.isSending.edit = true;
                 commentService.edit(laravel.object, self).then(function(response) {
                     self.comment_md = response.data.comment_md;
                     self.comment = self.editText;
                     self.editText = null;
-                    self.isEditing = false;
+                    self.isEditing = self.isSending.edit = false;
                 });
             };
 
             self.delete = function(scope) {
+                self.isSending.deletion = true;
                 commentService.delete(laravel.object, self).then(function() {
                     self.comment = self.comment_md = null;
-                    self.isDeleting = false;
+                    self.isDeleting = self.isSending.deletion = false;
 
                     // If the comment has no children, remove it entirely. Otherwise, just show [deleted], similar to Reddit
                     if (self.children.length === 0) {

@@ -1,4 +1,4 @@
-<div class="object-actions">
+<div class="object-actions container">
     <span class="gr-4">
         <i class="fa fa-eye fa-2x"></i> {{ $object->views }} Views
     </span>

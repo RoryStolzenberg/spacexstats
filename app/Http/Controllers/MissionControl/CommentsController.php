@@ -20,12 +20,13 @@ class CommentsController extends Controller {
     // /{$object_id}/comments/add
     public function create($object_id) {
 
-        $newComment = Comment::create(array(
+        $newComment = Comment::create([
             'object_id' => $object_id,
             'user_id' => Auth::id(),
             'comment' => Input::get('comment.comment'),
-            'parent' => Input::get('comment.parent')
-        ));
+            'parent' => Input::get('comment.parent'),
+            'depth' => 0 // Reset to the corrent value by the attibute mutator
+        ]);
 
         $comment = Comment::where('comment_id', $newComment->comment_id)->with('user')->first();
 
@@ -39,7 +40,8 @@ class CommentsController extends Controller {
         $comment = Comment::find($comment_id);
 
         // Make sure that the request for deletion is either coming from an admin or from the user who owns the comment
-        if (Auth::isAdmin() || $comment->user_id == Auth::id()) {
+        // and that it isn't already trashed
+        if ((Auth::isAdmin() || $comment->user_id == Auth::id()) && !$comment->trashed()) {
             $comment->delete();
             return response()->json(null, 204);
         }
@@ -52,7 +54,8 @@ class CommentsController extends Controller {
         $comment = Comment::find($comment_id);
 
         // Make sure that the request for editing is from the user who owns the comment
-        if ($comment->user_id == Auth::id()) {
+        // and isn't already trashed
+        if ($comment->user_id == Auth::id() && !$comment->trashed()) {
             $comment->comment = Input::get('comment.comment');
             $comment->save();
             return response()->json($comment, 200);

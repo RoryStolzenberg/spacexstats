@@ -250,7 +250,7 @@
                                 <button class="canned-response" ng-click="buttons.click('Mission Failure')" ng-if="buttons.isVisible('Mission Failure')">Mission Failure</button>
                             </li>
                         </ul>
-                        <textarea class="new-live-update" name="message" ng-model="send.new.message"
+                        <textarea class="new-live-update half" name="message" ng-model="send.new.message"
                                   placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown" required>
                         </textarea>
                         <input type="submit" ng-click="send.message(cannedResponsePostForm)" ng-disabled="cannedResponsePostForm.$invalid" value="Post" />

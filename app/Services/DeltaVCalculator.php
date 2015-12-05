@@ -14,16 +14,16 @@ class DeltaVCalculator {
     protected $score = 0;
 
     protected $baseTypeScores = [
-        MissionControlType::Image       => 20,
-        MissionControlType::GIF         => 20,
-        MissionControlType::Audio       => 50,
-        MissionControlType::Video       => 50,
-        MissionControlType::Document    => 50,
+        MissionControlType::Image       => 10,
+        MissionControlType::GIF         => 10,
+        MissionControlType::Audio       => 25,
+        MissionControlType::Video       => 25,
+        MissionControlType::Document    => 25,
         MissionControlType::Tweet       => 5,
-        MissionControlType::Article     => 20,
+        MissionControlType::Article     => 10,
         MissionControlType::Comment     => 5,
-        MissionControlType::Webpage     => 50,
-        MissionControlType::Text        => 20
+        MissionControlType::Webpage     => 10,
+        MissionControlType::Text        => 10
     ];
 
     protected $specialTypeMultiplier = [

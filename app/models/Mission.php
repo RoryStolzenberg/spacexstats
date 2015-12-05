@@ -270,7 +270,7 @@ class Mission extends Model {
     // Attribute Mutators
     public function setNameAttribute($value) {
         $this->attributes['name'] = $value;
-        $this->attributes['slug'] = strtolower(str_replace(' ', '-', $value));
+        $this->attributes['slug'] = str_slug($value);
     }
 
     public function setLaunchDateTimeAttribute($value) {

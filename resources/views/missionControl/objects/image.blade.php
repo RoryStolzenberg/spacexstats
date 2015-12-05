@@ -64,10 +64,12 @@
 
             <h2>Summary</h2>
             <section id="summary" class="summary container scrollto">
-                <div class="gr-6">
+                <p>{{ $object->summary }}</p>
+
+                <div class="gr-7">
                     @include('templates.objects.notes')
                 </div>
-                <div class="gr-6">
+                <div class="gr-5">
                     <h3>Tags</h3>
                     @foreach ($object->tags as $tag)
                         <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>

@@ -48,6 +48,10 @@ form {
     textarea {
         resize:vertical;
         min-height:200px;
+
+        &.half {
+            min-height:100px;
+        }
     }
 
     // Checkbox styling from

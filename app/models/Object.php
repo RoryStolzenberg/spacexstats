@@ -102,10 +102,6 @@ class Object extends Model implements UploadableInterface {
         return $this->hasMany('SpaceXStats\Models\Download');
     }
 
-    public function comments() {
-        return $this->hasMany('SpaceXStats\Models\Comment');
-    }
-
     public function revisions() {
         return $this->hasMany('SpaceXStats\Models\ObjectRevision');
     }

@@ -15,8 +15,8 @@ class Comment extends Model {
     protected $primaryKey = 'comment_id';
     public $timestamps = true;
 
-    protected $hidden = [];
-    protected $appends = ['ownership', 'comment_md'];
+    protected $hidden = ['user_id'];
+    protected $appends = ['ownership', 'comment_md', 'username', 'created_at_relative'];
     protected $fillable = [];
     protected $guarded = [];
 
@@ -36,9 +36,6 @@ class Comment extends Model {
     }
 
     public function user() {
-        if ($this->shouldBeHidden()) {
-            return null;
-        }
         return $this->belongsTo('SpaceXStats\Models\User')->select(array('user_id', 'username'));
     }
 
@@ -46,7 +43,6 @@ class Comment extends Model {
     public function shouldBeHidden() {
         return $this->isHidden || $this->trashed();
     }
-
     // Attribute Accessors
     public function getCommentAttribute() {
         if ($this->shouldBeHidden()) {
@@ -63,13 +59,24 @@ class Comment extends Model {
         return Auth::id() == $this->attributes['user_id'];
     }
 
+    public function getUsernameAttribute() {
+        if ($this->shouldBeHidden()) {
+            return null;
+        }
+        return $this->user->username;
+    }
+
+    public function getCreatedAtRelativeAttribute() {
+        return $this->created_at->diffForHumans();
+    }
+
     // Attribute Mutators
     public function setDepthAttribute() {
-        if ($this->parent == 0) {
+        if ($this->attributes['parent'] == 0) {
             $depth = 0;
         } else {
             $parentComment = Comment::find($this->parent);
-            $depth = $parentComment->depth + 1;
+            $depth = $parentComment->attributes['depth'] + 1;
         }
         $this->attributes['depth'] = $depth;
     }

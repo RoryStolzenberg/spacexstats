@@ -31,11 +31,6 @@ body.live {
             @include gridle_grid(2);
         }
     }
-
-    .new-live-update {
-        height:100px;
-        min-height:0;
-    }
 }
 
 .dark {
