@@ -2,7 +2,10 @@
 
 namespace SpaceXStats\Console\Commands;
 
+use AWS;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Config;
 
 class DatabaseBackupCommand extends Command
 {
@@ -37,6 +40,20 @@ class DatabaseBackupCommand extends Command
      */
     public function handle()
     {
-        //
+        $username = Config::get('database.connections.mysql.username');
+        $password = Config::get('database.connections.mysql.password');
+        $database = Config::get('database.connections.mysql.database');
+        $date = Carbon::now()->format('Y-m-d');
+
+        exec("mysqldump -u " . $username . " -p" . $password . " " . $database . ' > storage/backups/' . $date .'_mysql_backup.sql');
+
+        $s3 = AWS::createClient('s3');
+
+        $s3->putObject([
+            'Bucket' => Config::get('filesystems.disks.s3.bucketMetadata'),
+            'Key' => $date .'_mysql_backup.sql',
+            'Body' => file_get_contents(base_path('storage/backups/' . $date .'_mysql_backup.sql')),
+            'ACL' => 'private',
+        ]);
     }
 }

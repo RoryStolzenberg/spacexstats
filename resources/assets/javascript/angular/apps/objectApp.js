@@ -178,7 +178,7 @@
             };
 
             self.toggleReplyState = function() {
-                if (self.isReplying === false) {
+                if (!self.isReplying) {
                     self.isReplying = true;
                     self.isEditing = self.isDeleting = false;
                 } else {
@@ -187,7 +187,7 @@
             };
 
             self.toggleEditState = function() {
-                if (self.isEditing === false) {
+                if (!self.isEditing) {
                     self.isEditing = true;
                     self.isReplying = self.isDeleting = false;
                 } else {
@@ -196,7 +196,7 @@
             };
 
             self.toggleDeleteState = function() {
-                if (self.isDeleting === false) {
+                if (!self.isDeleting) {
                     self.isDeleting = true;
                     self.isReplying = self.isEditing = false;
                 } else {

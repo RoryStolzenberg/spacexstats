@@ -1,3 +1,5 @@
+$nav-height: 50px;
+
 header > nav {
     @include gridle_state(small) {
         width:250px;
@@ -74,12 +76,12 @@ body, nav {
 /* IN PAGE NAVIGATION */
 .in-page {
     text-align:center;
-    height:50px; // Includes the 10px padding of the parent element
-    line-height:50px;
+    height:$nav-height; // Includes the 10px padding of the parent element
+    line-height:$nav-height;
     font-family: $montserrat;
 
     li {
-        height:50px;
+        height:$nav-height;
         cursor:pointer;
         padding-bottom: 3px;
 

@@ -8697,11 +8697,13 @@ section.details #live-tweets {
   width: 33.33333%; }
 
 body.object .content {
-  margin-left: -10px;
-  text-align: center; }
+  margin-left: -10px; }
 
 body.object .aside {
-  margin-left: 10px; }
+  margin-left: 10px;
+  padding-top: 10px;
+  position: relative;
+  top: -50px; }
 
 img#object {
   max-width: 100%; }
@@ -8733,9 +8735,15 @@ img#object {
   width: auto !important;
   height: auto !important;
   padding-top: 56.25% !important; }
+  .video-js.audio {
+    padding-top: 0px !important;
+    height: 100px !important; }
 
 .vjs-fullscreen {
   padding-top: 0% !important; }
+
+#summary {
+  margin-left: 10px; }
 
 .upload-type {
   text-align: center; }

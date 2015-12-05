@@ -70,6 +70,7 @@ return [
             'bucket'            => env('AWS_S3_BUCKET'),
             'bucketLargeThumbs' => env('AWS_S3_BUCKET_LARGE_THUMBS'),
             'bucketSmallThumbs' => env('AWS_S3_BUCKET_SMALL_THUMBS'),
+            'bucketMetadata'    => env('AWS_S3_BUCKET_METADATA')
         ],
 
         'rackspace' => [

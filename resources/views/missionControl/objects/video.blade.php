@@ -12,7 +12,7 @@
 
             @include('templates.objects.navigation')
 
-            <section class="details">
+            <section id="details" class="scrollto">
                 <div class="gr-9 content">
                     @if ($object->present()->youtubeExternalUrl() !== false)
                         <div class="video-container">
@@ -31,6 +31,21 @@
                             <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
                         </video>
                     @endif
+
+                    <h2>Summary</h2>
+                    <section id="summary" class="summary container scrollto">
+                        <p>{{ $object->summary }}</p>
+
+                        <div class="gr-7">
+                            @include('templates.objects.notes')
+                        </div>
+                        <div class="gr-5">
+                            <h3>Tags</h3>
+                            @foreach ($object->tags as $tag)
+                                <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
+                            @endforeach
+                        </div>
+                    </section>
                 </div>
 
                 <aside class="gr-3 aside">
@@ -72,27 +87,12 @@
                 </aside>
             </section>
 
-            <h2>Summary</h2>
-            <section id="summary" class="summary container scrollto">
-                <p>{{ $object->summary }}</p>
-
-                <div class="gr-7">
-                    @include('templates.objects.notes')
-                </div>
-                <div class="gr-5">
-                    <h3>Tags</h3>
-                    @foreach ($object->tags as $tag)
-                        <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
-                    @endforeach
-                </div>
-            </section>
-
             @include('templates.objects.comments')
 
         </main>
     </div>
 
-    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
+    <link href="http://vjs.zencdn.net/5.3.0/video-js.min.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/5.3.0/video.min.js"></script>
 </body>
 @stop

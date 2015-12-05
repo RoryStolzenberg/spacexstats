@@ -7,6 +7,7 @@ use Aws\S3\MultipartUploader;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 use SpaceXStats\Library\Enums\VisibilityStatus;
+use SpaceXStats\Models\Interfaces\UploadableInterface;
 
 /**
  * Class UploadableTrait
@@ -14,6 +15,9 @@ use SpaceXStats\Library\Enums\VisibilityStatus;
  */
 trait UploadableTrait {
 
+    /**
+     * @var int
+     */
     private $multipartUploadThreshold = 1000 * 1000 * 16; // 16MB
 
     /**
@@ -61,19 +65,31 @@ trait UploadableTrait {
         return $this->has_local_file;
     }
 
+    /**
+     * Checks whether the object has a copy of the full file stored locally in a temporary file.
+     *
+     * This function does not care about thumbnails, the object's status or its visibility.
+     *
+     * @return bool
+     */
     public function hasTemporaryFile() {
         return $this->has_temporary_file;
     }
 
     /**
-     * @return mixed
+     * Checks whether the object has its own unique thumbnail or not stored in the cloud.
+     *
+     * This function will return false if the object has a generic thumbnail or does not have a thumbnail. It does
+     * not care about the thumbnail's location, the object's status, or its visibility.
+     *
+     * @return bool
      */
     public function hasCloudThumbs() {
         return $this->has_cloud_thumbs;
     }
 
     /**
-     * Checks whether the object has its own unique thumbnail or not.
+     * Checks whether the object has its own unique thumbnail or not stored locally.
      *
      * This function will return false if the object has a generic thumbnail or does not have a thumbnail. It does
      * not care about the thumbnail's location, the object's status, or its visibility.
@@ -85,8 +101,25 @@ trait UploadableTrait {
         return $this->has_local_thumbs && !in_array($this->thumb_filename, $defaultThumbs);
     }
 
+    /**
+     * Checks whether the object has its own unique thumbnail or not stored locally, in the temporary folder.
+     *
+     * This function will return false if the object has a generic thumbnail or does not have a thumbnail. It does
+     * not care about the thumbnail's location, the object's status, or its visibility.
+     *
+     * @return bool
+     */
     public function hasTemporaryThumbs() {
         return $this->has_temporary_thumbs;
+    }
+
+    /**
+     * Checks whether the object has thumbnails which are generic
+     *
+     * @return bool
+     */
+    public function hasGenericThumbs() {
+
     }
 
     /**
@@ -101,7 +134,7 @@ trait UploadableTrait {
         if ($this->hasFile()) {
 
             if ($this->exceedsMultipartUploadThreshold()) {
-                $uploader = new MultipartUploader($s3, public_path() . $this->media, [
+                $uploader = new MultipartUploader($s3, public_path($this->media), [
                     'Bucket' => Config::get('filesystems.disks.s3.bucket'),
                     'Key' => $this->filename,
                     'ACL' => $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private'
@@ -118,7 +151,7 @@ trait UploadableTrait {
                 $s3->putObject([
                     'Bucket' => Config::get('filesystems.disks.s3.bucket'),
                     'Key' => $this->filename,
-                    'Body' => file_get_contents(public_path() . $this->media),
+                    'Body' => file_get_contents(public_path($this->media)),
                     'ACL' =>  $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
                 ]);
             }
@@ -130,7 +163,7 @@ trait UploadableTrait {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
                 'Key' => $this->thumb_filename,
-                'Body' => file_get_contents(public_path() . $this->media_thumb_large),
+                'Body' => file_get_contents(public_path($this->media_thumb_large)),
                 'ACL' => $this->visibility === VisibilityStatus::PublicStatus ? 'public-read' : 'private',
                 'StorageClass' => 'REDUCED_REDUNDANCY'
             ]);
@@ -138,7 +171,7 @@ trait UploadableTrait {
             $s3->putObject([
                 'Bucket' => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
                 'Key' => $this->thumb_filename,
-                'Body' => file_get_contents(public_path() . $this->media_thumb_small),
+                'Body' => file_get_contents(public_path($this->media_thumb_small)),
                 'ACL' => 'public-read',
                 'StorageClass' => 'REDUCED_REDUNDANCY'
             ]);
@@ -180,13 +213,13 @@ trait UploadableTrait {
 
         if ($this->hasFile()) {
             if ($this->hasTemporaryFile()) {
-                copy(public_path() . '/media/temporary/full/' . $this->filename, public_path() . '/media/local/full/' . $this->filename);
+                copy(public_path('media/temporary/full/' . $this->filename), public_path('media/local/full/' . $this->filename));
 
             } else if ($this->hasCloudFile()) {
                 $s3->getObject(array(
                     'Bucket'    => Config::get('filesystems.disks.s3.bucket'),
                     'Key'       => $this->filename,
-                    'SaveAs'    => public_path() . '/media/local/' . $this->filename
+                    'SaveAs'    => public_path('media/local/' . $this->filename)
                 ));
             }
             $this->has_local_file = true;
@@ -194,20 +227,20 @@ trait UploadableTrait {
 
         if ($this->hasThumbs()) {
             if ($this->hasTemporaryThumbs()) {
-                copy(public_path() . '/media/temporary/small/' . $this->thumb_filename, public_path() . '/media/local/small/' . $this->thumb_filename);
-                copy(public_path() . '/media/temporary/large/' . $this->thumb_filename, public_path() . '/media/local/large/' . $this->thumb_filename);
+                copy(public_path('media/temporary/small/' . $this->thumb_filename), public_path('media/local/small/' . $this->thumb_filename));
+                copy(public_path('media/temporary/large/' . $this->thumb_filename), public_path('media/local/large/' . $this->thumb_filename));
 
             } else if ($this->hasCloudThumbs()) {
                 $s3->getObject(array(
                     'Bucket'    => Config::get('filesystems.disks.s3.bucketLargeThumbs'),
                     'Key'       => $this->thumb_filename,
-                    'SaveAs'    => public_path() . '/media/local/large/' . $this->filename
+                    'SaveAs'    => public_path('media/local/large/' . $this->filename)
                 ));
 
                 $s3->getObject(array(
                     'Bucket'    => Config::get('filesystems.disks.s3.bucketSmallThumbs'),
                     'Key'       => $this->thumb_filename,
-                    'SaveAs'    => public_path() . '/media/local/small/' . $this->filename
+                    'SaveAs'    => public_path('media/local/small/' . $this->filename)
                 ));
             }
             $this->has_local_thumbs = true;
@@ -221,13 +254,13 @@ trait UploadableTrait {
      */
     public function deleteFromLocal() {
         if ($this->hasLocalFile()) {
-            unlink(public_path() . '/media/local/full/' . $this->filename);
+            unlink(public_path('media/local/full/' . $this->filename));
             $this->has_local_file = false;
         }
 
         if ($this->hasLocalThumbs()) {
-            unlink(public_path() . '/media/local/small/' . $this->thumb_filename);
-            unlink(public_path() . '/media/local/large/' . $this->thumb_filename);
+            unlink(public_path('media/local/small/' . $this->thumb_filename));
+            unlink(public_path('media/local/large/' . $this->thumb_filename));
             $this->has_local_thumbs = false;
         }
 
@@ -236,22 +269,30 @@ trait UploadableTrait {
 
     /**
      * Deletes any current temporary files
+     *
+     * @returns UploadableInterface
      */
     public function deleteFromTemporary() {
         if ($this->hasTemporaryFile()) {
-            unlink(public_path() . '/media/temporary/full/' . $this->filename);
+            unlink(public_path('media/temporary/full/' . $this->filename));
             $this->has_temporary_file = false;
         }
 
         if ($this->hasTemporaryThumbs()) {
-            unlink(public_path() . '/media/temporary/small/' . $this->thumb_filename);
-            unlink(public_path() . '/media/temporary/large/' . $this->thumb_filename);
+            unlink(public_path('media/temporary/small/' . $this->thumb_filename));
+            unlink(public_path('media/temporary/large/' . $this->thumb_filename));
             $this->has_temporary_thumbs = false;
         }
 
         return $this;
     }
 
+    /**
+     * Checks to see if a multipart upload implementation should be used by comparing the file size of the to-be-uploaded file
+     * against the upload threashold.
+     *
+     * @return bool
+     */
     private function exceedsMultipartUploadThreshold() {
         return $this->size > $this->multipartUploadThreshold;
     }

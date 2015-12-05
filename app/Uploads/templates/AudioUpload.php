@@ -12,13 +12,13 @@ class AudioUpload extends GenericUpload implements UploadInterface {
         parent::__construct($file);
 
         $this->ffprobe = FFProbe::create([
-            'ffmpeg.binaries' => \Credential::FFMpeg,
-            'ffprobe.binaries' => \Credential::FFProbe
+            'ffmpeg.binaries' => env('FFMPEG'),
+            'ffprobe.binaries' => env('FFPROBE')
         ]);
 
         $this->ffmpeg = FFMpeg::create([
-            'ffmpeg.binaries' => \Credential::FFMpeg,
-            'ffprobe.binaries' => \Credential::FFProbe
+            'ffmpeg.binaries' => env('FFMPEG'),
+            'ffprobe.binaries' => env('FFPROBE')
         ]);
     }
 

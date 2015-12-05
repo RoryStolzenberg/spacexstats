@@ -4,7 +4,6 @@
 @section('content')
 <body class="object" ng-app="objectApp" ng-controller="objectController" ng-strict-di>
 
-
     @include('templates.header')
 
     <div class="content-wrapper">
@@ -13,9 +12,24 @@
 
             @include('templates.objects.navigation')
 
-            <section id="object" class="details scrollto">
-                <div class="gr-9 content">
+            <section class="details scrollto">
+                <div id="object" class="gr-9 content scrollto">
                     <img id="object" src="{{ $object->media }}" />
+
+                    <h2>Summary</h2>
+                    <section id="summary" class="summary container scrollto">
+                        <p>{{ $object->summary }}</p>
+
+                        <div class="gr-7">
+                            @include('templates.objects.notes')
+                        </div>
+                        <div class="gr-5">
+                            <h3>Tags</h3>
+                            @foreach ($object->tags as $tag)
+                                <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
+                            @endforeach
+                        </div>
+                    </section>
                 </div>
 
                 <aside class="gr-3 aside">
@@ -60,21 +74,6 @@
                         {{ $object->present()->size() }}
                     </div>
                 </aside>
-            </section>
-
-            <h2>Summary</h2>
-            <section id="summary" class="summary container scrollto">
-                <p>{{ $object->summary }}</p>
-
-                <div class="gr-7">
-                    @include('templates.objects.notes')
-                </div>
-                <div class="gr-5">
-                    <h3>Tags</h3>
-                    @foreach ($object->tags as $tag)
-                        <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
-                    @endforeach
-                </div>
             </section>
 
             @include('templates.objects.comments')

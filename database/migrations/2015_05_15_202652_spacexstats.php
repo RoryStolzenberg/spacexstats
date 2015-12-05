@@ -261,7 +261,8 @@ class Spacexstats extends Migration {
             $table->string('summary', Varchar::large);
             $table->string('author', Varchar::tiny)->nullable();
             $table->string('attribution', Varchar::compact)->nullable();
-            $table->date('originated_at')->nullable(); // Optional day & month
+            $table->datetime('originated_at')->nullable(); // Optional day & month
+            $table->string('originated_at_specificity')->nullable();
 
             // Twitter-related properties
             $table->string('tweet_id', Varchar::tiny)->nullable();

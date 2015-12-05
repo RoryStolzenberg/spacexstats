@@ -16,9 +16,9 @@ class DeltaVCalculator {
     protected $baseTypeScores = [
         MissionControlType::Image       => 10,
         MissionControlType::GIF         => 10,
-        MissionControlType::Audio       => 25,
-        MissionControlType::Video       => 25,
-        MissionControlType::Document    => 25,
+        MissionControlType::Audio       => 20,
+        MissionControlType::Video       => 20,
+        MissionControlType::Document    => 20,
         MissionControlType::Tweet       => 5,
         MissionControlType::Article     => 10,
         MissionControlType::Comment     => 5,
@@ -36,8 +36,8 @@ class DeltaVCalculator {
 
     protected $resourceQuality = [
         'multipliers' => [
-            'perMegapixel' => 10,
-            'perMinute' => 5
+            'perMegapixel' => 8,
+            'perMinute' => 4
         ],
         'scores' => [
             'perPage' => 2.5
@@ -61,9 +61,9 @@ class DeltaVCalculator {
 
     protected $dateAccuracyMultiplier = [
         'year' => 1,
-        'month' => 1.1,
-        'date' => 1.2,
-        'datetime' => 1.4,
+        'month' => 1.05,
+        'date' => 1.1,
+        'datetime' => 1.2,
     ];
 
     protected $dataSaverMultiplier = [

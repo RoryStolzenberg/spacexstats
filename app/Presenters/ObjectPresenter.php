@@ -2,6 +2,7 @@
 namespace SpaceXStats\Presenters;
 
 use Carbon\Carbon;
+use SpaceXStats\Library\Enums\DateSpecificity;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 
@@ -34,17 +35,18 @@ class ObjectPresenter {
     }
 
     public function originDateAsString() {
-        // Y-m-d
-        $year = substr($this->entity->originated_at, 0, 4);
-        $month = substr($this->entity->originated_at, 5, 2);
-        $day = substr($this->entity->originated_at, 8, 2);
-
-        if ($month == '00') {
-            return $year;
-        } else if ($day == '00') {
-            return jdmonthname($month, 0) . " " . $year;
+        switch ($this->entity->originated_at_specificity) {
+            case DateSpecificity::Datetime:
+                return $this->entity->originated_at->format('g:i:sA F j, Y');
+            case DateSpecificity::Day:
+                return $this->entity->originated_at->format('F j, Y');
+            case DateSpecificity::Month:
+                return $this->entity->originated_at->format('F Y');
+            case DateSpecificity::Year:
+                return $this->entity->originated_at->format('Y');
+            default:
+                return null;
         }
-        return Carbon::parse($this->entity->originated_at)->toFormattedDateString();
     }
 
     public function youtubeExternalUrl() {

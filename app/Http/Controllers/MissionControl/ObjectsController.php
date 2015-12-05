@@ -5,6 +5,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redis;
+use SpaceXStats\Facades\Search;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Http\Requests\EditObjectRequest;
 use SpaceXStats\Library\Enums\MissionControlType;
@@ -87,6 +89,8 @@ class ObjectsController extends Controller {
             $object->attribution = Input::get('object.attribution');
 
             $object->save();
+
+            Redis::sadd('objects:toReindex', $object->object_id);
         });
 
         return response()->json(null, 204);
@@ -121,6 +125,8 @@ class ObjectsController extends Controller {
                 $usernote->note = Input::get('note', null);
                 $usernote->save();
 
+                Redis::sadd('objects:toReindex', $object_id);
+
             // Edit
             } elseif (request()->isMethod('patch')) {
                 $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
@@ -131,6 +137,8 @@ class ObjectsController extends Controller {
             } elseif (request()->isMethod('delete')) {
                 $usernote = Auth::user()->notes()->where('object_id', $object_id)->firstOrFail();
                 $usernote->delete();
+
+                Redis::sadd('objects:toReindex', $object_id);
             }
             return response()->json(null, 204);
         }
@@ -157,6 +165,8 @@ class ObjectsController extends Controller {
                 Auth::user()->favorites()->where('object_id', $object_id)->firstOrFail()->delete();
             }
 
+            Redis::sadd('objects:toReindex', $object_id);
+
             return response()->json(null, 204);
         }
 
@@ -175,6 +185,8 @@ class ObjectsController extends Controller {
                 'user_id' => Auth::id(),
                 'object_id' => $object_id
             ));
+
+            Redis::sadd('objects:toReindex', $object_id);
         }
         return response()->json(null, 204);
     }

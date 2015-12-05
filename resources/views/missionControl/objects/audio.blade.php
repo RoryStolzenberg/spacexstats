@@ -14,8 +14,8 @@
 
             <section class="details">
                 <div class="gr-9 content">
-                    <audio id="object" class="video-js vjs-default-skin" controls
-                           preload="none" data-setup="{}" width="auto" height="auto">
+                    <audio id="object" class="video-js vjs-default-skin audio" controls
+                           data-setup="{}" preload="none" width="auto" height="auto">
                         <source src="{{ $object->media }}" type="{{ $object->mimetype }}">
                     </audio>
                 </div>
@@ -79,7 +79,8 @@
         </main>
     </div>
 
-    <link href="http://vjs.zencdn.net/4.12/video-js.css" rel="stylesheet">
-    <script src="http://vjs.zencdn.net/4.12/video.js"></script>
+    <link href="http://vjs.zencdn.net/5.3.0/video-js.min.css" rel="stylesheet">
+    <script src="http://vjs.zencdn.net/5.3.0/video.min.js"></script>
+
     </body>
 @stop

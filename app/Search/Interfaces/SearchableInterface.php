@@ -3,7 +3,7 @@ namespace SpaceXStats\Search\Interfaces;
 
 interface SearchableInterface
 {
-    public function getIndexName();
+    public function getIndexType();
 
     public function getId();
 

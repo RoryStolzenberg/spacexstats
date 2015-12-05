@@ -2,12 +2,14 @@
 namespace SpaceXStats\Models;
 
 use AWS;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
 use Parsedown;
+use SpaceXStats\Library\Enums\DateSpecificity;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 
@@ -18,8 +20,9 @@ use SpaceXStats\Models\Interfaces\UploadableInterface;
 
 use SpaceXStats\Presenters\PresentableTrait as Presentable;
 use SpaceXStats\Presenters\ObjectPresenter;
+use SpaceXStats\Search\Interfaces\SearchableInterface;
 
-class Object extends Model implements UploadableInterface {
+class Object extends Model implements UploadableInterface, SearchableInterface {
 
     use Presentable, Commentable, Uploadable, CountsViews;
 
@@ -35,7 +38,7 @@ class Object extends Model implements UploadableInterface {
     protected $supportsMarkdown = [];
 
     public function getDates() {
-        return ['created_at', 'updated_at', 'actioned_at'];
+        return ['created_at', 'updated_at', 'actioned_at', 'originated_at'];
     }
 
     protected $presenter = ObjectPresenter::class;
@@ -121,6 +124,64 @@ class Object extends Model implements UploadableInterface {
             return $this->visibility == VisibilityStatus::PublicStatus;
         }
     }
+    
+    public function getId() {
+        return $this->object_id;
+    }
+    
+    public function getIndexType() {
+        return 'objects';
+    }
+    
+    public function index() {
+        $paramBody = [
+            'object_id' => $this->object_id,
+            'user_id' => !$this->anonymous ? $this->user_id : null,
+            'user' => [
+                'user_id' => !$this->anonymous ? $this->user->user_id : null,
+                'username' => !$this->anonymous ? $this->user->username : null
+            ],
+            'mission_id' => $this->mission_id,
+            'type' => $this->type,
+            'subtype' => $this->subtype,
+            'size' => $this->size,
+            'filetype' => $this->filetype,
+            'title' => $this->title,
+            'dimensions' => [
+                'width' => $this->dimension_width,
+                'height' => $this->dimension_height
+            ],
+            'duration' => $this->duration,
+            'summary' => $this->summary,
+            'author' => $this->author,
+            'attribution' => $this->attribution,
+            'originated_at' => $this->present()->originDateAsString(),
+            'tweet_user_name' => $this->tweet_user_name,
+            'tweet_text' => $this->tweet_text,
+            'status' => $this->status,
+            'visibility' => $this->visibility,
+            'anonymous' => $this->anonymous,
+            'orignal_content' => $this->originalContent,
+            'actioned_at' => $this->actioned_at->toDateTimeString(),
+            'tags' => $this->tags()->lists('name'),
+            'favorites' => $this->favorites()->lists('user_id'),
+            'notes' => $this->notes()->lists('user_id'),
+            'downloads' => $this->downloads()->lists('user_id')->unique()
+        ];
+
+        if ($this->mission()->count() == 1) {
+            $paramBody['mission'] = [
+                'mission_id' => $this->mission->mission_id,
+                'name' => $this->mission->name
+            ];
+        } else {
+            $paramBody['mission'] = [
+                'mission_id' => null,
+                'name' => null
+            ];
+        }
+        return $paramBody;
+    }
 
     public function isInMissionControl() {
         return $this->status != ObjectPublicationStatus::NewStatus;
@@ -157,20 +218,6 @@ class Object extends Model implements UploadableInterface {
     }
 
     // Attribute accessors
-    public function getOriginDateAsStringAttribute() {
-        // Y-m-d
-        $year = substr($this->originated_at, 0, 4);
-        $month = substr($this->originated_at, 5, 2);
-        $day = substr($this->originated_at, 8, 2);
-
-        if ($month == '00') {
-            return $year;
-        } else if ($day == '00') {
-            return $year . '-' . $month;
-        }
-        return $this->originated_at;
-    }
-
     /**
      * Preferentially fetches the main media file from an object from the local repository, the cloud, and then the
      * temporary location, if it exists.
@@ -290,5 +337,24 @@ class Object extends Model implements UploadableInterface {
     // Attribute mutators
     public function setAnonymousAttribute($value) {
         $this->attributes['anonymous'] = filter_var($value, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    public function setOriginatedAtAttribute($value) {
+        if (substr($value, 5, 2) === '00') {
+            $this->attributes['originated_at_specificity'] = DateSpecificity::Year;
+            $this->attributes['originated_at'] = Carbon::createFromFormat('Y', substr($value, 0, 4));
+
+        } elseif (substr($value, 8, 2) === '00') {
+            $this->attributes['originated_at_specificity'] = DateSpecificity::Month;
+            $this->attributes['originated_at'] = Carbon::createFromFormat('Y-m', substr($value, 0, 10));
+
+        } elseif (substr($value, 11) === '00:00:00') {
+            $this->attributes['originated_at_specificity'] = DateSpecificity::Day;
+            $this->attributes['originated_at'] = $value;
+
+        } else {
+            $this->attributes['originated_at_specificity'] = DateSpecificity::Datetime;
+            $this->attributes['originated_at'] = $value;
+        }
     }
 }
