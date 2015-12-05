@@ -7,5 +7,5 @@ abstract class DateSpecificity extends Enum
     const Year = "Year";
     const Month = "Month";
     const Day = "Day";
-    const Datetime = "Datetme";
+    const Datetime = "Datetime";
 }

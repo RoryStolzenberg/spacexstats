@@ -40,6 +40,7 @@ class ReindexSearchCommand extends Command
     public function handle()
     {
         $objects = Objects::whereIn('object_id', Redis::smembers('objects:toReindex'));
+        Redis::del('objects:toReindex');
 
         $objects->each(function($object) {
             Search::reindex($object);

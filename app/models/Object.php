@@ -340,17 +340,21 @@ class Object extends Model implements UploadableInterface, SearchableInterface {
     }
 
     public function setOriginatedAtAttribute($value) {
+        if (is_null($value)) {
+            return;
+        }
+
         if (substr($value, 5, 2) === '00') {
             $this->attributes['originated_at_specificity'] = DateSpecificity::Year;
-            $this->attributes['originated_at'] = Carbon::createFromFormat('Y', substr($value, 0, 4));
+            $this->attributes['originated_at'] = Carbon::create(substr($value, 0, 4), 1, 1, 0, 0, 0);
 
         } elseif (substr($value, 8, 2) === '00') {
             $this->attributes['originated_at_specificity'] = DateSpecificity::Month;
-            $this->attributes['originated_at'] = Carbon::createFromFormat('Y-m', substr($value, 0, 10));
+            $this->attributes['originated_at'] = Carbon::create(substr($value, 0, 4), substr($value, 5, 2), 1, 0, 0, 0);
 
         } elseif (substr($value, 11) === '00:00:00') {
             $this->attributes['originated_at_specificity'] = DateSpecificity::Day;
-            $this->attributes['originated_at'] = $value;
+            $this->attributes['originated_at'] = Carbon::create(substr($value, 0, 4), substr($value, 5, 2), substr($value, 8, 2), 0, 0, 0);
 
         } else {
             $this->attributes['originated_at_specificity'] = DateSpecificity::Datetime;
