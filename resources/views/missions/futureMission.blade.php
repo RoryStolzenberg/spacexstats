@@ -44,12 +44,14 @@
                             @else
                                 <a class="link" href="/docs#email-notifications"><i class="fa fa-envelope-o"></i></a>
                             @endif
-                            <a class="link" href="/calendars/{{ $mission->slug }}">
-                                <i class="fa fa-calendar"></i>
-                            </a>
-                            <a href="http://www.google.com/calendar/render?cid={{ Request::url() }}">
-                                <i class="fa fa-google"></i>
-                            </a>
+                            @if ($mission->isLaunchPrecise())
+                                <a class="link" href="/calendars/{{ $mission->slug }}">
+                                    <i class="fa fa-calendar"></i>
+                                </a>
+                                <a href="http://www.google.com/calendar/render?cid={{ Request::url() }}">
+                                    <i class="fa fa-google"></i>
+                                </a>
+                            @endif
                             <a href="">
                                 <i class="fa fa-rss"></i>
                             </a>

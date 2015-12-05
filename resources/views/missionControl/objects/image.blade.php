@@ -12,7 +12,7 @@
 
             @include('templates.objects.navigation')
 
-            <section class="details scrollto">
+            <section id="details" class="details scrollto">
                 <div id="object" class="gr-9 content scrollto">
                     <img id="object" src="{{ $object->media }}" />
 

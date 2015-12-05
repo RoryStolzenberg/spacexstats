@@ -116,9 +116,8 @@
                                         <li>
                                             <label>
                                                 <p>When was this created?</p>
-                                                <datetime type="@{{ ::(file.datetimeExtractedFromEXIF ? 'datetime' : 'date') }}"
+                                                <datetime ng-if="!file.datetimeExtractedFromEXIF" type="date"
                                                           ng-model="file.originated_at"
-                                                          is-null="::file.datetimeExtractedFromEXIF"
                                                           nullable-toggle="false"></datetime>
                                             </label>
                                         </li>

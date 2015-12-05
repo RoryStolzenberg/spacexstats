@@ -21,6 +21,8 @@
                     name: ''
                 };
 
+                $scope.thumbnails = angular.isDefined($scope.imageKey);
+
                 ngModelCtrl.$viewChangeListeners.push(function() {
                     $scope.$eval(attributes.ngChange);
                 });

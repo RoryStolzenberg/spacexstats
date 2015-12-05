@@ -36,11 +36,11 @@ class DeltaVCalculator {
 
     protected $resourceQuality = [
         'multipliers' => [
-            'perMegapixel' => 8,
-            'perMinute' => 4
+            'perMegapixel' => 5,
+            'perMinute' => 2
         ],
         'scores' => [
-            'perPage' => 2.5
+            'perPage' => 2
         ]
     ];
 

@@ -13,33 +13,25 @@
     </div>
 
 	<div class="filters container">
-		<dropdown class="gr-3 filter missions" ng-change="onFilterUpdate('mission')" searchable="true" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false"
+		<dropdown class="gr-3 gr-12@small filter missions" ng-change="onFilterUpdate('mission')" searchable="true" options="data.missions" unique-key="mission_id" title-key="name" has-default-option="false"
                   ng-model="brokerFilters.mission" placeholder="Filter by Mission"></dropdown>
 
-        <dropdown class="gr-3 filter types" options="data.types" unique-key="name" title-key="name" has-default-option="false"
+        <dropdown class="gr-3 gr-12@small filter types" options="data.types" unique-key="name" title-key="name" has-default-option="false"
         ng-model="brokerFilters.type" ng-change="onFilterUpdate('type')" placeholder="Filter by Resource"></dropdown>
 
-        <div class="gr-3 filter before after search-datepicker dropdown">
-            <div class="selected-option default" ng-click="isDatepickerVisible = !isDatepickerVisible">
-                <span class="name" ng-bind="datepickerText()"></span>
-            </div>
-            <ul class="dropdown" ng-show="isDatepickerVisible">
-                    <li class="after">
-                        <label>After</label>
-                        <datepicker date-format="MMM d, yyyy">
-                            <input date-typer="true" ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text"/>
-                        </datepicker>
-                    </li>
-                    <li class="before">
-                        <label>Before</label>
-                        <datepicker date-format="MMM d, yyyy">
-                            <input date-typer="true" ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text"/>
-                        </datepicker>
-                    </li>
-            </ul>
+        <div class="gr-2 filter after">
+            <datepicker date-format="MMM d, yyyy">
+                <input date-typer="true" ng-model="brokerFilters.after" ng-change="onFilterUpdate('after')" type="text" placeholder="After this" />
+            </datepicker>
         </div>
 
-        <div class="gr-3 filter user-centric">
+        <div class="gr-2 filter after">
+            <datepicker date-format="MMM d, yyyy">
+                <input date-typer="true" ng-model="brokerFilters.before" ng-change="onFilterUpdate('before')" type="text" placeholder="Before this" />
+            </datepicker>
+        </div>
+
+        <div class="gr-2 gr-12@small filter user-centric">
             <div class="dropdown">
                 <div class="more-filters selected-option default" ng-click="showMoreFilters = !showMoreFilters">
                     <span class="name">More Filters...</span>

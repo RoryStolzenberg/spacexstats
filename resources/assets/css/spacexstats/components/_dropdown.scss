@@ -4,6 +4,7 @@ $dropdownSize: 40px;
     position: relative;
     font-family:$montserrat;
     cursor:pointer;
+    background-color:white;
 
     >.default {
         border:1px solid $bordergrey;
@@ -37,6 +38,14 @@ $dropdownSize: 40px;
 
         &.selected {
             background-color:$blue;
+        }
+    }
+
+    .dropdown-search {
+        padding:0 10px;
+
+        input {
+            margin:4px 0;
         }
     }
 

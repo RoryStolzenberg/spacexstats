@@ -18,9 +18,9 @@
                 </section>
 
                 <h2 ng-show="hasSearchResults">Results</h2>
-                <section ng-show="hasSearchResults">
-                    <p>@{{ searchResults.hits.total }} results</p>
-                    <p>Search took: @{{ searchResults.took }} ms</p>
+                <section ng-show="hasSearchResults" class="search-results">
+                    <p class="result-count">@{{ searchResults.hits.total }} results</p>
+                    <p class="search-time">Search took: @{{ searchResults.took }} ms</p>
                     <p class="exclaim" ng-if="searchResults.hits.total == 0">
                         No results :(
                     </p>

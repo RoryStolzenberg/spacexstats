@@ -1,4 +1,4 @@
-<div class="card object-card">
+<div class="card object-card {{ $bias or 'no-bias' }}">
     <div class="thumb-holder">
         <img class="thumb" src="{{ $object->media_thumb_small }}" title="{{ $object->title }}"/>
     </div>

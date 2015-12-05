@@ -57,18 +57,6 @@
                         }
                     });
                 })();
-
-                $scope.datepickerText = function() {
-                    if ($scope.brokerFilters.before === null && $scope.brokerFilters.after === null) {
-                        return "Any time";
-                    } else if ($scope.brokerFilters.before !== null && $scope.brokerFilters.after === null) {
-                        return "Before " + $scope.brokerFilters.before;
-                    } else if ($scope.brokerFilters.before === null && $scope.brokerFilters.after !== null) {
-                        return "After " + $scope.brokerFilters.after;
-                    } else {
-                        return "Between " + $scope.brokerFilters.after + " - " + $scope.brokerFilters.before;
-                    }
-                };
 			},
 			templateUrl: '/js/templates/search.html'
 		}
@@ -174,29 +162,31 @@
             }
 
             else if (filterType == 'after') {
-                if (brokerFilters.after === null) {
+                if (brokerFilters.after === null || brokerFilters.after === "") {
                     search.rawQuery = search.rawQuery.replace(search.regex.after, '');
                 } else {
-
-                    var dateToConcatenate = moment(brokerFilters.after, "MMM D, YYYY").format('YYYY-MM-DD');
-                    if (search.filters().after() === null) {
-                        this.contextualConcat(search, 'after:' + dateToConcatenate);
-                    } else {
-                        search.rawQuery = search.rawQuery.replace(search.regex.after, 'after:' + dateToConcatenate);
+                    if (moment(brokerFilters.after, "MMM D, YYYY").isValid()) {
+                        var dateToConcatenate = moment(brokerFilters.after, "MMM D, YYYY").format('YYYY-MM-DD');
+                        if (search.filters().after() === null) {
+                            this.contextualConcat(search, 'after:' + dateToConcatenate);
+                        } else {
+                            search.rawQuery = search.rawQuery.replace(search.regex.after, 'after:' + dateToConcatenate);
+                        }
                     }
                 }
             }
 
             else if (filterType == 'before') {
-                if (brokerFilters.before === null) {
+                if (brokerFilters.before === null || brokerFilters.before === "") {
                     search.rawQuery = search.rawQuery.replace(search.regex.before, '');
                 } else {
-
-                    var dateToConcatenate = moment(brokerFilters.before, "MMM D, YYYY").format('YYYY-MM-DD');
-                    if (search.filters().before() === null) {
-                        this.contextualConcat(search, 'before:' + dateToConcatenate);
-                    } else {
-                        search.rawQuery = search.rawQuery.replace(search.regex.before, 'before:' + dateToConcatenate);
+                    if (moment(brokerFilters.before, "MMM D, YYYY").isValid()) {
+                        var dateToConcatenate = moment(brokerFilters.before, "MMM D, YYYY").format('YYYY-MM-DD');
+                        if (search.filters().before() === null) {
+                            this.contextualConcat(search, 'before:' + dateToConcatenate);
+                        } else {
+                            search.rawQuery = search.rawQuery.replace(search.regex.before, 'before:' + dateToConcatenate);
+                        }
                     }
                 }
             }
