@@ -1,5 +1,7 @@
 (function() {
-    var objectApp = angular.module('app', ['ui.tree', 'ngSanitize']);
+    var objectApp = angular.module('app', ['ui.tree', 'ngSanitize'], function($rootScopeProvider) {
+        $rootScopeProvider.digestTtl(20);
+    });
 
     objectApp.controller("objectController", ["$scope", "$http", function($scope, $http) {
 

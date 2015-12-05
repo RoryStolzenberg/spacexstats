@@ -3,7 +3,7 @@ section.comments {
     max-width:800px;
 }
 
-@for $i from 0 through 10 {
+@for $i from 0 through 20 {
     $width: 20px * $i;
 
     .comment-depth-#{$i} {

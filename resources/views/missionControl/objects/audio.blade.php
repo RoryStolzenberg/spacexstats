@@ -60,16 +60,18 @@
             </section>
 
             <h2>Summary</h2>
-            <section class="summary">
+            <section id="summary" class="summary container scrollto">
                 <p>{{ $object->summary }}</p>
 
-                <h3>Tags</h3>
-                @foreach ($object->tags as $tag)
-                    <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
-                @endforeach
-
-                @include('templates.objects.notes')
-
+                <div class="gr-7">
+                    @include('templates.objects.notes')
+                </div>
+                <div class="gr-5">
+                    <h3>Tags</h3>
+                    @foreach ($object->tags as $tag)
+                        <div class="tag"><a href="/missioncontrol/tags/{{ $tag->name }}">{{ $tag->name }}</a></div>
+                    @endforeach
+                </div>
             </section>
 
             @include('templates.objects.comments')
