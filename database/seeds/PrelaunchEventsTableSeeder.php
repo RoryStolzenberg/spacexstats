@@ -114,6 +114,63 @@ class PrelaunchEventsTableSeeder extends Seeder {
             'summary' => null,
             'supporting_document' => null
         ]);
-        
+
+        // F9F7
+        PrelaunchEvent::create([
+            'mission_id' => 12,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2013, 11, 20),
+            'summary' => 'Unspecified issues & weather',
+            'supporting_document' => null
+        ]);
+
+        PrelaunchEvent::create([
+            'mission_id' => 12,
+            'event' => 'Launch Site Static Fire',
+            'occurred_at' => Carbon::createFromDate(2013, 11, 21),
+            'summary' => 'Successful, but with excessive venting',
+            'supporting_document' => null
+        ]);
+
+        PrelaunchEvent::create([
+            'mission_id' => 12,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2013, 11, 25),
+            'summary' => '1st stage LOX vent/pressure relief valve',
+            'supporting_document' => null
+        ]);
+
+        PrelaunchEvent::create([
+            'mission_id' => 12,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2013, 11, 25),
+            'summary' => 'Ground electrical power supply',
+            'supporting_document' => null
+        ]);
+
+        PrelaunchEvent::create([
+            'mission_id' => 12,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2013, 11, 25),
+            'summary' => '1st stage LOX vent/pressure relief valve, premature release of ECS duct',
+            'supporting_document' => null
+        ]);
+
+        PrelaunchEvent::create([
+            'mission_id' => 12,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2013, 11, 28),
+            'summary' => 'Abort at ignition by low ramp up of thrust on Merlin 1D engines, T-0:01',
+            'supporting_document' => null
+        ]);
+
+        PrelaunchEvent::create([
+            'mission_id' => 12,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2013, 11, 28),
+            'summary' => 'Oxygen contamination of ground side TEA-TEB T-1:00',
+            'supporting_document' => null
+        ]);
+
     }
 }
