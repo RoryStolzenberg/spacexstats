@@ -12,7 +12,7 @@ use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Library\Launch\LaunchReorderer;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
 use SpaceXStats\Presenters\MissionPresenter;
-use SpaceXStats\Presenters\PresentableTrait;
+use SpaceXStats\Presenters\Traits\PresentableTrait;
 use SpaceXStats\Validators\ValidatableTrait;
 use Parsedown;
 

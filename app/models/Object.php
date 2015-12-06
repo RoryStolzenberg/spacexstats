@@ -18,7 +18,7 @@ use SpaceXStats\Models\Traits\UploadableTrait as Uploadable;
 use SpaceXStats\Models\Traits\CountsViewsTrait as CountsViews;
 use SpaceXStats\Models\Interfaces\UploadableInterface;
 
-use SpaceXStats\Presenters\PresentableTrait as Presentable;
+use SpaceXStats\Presenters\Traits\PresentableTrait as Presentable;
 use SpaceXStats\Presenters\ObjectPresenter;
 use SpaceXStats\Search\Interfaces\SearchableInterface;
 use SpaceXStats\Search\Models\SearchableObject;

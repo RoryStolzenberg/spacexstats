@@ -1,5 +1,5 @@
 <?php
-namespace SpaceXStats\Presenters;
+namespace SpaceXStats\Presenters\Traits;
 
 trait PresentableTrait {
 	protected $presenterInstance;

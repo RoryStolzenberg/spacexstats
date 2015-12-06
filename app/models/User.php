@@ -12,14 +12,12 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Laravel\Cashier\Billable;
 use Laravel\Cashier\Contracts\Billable as BillableContract;
 
-use SpaceXStats\Library\Enums\NotificationType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\UserRole;
 use SpaceXStats\Library\Enums\VisibilityStatus;
-use SpaceXStats\Presenters\PresentableTrait;
+use SpaceXStats\Presenters\Traits\PresentableTrait;
 use SpaceXStats\Presenters\UserPresenter;
 
-use Carbon\Carbon;
 use Auth;
 use Hash;
 use Input;

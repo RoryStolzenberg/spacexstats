@@ -2,7 +2,7 @@
 namespace SpaceXStats\Models;
 use Illuminate\Database\Eloquent\Model;
 use SpaceXStats\Presenters\CollectionPresenter;
-use SpaceXStats\Presenters\PresentableTrait;
+use SpaceXStats\Presenters\Traits\PresentableTrait;
 use SpaceXStats\Validators\ValidatableTrait;
 
 class Collection extends Model {
