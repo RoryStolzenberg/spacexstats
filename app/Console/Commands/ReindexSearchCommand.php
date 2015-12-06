@@ -44,7 +44,7 @@ class ReindexSearchCommand extends Command
         Redis::del('objects:toReindex');
 
         $objects->each(function($object) {
-            Search::reindex($object);
+            Search::reindex($object->search());
         });
     }
 }

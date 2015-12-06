@@ -99,18 +99,29 @@ class Search {
             $take = 10;
         }
 
-        try {
-            $results = $this->elasticSearchClient->mlt([
-                'index' => Search::INDEX,
-                'type' => $model->getIndexType(),
-                'id' => $model->getId()
-            ])['hits']['hits'];
+        $results = $this->elasticSearchClient->search([
+            'index' => Search::INDEX,
+            'type' => $model->getIndexType(),
+            'body' => [
+                'query' => [
+                    'more_like_this' => [
+                        'fields' => ['title', 'summary', 'tags'],
+                        "min_term_freq" => 0,
+                        "min_doc_freq" => 0,
+                        'docs' => [
+                            [
+                                "_index" => Search::INDEX,
+                                "_type" => $model->getIndexType(),
+                                "_id" => $model->getId()
+                            ]
+                        ]
+                    ]
+                ],
+                "size" => 10
+            ]
+        ]);
 
-        } catch (\Exception $e) {
-            $results = [];
-        }
-
-        return $results;
+        return $results['hits']['hits'];
     }
 
     /**

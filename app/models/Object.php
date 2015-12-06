@@ -20,12 +20,12 @@ use SpaceXStats\Models\Interfaces\UploadableInterface;
 
 use SpaceXStats\Presenters\Traits\PresentableTrait as Presentable;
 use SpaceXStats\Presenters\ObjectPresenter;
-use SpaceXStats\Search\Interfaces\SearchableInterface;
 use SpaceXStats\Search\Models\SearchableObject;
+use SpaceXStats\Search\Traits\SearchableTrait as Searchable;
 
 class Object extends Model implements UploadableInterface {
 
-    use Presentable, Commentable, Uploadable, CountsViews;
+    use Presentable, Commentable, Uploadable, CountsViews, Searchable;
 
 	protected $table = 'objects';
 	protected $primaryKey = 'object_id';
@@ -43,7 +43,7 @@ class Object extends Model implements UploadableInterface {
     }
 
     protected $presenter = ObjectPresenter::class;
-    protected $searchableDecorator = SearchableObject::class;
+    protected $searchDecorator = SearchableObject::class;
 
 	public $rules = array(
         'user_id' => ['integer', 'exists:users,user_id'],

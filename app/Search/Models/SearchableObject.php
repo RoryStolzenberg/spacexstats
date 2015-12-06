@@ -8,6 +8,10 @@ class SearchableObject implements SearchableInterface
     private $entity;
     private $indexType = 'objects';
 
+    function __construct($entity) {
+        $this->entity = $entity;
+    }
+
     public function getIndexType() {
         return $this->indexType;
     }
@@ -18,44 +22,44 @@ class SearchableObject implements SearchableInterface
 
     public function index() {
         $paramBody = [
-            'object_id' => $this->object_id,
-            'user_id' => !$this->anonymous ? $this->user_id : null,
+            'object_id' => $this->entity->object_id,
+            'user_id' => !$this->entity->anonymous ? $this->entity->user_id : null,
             'user' => [
-                'user_id' => !$this->anonymous ? $this->user->user_id : null,
-                'username' => !$this->anonymous ? $this->user->username : null
+                'user_id' => !$this->entity->anonymous ? $this->entity->user->user_id : null,
+                'username' => !$this->entity->anonymous ? $this->entity->user->username : null
             ],
-            'mission_id' => $this->mission_id,
-            'type' => $this->type,
-            'subtype' => $this->subtype,
-            'size' => $this->size,
-            'filetype' => $this->filetype,
-            'title' => $this->title,
+            'mission_id' => $this->entity->mission_id,
+            'type' => $this->entity->type,
+            'subtype' => $this->entity->subtype,
+            'size' => $this->entity->size,
+            'filetype' => $this->entity->filetype,
+            'title' => $this->entity->title,
             'dimensions' => [
-                'width' => $this->dimension_width,
-                'height' => $this->dimension_height
+                'width' => $this->entity->dimension_width,
+                'height' => $this->entity->dimension_height
             ],
-            'duration' => $this->duration,
-            'summary' => $this->summary,
-            'author' => $this->author,
-            'attribution' => $this->attribution,
-            'originated_at' => $this->originated_at->toIso8601String(),
-            'tweet_user_name' => $this->tweet_user_name,
-            'tweet_text' => $this->tweet_text,
-            'status' => $this->status,
-            'visibility' => $this->visibility,
-            'anonymous' => $this->anonymous,
-            'orignal_content' => $this->originalContent,
-            'actioned_at' => $this->actioned_at->toIso8601String(),
-            'tags' => $this->tags()->lists('name'),
-            'favorites' => $this->favorites()->lists('user_id'),
-            'notes' => $this->notes()->lists('user_id'),
-            'downloads' => $this->downloads()->lists('user_id')->unique()
+            'duration' => $this->entity->duration,
+            'summary' => $this->entity->summary,
+            'author' => $this->entity->author,
+            'attribution' => $this->entity->attribution,
+            'originated_at' => $this->entity->originated_at->toIso8601String(),
+            'tweet_user_name' => $this->entity->tweet_user_name,
+            'tweet_text' => $this->entity->tweet_text,
+            'status' => $this->entity->status,
+            'visibility' => $this->entity->visibility,
+            'anonymous' => $this->entity->anonymous,
+            'orignal_content' => $this->entity->originalContent,
+            'actioned_at' => $this->entity->actioned_at->toIso8601String(),
+            'tags' => $this->entity->tags()->lists('name'),
+            'favorites' => $this->entity->favorites()->lists('user_id'),
+            'notes' => $this->entity->notes()->lists('user_id'),
+            'downloads' => $this->entity->downloads()->lists('user_id')->unique()
         ];
 
-        if ($this->mission()->count() == 1) {
+        if ($this->entity->mission()->count() == 1) {
             $paramBody['mission'] = [
-                'mission_id' => $this->mission->mission_id,
-                'name' => $this->mission->name
+                'mission_id' => $this->entity->mission->mission_id,
+                'name' => $this->entity->mission->name
             ];
         } else {
             $paramBody['mission'] = [

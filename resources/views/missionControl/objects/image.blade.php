@@ -76,12 +76,18 @@
                         {{ $object->present()->size() }}
                     </div>
 
-                    @if (!is_null($moreLikeThis))
+                    @if (count($moreLikeThis) > 0)
                         <h3>More Like This</h3>
-                        <div>
-                            @foreach($moreLikeThis as $object)
-                                {{ dd($moreLikeThis) }}
-                            @endforeach
+                        <div class="more-like-this">
+                            <ul>
+                                @foreach($moreLikeThis as $likeThis)
+                                    <li class="like-this-list-item">
+                                        <a href="/missioncontrol/objects/{{ $likeThis['_source']['object_id'] }}">
+                                            {{ $likeThis['_source']['title'] }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                     @endif
                 </aside>

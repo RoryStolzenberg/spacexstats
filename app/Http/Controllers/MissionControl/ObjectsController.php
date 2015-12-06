@@ -45,7 +45,7 @@ class ObjectsController extends Controller {
 
             return view('missionControl.objects.' . $viewType , [
                 'object' => $object,
-                'moreLikeThis' => Search::moreLikeThis($object)
+                'moreLikeThis' => Search::moreLikeThis($object->search())
             ]);
         }
 
