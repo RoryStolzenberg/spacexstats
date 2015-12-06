@@ -163,7 +163,7 @@
             self.anonymous = null;
             self.tags = [];
 
-            self.datetimeExtractedFromEXIF = self.originated_at !== null ? true : false;
+            self.datetimeExtractedFromEXIF = angular.isDefined(self.originated_at) ? true : false;
 
             return self;
         }

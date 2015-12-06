@@ -2,6 +2,7 @@
 namespace SpaceXStats\Uploads\Templates;
 
 use Imagick;
+use SpaceXStats\Library\Enums\DateSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Exif\Exif;
@@ -41,6 +42,7 @@ class ImageUpload extends GenericUpload implements UploadInterface {
             'aperture' => $this->exif->aperture(),
             'ISO' => $this->exif->iso(),
             'originated_at' => $this->exif->datetime(),
+            'originated_at_specificity' => !is_null($this->exif->datetime()) ? DateSpecificity::Datetime : null,
 			'status' => ObjectPublicationStatus::NewStatus
 		));
 	}

@@ -73,6 +73,11 @@
                     <div class="file-details">
                         {{ $object->present()->size() }}
                     </div>
+
+                    <h3>More Like This</h3>
+                    <div>
+
+                    </div>
                 </aside>
             </section>
 

@@ -27,7 +27,7 @@ class MissionControlController extends Controller {
 		if (Auth::isSubscriber()) {
 
             // Fetch data
-            $objects['latest'] = Object::authedVisibility()->inMissionControl()->orderBy('actioned_at', 'desc')->take(10)->get();
+            $objects['latest'] = Object::authedVisibility()->inMissionControl()->orderBy('created_at', 'desc')->take(10)->get();
 
             $objects['hot'] = Object::authedVisibility()->inMissionControl()
                 ->selectRaw('objects.*, LOG10(greatest(1, count(comments.object_id)) + greatest(1, count(favorites.object_id))) / TIMESTAMPDIFF(HOUR, objects.actioned_at, NOW()) as score')

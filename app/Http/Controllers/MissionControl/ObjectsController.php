@@ -43,10 +43,13 @@ class ObjectsController extends Controller {
             // Determine what type of object it is to show the correct view
             $viewType = strtolower(MissionControlType::getKey($object->type));
 
-            return view('missionControl.objects.' . $viewType , ['object' => $object]);
+            return view('missionControl.objects.' . $viewType , [
+                'object' => $object,
+                'moreLikeThis' => Search::moreLikeThis($object)
+            ]);
         }
 
-        // Item cannot be viewed
+        // Item cannot be viewed or does not exist
         return App::abort(401);
     }
 

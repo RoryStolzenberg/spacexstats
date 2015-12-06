@@ -5,6 +5,7 @@ namespace SpaceXStats\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Redis;
 use SpaceXStats\Facades\Search;
+use SpaceXStats\Models\Object;
 
 class ReindexSearchCommand extends Command
 {
@@ -39,7 +40,7 @@ class ReindexSearchCommand extends Command
      */
     public function handle()
     {
-        $objects = Objects::whereIn('object_id', Redis::smembers('objects:toReindex'));
+        $objects = Object::whereIn('object_id', Redis::smembers('objects:toReindex'))->get();
         Redis::del('objects:toReindex');
 
         $objects->each(function($object) {

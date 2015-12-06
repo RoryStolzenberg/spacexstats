@@ -73,11 +73,12 @@ class Search {
         }
 
 
-        return $this->elasticSearchClient->search(array(
+        return $this->elasticSearchClient->search([
             'index' => Search::INDEX,
             'type' => $limitTypesToThese,
-            'body' => $requestBody
-        ));
+            'body' => $requestBody,
+            'size' => 100
+        ]);
     }
 
     public function reindex(SearchableInterface $model) {
@@ -93,8 +94,23 @@ class Search {
 
     }
 
-    public function moreLikeThis(SearchableInterface $model, $take) {
+    public function moreLikeThis(SearchableInterface $model, $take = null) {
+        if (is_null($take)) {
+            $take = 10;
+        }
 
+        try {
+            $results = $this->elasticSearchClient->mlt([
+                'index' => Search::INDEX,
+                'type' => $model->getIndexType(),
+                'id' => $model->getId()
+            ]);
+
+        } catch (\Exception $e) {
+            $results = null;
+        }
+
+        return $results;
     }
 
     /**
