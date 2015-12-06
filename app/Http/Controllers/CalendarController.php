@@ -25,7 +25,7 @@ class CalendarController extends Controller {
 
 			return response()->make($calendar->getContent(), 200, array(
 				'Content-type' => 'text/calendar',
-				'Content-Disposition' => 'inline;filename="'.$filename.'.ics"'
+				'Content-Disposition' => 'attachment;filename="'.$filename.'.ics"'
 			));			
 		} else {
 			return redirect('/');

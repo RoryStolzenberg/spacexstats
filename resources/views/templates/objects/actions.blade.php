@@ -7,6 +7,10 @@
         <span>@{{ favoritesText }}</span>
     </span>
     <span class="gr-4">
-        <a href="{{ $object->media_download }}" target="_blank" download><i class="fa fa-download fa-2x" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
+        @if ($object->hasFile())
+            <a href="{{ $object->media }}" target="_blank" download><i class="fa fa-download fa-2x" ng-click="incrementDownloads()"></i></a> {{ $object->downloads()->count() }} Downloads
+        @else
+            <a href="/missioncontrol/objects/{{ $object->object_id }}/download" target="_blank" download><i class="fa fa-download fa-2x"></i></a> {{ $object->downloads()->count() }} Downloads
+        @endif
     </span>
 </div>

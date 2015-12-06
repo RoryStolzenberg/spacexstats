@@ -195,20 +195,6 @@ class Object extends Model implements UploadableInterface {
     }
 
     /**
-     * @return mixed
-     */
-    public function getMediaDownloadAttribute() {
-        if ($this->hasFile()) {
-            // scale for type and length
-            return AWS::createClient('s3')->getObjectUrl(Config::get('filesystems.disks.s3.bucket'), $this->filename, '+5 minutes', array(
-                'ResponseContentDisposition' => 'attachment; filename="' . $this->title . '.' . $this->filetype . '"'
-            ));
-        } else {
-
-        }
-    }
-
-    /**
      * @return null|string
      */
     public function getMediaThumbSmallAttribute() {

@@ -180,6 +180,8 @@ class ObjectsController extends Controller {
     // missioncontrol/object/{object_id}/download
     public function download($object_id) {
 
+        $object = Object::find($object_id);
+
         // Only increment the downloads table if the same user has not downloaded it in the last hour (just like views)
         $mostRecentDownload = Download::where('user_id', Auth::id())->where('object_id', $object_id)->first();
 
@@ -191,6 +193,13 @@ class ObjectsController extends Controller {
 
             Redis::sadd('objects:toReindex', $object_id);
         }
-        return response()->json(null, 204);
+        if ($object->hasFile()) {
+            return response()->json(null, 204);
+        } else {
+            return response()->make($object->summary, 200, array(
+                'Content-type' => 'text/plain',
+                'Content-Disposition' => 'attachment;filename="'.str_slug($object->title).'.txt"'
+            ));
+        }
     }
 }
