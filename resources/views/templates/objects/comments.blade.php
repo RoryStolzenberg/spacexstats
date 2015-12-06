@@ -3,7 +3,7 @@
     @if (Auth::isSubscriber())
         <form name="commentForm">
             <textarea class="half" ng-model="newComment" minlength="10" required placeholder="You can use markdown here."></textarea>
-            <input type="submit" ng-click="addTopLevelComment(commentForm)" ng-disabled="commentForm.$invalid" value="Add comment" />
+            <input type="submit" ng-click="addTopLevelComment(commentForm)" ng-disabled="commentForm.$invalid || isAddingTopLevelComment" value="Add comment" />
         </form>
         <p class="exclaim" ng-if="!commentsAreLoaded">Comments are loading...</p>
         <div ui-tree data-nodrop-enabled="true" data-drag-enabled="false">

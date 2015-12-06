@@ -8717,15 +8717,16 @@ section.details #live-tweets {
 
 body.object .content {
   margin-left: -10px; }
+  body.object .content #object-container {
+    text-align: center; }
+    body.object .content #object-container img {
+      max-width: 100%; }
 
 body.object .aside {
   margin-left: 10px;
   padding-top: 10px;
   position: relative;
   top: -50px; }
-
-img#object {
-  max-width: 100%; }
 
 .object-actions {
   text-align: center;

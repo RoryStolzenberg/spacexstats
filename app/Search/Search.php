@@ -104,10 +104,10 @@ class Search {
                 'index' => Search::INDEX,
                 'type' => $model->getIndexType(),
                 'id' => $model->getId()
-            ]);
+            ])['hits']['hits'];
 
         } catch (\Exception $e) {
-            $results = null;
+            $results = [];
         }
 
         return $results;

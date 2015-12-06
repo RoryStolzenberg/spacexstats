@@ -13,8 +13,10 @@
             @include('templates.objects.navigation')
 
             <section id="details" class="details scrollto">
-                <div id="object" class="gr-9 content scrollto">
-                    <img id="object" src="{{ $object->media }}" />
+                <div class="gr-9 content scrollto">
+                    <div id="object-container">
+                        <img id="object" src="{{ $object->media }}" />
+                    </div>
 
                     <h2>Summary</h2>
                     <section id="summary" class="summary container scrollto">
@@ -74,10 +76,14 @@
                         {{ $object->present()->size() }}
                     </div>
 
-                    <h3>More Like This</h3>
-                    <div>
-
-                    </div>
+                    @if (!is_null($moreLikeThis))
+                        <h3>More Like This</h3>
+                        <div>
+                            @foreach($moreLikeThis as $object)
+                                {{ dd($moreLikeThis) }}
+                            @endforeach
+                        </div>
+                    @endif
                 </aside>
             </section>
 

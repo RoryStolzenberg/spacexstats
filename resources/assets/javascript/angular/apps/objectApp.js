@@ -98,9 +98,12 @@
     objectApp.controller('commentsController', ["$scope", "commentService", "Comment", function($scope, commentService, Comment) {
         $scope.object = laravel.object;
         $scope.commentsAreLoaded = false;
+        $scope.isAddingTopLevelComment = false;
 
         $scope.addTopLevelComment = function(form) {
+            $scope.isAddingTopLevelComment = true;
             commentService.addTopLevel($scope.object, $scope.newComment).then(function(response) {
+                $scope.isAddingTopLevelComment = false;
                 $scope.comments.push(new Comment(response.data));
                 $scope.newComment = null;
                 form.$setUntouched();

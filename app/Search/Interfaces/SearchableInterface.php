@@ -8,4 +8,6 @@ interface SearchableInterface
     public function getId();
 
     public function index();
+
+    public function getMapping();
 }

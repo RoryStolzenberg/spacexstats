@@ -21,8 +21,9 @@ use SpaceXStats\Models\Interfaces\UploadableInterface;
 use SpaceXStats\Presenters\PresentableTrait as Presentable;
 use SpaceXStats\Presenters\ObjectPresenter;
 use SpaceXStats\Search\Interfaces\SearchableInterface;
+use SpaceXStats\Search\Models\SearchableObject;
 
-class Object extends Model implements UploadableInterface, SearchableInterface {
+class Object extends Model implements UploadableInterface {
 
     use Presentable, Commentable, Uploadable, CountsViews;
 
@@ -42,6 +43,7 @@ class Object extends Model implements UploadableInterface, SearchableInterface {
     }
 
     protected $presenter = ObjectPresenter::class;
+    protected $searchableDecorator = SearchableObject::class;
 
 	public $rules = array(
         'user_id' => ['integer', 'exists:users,user_id'],
@@ -123,64 +125,6 @@ class Object extends Model implements UploadableInterface, SearchableInterface {
         } else {
             return $this->visibility == VisibilityStatus::PublicStatus;
         }
-    }
-    
-    public function getId() {
-        return $this->object_id;
-    }
-    
-    public function getIndexType() {
-        return 'objects';
-    }
-    
-    public function index() {
-        $paramBody = [
-            'object_id' => $this->object_id,
-            'user_id' => !$this->anonymous ? $this->user_id : null,
-            'user' => [
-                'user_id' => !$this->anonymous ? $this->user->user_id : null,
-                'username' => !$this->anonymous ? $this->user->username : null
-            ],
-            'mission_id' => $this->mission_id,
-            'type' => $this->type,
-            'subtype' => $this->subtype,
-            'size' => $this->size,
-            'filetype' => $this->filetype,
-            'title' => $this->title,
-            'dimensions' => [
-                'width' => $this->dimension_width,
-                'height' => $this->dimension_height
-            ],
-            'duration' => $this->duration,
-            'summary' => $this->summary,
-            'author' => $this->author,
-            'attribution' => $this->attribution,
-            'originated_at' => $this->originated_at->toIso8601String(),
-            'tweet_user_name' => $this->tweet_user_name,
-            'tweet_text' => $this->tweet_text,
-            'status' => $this->status,
-            'visibility' => $this->visibility,
-            'anonymous' => $this->anonymous,
-            'orignal_content' => $this->originalContent,
-            'actioned_at' => $this->actioned_at->toIso8601String(),
-            'tags' => $this->tags()->lists('name'),
-            'favorites' => $this->favorites()->lists('user_id'),
-            'notes' => $this->notes()->lists('user_id'),
-            'downloads' => $this->downloads()->lists('user_id')->unique()
-        ];
-
-        if ($this->mission()->count() == 1) {
-            $paramBody['mission'] = [
-                'mission_id' => $this->mission->mission_id,
-                'name' => $this->mission->name
-            ];
-        } else {
-            $paramBody['mission'] = [
-                'mission_id' => null,
-                'name' => null
-            ];
-        }
-        return $paramBody;
     }
 
     public function isInMissionControl() {
