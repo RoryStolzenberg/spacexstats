@@ -29,4 +29,14 @@ class PrelaunchEvent extends Model {
 	public function mission() {
 		return $this->belongsTo('SpaceXStats\Models\Mission');
 	}
+
+    // Methods
+    public function isScheduledLaunchPrecise() {
+        return $this->scheduled_launch_specificity >= LaunchSpecificity::Day;
+    }
+
+    // Attribute accessors
+    public function getScheduledLaunchDateTimeAttribute() {
+        return $this->isScheduledLaunchPrecise() ? $this->scheduled_launch_exact: $this->scheduled_launch_approximate;
+    }
 }

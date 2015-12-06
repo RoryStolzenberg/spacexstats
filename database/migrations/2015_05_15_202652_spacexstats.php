@@ -410,10 +410,12 @@ class Spacexstats extends Migration {
             $table->increments('prelaunch_event_id');
             $table->integer('mission_id')->unsigned();
             $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Launch Site Static Fire', 'Test Static Fire', 'Launch Change'));
-            $table->date('occurred_at'); // Nonoptional values
-            $table->datetime('scheduled_launch_exact')->nullable(); // Nonoptional values
+            $table->date('occurred_at');
+            $table->datetime('scheduled_launch_exact')->nullable();
             $table->string('scheduled_launch_approximate', Varchar::tiny)->nullable();
-            $table->string('summary', Varchar::tiny)->nullable();
+            $table->smallInteger('scheduled_launch_specificity')->unsigned()->nullable();
+            $table->string('summary', Varchar::small)->nullable();
+            $table->string('supporting_document', Varchar::small)->nullable();
         });
 
         Schema::create('profiles', function(Blueprint $table) {
