@@ -4337,7 +4337,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "Altitude 7km, speed 300m/s, downrange distance 2.4km"
+            'readout'       => "Altitude 7km, speed 300m/s, downrange distance 2.4km",
+            'altitude'      => 7000,
+            'velocity'      => 300,
+            'downrange'     => 2400
         ]);
         Telemetry::create([
             'mission_id'    => 17,
@@ -4367,12 +4370,18 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "T+2 minutes 15 seconds. Altitude 38km, speed 1.5km/s, downrange distance 50km"
+            'readout'       => "T+2 minutes 15 seconds. Altitude 38km, speed 1.5km/s, downrange distance 50km",
+            'altitude'      => 38000,
+            'velocity'      => 1500,
+            'downrange'     => 50000
         ]);
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "T+2 minutes 30 seconds, vehicle on the nominal trajectory. Altitude 52km, speed 2km/s, downrange distance 82km"
+            'readout'       => "T+2 minutes 30 seconds, vehicle on the nominal trajectory. Altitude 52km, speed 2km/s, downrange distance 82km",
+            'altitude'      => 52000,
+            'velocity'      => 2000,
+            'downrange'     => 82000
         ]);
         Telemetry::create([
             'mission_id'    => 17,
@@ -4412,7 +4421,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "T+4 minutes 20 seconds. Altitude 133km, speed 3.2km/s, downrange distance 370km"
+            'readout'       => "T+4 minutes 20 seconds. Altitude 133km, speed 3.2km/s, downrange distance 370km",
+            'altitude'      => 133000,
+            'velocity'      => 3200,
+            'downrange'     => 370000
         ]);
         Telemetry::create([
             'mission_id'    => 17,
@@ -4432,7 +4444,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "T+5 minutes 25 seconds. Altitude 159km, speed 3.75km/s, downrange distance 575km"
+            'readout'       => "T+5 minutes 25 seconds. Altitude 159km, speed 3.75km/s, downrange distance 575km",
+            'altitude'      => 159000,
+            'velocity'      => 3750,
+            'downrange'     => 575000
         ]);
         Telemetry::create([
             'mission_id'    => 17,
@@ -4447,7 +4462,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "T+6 minutes 20 seconds. Altitude 172km, velocity 4.5km/s, downrange distance 815km"
+            'readout'       => "T+6 minutes 20 seconds. Altitude 172km, velocity 4.5km/s, downrange distance 815km",
+            'altitude'      => 172000,
+            'velocity'      => 4500,
+            'downrange'     => 815000
         ]);
         Telemetry::create([
             'mission_id'    => 17,
@@ -4462,7 +4480,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "T+7 minutes 30 seconds. Altitude 179km, speed 5.6km/s, downrange distance 1150km"
+            'readout'       => "T+7 minutes 30 seconds. Altitude 179km, speed 5.6km/s, downrange distance 1150km",
+            'altitude'      => 179000,
+            'velocity'      => 5600,
+            'downrange'     => 1150000
         ]);
         Telemetry::create([
             'mission_id'    => 17,
@@ -4477,7 +4498,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 17,
             'timestamp'     => 0,
-            'readout'       => "T+8 minutes 30 seconds. Altitude 179km, speed 7000m/s, downrange distance 1500km"
+            'readout'       => "T+8 minutes 30 seconds. Altitude 179km, speed 7000m/s, downrange distance 1500km",
+            'altitude'      => 179000,
+            'velocity'      => 7000,
+            'downrange'     => 1500000
         ]);
         Telemetry::create([
             'mission_id'    => 17,
@@ -4525,7 +4549,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+6o seconds. Altitude 5.8km, speed 250m/s, downrange distance .8km"
+            'readout'       => "T+6o seconds. Altitude 5.8km, speed 250m/s, downrange distance .8km",
+            'altitude'      => 5800,
+            'velocity'      => 250,
+            'downrange'     => 800
         ]);
         Telemetry::create([
             'mission_id'    => 18,
@@ -4560,12 +4587,18 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+2 minutes 10 seconds. Altitude 38km, speed 1.16km/s, downrange distance 19km"
+            'readout'       => "T+2 minutes 10 seconds. Altitude 38km, speed 1.16km/s, downrange distance 19km",
+            'altitude'      => 38000,
+            'velocity'      => 1160,
+            'downrange'     => 19000
         ]);
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+2 minutes 30 seconds. Altitude 61km, speed 1.9km/s, downrange distance 40km"
+            'readout'       => "T+2 minutes 30 seconds. Altitude 61km, speed 1.9km/s, downrange distance 40km",
+            'altitude'      => 61000,
+            'velocity'      => 1900,
+            'downrange'     => 40000
         ]);
         Telemetry::create([
             'mission_id'    => 18,
@@ -4600,7 +4633,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+3 minutes, altitude 93km, speed 2.12km/s, downrange distance 79km"
+            'readout'       => "T+3 minutes, altitude 93km, speed 2.12km/s, downrange distance 79km",
+            'altitude'      => 93000,
+            'velocity'      => 2120,
+            'downrange'     => 79000
         ]);
         Telemetry::create([
             'mission_id'    => 18,
@@ -4625,7 +4661,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+4 minutes 25 seconds. Altitude 156km, speed 2.5km/s, downrange distance 193km"
+            'readout'       => "T+4 minutes 25 seconds. Altitude 156km, speed 2.5km/s, downrange distance 193km",
+            'altitude'      => 156000,
+            'velocity'      => 2500,
+            'downrange'     => 193000
         ]);
         Telemetry::create([
             'mission_id'    => 18,
@@ -4640,7 +4679,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+6 minutes 20 seconds. Altitude 202km, speed 3.7km/s, downrange distance 420km"
+            'readout'       => "T+6 minutes 20 seconds. Altitude 202km, speed 3.7km/s, downrange distance 420km",
+            'altitude'      => 202000,
+            'velocity'      => 3700,
+            'downrange'     => 420000
         ]);
         Telemetry::create([
             'mission_id'    => 18,
@@ -4655,7 +4697,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+7 minutes 30 seconds, altitude 210km, speed 4.7km/s, downrange distance 610km"
+            'readout'       => "T+7 minutes 30 seconds, altitude 210km, speed 4.7km/s, downrange distance 610km",
+            'altitude'      => 210000,
+            'velocity'      => 4700,
+            'downrange'     => 610000
         ]);
         Telemetry::create([
             'mission_id'    => 18,
@@ -4665,7 +4710,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 18,
             'timestamp'     => 0,
-            'readout'       => "T+9 minutes. Altitude 207km, speed 6.7km/s, downrange distance 925km"
+            'readout'       => "T+9 minutes. Altitude 207km, speed 6.7km/s, downrange distance 925km",
+            'altitude'      => 207000,
+            'velocity'      => 6700,
+            'downrange'     => 925000
         ]);
         Telemetry::create([
             'mission_id'    => 18,
@@ -4803,7 +4851,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "T+60 seconds. Altitude 5.5km, speed 250m/s, downrange distance .9km"
+            'readout'       => "T+60 seconds. Altitude 5.5km, speed 250m/s, downrange distance .9km",
+            'altitude'      => 5500,
+            'velocity'      => 250,
+            'downrange'     => 900
         ]);
         Telemetry::create([
             'mission_id'    => 19,
@@ -4833,12 +4884,18 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "Altitude 35km, speed 1km/s, downrange distance 14.5km"
+            'readout'       => "Altitude 35km, speed 1km/s, downrange distance 14.5km",
+            'altitude'      => 35000,
+            'velocity'      => 1000,
+            'downrange'     => 14500
         ]);
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "T+2 minutes 30 seconds. Altitude 58km, speed 1.8km/s, downrange distance 33km"
+            'readout'       => "T+2 minutes 30 seconds. Altitude 58km, speed 1.8km/s, downrange distance 33km",
+            'altitude'      => 58000,
+            'velocity'      => 1800,
+            'downrange'     => 33000
         ]);
         Telemetry::create([
             'mission_id'    => 19,
@@ -4873,7 +4930,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "Altitude 90km, speed 1.9km/s, downrange distance 67km"
+            'readout'       => "Altitude 90km, speed 1.9km/s, downrange distance 67km",
+            'altitude'      => 90000,
+            'velocity'      => 1900,
+            'downrange'     => 67000
         ]);
         Telemetry::create([
             'mission_id'    => 19,
@@ -4888,7 +4948,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "T+4 minutes. Stage 2 propulsion is still nominal. Altitude 134km, speed 2.1km/s, downrange distance now 135km"
+            'readout'       => "T+4 minutes. Stage 2 propulsion is still nominal. Altitude 134km, speed 2.1km/s, downrange distance now 135km",
+            'altitude'      => 134000,
+            'velocity'      => 2100,
+            'downrange'     => 135000
         ]);
         Telemetry::create([
             'mission_id'    => 19,
@@ -4903,7 +4966,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "T+5 minutes. Altitude 166km, speed 2.6km/s, downrange distance now 225km"
+            'readout'       => "T+5 minutes. Altitude 166km, speed 2.6km/s, downrange distance now 225km",
+            'altitude'      => 166000,
+            'velocity'      => 2600,
+            'downrange'     => 225000
         ]);
         Telemetry::create([
             'mission_id'    => 19,
@@ -4948,7 +5014,9 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "T+7 minutes 15 seconds. Altitude 205km, speed 4.2km/s, downrange [inaudible] km"
+            'readout'       => "T+7 minutes 15 seconds. Altitude 205km, speed 4.2km/s, downrange [inaudible] km",
+            'altitude'      => 205000,
+            'velocity'      => 4200
         ]);
         Telemetry::create([
             'mission_id'    => 19,
@@ -4983,7 +5051,10 @@ class TelemetryTableSeeder extends Seeder {
         Telemetry::create([
             'mission_id'    => 19,
             'timestamp'     => 0,
-            'readout'       => "T+9 minutes. Altitude 208km, speed 6.9km/s, downrange distance 850km"
+            'readout'       => "T+9 minutes. Altitude 208km, speed 6.9km/s, downrange distance 850km",
+            'altitude'      => 208000,
+            'velocity'      => 6900,
+            'downrange'     => 850000
         ]);
         Telemetry::create([
             'mission_id'    => 19,
