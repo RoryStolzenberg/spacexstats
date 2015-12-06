@@ -172,5 +172,22 @@ class PrelaunchEventsTableSeeder extends Seeder {
             'supporting_document' => null
         ]);
 
+        // F9F8 (Thaicom 6)
+        PrelaunchEvent::create([
+            'mission_id' => 13,
+            'event' => 'Launch Site Static Fire',
+            'occurred_at' => Carbon::createFromDate(2013, 12, 29),
+            'summary' => null,
+            'supporting_document' => null
+        ]);
+
+        PrelaunchEvent::create([
+            'mission_id' => 13,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2014, 1, 3),
+            'summary' => "payload fairing issue",
+            'supporting_document' => null
+        ]);
+
     }
 }

@@ -28,7 +28,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "SpaceX's first launch, which ended in disaster 25 seconds after launch due to an engine issue.",
             'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight1.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Failure
+            'outcome' => MissionOutcome::Failure,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=1fb6ce16-55d5-4391-9c96-154a98d46995&code=FSAT'
         ]);
 
         Mission::create([
@@ -46,7 +47,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "The second launch of Falcon 1, attempted (and failed to) carry a mass simulator into orbit.",
             'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight2.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Failure
+            'outcome' => MissionOutcome::Failure,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=1ae6c87d-5c53-446b-a2fa-393750ceab60&code=DEMO'
         ]);
 
         Mission::create([
@@ -64,7 +66,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "Flight 3 of Falcon 1 was to place a quadro of small satellites into Earth orbit, but again failed.",
             'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight3.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Failure
+            'outcome' => MissionOutcome::Failure,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=99ea6398-1f8f-44c2-b00b-b87b781ade8e&code=TBZR'
         ]);
 
         Mission::create([
@@ -82,7 +85,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "The first privately-developed liquid fueled rocket to reach orbit.",
             'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight4.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=a3247ff9-b134-4be3-9899-e2fafda69ee5&code=RATS'
         ]);
 
         Mission::create([
@@ -100,7 +104,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "Final launch of Falcon 1 and SpaceX's second successful flight and first satellite in orbit.",
             'article' => file_get_contents(base_path('resources/assets/documents/falcon1flight5.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=dc4d2483-7835-400c-8d9c-f1abb26a3fd8&code=RAZS'
         ]);
 
         Mission::create([
