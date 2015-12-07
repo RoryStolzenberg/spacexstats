@@ -17,7 +17,7 @@
                             <label for="username">Username</label>
                             <input type="text" name="username" id="username"
                                    ng-model="user.username" ng-minlength="4" ng-model-options="{ debounce: 500 }"
-                                   unique-username required />
+                                   unique-username required placeholder="4 characters or more" />
                             <p>
                                 <span class="red" ng-show="signUpForm.username.$error.username" ng-animate="{ show: 'username-checker-visible', hide: 'username-checker-hidden'}">
                                     <i class="fa fa-times"></i> That username is taken.
