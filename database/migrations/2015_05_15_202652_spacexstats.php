@@ -535,9 +535,9 @@ class Spacexstats extends Migration {
         Schema::create('users', function(Blueprint $table) {
             $table->increments('user_id');
             $table->integer('role_id')->unsigned();
-            $table->string('username', Varchar::tiny);
+            $table->string('username', Varchar::tiny)->unique();
             $table->string('firstname', Varchar::tiny);
-            $table->string('email', Varchar::tiny);
+            $table->string('email', Varchar::tiny)->unique();
 
             $table->string('mobile', Varchar::tiny)->nullable();
             $table->string('mobile_national_format', Varchar::tiny)->nullable();

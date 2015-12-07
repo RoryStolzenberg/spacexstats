@@ -365,7 +365,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => 'The fifth CRS mission to the ISS will carry pressurized and unpressurized cargo to the station. Secondary payloads include 2 small satellites to be deployed from the ISS airlock.', 'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=d8fad388-cdcd-442e-a1b0-a404ade89070&code=CRS5'
         ]);
 
         Mission::create([
@@ -382,7 +383,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Day',
             'summary' => 'Falcon 9 will loft the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it will function as an Earth & Solar Observation satellite.',
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=0248fc77-b30a-4e45-a55c-c8c6c2e2efba&code=DSCR'
         ]);
 
         Mission::create([

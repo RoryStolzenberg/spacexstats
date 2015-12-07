@@ -16,7 +16,7 @@
                         <li>
                             <label for="username">Username</label>
                             <input type="text" name="username" id="username"
-                                   ng-model="user.username" ng-model-options="{ debounce: 500 }"
+                                   ng-model="user.username" ng-minlength="4" ng-model-options="{ debounce: 500 }"
                                    unique-username required />
                             <p>
                                 <span class="red" ng-show="signUpForm.username.$error.username" ng-animate="{ show: 'username-checker-visible', hide: 'username-checker-hidden'}">
