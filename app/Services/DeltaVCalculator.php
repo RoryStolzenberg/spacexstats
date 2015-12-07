@@ -1,6 +1,7 @@
 <?php
 namespace SpaceXStats\Services;
 
+use SpaceXStats\Library\Enums\DateSpecificity;
 use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Models\Object;
@@ -61,10 +62,10 @@ class DeltaVCalculator {
     ];
 
     protected $dateAccuracyMultiplier = [
-        'year' => 1,
-        'month' => 1.05,
-        'date' => 1.1,
-        'datetime' => 1.2,
+        'Year' => 1,
+        'Month' => 1.05,
+        'Date' => 1.1,
+        'Datetime' => 1.2,
     ];
 
     protected $dataSaverMultiplier = [
@@ -160,6 +161,9 @@ class DeltaVCalculator {
      * @internal
      */
     private function dateAccuracyRegime() {
+
+        $this->score *= $this->dateAccuracyMultiplier[$this->object->originated_at_specificity];
+
         $year = substr($this->object->originated_at, 0, 4);
         $month = substr($this->object->originated_at, 5, 2);
         $day = substr($this->object->originated_at, 8, 2);

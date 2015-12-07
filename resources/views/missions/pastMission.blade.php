@@ -166,7 +166,9 @@
                 @if ($images->count() > 0)
                     @foreach ($images as $image)
                         <div class="square">
-                            <img src="" alt="" class="square" />
+                            <a href="/missioncontrol/objects/{{ $image->object_id }}">
+                                <img src="{{ $image->media_thumb_small }}" alt="{{ $image->summary }}" class="square" />
+                            </a>
                         </div>
                     @endforeach
                     @if ($images->count() > 20)
@@ -212,8 +214,12 @@
 
             <h2>Articles</h2>
             <section id="articles" class="scrollto">
-                @foreach ($mission->articles() as $article)
-                @endforeach
+                @if ($mission->articles->count() > 0)
+                    @foreach($mission->articles as $article)
+                    @endforeach
+                @else
+                    <p class="exclaim">No articles</p>
+                @endif
             </section>
 
             <h2>Timeline</h2>

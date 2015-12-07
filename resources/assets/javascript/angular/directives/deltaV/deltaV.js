@@ -85,23 +85,79 @@
                 }, true);
 
                 $scope.calculate = function(object) {
-                    console.log(object);
                     var internalValue = 0;
-                    Object.getOwnPropertyNames(object).forEach(function(key) {
-                        if (key == 'mission_id') {
-                            if (typeof key !== 'undefined') {
-                                //internalValue
-                            }
+
+                    // typeRegime
+                    internalValue += baseTypeScores[$scope.hint];
+
+                    // specialTypeRegime
+                    if (object.subtype !== null) {
+                        if (object.subtype in specialTypeMultiplier) {
+                            internalValue += specialTypeMultiplier[object.subtype];
                         }
-                    });
+                    }
+
+                    // resourceQualityRegime
+                    switch ($scope.hint) {
+                        case 'Image':
+                            internalValue += megapixelSubscore(object);
+                            break;
+
+                        case 'GIF':
+                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            break;
+
+                        case 'Video':
+                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            break;
+
+                        case 'Audio':
+                            internalValue += minuteSubscore(object);
+                            break;
+
+                        case 'Document':
+                            internalValue += pageSubscore(object);
+                            break;
+                    }
+
+                    // metadataRegime
+                    internalValue += object.summary.length * metadataScore.summary.perCharacter;
+                    internalValue += object.author.length * metadataScore.author.perCharacter;
+                    internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
+                    internalValue += object.tags.length * metadataScore.tags.perTag;
+
+                    // dateAccuracyRegime
+                    $year = object.originated_at.substr(0, 4);
+                    $month = object.originated_at.substr(5, 2);
+                    $date = object.originated_at.substr(8, 2);
+                    $datetime = object.originated_at.substr(11, 8);
+
+                    if ($datetime !== '00:00:00') {
+                        internalValue *= dateAccuracyMultiplier.datetime;
+                    } else if ($date !== '00') {
+                        internalValue *= dateAccuracyMultiplier.date;
+                    } else if ($month !== '00') {
+                        internalValue *= dateAccuracyMultiplier.month;
+                    } else {
+                        internalValue *= dateAccuracyMultiplier.year;
+                    }
+
+                    // dataSaverRegime
+                    if (object.external_url != null) {
+                        internalValue *= dataSaverMultiplier.hasExternalUrl;
+                    }
+
+                    // originalContentRegime
+                    if (object.original_content === true) {
+                        internalValue *= originalContentMultiplier.isOriginalContent;
+                    }
+
                     return internalValue;
                 };
 
                 $scope.setCalculatedValue = function(calculatedValue) {
                     $scope.calculatedValue.deltaV = calculatedValue;
-
                     var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
-
                     $scope.calculatedValue.time = seconds + ' seconds';
                 };
 
