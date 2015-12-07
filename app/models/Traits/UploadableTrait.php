@@ -205,7 +205,7 @@ trait UploadableTrait {
     /**
      * Makes a local copy of a file and thumbs for an object, preferentially fetching from the temporary storage
      * before trying to fetch from S3. Does not delete any temporary files if they exist,
-     * call deleteFromTemporary() for this.
+     * call deleteFromTemporary() for this. Does not save file locations to the database, call save() for this.
      */
     public function putToLocal() {
 
@@ -213,6 +213,11 @@ trait UploadableTrait {
 
         if ($this->hasFile()) {
             if ($this->hasTemporaryFile()) {
+
+                if (!file_exists(public_path('media/local/full'))) {
+                    mkdir(public_path('media/local/full'), 0777, true);
+                }
+
                 copy(public_path('media/temporary/full/' . $this->filename), public_path('media/local/full/' . $this->filename));
 
             } else if ($this->hasCloudFile()) {
@@ -227,7 +232,15 @@ trait UploadableTrait {
 
         if ($this->hasThumbs()) {
             if ($this->hasTemporaryThumbs()) {
+
+                if (!file_exists(public_path('media/local/small/'))) {
+                    mkdir(public_path('media/local/small/'), 0777, true);
+                }
                 copy(public_path('media/temporary/small/' . $this->thumb_filename), public_path('media/local/small/' . $this->thumb_filename));
+
+                if (!file_exists(public_path('media/local/large/'))) {
+                    mkdir(public_path('media/local/large/'), 0777, true);
+                }
                 copy(public_path('media/temporary/large/' . $this->thumb_filename), public_path('media/local/large/' . $this->thumb_filename));
 
             } else if ($this->hasCloudThumbs()) {

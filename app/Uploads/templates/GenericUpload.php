@@ -50,17 +50,17 @@ abstract class GenericUpload {
 
     private function createThumbnail($thumbnailType) {
         // Check if the directory exists, if not, create
-        if (!file_exists(public_path() . '/' . $this->directory[$thumbnailType])) {
-            mkdir(public_path() . '/' . $this->directory[$thumbnailType]);
+        if (!file_exists(public_path($this->directory[$thumbnailType]))) {
+            mkdir(public_path($this->directory[$thumbnailType]), 0777, true);
         }
 
         // Open the file
-        $image = new Imagick(public_path() . '/' . $this->directory['full'] . $this->fileinfo['filename']);
+        $image = new Imagick(public_path($this->directory['full'] . $this->fileinfo['filename']));
 
         // Set the thumbnail size
         $image->thumbnailImage($this->{$thumbnailType . 'ThumbnailSize'}, $this->{$thumbnailType . 'ThumbnailSize'}, true);
 
         // Create the relevant thumbnail
-        $image->writeImage(public_path() . '/' . $this->directory[$thumbnailType] . $this->fileinfo['filename']);
+        $image->writeImage(public_path($this->directory[$thumbnailType] . $this->fileinfo['filename']));
     }
 }

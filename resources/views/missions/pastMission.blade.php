@@ -198,8 +198,16 @@
 
             <h2>Documents</h2>
             <section id="documents" class="scrollto">
-                @foreach($documents as $document)
-                @endforeach
+                @if ($documents->count() > 0)
+                    @foreach($documents as $document)
+                    @endforeach
+                @else
+                    @if (Auth::isSubscriber())
+                        <p class="exclaim">No images</p>
+                    @else
+                        <p class="exclaim">No public images</p>
+                    @endif
+                @endif
             </section>
 
             <h2>Articles</h2>
