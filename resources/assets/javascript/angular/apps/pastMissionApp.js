@@ -16,8 +16,12 @@
             missionDataService.orbitalElements($scope.mission.slug).then(function(response) {
                 $scope.orbitalPlots = {
                     apogeeVsTime:           ephemerisPlotCreator.apogeeVsTime(response.data),
-                    perigeeVsTime:          ephemerisPlotCreator.perigeeVsTime(response.data)
+                    perigeeVsTime:          ephemerisPlotCreator.perigeeVsTime(response.data),
+                    inclinationVsTime:      ephemerisPlotCreator.inclinationVsTime(response.data)
                 }
+            });
+            missionDataService.launchEvents($scope.mission.slug).then(function(response) {
+                $scope.launchEvents = response.data;
             });
         })();
     }]);
@@ -234,22 +238,6 @@
                     chartTitle: 'Inclination (°) vs. Time'
                 }
             }
-        };
-    }]);
-
-    app.service('missionDataService', ["$http", function($http) {
-        this.telemetry = function(name) {
-            return $http.get('/missions/'+ name + '/telemetry');
-        };
-
-        this.orbitalElements = function(name) {
-            return $http.get('/missions/' + name + '/orbitalelements').then(function(response) {
-                // premap the dates of the timestamps because otherwise we'll do it too many times
-                return response.data.map(function(orbitalElement) {
-                    orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
-                    return orbitalElement;
-                });
-            });
         };
     }]);
 })();

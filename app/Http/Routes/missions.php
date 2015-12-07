@@ -13,15 +13,15 @@ Route::group(['prefix' => 'missions'], function() {
         Route::patch('/{slug}/edit', 'MissionsController@patchEdit')->before('doesExist:Mission');
     });
 
-    Route::get('/{slug}', 'MissionsController@get')->before('doesExist:Mission');
+    Route::group(['middleware' => 'doesExist:Mission'], function() {
+        Route::get('/{slug}', 'MissionsController@get');
+        Route::get('/{slug}/launchdatetime', 'MissionsController@launchDateTime');
+        Route::get('/{slug}/telemetry', 'MissionsController@telemetry');
+        Route::get('/{slug}/launchevents', 'MissionsController@launchEvents');
 
-    Route::get('/{slug}/launchdatetime', 'MissionsController@launchDateTime')->before('doesExist:Mission');
-
-    Route::get('/{slug}/telemetry', 'MissionsController@telemetry')->before('doesExist:Mission');
-
-    Route::group(['middleware' => ['mustBe:Subscriber', 'doesExist:Mission']], function() {
-        Route::get('/{slug}/orbitalelements', 'MissionsController@orbitalElements');
-        Route::get('/{slug}/raw', 'MissionsController@raw');
+        Route::group(['middleware' => 'mustBe:Subscriber'], function() {
+            Route::get('/{slug}/orbitalelements', 'MissionsController@orbitalElements');
+            Route::get('/{slug}/raw', 'MissionsController@raw');
+        });
     });
-
 });

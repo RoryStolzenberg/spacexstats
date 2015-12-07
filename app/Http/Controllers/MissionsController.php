@@ -268,6 +268,10 @@ class MissionsController extends Controller {
         return response()->json($orbitalElements);
     }
 
+    public function launchEvents($slug) {
+        return response()->json(Mission::whereSlug($slug)->prelaunchEvents()->orderBy('occurred_at', 'asc')->get());
+    }
+
     /**
      * GET, /missions/{slug}/raw. Get raw mission data, used for a raw data download on a mission page.
      *

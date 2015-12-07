@@ -50,7 +50,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.4.0/moment-timezone-with-data.js"></script>
 
         <!-- d3.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
 
         <!-- jstz & dropzone -->
         <script src="/js/jstz-1.0.4.min.js"></script>

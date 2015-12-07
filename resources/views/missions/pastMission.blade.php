@@ -210,24 +210,45 @@
 
             <h2>Timeline</h2>
             <section id="timeline" class="scrollto">
+                <script>
+
+                </script>
                 <h3>Prelaunch</h3>
                 @if ($mission->prelaunchEvents->count() > 0)
-                    <table>
-                        <tr>
-                            <th>Occurred At</th>
-                            <th>Event Type</th>
-                            <th>Summary</th>
-                            <th>Scheduled Lauch at time of event</th>
-                        </tr>
-                        @foreach ($mission->prelaunchEvents as $prelaunchEvent)
-                            <tr>
-                                <td>{{ $prelaunchEvent->occurred_at }}</td>
-                                <td>{{ $prelaunchEvent->event }}</td>
-                                <td>{{ $prelaunchEvent->summary }}</td>
-                                <td>{{ $prelaunchEvent->scheduled_launch_date_time }}</td>
-                            </tr>
-                        @endforeach
-                    </table>
+                    <script>
+                        $(document).ready(function() {
+
+                            var data = [1, 5, 12, 18];
+
+                            var elem = $('#timeline-graph');
+
+                            var svg = d3.select(elem[0]).data(data);
+
+                            var xScale = d3.scale.linear()
+                                    .domain([0, data[data.length-1]])
+                                    .range([0, elem.width()]);
+
+                            var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(data.length).tickFormat(null);
+
+                            svg.append("svg:g")
+                                    .attr("class", "x axis")
+                                    .attr("transform", "translate(0," + elem.height() / 2 + ")")
+                                    .call(xAxisGenerator);
+
+                            svg.append("g")
+                                    .attr("transform", "translate(0," + elem.height() / 2 + ")")
+                                    .selectAll("circle")
+                                    .data(data)
+                                    .enter().append("circle")
+                                    .attr("r", 20)
+                                    .attr("fill", "blue")
+                                    .attr("cx", function(d) { return xScale(d); });
+                        });
+
+                    </script>
+                    <svg id="timeline-graph" width="100%">
+
+                    </svg>
                 @else
                     <p class="exclaim">No Prelaunch Events</p>
                 @endif
