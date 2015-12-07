@@ -205,9 +205,9 @@
                     @endforeach
                 @else
                     @if (Auth::isSubscriber())
-                        <p class="exclaim">No images</p>
+                        <p class="exclaim">No documents</p>
                     @else
-                        <p class="exclaim">No public images</p>
+                        <p class="exclaim">No public documents</p>
                     @endif
                 @endif
             </section>

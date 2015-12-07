@@ -16,18 +16,18 @@
                         <li>
                             <label for="username">Username</label>
                             <input type="text" name="username" id="username"
-                                   ng-model="user.username" ng-model-options="{ debounce: 250 }"
+                                   ng-model="user.username" ng-model-options="{ debounce: 500 }"
                                    unique-username required />
-                            <p ng-show="signUpForm.username.$error.username" class="red">
-                                <i class="fa fa-times"></i> That username is taken.
-                            </p>
-
-                            <p ng-show="signUpForm.username.$pending.username">
-                                <i class="fa fa-circle-o-notch fa-spin"></i> Checking...
-                            </p>
-
-                            <p ng-show="signUpForm.username.$valid" class="green">
-                                <i class="fa fa-check"></i> Good to go!
+                            <p>
+                                <span class="red" ng-show="signUpForm.username.$error.username" ng-animate="{ show: 'username-checker-visible', hide: 'username-checker-hidden'}">
+                                    <i class="fa fa-times"></i> That username is taken.
+                                </span>
+                                <span ng-show="signUpForm.username.$pending.username" ng-animate="{ show: 'username-checker-visible', hide: 'username-checker-hidden'}">
+                                    <i class="fa fa-circle-o-notch fa-spin"></i> Checking...
+                                </span>
+                                <span class="green" ng-show="signUpForm.username.$valid" ng-animate="{ show: 'username-checker-visible', hide: 'username-checker-hidden'}">
+                                    <i class="fa fa-check"></i> Good to go!
+                                </span>
                             </p>
                         </li>
                         <li>

@@ -91,33 +91,33 @@ $h1-height-small: 50px;
 @mixin transition($property) {
     transition:$property;
 }
-@mixin transitionFast($properties) {
+@mixin transitionFast($properties, $delay: "0s") {
     $transitions: ();
 
     @each $property in $properties {
-        $trans: unquote("#{$property} ease-in-out 0.3s");
+        $trans: unquote("#{$property} ease-in-out 0.3s #{$delay}");
         $transitions: append($transitions, $trans, comma );
     }
 
     @include transition(#{$transitions});
 }
 
-@mixin transitionMed($properties) {
+@mixin transitionMed($properties, $delay: "0s") {
     $transitions: ();
 
     @each $property in $properties {
-        $trans: unquote("#{$property} ease-in-out 0.5s");
+        $trans: unquote("#{$property} ease-in-out 0.5s #{$delay}");
         $transitions: append($transitions, $trans, comma );
     }
 
     @include transition(#{$transitions});
 }
 
-@mixin transitionSlow($properties) {
+@mixin transitionSlow($properties, $delay: "0s") {
     $transitions: ();
 
     @each $property in $properties {
-        $trans: unquote("#{$property} ease-in-out 1s");
+        $trans: unquote("#{$property} ease-in-out 1s #{$delay}");
         $transitions: append($transitions, $trans, comma );
     }
 

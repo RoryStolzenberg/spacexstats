@@ -1,5 +1,5 @@
 (function() {
-    var signUpApp = angular.module('app', []);
+    var signUpApp = angular.module('app', ['ngAnimate']);
 
     signUpApp.controller("signUpController", ["$scope", "signUpService", "flashMessage", function($scope, signUpService, flashMessage) {
         $scope.hasSignedUp = false;

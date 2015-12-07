@@ -305,3 +305,22 @@ input[value="Logout"], input[value="Logout"]:focus {
         font-size: 16px;
     }
 }
+
+// Username checker styles
+.username-checker-hidden {
+    @include transitionFast(all);
+    opacity:0;
+}
+
+.username-checker-hidden.username-checker-hidden-active {
+    opacity:1;
+}
+
+.username-checker-visible {
+    @include transitionFast(all, 0.3s);
+    opacity:1;
+}
+
+.username-checker-visible.username-checker-visible-active {
+    opacity:0;
+}
