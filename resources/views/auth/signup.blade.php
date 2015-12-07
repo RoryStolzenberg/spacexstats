@@ -2,7 +2,7 @@
 @section('title', 'Sign Up')
 
 @section('content')
-<body class="signup" ng-controller="signUpController" ng-strict-di>
+<body class="signup" ng-controller="signUpController" ng-strict-di ng-cloak>
 
     @include('templates.header')
 

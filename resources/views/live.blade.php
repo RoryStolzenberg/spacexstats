@@ -2,7 +2,7 @@
 @section('title', 'Live')
 
 @section('content')
-    <body class="live" ng-controller="liveController" ng-strict-di>
+    <body class="live" ng-controller="liveController" ng-strict-di ng-cloak>
     <!-- Custom Header -->
     <div class="content-wrapper">
         <header class="container">

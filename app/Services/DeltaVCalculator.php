@@ -70,6 +70,10 @@ class DeltaVCalculator {
         'hasExternalUrl' => 2
     ];
 
+    protected $originalContentMultiplier = [
+        'isOriginalContent' => 1.5
+    ];
+
     /**
      * Calculates the total deltaV value of a particular object
      *
@@ -85,6 +89,7 @@ class DeltaVCalculator {
         $this->metadataRegime();
         $this->dateAccuracyRegime();
         $this->dataSaverRegime();
+        $this->originalContentRegime();
 
         return round($this->score);
     }
@@ -177,6 +182,16 @@ class DeltaVCalculator {
     private function dataSaverRegime() {
         if (!is_null($this->object->external_url)) {
             return $this->score * $this->dataSaverMultiplier['hasExternalUrl'];
+        }
+    }
+
+    /**
+     * @internal
+     * @return int
+     */
+    private function originalContentRegime() {
+        if (!is_null($this->object->original_content)) {
+            return $this->score * $this->originalContentMultiplier['isOriginalContent'];
         }
     }
 
