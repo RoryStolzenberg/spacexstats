@@ -18,6 +18,9 @@
                             <a href="#details">Details</a>
                         </li>
                         <li class="gr-1">
+                            <a href="#images">Images</a>
+                        </li>
+                        <li class="gr-1">
                             <a href="#timeline">Timeline</a>
                         </li>
                         <li class="gr-1">
@@ -137,10 +140,35 @@
                     @endif
                 </section>
 
+                <h2>Images</h2>
+                <section id="images" class="scrollto">
+                    @if ($images->count() > 0)
+                        @foreach ($images as $image)
+                            <div class="square">
+                                <a href="/missioncontrol/objects/{{ $image->object_id }}">
+                                    <img src="{{ $image->media_thumb_small }}" alt="{{ $image->summary }}" class="square" />
+                                </a>
+                            </div>
+                        @endforeach
+                        @if ($images->count() > 20)
+                            <div class="square">
+                                <p class="exclaim">{{ $images->count() - 20 }} more...</p>
+                            </div>
+                        @endif
+                    @else
+                        @if (Auth::isSubscriber())
+                            <p class="exclaim">No images</p>
+                        @else
+                            <p class="exclaim">No public images</p>
+                        @endif
+                    @endif
+                </section>
+
                 <h2>Timeline</h2>
                 <section class="scrollto" id="timeline">
                     <canvas></canvas>
                 </section>
+
                 <h2>Articles</h2>
                 <section class="scrollto" id="articles">
                     @if ($mission->articles->count() == 0)

@@ -40,7 +40,8 @@ class MissionsController extends Controller {
         $data = [
             'mission' => $mission,
             'pastMission' => Mission::before($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']),
-            'futureMission' => Mission::after($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name'])
+            'futureMission' => Mission::after($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']),
+            'images' => Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get()
         ];
 
 		if ($mission->status === MissionStatus::Upcoming || $mission->status === MissionStatus::InProgress) {
@@ -67,7 +68,6 @@ class MissionsController extends Controller {
         ]);
 
         $data['documents'] = Object::inMissionControl()->authedVisibility()->where('type', MissionControlType::Document)->orderBy('created_at')->get();
-        $data['images'] = Object::inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get();
         $data['launchVideo'] = $data['mission']->launchVideo();
         $data['orbitalElements'] = $data['mission']->orbitalElements()->orderBy('epoch', 'desc')->take(5);
 

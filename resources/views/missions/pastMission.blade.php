@@ -173,7 +173,7 @@
                     @endforeach
                     @if ($images->count() > 20)
                         <div class="square">
-                            {{ $images->count() - 20 }} more...
+                            <p class="exclaim">{{ $images->count() - 20 }} more...</p>
                         </div>
                     @endif
                 @else
