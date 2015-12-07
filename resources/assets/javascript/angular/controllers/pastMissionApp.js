@@ -20,9 +20,6 @@
                     inclinationVsTime:      ephemerisPlotCreator.inclinationVsTime(response.data)
                 }
             });
-            missionDataService.launchEvents($scope.mission.slug).then(function(response) {
-                $scope.launchEvents = response.data;
-            });
         })();
     }]);
 
