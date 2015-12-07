@@ -19,6 +19,7 @@ use SpaceXStats\Models\MissionType;
 use SpaceXStats\Models\Object;
 use SpaceXStats\Models\OrbitalElement;
 use SpaceXStats\Models\Part;
+use SpaceXStats\Models\PrelaunchEvent;
 use SpaceXStats\Models\Spacecraft;
 use SpaceXStats\Models\Telemetry;
 use SpaceXStats\Models\Vehicle;

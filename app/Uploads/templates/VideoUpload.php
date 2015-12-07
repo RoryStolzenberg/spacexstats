@@ -57,15 +57,22 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         $frame = $video->frame(TimeCode::fromSeconds($frameExtractionPoint));
 
         // Save frame to temporary location
+        if (!file_exists(public_path($this->directory['frames']))) {
+            mkdir(public_path($this->directory['frames']), 0777, true);
+        }
         $frame->save($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
 
         foreach ($thumbnailsToCreate as $size) {
             $lengthDimension = ($size == 'small') ? $this->smallThumbnailSize : $this->largeThumbnailSize;
 
             // create an Imagick instance
-            $image = new \Imagick(public_path() . '/' . $this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
+            $image = new \Imagick(public_path($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg'));
             $image->thumbnailImage($lengthDimension, $lengthDimension, true);
-            $image->writeImage(public_path() . '/' . $this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg');
+
+            if (!file_exists(public_path($this->directory[$size]))) {
+                mkdir(public_path($this->directory[$size]), 0777, true);
+            }
+            $image->writeImage(public_path($this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg'));
         }
 
         // Delete the temporary frame
