@@ -130,7 +130,7 @@
                                         <li>
                                             <label>
                                                 <p>Tags</p>
-                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <tags available-tags="data.tags" ng-model="file.tags" name="tags"></tags>
                                                 <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                                             </label>
                                         </li>
@@ -250,7 +250,7 @@
                                         <li>
                                             <label>
                                                 <p>Tags</p>
-                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <tags available-tags="data.tags" ng-model="file.tags" name="tags"></tags>
                                                 <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                                             </label>
                                         </li>
@@ -361,7 +361,7 @@
                                         <li>
                                             <label>
                                                 <p>Tags</p>
-                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <tags available-tags="data.tags" ng-model="file.tags" name="tags"></tags>
                                                 <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                                             </label>
                                         </li>
@@ -490,7 +490,7 @@
                                         <li>
                                             <label>
                                                 <p>Tags</p>
-                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <tags available-tags="data.tags" ng-model="file.tags" name="tags"></tags>
                                                 <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                                             </label>
                                         </li>
@@ -609,7 +609,7 @@
                                         <li>
                                             <label>
                                                 <p>Tags</p>
-                                                <tags available-tags="data.tags" ng-model="file.tags" ></tags>
+                                                <tags available-tags="data.tags" ng-model="file.tags" name="tags"></tags>
                                                 <span ng-show="@{{'fileForm' + $index}}.tags.$error.taglength">Please enter 1 to 5 tags.</span>
                                             </label>
                                         </li>
