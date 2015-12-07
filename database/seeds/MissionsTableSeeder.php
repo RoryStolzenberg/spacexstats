@@ -123,7 +123,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "First launch of the new Falcon 9 from Cape Canaveral delivering the Dragon Spacecraft Qualification Unit into orbit.",
             'article' => file_get_contents(base_path('resources/assets/documents/dsqu.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=b23bd90a-60a5-43bc-8c99-8eaa6add53ca&code=F9F1'
         ]);
 
         Mission::create([
@@ -141,7 +142,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "Second launch of Falcon 9, and first launch of Dragon spacecraft into Low Earth Orbit.",
             'article' => file_get_contents(base_path('resources/assets/documents/cots1.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=270d3400-4d15-4f2b-8b54-b2af12286fea&code=COT1'
         ]);
 
         Mission::create([
@@ -159,7 +161,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "First night Falcon 9 liftoff, and first private spacecraft to dock with the International Space Station.",
             'article' => file_get_contents(base_path('resources/assets/documents/cots2+.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=76b9675a-7e6d-458f-bb2d-22281b7d4bb4&code=COT2'
         ]);
 
         Mission::create([
@@ -177,7 +180,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => 'First of twelve initially contracted International Space Station resupply missions with Dragon. Demonstration of engine out capability.',
             'article' => file_get_contents(base_path('resources/assets/documents/crs1.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=cd6f5ea1-2cc6-4b16-ae7e-0254328365d2&code=CRS1'
         ]);
 
         Mission::create(array(
@@ -195,7 +199,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => 'Second contracted flight of Dragon, and the fifth and last flight of Falcon 9 v1.0',
             'article' => file_get_contents(base_path('resources/assets/documents/crs2.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=f6aa4e89-33ca-48c4-a545-df34364913ff&code=CRS2'
         ));
 
         Mission::create(array(
@@ -213,7 +218,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => 'First Falcon 9v1.1 launch from Vandenberg delivering CASSIOPE satellite into a polar orbit with a new payload fairing. Attempt at propulsive over-water soft landing.',
             'article' => file_get_contents(base_path('resources/assets/documents/cassiope.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=89b1bbdc-7d1a-4c1d-8b2f-3b3d65ac39ab&code=CASS'
         ));
 
         Mission::create([
@@ -231,7 +237,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => 'Second Falcon 9v1.1 launch, first from Cape Canaveral. Other firsts include achieving a GTO orbit, a Merlin 1D upper stage restart, and a communications satellite payload. ',
             'article' => file_get_contents(base_path('resources/assets/documents/ses8.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=2799bd61-39db-40ce-aedb-4e9fe0ddb759&code=SES8'
         ]);
 
         Mission::create([
@@ -249,7 +256,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => 'Third Falcon 9v1.1 launch, 8th Falcon 9. Delivered the communications satellite Thaicom 6 into a "supersynchronous" GTO orbit similar to SES-8. ',
             'article' => file_get_contents(base_path('resources/assets/documents/thaicom6.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=678a6c1e-4442-4c66-9ddb-840032673ec8&code=THM6'
         ]);
 
         Mission::create([
@@ -267,7 +275,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => 'Third Dragon CRS mission to the ISS. First resupply utilizing a Falcon 9v1.1, allowing Dragon to carry a larger capacity of cargo.',
             'article' => file_get_contents(base_path('resources/assets/documents/crs3.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=786f9b59-cb08-4c18-9615-704205259f70&code=CRS3'
         ]);
 
         Mission::create([
@@ -285,7 +294,8 @@ class MissionsTableSeeder extends Seeder {
             'summary' => 'A Falcon 9 flew the first 6 Orbcomm G2 satellites into a Low Earth Orbit as part of a multi-mission contract for the communications corporation.',
             'article' => file_get_contents(base_path('resources/assets/documents/orbcommog2launch1.txt')),
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=ca97c97e-f1a3-42e8-abbf-b92df9383cc7&code=OG21'
         ]);
 
         Mission::create([
@@ -302,7 +312,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Night',
             'summary' => 'AsiaSat 8 is a communications satellite that Falcon 9 propelled into a GTO orbit, and will be located at 105.5 degrees East.',
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=e0030f94-88c9-4bda-9973-cdc7d189a992&code=AST8'
         ]);
 
         Mission::create([
@@ -319,7 +330,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Night',
             'summary' => 'AsiaSat 6 is a communications satellite being launched for Asia Satellite Telecommunications Company Ltd. Once in orbit, it will be renamed AsiaSat 6 / Thaicom 7.',
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=aa44b8b5-25bf-453e-9ca4-2510848fb145&code=AST6'
         ]);
 
         Mission::create([
@@ -336,7 +348,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Night',
             'summary' => 'Fourth of twelve Dragon ISS resupply missions. It is carrying over 5000 pounds to the station, including 20 mousetronauts, and the SpinSat satellite.',
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=dc88c2c3-9919-44dd-9893-0738518a28d6&code=CRS4'
         ]);
 
         Mission::create([
@@ -386,7 +399,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Night',
             'summary' => "This marks SpaceX's first dual comm. satellite launch, of Eutelsat 115W B & ABS-3A. The satellites, built by Boeing, use Solar Electric Propulsion, making it feasible to fit both on a single Falcon 9 and removing the need for weighty Hydrazine.",
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=2466b6b0-d440-495c-890f-23577087924d&code=EUAB'
         ]);
 
         Mission::create([
@@ -403,7 +417,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Day',
             'summary' => "The sixth of fourteen Dragon ISS resupply missions to the ISS. Will attempt a barge landing on ASDS.",
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=4713410a-e452-484e-86be-3bb95ea3c5e8&code=CRS6'
         ]);
 
         Mission::create([
@@ -420,7 +435,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Day',
             'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Success
+            'outcome' => MissionOutcome::Success,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=eb98b985-210f-416c-a118-14eb1afbb1c8&code=TRK1'
         ]);
 
         Mission::create([
@@ -437,7 +453,8 @@ class MissionsTableSeeder extends Seeder {
             'launch_illumination' => 'Day',
             'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
             'status' => MissionStatus::Complete,
-            'outcome' => MissionOutcome::Failure
+            'outcome' => MissionOutcome::Failure,
+            'flight_club' => 'http://www.flightclub.io/results.php?id=ad8d5e76-ad6b-4670-9aee-60c1319dff50&code=CRS7'
         ]);
 
         // Upcoming below
