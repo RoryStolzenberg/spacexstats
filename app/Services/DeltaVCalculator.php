@@ -31,7 +31,8 @@ class DeltaVCalculator {
         MissionControlSubtype::Photo            => 1.1,
         MissionControlSubtype::LaunchVideo      => 2,
         MissionControlSubtype::PressKit         => 2,
-        MissionControlSubtype::WeatherForecast  => 2
+        MissionControlSubtype::WeatherForecast  => 2,
+        MissionControlSubtype::PressConference  => 1.5
     ];
 
     protected $resourceQuality = [
