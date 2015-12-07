@@ -1,7 +1,7 @@
 @extends('emails.template')
 
 @section('emailType', 'Signup Request')
-@section('EmailBody')
+@section('emailBody')
 <h2>Welcome to SpaceX Stats!</h2>
 
 <p>You're one step away from access to the world's largest collection of SpaceX news, information, and resources.

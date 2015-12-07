@@ -49,14 +49,12 @@ abstract class Mailer {
             $message->to($user->email)->subject($subject);
         });
 
-        $now = Carbon::now();
-
         Email::create([
             'user_id' => $user->user_id,
             'subject' => $subject,
             'body' => view($view)->with($data)->render(),
             'status' => EmailStatus::Sent,
-            'sent_at' => $now
+            'sent_at' => Carbon::now()
         ]);
     }
 
