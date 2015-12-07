@@ -136,15 +136,15 @@
                         </li>
                         @endif
 
-                        @if ($mission->redditDiscussiob)
+                        @if ($mission->reddit_discussion)
                             <li id="reddit-discussion">
-                                <span>/r/SpaceX Reddit Live Thread</span>
+                                <span><a href="{{ $mission->reddit_discussion }}">/r/SpaceX Reddit Live Thread</a></span>
                             </li>
                         @endif
 
-                        @if ($mission->flightclub)
+                        @if ($mission->flight_club)
                             <li id="flightclub-link">
-                                <span>FlightClub Simulation</span>
+                                <span><a href="{{ $mission->flight_club }}">FlightClub Simulation</a></span>
                             </li>
                         @endif
 
@@ -229,42 +229,7 @@
                 </script>
                 <h3>Prelaunch</h3>
                 @if ($mission->prelaunchEvents->count() > 0)
-                    <div ng-controller="launchEventsController">
-                        <script>
-                            $(document).ready(function() {
-
-                                var data = [1, 5, 12, 18];
-
-                                var elem = $('#timeline-graph');
-
-                                var svg = d3.select(elem[0]).data(data);
-
-                                var xScale = d3.scale.linear()
-                                        .domain([0, data[data.length-1]])
-                                        .range([0, elem.width()]);
-
-                                var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(data.length).tickFormat(null);
-
-                                svg.append("svg:g")
-                                        .attr("class", "x axis")
-                                        .attr("transform", "translate(0," + elem.height() / 2 + ")")
-                                        .call(xAxisGenerator);
-
-                                svg.append("g")
-                                        .attr("transform", "translate(0," + elem.height() / 2 + ")")
-                                        .selectAll("circle")
-                                        .data(data)
-                                        .enter().append("circle")
-                                        .attr("r", 20)
-                                        .attr("fill", "blue")
-                                        .attr("cx", function(d) { return xScale(d); });
-                            });
-
-                        </script>
-                        <svg id="timeline-graph" width="100%">
-
-                        </svg>
-                    </div>
+                    <timeline></timeline>
                 @else
                     <p class="exclaim">No Prelaunch Events</p>
                 @endif
