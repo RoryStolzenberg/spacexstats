@@ -5168,4 +5168,400 @@ class TelemetryTableSeeder extends Seeder {
         ]);
 
     }
+
+    public function DSCOVR() {
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Liftoff of the Falcon 9"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the towers"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] set warning stage to flight"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible]"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "GC OSM move to section 10 dot 55"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] is active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Altitude 6.5km, downrange distance 1.3km, speed 599m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Recovery has acquisition of signal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "First stage propulsion-"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle has reached maximum aerodynamic pressure"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "First stage prop is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry remain nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "MVac is chilling in"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle remains on a nominal trajectory. Altitude 33.9km, downrange distance 20.9km, speed 1468m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle remains on a nominal trajectory. Altitude 57.9km, downrange distance 50.0km, speed 2350m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "We have MECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Stage separation confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "And we have stage 2 engine ignition"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Fairing separation confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Altitude 130km, downrange distance 215km, vehicle speed 2303m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Altitude 130km, downrange distance 320km, vehicle speed 2313m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       = "AFCN AOS"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Altitude 99km, downrange distance 417km, vehicle speed 2449m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "We have stage 1 entry startup"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Second stage FTS has been safed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 prop is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "First stage FTS has been safed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Altitude 191km, downrange distance 813km, vehicle speed 5615m/s"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1 entry shutdown"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's in terminal guidance"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "And we have SECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Eastern range loss of signal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "We have stage 1 splashdown"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 20,
+            'timestamp'     => 0,
+            'readout'       => "Well as you saw and heard, Falcon 9 has carried the DSCOVR spacecraft into the Low Earth parking orbit. There is a second burn of the upper stage required in about 21 minutes to place DSCOVR in the final orbit, heading towards the L1 Lagrange point. SpaceX is ending the webcast now but remember to follow us online at spacex.com As well as on our social media pages as we continue through the remainder of todays mission. Also SpaceX would like to thanks to our NASA and NOAA spacecraft stakeholders, our Air Force customer, from the space and missile systems center, and to the Air Force for Eastern Range and ground station support, and all of you for following us on today's launch, and we'll you see next time here from SpaceX in Hawthorne, California."
+        ]);
+    }
+
+    public function ABSEutelsat1() {
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Liftoff"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the towers"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] set stage to flight"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "[inaudible] phase change"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "GC OSM proceed to section 10 dot 66"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Copy"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1 PU is active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude 3.8km, velocity 197m/s, downrange distance 1km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle is supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle has reached maximum aerodynamic pressure"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry remain nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "MVac chill has begun"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude 33km, velocity 1200m/s, downrange distance 36km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle remains on a nominal trajectory"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude 50km, velocity 1900m/s, downrange distance 70km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "We have MECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Stage separation confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "And we have MVac start"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Fairing separation confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Bermuda acquisition of signal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude 138km, velocity 3100m/s, downrange distance 370km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle remains on a nominal trajectory"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude is 165km, velocity is 3800m/s, downrange distance 590km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry remain nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude 177km, velocity 4500m/s, downrange distance 806km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude 180km, velocity is 5.5km/s, downrange distance 1100km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Cape loss of signal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "FTS has been safed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle remains on a nominal trajectory"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "And we have SECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle altitude 178km, velocity is 7500m/s, downrange distance 1600km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 21,
+            'timestamp'     => 0,
+            'readout'       => "Well as you saw and heard, Falcon 9 has carried the ABS and Eutelsat satellites into the low earth parking orbit.There is a second burn of the upper stage required at just under 26 minutes into flight, that will place both payloads into the supersynchronous transfer orbit. SpaceX is ending the webcast now, but remember to follow us online at our twitter social media page and at spacex.com as we continue through the remainder of tonight's mission. SpaceX would like to say thanks to our Federal Aviation Administration Licensing Authority, thank you to the Air Force for Eastern range and ground station support, and of course to our EutelSat and Asia Broadcast Satellite customers for their confidence in SpaceX, and finally to all of you for following us on today's launch, with that we'll see you next time here from SpaceX headquarters from Hawthorne California."
+        ]);
+    }
 }
