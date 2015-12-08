@@ -226,7 +226,7 @@
             <section id="timeline" class="scrollto">
                 <h3>Prelaunch</h3>
                 @if ($mission->prelaunchEvents->count() > 0)
-                    <timeline mission="{{ $mission->slug }}"></timeline>
+                    <timeline mission="mission"></timeline>
                 @else
                     <p class="exclaim">No Prelaunch Events</p>
                 @endif

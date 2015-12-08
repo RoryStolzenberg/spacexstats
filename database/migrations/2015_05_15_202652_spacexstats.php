@@ -8,7 +8,6 @@ class Spacexstats extends Migration {
 
     /** Todo:
      * calendar downloads
-     * webcast statuses
      * types / subtypes
      * rss_updates
      */

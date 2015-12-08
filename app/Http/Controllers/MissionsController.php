@@ -270,9 +270,11 @@ class MissionsController extends Controller {
     }
 
     public function launchEvents($slug) {
-        return response()->json(PrelaunchEvent::whereHas('mission', function($q) use ($slug) {
+        $prelaunchEvents = PrelaunchEvent::whereHas('mission', function($q) use ($slug) {
             $q->whereSlug($slug);
-        })->orderBy('occurred_at', 'asc')->get());
+        })->orderBy('occurred_at', 'asc')->get();
+
+        return response()->json($prelaunchEvents);
     }
 
     /**

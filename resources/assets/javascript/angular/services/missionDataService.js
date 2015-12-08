@@ -9,10 +9,12 @@
         this.orbitalElements = function(slug) {
             return $http.get('/missions/' + slug + '/orbitalelements').then(function(response) {
                 // premap the dates of the timestamps because otherwise we'll do it too many times
-                return response.data.map(function(orbitalElement) {
-                    orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
-                    return orbitalElement;
-                });
+                if (response.data === Array) {
+                    return response.data.map(function(orbitalElement) {
+                        orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
+                        return orbitalElement;
+                    });
+                }
             });
         };
 
