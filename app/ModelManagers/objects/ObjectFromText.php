@@ -24,10 +24,10 @@ class ObjectFromText extends ObjectCreator {
                 'user_id'               => Auth::id(),
                 'type'                  => MissionControlType::Text,
                 'title'                 => $this->input['title'],
-                'size'                  => strlen($this->input['content']),
-                'summary'               => $this->input['content'],
+                'size'                  => strlen($this->input['summary']),
+                'summary'               => $this->input['summary'],
                 'anonymous'             => array_get($this->input, 'anonymous', false),
-                'cryptographic_hash'    => hash('sha256', $this->input['content']),
+                'cryptographic_hash'    => hash('sha256', $this->input['summary']),
                 'originated_at'         => Carbon::now(),
                 'original_content'      => true,
                 'status'                => ObjectPublicationStatus::QueuedStatus

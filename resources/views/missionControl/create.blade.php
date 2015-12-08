@@ -644,7 +644,7 @@
                             <ul>
                                 <li>
                                     <label>Collection Title</label>
-                                    <input type="text" name="title" ng-model="optionalCollection.title" minlength="10" placeholder="A descriptive title for the collection">
+                                    <input type="text" name="title" ng-model="optionalCollection.title" ng-minlength="10" placeholder="A descriptive title for the collection">
                                 </li>
                                 <li>
                                     <label>Collection Summary</label>
@@ -817,7 +817,7 @@
                                 </li>
                                 <li>
                                     <label>Title Describing The Comment</label>
-                                    <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" placeholder="The title that appears on SpaceX Stats" required ng-ng-minlength="10"  />
+                                    <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" placeholder="The title that appears on SpaceX Stats" required ng-minlength="10"  />
                                 </li>
                                 <li>
                                     <reddit-comment ng-model="redditcomment"></reddit-comment>
@@ -913,11 +913,11 @@
                         <ul>
                             <li>
                                 <label>Title</label>
-                                <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" ng-ng-minlength="10" required/>
+                                <input type="text" name="title" ng-model="text.title" placeholder="Enter a title for your post" ng-minlength="10" required/>
                             </li>
                             <li>
                                 <label>Content</label>
-                                <textarea name="content" ng-model="text.content" placeholder="Write your post" rows="10" ng-ng-minlength="100" required character-counter></textarea>
+                                <textarea name="content" ng-model="text.summary" placeholder="Write your post" rows="10" ng-minlength="100" required character-counter></textarea>
                             </li>
                             <li>
                                 <label>Select related mission</label>
