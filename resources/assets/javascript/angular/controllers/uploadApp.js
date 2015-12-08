@@ -81,6 +81,16 @@
 
         $scope.optionalCollection = null;
 
+        $scope.postSubmitButtonText = function(form) {
+            if (form.$invalid) {
+                return 'We need more info';
+            } else if ($scope.isSubmitting) {
+                return 'Submitting...';
+            } else {
+                return 'Submit';
+            }
+        };
+
         $scope.fileSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
             uploadService.postToMissionControl($scope.files, $scope.optionalCollection, 'files');
@@ -96,6 +106,16 @@
         $scope.tweet = {};
 
         $scope.isSubmitting = false;
+
+        $scope.postSubmitButtonText = function(form) {
+            if (form.$invalid) {
+                return 'We need more info';
+            } else if ($scope.isSubmitting) {
+                return 'Submitting...';
+            } else {
+                return 'Submit';
+            }
+        };
 
         $scope.postSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
@@ -120,6 +140,16 @@
         };
 
         $scope.isSubmitting = false;
+
+        $scope.writeSubmitButtonText = function(form) {
+            if (form.$invalid) {
+                return 'We need more info';
+            } else if ($scope.isSubmitting) {
+                return 'Submitting...';
+            } else {
+                return 'Submit';
+            }
+        };
 
         $scope.writeSubmitButtonFunction = function() {
             $scope.isSubmitting = true;

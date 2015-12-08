@@ -2055,6 +2055,16 @@
 
         $scope.optionalCollection = null;
 
+        $scope.postSubmitButtonText = function(form) {
+            if (form.$invalid) {
+                return 'We need more info';
+            } else if ($scope.isSubmitting) {
+                return 'Submitting...';
+            } else {
+                return 'Submit';
+            }
+        };
+
         $scope.fileSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
             uploadService.postToMissionControl($scope.files, $scope.optionalCollection, 'files');
@@ -2070,6 +2080,16 @@
         $scope.tweet = {};
 
         $scope.isSubmitting = false;
+
+        $scope.postSubmitButtonText = function(form) {
+            if (form.$invalid) {
+                return 'We need more info';
+            } else if ($scope.isSubmitting) {
+                return 'Submitting...';
+            } else {
+                return 'Submit';
+            }
+        };
 
         $scope.postSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
@@ -2094,6 +2114,16 @@
         };
 
         $scope.isSubmitting = false;
+
+        $scope.writeSubmitButtonText = function(form) {
+            if (form.$invalid) {
+                return 'We need more info';
+            } else if ($scope.isSubmitting) {
+                return 'Submitting...';
+            } else {
+                return 'Submit';
+            }
+        };
 
         $scope.writeSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
@@ -2289,6 +2319,18 @@
     }]);
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -3683,16 +3725,4 @@
             }
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
 })();

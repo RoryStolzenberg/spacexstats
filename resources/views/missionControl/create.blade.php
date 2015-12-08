@@ -653,7 +653,7 @@
                             </ul>
                         </form>
                     </div>
-                    <button id="files-submit" class="wide-button" ng-disabled="uploadForm.$invalid || isSubmitting" ng-click="fileSubmitButtonFunction()" ng-disabled="isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit'  }}</button>
+                    <button id="files-submit" class="wide-button" ng-disabled="uploadForm.$invalid || isSubmitting" ng-click="fileSubmitButtonFunction()" ng-bind="fileSubmitButtonText(uploadForm)"></button>
                 </div>
             </section>
 
@@ -899,7 +899,7 @@
 
                     <p class="exclaim" ng-if="postType == null">No Resource Selected</p>
 
-                    <button name="submit" class="wide-button" ng-click="postSubmitButtonFunction()" ng-disabled="postType == null || postForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
+                    <button name="submit" class="wide-button" ng-click="postSubmitButtonFunction()" ng-disabled="postType == null || postForm.$invalid || isSubmitting" ng-bind="writeSubmitButtonText(postForm)"></button>
                 </form>
             </section>
 
@@ -947,7 +947,7 @@
                         <delta-v ng-model="text" hint="text"></delta-v>
                     </div>
 
-                    <button name="submit" class="wide-button" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
+                    <button name="submit" class="wide-button" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting" ng-bind="writeSubmitButtonText(writeForm)"></button>
                 </form>
             </section>
 
