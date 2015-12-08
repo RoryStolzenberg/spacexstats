@@ -2347,72 +2347,6 @@
         }
     }]);
 })();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=?',
-                isVisibleWhenPaused: '=?',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
-                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                var countdownProcessor = function() {
-
-                    if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
-                        var secondsBetween = Math.abs(relativeSecondsBetween);
-
-                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
-                        $scope.tMinusZero = secondsBetween == 0;
-
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    }
-
-                    if (attrs.callback) {
-                        $scope.callback();
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -2568,279 +2502,72 @@
         }
     }]);
 })();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
 (function() {
     var app = angular.module('app');
 
-    app.directive('deltaV', function() {
+    app.directive('countdown', ['$interval', function($interval) {
         return {
             restrict: 'E',
             scope: {
-                deltaV: '=ngModel',
-                hint: '@'
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=?',
+                isVisibleWhenPaused: '=?',
+                type: '@',
+                callback: '&?'
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, elem, attrs) {
 
-                $scope.constants = {
-                    SECONDS_PER_DAY: 86400,
-                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
-                };
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
 
-                var baseTypeScores = {
-                    Image: 10,
-                    GIF: 10,
-                    Audio: 20,
-                    Video: 20,
-                    Document: 20,
-                    Tweet: 5,
-                    Article: 10,
-                    Comment: 5,
-                    Webpage: 10,
-                    Text: 10
-                };
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
 
-                var specialTypeMultiplier = {
-                    "Mission Patch": 2,
-                    "Photo": 1.1,
-                    "Launch Video": 2,
-                    "Press Kit": 2,
-                    "Weather Forecast": 2,
-                    "Press Conference": 1.5
-                };
+                var countdownProcessor = function() {
 
-                var resourceQuality = {
-                    multipliers: {
-                        perMegapixel: 5,
-                        perMinute: 2
-                    },
-                    scores: {
-                        perPage: 2
+                    if (!$scope.isPaused) {
+                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
+                        $scope.tMinusZero = secondsBetween == 0;
+
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    }
+
+                    if (attrs.callback) {
+                        $scope.callback();
                     }
                 };
 
-                var metadataScore = {
-                    summary: {
-                        perCharacter: 0.02
-                    },
-                    author: {
-                        perCharacter: 0.2
-                    },
-                    attribution: {
-                        perCharacter: 0.1
-                    },
-                    tags: {
-                        perTag: 1
-                    }
-                };
-
-                var dateAccuracyMultiplier = {
-                    year: 1,
-                    month: 1.05,
-                    date: 1.1,
-                    datetime: 1.2
-                };
-
-                var dataSaverMultiplier = {
-                    hasExternalUrl: 2
-                };
-
-                var originalContentMultiplier = {
-                    isOriginalContent: 1.5
-                };
-
-                $scope.$watch("deltaV", function(object) {
-                    if (typeof object !== 'undefined') {
-                        var calculatedValue = $scope.calculate(object);
-                        $scope.setCalculatedValue(calculatedValue);
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    if (angular.isDefined(object)) {
-                        var internalValue = 0;
-
-                        // typeRegime
-                        internalValue += baseTypeScores[$scope.hint];
-
-                        // specialTypeRegime
-                        if (object.subtype !== null) {
-                            if (object.subtype in specialTypeMultiplier) {
-                                internalValue += specialTypeMultiplier[object.subtype];
-                            }
-                        }
-
-                        // resourceQualityRegime
-                        switch ($scope.hint) {
-                            case 'Image':
-                                internalValue += megapixelSubscore(object);
-                                break;
-
-                            case 'GIF':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
-
-                            case 'Video':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
-
-                            case 'Audio':
-                                internalValue += minuteSubscore(object);
-                                break;
-
-                            case 'Document':
-                                internalValue += pageSubscore(object);
-                                break;
-                        }
-
-                        // metadataRegime
-                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
-                        internalValue += object.author.length * metadataScore.author.perCharacter;
-                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
-                        internalValue += object.tags.length * metadataScore.tags.perTag;
-
-                        // dateAccuracyRegime
-                        $year = object.originated_at.substr(0, 4);
-                        $month = object.originated_at.substr(5, 2);
-                        $date = object.originated_at.substr(8, 2);
-                        $datetime = object.originated_at.substr(11, 8);
-
-                        if ($datetime !== '00:00:00') {
-                            internalValue *= dateAccuracyMultiplier.datetime;
-                        } else if ($date !== '00') {
-                            internalValue *= dateAccuracyMultiplier.date;
-                        } else if ($month !== '00') {
-                            internalValue *= dateAccuracyMultiplier.month;
-                        } else {
-                            internalValue *= dateAccuracyMultiplier.year;
-                        }
-
-                        // dataSaverRegime
-                        if (object.external_url != null) {
-                            internalValue *= dataSaverMultiplier.hasExternalUrl;
-                        }
-
-                        // originalContentRegime
-                        if (object.original_content === true) {
-                            internalValue *= originalContentMultiplier.isOriginalContent;
-                        }
-
-                        return round(internalValue);
-                    }
-                    return 0;
-                };
-
-                $scope.setCalculatedValue = function(calculatedValue) {
-                    $scope.calculatedValue.deltaV = calculatedValue;
-                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
-                    $scope.calculatedValue.time = seconds + ' seconds';
-                };
-
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0
-                };
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
             },
-            templateUrl: '/js/templates/deltaV.html'
+            templateUrl: '/js/templates/countdown.html'
         }
-    });
+    }]);
 })();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.search = {
-                    name: ''
-                };
-
-                $scope.thumbnails = angular.isDefined($scope.imageKey);
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = '';
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
 (function() {
     var app = angular.module('app');
 
@@ -3021,19 +2748,275 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
+    var app = angular.module('app', []);
 
-    app.directive('missionCard', function() {
+    app.directive("dropdown", function() {
         return {
             restrict: 'E',
-            replace: true,
+            require: '^ngModel',
             scope: {
-                size: '@',
-                mission: '='
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
             },
-            link: function($scope) {
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.search = {
+                    name: ''
+                };
+
+                $scope.thumbnails = angular.isDefined($scope.imageKey);
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = '';
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
             },
-            templateUrl: '/js/templates/missionCard.html'
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel',
+                hint: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.constants = {
+                    SECONDS_PER_DAY: 86400,
+                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
+                };
+
+                var baseTypeScores = {
+                    Image: 10,
+                    GIF: 10,
+                    Audio: 20,
+                    Video: 20,
+                    Document: 20,
+                    Tweet: 5,
+                    Article: 10,
+                    Comment: 5,
+                    Webpage: 10,
+                    Text: 10
+                };
+
+                var specialTypeMultiplier = {
+                    "Mission Patch": 2,
+                    "Photo": 1.1,
+                    "Launch Video": 2,
+                    "Press Kit": 2,
+                    "Weather Forecast": 2,
+                    "Press Conference": 1.5
+                };
+
+                var resourceQuality = {
+                    multipliers: {
+                        perMegapixel: 5,
+                        perMinute: 2
+                    },
+                    scores: {
+                        perPage: 2
+                    }
+                };
+
+                var metadataScore = {
+                    summary: {
+                        perCharacter: 0.02
+                    },
+                    author: {
+                        perCharacter: 0.2
+                    },
+                    attribution: {
+                        perCharacter: 0.1
+                    },
+                    tags: {
+                        perTag: 1
+                    }
+                };
+
+                var dateAccuracyMultiplier = {
+                    year: 1,
+                    month: 1.05,
+                    date: 1.1,
+                    datetime: 1.2
+                };
+
+                var dataSaverMultiplier = {
+                    hasExternalUrl: 2
+                };
+
+                var originalContentMultiplier = {
+                    isOriginalContent: 1.5
+                };
+
+                $scope.$watch("deltaV", function(object) {
+                    if (typeof object !== 'undefined') {
+                        var calculatedValue = $scope.calculate(object);
+                        $scope.setCalculatedValue(calculatedValue);
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    if (angular.isDefined(object)) {
+                        var internalValue = 0;
+
+                        // typeRegime
+                        internalValue += baseTypeScores[$scope.hint];
+
+                        // specialTypeRegime
+                        if (object.subtype !== null) {
+                            if (object.subtype in specialTypeMultiplier) {
+                                internalValue += specialTypeMultiplier[object.subtype];
+                            }
+                        }
+
+                        // resourceQualityRegime
+                        switch ($scope.hint) {
+                            case 'Image':
+                                internalValue += megapixelSubscore(object);
+                                break;
+
+                            case 'GIF':
+                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                                break;
+
+                            case 'Video':
+                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                                break;
+
+                            case 'Audio':
+                                internalValue += minuteSubscore(object);
+                                break;
+
+                            case 'Document':
+                                internalValue += pageSubscore(object);
+                                break;
+                        }
+
+                        // metadataRegime
+                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
+                        internalValue += object.author.length * metadataScore.author.perCharacter;
+                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
+                        internalValue += object.tags.length * metadataScore.tags.perTag;
+
+                        // dateAccuracyRegime
+                        $year = object.originated_at.substr(0, 4);
+                        $month = object.originated_at.substr(5, 2);
+                        $date = object.originated_at.substr(8, 2);
+                        $datetime = object.originated_at.substr(11, 8);
+
+                        if ($datetime !== '00:00:00') {
+                            internalValue *= dateAccuracyMultiplier.datetime;
+                        } else if ($date !== '00') {
+                            internalValue *= dateAccuracyMultiplier.date;
+                        } else if ($month !== '00') {
+                            internalValue *= dateAccuracyMultiplier.month;
+                        } else {
+                            internalValue *= dateAccuracyMultiplier.year;
+                        }
+
+                        // dataSaverRegime
+                        if (object.external_url != null) {
+                            internalValue *= dataSaverMultiplier.hasExternalUrl;
+                        }
+
+                        // originalContentRegime
+                        if (object.original_content === true) {
+                            internalValue *= originalContentMultiplier.isOriginalContent;
+                        }
+
+                        return round(internalValue);
+                    }
+                    return 0;
+                };
+
+                $scope.setCalculatedValue = function(calculatedValue) {
+                    $scope.calculatedValue.deltaV = calculatedValue;
+                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
+                    $scope.calculatedValue.time = seconds + ' seconds';
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0
+                };
+            },
+            templateUrl: '/js/templates/deltaV.html'
         }
     });
 })();
@@ -3057,6 +3040,23 @@
     }]);
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -3423,6 +3423,87 @@
 (function() {
     var app = angular.module('app', []);
 
+    app.directive('timeline', ["missionDataService", function(missionDataService) {
+        return {
+            restrict: 'E',
+            scope: {
+                mission: '='
+            },
+            link: function(scope, element, attributes) {
+                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
+
+                    var timespans = {
+                        ONE_YEAR: 365 * 86400,
+                        SIX_MONTHS: 6 * 30 * 86400,
+                        ONE_MONTH: 30 * 86400
+                    };
+
+                    scope.launchEvents = response.data.map(function(launchEvent) {
+                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
+                        return launchEvent;
+                    });
+
+                    if (scope.mission.status == 'Complete') {
+                        scope.launchEvents.push({
+                            'event': 'Launch',
+                            'occurred_at': moment.utc(scope.mission.launch_date_time)
+                        });
+                    }
+
+                    // Add 10% to the minimum and maximum dates
+                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
+                    var dates = {
+                        min: scope.launchEvents[0].occurred_at,
+                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at
+                    };
+                    dates.min.subtract(timespan / 10, 'seconds').toDate();
+                    dates.min.add(timespan / 10, 'seconds').toDate();
+
+                    var elem = $(element).find('svg');
+
+                    var svg = d3.select(elem[0]).data(scope.launchEvents);
+
+                    var xScale = d3.time.scale.utc()
+                        .domain([dates.min, dates.max])
+                        .range([0, $(elem[0]).width()]);
+
+                    // Determine ticks to use
+                    if (timespan > timespans.ONE_YEAR) {
+                        var preferredTickFormat = d3.time.month;
+                    } else if (timespan > timespans.SIX_MONTHS) {
+                        var preferredTickFormat = d3.time.month;
+                    } else if (timespan > timespans.ONE_MONTH) {
+                        var preferredTickFormat = d3.time.week;
+                    } else {
+                        var preferredTickFormat = d3.time.day;
+                    }
+
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(preferredTickFormat, 1).tickFormat(null);
+
+                    svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .call(xAxisGenerator);
+
+                    svg.append("g")
+                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .selectAll("circle")
+                        .data(scope.launchEvents.map(function(launchEvent) {
+                            return launchEvent.occurred_at.toDate();
+                        }))
+                        .enter().append("circle")
+                        .attr("r", 20)
+                        .attr("fill", "#4f708f")
+                        .attr("cx", function(d) { return xScale(d); });
+                });
+            },
+            template: '<svg width="100%" height="200px"></svg>'
+        };
+    }]);
+})();
+(function() {
+    var app = angular.module('app', []);
+
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
             require: 'ngModel',
@@ -3552,71 +3633,6 @@
 })();
 
 
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive('timeline', ["missionDataService", function(missionDataService) {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '='
-            },
-            link: function(scope, element, attributes) {
-                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
-
-                    scope.launchEvents = response.data.map(function(launchEvent) {
-                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
-                        return launchEvent;
-                    });
-
-                    if (scope.mission.status == 'Complete') {
-                        scope.launchEvents.push({
-                            'event': 'Launch',
-                            'occurred_at': moment.utc(scope.mission.launch_date_time)
-                        });
-                    }
-
-                    // Add 10% to the minimum and maximum dates
-                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
-                    var dates = {
-                        min: scope.launchEvents[0].occurred_at.subtract(timespan / 5, 'seconds').toDate(),
-                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 5, 'seconds').toDate()
-                    };
-                    console.log(timespan);
-                    console.log(dates);
-
-                    var elem = $(element).find('svg');
-
-                    var svg = d3.select(elem[0]).data(scope.launchEvents);
-
-                    var xScale = d3.time.scale.utc()
-                        .domain([dates.min, dates.max])
-                        .range([0, $(elem[0]).width()]);
-
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(d3.time.month, 1).tickFormat(null);
-
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
-                        .call(xAxisGenerator);
-
-                    svg.append("g")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
-                        .selectAll("circle")
-                        .data(scope.launchEvents.map(function(launchEvent) {
-                            console.log(scope.launchEvents);
-                            return launchEvent.occurred_at.toDate();
-                        }))
-                        .enter().append("circle")
-                        .attr("r", 20)
-                        .attr("fill", "#4f708f")
-                        .attr("cx", function(d) { return xScale(d); });
-                });
-            },
-            template: '<svg width="100%" height="200px"></svg>'
-        };
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 

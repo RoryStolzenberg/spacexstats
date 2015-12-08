@@ -10,6 +10,12 @@
             link: function(scope, element, attributes) {
                 missionDataService.launchEvents(scope.mission.slug).then(function(response) {
 
+                    var timespans = {
+                        ONE_YEAR: 365 * 86400,
+                        SIX_MONTHS: 6 * 30 * 86400,
+                        ONE_MONTH: 30 * 86400
+                    };
+
                     scope.launchEvents = response.data.map(function(launchEvent) {
                         launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
                         return launchEvent;
@@ -25,11 +31,11 @@
                     // Add 10% to the minimum and maximum dates
                     var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
                     var dates = {
-                        min: scope.launchEvents[0].occurred_at.subtract(timespan / 5, 'seconds').toDate(),
-                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 5, 'seconds').toDate()
+                        min: scope.launchEvents[0].occurred_at,
+                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at
                     };
-                    console.log(timespan);
-                    console.log(dates);
+                    dates.min.subtract(timespan / 10, 'seconds').toDate();
+                    dates.min.add(timespan / 10, 'seconds').toDate();
 
                     var elem = $(element).find('svg');
 
@@ -39,7 +45,18 @@
                         .domain([dates.min, dates.max])
                         .range([0, $(elem[0]).width()]);
 
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(d3.time.month, 1).tickFormat(null);
+                    // Determine ticks to use
+                    if (timespan > timespans.ONE_YEAR) {
+                        var preferredTickFormat = d3.time.month;
+                    } else if (timespan > timespans.SIX_MONTHS) {
+                        var preferredTickFormat = d3.time.month;
+                    } else if (timespan > timespans.ONE_MONTH) {
+                        var preferredTickFormat = d3.time.week;
+                    } else {
+                        var preferredTickFormat = d3.time.day;
+                    }
+
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(preferredTickFormat, 1).tickFormat(null);
 
                     svg.append("svg:g")
                         .attr("class", "x axis")
@@ -50,7 +67,6 @@
                         .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
                         .selectAll("circle")
                         .data(scope.launchEvents.map(function(launchEvent) {
-                            console.log(scope.launchEvents);
                             return launchEvent.occurred_at.toDate();
                         }))
                         .enter().append("circle")
