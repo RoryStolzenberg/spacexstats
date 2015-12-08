@@ -61,18 +61,22 @@
                         .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
                         .call(xAxisGenerator);
 
-                    svg.append("g")
+                    var g = svg.append("g")
                         .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
                         .selectAll("circle")
                         .data(scope.launchEvents.map(function(launchEvent) {
-                            return launchEvent.occurred_at.toDate();
+                            launchEvent.occurred_at.toDate();
+                            return launchEvent;
                         }))
                         .enter().append("circle")
                         .attr("r", 20)
-                        .attr("class", function(d) {
+                        .classed(function(d) {
                             return d.event.toLowerCase().replace(" ", "-");
                         })
-                        .attr("cx", function(d) { return xScale(d); });
+                        .attr("cx", function(d) { return xScale(d.occurred_at); });
+
+                    g.append("image")
+                        .attr('xlink:href', 'test.png')
                 });
             },
             template: '<svg></svg>'

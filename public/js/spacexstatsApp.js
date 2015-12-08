@@ -2502,6 +2502,72 @@
         }
     }]);
 })();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=?',
+                isVisibleWhenPaused: '=?',
+                type: '@',
+                callback: '&?'
+            },
+            link: function($scope, elem, attrs) {
+
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                var countdownProcessor = function() {
+
+                    if (!$scope.isPaused) {
+                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
+                        $scope.tMinusZero = secondsBetween == 0;
+
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    }
+
+                    if (attrs.callback) {
+                        $scope.callback();
+                    }
+                };
+
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -2681,170 +2747,6 @@
         }
     });
 })();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=?',
-                isVisibleWhenPaused: '=?',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
-                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                var countdownProcessor = function() {
-
-                    if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
-                        var secondsBetween = Math.abs(relativeSecondsBetween);
-
-                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
-                        $scope.tMinusZero = secondsBetween == 0;
-
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    }
-
-                    if (attrs.callback) {
-                        $scope.callback();
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.search = {
-                    name: ''
-                };
-
-                $scope.thumbnails = angular.isDefined($scope.imageKey);
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = '';
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
 (function() {
     var app = angular.module('app');
 
@@ -3020,6 +2922,121 @@
         }
     });
 })();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.search = {
+                    name: ''
+                };
+
+                $scope.thumbnails = angular.isDefined($scope.imageKey);
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = '';
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
@@ -3040,23 +3057,6 @@
     }]);
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
 (function() {
     var app = angular.module('app');
 
@@ -3423,87 +3423,6 @@
 (function() {
     var app = angular.module('app', []);
 
-    app.directive('timeline', ["missionDataService", function(missionDataService) {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '='
-            },
-            link: function(scope, element, attributes) {
-                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
-
-                    var timespans = {
-                        ONE_YEAR: 365 * 86400,
-                        SIX_MONTHS: 6 * 30 * 86400,
-                        ONE_MONTH: 30 * 86400
-                    };
-
-                    scope.launchEvents = response.data.map(function(launchEvent) {
-                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
-                        return launchEvent;
-                    });
-
-                    if (scope.mission.status == 'Complete') {
-                        scope.launchEvents.push({
-                            'event': 'Launch',
-                            'occurred_at': moment.utc(scope.mission.launch_date_time)
-                        });
-                    }
-
-                    // Add 10% to the minimum and maximum dates
-                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
-                    var dates = {
-                        min: moment(scope.launchEvents[0].occurred_at).subtract(timespan / 10, 'seconds').toDate(),
-                        max: moment(scope.launchEvents[scope.launchEvents.length-1].occurred_at).add(timespan / 10, 'seconds').toDate()
-                    };
-
-                    var elem = $(element).find('svg');
-
-                    var svg = d3.select(elem[0]).data(scope.launchEvents);
-
-                    var xScale = d3.time.scale.utc()
-                        .domain([dates.min, dates.max])
-                        .range([0, $(elem[0]).width()]);
-
-                    // Determine ticks to use
-                    if (timespan > timespans.ONE_YEAR) {
-                        var preferredTickFormat = d3.time.month;
-                    } else if (timespan > timespans.SIX_MONTHS) {
-                        var preferredTickFormat = d3.time.month;
-                    } else if (timespan > timespans.ONE_MONTH) {
-                        var preferredTickFormat = d3.time.week;
-                    } else {
-                        var preferredTickFormat = d3.time.day;
-                    }
-
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(preferredTickFormat, 1).tickFormat(null);
-
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
-                        .call(xAxisGenerator);
-
-                    svg.append("g")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
-                        .selectAll("circle")
-                        .data(scope.launchEvents.map(function(launchEvent) {
-                            return launchEvent.occurred_at.toDate();
-                        }))
-                        .enter().append("circle")
-                        .attr("r", 20)
-                        .attr("class", function(d) {
-                            return d.event.toLowerCase().replace(" ", "-");
-                        })
-                        .attr("cx", function(d) { return xScale(d); });
-                });
-            },
-            template: '<svg></svg>'
-        };
-    }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
             require: 'ngModel',
@@ -3633,6 +3552,91 @@
 })();
 
 
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive('timeline', ["missionDataService", function(missionDataService) {
+        return {
+            restrict: 'E',
+            scope: {
+                mission: '='
+            },
+            link: function(scope, element, attributes) {
+                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
+
+                    var timespans = {
+                        ONE_YEAR: 365 * 86400,
+                        SIX_MONTHS: 6 * 30 * 86400,
+                        ONE_MONTH: 30 * 86400
+                    };
+
+                    scope.launchEvents = response.data.map(function(launchEvent) {
+                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
+                        return launchEvent;
+                    });
+
+                    if (scope.mission.status == 'Complete') {
+                        scope.launchEvents.push({
+                            'event': 'Launch',
+                            'occurred_at': moment.utc(scope.mission.launch_date_time)
+                        });
+                    }
+
+                    // Add 10% to the minimum and maximum dates
+                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
+                    var dates = {
+                        min: moment(scope.launchEvents[0].occurred_at).subtract(timespan / 10, 'seconds').toDate(),
+                        max: moment(scope.launchEvents[scope.launchEvents.length-1].occurred_at).add(timespan / 10, 'seconds').toDate()
+                    };
+
+                    var elem = $(element).find('svg');
+
+                    var svg = d3.select(elem[0]).data(scope.launchEvents);
+
+                    var xScale = d3.time.scale.utc()
+                        .domain([dates.min, dates.max])
+                        .range([0, $(elem[0]).width()]);
+
+                    // Determine ticks to use
+                    if (timespan > timespans.ONE_YEAR) {
+                        var preferredTickFormat = d3.time.month;
+                    } else if (timespan > timespans.SIX_MONTHS) {
+                        var preferredTickFormat = d3.time.month;
+                    } else if (timespan > timespans.ONE_MONTH) {
+                        var preferredTickFormat = d3.time.week;
+                    } else {
+                        var preferredTickFormat = d3.time.day;
+                    }
+
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(preferredTickFormat, 1).tickFormat(null);
+
+                    svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .call(xAxisGenerator);
+
+                    var g = svg.append("g")
+                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .selectAll("circle")
+                        .data(scope.launchEvents.map(function(launchEvent) {
+                            launchEvent.occurred_at.toDate();
+                            return launchEvent;
+                        }))
+                        .enter().append("circle")
+                        .attr("r", 20)
+                        .classed(function(d) {
+                            return d.event.toLowerCase().replace(" ", "-");
+                        })
+                        .attr("cx", function(d) { return xScale(d.occurred_at); });
+
+                    g.append("image")
+                        .attr('xlink:href', 'test.png')
+                });
+            },
+            template: '<svg></svg>'
+        };
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 

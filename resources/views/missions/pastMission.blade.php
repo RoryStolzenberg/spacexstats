@@ -239,11 +239,11 @@
                         }
 
                         .launch-change {
-                            color:#4f708f;
+                            fill:#4f708f;
                         }
 
                         .launch {
-                            color:rgb(204, 172, 85);
+                            fill:rgb(204, 172, 85);
                         }
                     </style>
                     <timeline mission="mission"></timeline>
