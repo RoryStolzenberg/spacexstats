@@ -152,7 +152,7 @@
                         internalValue *= originalContentMultiplier.isOriginalContent;
                     }
 
-                    return internalValue;
+                    return round(internalValue);
                 };
 
                 $scope.setCalculatedValue = function(calculatedValue) {

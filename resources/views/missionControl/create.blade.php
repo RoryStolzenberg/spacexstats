@@ -65,7 +65,7 @@
                                 <fieldset class="gr-4 upload-preview text-center">
                                     <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <delta-v ng-model="file"></delta-v>
+                                    <delta-v ng-model="file" hint="@{{ file.type }}"></delta-v>
                                 </fieldset>
 
                                 <fieldset class="gr-8 upload-attribution">
@@ -183,7 +183,7 @@
                                 <fieldset class="gr-4 upload-preview text-center">
                                     <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <delta-v ng-model="file"></delta-v>
+                                    <delta-v ng-model="file" hint="@{{ file.type }}"></delta-v>
                                 </fieldset>
 
                                 <fieldset class="gr-8 upload-attribution">
@@ -303,7 +303,7 @@
                                 <fieldset class="gr-4 upload-preview text-center">
                                     <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <delta-v ng-model="file"></delta-v>
+                                    <delta-v ng-model="file" hint="@{{ file.type }}"></delta-v>
                                 </fieldset>
 
                                 <fieldset class="gr-8 upload-attribution">
@@ -413,7 +413,7 @@
                                 <fieldset class="gr-4 upload-preview text-center">
                                     <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <delta-v ng-model="file"></delta-v>
+                                    <delta-v ng-model="file" hint="@{{ file.type }}"></delta-v>
                                 </fieldset>
 
                                 <fieldset class="gr-8 upload-attribution">
@@ -543,7 +543,7 @@
                                 <fieldset class="gr-4 upload-preview text-center">
                                     <img ng-attr-src="@{{file.media_thumb_small}}" ng-attr-alt="@{{file.media_thumb_small}}" />
 
-                                    <delta-v ng-model="file"></delta-v>
+                                    <delta-v ng-model="file" hint="@{{ file.type }}"></delta-v>
                                 </fieldset>
 
                                 <fieldset class="gr-8 upload-attribution">
@@ -691,7 +691,7 @@
                     <!-- Tweet -->
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
                         <h3>Tweet</h3>
-                        <delta-v ng-model="tweet"></delta-v>
+                        <delta-v ng-model="tweet" hint="tweet"></delta-v>
                         <tweet action="write" tweet="tweet"></tweet>
                     </fieldset>
 
@@ -756,7 +756,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="article"></delta-v>
+                            <delta-v ng-model="article" hint="article"></delta-v>
                         </div>
                     </fieldset>
 
@@ -802,7 +802,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="pressrelease"></delta-v>
+                            <delta-v ng-model="pressrelease" hint="article"></delta-v>
                         </div>
                     </fieldset>
 
@@ -843,7 +843,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="redditcomment"></delta-v>
+                            <delta-v ng-model="redditcomment" hint="comment"></delta-v>
                         </div>
                     </fieldset>
 
@@ -893,7 +893,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="NSFcomment"></delta-v>
+                            <delta-v ng-model="NSFcomment" hint="comment"></delta-v>
                         </div>
                     </fieldset>
 
@@ -944,7 +944,7 @@
                         </ul>
                     </div>
                     <div class="gr-3">
-                        <delta-v ng-model="text"></delta-v>
+                        <delta-v ng-model="text" hint="text"></delta-v>
                     </div>
 
                     <button name="submit" class="wide-button" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting">@{{ isSubmitting ? 'Submitting...' : 'Submit' }}</button>
