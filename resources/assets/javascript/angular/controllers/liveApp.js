@@ -2,7 +2,7 @@
     var liveApp = angular.module('app', []);
 
     liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
-        var socket = io('http://spacexstats.app:3000');
+        var socket = io(document.location.origin + ':3000');
 
         $scope.auth = laravel.auth;
         $scope.isActive = laravel.isActive;
