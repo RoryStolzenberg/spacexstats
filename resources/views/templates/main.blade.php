@@ -73,7 +73,8 @@
 
                 // Stickybar
                 $('nav.sticky-bar').stickyNavbar({
-                    selector: 'li'
+                    selector: 'li',
+                    zindex:'auto'
                 });
             });
         </script>
