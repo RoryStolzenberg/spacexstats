@@ -2322,71 +2322,17 @@
     }]);
 })();
 
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
 (function() {
     var app = angular.module('app');
 
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=?',
-                isVisibleWhenPaused: '=?',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
-                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                var countdownProcessor = function() {
-
-                    if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
-                        var secondsBetween = Math.abs(relativeSecondsBetween);
-
-                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
-                        $scope.tMinusZero = secondsBetween == 0;
-
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    }
-
-                    if (attrs.callback) {
-                        $scope.callback();
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();
 (function() {
     var app = angular.module('app');
@@ -2568,6 +2514,247 @@
         }
     }]);
 })();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=?',
+                isVisibleWhenPaused: '=?',
+                type: '@',
+                callback: '&?'
+            },
+            link: function($scope, elem, attrs) {
+
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                var countdownProcessor = function() {
+
+                    if (!$scope.isPaused) {
+                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
+                        $scope.tMinusZero = secondsBetween == 0;
+
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    }
+
+                    if (attrs.callback) {
+                        $scope.callback();
+                    }
+                };
+
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                deltaV: '=ngModel',
+                hint: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.constants = {
+                    SECONDS_PER_DAY: 86400,
+                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
+                };
+
+                var baseTypeScores = {
+                    Image: 10,
+                    GIF: 10,
+                    Audio: 20,
+                    Video: 20,
+                    Document: 20,
+                    Tweet: 5,
+                    Article: 10,
+                    Comment: 5,
+                    Webpage: 10,
+                    Text: 10
+                };
+
+                var specialTypeMultiplier = {
+                    "Mission Patch": 2,
+                    "Photo": 1.1,
+                    "Launch Video": 2,
+                    "Press Kit": 2,
+                    "Weather Forecast": 2,
+                    "Press Conference": 1.5
+                };
+
+                var resourceQuality = {
+                    multipliers: {
+                        perMegapixel: 5,
+                        perMinute: 2
+                    },
+                    scores: {
+                        perPage: 2
+                    }
+                };
+
+                var metadataScore = {
+                    summary: {
+                        perCharacter: 0.02
+                    },
+                    author: {
+                        perCharacter: 0.2
+                    },
+                    attribution: {
+                        perCharacter: 0.1
+                    },
+                    tags: {
+                        perTag: 1
+                    }
+                };
+
+                var dateAccuracyMultiplier = {
+                    year: 1,
+                    month: 1.05,
+                    date: 1.1,
+                    datetime: 1.2
+                };
+
+                var dataSaverMultiplier = {
+                    hasExternalUrl: 2
+                };
+
+                var originalContentMultiplier = {
+                    isOriginalContent: 1.5
+                };
+
+                $scope.$watch("deltaV", function(object) {
+                    if (typeof object !== 'undefined') {
+                        var calculatedValue = $scope.calculate(object);
+                        $scope.setCalculatedValue(calculatedValue);
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    if (angular.isDefined(object)) {
+                        var internalValue = 0;
+
+                        // typeRegime
+                        internalValue += baseTypeScores[$scope.hint];
+
+                        // specialTypeRegime
+                        if (object.subtype !== null) {
+                            if (object.subtype in specialTypeMultiplier) {
+                                internalValue += specialTypeMultiplier[object.subtype];
+                            }
+                        }
+
+                        // resourceQualityRegime
+                        switch ($scope.hint) {
+                            case 'Image':
+                                internalValue += megapixelSubscore(object);
+                                break;
+
+                            case 'GIF':
+                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                                break;
+
+                            case 'Video':
+                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                                break;
+
+                            case 'Audio':
+                                internalValue += minuteSubscore(object);
+                                break;
+
+                            case 'Document':
+                                internalValue += pageSubscore(object);
+                                break;
+                        }
+
+                        // metadataRegime
+                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
+                        internalValue += object.author.length * metadataScore.author.perCharacter;
+                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
+                        internalValue += object.tags.length * metadataScore.tags.perTag;
+
+                        // dateAccuracyRegime
+                        $year = object.originated_at.substr(0, 4);
+                        $month = object.originated_at.substr(5, 2);
+                        $date = object.originated_at.substr(8, 2);
+                        $datetime = object.originated_at.substr(11, 8);
+
+                        if ($datetime !== '00:00:00') {
+                            internalValue *= dateAccuracyMultiplier.datetime;
+                        } else if ($date !== '00') {
+                            internalValue *= dateAccuracyMultiplier.date;
+                        } else if ($month !== '00') {
+                            internalValue *= dateAccuracyMultiplier.month;
+                        } else {
+                            internalValue *= dateAccuracyMultiplier.year;
+                        }
+
+                        // dataSaverRegime
+                        if (object.external_url != null) {
+                            internalValue *= dataSaverMultiplier.hasExternalUrl;
+                        }
+
+                        // originalContentRegime
+                        if (object.original_content === true) {
+                            internalValue *= originalContentMultiplier.isOriginalContent;
+                        }
+
+                        return round(internalValue);
+                    }
+                    return 0;
+                };
+
+                $scope.setCalculatedValue = function(calculatedValue) {
+                    $scope.calculatedValue.deltaV = calculatedValue;
+                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
+                    $scope.calculatedValue.time = seconds + ' seconds';
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0
+                };
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -2748,181 +2935,6 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel',
-                hint: '@'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.constants = {
-                    SECONDS_PER_DAY: 86400,
-                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
-                };
-
-                var baseTypeScores = {
-                    Image: 10,
-                    GIF: 10,
-                    Audio: 20,
-                    Video: 20,
-                    Document: 20,
-                    Tweet: 5,
-                    Article: 10,
-                    Comment: 5,
-                    Webpage: 10,
-                    Text: 10
-                };
-
-                var specialTypeMultiplier = {
-                    "Mission Patch": 2,
-                    "Photo": 1.1,
-                    "Launch Video": 2,
-                    "Press Kit": 2,
-                    "Weather Forecast": 2,
-                    "Press Conference": 1.5
-                };
-
-                var resourceQuality = {
-                    multipliers: {
-                        perMegapixel: 5,
-                        perMinute: 2
-                    },
-                    scores: {
-                        perPage: 2
-                    }
-                };
-
-                var metadataScore = {
-                    summary: {
-                        perCharacter: 0.02
-                    },
-                    author: {
-                        perCharacter: 0.2
-                    },
-                    attribution: {
-                        perCharacter: 0.1
-                    },
-                    tags: {
-                        perTag: 1
-                    }
-                };
-
-                var dateAccuracyMultiplier = {
-                    year: 1,
-                    month: 1.05,
-                    date: 1.1,
-                    datetime: 1.2
-                };
-
-                var dataSaverMultiplier = {
-                    hasExternalUrl: 2
-                };
-
-                var originalContentMultiplier = {
-                    isOriginalContent: 1.5
-                };
-
-                $scope.$watch("deltaV", function(object) {
-                    if (typeof object !== 'undefined') {
-                        var calculatedValue = $scope.calculate(object);
-                        $scope.setCalculatedValue(calculatedValue);
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    if (angular.isDefined(object)) {
-                        var internalValue = 0;
-
-                        // typeRegime
-                        internalValue += baseTypeScores[$scope.hint];
-
-                        // specialTypeRegime
-                        if (object.subtype !== null) {
-                            if (object.subtype in specialTypeMultiplier) {
-                                internalValue += specialTypeMultiplier[object.subtype];
-                            }
-                        }
-
-                        // resourceQualityRegime
-                        switch ($scope.hint) {
-                            case 'Image':
-                                internalValue += megapixelSubscore(object);
-                                break;
-
-                            case 'GIF':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
-
-                            case 'Video':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
-
-                            case 'Audio':
-                                internalValue += minuteSubscore(object);
-                                break;
-
-                            case 'Document':
-                                internalValue += pageSubscore(object);
-                                break;
-                        }
-
-                        // metadataRegime
-                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
-                        internalValue += object.author.length * metadataScore.author.perCharacter;
-                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
-                        internalValue += object.tags.length * metadataScore.tags.perTag;
-
-                        // dateAccuracyRegime
-                        $year = object.originated_at.substr(0, 4);
-                        $month = object.originated_at.substr(5, 2);
-                        $date = object.originated_at.substr(8, 2);
-                        $datetime = object.originated_at.substr(11, 8);
-
-                        if ($datetime !== '00:00:00') {
-                            internalValue *= dateAccuracyMultiplier.datetime;
-                        } else if ($date !== '00') {
-                            internalValue *= dateAccuracyMultiplier.date;
-                        } else if ($month !== '00') {
-                            internalValue *= dateAccuracyMultiplier.month;
-                        } else {
-                            internalValue *= dateAccuracyMultiplier.year;
-                        }
-
-                        // dataSaverRegime
-                        if (object.external_url != null) {
-                            internalValue *= dataSaverMultiplier.hasExternalUrl;
-                        }
-
-                        // originalContentRegime
-                        if (object.original_content === true) {
-                            internalValue *= originalContentMultiplier.isOriginalContent;
-                        }
-
-                        return round(internalValue);
-                    }
-                    return 0;
-                };
-
-                $scope.setCalculatedValue = function(calculatedValue) {
-                    $scope.calculatedValue.deltaV = calculatedValue;
-                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
-                    $scope.calculatedValue.time = seconds + ' seconds';
-                };
-
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0
-                };
-            },
-            templateUrl: '/js/templates/deltaV.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -3057,6 +3069,38 @@
     }]);
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
@@ -3550,6 +3594,7 @@
                         min: scope.launchEvents[0].occurred_at.subtract(timespan / 5, 'seconds').toDate(),
                         max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 5, 'seconds').toDate()
                     };
+                    console.log(timespan);
                     console.log(dates);
 
                     var elem = $(element).find('svg');
@@ -3571,6 +3616,7 @@
                         .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
                         .selectAll("circle")
                         .data(scope.launchEvents.map(function(launchEvent) {
+                            console.log(launchEvent.occurred_at.toDate());
                             return launchEvent.occurred_at.toDate();
                         }))
                         .enter().append("circle")
@@ -3581,90 +3627,6 @@
             },
             template: '<svg width="100%" height="200px"></svg>'
         };
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
     }]);
 })();
 (function() {
@@ -3728,12 +3690,52 @@
 (function() {
     var app = angular.module('app');
 
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
 })();

@@ -28,6 +28,7 @@
                         min: scope.launchEvents[0].occurred_at.subtract(timespan / 5, 'seconds').toDate(),
                         max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 5, 'seconds').toDate()
                     };
+                    console.log(timespan);
                     console.log(dates);
 
                     var elem = $(element).find('svg');
@@ -49,6 +50,7 @@
                         .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
                         .selectAll("circle")
                         .data(scope.launchEvents.map(function(launchEvent) {
+                            console.log(launchEvent.occurred_at.toDate());
                             return launchEvent.occurred_at.toDate();
                         }))
                         .enter().append("circle")
