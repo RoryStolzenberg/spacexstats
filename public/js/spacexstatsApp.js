@@ -3682,7 +3682,7 @@
                 mission: '@'
             },
             link: function(scope, element, attributes) {
-                missionDataService.launchEvents(mission).then(function(response) {
+                missionDataService.launchEvents(scope.mission).then(function(response) {
 
                     scope.launchEvents = response.data.map(function(launchEvent) {
                         launchEvent.occurred_at = moment.utc(launchEvent.occurred_at).toDate();
@@ -3694,8 +3694,6 @@
                         min: scope.launchEvents[0].occurred_at.substract(timespan / 10, 'seconds'),
                         max: [scope.launchEvents.length].occurred_at.add(timespan / 10, 'seconds')
                     };
-
-                    var data = response.data;
 
                     var elem = $('#timeline-graph');
 

@@ -8,7 +8,7 @@ Route::group(['prefix' => 'missioncontrol', 'namespace' => 'MissionControl'], fu
 
     });
 
-    Route::group(['middleware' => 'mustBe:Administrator'], function() {
+    Route::group(['middleware' => ['mustBe:Administrator']], function() {
         Route::get('/review', 'ReviewController@index');
         Route::get('/review/get', 'ReviewController@get');
         Route::post('/review/update/{object_id}', 'ReviewController@update')->middleware(['doesExist:Object']);

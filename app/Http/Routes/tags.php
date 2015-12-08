@@ -1,5 +1,5 @@
 <?php
-Route::group(['prefix' => 'missioncontrol/tags', 'namespace' => 'MissionControl', 'middleware' => 'mustBe:Subscriber'], function() {
+Route::group(['prefix' => 'missioncontrol/tags', 'namespace' => 'MissionControl', 'middleware' => ['mustBe:Subscriber']], function() {
     Route::get('/', 'TagsController@all');
 
     Route::get('/{slug}', 'TagsController@get')->middleware('doesExist:Tag');

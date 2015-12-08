@@ -1,7 +1,7 @@
 <?php
 Route::group(array('prefix' => 'missioncontrol/publishers', 'namespace' => 'MissionControl'), function() {
 
-    Route::group(array('middleware' => 'mustBe:Subscriber'), function() {
+    Route::group(['middleware' => ['mustBe:Subscriber']], function() {
 
         Route::get('/', 'PublishersController@index');
         Route::get('/{publisher_id}', 'PublishersController@get');

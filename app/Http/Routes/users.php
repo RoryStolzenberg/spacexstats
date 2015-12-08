@@ -1,7 +1,7 @@
 <?php
 Route::group(array('prefix' => 'users'), function() {
 
-    Route::group(array('middleware' => 'mustBe:Yourself'), function() {
+    Route::group(['middleware' => ['mustBe:Yourself']], function() {
 
         // Main edit functionality
         Route::get('/{username}/edit', 'UsersController@getEdit');

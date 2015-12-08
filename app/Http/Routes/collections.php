@@ -1,7 +1,7 @@
 <?php
 Route::group(['prefix' => 'missioncontrol/collections', 'namespace' => 'MissionControl'], function() {
 
-    Route::group(['middleware' => 'mustBe:Subscriber'], function() {
+    Route::group(['middleware' => ['mustBe:Subscriber']], function() {
         Route::get('/', 'CollectionsController@index');
 
         Route::get('/mission/{slug}', 'CollectionsController@mission');
