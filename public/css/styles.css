@@ -7655,8 +7655,8 @@ header > nav {
     background-color: rgba(53, 105, 164, 0.1); }
 
 body, nav {
-  -webkit-transition: left ease-in-out 0.5s 0s;
-          transition: left ease-in-out 0.5s 0s; }
+  -webkit-transition: left ease-in-out 0.5s;
+          transition: left ease-in-out 0.5s; }
 
 /* MOBILE NAVIGATION */
 .nav-open {
@@ -7700,12 +7700,12 @@ nav.sticky-bar {
   width: inherit;
   max-width: 1400px;
   font-size: 14px;
-  -webkit-transition: background-color ease-in-out 0.5s 0s, color ease-in-out 0.5s 0s;
-          transition: background-color ease-in-out 0.5s 0s, color ease-in-out 0.5s 0s;
-  -webkit-backface-visibility: hidden; }
+  -webkit-transition: background-color ease-in-out 0.5s, color ease-in-out 0.5s;
+          transition: background-color ease-in-out 0.5s, color ease-in-out 0.5s; }
   nav.sticky-bar.sticky {
     background-color: #3569A4;
-    color: #FAFAFA; }
+    color: #FAFAFA;
+    z-index: 1000; }
 
 .sticky ~ * {
   top: 40px;
@@ -7743,10 +7743,10 @@ form input, form textarea {
   font-size: 14px;
   box-shadow: 0 0 0 rgba(79, 112, 143, 0.2);
   border-radius: 0;
-  -webkit-transition: border ease-in-out 0.3s 0s;
-          transition: border ease-in-out 0.3s 0s;
-  -webkit-transition: box-shadow ease-in-out 0.3s 0s;
-          transition: box-shadow ease-in-out 0.3s 0s;
+  -webkit-transition: border ease-in-out 0.3s;
+          transition: border ease-in-out 0.3s;
+  -webkit-transition: box-shadow ease-in-out 0.3s;
+          transition: box-shadow ease-in-out 0.3s;
   -webkit-appearance: none; }
   form input.invalid, form input.ng-invalid.ng-touched, form textarea.invalid, form textarea.ng-invalid.ng-touched {
     border: 1px solid #FB6473; }
@@ -7878,8 +7878,8 @@ form .password-toggle {
     height: 32px;
     line-height: 32px;
     cursor: pointer;
-    -webkit-transition: color ease-in-out 0.3s 0s;
-            transition: color ease-in-out 0.3s 0s; }
+    -webkit-transition: color ease-in-out 0.3s;
+            transition: color ease-in-out 0.3s; }
     form .password-toggle i:hover {
       color: #ccac55; }
 
@@ -7945,22 +7945,6 @@ input[value="Logout"], input[value="Logout"]:focus {
 @media (max-width: 640px) {
   input, select, textarea {
     font-size: 16px; } }
-
-.username-checker-hidden {
-  -webkit-transition: all ease-in-out 0.3s 0s;
-          transition: all ease-in-out 0.3s 0s;
-  opacity: 0; }
-
-.username-checker-hidden.username-checker-hidden-active {
-  opacity: 1; }
-
-.username-checker-visible {
-  -webkit-transition: all ease-in-out 0.3s 0.3s;
-          transition: all ease-in-out 0.3s 0.3s;
-  opacity: 1; }
-
-.username-checker-visible.username-checker-visible-active {
-  opacity: 0; }
 
 section.comments {
   margin: 0 auto;
@@ -8577,8 +8561,8 @@ form[name="subscribeForm"] .subscription-failed {
   bottom: -45px; }
 
 .fade-in-out {
-  -webkit-transition: opacity ease-in-out 0.3s 0s;
-          transition: opacity ease-in-out 0.3s 0s; }
+  -webkit-transition: opacity ease-in-out 0.3s;
+          transition: opacity ease-in-out 0.3s; }
 
 .fade-in-out.ng-hide {
   opacity: 0; }
@@ -8623,13 +8607,13 @@ body.future-mission .highlights {
     display: inline-block;
     width: 150px;
     opacity: 1;
-    -webkit-transition: all ease-in-out 0.3s 0s;
-            transition: all ease-in-out 0.3s 0s; }
+    -webkit-transition: all ease-in-out 0.3s;
+            transition: all ease-in-out 0.3s; }
   .mission-link .link {
     opacity: 0;
     display: inline-block;
-    -webkit-transition: all ease-in-out 0.3s 0s;
-            transition: all ease-in-out 0.3s 0s; }
+    -webkit-transition: all ease-in-out 0.3s;
+            transition: all ease-in-out 0.3s; }
 
 .mission-status-outcomes {
   float: right; }
@@ -8706,8 +8690,8 @@ body.future-mission .highlights {
     -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
             transform: translateY(0);
-    -webkit-transition: -webkit-transform ease-in-out 0.5s 0s;
-            transition: transform ease-in-out 0.5s 0s; }
+    -webkit-transition: -webkit-transform ease-in-out 0.5s;
+            transition: transform ease-in-out 0.5s; }
     .display-date-time .timezone-list.ng-hide {
       -webkit-transform: translateY(-120px);
           -ms-transform: translateY(-120px);
@@ -8718,8 +8702,8 @@ body.future-mission .highlights {
     text-align: center;
     padding: 0;
     cursor: pointer;
-    -webkit-transition: background-color ease-in-out 0.3s 0s;
-            transition: background-color ease-in-out 0.3s 0s; }
+    -webkit-transition: background-color ease-in-out 0.3s;
+            transition: background-color ease-in-out 0.3s; }
     .display-date-time .timezone-option:hover {
       background-color: #b79537; }
     .display-date-time .timezone-option.active {
@@ -8730,29 +8714,6 @@ body.future-mission .highlights {
 
 section.details #live-tweets {
   width: 33.33333%; }
-
-div.square {
-  display: inline-block;
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-  border-radius: 8px;
-  background-color: #8B939B;
-  text-align: center;
-  margin: 10px; }
-  div.square img {
-    min-height: 100%;
-    min-width: 100%;
-    width: auto;
-    height: auto;
-    display: block;
-    position: relative;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-        -ms-transform: translate(-50%, -50%);
-            transform: translate(-50%, -50%);
-    margin: 0; }
 
 body.object .content {
   margin-left: -10px; }
@@ -8815,8 +8776,8 @@ body.object .aside {
   text-align: center;
   display: inline-block;
   overflow: hidden;
-  -webkit-transition: background-color ease-in-out 0.5s 0s;
-          transition: background-color ease-in-out 0.5s 0s; }
+  -webkit-transition: background-color ease-in-out 0.5s;
+          transition: background-color ease-in-out 0.5s; }
   .files-list li.uploaded-file img {
     max-width: 100%;
     max-height: 100%; }
@@ -9119,8 +9080,8 @@ button.canned-response {
   background-color: rgba(53, 105, 164, 0.2);
   border-radius: 3px;
   height: 300px;
-  -webkit-transition: background-color ease-in-out 0.5s 0s;
-          transition: background-color ease-in-out 0.5s 0s;
+  -webkit-transition: background-color ease-in-out 0.5s;
+          transition: background-color ease-in-out 0.5s;
   margin-bottom: 20px; }
   .dropzone:hover {
     background-color: rgba(53, 105, 164, 0.5); }
