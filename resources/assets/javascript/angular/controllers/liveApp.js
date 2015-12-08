@@ -117,8 +117,9 @@
         };
 
         $scope.isLivestreamVisible = function() {
-            return $scope.liveParameters.userSelectedStream != null && $scope.liveParameters.streams
-                    [$scope.liveParameters.userSelectedStream].isAvailable;
+            return $scope.liveParameters.userSelectedStream != null
+                && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isAvailable
+                && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isActive;
         };
 
         $scope.send = {

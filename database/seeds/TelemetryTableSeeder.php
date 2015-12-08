@@ -5867,4 +5867,255 @@ class TelemetryTableSeeder extends Seeder {
             'readout'       => "Well as you saw and heard, looks like we've had another successful launch of the Falcon 9 rocket and the Dragon spacecraft into orbit. Again, another great ride from Falcon 9, right into the desired orbit, Dragon separated and as you saw in the webcast, deployed both of it's solar arrays. Right now we're waiting for word from the landing ship, but we'll have to give you that update after we close the webcast, so please check our social media pages, SpaceX is ending the webcast now, but remember us to follow us online at spacex.com, and at our social media pages, as we continue through the remainder of Dragon's approach to the International Space Station over the next couple of days. This time SpaceX would like to say thanks to our NASA customer, to the Air Force for Eastern Range and ground station support, to the Federal Aviation Administation, and all of you for watching today's launch with us. A great launch of Falcon 9 and Dragon out of Cape Canaveral, and we hope to see you later this month, as we countdown to the launch to TurkmenAlem52E/Monacosat on the Falcon 9. With that, good afternoon everybody from SpaceX headquarts from Hawthorne California."
         ]);
     }
+
+    public function TurkmenAlem52E() {
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "We have liftoff of the Falcon 9"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the tower"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "First stage PU is active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Flight, telemetry, and power look nominal on both stages"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "T+60 seconds. Altitude 6km, speed 280m/s, downrange distance 2km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's passed through max aerodynamic pressure"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "[Inaudible] power and telemetry still look nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "MVac chill has begun"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "T+2 minutes 20 seconds. Altitude 40km, speed 1.5km/s, downrange distance 50km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "We have MECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Stage sep confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "And we have MVac ignition"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Fairing sep confirmed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Bermuda acquisition of signal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "T+4 minutes 20 seconds. Altitude 136km, speed 3.2km/s, downrange distance 365km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Telemetry, health, and power still look nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's flying right down the nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Altitude 168km, speed 3.95km/s, downrange distance 650km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "RF, telemetry, and power still look good"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "T+6 minutes 30 seconds. Altitude 176km, speed 4.5km/s, downrange distance 835km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "And vehicle continues to fly down the nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Stage 2 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "T+7 minutes 30 seconds. Altitude 181km, speed 5.5km/s, downrange distance 1150km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's now in terminal guidance"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "FTS has been safed"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "And we have Cape LOS, [inaudible] on Bermuda data at this time"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "And we have SECO 1"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "We have a good park orbit insertion, 208 by 175km inclined 27.7 degrees to the equator"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 23,
+            'timestamp'     => 0,
+            'readout'       => "Well as you just saw and heard, we've had another successful launch of the Falcon 9 rocket, carrying the TurkmenAlem52E/MonacoSat into low earth parking orbit. Orbit injection appears to be accurate, after we had to wait for a 49 minute delay due to weather. The next activities will be restart of the second stage engine placing the spacecraft into geosynchronous transfer orbit. Spacecraft separation is planned to occur at approximately T+52 minutes and 15 seconds. However, SpaceX is ending the webcast now, but remember to follow us online at spacex.com, as well as on our social media pages for more mission updates over the next hour. We'd like to close the webcast with a thanks to our customer, to the Air Force for Eastern Range and ground station support, to the Federal Aviation Administation, to all of you who followed us on today's launch, and we invite you to follow us in May, when SpaceX conducts the Pad Abort test of our Crew Dragon capsule from Complex 40 at Cape Canaveral. Signing off until then, have a good afternoon."
+        ]);
+    }
+
+    public function CRS7() {
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "We have liftoff of the Falcon 9"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Falcon 9 has cleared the tower"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1 propulsion is nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's programming downrange"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1 propellant utilization is active"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "T+1 minute. Altitude [cutout], speed 290m/s, downrange distance 1.1km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Recovery droneship has AOS"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Vehicle's reached maximum aerodynamic pressure"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Stage 1 propulsion is still nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Power and telemetry remain nominal"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "MVac chill has begun"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "T+2 minutes. Altitude 32km, speed 1km/s, downrange distance 13km"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "[Inaudible], this is the ROC, [inaudible]"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "ROC on the countdown net"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 24,
+            'timestamp'     => 0,
+            'readout'       => "Well, this is John Insprcker back at SpaceX broadcast headquarters in Hawthorne, we have lost the video from the vehicle, there was some type of anomaly during first stage flight, what we know is that the countdown was satisfactory, we did ignite the 9 Merlin engines, we successfully lifted off the Slick Forty launchpad at Cape Canaveral, we proceeded through the stressing events during flight, went through maximum aerodynamic pressure and went supersonic, however it appears something did occur during first stage operations. SpaceX engineers will be reviewing the data in order to learn more about what happened during the Falcon 9 flight. One of the unique features of Falcon 9 is the large amounts of data that come on separate telemetry streams from the first and the second stage. This will bring an end to the live webcast for today. Please check our website spacex.com, and our social media pages, where we will be providing you with more information as it becomes available. Thanks for joining us today."
+        ]);
+    }
 }
