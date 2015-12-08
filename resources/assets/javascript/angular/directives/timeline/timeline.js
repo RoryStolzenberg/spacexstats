@@ -5,26 +5,27 @@
         return {
             restrict: 'E',
             scope: {
+                mission: '@'
             },
             link: function(scope, element, attributes) {
-                missionDataService.launchEvents($scope.$parent.mission.slug).then(function(response) {
+                missionDataService.launchEvents(mission).then(function(response) {
 
                     scope.launchEvents = response.data.map(function(launchEvent) {
                         launchEvent.occurred_at = moment.utc(launchEvent.occurred_at).toDate();
                     });
 
                     // Add 10% to the minimum and maximum dates
-                    var timespan =  $scope.launchEvents[0].occurred_at.diff($scope.launchEvents[$scope.launchEvents.length].occurred_at, 'seconds');
+                    var timespan =  scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length].occurred_at, 'seconds');
                     var dates = {
-                        min: $scope.launchEvents[0].occurred_at.substract(timespan / 10, 'seconds'),
-                        max: [$scope.launchEvents.length].occurred_at.add(timespan / 10, 'seconds')
+                        min: scope.launchEvents[0].occurred_at.substract(timespan / 10, 'seconds'),
+                        max: [scope.launchEvents.length].occurred_at.add(timespan / 10, 'seconds')
                     };
 
                     var data = response.data;
 
                     var elem = $('#timeline-graph');
 
-                    var svg = d3.select(elem[0]).data($scope.launchEvents);
+                    var svg = d3.select(elem[0]).data(scope.launchEvents);
 
                     var xScale = d3.time.scale.utc()
                         .domain([dates.min, dates.max])
@@ -40,7 +41,7 @@
                     svg.append("g")
                         .attr("transform", "translate(0," + elem.height() / 2 + ")")
                         .selectAll("circle")
-                        .data($scope.launchEvents.map(function(launchEvent) {
+                        .data(scope.launchEvents.map(function(launchEvent) {
                             return launchEvent.occurred_at;
                         }))
                         .enter().append("circle")
