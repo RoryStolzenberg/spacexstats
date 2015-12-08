@@ -25,9 +25,10 @@
                     // Add 10% to the minimum and maximum dates
                     var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
                     var dates = {
-                        min: scope.launchEvents[0].occurred_at.subtract(timespan / 10, 'seconds').toDate(),
-                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 10, 'seconds').toDate()
+                        min: scope.launchEvents[0].occurred_at.subtract(timespan / 5, 'seconds').toDate(),
+                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 5, 'seconds').toDate()
                     };
+                    console.log(dates);
 
                     var elem = $(element).find('svg');
 
@@ -52,7 +53,7 @@
                         }))
                         .enter().append("circle")
                         .attr("r", 20)
-                        .attr("fill", "blue")
+                        .attr("fill", "#4f708f")
                         .attr("cx", function(d) { return xScale(d); });
                 });
             },
