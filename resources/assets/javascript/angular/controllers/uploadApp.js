@@ -133,7 +133,7 @@
 
         $scope.text = {
             title: null,
-            content: null,
+            summary: null,
             mission_id: null,
             anonymous: null,
             tags: []
