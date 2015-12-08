@@ -42,7 +42,7 @@ class MissionsController extends Controller {
             'mission' => $mission,
             'pastMission' => Mission::before($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']),
             'futureMission' => Mission::after($mission->launch_order_id, 1)->first(['mission_id', 'slug', 'name']),
-            'images' => Mission::objects()->inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get()
+            'images' => $mission->objects()->inMissionControl()->wherePublic()->where('type', MissionControlType::Image)->orderBy('created_at')->get()
         ];
 
 		if ($mission->status === MissionStatus::Upcoming || $mission->status === MissionStatus::InProgress) {
