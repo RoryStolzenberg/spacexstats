@@ -9,8 +9,8 @@ Route::group(['prefix' => 'missions'], function() {
         Route::get('/create', 'MissionsController@getCreate');
         Route::post('/create', 'MissionsController@postCreate');
 
-        Route::get('/{slug}/edit', 'MissionsController@getEdit')->before('doesExist:Mission');
-        Route::patch('/{slug}/edit', 'MissionsController@patchEdit')->before('doesExist:Mission');
+        Route::get('/{slug}/edit', 'MissionsController@getEdit')->middleware('doesExist:Mission');
+        Route::patch('/{slug}/edit', 'MissionsController@patchEdit')->middleware('doesExist:Mission');
     });
 
     Route::group(['middleware' => 'doesExist:Mission'], function() {

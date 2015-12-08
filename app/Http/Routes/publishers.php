@@ -8,6 +8,6 @@ Route::group(array('prefix' => 'missioncontrol/publishers', 'namespace' => 'Miss
         Route::post('/create', 'PublishersController@create');
         Route::patch('/{publisher_id}', 'PublishersController@edit');
 
-        Route::delete('/{publisher_id}', 'PublishersController@delete')->before('mustBe:Administrator');
+        Route::delete('/{publisher_id}', 'PublishersController@delete')->middleware('mustBe:Administrator');
     });
 });

@@ -1,22 +1,8 @@
 <?php
-Route::group(array('prefix' => 'missioncontrol/tags', 'namespace' => 'MissionControl'), function() {
-    Route::get('/', array(
-        'as' => 'tags.all',
-        'uses' => 'TagsController@all'
-    ))->before('mustBe:Subscriber');
+Route::group(['prefix' => 'missioncontrol/tags', 'namespace' => 'MissionControl', 'middleware' => 'mustBe:Subscriber'], function() {
+    Route::get('/', 'TagsController@all');
 
-    Route::get('/{slug}', array(
-        'as' => 'tags.get',
-        'uses' => 'TagsController@get'
-    ))->before('doesTagExist|mustBe:Subscriber');
-
-    Route::get('/{slug}/edit', array(
-        'as' => 'tags.edit',
-        'uses' => 'TagsController@edit'
-    ))->before('doesTagExist|mustBe:Subscriber');
-
-    Route::post('/{slug}/edit', array(
-        'as' => 'tags.edit',
-        'uses' => 'TagsController@edit'
-    ))->before('doesTagExist|mustBe:Subscriber');
+    Route::get('/{slug}', 'TagsController@get')->middleware('doesExist:Tag');
+    Route::get('/{slug}/edit', 'TagsController@edit')->middleware('doesExist:Tag');
+    Route::post('/{slug}/edit', 'TagsController@edit')->middleware('doesExist:Tag');
 });

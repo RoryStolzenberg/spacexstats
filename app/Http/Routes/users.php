@@ -9,8 +9,8 @@ Route::group(array('prefix' => 'users'), function() {
 
         // Individual edit functionality
         Route::patch('/{username}/edit/emailnotifications', 'UsersController@editEmailNotifications');
-        Route::patch('/{username}/edit/smsnotifications', 'UsersController@editSMSNotifications')->before('mustBe:Subscriber');
-        Route::patch('/{username}/edit/redditnotifications', 'UsersController@editRedditNotifications')->before('mustBe:Subscriber');
+        Route::patch('/{username}/edit/smsnotifications', 'UsersController@editSMSNotifications')->middleware('mustBe:Subscriber');
+        Route::patch('/{username}/edit/redditnotifications', 'UsersController@editRedditNotifications')->middleware('mustBe:Subscriber');
 
         Route::get('/{username}/notes', 'UsersController@notes');
     });

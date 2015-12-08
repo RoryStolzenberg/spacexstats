@@ -1,5 +1,5 @@
 <?php
-Route::group(array('prefix' => 'auth', 'namespace' => 'Auth'), function() {
+Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function() {
 
     // Registration
     Route::get('/signup', 'AuthController@getSignUp');
