@@ -2347,6 +2347,72 @@
         }
     }]);
 })();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=?',
+                isVisibleWhenPaused: '=?',
+                type: '@',
+                callback: '&?'
+            },
+            link: function($scope, elem, attrs) {
+
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                var countdownProcessor = function() {
+
+                    if (!$scope.isPaused) {
+                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
+                        $scope.tMinusZero = secondsBetween == 0;
+
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    }
+
+                    if (attrs.callback) {
+                        $scope.callback();
+                    }
+                };
+
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -2501,251 +2567,6 @@
             templateUrl: '/js/templates/chart.html'
         }
     }]);
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=?',
-                isVisibleWhenPaused: '=?',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
-                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                var countdownProcessor = function() {
-
-                    if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
-                        var secondsBetween = Math.abs(relativeSecondsBetween);
-
-                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
-                        $scope.tMinusZero = secondsBetween == 0;
-
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    }
-
-                    if (attrs.callback) {
-                        $scope.callback();
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('datetime', function() {
-        return {
-            require: 'ngModel',
-            restrict: 'E',
-            scope: {
-                type: '@',
-                datetimevalue: '=ngModel',
-                startYear: '@',
-                nullableToggle: '@?',
-                isNull: '=',
-                disabled: '=?ngDisabled'
-            },
-            link: function($scope, element, attrs, ngModelController) {
-
-                $scope.days = [];
-                $scope.days.push({ value: 0, display: '-'});
-
-                for (i = 1; i <= 31; i++) {
-                    $scope.days.push({ value: i, display: i });
-                }
-
-                $scope.months = [
-                    { value: 0, display: '-'},
-                    { value: 1, display: 'January'},
-                    { value: 2, display: 'February'},
-                    { value: 3, display: 'March'},
-                    { value: 4, display: 'April'},
-                    { value: 5, display: 'May'},
-                    { value: 6, display: 'June'},
-                    { value: 7, display: 'July'},
-                    { value: 8, display: 'August'},
-                    { value: 9, display: 'September'},
-                    { value: 10, display: 'October'},
-                    { value: 11, display: 'November'},
-                    { value: 12, display: 'December'}
-                ];
-
-                $scope.years = function() {
-                    var years = [];
-
-                    var currentYear = moment().year();
-
-                    if (typeof $scope.startYear !== 'undefined') {
-                        var startYear = $scope.startYear;
-                    } else {
-                        var startYear = 1950;
-                    }
-
-                    while (currentYear >= startYear) {
-                        years.push(currentYear);
-                        currentYear--;
-                    }
-                    return years;
-                };
-
-                //convert data from view format to model format
-                ngModelController.$parsers.push(function(viewvalue) {
-
-                    if ($scope.isNull == true) {
-                        return null;
-                    }
-
-                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
-
-                        if ($scope.type == 'datetime') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date,
-                                hour: viewvalue.hour,
-                                minute: viewvalue.minute,
-                                second: viewvalue.second
-                            }).format('YYYY-MM-DD HH:mm:ss');
-
-                        } else if ($scope.type == 'date') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date
-                            }).format('YYYY-MM-DD');
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2) + " "
-                                + ("0" + viewvalue.hour).slice(-2) + ":"
-                                + ("0" + viewvalue.minute).slice(-2) + ":"
-                                + ("0" + viewvalue.second).slice(-2);
-
-                        } else {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2);
-                        }
-                    }
-                    return value;
-                });
-
-                //convert data from model format to view format
-                ngModelController.$formatters.push(function(data) {
-
-                    // If the value is not undefined and the value is valid,
-                    if (typeof data !== 'undefined' && moment(data).isValid()) {
-
-                        var dt = moment(data);
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date(),
-                                hour: dt.hour(),
-                                minute: dt.minute(),
-                                second: dt.second()
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date()
-                            }
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0,
-                                hour: 0,
-                                minute: 0,
-                                second: 0
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0
-                            }
-                        }
-                    }
-                });
-
-                ngModelController.$render = function() {
-                    $scope.year = ngModelController.$viewValue.year;
-                    $scope.month = ngModelController.$viewValue.month;
-                    $scope.date = ngModelController.$viewValue.date;
-
-                    if ($scope.type == 'datetime') {
-                        $scope.hour = ngModelController.$viewValue.hour;
-                        $scope.minute = ngModelController.$viewValue.minute;
-                        $scope.second = ngModelController.$viewValue.second;
-                    }
-                };
-
-                $scope.$watch('datetimevalue', function(value) {
-                    if (typeof value === null) {
-                        $scope.isNull = true;
-                    }
-                });
-
-                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
-                    ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
-                });
-
-                $scope.toggleChecked = function() {
-                    console.log('yep');
-                    $scope.isNull = !$scope.isNull;
-                }
-            },
-            templateUrl: '/js/templates/datetime.html'
-        }
-    });
 })();
 (function() {
     var app = angular.module('app');
@@ -3020,6 +2841,185 @@
     });
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('datetime', function() {
+        return {
+            require: 'ngModel',
+            restrict: 'E',
+            scope: {
+                type: '@',
+                datetimevalue: '=ngModel',
+                startYear: '@',
+                nullableToggle: '@?',
+                isNull: '=',
+                disabled: '=?ngDisabled'
+            },
+            link: function($scope, element, attrs, ngModelController) {
+
+                $scope.days = [];
+                $scope.days.push({ value: 0, display: '-'});
+
+                for (i = 1; i <= 31; i++) {
+                    $scope.days.push({ value: i, display: i });
+                }
+
+                $scope.months = [
+                    { value: 0, display: '-'},
+                    { value: 1, display: 'January'},
+                    { value: 2, display: 'February'},
+                    { value: 3, display: 'March'},
+                    { value: 4, display: 'April'},
+                    { value: 5, display: 'May'},
+                    { value: 6, display: 'June'},
+                    { value: 7, display: 'July'},
+                    { value: 8, display: 'August'},
+                    { value: 9, display: 'September'},
+                    { value: 10, display: 'October'},
+                    { value: 11, display: 'November'},
+                    { value: 12, display: 'December'}
+                ];
+
+                $scope.years = function() {
+                    var years = [];
+
+                    var currentYear = moment().year();
+
+                    if (typeof $scope.startYear !== 'undefined') {
+                        var startYear = $scope.startYear;
+                    } else {
+                        var startYear = 1950;
+                    }
+
+                    while (currentYear >= startYear) {
+                        years.push(currentYear);
+                        currentYear--;
+                    }
+                    return years;
+                };
+
+                //convert data from view format to model format
+                ngModelController.$parsers.push(function(viewvalue) {
+
+                    if ($scope.isNull == true) {
+                        return null;
+                    }
+
+                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
+
+                        if ($scope.type == 'datetime') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date,
+                                hour: viewvalue.hour,
+                                minute: viewvalue.minute,
+                                second: viewvalue.second
+                            }).format('YYYY-MM-DD HH:mm:ss');
+
+                        } else if ($scope.type == 'date') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date
+                            }).format('YYYY-MM-DD');
+                        }
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2) + " "
+                                + ("0" + viewvalue.hour).slice(-2) + ":"
+                                + ("0" + viewvalue.minute).slice(-2) + ":"
+                                + ("0" + viewvalue.second).slice(-2);
+
+                        } else {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2);
+                        }
+                    }
+                    return value;
+                });
+
+                //convert data from model format to view format
+                ngModelController.$formatters.push(function(data) {
+
+                    // If the value is not undefined and the value is valid,
+                    if (typeof data !== 'undefined' && moment(data).isValid()) {
+
+                        var dt = moment(data);
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date(),
+                                hour: dt.hour(),
+                                minute: dt.minute(),
+                                second: dt.second()
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date()
+                            }
+                        }
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0,
+                                hour: 0,
+                                minute: 0,
+                                second: 0
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0
+                            }
+                        }
+                    }
+                });
+
+                ngModelController.$render = function() {
+                    $scope.year = ngModelController.$viewValue.year;
+                    $scope.month = ngModelController.$viewValue.month;
+                    $scope.date = ngModelController.$viewValue.date;
+
+                    if ($scope.type == 'datetime') {
+                        $scope.hour = ngModelController.$viewValue.hour;
+                        $scope.minute = ngModelController.$viewValue.minute;
+                        $scope.second = ngModelController.$viewValue.second;
+                    }
+                };
+
+                $scope.$watch('datetimevalue', function(value) {
+                    if (typeof value === null) {
+                        $scope.isNull = true;
+                    }
+                });
+
+                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
+                    ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
+                });
+
+                $scope.toggleChecked = function() {
+                    console.log('yep');
+                    $scope.isNull = !$scope.isNull;
+                }
+            },
+            templateUrl: '/js/templates/datetime.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -3423,71 +3423,6 @@
 (function() {
     var app = angular.module('app', []);
 
-    app.directive('timeline', ["missionDataService", function(missionDataService) {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '='
-            },
-            link: function(scope, element, attributes) {
-                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
-
-                    scope.launchEvents = response.data.map(function(launchEvent) {
-                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
-                        return launchEvent;
-                    });
-
-                    if (scope.mission.status == 'Complete') {
-                        scope.launchEvents.push({
-                            'event': 'Launch',
-                            'occurred_at': moment.utc(scope.mission.launch_date_time)
-                        });
-                    }
-
-                    // Add 10% to the minimum and maximum dates
-                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
-                    var dates = {
-                        min: scope.launchEvents[0].occurred_at.subtract(timespan / 5, 'seconds').toDate(),
-                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 5, 'seconds').toDate()
-                    };
-                    console.log(timespan);
-                    console.log(dates);
-
-                    var elem = $(element).find('svg');
-
-                    var svg = d3.select(elem[0]).data(scope.launchEvents);
-
-                    var xScale = d3.time.scale.utc()
-                        .domain([dates.min, dates.max])
-                        .range([0, $(elem[0]).width()]);
-
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(d3.time.month, 1).tickFormat(null);
-
-                    svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
-                        .call(xAxisGenerator);
-
-                    svg.append("g")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
-                        .selectAll("circle")
-                        .data(scope.launchEvents.map(function(launchEvent) {
-                            console.log(scope.launchEvents);
-                            return launchEvent.occurred_at.toDate();
-                        }))
-                        .enter().append("circle")
-                        .attr("r", 20)
-                        .attr("fill", "#4f708f")
-                        .attr("cx", function(d) { return xScale(d); });
-                });
-            },
-            template: '<svg width="100%" height="200px"></svg>'
-        };
-    }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
             require: 'ngModel',
@@ -3617,6 +3552,71 @@
 })();
 
 
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive('timeline', ["missionDataService", function(missionDataService) {
+        return {
+            restrict: 'E',
+            scope: {
+                mission: '='
+            },
+            link: function(scope, element, attributes) {
+                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
+
+                    scope.launchEvents = response.data.map(function(launchEvent) {
+                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
+                        return launchEvent;
+                    });
+
+                    if (scope.mission.status == 'Complete') {
+                        scope.launchEvents.push({
+                            'event': 'Launch',
+                            'occurred_at': moment.utc(scope.mission.launch_date_time)
+                        });
+                    }
+
+                    // Add 10% to the minimum and maximum dates
+                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
+                    var dates = {
+                        min: scope.launchEvents[0].occurred_at.subtract(timespan / 5, 'seconds').toDate(),
+                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at.add(timespan / 5, 'seconds').toDate()
+                    };
+                    console.log(timespan);
+                    console.log(dates);
+
+                    var elem = $(element).find('svg');
+
+                    var svg = d3.select(elem[0]).data(scope.launchEvents);
+
+                    var xScale = d3.time.scale.utc()
+                        .domain([dates.min, dates.max])
+                        .range([0, $(elem[0]).width()]);
+
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(d3.time.month, 1).tickFormat(null);
+
+                    svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .call(xAxisGenerator);
+
+                    svg.append("g")
+                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .selectAll("circle")
+                        .data(scope.launchEvents.map(function(launchEvent) {
+                            console.log(scope.launchEvents);
+                            return launchEvent.occurred_at.toDate();
+                        }))
+                        .enter().append("circle")
+                        .attr("r", 20)
+                        .attr("fill", "#4f708f")
+                        .attr("cx", function(d) { return xScale(d); });
+                });
+            },
+            template: '<svg width="100%" height="200px"></svg>'
+        };
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
