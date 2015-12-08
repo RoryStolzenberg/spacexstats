@@ -34,7 +34,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
 
         PrelaunchEvent::create([
             'mission_id' => 7,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2010, 12, 4),
             'summary' => null,
             'supporting_document' => null
@@ -68,7 +68,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         // F9F4
         PrelaunchEvent::create([
             'mission_id' => 9,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2012, 9, 29),
             'summary' => null,
             'supporting_document' => null
@@ -77,7 +77,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         // F9F5
         PrelaunchEvent::create([
             'mission_id' => 10,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2013, 2, 25),
             'summary' => null,
             'supporting_document' => null
@@ -110,7 +110,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
 
         PrelaunchEvent::create([
             'mission_id' => 11,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2013, 9, 19),
             'summary' => null,
             'supporting_document' => null
@@ -127,7 +127,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
 
         PrelaunchEvent::create([
             'mission_id' => 12,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2013, 11, 21),
             'summary' => 'Successful, but with excessive venting',
             'supporting_document' => null
@@ -176,7 +176,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         // F9F8 (Thaicom 6)
         PrelaunchEvent::create([
             'mission_id' => 13,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2013, 12, 29),
             'summary' => null,
             'supporting_document' => null
@@ -193,7 +193,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         //F9F9
         PrelaunchEvent::create([
             'mission_id' => 14,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 3, 8),
             'summary' => null,
             'supporting_document' => null
@@ -256,7 +256,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
 
         PrelaunchEvent::create([
             'mission_id' => 15,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 6, 13),
             'summary' => null,
             'supporting_document' => null
@@ -290,7 +290,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
 
         PrelaunchEvent::create([
             'mission_id' => 15,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 7, 11),
             'summary' => null,
             'supporting_document' => null
@@ -307,7 +307,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         //F9F11
         PrelaunchEvent::create([
             'mission_id' => 16,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 7, 31),
             'summary' => null,
             'supporting_document' => null
@@ -324,7 +324,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         //F9F12
         PrelaunchEvent::create([
             'mission_id' => 17,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 8, 22),
             'summary' => null,
             'supporting_document' => null
@@ -343,7 +343,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         //F9F13
         PrelaunchEvent::create([
             'mission_id' => 18,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 9, 17),
             'summary' => null,
             'supporting_document' => null
@@ -360,7 +360,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         //F9F14
         PrelaunchEvent::create([
             'mission_id' => 19,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 12, 17),
             'summary' => "Early engine shutdown, static fire unsucessful",
             'supporting_document' => null
@@ -378,7 +378,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
 
         PrelaunchEvent::create([
             'mission_id' => 19,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2014, 12, 19),
             'summary' => null,
             'supporting_document' => null
@@ -395,7 +395,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         //F9F15 DSCOVR
         PrelaunchEvent::create([
             'mission_id' => 20,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2015, 1, 31),
             'summary' => null,
             'supporting_document' => null
@@ -428,7 +428,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         // F9F16
         PrelaunchEvent::create([
             'mission_id' => 21,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2015, 2, 25),
             'summary' => null,
             'supporting_document' => null
@@ -437,7 +437,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         // F9F17
         PrelaunchEvent::create([
             'mission_id' => 22,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2015, 4, 11),
             'summary' => null,
             'supporting_document' => null
@@ -454,7 +454,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         //F9F18
         PrelaunchEvent::create([
             'mission_id' => 23,
-            'event' => 'Launch Site Static Fire',
+            'event' => 'Launch Static Fire',
             'occurred_at' => Carbon::createFromDate(2015, 4, 22),
             'summary' => null,
             'supporting_document' => null

@@ -408,7 +408,7 @@ class Spacexstats extends Migration {
         Schema::create('prelaunch_events', function(Blueprint $table) {
             $table->increments('prelaunch_event_id');
             $table->integer('mission_id')->unsigned();
-            $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Launch Site Static Fire', 'Test Static Fire', 'Launch Change'));
+            $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Launch Static Fire', 'Test Static Fire', 'Launch Change'));
             $table->date('occurred_at');
             $table->datetime('scheduled_launch_exact')->nullable();
             $table->string('scheduled_launch_approximate', Varchar::tiny)->nullable();

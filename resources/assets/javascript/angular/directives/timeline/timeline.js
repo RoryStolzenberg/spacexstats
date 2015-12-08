@@ -31,11 +31,9 @@
                     // Add 10% to the minimum and maximum dates
                     var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
                     var dates = {
-                        min: scope.launchEvents[0].occurred_at,
-                        max: scope.launchEvents[scope.launchEvents.length-1].occurred_at
+                        min: moment(scope.launchEvents[0].occurred_at).subtract(timespan / 10, 'seconds').toDate(),
+                        max: moment(scope.launchEvents[scope.launchEvents.length-1].occurred_at).add(timespan / 10, 'seconds').toDate()
                     };
-                    dates.min.subtract(timespan / 10, 'seconds').toDate();
-                    dates.min.add(timespan / 10, 'seconds').toDate();
 
                     var elem = $(element).find('svg');
 
@@ -71,11 +69,13 @@
                         }))
                         .enter().append("circle")
                         .attr("r", 20)
-                        .attr("fill", "#4f708f")
+                        .attr("class", function(d) {
+                            return d.event.toLowerCase().replace(" ", "-");
+                        })
                         .attr("cx", function(d) { return xScale(d); });
                 });
             },
-            template: '<svg width="100%" height="200px"></svg>'
+            template: '<svg></svg>'
         };
     }]);
 })();

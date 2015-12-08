@@ -226,6 +226,26 @@
             <section id="timeline" class="scrollto">
                 <h3>Prelaunch</h3>
                 @if ($mission->prelaunchEvents->count() > 0)
+                    <style>
+                        timeline {
+                            display:block;
+                            width:100%;
+                            height:200px;
+                        }
+
+                        timeline svg {
+                            width:100%;
+                            height:100%;
+                        }
+
+                        .launch-change {
+                            color:#4f708f;
+                        }
+
+                        .launch {
+                            color:rgb(204, 172, 85);
+                        }
+                    </style>
                     <timeline mission="mission"></timeline>
                 @else
                     <p class="exclaim">No Prelaunch Events</p>
