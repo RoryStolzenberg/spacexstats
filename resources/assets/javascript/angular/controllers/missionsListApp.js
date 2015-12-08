@@ -20,7 +20,7 @@
 
         $scope.missionsInYear = function(year, completeness) {
             return $scope.missions.filter(function(mission) {
-                return moment(mission.launchDateTime).year() == year && mission.status == completeness;
+                return moment(mission.launch_date_time).year() == year && mission.status == completeness;
             }).length;
         };
     }]);

@@ -23,7 +23,7 @@
                 
                 <p>By being a member and using SpaceXStats, you agree to everything on this page. We have to do this to protect both you and us and make running this site possible. If you break these terms, you can't use SpaceXStats anymore.</p>
 
-                <p>Your account is your responsibility. If your account is compromised we'll try to help, but we can't guarantee we can fix any damages. You can copy the SpaceXStats codebase according to the license conditions available on the project GitHub page.</p>
+                <p>Your account is your responsibility. If your account is compromised we'll try to help, but we can't guarantee we can fix any damages. You can copy the SpaceXStats codebase according to the license conditions available on the <a href="https://github.com/LukeNZ/spacexstats">project GitHub page</a>.</p>
 
                 <p>Don't upload any public-visible or subscriber-visible content on SpaceXStats that violates SpaceX's communications policy, is confidential to SpaceX or any other company, is U.S. Export Controlled, or violates the International Traffic of Arm Regulations. Don't upload content to SpaceXStats which could be considered offensive or is illegal. Follow all laws that apply to you, based on where you live or anything else.</p>
 
@@ -41,7 +41,7 @@
 
                 <p>We can't be liable for misuse of SpaceXStats or for SpaceXStats not meeting your needs. If you get in trouble with the law for something you did on SpaceXStats, that's on you and you agree that it isn't SpaceXStats itself's fault. If we receive notification of an infringement by you, we'll pass it along to you.</p>
 
-                <p>If you have any questions, contact us.</p>
+                <p>If you have any questions, <a href="/about/contact">contact us</a>.</p>
             </main>
         </div>
     </body>
