@@ -34,7 +34,7 @@
         <!-- jQuery& jQuery plugins -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
-        <script src="/js/jquery.stickyNavbar.js"></script>
+        <script src="//cdn.jsdelivr.net/stickynavbar.js/1.2.0/jquery.stickyNavbar.min.js"></script>
 
         <!-- Angular -->
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular.js"></script>
@@ -73,7 +73,8 @@
 
                 // Stickybar
                 $('nav.sticky-bar').stickyNavbar({
-                    selector: 'li'
+                    selector: 'li',
+                    startAt: 0
                 });
             });
         </script>
