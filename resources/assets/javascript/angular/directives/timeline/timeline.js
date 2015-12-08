@@ -50,7 +50,7 @@
                         .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
                         .selectAll("circle")
                         .data(scope.launchEvents.map(function(launchEvent) {
-                            console.log(launchEvents);
+                            console.log(scope.launchEvents);
                             return launchEvent.occurred_at.toDate();
                         }))
                         .enter().append("circle")
