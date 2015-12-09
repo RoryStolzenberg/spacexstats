@@ -45,24 +45,39 @@
 
                     // Determine ticks to use
                     if (timespan > timespans.ONE_YEAR) {
-                        var preferredTickFormat = d3.time.month;
+                        var preferredTick = {
+                            frequency: d3.time.month,
+                            format: d3.time.format("%b %Y")
+                        };
                     } else if (timespan > timespans.SIX_MONTHS) {
-                        var preferredTickFormat = d3.time.month;
+                        var preferredTick = {
+                            frequency: d3.time.month,
+                            format: d3.time.format("%b %Y")
+                        };
                     } else if (timespan > timespans.ONE_MONTH) {
-                        var preferredTickFormat = d3.time.week;
+                        var preferredTick = {
+                            frequency: d3.time.week,
+                            format: d3.time.format("%e %b")
+                        };
                     } else {
-                        var preferredTickFormat = d3.time.day;
+                        var preferredTick = {
+                            frequency: d3.time.day,
+                            format: d3.time.format("%e %b")
+                        };
                     }
 
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(preferredTickFormat, 1).tickFormat(null);
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom')
+                        .ticks(preferredTick.frequency, 1)
+                        .tickFormat(preferredTick.format)
+                        .tickPadding(25);
 
-                    svg.append("svg:g")
+                    var axis = svg.append("svg:g")
                         .attr("class", "x axis")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .attr("transform", "translate(0," + 3 * $(elem[0]).height() / 4 + ")")
                         .call(xAxisGenerator);
 
                     var g = svg.append("g")
-                        .attr("transform", "translate(0," + $(elem[0]).height() / 2 + ")")
+                        .attr("transform", "translate(0," + 3 * $(elem[0]).height() / 4 + ")")
                         .selectAll("circle")
                         .data(scope.launchEvents.map(function(launchEvent) {
                             launchEvent.occurred_at.toDate();
@@ -70,13 +85,19 @@
                         }))
                         .enter().append("circle")
                         .attr("r", 20)
-                        .classed(function(d) {
-                            return d.event.toLowerCase().replace(" ", "-");
+                        .attr('class', function(d) {
+                            return d.event.toLowerCase().replace(/\s/g, "-");
                         })
+                        .classed('event', true)
                         .attr("cx", function(d) { return xScale(d.occurred_at); });
 
                     g.append("image")
-                        .attr('xlink:href', 'test.png')
+                        .attr('xlink:href', 'test.png');
+
+                    // replace tick lines with circles
+                    var ticks = axis.selectAll(".tick");
+                    ticks.each(function() { d3.select(this).append("circle").attr("r", 3); });
+                    ticks.selectAll("line").remove();
                 });
             },
             template: '<svg></svg>'

@@ -14,7 +14,7 @@
 <div class="header-wrapper {{ $class or null }}">
     <style scoped>
         .header-wrapper:before {
-            background-image:url({{ $backgroundImage or null }});
+            background-image:url('{{ $backgroundImage or null }}');
             background-position: 50% center;
         }
     </style>

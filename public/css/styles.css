@@ -9420,6 +9420,60 @@ button.canned-response {
 countdown {
   display: block; }
 
+timeline {
+  display: block;
+  width: 100%;
+  height: 200px;
+  position: relative; }
+  timeline svg {
+    width: 100%;
+    height: 100%; }
+  timeline circle {
+    fill: #8B939B; }
+    timeline circle.event {
+      cursor: pointer; }
+    timeline circle.launch-change {
+      fill: #4f708f; }
+    timeline circle.launch {
+      fill: #ccac55; }
+    timeline circle.launch-static-fire {
+      fill: #FB6473; }
+    timeline circle.test-static-fire {
+      fill: #FB6473; }
+    timeline circle.announcement {
+      fill: #21272B; }
+  timeline .axis text {
+    font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+    font-size: 14px;
+    fill: #8B939B; }
+  timeline:before, timeline:after {
+    display: block;
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    top: 0; }
+  timeline:before {
+    left: 0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#fafafa+0,ffffff+100&1+0,0+100 */
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, #fafafa 0%, rgba(255, 255, 255, 0) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, #fafafa 0%, rgba(255, 255, 255, 0) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fafafa', endColorstr='#00ffffff',GradientType=1 );
+    /* IE6-9 */ }
+  timeline:after {
+    right: 0;
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,fafafa+100&0+0,1+100 */
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, #fafafa 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, #fafafa 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#fafafa',GradientType=1 );
+    /* IE6-9 */ }
+
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {
   background-color: #3569A4;

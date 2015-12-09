@@ -90,7 +90,7 @@
                         @include('templates.cards.payloadsCard', ['mission' => $mission])
                     @endif
 
-                    @if ($mission->upperStage->status != 'Did not achieve orbit')
+                    @if ($mission->upperStage && $mission->upperStage->status != 'Did not achieve orbit')
                         <h3>{{ $mission->upperStage->part->name }} Upper Stage</h3>
                         @include('templates.cards.upperStageCard', ['mission' => $mission])
                     @endif
@@ -226,26 +226,6 @@
             <section id="timeline" class="scrollto">
                 <h3>Prelaunch</h3>
                 @if ($mission->prelaunchEvents->count() > 0)
-                    <style>
-                        timeline {
-                            display:block;
-                            width:100%;
-                            height:200px;
-                        }
-
-                        timeline svg {
-                            width:100%;
-                            height:100%;
-                        }
-
-                        .launch-change {
-                            fill:#4f708f;
-                        }
-
-                        .launch {
-                            fill:rgb(204, 172, 85);
-                        }
-                    </style>
                     <timeline mission="mission"></timeline>
                 @else
                     <p class="exclaim">No Prelaunch Events</p>
