@@ -843,7 +843,7 @@
             if (data.newLaunchTime != null) {
                 $scope.liveParameters.countdown = {
                     isPaused: false,
-                    to: data.newLaunchDate,
+                    to: data.newLaunchTime,
                     newLaunchDate: null
                 };
 
@@ -2923,23 +2923,6 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -3037,6 +3020,23 @@
     });
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');

@@ -189,7 +189,7 @@
             if (data.newLaunchTime != null) {
                 $scope.liveParameters.countdown = {
                     isPaused: false,
-                    to: data.newLaunchDate,
+                    to: data.newLaunchTime,
                     newLaunchDate: null
                 };
 

@@ -95,7 +95,7 @@
                     <li class="gr-5">
                         @{{ liveParameters.title }} Event
                         <span ng-if="liveParameters.isForLaunch || liveParameters.reddit.thing !== null">
-                            (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}">Mission Page</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{liveParameters.reddit.thing}}">Reddit Discussion</a></span>)
+                            (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}">Mission Page</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}">Reddit Discussion</a></span>)
                         </span>
                     </li>
                     <li class="gr-2 stream-options">
