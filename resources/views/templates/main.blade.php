@@ -51,6 +51,7 @@
 
         <!-- d3.js -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+        <script src="/js/d3-tip.js"></script>
 
         <!-- jstz & dropzone -->
         <script src="/js/jstz-1.0.4.min.js"></script>
