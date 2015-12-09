@@ -90,7 +90,7 @@
             </section>
 
             <!-- If SpaceXStats live is running -->
-            <nav class="in-page" ng-if="isActive" ng-class="{ 'dark':liveParameters.userSelectedStream != null }">
+            <nav class="in-page" ng-if="isActive" ng-class="{ 'dark':isLivestreamVisible() }">
                 <ul class="container highlights">
                     <li class="gr-5">
                         @{{ liveParameters.title }} Event

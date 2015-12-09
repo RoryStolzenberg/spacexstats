@@ -179,6 +179,9 @@ class LiveController extends Controller {
         Redis::hset('live:countdown', 'isPaused', false);
         Redis::hset('live:countdown', 'to', $newLaunchDate->toDateTimeString());
 
+        // Event
+        event(new LiveCountdownEvent(true, $newLaunchDate));
+
         // If it relates to a mission (and not a miscellaneous webcast)
         if (Redis::get('live:isForLaunch')) {
             $nextMission = Mission::future()->first();
@@ -196,9 +199,6 @@ class LiveController extends Controller {
             $nextMission->launch_date_time = $newLaunchDate;
             $nextMission->save();
         }
-
-        // Event
-        event (new LiveCountdownEvent(true, $newLaunchDate));
 
         return response()->json(null, 204);
     }
