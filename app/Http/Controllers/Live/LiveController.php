@@ -20,7 +20,7 @@ use SpaceXStats\Jobs\UpdateRedditLiveThreadJob;
 use SpaceXStats\Live\LiveUpdate;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\PrelaunchEvent;
-use Illuminate\Log\Writer;
+use Illuminate\Support\Facades\Log;
 
 class LiveController extends Controller {
 

@@ -5,7 +5,7 @@ namespace SpaceXStats\Events\Live;
 use SpaceXStats\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Log\Writer;
+use Illuminate\Support\Facades\Log;
 
 class LiveCountdownEvent extends Event implements ShouldBroadcast
 {
