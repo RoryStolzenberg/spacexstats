@@ -80,8 +80,6 @@
                         return d.event;
                     });
 
-                    svg.call(tip);
-
                     var g = svg.append("g")
                         .attr("transform", "translate(0," + 3 * $(elem[0]).height() / 4 + ")")
                         .selectAll("circle")
@@ -96,6 +94,7 @@
                         })
                         .classed('event', true)
                         .attr("cx", function(d) { return xScale(d.occurred_at); })
+                        .call(tip)
                         .on("mouseover", function() {
                             tip.show();
                             d3.selectAll('.event').transition()
