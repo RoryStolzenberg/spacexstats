@@ -105,16 +105,13 @@
                                 .attr('opacity', 1);
                         });
 
-                    g.append("image")
-                        .attr('xlink:href', 'test.png');
-
                     // replace tick lines with circles
                     var ticks = axis.selectAll(".tick");
                     ticks.each(function() { d3.select(this).append("circle").attr("r", 3); });
                     ticks.selectAll("line").remove();
                 });
             },
-            template: '<svg></svg>'
+            templateUrl: '/js/templates/timeline.html'
         };
     }]);
 })();

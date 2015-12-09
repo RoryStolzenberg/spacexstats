@@ -4,7 +4,7 @@
 @section('content')
     <body class="future-mission">
 
-        @include('templates.header', array('backgroundImage' => !is_null($mission->featuredImage) ? $mission->featuredImage->media : ''))
+    @include('templates.header', ['backgroundImage' => $mission->present()->featuredImageUrl()])
 
         <div class="content-wrapper" ng-controller="futureMissionController" ng-strict-di>
             <h1>{{ $mission->name }}</h1>
