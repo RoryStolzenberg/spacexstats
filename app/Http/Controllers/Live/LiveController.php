@@ -20,6 +20,7 @@ use SpaceXStats\Jobs\UpdateRedditLiveThreadJob;
 use SpaceXStats\Live\LiveUpdate;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\PrelaunchEvent;
+use Illuminate\Log\Writer;
 
 class LiveController extends Controller {
 
@@ -153,6 +154,7 @@ class LiveController extends Controller {
      */
     public function pauseCountdown() {
         // Update Redis
+        Log::info('pause server hit ' . round(microtime(true) * 1000));
         Redis::hset('live:countdown', 'isPaused', true);
 
         // If it relates to a mission (and not a miscellaneous webcast)
@@ -164,7 +166,10 @@ class LiveController extends Controller {
             $nextMission->save();
         }
 
+        Log::info('pause mission saved ' . round(microtime(true) * 1000));
+
         event(new LiveCountdownEvent(false));
+        Log::info('pause event sent ' . round(microtime(true) * 1000));
         return response()->json(null, 204);
     }
 
@@ -173,6 +178,7 @@ class LiveController extends Controller {
      */
     public function resumeCountdown() {
         // Parse launch date
+        Log::info('resume server hit ' . round(microtime(true) * 1000));
         $newLaunchDate = Carbon::parse(Input::get('newLaunchDate'));
 
         // Update Redis
@@ -181,6 +187,7 @@ class LiveController extends Controller {
 
         // Event
         event(new LiveCountdownEvent(true, $newLaunchDate));
+        Log::info('resume event sent ' . round(microtime(true) * 1000));
 
         // If it relates to a mission (and not a miscellaneous webcast)
         if (Redis::get('live:isForLaunch')) {
@@ -199,6 +206,7 @@ class LiveController extends Controller {
             $nextMission->launch_date_time = $newLaunchDate;
             $nextMission->save();
         }
+        Log::info('resume mission saved ' . round(microtime(true) * 1000));
 
         return response()->json(null, 204);
     }

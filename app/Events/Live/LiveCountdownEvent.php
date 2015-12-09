@@ -5,8 +5,9 @@ namespace SpaceXStats\Events\Live;
 use SpaceXStats\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Log\Writer;
 
-class LiveCountdownEvent extends Event  implements ShouldBroadcast
+class LiveCountdownEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 
@@ -35,6 +36,7 @@ class LiveCountdownEvent extends Event  implements ShouldBroadcast
      */
     public function broadcastOn()
     {
+        Log::info('broadcast ' . round(microtime(true) * 1000));
         return ['live-updates'];
     }
 }

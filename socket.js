@@ -21,10 +21,10 @@ Redis.subscribe('live-updates');
 
 Redis.on('message', function(channel, message) {
     message = JSON.parse(message);
-    console.log(message);
+    var d = new Date();
+    console.log(d.getTime());
     io.emit(channel + ':' + message.event, message.data);
 });
 
 app.listen(3000, function() {
-    console.log('listening');
 });
