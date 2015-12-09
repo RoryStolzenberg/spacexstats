@@ -11,7 +11,7 @@
         @include gridle_gutter(0 10px);
     }
 
-    .about-this-user {
+    .about-this-user,  {
         td:first-child {
             color:$grey;
             text-align:right;
@@ -21,4 +21,14 @@
 
         }
     }
+
+    .user-stats {
+        td {
+            width:50%;
+        }
+    }
+}
+
+.profile #overview table {
+    width:100%;
 }

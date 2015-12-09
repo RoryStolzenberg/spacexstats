@@ -7,20 +7,8 @@
             <span class="mission-contractor hide@small">{{ mission.contractor }}</span>
         </p>
     </div>
-    <div class="bottom" ng-if="size == 'small'">
-        <div class="container values">
-            <div class="gr-4"><span class="launch-count">{{ mission.generic_vehicle_count }}</span></div>
-            <div class="gr-4">{{ mission.launch_date_time }}</div>
-            <div class="gr-4">launchSite FullLocation</div>
-        </div>
-        <div class="container keys">
-            <div class="gr-4 smallcaps">{{ mission.generic_vehicle }}<br/>Launch</div>
-            <div class="gr-4 smallcaps">Launch (UTC)</div>
-            <div class="gr-4 smallcaps">Launch Site</div>
-        </div>
-    </div>
 
-    <div class="bottom" ng-if="size == 'large'">
+    <div class="bottom">
         <div class="container values">
             <div><span class="launch-count">{{ mission.generic_vehicle_count }}</span></div>
             <div>{{ mission.launch_date_time }}</div>

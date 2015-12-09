@@ -42,26 +42,26 @@ class UsersController extends Controller {
 
             // Fetch the status of their interactions
             $params['interactions'] = [
-                'favoritemission' => $user->profile->favorite_mission != null,
-                'favoritepatch' => $user->profile->favorite_mission_patch != null,
-                'smsmessages' => $user->notifications->filter(function($notification) {
+                'Favorite Mission' => $user->profile->favorite_mission != null,
+                'Favorite Patch' => $user->profile->favorite_mission_patch != null,
+                'SMS Messages' => $user->notifications->filter(function($notification) {
                     return in_array($notification->notification_type_id, [
                         NotificationType::TMinus24HoursSMS,
                         NotificationType::TMinus3HoursSMS,
                         NotificationType::TMinus1HourSMS
                     ]);
                 })->count() == 1,
-                'countdownemails' => $user->notifications->filter(function($notification) {
+                'Countdown Emails' => $user->notifications->filter(function($notification) {
                     return in_array($notification->notification_type_id, [
                         NotificationType::TMinus1HourEmail,
                         NotificationType::TMinus3HoursEmail,
                         NotificationType::TMinus24HoursEmail
                     ]);
                 })->count() > 0,
-                'launchupdates' => $user->notifications->filter(function($notification) {
+                'Launch Update Emails' => $user->notifications->filter(function($notification) {
                     return $notification->notification_type_id == NotificationType::LaunchChange;
                 })->count() == 1,
-                'newssummaries' => $user->notifications->filter(function($notification) {
+                'News Summaries' => $user->notifications->filter(function($notification) {
                     return $notification->notification_type_id == NotificationType::NewsSummaries;
                 })->count() == 1
             ];

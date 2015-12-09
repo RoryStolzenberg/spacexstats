@@ -35,18 +35,35 @@
             @if (Auth::isAccessingSelf($user))
                 <h2>Your Interactions</h2>
                 <section class="interactions">
-                    <div class="text-center">
-                        @foreach ($interactions as $interaction => $value)
-                            @if ($value)
-                                <img src="/images/icons/interactions/{{ $interaction }}active.png" />
-                            @else
-                                <img src="/images/icons/interactions/{{ $interaction }}.png" />
-                            @endif
-                        @endforeach
-                        @if (!in_array(true, $interactions, true))
-                            <p class="exclaim"><a href="/users/{{ $user->username }}/edit">Edit your profile</a> to setup SMS & email notifications, and more.</p>
-                        @endif
-                    </div>
+                    <p>Here you can see what services and features of SpaceXStats you are using. To enable a feature, go to the edit profile page.</p>
+                    @if (in_array(true, $interactions, true)))
+                        <table>
+                            <tr>
+                                @foreach ($interactions as $interaction => $value)
+                                    <td>
+                                        @if ($value)
+                                            <img src="/images/icons/interactions/{{ $interaction }} Active.png" />
+                                        @else
+                                            <img src="/images/icons/interactions/{{ $interaction }}.png" />
+                                        @endif
+                                    </td>
+                                @endforeach
+                            </tr>
+                            <tr>
+                                @foreach ($interactions as $interaction => $value)
+                                    <td>
+                                        @if ($value)
+                                            <i class="fa fa-check"></i> {{ $interaction }}
+                                        @else
+                                            {{ $interaction }}
+                                        @endif
+                                    </td>
+                                @endforeach
+                            </tr>
+                        </table>
+                    @else
+                        <p class="exclaim"><a href="/users/{{ $user->username }}/edit">Edit your profile</a> to setup SMS & email notifications, and more.</p>
+                    @endif
                 </section>
             @endif
 
@@ -62,13 +79,17 @@
                         @if (!is_null($user->profile->twitter_account))
                         <tr>
                             <td><i class="fa fa-twitter"></i> Twitter</td>
-                            <td><a href="https://twitter.com/{{ $user->profile->twitter_account }}">{{ '@' . $user->profile->twitter_account }}</a></td>
+                            <td>
+                                <span><a href="https://twitter.com/{{ $user->profile->twitter_account }}">{{ '@' . $user->profile->twitter_account }}</a></span>
+                            </td>
                         </tr>
                         @endif
                         @if (!is_null($user->profile->reddit_account))
                         <tr>
                             <td><i class="fa fa-reddit"></i> Reddit</td>
-                            <td><a href="http://reddit.com/u/{{ $user->profile->reddit_account }}">{{ '/u/' . $user->profile->reddit_account }}</a></td>
+                            <td>
+                                <span><a href="http://reddit.com/u/{{ $user->profile->reddit_account }}">{{ '/u/' . $user->profile->reddit_account }}</a></span>
+                            </td>
                         </tr>
                         @endif
                         <tr>
@@ -96,7 +117,7 @@
                             <p>{{ $user->username }} has extended their subscription by {{ $user->subscriptionExtendedBy(true) }}.</p>
                         @endif
                     </div>
-                    <table class="about-this-user">
+                    <table class="user-stats">
                         <tr>
                             <td>Uploads</td>
                             <td>{{ $user->objects()->inMissionControl()->count() }}</td>
@@ -112,22 +133,25 @@
                     </table>
                 </div>
 
+                <h3>Favorite Mission</h3>
+                @if ($favoriteMission)
+                    @include('templates.cards.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
+                @else
+                    <p class="exclaim">No favorite mission. Add one!</p>
+                @endif
                 <div class="gr-12">
-                    <div class="gr-4 gr-6@medium gr-12@small">
-                        @if ($favoriteMission)
-                            @include('templates.cards.missionCard', ['size' => 'small', 'mission' => $favoriteMission])
+                    <div class="gr-6 gr-12@small">
+                        @if ($user->profile->favorite_misison_patch)
+                            $user->profile->favorite_mission_patch
                         @else
-                            <p>No favorite mission. Add one!</p>
+                            <p class="exclaim">No Favorite Mission Patch. Add one!</p>
                         @endif
                     </div>
-                    <div class="gr-4 gr-6@medium gr-12@small">
-                        {{ $user->profile->favorite_mission_patch or 'No Favorite Mission Patch. Add one!' }}
-                    </div>
-                    <div class="gr-4 gr-6@medium gr-12@small">
+                    <div class="gr-6 gr-12@small">
                         @if ($user->profile->favorite_quote)
                             <blockquote>{{ $user->profile->favorite_quote }}</blockquote>
                         @else
-                            No favorite quote. Add one!
+                            <p class="exclaim">No favorite quote. Add one!</p>
                         @endif
                     </div>
                 </div>
