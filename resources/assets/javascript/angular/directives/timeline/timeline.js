@@ -95,8 +95,8 @@
                         .classed('event', true)
                         .attr("cx", function(d) { return xScale(d.occurred_at); })
                         .call(tip)
-                        .on("mouseover", function() {
-                            tip.show();
+                        .on("mouseover", function(d) {
+                            tip.show(d);
                             d3.selectAll('.event').transition()
                                 .attr('opacity', 0);
 
@@ -104,8 +104,8 @@
                                 .attr('opacity', 1)
                                 .attr("transform", "translate(-"+ d3.select(this).attr('cx') * (1.5-1) + ",-0) scale(1.5, 1.5)");
                         })
-                        .on("mouseout", function() {
-                            tip.hide();
+                        .on("mouseout", function(d) {
+                            tip.hide(d);
                             d3.selectAll('.event').transition()
                                 .attr("transform", "translate(0,0) scale(1,1)")
                                 .attr('opacity', 1);
