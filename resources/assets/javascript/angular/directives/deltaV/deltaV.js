@@ -5,7 +5,7 @@
         return {
             restrict: 'E',
             scope: {
-                deltaV: '=ngModel',
+                object: '=ngModel',
                 hint: '@'
             },
             link: function($scope, element, attributes) {
@@ -77,7 +77,8 @@
                     isOriginalContent: 1.5
                 };
 
-                $scope.$watch("deltaV", function(object) {
+                $scope.$watch("object", function(object) {
+                    console.log(object);
                     if (typeof object !== 'undefined') {
                         var calculatedValue = $scope.calculate(object);
                         $scope.setCalculatedValue(calculatedValue);
@@ -85,82 +86,92 @@
                 }, true);
 
                 $scope.calculate = function(object) {
-                    if (angular.isDefined(object)) {
-                        var internalValue = 0;
+                    var internalValue = 0;
 
-                        // typeRegime
-                        internalValue += baseTypeScores[$scope.hint];
+                    // typeRegime
+                    internalValue += baseTypeScores[$scope.hint];
 
-                        // specialTypeRegime
-                        if (object.subtype !== null) {
-                            if (object.subtype in specialTypeMultiplier) {
-                                internalValue += specialTypeMultiplier[object.subtype];
-                            }
+                    // specialTypeRegime
+                    if (object.subtype !== null) {
+                        if (object.subtype in specialTypeMultiplier) {
+                            internalValue += specialTypeMultiplier[object.subtype];
                         }
+                    }
 
-                        // resourceQualityRegime
-                        switch ($scope.hint) {
-                            case 'Image':
-                                internalValue += megapixelSubscore(object);
-                                break;
+                    // resourceQualityRegime
+                    switch ($scope.hint) {
+                        case 'Image':
+                            internalValue += megapixelSubscore(object);
+                            break;
 
-                            case 'GIF':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
+                        case 'GIF':
+                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            break;
 
-                            case 'Video':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
+                        case 'Video':
+                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            break;
 
-                            case 'Audio':
-                                internalValue += minuteSubscore(object);
-                                break;
+                        case 'Audio':
+                            internalValue += minuteSubscore(object);
+                            break;
 
-                            case 'Document':
-                                internalValue += pageSubscore(object);
-                                break;
-                        }
+                        case 'Document':
+                            internalValue += pageSubscore(object);
+                            break;
+                    }
 
-                        // metadataRegime
+                    // metadataRegime
+                    if (object.summary) {
                         internalValue += object.summary.length * metadataScore.summary.perCharacter;
+                    }
+                    if (object.author) {
                         internalValue += object.author.length * metadataScore.author.perCharacter;
+                    }
+                    if (object.attribution) {
                         internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
+                    }
+                    if (object.tags) {
                         internalValue += object.tags.length * metadataScore.tags.perTag;
+                    }
 
-                        // dateAccuracyRegime
-                        $year = object.originated_at.substr(0, 4);
-                        $month = object.originated_at.substr(5, 2);
-                        $date = object.originated_at.substr(8, 2);
-                        $datetime = object.originated_at.substr(11, 8);
+                    // dateAccuracyRegime
+                    if (object.originated_at) {
+                        var month = object.originated_at.substr(5, 2);
+                        var date = object.originated_at.substr(8, 2);
+                        var datetime = object.originated_at.substr(11, 8);
 
-                        if ($datetime !== '00:00:00') {
+                        console.log(datetime);
+                        console.log(date);
+                        console.log(month);
+
+                        if (datetime !== '00:00:00' && datetime !== '') {
                             internalValue *= dateAccuracyMultiplier.datetime;
-                        } else if ($date !== '00') {
+                        } else if (date !== '00') {
                             internalValue *= dateAccuracyMultiplier.date;
-                        } else if ($month !== '00') {
+                        } else if (month !== '00') {
                             internalValue *= dateAccuracyMultiplier.month;
                         } else {
                             internalValue *= dateAccuracyMultiplier.year;
                         }
-
-                        // dataSaverRegime
-                        if (object.external_url != null) {
-                            internalValue *= dataSaverMultiplier.hasExternalUrl;
-                        }
-
-                        // originalContentRegime
-                        if (object.original_content === true) {
-                            internalValue *= originalContentMultiplier.isOriginalContent;
-                        }
-
-                        return round(internalValue);
                     }
-                    return 0;
+
+                    // dataSaverRegime
+                    if (object.external_url) {
+                        internalValue *= dataSaverMultiplier.hasExternalUrl;
+                    }
+
+                    // originalContentRegime
+                    if (object.original_content === true) {
+                        internalValue *= originalContentMultiplier.isOriginalContent;
+                    }
+
+                    return Math.round(internalValue);
                 };
 
                 $scope.setCalculatedValue = function(calculatedValue) {
                     $scope.calculatedValue.deltaV = calculatedValue;
-                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
+                    var seconds = Math.round($scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE));
                     $scope.calculatedValue.time = seconds + ' seconds';
                 };
 

@@ -702,7 +702,7 @@
                             <ul>
                                 <li>
                                     <label>Article URL</label>
-                                    <input type="url" name="article-url" id="article-url" ng-model="article.external_url" required />
+                                    <input type="url" name="article-url" id="article-url" ng-model="article.external_url" ng-change="detectPublisher()" required />
                                 </li>
                                 <li>
                                     <label>Article Date</label>
@@ -716,10 +716,11 @@
                                             ng-model="article.publisher_id"
                                             unique-key="publisher_id"
                                             title-key="name"
+                                            image-key="favicon"
                                             searchable="true"
                                             placeholder="Select the publisher of the article">
                                     </dropdown>
-                                    <p>Can't find the article publisher? <a href="/missioncontrol/publishers">Create them first</a>.</p>
+                                    <p ng-show="article.publisher_id == null">Can't find the article publisher? <a href="/missioncontrol/publishers">Create them first</a>.</p>
                                 </li>
                                 <li class="container">
                                     <div class="gr-8">
@@ -733,7 +734,7 @@
                                 </li>
                                 <li>
                                     <label>Article</label>
-                                    <textarea ng-model="article.article" required></textarea>
+                                    <textarea ng-model="article.article" placeholder="You can use markdown here to format the article." required></textarea>
                                 </li>
                                 <li>
                                     <label>Select Mission</label>
@@ -756,7 +757,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="article" hint="article"></delta-v>
+                            <delta-v ng-model="article" hint="Article"></delta-v>
                         </div>
                     </fieldset>
 

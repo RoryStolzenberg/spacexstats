@@ -411,6 +411,10 @@
 
         $scope.isSubmitting = false;
 
+        $scope.detectPublisher = function() {
+
+        };
+
         $scope.postSubmitButtonText = function(form) {
             if (form.$invalid) {
                 return 'We need more info';
@@ -645,36 +649,51 @@
 (function() {
 	var publisherApp = angular.module('app', []);
 
-	publisherApp.controller('publishersController', ["$scope", "publisherService", function($scope, publisherService) {
+	publisherApp.controller('publishersController', ["$scope", "publisherService", "flashMessage", function($scope, publisherService, flashMessage) {
         $scope.publishers = laravel.publishers;
-        $scope.isCreatingPublisher = false;
+        $scope.isCreatingPublisher = $scope.isEditingPublisher = false;
 
         $scope.editPublisher = function(publisher) {
+            $scope.isEditingPublisher = true;
             publisherService.edit(publisher).then(function(response) {
-                // Push & flashMessage
+                publisher = response.data;
+                $scope.isEditingPublisher = false;
+                flashMessage.addOK("Publisher " + publisher.name + " edited");
             });
         };
 
-        $scope.createPublisher = function(publisher) {
+        $scope.createPublisher = function(publisher, form) {
+            $scope.isCreatingPublisher = true;
             publisherService.create(publisher).then(function(response) {
-                // Push & flashMessage
+                $scope.publishers.unshift(response.data);
+                $scope.isCreatingPublisher = false;
+
+                flashMessage.addOK("Publisher " + publisher.name + " created");
+                $scope.newPublisher = null;
+                form.$setUntouched();
+
+            }, function(response) {
+                $scope.isCreatingPublisher = false;
+                flashMessage.addError("That publisher already exists");
             });
         };
 
         $scope.deletePublisher = function(publisher) {
+            $scope.isDeletingPublisher = true;
             publisherService.delete(publisher).then(function(response) {
-                // Delete & flashMessage
+                $scope.isDeletingPublisher = false;
+                flashMessage.addOK("Publisher " + publisher.name + " deleted");
             });
         }
 	}]);
 
     publisherApp.service('publisherService', ["$http", function($http) {
         this.create = function(publisher) {
-            return $http.post('/missioncontrol/publishers/create', publisher);
+            return $http.post('/missioncontrol/publishers/create', {publisher: publisher});
         };
 
         this.edit = function(publisher) {
-            return $http.patch('/missioncontrol/publishers/' + publisher.publisher_id, publisher);
+            return $http.patch('/missioncontrol/publishers/' + publisher.publisher_id, {publisher: publisher});
         };
 
         this.delete = function(publisher) {
@@ -2350,6 +2369,23 @@
     }]);
 
 })();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2465,6 +2501,46 @@
                     dropzone.processQueue();
                 }
             }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
         }
     }]);
 })();
@@ -2648,23 +2724,6 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
     var app = angular.module('app', []);
 
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
@@ -2788,7 +2847,7 @@
             var self = tag;
 
             // Convert the tag to lowercase and replace all spaces present.
-            self.name = tag.name.toLowerCase().replace(/[a-z0-9-]/g, "").substring(0, 50);
+            self.name = tag.name.toLowerCase().replace(/[^a-z0-9-]/g, "").substring(0, 50);
 
             return self;
         }
@@ -2799,370 +2858,32 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('chart', ["$window", function($window) {
+    app.directive('redditComment', ["$http", function($http) {
         return {
             replace: true,
             restrict: 'E',
             scope: {
-                data: '=data',
-                settings: "="
-            },
-            link: function($scope, elem, attrs) {
-
-                $scope.$watch('data', function(newValue) {
-                    render(newValue);
-                }, true);
-
-                function render(chartData) {
-                    if (!angular.isDefined(chartData) || chartData.length == 0) {
-                        return;
-                    }
-
-                    // Make a deep copy of the object as we may be doing manipulation
-                    // which would cause the watcher to fire
-                    var data = jQuery.extend(true, [], chartData);
-
-                    var d3 = $window.d3;
-                    var svg = d3.select(elem[0]);
-                    var width = elem.width();
-                    var height = elem.height();
-
-                    var settings = $scope.settings;
-
-                    // create a reasonable set of defaults for some things
-                    if (typeof settings.xAxis.ticks === 'undefined') {
-                        settings.xAxis.ticks = 5;
-                    }
-                    if (typeof settings.yAxis.ticks === 'undefined') {
-                        settings.yAxis.ticks = 5;
-                    }
-
-                    // check padding and set default
-                    if (typeof settings.padding === 'undefined') {
-                        settings.padding = 50;
-                    }
-
-                    // extrapolate data
-                    if (settings.extrapolation === true) {
-                        var originDatapoint = {};
-                        originDatapoint[settings.xAxis.key] = 0;
-                        originDatapoint[settings.yAxis.key] = 0;
-
-                        //data.unshift(originDatapoint);
-                    }
-
-                    // draw
-                    var drawLineChart = function() {
-                        // Setup scales
-                        if (settings.xAxis.type == 'linear') {
-                            var xScale = d3.scale.linear()
-                                .domain([0, data[data.length-1][settings.xAxis.key]])
-                                .range([settings.padding, width - settings.padding]);
-
-                        } else if (settings.xAxis.type == 'timescale') {
-                            var xScale = d3.time.scale.utc()
-                                .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
-                                .range([settings.padding, width - settings.padding]);
-                        }
-
-                        if (settings.yAxis.type == 'linear') {
-                            var yScale = d3.scale.linear()
-                                .domain([d3.max(data, function(d) {
-                                    return d[settings.yAxis.key];
-                                }), d3.min(data, function(d) {
-                                    return d[settings.yAxis.key];
-                                })])
-                                .range([settings.padding, height - settings.padding]);
-
-                        } else if (settings.yAxis.type == 'timescale') {
-                            var yScale = d3.time.scale.utc()
-                                .domain([d3.max(data, function(d) {
-                                    return d[settings.yAxis.key];
-                                }), 0])
-                                .range([settings.padding, height - settings.padding]);
-                        }
-
-                        // Generators
-                        var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
-                            return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
-                        });
-                        var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
-                            return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
-                        });
-
-                        // Line function
-                        var lineFunction = d3.svg.line()
-                            .x(function(d) {
-                                return xScale(d[settings.xAxis.key]);
-                            })
-                            .y(function(d) {
-                                return yScale(d[settings.yAxis.key]);
-                            })
-                            .interpolate(settings.interpolation);
-
-                        // Element manipulation
-                        svg.append("svg:g")
-                            .attr("class", "x axis")
-                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                            .call(xAxisGenerator);
-
-                        svg.append("svg:g")
-                            .attr("class", "y axis")
-                            .attr("transform", "translate(" + settings.padding + ",0)")
-                            .attr("stroke-width", 2)
-                            .call(yAxisGenerator);
-
-                        svg.append("svg:path")
-                            .attr({
-                                d: lineFunction(data),
-                                "stroke-width": 2,
-                                "fill": "none",
-                                "class": "path"
-                            });
-
-                        svg.append("text")
-                            .attr("class", "chart-title")
-                            .attr("text-anchor", "middle")
-                            .attr("x", width / 2)
-                            .attr("y", settings.padding / 2)
-                            .text(settings.chartTitle);
-
-                        svg.append("text")
-                            .attr("class", "axis x-axis")
-                            .attr("text-anchor", "middle")
-                            .attr("x", width / 2)
-                            .attr("y", height - (settings.padding / 2))
-                            .text(settings.xAxis.title);
-
-                        svg.append("text")
-                            .attr("class", "axis y-axis")
-                            .attr("text-anchor", "middle")
-                            .attr("transform", "rotate(-90)")
-                            .attr("x", - (height / 2))
-                            .attr("y", settings.padding / 2)
-                            .text(settings.yAxis.title);
-                    };
-
-                    drawLineChart();
-                }
-
-            },
-            templateUrl: '/js/templates/chart.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                deltaV: '=ngModel',
-                hint: '@'
+                redditComment: '=ngModel'
             },
             link: function($scope, element, attributes) {
 
-                $scope.constants = {
-                    SECONDS_PER_DAY: 86400,
-                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
-                };
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
 
-                var baseTypeScores = {
-                    Image: 10,
-                    GIF: 10,
-                    Audio: 20,
-                    Video: 20,
-                    Document: 20,
-                    Tweet: 5,
-                    Article: 10,
-                    Comment: 5,
-                    Webpage: 10,
-                    Text: 10
-                };
-
-                var specialTypeMultiplier = {
-                    "Mission Patch": 2,
-                    "Photo": 1.1,
-                    "Launch Video": 2,
-                    "Press Kit": 2,
-                    "Weather Forecast": 2,
-                    "Press Conference": 1.5
-                };
-
-                var resourceQuality = {
-                    multipliers: {
-                        perMegapixel: 5,
-                        perMinute: 2
-                    },
-                    scores: {
-                        perPage: 2
-                    }
-                };
-
-                var metadataScore = {
-                    summary: {
-                        perCharacter: 0.02
-                    },
-                    author: {
-                        perCharacter: 0.2
-                    },
-                    attribution: {
-                        perCharacter: 0.1
-                    },
-                    tags: {
-                        perTag: 1
-                    }
-                };
-
-                var dateAccuracyMultiplier = {
-                    year: 1,
-                    month: 1.05,
-                    date: 1.1,
-                    datetime: 1.2
-                };
-
-                var dataSaverMultiplier = {
-                    hasExternalUrl: 2
-                };
-
-                var originalContentMultiplier = {
-                    isOriginalContent: 1.5
-                };
-
-                $scope.$watch("deltaV", function(object) {
-                    if (typeof object !== 'undefined') {
-                        var calculatedValue = $scope.calculate(object);
-                        $scope.setCalculatedValue(calculatedValue);
-                    }
-                }, true);
-
-                $scope.calculate = function(object) {
-                    if (angular.isDefined(object)) {
-                        var internalValue = 0;
-
-                        // typeRegime
-                        internalValue += baseTypeScores[$scope.hint];
-
-                        // specialTypeRegime
-                        if (object.subtype !== null) {
-                            if (object.subtype in specialTypeMultiplier) {
-                                internalValue += specialTypeMultiplier[object.subtype];
-                            }
-                        }
-
-                        // resourceQualityRegime
-                        switch ($scope.hint) {
-                            case 'Image':
-                                internalValue += megapixelSubscore(object);
-                                break;
-
-                            case 'GIF':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
-
-                            case 'Video':
-                                internalValue += megapixelSubscore(object) * minuteSubscore(object);
-                                break;
-
-                            case 'Audio':
-                                internalValue += minuteSubscore(object);
-                                break;
-
-                            case 'Document':
-                                internalValue += pageSubscore(object);
-                                break;
-                        }
-
-                        // metadataRegime
-                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
-                        internalValue += object.author.length * metadataScore.author.perCharacter;
-                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
-                        internalValue += object.tags.length * metadataScore.tags.perTag;
-
-                        // dateAccuracyRegime
-                        $year = object.originated_at.substr(0, 4);
-                        $month = object.originated_at.substr(5, 2);
-                        $date = object.originated_at.substr(8, 2);
-                        $datetime = object.originated_at.substr(11, 8);
-
-                        if ($datetime !== '00:00:00') {
-                            internalValue *= dateAccuracyMultiplier.datetime;
-                        } else if ($date !== '00') {
-                            internalValue *= dateAccuracyMultiplier.date;
-                        } else if ($month !== '00') {
-                            internalValue *= dateAccuracyMultiplier.month;
-                        } else {
-                            internalValue *= dateAccuracyMultiplier.year;
-                        }
-
-                        // dataSaverRegime
-                        if (object.external_url != null) {
-                            internalValue *= dataSaverMultiplier.hasExternalUrl;
-                        }
-
-                        // originalContentRegime
-                        if (object.original_content === true) {
-                            internalValue *= originalContentMultiplier.isOriginalContent;
-                        }
-
-                        return round(internalValue);
-                    }
-                    return 0;
-                };
-
-                $scope.setCalculatedValue = function(calculatedValue) {
-                    $scope.calculatedValue.deltaV = calculatedValue;
-                    var seconds = $scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE);
-                    $scope.calculatedValue.time = seconds + ' seconds';
-                };
-
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0
-                };
-            },
-            templateUrl: '/js/templates/deltaV.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
                         });
-                    } else {
-                        $scope.tweet = {};
                     }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
                 }
+
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/redditComment.html'
         }
     }]);
 })();
@@ -3500,78 +3221,344 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                object: '=ngModel',
+                hint: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.constants = {
+                    SECONDS_PER_DAY: 86400,
+                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
+                };
+
+                var baseTypeScores = {
+                    Image: 10,
+                    GIF: 10,
+                    Audio: 20,
+                    Video: 20,
+                    Document: 20,
+                    Tweet: 5,
+                    Article: 10,
+                    Comment: 5,
+                    Webpage: 10,
+                    Text: 10
+                };
+
+                var specialTypeMultiplier = {
+                    "Mission Patch": 2,
+                    "Photo": 1.1,
+                    "Launch Video": 2,
+                    "Press Kit": 2,
+                    "Weather Forecast": 2,
+                    "Press Conference": 1.5
+                };
+
+                var resourceQuality = {
+                    multipliers: {
+                        perMegapixel: 5,
+                        perMinute: 2
+                    },
+                    scores: {
+                        perPage: 2
+                    }
+                };
+
+                var metadataScore = {
+                    summary: {
+                        perCharacter: 0.02
+                    },
+                    author: {
+                        perCharacter: 0.2
+                    },
+                    attribution: {
+                        perCharacter: 0.1
+                    },
+                    tags: {
+                        perTag: 1
+                    }
+                };
+
+                var dateAccuracyMultiplier = {
+                    year: 1,
+                    month: 1.05,
+                    date: 1.1,
+                    datetime: 1.2
+                };
+
+                var dataSaverMultiplier = {
+                    hasExternalUrl: 2
+                };
+
+                var originalContentMultiplier = {
+                    isOriginalContent: 1.5
+                };
+
+                $scope.$watch("object", function(object) {
+                    console.log(object);
+                    if (typeof object !== 'undefined') {
+                        var calculatedValue = $scope.calculate(object);
+                        $scope.setCalculatedValue(calculatedValue);
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+
+                    // typeRegime
+                    internalValue += baseTypeScores[$scope.hint];
+
+                    // specialTypeRegime
+                    if (object.subtype !== null) {
+                        if (object.subtype in specialTypeMultiplier) {
+                            internalValue += specialTypeMultiplier[object.subtype];
+                        }
+                    }
+
+                    // resourceQualityRegime
+                    switch ($scope.hint) {
+                        case 'Image':
+                            internalValue += megapixelSubscore(object);
+                            break;
+
+                        case 'GIF':
+                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            break;
+
+                        case 'Video':
+                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            break;
+
+                        case 'Audio':
+                            internalValue += minuteSubscore(object);
+                            break;
+
+                        case 'Document':
+                            internalValue += pageSubscore(object);
+                            break;
+                    }
+
+                    // metadataRegime
+                    if (object.summary) {
+                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
+                    }
+                    if (object.author) {
+                        internalValue += object.author.length * metadataScore.author.perCharacter;
+                    }
+                    if (object.attribution) {
+                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
+                    }
+                    if (object.tags) {
+                        internalValue += object.tags.length * metadataScore.tags.perTag;
+                    }
+
+                    // dateAccuracyRegime
+                    if (object.originated_at) {
+                        var month = object.originated_at.substr(5, 2);
+                        var date = object.originated_at.substr(8, 2);
+                        var datetime = object.originated_at.substr(11, 8);
+
+                        console.log(datetime);
+                        console.log(date);
+                        console.log(month);
+
+                        if (datetime !== '00:00:00' && datetime !== '') {
+                            internalValue *= dateAccuracyMultiplier.datetime;
+                        } else if (date !== '00') {
+                            internalValue *= dateAccuracyMultiplier.date;
+                        } else if (month !== '00') {
+                            internalValue *= dateAccuracyMultiplier.month;
+                        } else {
+                            internalValue *= dateAccuracyMultiplier.year;
+                        }
+                    }
+
+                    // dataSaverRegime
+                    if (object.external_url) {
+                        internalValue *= dataSaverMultiplier.hasExternalUrl;
+                    }
+
+                    // originalContentRegime
+                    if (object.original_content === true) {
+                        internalValue *= originalContentMultiplier.isOriginalContent;
+                    }
+
+                    return Math.round(internalValue);
+                };
+
+                $scope.setCalculatedValue = function(calculatedValue) {
+                    $scope.calculatedValue.deltaV = calculatedValue;
+                    var seconds = Math.round($scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE));
+                    $scope.calculatedValue.time = seconds + ' seconds';
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0
+                };
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
             restrict: 'E',
             scope: {
-                redditComment: '=ngModel'
+                data: '=data',
+                settings: "="
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, elem, attrs) {
 
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                $scope.$watch('data', function(newValue) {
+                    render(newValue);
+                }, true);
 
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
+                function render(chartData) {
+                    if (!angular.isDefined(chartData) || chartData.length == 0) {
+                        return;
                     }
+
+                    // Make a deep copy of the object as we may be doing manipulation
+                    // which would cause the watcher to fire
+                    var data = jQuery.extend(true, [], chartData);
+
+                    var d3 = $window.d3;
+                    var svg = d3.select(elem[0]);
+                    var width = elem.width();
+                    var height = elem.height();
+
+                    var settings = $scope.settings;
+
+                    // create a reasonable set of defaults for some things
+                    if (typeof settings.xAxis.ticks === 'undefined') {
+                        settings.xAxis.ticks = 5;
+                    }
+                    if (typeof settings.yAxis.ticks === 'undefined') {
+                        settings.yAxis.ticks = 5;
+                    }
+
+                    // check padding and set default
+                    if (typeof settings.padding === 'undefined') {
+                        settings.padding = 50;
+                    }
+
+                    // extrapolate data
+                    if (settings.extrapolation === true) {
+                        var originDatapoint = {};
+                        originDatapoint[settings.xAxis.key] = 0;
+                        originDatapoint[settings.yAxis.key] = 0;
+
+                        //data.unshift(originDatapoint);
+                    }
+
+                    // draw
+                    var drawLineChart = function() {
+                        // Setup scales
+                        if (settings.xAxis.type == 'linear') {
+                            var xScale = d3.scale.linear()
+                                .domain([0, data[data.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
+
+                        } else if (settings.xAxis.type == 'timescale') {
+                            var xScale = d3.time.scale.utc()
+                                .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
+                        }
+
+                        if (settings.yAxis.type == 'linear') {
+                            var yScale = d3.scale.linear()
+                                .domain([d3.max(data, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), d3.min(data, function(d) {
+                                    return d[settings.yAxis.key];
+                                })])
+                                .range([settings.padding, height - settings.padding]);
+
+                        } else if (settings.yAxis.type == 'timescale') {
+                            var yScale = d3.time.scale.utc()
+                                .domain([d3.max(data, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), 0])
+                                .range([settings.padding, height - settings.padding]);
+                        }
+
+                        // Generators
+                        var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
+                            return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
+                        });
+                        var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
+                            return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
+                        });
+
+                        // Line function
+                        var lineFunction = d3.svg.line()
+                            .x(function(d) {
+                                return xScale(d[settings.xAxis.key]);
+                            })
+                            .y(function(d) {
+                                return yScale(d[settings.yAxis.key]);
+                            })
+                            .interpolate(settings.interpolation);
+
+                        // Element manipulation
+                        svg.append("svg:g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                            .call(xAxisGenerator);
+
+                        svg.append("svg:g")
+                            .attr("class", "y axis")
+                            .attr("transform", "translate(" + settings.padding + ",0)")
+                            .attr("stroke-width", 2)
+                            .call(yAxisGenerator);
+
+                        svg.append("svg:path")
+                            .attr({
+                                d: lineFunction(data),
+                                "stroke-width": 2,
+                                "fill": "none",
+                                "class": "path"
+                            });
+
+                        svg.append("text")
+                            .attr("class", "chart-title")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", settings.padding / 2)
+                            .text(settings.chartTitle);
+
+                        svg.append("text")
+                            .attr("class", "axis x-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", height - (settings.padding / 2))
+                            .text(settings.xAxis.title);
+
+                        svg.append("text")
+                            .attr("class", "axis y-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("transform", "rotate(-90)")
+                            .attr("x", - (height / 2))
+                            .attr("y", settings.padding / 2)
+                            .text(settings.yAxis.title);
+                    };
+
+                    drawLineChart();
                 }
 
             },
-            templateUrl: '/js/templates/redditComment.html'
+            templateUrl: '/js/templates/chart.html'
         }
     }]);
 })();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
-                    }
-                    return viewValue;
-                });
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
-})();
-
 (function() {
     var app = angular.module('app', []);
 
@@ -3610,7 +3597,7 @@
                         var props = {
                             id: option[$scope.uniqueKey],
                             name: option[$scope.titleKey],
-                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                            image: option[$scope.imageKey]
                         };
 
                         if (typeof $scope.descriptionKey !== 'undefined') {
@@ -3693,14 +3680,45 @@
 (function() {
     var app = angular.module('app');
 
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -3826,4 +3844,16 @@
             templateUrl: '/js/templates/timeline.html'
         };
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();

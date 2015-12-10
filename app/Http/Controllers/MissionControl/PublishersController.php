@@ -1,7 +1,10 @@
 <?php
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use Illuminate\Support\Facades\Input;
 use SpaceXStats\Http\Controllers\Controller;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Models\Object;
 use SpaceXStats\Models\Publisher;
 use JavaScript;
 
@@ -14,12 +17,14 @@ class PublishersController extends Controller {
     public function index() {
         $publishers = Publisher::with('objects')->get()->map(function($publisher) {
             $publisher->articleCount = $publisher->objects->count();
+            $publisher->mostRecentArticle = $publisher->objects->sortByDesc('originated_at')->first();
             unset($publisher->objects);
             return $publisher;
         });
 
         JavaScript::put([
-            'publishers' => $publishers
+            'publishers' => $publishers,
+            'articleCount' => Object::where('type', MissionControlType::Article)->inMissionControl()->count()
         ]);
 
         return view('missionControl.publishers.index');
@@ -32,7 +37,7 @@ class PublishersController extends Controller {
 	}
 
 	public function create() {
-        if ($this->publisher->isValid(Input::get('publisher'))) {
+        if ($this->publisher->isValid(Input::get('publisher')) === true) {
 
             // Create publisher
             $publisher = Publisher::create([
@@ -46,24 +51,24 @@ class PublishersController extends Controller {
 
             return response()->json($publisher, 200);
         }
-        return response()->json();
+        return response()->json(null, 422);
 	}
 
 	public function edit($publisher_id) {
 
         // Is the publisher details provided valid?
-        if ($this->publisher->isValid(Input::get('publisher'))) {
+        if ($this->publisher->isValid(Input::get('publisher')) === true) {
 
             // update
             $publisher = Publisher::find(Input::get('publisher.publisher_id'));
-            $publisher->name =
-            $publisher->description =
+            $publisher->name = Input::get('publisher.name');
+            $publisher->description = Input::get('publisher.description');
             $publisher->save();
 
             // Edit publisher
             return response()->json(null, 204);
         }
-        return response()->json();
+        return response()->json(null, 422);
 	}
 
     public function delete($publisher_id) {

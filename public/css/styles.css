@@ -7523,6 +7523,9 @@ blockquote, .backing {
   padding: 10px;
   width: 100%; }
 
+.cursor-pointer {
+  cursor: pointer; }
+
 .header-wrapper {
   width: 100%;
   background-color: #3569A4;
@@ -9053,6 +9056,9 @@ button.canned-response {
     float: right;
     max-width: 500px; }
 
+.publisher {
+  margin: 20px 0; }
+
 .tagger-container .wrapper {
   border: 1px solid #CCC;
   font-size: 0;
@@ -9136,8 +9142,8 @@ button.canned-response {
     .dropdown .dropdown-search input {
       margin: 4px 0; }
   .dropdown .selected-option img {
-    width: 40px - 2px;
-    height: 40px - 2px; }
+    width: 38px;
+    height: 38px; }
   .dropdown img {
     width: 40px;
     height: 40px;

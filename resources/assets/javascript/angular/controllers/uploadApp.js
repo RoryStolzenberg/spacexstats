@@ -107,6 +107,10 @@
 
         $scope.isSubmitting = false;
 
+        $scope.detectPublisher = function() {
+
+        };
+
         $scope.postSubmitButtonText = function(form) {
             if (form.$invalid) {
                 return 'We need more info';

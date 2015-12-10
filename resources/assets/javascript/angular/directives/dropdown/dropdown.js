@@ -36,7 +36,7 @@
                         var props = {
                             id: option[$scope.uniqueKey],
                             name: option[$scope.titleKey],
-                            image: option.featuredImage ? option.featuredImage.media_thumb_small : option.media_thumb_small
+                            image: option[$scope.imageKey]
                         };
 
                         if (typeof $scope.descriptionKey !== 'undefined') {

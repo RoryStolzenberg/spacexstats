@@ -51,8 +51,8 @@ $dropdownSize: 40px;
 
     .selected-option {
         img {
-            width:#{$dropdownSize} - 2px;
-            height:#{$dropdownSize} - 2px;
+            width:$dropdownSize - 2px;
+            height:$dropdownSize - 2px;
         }
     }
 

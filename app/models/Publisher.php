@@ -13,16 +13,16 @@ class Publisher extends Model {
     public $timestamps = false;
 
     protected $hidden = [];
-    protected $appends = [];
+    protected $appends = ['favicon'];
     protected $fillable = [];
     protected $guarded = [];
 
     // Validation
-    public $rules = array(
+    public $rules = [
         'name' => ['unique:publishers', 'varchar:tiny', 'required'],
         'description' => ['varchar:medium', 'required'],
-        'url' => ['varchar:small', 'required']
-    );
+        'url' => ['unique:publishers', 'varchar:small', 'required']
+    ];
 
     public $messages = array();
 
@@ -33,13 +33,13 @@ class Publisher extends Model {
 
     // Methods
     public function createFavicon() {
-        $favicon = file_get_contents($this->url);
+        $favicon = file_get_contents('http://www.google.com/s2/favicons?domain=' . $this->url);
         create_if_does_not_exist(public_path('media/publications'));
-        file_put_contents(public_path($this->name . '.jpg'), $favicon);
+        file_put_contents(public_path('media/publications/' . $this->name . '.jpg'), $favicon);
     }
 
     // Attribute accessors
     public function getFaviconAttribute() {
-        return 'media/publications/' . $this->name . 'jpg';
+        return '/media/publications/' . $this->name . '.jpg';
     }
 }
