@@ -120,6 +120,7 @@ class LiveController extends Controller {
         // Repush to DB
         $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::find($id);
         $liveUpdateModel->update = Input::get('update');
+        $liveUpdateModel->save();
 
         return response()->json(null, 204);
     }

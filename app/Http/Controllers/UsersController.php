@@ -29,7 +29,7 @@ class UsersController extends Controller {
         $params = [
             'user' => $user,
             'favoriteMission' => $user->profile->favoriteMission,
-            'objects' => $user->objects()->inMissionControl()->take(10)->get(),
+            'objects' => $user->objects()->inMissionControl()->take(10),
             'favorites' => $user->favorites->take(10),
             'comments' => $user->comments->take(10),
             'deltaV' => $user->totalDeltaV(),
