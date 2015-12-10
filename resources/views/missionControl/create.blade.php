@@ -691,7 +691,7 @@
                     <!-- Tweet -->
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
                         <h3>Tweet</h3>
-                        <delta-v ng-model="tweet" hint="tweet"></delta-v>
+                        <delta-v ng-model="tweet" hint="Tweet"></delta-v>
                         <tweet action="write" tweet="tweet"></tweet>
                     </fieldset>
 
@@ -803,7 +803,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="pressrelease" hint="article"></delta-v>
+                            <delta-v ng-model="pressrelease" hint="Article"></delta-v>
                         </div>
                     </fieldset>
 
@@ -844,7 +844,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="redditcomment" hint="comment"></delta-v>
+                            <delta-v ng-model="redditcomment" hint="Comment"></delta-v>
                         </div>
                     </fieldset>
 
@@ -894,7 +894,7 @@
                         </div>
 
                         <div class="gr-3">
-                            <delta-v ng-model="NSFcomment" hint="comment"></delta-v>
+                            <delta-v ng-model="NSFcomment" hint="Comment"></delta-v>
                         </div>
                     </fieldset>
 
@@ -945,7 +945,7 @@
                         </ul>
                     </div>
                     <div class="gr-3">
-                        <delta-v ng-model="text" hint="text"></delta-v>
+                        <delta-v ng-model="text" hint="Text"></delta-v>
                     </div>
 
                     <button name="submit" class="wide-button" ng-click="writeSubmitButtonFunction()" ng-disabled="writeForm.$invalid || isSubmitting" ng-bind="writeSubmitButtonText(writeForm)"></button>

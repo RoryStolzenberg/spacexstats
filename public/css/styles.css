@@ -7833,7 +7833,7 @@ form input[type="radio"] {
       left: 25px;
       min-width: 200px;
       display: block;
-      line-height: 1.5; }
+      line-height: 1; }
     form input[type="radio"] + label:after {
       background-color: transparent; }
   form input[type="radio"]:checked + label {
@@ -8364,46 +8364,57 @@ datepicker, .datepicker, [datepicker],
   background: rgba(25, 2, 0, 0.02);
   cursor: default; }
 
-.md {
+.md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
   font-family: "Noto Sans", sans-serif;
   font-weight: 500;
   text-transform: initial;
-  color: #181c1f; }
-  .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
-    color: #21272B;
-    margin: 10px 0;
-    padding: 0;
-    line-height: 1.2; }
-  .md h1 {
-    font-size: 32px; }
-  .md h2 {
-    font-size: 28px; }
-  .md h3 {
-    font-size: 24px; }
-  .md h4 {
-    font-size: 20px; }
-  .md h5 {
-    font-size: 18px; }
-  .md h6 {
-    font-size: 16px; }
-  .md em {
-    font-style: italic; }
-  .md strong {
-    font-weight: bold; }
-  .md p {
-    padding: 0;
-    margin: 10px 0; }
-  .md ul, .md ol {
-    margin: 10px 0;
-    list-style-position: inside; }
-    .md ul ul, .md ol ul {
-      list-style-type: circle; }
-    .md ul ol, .md ol ol {
-      list-style-type: lower-alpha; }
-  .md ul {
-    list-style-type: disc; }
-  .md ol {
-    list-style-type: decimal; }
+  color: #21272B;
+  margin: 10px 0;
+  padding: 0;
+  line-height: 1.2;
+  height: initial; }
+
+.md h1 {
+  font-size: 32px; }
+
+.md h2 {
+  font-size: 28px; }
+
+.md h3 {
+  font-size: 24px; }
+
+.md h4 {
+  font-size: 20px; }
+
+.md h5 {
+  font-size: 18px; }
+
+.md h6 {
+  font-size: 16px; }
+
+.md em {
+  font-style: italic; }
+
+.md strong {
+  font-weight: bold; }
+
+.md p {
+  padding: 0;
+  margin: 10px 0; }
+
+.md ul, .md ol {
+  margin: 10px 0;
+  list-style-position: inside; }
+  .md ul ul, .md ol ul {
+    list-style-type: circle; }
+  .md ul ol, .md ol ol {
+    list-style-type: lower-alpha; }
+
+.md ul {
+  list-style-type: disc; }
+
+.md ol {
+  list-style-type: decimal; }
 
 .subscribe {
   text-align: center;
