@@ -37,10 +37,13 @@ class PublishersController extends Controller {
             // Create publisher
             $publisher = Publisher::create([
                 'name' => Input::get('publisher.name'),
-                'description' => Input::get('publisher.description')
+                'description' => Input::get('publisher.description'),
+                'url' => Input::get('publisher.url')
             ]);
 
             // Fetch and save their icon
+            $favicon = file_get_contents($publisher->url);
+            file_put_contents($publisher->name . '.jpg', $favicon);
 
             return response()->json($publisher, 200);
         }
