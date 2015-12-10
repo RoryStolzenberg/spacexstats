@@ -31,14 +31,18 @@ class SubscriptionService
             // Subscribe the user
             Auth::user()->subscription($this->currentPlan)->create($token);
 
+            $subscriptionEndsAt = Auth::user()->subscription()->getSubscriptionEndDate();
+
             // Create a payment representation
             Payment::create([
                 'user_id' => Auth::id(),
-                'price' => Plan::retrieve($this->currentPlan)->amount
+                'price' => Plan::retrieve($this->currentPlan)->amount,
+                'subscription_ends_at' => $subscriptionEndsAt
             ]);
 
             // Set the user to the subscriber role
             Auth::user()->role_id = UserRole::Subscriber;
+            Auth::user()->subscription_ends_at = $subscriptionEndsAt;
             Auth::user()->save();
         }
     }
@@ -59,15 +63,17 @@ class SubscriptionService
             $seconds = (new DeltaVCalculator())->toSeconds($award->value);
 
             // Fetch the current subscription/trail end
-            //$endDate = is_null($user->getTrialEndDate()) ? $user->getSubscriptionEndDate() : $user->getTrialEndDate();
-
-            $endDate = $user->subscription()->getSubscriptionEndDate();
+            $endDate = is_null($user->getTrialEndDate()) ? $user->getSubscriptionEndDate() : $user->getTrialEndDate();
 
             // Calculate the new end date
             $newEndDate = $endDate->addSeconds($seconds);
 
-            // Extend trial by to that date
+            // Extend trial to that date
             $user->subscription($this->currentPlan)->noProrate()->trialFor($newEndDate)->swap();
+
+            // Update the database
+            $user->trial_ends_at = $user->subsription()->getTrialEndDate();
+            $user->save();
         }
     }
 

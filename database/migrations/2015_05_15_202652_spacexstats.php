@@ -402,6 +402,7 @@ class Spacexstats extends Migration {
             $table->integer('user_id')->unsigned();
             $table->smallInteger('price')->unsigned();
             $table->string('plan', Varchar::small);
+            $table->datetime('subscription_ends_at');
             $table->timestamps();
         });
 
