@@ -9070,35 +9070,43 @@ button.canned-response {
 .publisher {
   margin: 20px 0; }
 
-.tagger-container .wrapper {
-  border: 1px solid #CCC;
-  font-size: 0;
-  overflow: hidden;
-  background-color: #FAFAFA; }
-  .tagger-container .wrapper .tag-wrapper {
+.tagger-container {
+  position: relative; }
+  .tagger-container .wrapper {
+    border: 1px solid #CCC;
+    font-size: 0;
+    overflow: hidden;
+    background-color: #FAFAFA;
+    position: relative; }
+    .tagger-container .wrapper .tag-wrapper {
+      display: inline-block;
+      font-size: 12px; }
+    .tagger-container .wrapper.active {
+      border: 1px solid #ccac55;
+      box-shadow: 0 0 5px rgba(79, 112, 143, 0.2); }
+  .tagger-container input {
     display: inline-block;
-    font-size: 12px; }
-  .tagger-container .wrapper.active {
-    border: 1px solid #ccac55;
-    box-shadow: 0 0 5px rgba(79, 112, 143, 0.2); }
-
-.tagger-container input {
-  display: inline-block;
-  vertical-align: top;
-  border: none;
-  box-shadow: none;
-  margin: 0;
-  outline: none; }
-  .tagger-container input:focus {
-    border: none !important;
-    box-shadow: none; }
-
-.tagger-container .suggestion {
-  width: 33%;
-  display: inline-block; }
-
-.tagger-container.invalid {
-  border: 1px solid #FB6473; }
+    vertical-align: top;
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    outline: none; }
+    .tagger-container input:focus {
+      border: none !important;
+      box-shadow: none; }
+  .tagger-container .suggestions {
+    position: absolute;
+    background-color: #FAFAFA;
+    box-shadow: 10px 10px 15px rgba(33, 39, 43, 0.2);
+    border: 1px solid #CCC;
+    border-top: none;
+    display: block;
+    width: 100%; }
+    .tagger-container .suggestions .suggestion {
+      width: 33%;
+      display: inline-block; }
+  .tagger-container.invalid {
+    border: 1px solid #FB6473; }
 
 .tag {
   font-family: "Montserrat", sans-serif;
@@ -9109,13 +9117,15 @@ button.canned-response {
   padding: 5px 10px;
   margin: 4px 3px;
   line-height: 1;
-  font-size: 12px; }
+  font-size: 11px;
+  cursor: pointer; }
   .tag .remove {
     padding-left: 10px;
     width: 20px;
     height: 20px; }
-  .tag .remove:before {
-    content: "x"; }
+    .tag .remove:before {
+      content: "x";
+      color: #8B939B; }
 
 .dropdown {
   position: relative;
@@ -9179,7 +9189,6 @@ button.canned-response {
     background: none; }
 
 .datetime {
-  padding: 0 10px;
   display: block; }
   .datetime input[type="number"] {
     width: 60px;

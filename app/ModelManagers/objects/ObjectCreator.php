@@ -30,7 +30,6 @@ abstract class ObjectCreator {
         try {
             $mission = Mission::findOrFail(array_get($this->input, 'mission_id', null));
             $this->object->mission()->associate($mission);
-
         } catch (ModelNotFoundException $e) {
             // Model not found, do not set
         }
@@ -49,14 +48,10 @@ abstract class ObjectCreator {
     protected function createPublisherRelation() {
         try {
             $publisher = Publisher::findOrFail(array_get($this->input, 'publisher_id', null));
+            $this->object->publisher()->associate($publisher);
         } catch (ModelNotFoundException $e) {
-
-            $publisher = Publisher::create([
-
-            ]);
+            // Model not found, do not set
         }
-
-        $this->object->publisher()->associate($publisher);
     }
 
     protected function createTweeterRelation() {

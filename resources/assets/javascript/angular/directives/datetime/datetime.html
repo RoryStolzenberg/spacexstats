@@ -3,7 +3,7 @@
         <td>
             <label>Date</label> <i class="fa fa-info-circle" title="If you don't know the day or the month, leave them blank"></i>
         </td>
-        <td ng-if="type == 'datetime'" colspan="2">
+        <td ng-if="type == 'datetime' && dateIsComplete()" colspan="2">
             <label>Time (UTC)</label> <i class="fa fa-info-circle" title="If you don't know the time, ignore it"></i>
         </td>
     </tr>
@@ -16,16 +16,12 @@
             <select ng-model="year" ng-options="year for year in years()" ng-disabled="isNull || disabled">
             </select>
         </td>
-        <td ng-if="type == 'datetime'">
+        <td ng-if="type == 'datetime' && dateIsComplete()">
             <input type="number" min="0" max="23" ng-model="$parent.hour" ng-disabled="isNull || disabled" />
             <span class="time-separator">:</span>
             <input type="number" min="0" max="59" ng-model="$parent.minute" ng-disabled="isNull || disabled" />
             <span class="time-separator">:</span>
             <input type="number" min="0" max="59" ng-model="$parent.second" ng-disabled="isNull || disabled" />
-        </td>
-        <td ng-show="nullableToggle == 'true'">
-            <input type="checkbox" value="true" ng-model="isNull" ng-click="toggleChecked()" value="true" />
-            <label><span>Disable</span></label>
         </td>
     </tr>
 </table>

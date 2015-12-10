@@ -78,7 +78,6 @@
                 };
 
                 $scope.$watch("object", function(object) {
-                    console.log(object);
                     if (typeof object !== 'undefined') {
                         var calculatedValue = $scope.calculate(object);
                         $scope.setCalculatedValue(calculatedValue);
@@ -140,10 +139,6 @@
                         var month = object.originated_at.substr(5, 2);
                         var date = object.originated_at.substr(8, 2);
                         var datetime = object.originated_at.substr(11, 8);
-
-                        console.log(datetime);
-                        console.log(date);
-                        console.log(month);
 
                         if (datetime !== '00:00:00' && datetime !== '') {
                             internalValue *= dateAccuracyMultiplier.datetime;

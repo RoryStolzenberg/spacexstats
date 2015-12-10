@@ -3,30 +3,46 @@
         <a href="https://twitter.com/">Link</a>
     </div>
 
-    <div class="write" ng-if="action == 'write'" ng-form="tweetForm">
+    <form class="write" ng-if="action == 'write'" name="tweetForm">
         <label>Tweet URL</label>
         <input type="url" name="tweet_url" id="tweet_url" ng-model="tweet.external_url" ng-change="retrieveTweet()" placeholder="Paste the URL of the tweet here"/>
 
-        <p class="write-options lowvisibility opacity fancy-heading"><span>Alternatively, if the tweet is no longer available, enter the tweet information below</span></p>
+        <p class="write-options lowvisibility opacity fancy-heading">
+            <span>Alternatively, if the tweet is no longer available, enter the tweet information below</span>
+        </p>
 
-        <div class="tweeter-details container">
-            <div class="gr-1">
-                <img ng-attr-src="{{ tweet.tweet_user_profile_image_url }}" />
-            </div>
-            <div class="gr-11">
-                <span class="tweeter-name">{{ tweet.tweet_user_name }}</span>
-                <input type="text" class="tweeter-screen-name" ng-model="tweet.tweet_user_screen_name" ng-disabled="tweetRetrievedFromUrl" placeholder="@elonmusk" required/>
-            </div>
-        </div>
-
-        <textarea class="tweet-text" ng-model="tweet.tweet_text" ng-disabled="tweetRetrievedFromUrl" placeholder="Tweet Text" ng-maxlength="140" required></textarea>
-
-        <label>Date of Tweet</label>
-        <datetime ng-model="tweet.originated_at" type="datetime" start-year="2006" is-null="false" nullable-toggle="false" ng-disabled="tweetRetrievedFromUrl"></datetime>
-
-        <label>Tags</label>
-        <tags available-tags="$parent.$parent.data.tags" name="tags" ng-model="tweet.tags"></tags>
-        <span ng-show="tweetForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
-    </div>
-
+        <fieldset>
+            <ul>
+                <li class="tweeter-details container">
+                    <div class="gr-1">
+                        <img ng-attr-src="{{ tweet.tweet_user_profile_image_url }}" />
+                    </div>
+                    <div class="gr-11">
+                        <span class="tweeter-name">{{ tweet.tweet_user_name }}</span>
+                        <input type="text" class="tweeter-screen-name" ng-model="tweet.tweet_user_screen_name" ng-disabled="tweetRetrievedFromUrl" placeholder="@elonmusk" required/>
+                    </div>
+                </li>
+                <li>
+                    <textarea class="half tweet-text" ng-model="tweet.tweet_text" ng-disabled="tweetRetrievedFromUrl" placeholder="Tweet Text" ng-maxlength="140" required></textarea>
+                </li>
+                <li>
+                    <label>Date of Tweet</label>
+                    <datetime ng-model="tweet.originated_at" type="datetime" start-year="2006" is-null="false" nullable-toggle="false" ng-disabled="tweetRetrievedFromUrl"></datetime>
+                </li>
+                <li>
+                    <label>Summary</label>
+                    <textarea name="summary" class="half" ng-model="tweet.summary" placeholder="A brief summary of the tweet" ng-minlength="100" required character-counter></textarea>
+                </li>
+                <li>
+                    <label>Mission</label>
+                    <dropdown ng-model="tweet.mission_id" options="$parent.$parent.data.missions" unique-key="mission_id" title-key="name" searchable="true" id-only="true"></dropdown>
+                </li>
+                <li>
+                    <label>Tags</label>
+                    <tags available-tags="$parent.$parent.data.tags" name="tags" ng-model="tweet.tags"></tags>
+                    <span ng-show="tweetForm.tags.$error.taglength">Please enter 1 to 5 tags.</span>
+                </li>
+            </ul>
+        </fieldset>
+    </form>
 </div>

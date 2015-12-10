@@ -689,10 +689,14 @@
                     </fieldset>
 
                     <!-- Tweet -->
-                    <fieldset ng-if="postType == 'tweet'" class="post-type tweet">
+                    <fieldset ng-if="postType == 'tweet'" class="post-type tweet container">
                         <h3>Tweet</h3>
-                        <delta-v ng-model="tweet" hint="Tweet"></delta-v>
-                        <tweet action="write" tweet="tweet"></tweet>
+                        <div class="gr-9">
+                            <tweet action="write" tweet="tweet"></tweet>
+                        </div>
+                        <div class="gr-3">
+                            <delta-v ng-model="tweet" hint="Tweet"></delta-v>
+                        </div>
                     </fieldset>
 
                     <!-- Article -->
@@ -900,7 +904,7 @@
 
                     <p class="exclaim" ng-if="postType == null">No Submission Selected</p>
 
-                    <button name="submit" class="wide-button" ng-click="postSubmitButtonFunction()" ng-disabled="postType == null || postForm.$invalid || isSubmitting" ng-bind="writeSubmitButtonText(postForm)"></button>
+                    <button name="submit" class="wide-button" ng-click="postSubmitButtonFunction()" ng-disabled="postType == null || postForm.$invalid || isSubmitting" ng-bind="postSubmitButtonText(postForm)"></button>
                 </form>
             </section>
 

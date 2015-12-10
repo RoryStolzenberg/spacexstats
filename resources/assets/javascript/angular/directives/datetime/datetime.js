@@ -9,7 +9,6 @@
                 type: '@',
                 datetimevalue: '=ngModel',
                 startYear: '@',
-                nullableToggle: '@?',
                 isNull: '=',
                 disabled: '=?ngDisabled'
             },
@@ -42,12 +41,7 @@
                     var years = [];
 
                     var currentYear = moment().year();
-
-                    if (typeof $scope.startYear !== 'undefined') {
-                        var startYear = $scope.startYear;
-                    } else {
-                        var startYear = 1950;
-                    }
+                    var startYear = angular.isDefined($scope.startYear) ? $scope.startYear : 1950;
 
                     while (currentYear >= startYear) {
                         years.push(currentYear);
@@ -158,6 +152,10 @@
                     }
                 };
 
+                $scope.dateIsComplete = function() {
+                    return $scope.month !== 0 && $scope.date !== 0;
+                };
+
                 $scope.$watch('datetimevalue', function(value) {
                     if (typeof value === null) {
                         $scope.isNull = true;
@@ -167,11 +165,6 @@
                 $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
                     ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
                 });
-
-                $scope.toggleChecked = function() {
-                    console.log('yep');
-                    $scope.isNull = !$scope.isNull;
-                }
             },
             templateUrl: '/js/templates/datetime.html'
         }

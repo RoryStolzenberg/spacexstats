@@ -95,6 +95,10 @@ class UploadController extends Controller {
         } else {
             switch ($request->header('Submission-Type')) {
 
+                case 'tweet':
+                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromTweet');
+                    break;
+
                 case 'article':
                     $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromArticle');
                     break;

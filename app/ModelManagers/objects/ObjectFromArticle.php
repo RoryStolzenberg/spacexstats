@@ -2,6 +2,7 @@
 
 namespace SpaceXStats\ModelManagers\Objects;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
@@ -25,13 +26,12 @@ class ObjectFromArticle extends ObjectCreator {
                 'size'                  => strlen($this->input['article']),
                 'article'               => $this->input['article'],
                 'cryptographic_hash'    => hash('sha256', $this->input['article']),
-                'originated_at'         => \Carbon\Carbon::now(),
+                'originated_at'         => Carbon::now(),
                 'status'                => ObjectPublicationStatus::QueuedStatus
             ]);
 
             $this->createMissionRelation();
             $this->createTagRelations();
-
             $this->createPublisherRelation();
         });
 

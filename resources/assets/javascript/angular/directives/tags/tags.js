@@ -88,7 +88,7 @@
 
                 $scope.areSuggestionsVisible = false;
                 $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = !$scope.areSuggestionsVisible;
+                    $scope.areSuggestionsVisible = $scope.currentTags.length  < 5 ? !$scope.areSuggestionsVisible : false;
                 };
 
                 $scope.updateSuggestionList = function() {

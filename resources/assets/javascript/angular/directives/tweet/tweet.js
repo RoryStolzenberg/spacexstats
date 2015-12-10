@@ -20,6 +20,7 @@
 
                         $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
                             // Set parameters
+                            $scope.tweet.tweet_id = id;
                             $scope.tweet.tweet_text = response.data.text;
                             $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
                             $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
