@@ -122,7 +122,7 @@
             var self = tag;
 
             // Convert the tag to lowercase and replace all spaces present.
-            self.name = tag.name.replace(/["'\s]/g, "").toLowerCase();
+            self.name = tag.name.toLowerCase().replace(/[a-z0-9-]/g, "").substring(0, 50);
 
             return self;
         }

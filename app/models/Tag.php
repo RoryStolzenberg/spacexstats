@@ -15,7 +15,7 @@ class Tag extends Model {
     protected $guarded = [];
 
     protected $rules = [
-        'name' => ['required', 'string', 'varchar:tiny', 'unique:tags', "regex:/[^\s'\"]+/i"],
+        'name' => ['required', 'string', 'varchar:tiny', 'unique:tags', "regex:/[a-z0-9-]+/"],
         'description' => ['string', 'varchar:compact']
     ];
 
