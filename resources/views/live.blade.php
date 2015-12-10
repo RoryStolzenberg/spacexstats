@@ -162,8 +162,8 @@
                                     <textarea name="holdAbort" ng-model="buttons.cannedResponses.holdAbort" required></textarea>
                                 </li>
                                 <li>
-                                    <label for="tMinusTen">T-10s</label>
-                                    <textarea name="tMinusTen" ng-model="buttons.cannedResponses.tMinusTen" required></textarea>
+                                    <label for="terminalCount">Terminal Count</label>
+                                    <textarea name="terminalCount" ng-model="buttons.cannedResponses.terminalCount" required></textarea>
                                 </li>
                                 <li>
                                     <label for="liftoff">Liftoff</label>
@@ -215,6 +215,8 @@
                 <iframe src="https://www.youtube.com/embed/OvHJSIKP0Hg?VQ=HD720" frameborder="0" allowfullscreen></iframe>
             </section>
 
+            <p class="mission-status" ng-class="liveParameters.status.class()">@{{ liveParameters.status.text }}</p>
+
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section class="live-message-form" ng-if="isActive && liveParameters.isForLaunch">
                     <form name="cannedResponsePostForm" novalidate>
@@ -223,7 +225,7 @@
                                 <button class="canned-response" ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('T-10s')" ng-if="buttons.isVisible('T-10s')">T-10s</button>
+                                <button class="canned-response" ng-click="buttons.click('Terminal Count')" ng-if="buttons.isVisible('Terminal Count')">T-10s</button>
                             </li>
                             <li class="gr-1">
                                 <button class="canned-response" ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible('Liftoff')">Liftoff</button>

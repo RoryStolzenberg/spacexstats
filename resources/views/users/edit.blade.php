@@ -103,7 +103,7 @@
                                 <label for="LaunchTimeChange"></label>
                             </li>
                             <li class="gr-2">
-                                <span>When a new mission exists</span>
+                                <span>When a new mission is created</span>
                                 <input type="checkbox" id="NewMission" value="true" ng-model="emailNotifications.NewMission" />
                                 <label for="NewMission"></label>
                             </li>
@@ -165,15 +165,15 @@
                             <label for="off"><span>Off</span></label>
                         </li>
                         <li>
-                            <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus24HoursSMS" value="TMinus24HoursSMS" />
+                            <input type="radio" name="status" ng-model="SMSNotification.status" id="TMinus24HoursSMS" value="TMinus24HoursSMS" />
                             <label for="TMinus24HoursSMS"><span>24 Hours Before</span></label>
                         </li>
                         <li>
-                            <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus3HoursSMS" value="TMinus3HoursSMS" />
+                            <input type="radio" name="status" ng-model="SMSNotification.status" id="TMinus3HoursSMS" value="TMinus3HoursSMS" />
                             <label for="TMinus3HoursSMS"><span>3 Hours Before</span></label>
                         </li>
                         <li>
-                            <input type="radio" name="status" ng-model="SMSNotification.status" id="tMinus1HourSMS" value="TMinus1HourSMS" />
+                            <input type="radio" name="status" ng-model="SMSNotification.status" id="TMinus1HourSMS" value="TMinus1HourSMS" />
                             <label for="TMinus1HourSMS"><span>1 Hour Before</span></label>
                         </li>
                     </ul>

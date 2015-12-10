@@ -36,7 +36,6 @@ class LiveCountdownEvent extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        Log::info('broadcast ' . round(microtime(true) * 1000));
         return ['live-updates'];
     }
 }

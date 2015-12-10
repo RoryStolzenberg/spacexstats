@@ -91,7 +91,7 @@
                 thing: laravel.reddit.thing ? laravel.reddit.thing : null
             },
             countdown: {
-                to: $scope.data.upcomingMission.launch_date_time,
+                to: laravel.countdown.to,
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
@@ -113,7 +113,13 @@
                 markdown: laravel.description.markdown
             },
             sections: laravel.sections ? laravel.sections : [],
-            resources: laravel.resources ? laravel.resources : []
+            resources: laravel.resources ? laravel.resources : [],
+            status: {
+                text: laravel.status.text,
+                class: function() {
+                    return $scope.liveParameters.status.text.toLowerCase()replace(/\s/g, "-");
+                }
+            }
         };
 
         $scope.isLivestreamVisible = function() {
@@ -147,7 +153,7 @@
         $scope.buttons = {
             cannedResponses: {
                 holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
-                tMinusTen: laravel.cannedResponses ? laravel.cannedResponses.tMinusTen : null,
+                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
                 liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
                 maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
                 meco: laravel.cannedResponses ? laravel.cannedResponses.meco : null,
@@ -164,7 +170,29 @@
                 return true;
             },
             isVisible: function(messageType) {
-                return true;
+                var timeDiff = moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second');
+                switch (messageType) {
+                    case 'holdAbort':
+                        return -(60 * 60) < timeDiff < 30;
+                    case 'terminalCount':
+                        return -(60 * 15) < timeDiff < -(60 * 8);
+                    case 'liftoff':
+                        return -30 < timeDiff < 30;
+                    case 'maxQ':
+                        return 15 < timeDiff < 90;
+                    case 'meco':
+                        return 120 < timeDiff < 210;
+                    case 'stageSep':
+                        return 120 < timeDiff < 210;
+                    case 'mVacIgnition':
+                        return 120 < timeDiff < 210;
+                    case 'seco':
+                        return (60 * 8) < timeDiff < (60 * 12);
+                    case 'missionSuccess':
+                        return (60 * 8) < timeDiff;
+                    case 'missionFailure':
+                        return -30 < timeDiff;
+                }
             },
             updateCannedResponses: function() {
 
