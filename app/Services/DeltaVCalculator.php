@@ -170,13 +170,13 @@ class DeltaVCalculator {
         $datetime = substr($this->object->originated_at, 11, 8);
 
         if ($datetime !== '00:00:00' || $datetime !== false) {
-            $this->score *= $this->dateAccuracyMultiplier['datetime'];
+            $this->score *= $this->dateAccuracyMultiplier['Datetime'];
         } elseif ($day !== '00') {
-            $this->score *= $this->dateAccuracyMultiplier['day'];
+            $this->score *= $this->dateAccuracyMultiplier['Day'];
         } elseif ($month !== '00') {
-            $this->score *= $this->dateAccuracyMultiplier['month'];
+            $this->score *= $this->dateAccuracyMultiplier['Month'];
         } elseif ($year !== '0000') {
-            $this->score *= $this->dateAccuracyMultiplier['year'];
+            $this->score *= $this->dateAccuracyMultiplier['Year'];
         }
     }
 
