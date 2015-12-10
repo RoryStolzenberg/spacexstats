@@ -214,10 +214,7 @@ trait UploadableTrait {
         if ($this->hasFile()) {
             if ($this->hasTemporaryFile()) {
 
-                if (!file_exists(public_path('media/local/full'))) {
-                    mkdir(public_path('media/local/full'), 0777, true);
-                }
-
+                create_if_does_not_exist(public_path('media/local/full'));
                 copy(public_path('media/temporary/full/' . $this->filename), public_path('media/local/full/' . $this->filename));
 
             } else if ($this->hasCloudFile()) {
@@ -233,14 +230,10 @@ trait UploadableTrait {
         if ($this->hasThumbs()) {
             if ($this->hasTemporaryThumbs()) {
 
-                if (!file_exists(public_path('media/local/small/'))) {
-                    mkdir(public_path('media/local/small/'), 0777, true);
-                }
+                create_if_does_not_exist(public_path('media/temporary/small/'));
                 copy(public_path('media/temporary/small/' . $this->thumb_filename), public_path('media/local/small/' . $this->thumb_filename));
 
-                if (!file_exists(public_path('media/local/large/'))) {
-                    mkdir(public_path('media/local/large/'), 0777, true);
-                }
+                create_if_does_not_exist(public_path('media/local/large/'));
                 copy(public_path('media/temporary/large/' . $this->thumb_filename), public_path('media/local/large/' . $this->thumb_filename));
 
             } else if ($this->hasCloudThumbs()) {

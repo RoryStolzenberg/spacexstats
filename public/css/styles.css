@@ -8361,29 +8361,46 @@ datepicker, .datepicker, [datepicker],
   background: rgba(25, 2, 0, 0.02);
   cursor: default; }
 
-.md em {
-  font-style: italic; }
-
-.md strong {
-  font-weight: bold; }
-
-.md p {
-  padding: 0;
-  margin: 10px 0; }
-
-.md ul, .md ol {
-  margin: 10px 0;
-  list-style-position: inside; }
-  .md ul ul, .md ol ul {
-    list-style-type: circle; }
-  .md ul ol, .md ol ol {
-    list-style-type: lower-alpha; }
-
-.md ul {
-  list-style-type: disc; }
-
-.md ol {
-  list-style-type: decimal; }
+.md {
+  font-family: "Noto Sans", sans-serif;
+  font-weight: 500;
+  text-transform: initial;
+  color: #181c1f; }
+  .md h1, .md h2, .md h3, .md h4, .md h5, .md h6 {
+    color: #21272B;
+    margin: 10px 0;
+    padding: 0;
+    line-height: 1.2; }
+  .md h1 {
+    font-size: 32px; }
+  .md h2 {
+    font-size: 28px; }
+  .md h3 {
+    font-size: 24px; }
+  .md h4 {
+    font-size: 20px; }
+  .md h5 {
+    font-size: 18px; }
+  .md h6 {
+    font-size: 16px; }
+  .md em {
+    font-style: italic; }
+  .md strong {
+    font-weight: bold; }
+  .md p {
+    padding: 0;
+    margin: 10px 0; }
+  .md ul, .md ol {
+    margin: 10px 0;
+    list-style-position: inside; }
+    .md ul ul, .md ol ul {
+      list-style-type: circle; }
+    .md ul ol, .md ol ol {
+      list-style-type: lower-alpha; }
+  .md ul {
+    list-style-type: disc; }
+  .md ol {
+    list-style-type: decimal; }
 
 .subscribe {
   text-align: center;
@@ -8877,6 +8894,19 @@ body.live {
     text-align: center; }
     body.live .access-links#logo {
       width: 16.66667%; }
+  body.live .live-status {
+    font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+    font-size: 24px; }
+    body.live .live-status.upcoming {
+      background-color: #8B939B; }
+    body.live .live-status.terminal-count {
+      background-color: #4f708f; }
+    body.live .live-status.in-progress {
+      background-color: #ccac55; }
+    body.live .live-status.success {
+      background-color: #40C085; }
+    body.live .live-status.failure {
+      background-color: #FB6473; }
 
 .dark {
   background-color: #21272B;
@@ -8969,6 +8999,12 @@ button.canned-response {
 .profile .about-this-user td:first-child {
   color: #8B939B;
   text-align: right; }
+
+.profile .user-stats td {
+  width: 50%; }
+
+.profile #overview table {
+  width: 100%; }
 
 #missioncontrol > div {
   padding-top: 0px;
@@ -9152,12 +9188,11 @@ button.canned-response {
   position: relative;
   margin-top: 30px;
   background-color: #F2F2F2;
-  border: 3px solid rgba(24, 28, 31, 0.2); }
-  .mission-card.large {
-    border-left: none;
-    border-right: none;
-    width: calc(100% + 20px);
-    left: -10px; }
+  border: 3px solid rgba(24, 28, 31, 0.2);
+  border-left: none;
+  border-right: none;
+  width: calc(100% + 20px);
+  left: -10px; }
   .mission-card .top {
     padding: 10px;
     padding-left: 130px;
@@ -9440,6 +9475,8 @@ timeline {
       fill: #FB6473; }
     timeline circle.test-static-fire {
       fill: #FB6473; }
+    timeline circle.wet-dress-rehearsal {
+      fill: #3569A4; }
     timeline circle.announcement {
       fill: #21272B; }
   timeline .axis text {
@@ -9473,6 +9510,16 @@ timeline {
     /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#fafafa',GradientType=1 );
     /* IE6-9 */ }
+
+div.tip {
+  -webkit-transition: opacity ease-in-out 0.3s 0s;
+          transition: opacity ease-in-out 0.3s 0s;
+  border-radius: 3px;
+  background-color: rgba(24, 28, 31, 0.5);
+  padding: 5px;
+  width: 200px;
+  height: 200px;
+  z-index: 200; }
 
 /* ------------ FUTURE/PAST MISSIONS  ------------- */
 .spotlight {

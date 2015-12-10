@@ -30,4 +30,16 @@ class Publisher extends Model {
     public function objects() {
         return $this->hasMany('SpaceXStats\Models\Object');
     }
+
+    // Methods
+    public function createFavicon() {
+        $favicon = file_get_contents($this->url);
+        create_if_does_not_exist(public_path('media/publications'));
+        file_put_contents(public_path($this->name . '.jpg'), $favicon);
+    }
+
+    // Attribute accessors
+    public function getFaviconAttribute() {
+        return 'media/publications/' . $this->name . 'jpg';
+    }
 }

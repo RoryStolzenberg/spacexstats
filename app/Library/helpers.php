@@ -7,3 +7,9 @@ function ordinal($number) {
         return $number. $ends[$number % 10];
     }
 }
+
+function create_if_does_not_exist($directory) {
+    if (!file_exists($directory)) {
+        mkdir($directory, 0777, true);
+    }
+}

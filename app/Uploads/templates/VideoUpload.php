@@ -57,9 +57,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
         $frame = $video->frame(TimeCode::fromSeconds($frameExtractionPoint));
 
         // Save frame to temporary location
-        if (!file_exists(public_path($this->directory['frames']))) {
-            mkdir(public_path($this->directory['frames']), 0777, true);
-        }
+        create_if_does_not_exist(public_path($this->directory['frames']));
         $frame->save($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg');
 
         foreach ($thumbnailsToCreate as $size) {
@@ -69,9 +67,7 @@ class VideoUpload extends GenericUpload implements UploadInterface {
             $image = new \Imagick(public_path($this->directory['frames'] . $this->fileinfo['filename_without_extension'] . '.jpg'));
             $image->thumbnailImage($lengthDimension, $lengthDimension, true);
 
-            if (!file_exists(public_path($this->directory[$size]))) {
-                mkdir(public_path($this->directory[$size]), 0777, true);
-            }
+            create_if_does_not_exist(public_path($this->directory[$size]));
             $image->writeImage(public_path($this->directory[$size] . $this->fileinfo['filename_without_extension'] . '.jpg'));
         }
 
