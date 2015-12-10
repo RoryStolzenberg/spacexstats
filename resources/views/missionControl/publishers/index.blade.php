@@ -21,7 +21,7 @@
                     <label for="description">Description of this publisher</label>
                     <textarea ng-model="publisher.description" required></textarea>
 
-                    <input type="submit" value="Create Publisher" ng-disabled="createPublisherForm.$invalid" ng-click="createPublisher(publisher)" />
+                    <input type="submit" value="Create Publisher" ng-disabled="createPublisherForm.$invalid || isCreatingPublisher" ng-click="createPublisher(publisher)" />
                 </form>
 
                 <h2>All Publishers</h2>
@@ -41,7 +41,7 @@
                         <label for="description">Description of this publisher</label>
                         <textarea ng-model="publisher.description" required></textarea>
 
-                        <input type="submit" value="Edit Publisher" ng-disabled="editPublisherForm.$pristine && " ng-click="editPublisher(publisher)" />
+                        <input type="submit" value="Edit Publisher" ng-disabled="editPublisherForm.$pristine || editPublisherForm.$invalid || isEditingPublisher" ng-click="editPublisher(publisher)" />
                     </form>
                 </div>
             </main>

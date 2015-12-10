@@ -35,12 +35,14 @@ class PublishersController extends Controller {
         if ($this->publisher->isValid(Input::get('publisher'))) {
 
             // Create publisher
-            /*$publisher = Publisher::create(array(
-                'name' =>
-                'description' =>
-            ));*/
+            $publisher = Publisher::create([
+                'name' => Input::get('publisher.name'),
+                'description' => Input::get('publisher.description')
+            ]);
 
-            //return response()->json($publisher, 200);
+            // Fetch and save their icon
+
+            return response()->json($publisher, 200);
         }
         return response()->json();
 	}

@@ -438,7 +438,6 @@ class Spacexstats extends Migration {
             $table->string('description', Varchar::medium);
             $table->string('url', Varchar::small);
             // Create rating system for publishers in the future
-            $table->string('icon', Varchar::small)->nullable();
         });
 
         Schema::create('questions', function(Blueprint $table) {

@@ -719,7 +719,7 @@
                                             searchable="true"
                                             placeholder="Select the publisher of the article">
                                     </dropdown>
-                                    <p>Can't find the article publisher? <a href="/missioncontrol/publishers/create">Create them first</a>.</p>
+                                    <p>Can't find the article publisher? <a href="/missioncontrol/publishers">Create them first</a>.</p>
                                 </li>
                                 <li class="container">
                                     <div class="gr-8">
