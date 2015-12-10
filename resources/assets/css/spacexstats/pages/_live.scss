@@ -31,6 +31,31 @@ body.live {
             @include gridle_grid(2);
         }
     }
+
+    .live-status {
+        font-family: $brandonGrotesque;
+        font-size:24px;
+
+        &.upcoming {
+            background-color:$grey;
+        }
+
+        &.terminal-count {
+            background-color:$october;
+        }
+
+        &.in-progress {
+            background-color:$gold;
+        }
+
+        &.success {
+            background-color:$green;
+        }
+
+        &.failure {
+            background-color:$red;
+        }
+    }
 }
 
 .dark {

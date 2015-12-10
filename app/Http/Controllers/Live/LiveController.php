@@ -49,6 +49,9 @@ class LiveController extends Controller {
             'streams' => [
                 'spacex' => json_decode(Redis::hget('live:streams', 'spacex')),
                 'nasa' => json_decode(Redis::hget('live:streams', 'nasa')),
+            ],
+            'status' => [
+                'text' => Redis::get('live:status')
             ]
         ];
 
@@ -242,6 +245,7 @@ class LiveController extends Controller {
         Redis::set('live:isForLaunch', Input::get('isForLaunch'));
         Redis::set('live:resources', json_encode(Input::get('resources')));
         Redis::set('live:sections', json_encode(Input::get('sections')));
+        Redis::set('live:status', 'Upcoming');
 
         // Set the Reddit parameters
         Redis::hmset('live:reddit', [
@@ -301,6 +305,7 @@ class LiveController extends Controller {
             'isForLaunch' => Input::get('isForLaunch'),
             'resources' => Input::get('resources'),
             'sections' => Input::get('sections'),
+            'status' => 'Upcoming'
         ]));
 
         // Respond
@@ -322,7 +327,7 @@ class LiveController extends Controller {
 
         // Clean up all spacexstats live redis keys
         Redis::del(['live:streams', 'live:title', 'live:description', 'live:resources', 'live:sections', 'live:updates',
-            'live:countdownTo', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit']);
+            'live:countdownTo', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit', 'live:status']);
 
         // Send out event
         event(new LiveEndedEvent());

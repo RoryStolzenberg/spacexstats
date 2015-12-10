@@ -215,7 +215,7 @@
                 <iframe src="https://www.youtube.com/embed/OvHJSIKP0Hg?VQ=HD720" frameborder="0" allowfullscreen></iframe>
             </section>
 
-            <p class="mission-status" ng-class="liveParameters.status.class()">@{{ liveParameters.status.text }}</p>
+            <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section class="live-message-form" ng-if="isActive && liveParameters.isForLaunch">

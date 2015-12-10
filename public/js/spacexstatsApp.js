@@ -2353,6 +2353,18 @@
 (function() {
     var app = angular.module('app');
 
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('characterCounter', ["$compile", function($compile) {
         return {
             restrict: 'A',
@@ -2951,6 +2963,23 @@
     });
 })();
 (function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                size: '@',
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -3048,23 +3077,6 @@
     });
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
@@ -3814,16 +3826,4 @@
             }
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
 })();
