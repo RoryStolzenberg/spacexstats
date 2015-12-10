@@ -9,7 +9,7 @@
     <div class="content-wrapper">
         <h1>Collections</h1>
         <main>
-            <p>A collection is a grouping of similar Mission control resources that anyone can create. Resources can be related by a mission ("CRS-1" for example), by someone who created then (a collection of photos by a photographer), or by anything else (a collection of high resolution pictures of Elon Musk).</p>
+            <p>A collection is a grouping of similar Mission control submissions that anyone can create. Submissions can be related by a mission ("CRS-1" for example), by someone who created then (a collection of photos by a photographer), or by anything else (a collection of high resolution pictures of Elon Musk).</p>
             <h2>Create</h2>
             <section ng-controller="createCollectionController">
                 <form name="createCollectionForm" novalidate>

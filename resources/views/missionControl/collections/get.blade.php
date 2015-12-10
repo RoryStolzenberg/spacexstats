@@ -45,10 +45,10 @@
             </section>
 
             <p>{{ $collection->summary }}</p>
-            <h2>{{ $collection->objects->count() }} resources in this Collection</h2>
+            <h2>{{ $collection->objects->count() }} submissions in this Collection</h2>
             <section>
                 @if($collection->objects->count() == 0)
-                    <p class="exclaim">No resources in this collection. <a ng-click="is.editingCollection = true">Add some!</a></p>
+                    <p class="exclaim">No submissions in this collection. <a ng-click="is.editingCollection = true">Add some!</a></p>
                 @endif
             </section>
         </main>

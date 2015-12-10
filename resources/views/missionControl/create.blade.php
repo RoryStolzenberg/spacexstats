@@ -660,7 +660,7 @@
             <!-- Post -->
             <section class="upload-post" ng-controller="postController" ng-show="activeSection == 'post'">
                 <form name="postForm">
-                    <p>Select what type of resource you want to submit...</p>
+                    <p>Select what type of submission you want to submit...</p>
                     <fieldset class="post-type-selection container text-center">
                         <div class="gr-2">
                             <input type="radio" name="type" id="tweet" value="tweet" ng-model="postType" ng-click="postType = 'tweet'" />
@@ -897,7 +897,7 @@
                         </div>
                     </fieldset>
 
-                    <p class="exclaim" ng-if="postType == null">No Resource Selected</p>
+                    <p class="exclaim" ng-if="postType == null">No Submission Selected</p>
 
                     <button name="submit" class="wide-button" ng-click="postSubmitButtonFunction()" ng-disabled="postType == null || postForm.$invalid || isSubmitting" ng-bind="writeSubmitButtonText(postForm)"></button>
                 </form>

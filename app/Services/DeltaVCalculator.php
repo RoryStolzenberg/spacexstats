@@ -36,7 +36,7 @@ class DeltaVCalculator {
         MissionControlSubtype::PressConference  => 1.5
     ];
 
-    protected $resourceQuality = [
+    protected $submissionQuality = [
         'multipliers' => [
             'perMegapixel' => 5,
             'perMinute' => 2
@@ -87,7 +87,7 @@ class DeltaVCalculator {
         $this->object = $object;
 
         $this->typeRegime();
-        $this->resourceQualityRegime();
+        $this->submissionQualityRegime();
         $this->metadataRegime();
         $this->dateAccuracyRegime();
         $this->dataSaverRegime();
@@ -125,26 +125,26 @@ class DeltaVCalculator {
     /**
      * @internal
      */
-    private function resourceQualityRegime() {
-        $resourceQualityScore = 0;
+    private function submissionQualityRegime() {
+        $submissionQualityScore = 0;
 
         if ($this->object->type == MissionControlType::Image) {
-            $resourceQualityScore = $this->megapixelSubscore();
+            $submissionQualityScore = $this->megapixelSubscore();
         }
 
         if ($this->object->type == MissionControlType::GIF || $this->object->type == MissionControlType::Video) {
-            $resourceQualityScore = $this->megapixelSubscore() * $this->minuteSubscore();
+            $submissionQualityScore = $this->megapixelSubscore() * $this->minuteSubscore();
         }
 
         if ($this->object->type == MissionControlType::Audio) {
-            $resourceQualityScore = $this->minuteSubscore();
+            $submissionQualityScore = $this->minuteSubscore();
         }
 
         if ($this->object->type == MissionControlType::Document) {
-            $resourceQualityScore = $this->pageSubscore();
+            $submissionQualityScore = $this->pageSubscore();
         }
 
-        $this->score += $resourceQualityScore;
+        $this->score += $submissionQualityScore;
     }
 
     /**
@@ -206,7 +206,7 @@ class DeltaVCalculator {
      */
     private function megapixelSubscore() {
         $megapixels = ($this->object->dimension_width * $this->object->dimension_height) / 1000000;
-        return $this->resourceQuality['multipliers']['perMegapixel'] * $megapixels;
+        return $this->submissionQuality['multipliers']['perMegapixel'] * $megapixels;
     }
 
     /**
@@ -214,7 +214,7 @@ class DeltaVCalculator {
      * @return mixed
      */
     private function minuteSubscore() {
-        return $this->resourceQuality['multipliers']['perMinute'] * ($this->object->duration / 60);
+        return $this->submissionQuality['multipliers']['perMinute'] * ($this->object->duration / 60);
     }
 
     /**
@@ -222,6 +222,6 @@ class DeltaVCalculator {
      * @return mixed
      */
     private function pageSubscore() {
-        return $this->resourceQuality['scores']['perPage'] * $this->object->page_count;
+        return $this->submissionQuality['scores']['perPage'] * $this->object->page_count;
     }
 }

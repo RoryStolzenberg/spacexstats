@@ -66,7 +66,7 @@ class Search {
             ];
         }
 
-        // Add resource type filters
+        // Add submission type filters
         if (!is_null($search['filters']['type'])) {
             $requestBody['filter']['bool']['should']['term']['type'] = strtolower($search['filters']['type']);
             $requestBody['filter']['bool']['should']['term']['subtype'] = strtolower($search['filters']['type']);
