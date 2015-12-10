@@ -745,7 +745,7 @@
                 thing: laravel.reddit.thing ? laravel.reddit.thing : null
             },
             countdown: {
-                to: $scope.data.upcomingMission.launch_date_time,
+                to: laravel.countdown.to,
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
@@ -767,7 +767,13 @@
                 markdown: laravel.description.markdown
             },
             sections: laravel.sections ? laravel.sections : [],
-            resources: laravel.resources ? laravel.resources : []
+            resources: laravel.resources ? laravel.resources : [],
+            status: {
+                text: laravel.status.text,
+                class: function() {
+                    return $scope.liveParameters.status.text.toLowerCase()replace(/\s/g, "-");
+                }
+            }
         };
 
         $scope.isLivestreamVisible = function() {
@@ -801,7 +807,7 @@
         $scope.buttons = {
             cannedResponses: {
                 holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
-                tMinusTen: laravel.cannedResponses ? laravel.cannedResponses.tMinusTen : null,
+                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
                 liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
                 maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
                 meco: laravel.cannedResponses ? laravel.cannedResponses.meco : null,
@@ -818,7 +824,29 @@
                 return true;
             },
             isVisible: function(messageType) {
-                return true;
+                var timeDiff = moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second');
+                switch (messageType) {
+                    case 'holdAbort':
+                        return -(60 * 60) < timeDiff < 30;
+                    case 'terminalCount':
+                        return -(60 * 15) < timeDiff < -(60 * 8);
+                    case 'liftoff':
+                        return -30 < timeDiff < 30;
+                    case 'maxQ':
+                        return 15 < timeDiff < 90;
+                    case 'meco':
+                        return 120 < timeDiff < 210;
+                    case 'stageSep':
+                        return 120 < timeDiff < 210;
+                    case 'mVacIgnition':
+                        return 120 < timeDiff < 210;
+                    case 'seco':
+                        return (60 * 8) < timeDiff < (60 * 12);
+                    case 'missionSuccess':
+                        return (60 * 8) < timeDiff;
+                    case 'missionFailure':
+                        return -30 < timeDiff;
+                }
             },
             updateCannedResponses: function() {
 
@@ -2347,6 +2375,72 @@
         }
     }]);
 })();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=?',
+                isVisibleWhenPaused: '=?',
+                type: '@',
+                callback: '&?'
+            },
+            link: function($scope, elem, attrs) {
+
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                var countdownProcessor = function() {
+
+                    if (!$scope.isPaused) {
+                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
+                        $scope.tMinusZero = secondsBetween == 0;
+
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+                    }
+
+                    if (attrs.callback) {
+                        $scope.callback();
+                    }
+                };
+
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -2499,72 +2593,6 @@
 
             },
             templateUrl: '/js/templates/chart.html'
-        }
-    }]);
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=?',
-                isVisibleWhenPaused: '=?',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
-                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                var countdownProcessor = function() {
-
-                    if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
-                        var secondsBetween = Math.abs(relativeSecondsBetween);
-
-                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
-                        $scope.tMinusZero = secondsBetween == 0;
-
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    }
-
-                    if (attrs.callback) {
-                        $scope.callback();
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
         }
     }]);
 })();

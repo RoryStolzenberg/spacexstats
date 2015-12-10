@@ -82,8 +82,8 @@ class UsersController extends Controller {
         }
 
         JavaScript::put([
-            'missions' => Mission::with('featuredImage')->get('mission_id', 'name'),
-            'patches' => Mission::whereNotNull('mission_patch')->with('missionPatch')->get('mission_id', 'name'),
+            'missions' => Mission::with('featuredImage')->get(['mission_id', 'name']),
+            'patches' => Mission::whereNotNull('mission_patch')->with('missionPatch')->get(['mission_id', 'name']),
             'notifications' => $hasNotifications,
             'user' => $user
         ]);

@@ -225,7 +225,7 @@
                                 <button class="canned-response" ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Terminal Count')" ng-if="buttons.isVisible('Terminal Count')">T-10s</button>
+                                <button class="canned-response" ng-click="buttons.click('Terminal Count')" ng-if="buttons.isVisible('Terminal Count')">Terminal Count</button>
                             </li>
                             <li class="gr-1">
                                 <button class="canned-response" ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible('Liftoff')">Liftoff</button>
