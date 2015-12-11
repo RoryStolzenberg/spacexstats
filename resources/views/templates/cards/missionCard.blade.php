@@ -14,34 +14,38 @@
 			</div>
 			<div>{{ $mission->present()->launchDateTime() }}</div>
 			<div>{{ ordinal($mission->launch_of_year) }}</div>
-			@if ($mission->status == 'Upcoming')
-				<div>42%</div>
-			@endif
 			<div>{{ $mission->vehicle->specific_vehicle }}</div>
 			<div>{{ $mission->destination->destination }}</div>
 			<div>{{ $mission->launchSite->full_location }}</div>
 			@if ($mission->status == 'Upcoming')
-				<div></div>
+                <div>42%</div>
+				<div>
+                    <a href="/locations">
+                        <img class="where-to-watch" ng-src="/images/icons/wheretowatch.png" />
+                    </a>
+                </div>
 			@endif
 			@if ($mission->status == 'Complete')
+                @if ($mission->outcome == 'Success')
+                    <div>{{ ordinal($mission->successful_consecutive_launch) }}</div>
+                @endif
 				<div><img class="launch-illumination" src="/images/icons/illuminations/{{ $mission->launch_illumination }}.png" /></div>
-				@if ($mission->outcome == 'Success')
-					<div>{{ ordinal($mission->successful_consecutive_launch) }}</div>
-				@endif
 			@endif
-			<div>Mission Collection</div>
+			<div>
+                <a href="/missioncontrol/collections/missions/{{ $mission->slug }}">
+                    <img class="mission-collection" src="/images/icons/collection.png" alt="{{ $mission->name }} mission collection"/>
+                </a>
+            </div>
 		</div>
 		<div class="container keys">
 			<div>{{ $mission->vehicle->generic_vehicle }}<br/>Launch</div>
 			<div>Launch (UTC)</div>
 			<div>Launch of the Year</div>
-			@if ($mission->status == 'Upcoming')
-				<div>Probability of Launch</div>
-			@endif
 			<div>Vehicle</div>
 			<div>Destination</div>
 			<div>Launch Site</div>
 			@if ($mission->status == 'Upcoming')
+                <div>Probability of Launch</div>
 				<div>Where to watch</div>
 			@endif
 			@if ($mission->status == 'Complete')
@@ -50,7 +54,7 @@
 					<div>Successful Consecutive Launch</div>
 				@endif
 			@endif
-			<div>Mission Collection</div>
+			<div><a href="/missioncontrol/collections/missions/{{ $mission->slug }}">Mission Collection</a></div>
 		</div>
 		<p><em>{{ $mission->summary }}</em></p>
 	</div>

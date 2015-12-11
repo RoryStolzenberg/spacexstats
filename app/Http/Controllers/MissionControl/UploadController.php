@@ -126,6 +126,10 @@ class UploadController extends Controller {
             // Add to db
             $objectCreator->create();
 
+            // redirect to mission control
+            Session::flash('flashMessage', 'Done!');
+            return response()->json(null, 204);
+
         } else {
             return response()->json($objectCreator->getErrors(), 400);
         }
@@ -134,6 +138,10 @@ class UploadController extends Controller {
     public function submitWriting(ObjectFromText $objectCreator) {
         if ($objectCreator->isValid(Input::get('data')) === true) {
             $objectCreator->create();
+
+            // redirect to mission control
+            Session::flash('flashMessage', 'Done!');
+            return response()->json(null, 204);
         } else {
             return response()->json($objectCreator->getErrors(), 400);
         }

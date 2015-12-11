@@ -7754,6 +7754,18 @@ form input, form textarea {
   form input:focus, form textarea:focus {
     border: 1px solid #ccac55;
     box-shadow: 0 0 5px rgba(79, 112, 143, 0.2); }
+  form input.prepended-input, form textarea.prepended-input {
+    padding-left: 32px; }
+    form input.prepended-input:before, form textarea.prepended-input:before {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      text-align: center; }
+    form input.prepended-input.twitter:before, form textarea.prepended-input.twitter:before {
+      content: "@"; }
+    form input.prepended-input.reddit:before, form textarea.prepended-input.reddit:before {
+      content: "/u/"; }
 
 form select {
   padding: 5px;
@@ -7859,17 +7871,6 @@ form input[type="radio"] {
 form legend {
   font-size: 18px;
   line-height: 2; }
-
-form .prepended-input span, form .prepended-input input {
-  display: inline-block; }
-
-form .prepended-input span {
-  width: 30px;
-  text-align: center; }
-
-form .prepended-input input {
-  margin: 0;
-  width: calc(100% - 30px); }
 
 form .password-toggle {
   position: relative; }
@@ -8372,7 +8373,8 @@ datepicker, .datepicker, [datepicker],
   margin: 10px 0;
   padding: 0;
   line-height: 1.2;
-  height: initial; }
+  height: initial;
+  border: none; }
 
 .md h1 {
   font-size: 32px; }
@@ -9224,7 +9226,6 @@ button.canned-response {
     padding-left: 130px;
     height: 80px;
     color: #8B939B;
-    text-transform: uppercase;
     font-family: "Segoe WP", sans-serif; }
     .mission-card .top .thumb {
       background-size: cover;
@@ -9243,10 +9244,10 @@ button.canned-response {
       color: #21272B !important;
       text-decoration: none !important; }
     .mission-card .top .for {
-      padding: 0 10px;
-      font-size: 18px; }
+      padding: 0 5px;
+      font-size: 14px; }
     .mission-card .top .mission-contractor {
-      font-size: 24px; }
+      font-size: 18px; }
   .mission-card .bottom {
     padding: 10px;
     text-align: center;
@@ -9279,7 +9280,7 @@ button.canned-response {
       line-height: 50px;
       text-align: center;
       margin: 0 auto; }
-    .mission-card .bottom .launch-illumination {
+    .mission-card .bottom .launch-illumination, .mission-card .bottom .mission-collection, .mission-card .bottom .where-to-watch {
       width: 48px;
       height: 48px; }
 

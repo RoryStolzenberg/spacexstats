@@ -174,7 +174,7 @@
                 case 'files':
                     submitFiles(submissionData).then(redirect, error);
                     break;
-                case ('article'):
+                case ('article' || 'comment' || 'tweet'):
                     submitPost(submissionData).then(redirect, error);
                     break;
                 case 'text':
