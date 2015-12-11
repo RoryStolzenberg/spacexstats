@@ -31,15 +31,11 @@
                             </li>
                             <li>
                                 <label for="twitter_account">Twitter</label>
-                                <div class="prepended-input">
-                                    <span>@</span><input type="text" ng-model="profile.twitter_account" />
-                                </div>
+                                <input type="text" class="prepended-input twitter" ng-model="profile.twitter_account" />
                             </li>
                             <li>
                                 <label>Reddit</label>
-                                <div class="prepended-input">
-                                    <span>/u/</span><input type="text" ng-model="profile.reddit_account" />
-                                </div>
+                                <input type="text" class="prepended-input reddit" ng-model="profile.reddit_account" />
                             </li>
                         </ul>
                     </div>

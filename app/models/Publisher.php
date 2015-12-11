@@ -19,9 +19,9 @@ class Publisher extends Model {
 
     // Validation
     public $rules = [
-        'name' => ['unique:publishers', 'varchar:tiny', 'required'],
-        'description' => ['varchar:medium', 'required'],
-        'url' => ['unique:publishers', 'varchar:small', 'required']
+        'name'          => ['unique:publishers', 'varchar:tiny', 'required'],
+        'description'   => ['varchar:medium', 'required'],
+        'url'           => ['unique:publishers', 'varchar:small', 'required']
     ];
 
     public $messages = array();
@@ -32,7 +32,7 @@ class Publisher extends Model {
     }
 
     // Methods
-    public function createFavicon() {
+    public function saveFavicon() {
         $favicon = file_get_contents('http://www.google.com/s2/favicons?domain=' . $this->url);
         create_if_does_not_exist(public_path('media/publications'));
         file_put_contents(public_path('media/publications/' . $this->name . '.jpg'), $favicon);

@@ -7,6 +7,7 @@ use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Object;
 use SpaceXStats\Models\Publisher;
 use SpaceXStats\Models\Tag;
+use SpaceXStats\Models\Tweeter;
 
 abstract class ObjectCreator {
     protected $object, $input, $errors;
@@ -55,7 +56,14 @@ abstract class ObjectCreator {
     }
 
     protected function createTweeterRelation() {
+        $tweeter = Tweeter::firstOrCreate([
+            'user_screen_name'  => array_get($this->input, 'user_screen_name', null),
+            'user_name'         => array_get($this->input, 'user_name', null),
+            'description'       => array_get($this->input, 'description', null)
+        ]);
 
+        $this->object->tweeter()->associate($tweeter);
+        $tweeter->saveProfilePicture();
     }
 
     public function getErrors() {

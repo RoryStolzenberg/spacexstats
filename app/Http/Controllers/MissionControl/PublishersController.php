@@ -47,7 +47,7 @@ class PublishersController extends Controller {
             ]);
 
             // Fetch and save their icon
-            $publisher->createFavicon();
+            $publisher->saveFavicon();
 
             return response()->json($publisher, 200);
         }

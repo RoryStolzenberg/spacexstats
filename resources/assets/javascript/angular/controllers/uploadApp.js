@@ -124,11 +124,11 @@
         $scope.postSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
             switch ($scope.postType) {
-                case 'NSFcomment': uploadService.postToMissionControl($scope.NSFcomment, null, 'NSFcomment'); break;
-                case 'redditcomment': uploadService.postToMissionControl($scope.redditcomment, null, 'redditcomment'); break;
-                case 'pressrelease' : uploadService.postToMissionControl($scope.pressrelease, null, 'pressrelease'); break;
-                case 'article': uploadService.postToMissionControl($scope.article, null, 'article'); break;
-                case 'tweet': uploadService.postToMissionControl($scope.tweet, null, 'tweet'); break;
+                case 'NSFcomment': uploadService.postToMissionControl($scope.NSFcomment, 'NSFcomment'); break;
+                case 'redditcomment': uploadService.postToMissionControl($scope.redditcomment, 'redditcomment'); break;
+                case 'pressrelease' : uploadService.postToMissionControl($scope.pressrelease, 'pressrelease'); break;
+                case 'article': uploadService.postToMissionControl($scope.article, 'article'); break;
+                case 'tweet': uploadService.postToMissionControl($scope.tweet, 'tweet'); break;
             }
         }
     }]);
@@ -157,29 +157,51 @@
 
         $scope.writeSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
-            uploadService.postToMissionControl($scope.text, null, 'text');
+            uploadService.postToMissionControl($scope.text, 'text');
         }
     }]);
 
-    uploadApp.service('uploadService', ['$http', 'CSRF_TOKEN', function($http, CSRF_TOKEN) {
-        this.postToMissionControl = function(dataToUpload, optionalCollection, submissionHeader) {
-            var req = {
-                method: 'POST',
-                url: '/missioncontrol/create/submit',
-                headers: {
-                    'Submission-Type': submissionHeader
-                },
-                data: {
-                    data: dataToUpload,
-                    collection: optionalCollection,
-                    _token: CSRF_TOKEN
-                }
+    uploadApp.service('uploadService', ['$http', 'CSRF_TOKEN', 'flashMessage', function($http, CSRF_TOKEN, flashMessage) {
+        this.postToMissionControl = function(dataToUpload, resourceType, collection) {
+            var submissionData = {
+                data: dataToUpload,
+                collection: collection,
+                type: resourceType,
+                _token: CSRF_TOKEN
             };
 
-            $http(req).then(function() {
-                window.location = '/missioncontrol';
-            });
-        }
+            switch (resourceType) {
+                case 'files':
+                    submitFiles(submissionData).then(redirect, error);
+                    break;
+                case ('article'):
+                    submitPost(submissionData).then(redirect, error);
+                    break;
+                case 'text':
+                    submitWriting(submissionData).then(redirect, error);
+                    break;
+            }
+        };
+
+        var submitFiles = function(submissionData) {
+            return $http.put('/missioncontrol/create/submit/files', submissionData);
+        };
+
+        var submitPost = function(submissionData) {
+            return $http.put('/missioncontrol/create/submit/post', submissionData);
+        };
+
+        var submitWriting = function(submissionData) {
+            return $http.put('/missioncontrol/create/submit/writing', submissionData);
+        };
+
+        var redirect = function(response) {
+            window.location = '/missioncontrol';
+        };
+
+        var error = function(response) {
+            flashMessage.addError(response.data.errors);
+        };
     }]);
 
     uploadApp.factory("Image", function() {

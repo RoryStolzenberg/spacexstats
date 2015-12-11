@@ -35,6 +35,26 @@ form {
             box-shadow: 0 0 5px rgba($october, 0.2);
         }
 
+        &.prepended-input {
+            padding-left:32px;
+
+            &:before {
+                display:inline-block;
+                width:32px;
+                height:32px;
+                line-height:32px;
+                text-align:center;
+            }
+
+            &.twitter:before {
+                content:"@";
+            }
+
+            &.reddit:before {
+                content:"/u/";
+            }
+        }
+
         // Remove iOS styling
         -webkit-appearance: none;
     }
@@ -179,23 +199,6 @@ form {
     legend {
         font-size:$font-large;
         line-height:2;
-    }
-
-    .prepended-input {
-
-        span, input {
-            display:inline-block;
-        }
-
-        span {
-            width:30px;
-            text-align:center;
-        }
-
-        input {
-            margin:0;
-            width:calc(100% - 30px);
-        }
     }
 
     // Password toggle

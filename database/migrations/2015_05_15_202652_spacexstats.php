@@ -266,7 +266,7 @@ class Spacexstats extends Migration {
             // Twitter-related properties
             $table->string('tweet_id', Varchar::tiny)->nullable();
             $table->datetime('tweet_created_at')->nullable(); // Optional second, minute, hour, day, month
-            $table->string('tweet_text', Varchar::small)->nullable();
+            $table->string('tweet_text', 140)->nullable();
             $table->string('tweet_parent_id', Varchar::tiny)->nullable();
             $table->integer('tweeter_id')->unsigned()->nullable();
 
@@ -296,6 +296,7 @@ class Spacexstats extends Migration {
             $table->boolean('anonymous')->default(false);
             $table->boolean('original_content')->default(false);
             $table->datetime('actioned_at')->nullable(); // Nonoptional values
+
             $table->timestamps();
         });
 
@@ -525,7 +526,6 @@ class Spacexstats extends Migration {
 
         Schema::create('tweeters', function(Blueprint $table) {
             $table->increments('tweeter_id');
-            $table->string('user_profile_image_url', Varchar::small)->nullable();
             $table->string('user_screen_name', Varchar::tiny)->nullable();
             $table->string('user_name', Varchar::tiny)->nullable();
             $table->string('description', Varchar::medium)->nullable();

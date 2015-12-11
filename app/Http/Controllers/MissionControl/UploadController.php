@@ -10,6 +10,7 @@ use SpaceXStats\Facades\Upload;
 use SpaceXStats\Http\Controllers\Controller;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use LukeNZ\Reddit\Reddit;
+use SpaceXStats\ModelManagers\Objects\ObjectFromText;
 use SpaceXStats\Models\Collection;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\Object;
@@ -52,83 +53,43 @@ class UploadController extends Controller {
     }
 
 	// AJAX POST
-	public function submit(Request $request) {
-    	// File Submissions
-		if ($request->header('Submission-Type') == 'files') {
-            $files = Input::get('data');
-            $objectValidities = $objectManagers = $queuedObjects = [];
-            $doesNotContainErrors = true;
+	public function submitFiles() {
+        $files = Input::get('data');
+        $objectValidities = $objectManagers = $queuedObjects = [];
+        $doesNotContainErrors = true;
 
-            // Find each object from file
+        // Find each object from file
+        for ($i = 0; $i < count($files); $i++) {
+
+            $objectManagers[$i] = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromFile');
+            $objectValidities[$i] = $objectManagers[$i]->isValid($files[$i]) ? true : $objectManagers[$i]->getErrors();
+
+            if ($objectValidities[$i] !== true) {
+                $doesNotContainErrors = false;
+            }
+        }
+
+        // Check if there are errors, if no, add all to db, if yes, return with errors.
+        if ($doesNotContainErrors) {
+            // add all objects to db
             for ($i = 0; $i < count($files); $i++) {
-
-                $objectManagers[$i] = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromFile');
-                $objectValidities[$i] = $objectManagers[$i]->isValid($files[$i]) ? true : $objectManagers[$i]->getErrors();
-
-                if ($objectValidities[$i] !== true) {
-                    $doesNotContainErrors = false;
-                }
+                $queuedObjects[$i] = $objectManagers[$i]->create();
             }
 
-            // Check if there are errors, if no, add all to db, if yes, return with errors.
-            if ($doesNotContainErrors) {
-                // add all objects to db
-                for ($i = 0; $i < count($files); $i++) {
-                    $queuedObjects[$i] = $objectManagers[$i]->create();
-                }
+            // nothing bad happened, let's also create an optional collection if asked to
+            if (Input::get('collection') != null) {
+                $collection = Collection::create([
+                    'creating_user_id' =>   Auth::id(),
+                    'title' =>              Input::get('collection.title'),
+                    'summary' =>            Input::get('collection.summary')
+                ]);
 
-                // nothing bad happened, let's also create an optional collection if asked to
-                if (Input::get('collection') != null) {
-                    $collection = Collection::create([
-                        'creating_user_id' =>   Auth::id(),
-                        'title' =>              Input::get('collection.title'),
-                        'summary' =>            Input::get('collection.summary')
-                    ]);
-
-                    // and associate it with the given files
-                    $collection->objects()->saveMany($queuedObjects);
-                }
-
-            } else {
-                return response()->json($objectValidities, 400);
+                // and associate it with the given files
+                $collection->objects()->saveMany($queuedObjects);
             }
+
         } else {
-            switch ($request->header('Submission-Type')) {
-
-                case 'tweet':
-                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromTweet');
-                    break;
-
-                case 'article':
-                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromArticle');
-                    break;
-
-                case 'pressrelease':
-                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromPressRelease');
-                    break;
-
-                case 'redditcomment':
-                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromRedditComment');
-                    break;
-
-                case 'NSFcomment':
-                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromNSFComment');
-                    break;
-
-                case 'text':
-                    $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromText');
-                    break;
-                default:
-                    return response()->json(null, 400);
-            }
-
-            if ($objectCreator->isValid(Input::get('data'))) {
-                // Add to db
-                $objectCreator->create();
-
-            } else {
-                return response()->json($objectCreator->getErrors(), 400);
-            }
+            return response()->json($objectValidities, 400);
         }
 
         // redirect to mission control
@@ -136,8 +97,46 @@ class UploadController extends Controller {
         return response()->json(null, 204);
 	}
 
-    protected function submitPost() {
+    public function submitPost() {
+        switch (Input::get('type')) {
+            case 'tweet':
+                $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromTweet');
+                break;
 
+            case 'article':
+                $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromArticle');
+                break;
+
+            case 'pressrelease':
+                $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromPressRelease');
+                break;
+
+            case 'redditcomment':
+                $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromRedditComment');
+                break;
+
+            case 'NSFcomment':
+                $objectCreator = App::make('SpaceXStats\ModelManagers\Objects\ObjectFromNSFComment');
+                break;
+            default:
+                return response()->json(null, 400);
+        }
+
+        if ($objectCreator->isValid(Input::get('data')) === true) {
+            // Add to db
+            $objectCreator->create();
+
+        } else {
+            return response()->json($objectCreator->getErrors(), 400);
+        }
+    }
+
+    public function submitWriting(ObjectFromText $objectCreator) {
+        if ($objectCreator->isValid(Input::get('data')) === true) {
+            $objectCreator->create();
+        } else {
+            return response()->json($objectCreator->getErrors(), 400);
+        }
     }
 
     // AJAX GET

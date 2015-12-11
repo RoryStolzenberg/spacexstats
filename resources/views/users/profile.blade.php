@@ -140,7 +140,9 @@
                     <p class="exclaim">No favorite mission. Add one!</p>
                 @endif
                 <div class="gr-12">
+
                     <div class="gr-6 gr-12@small">
+                        <h3>Favorite Mission Patch</h3>
                         @if ($user->profile->favorite_misison_patch)
                             $user->profile->favorite_mission_patch
                         @else
@@ -148,10 +150,11 @@
                         @endif
                     </div>
                     <div class="gr-6 gr-12@small">
+                        <h3>Favorite Musk Quote</h3>
                         @if ($user->profile->favorite_quote)
                             <blockquote>{{ $user->profile->favorite_quote }}</blockquote>
                         @else
-                            <p class="exclaim">No favorite quote. Add one!</p>
+                            <p class="exclaim">No favorite Musk quote. Add one!</p>
                         @endif
                     </div>
                 </div>

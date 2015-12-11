@@ -17,4 +17,13 @@ class Tweeter extends Model {
     public function objects() {
         return $this->hasMany('SpaceXStats\Models\Object');
     }
+
+    // Methods
+    public function saveProfilePicture() {
+
+    }
+
+    public function getProfilePictureAttribute() {
+        return '/media/tweeters/' . $this->user_name . '.png';
+    }
 }

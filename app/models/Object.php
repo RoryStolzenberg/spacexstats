@@ -45,7 +45,7 @@ class Object extends Model implements UploadableInterface {
     protected $presenter = ObjectPresenter::class;
     protected $searchDecorator = SearchableObject::class;
 
-	public $rules = array(
+	public $rules = [
         'user_id' => ['integer', 'exists:users,user_id'],
         'mission_id' => ['integer','exists:missions,mission_id'],
 
@@ -58,17 +58,26 @@ class Object extends Model implements UploadableInterface {
 
         'dimension_width' => 'integer',
         'dimension_height' => 'integer',
-        'length' => 'integer',
+        'duration' => 'integer',
+        'page_count' => 'integer',
 
         'summary' => 'varchar:large',
         'author' => 'varchar:tiny',
         'attribution' => 'varchar:compact',
-        'originated_at' => '',
 
         'ISO' => 'integer',
         'camera_manufacturer' => 'varchar:small',
-        'camera_model' => 'varchar:small'
-    );
+        'camera_model' => 'varchar:small',
+
+        'tweet_id' => ['integer', 'unique:tweet_id'],
+        'tweet_text' => 'max:140',
+
+        'publisher_id' => ['integer', 'exists:publishers,publisher_id']
+    ];
+
+    public $messages = [
+        'tweet_id.unique' => 'That tweet has already been submitted'
+    ];
 
 	// Relations
 	public function mission() {
