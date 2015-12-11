@@ -196,7 +196,15 @@
                 @endif
             </section>
 
-
+            <h2>Comments</h2>
+            <section id="comments" class="scrollto">
+                @foreach ($comments as $comment)
+                    @include('templates.cards.objectCard', ['bias' => 'comment', 'object' => $comment->object])
+                @endforeach
+                @if ($comments->count() == 0)
+                    <p class="exclaim">Nothing to see here</p>
+                @endif
+            </section>
         </main>
     </div>
 </body>
