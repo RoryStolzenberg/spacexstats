@@ -182,6 +182,20 @@
                 </section>
             @endif
 
+            <h2>Uploads</h2>
+            <section id="uploads" class="scrollto uploads">
+                @foreach ($objects as $object)
+                    @include('templates.cards.objectCard', ['bias' => 'object', 'object' => $object])
+                @endforeach
+                @if ($objects->count() == 0)
+                    <p class="exclaim">Nothing to see here.
+                        @if (Auth::isAccessingSelf($user) && Auth::isSubscriber())
+                            <a href="/missioncontrol/create">Why don't you upload something?</a>
+                        @endif
+                    </p>
+                @endif
+            </section>
+
 
         </main>
     </div>
