@@ -43,6 +43,7 @@ class SubscriptionService
             // Set the user to the subscriber role
             Auth::user()->role_id = UserRole::Subscriber;
             Auth::user()->subscription_ends_at = $subscriptionEndsAt;
+            Auth::user()->trial_ends_at = null;
             Auth::user()->save();
         }
     }
@@ -62,7 +63,7 @@ class SubscriptionService
             // Calculate the seconds to extend by
             $seconds = (new DeltaVCalculator())->toSeconds($award->value);
 
-            // Fetch the current subscription/trail end
+            // Fetch the current subscription/trial end
             $endDate = is_null($user->getTrialEndDate()) ? $user->getSubscriptionEndDate() : $user->getTrialEndDate();
 
             // Calculate the new end date

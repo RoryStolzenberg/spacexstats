@@ -68,7 +68,7 @@
             self.visibility = "Default";
 
             self.linkToObject = '/missioncontrol/object/' + self.object_id;
-            self.linkToUser = 'users/' + self.user.username;
+            self.linkToUser = '/users/' + self.user.username;
 
             self.createdAtRelative = moment.utc(self.created_at).fromNow();
 
