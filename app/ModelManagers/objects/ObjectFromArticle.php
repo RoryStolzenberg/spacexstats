@@ -23,6 +23,7 @@ class ObjectFromArticle extends ObjectCreator {
                 'title'                 => $this->input['title'],
                 'size'                  => strlen($this->input['article']),
                 'article'               => $this->input['article'],
+                'summary'               => $this->input['summary'],
                 'cryptographic_hash'    => hash('sha256', $this->input['article']),
                 'originated_at'         => Carbon::now(),
                 'status'                => ObjectPublicationStatus::QueuedStatus

@@ -61,7 +61,7 @@ class Object extends Model implements UploadableInterface {
         'duration' => 'integer',
         'page_count' => 'integer',
 
-        'summary' => 'varchar:large',
+        'summary' => ['min:100', 'varchar:large'],
         'author' => 'varchar:tiny',
         'attribution' => 'varchar:compact',
 

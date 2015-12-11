@@ -1,6 +1,6 @@
 <div class="card object-card {{ $bias or 'no-bias' }}">
     <div class="thumb-holder">
-        <img class="thumb" src="{{ $object->media_thumb_small }}" title="{{ $object->title }}"/>
+        <img class="thumb" title="{{ $object->title }}"/>
     </div>
 
     <div class="object-overview">

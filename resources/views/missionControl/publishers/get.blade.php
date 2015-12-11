@@ -10,20 +10,21 @@
     <div class="content-wrapper">
         <h1>{{ $publisher->name }}</h1>
         <main>
-            <nav class="sticky-bar">
+            <nav class="sticky-bar in-page">
                 <ul class="container">
-                    <li class="gr-2">{{ $publisher->name }}</li>
+                    <li class="gr-2"><a href="#details">{{ $publisher->name }}</a></li>
+                    <li class="gr-2"><a href="#articles">Articles</a></li>
                 </ul>
             </nav>
 
-            <p>{{ $publisher->name }} has {{ $publisher->objects()->count() }} articles.</p>
+            <section id="details" class="scrollto">
+                <p>{{ $publisher->name }} has {{ $publisher->objects()->count() }} articles.</p>
 
-            <section class="details">
                 {{ $publisher->description or "No Description of the publisher has been created yet." }}
             </section>
 
             <h2>Articles published by {{ $publisher->name }}</h2>
-            <section class="objects">
+            <section id="articles">
                 @foreach ($publisher->objects as $object)
                     <a href="/missioncontrol/objects/{{ $object->object_id }}">{{ $object->title }}</a>
                 @endforeach

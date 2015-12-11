@@ -741,6 +741,10 @@
                                     <textarea ng-model="article.article" placeholder="You can use markdown here to format the article." required></textarea>
                                 </li>
                                 <li>
+                                    <label>Summary</label>
+                                    <textarea ng-model="article.article" placeholder="A short summary describing the article" required character-counter></textarea>
+                                </li>
+                                <li>
                                     <label>Select Mission</label>
                                     <dropdown
                                             name="mission"
