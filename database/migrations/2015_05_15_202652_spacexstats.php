@@ -126,7 +126,7 @@ class Spacexstats extends Migration {
             $table->increments('live_update_id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('update', Varchar::large);
-            $table->string('update_type', Varchar::small);
+            $table->string('update_type', Varchar::tiny)->nullable();
             $table->string('live_event_name', Varchar::small);
             $table->string('timestamp', Varchar::tiny);
             $table->dateTime('created_at');
