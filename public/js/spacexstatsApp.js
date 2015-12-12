@@ -1952,7 +1952,7 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", function($scope, liveService, Section, Resource, Update, $timeout) {
         var socket = io(document.location.origin + ':3000');
 
         $scope.auth = laravel.auth;
@@ -2086,17 +2086,17 @@
         $scope.send = {
             new: {
                 message: null,
-                messageType: 'update'
+                messageType: null
             },
+
             /*
              * Send a launch update (message) via POST off to the server to be broadcast to everyone else
              */
             message: function(form) {
-
                 // Send the message
                 liveService.sendMessage({
                     message: $scope.send.new.message,
-                    messageType: $scope.send.new.messageType
+                    messageType: null
                 });
 
                 // Reset the form
@@ -2107,50 +2107,54 @@
 
         $scope.buttons = {
             cannedResponses: {
-                holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
-                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
-                liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
-                maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
-                meco: laravel.cannedResponses ? laravel.cannedResponses.meco : null,
-                stageSep: laravel.cannedResponses ? laravel.cannedResponses.stageSep : null,
-                mVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.mVacIgnition : null,
-                seco: laravel.cannedResponses ? laravel.cannedResponses.seco : null,
-                missionSuccess: laravel.cannedResponses ? laravel.cannedResponses.missionSuccess : null,
-                missionFailure: laravel.cannedResponses ? laravel.cannedResponses.missionFailure : null
+                HoldAbort: laravel.cannedResponses ? laravel.cannedResponses.HoldAbort : null,
+                TerminalCount: laravel.cannedResponses ? laravel.cannedResponses.TerminalCount : null,
+                Liftoff: laravel.cannedResponses ? laravel.cannedResponses.Liftoff : null,
+                MaxQ: laravel.cannedResponses ? laravel.cannedResponses.MaxQ : null,
+                MECO: laravel.cannedResponses ? laravel.cannedResponses.MECO : null,
+                StageSep: laravel.cannedResponses ? laravel.cannedResponses.StageSep : null,
+                MVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.MVacIgnition : null,
+                SECO: laravel.cannedResponses ? laravel.cannedResponses.SECO : null,
+                MissionSuccess: laravel.cannedResponses ? laravel.cannedResponses.MissionSuccess : null,
+                MissionFailure: laravel.cannedResponses ? laravel.cannedResponses.MissionFailure : null
             },
             click: function(messageType) {
+                // If the button has been clicked in the last 5 seconds, we should send the message
+                if ($scope.buttons.isUnlocked[messageType]) {
 
-            },
-            isDisabled: function(messageType) {
-                return true;
-            },
-            isVisible: function(messageType) {
-                var timeDiff = moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second');
-                switch (messageType) {
-                    case 'holdAbort':
-                        return -(60 * 60) < timeDiff < 30;
-                    case 'terminalCount':
-                        return -(60 * 15) < timeDiff < -(60 * 8);
-                    case 'liftoff':
-                        return -30 < timeDiff < 30;
-                    case 'maxQ':
-                        return 15 < timeDiff < 90;
-                    case 'meco':
-                        return 120 < timeDiff < 210;
-                    case 'stageSep':
-                        return 120 < timeDiff < 210;
-                    case 'mVacIgnition':
-                        return 120 < timeDiff < 210;
-                    case 'seco':
-                        return (60 * 8) < timeDiff < (60 * 12);
-                    case 'missionSuccess':
-                        return (60 * 8) < timeDiff;
-                    case 'missionFailure':
-                        return -30 < timeDiff;
+                    liveService.sendMessage({
+                        message: $scope.send.new.message,
+                        messageType: messageType
+                    });
+
+                    // Reset the form
+                    $scope.send.new.message = "";
+                    form.$setUntouched();
+
+                // The button hasn't been clicked recently, make it active instead
+                } else {
+                    $scope.buttons.isUnlocked[messageType] = true;
+                    $timeout(function() {
+                        $scope.buttons.isUnlocked[messageType] = false;
+                    }, 5000);
                 }
             },
+            isVisible: {
+                HoldAbort:      -(60 * 60) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 30,
+                TerminalCount:  -(60 * 15) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < -(60 * 8),
+                Liftoff:        -(60 * 15) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < -(60 * 8),
+                MaxQ:           -30 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 30,
+                MECO:           120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
+                StageSep:       120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
+                MVacIgnition:   120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
+                SECO:           (60 * 8) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < (60 * 12),
+                MissionSuccess: (60 * 8) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second'),
+                MissionFailure: -30 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second')
+            },
             updateCannedResponses: function() {
+                liveService.updateCannedResponses($scope.buttons.cannedResponses).then(function() {
 
+                });
             }
         };
 
@@ -2482,22 +2486,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('upload', ['$parse', function($parse) {
         return {
             restrict: 'A',
@@ -2546,6 +2534,22 @@
             }
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -3459,6 +3463,104 @@
     });
 })();
 (function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.search = {
+                    name: ''
+                };
+
+                $scope.thumbnails = angular.isDefined($scope.imageKey);
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option[$scope.imageKey]
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = '';
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
+(function() {
     var app = angular.module('app');
 
     app.directive('chart', ["$window", function($window) {
@@ -3613,104 +3715,6 @@
         }
     }]);
 })();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.search = {
-                    name: ''
-                };
-
-                $scope.thumbnails = angular.isDefined($scope.imageKey);
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option[$scope.imageKey]
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = '';
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
@@ -3731,31 +3735,6 @@
     }]);
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
-                    }
-                    return viewValue;
-                });
-            }
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -3902,18 +3881,27 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('objectCard', function() {
+    app.directive('characterCounter', ["$compile", function($compile) {
         return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                object: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/objectCard.html'
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
         }
-    });
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -3925,5 +3913,21 @@
            }
            return null;
        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('objectCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                object: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/objectCard.html'
+        }
     });
 })();

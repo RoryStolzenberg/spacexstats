@@ -252,16 +252,16 @@ class LiveController extends Controller {
 
         // Create the canned responses
         Redis::hmset('live:cannedResponses', [
-            'holdAbort' => 'HOLD HOLD HOLD',
-            'terminalCount' => 'Terminal count has now begun.',
-            'liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
-            'maxQ' => 'MaxQ, at this point in flight maximum aerodynamic pressure on the vehicle is occurring.',
-            'meco' => 'MECO! Main Engine Cutoff. The vehicles first stage engines have shutdown in preparation for stage separation.',
-            'stageSep' => 'Stage separation confirmed.',
-            'mVacIgnition' => "Falcon's upper stage engine has ignited.",
-            'seco' => 'SECO! Second Stage Engine Cutoff. Falcon is now in orbit.',
-            'missionSuccess' => 'Success! SpaceX has completed another successful mission.',
-            'missionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
+            'HoldAbort' => 'HOLD HOLD HOLD',
+            'TerminalCount' => 'Terminal count has now begun.',
+            'Liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
+            'MaxQ' => 'MaxQ, at this point in flight maximum aerodynamic pressure on the vehicle is occurring.',
+            'MECO' => 'MECO! Main Engine Cutoff. The vehicles first stage engines have shutdown in preparation for stage separation.',
+            'StageSep' => 'Stage separation confirmed.',
+            'MVacIgnition' => "Falcon's upper stage engine has ignited.",
+            'SECO' => 'SECO! Second Stage Engine Cutoff. Falcon is now in orbit.',
+            'MissionSuccess' => 'Success! SpaceX has completed another successful mission.',
+            'MissionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
         ]);
 
         // Render the Reddit thread template

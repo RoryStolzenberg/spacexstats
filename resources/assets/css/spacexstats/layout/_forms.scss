@@ -361,12 +361,12 @@ input[value="Logout"], input[value="Logout"]:focus {
                 border-right:1px solid $blue;
             }
 
-            &:active, .active {
+            &:active, &.active {
                 background-color:$blue;
                 color:white;
             }
 
-            .active {
+            &:active {
                 box-shadow:inset 0 1px 4px $october,
                 inset 0 0 5px $october;
             }

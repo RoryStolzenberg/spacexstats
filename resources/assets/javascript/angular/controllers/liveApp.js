@@ -1,7 +1,7 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", function($scope, liveService, Section, Resource, Update, $timeout) {
         var socket = io(document.location.origin + ':3000');
 
         $scope.auth = laravel.auth;
@@ -135,17 +135,17 @@
         $scope.send = {
             new: {
                 message: null,
-                messageType: 'update'
+                messageType: null
             },
+
             /*
              * Send a launch update (message) via POST off to the server to be broadcast to everyone else
              */
             message: function(form) {
-
                 // Send the message
                 liveService.sendMessage({
                     message: $scope.send.new.message,
-                    messageType: $scope.send.new.messageType
+                    messageType: null
                 });
 
                 // Reset the form
@@ -156,50 +156,54 @@
 
         $scope.buttons = {
             cannedResponses: {
-                holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
-                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
-                liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
-                maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
-                meco: laravel.cannedResponses ? laravel.cannedResponses.meco : null,
-                stageSep: laravel.cannedResponses ? laravel.cannedResponses.stageSep : null,
-                mVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.mVacIgnition : null,
-                seco: laravel.cannedResponses ? laravel.cannedResponses.seco : null,
-                missionSuccess: laravel.cannedResponses ? laravel.cannedResponses.missionSuccess : null,
-                missionFailure: laravel.cannedResponses ? laravel.cannedResponses.missionFailure : null
+                HoldAbort: laravel.cannedResponses ? laravel.cannedResponses.HoldAbort : null,
+                TerminalCount: laravel.cannedResponses ? laravel.cannedResponses.TerminalCount : null,
+                Liftoff: laravel.cannedResponses ? laravel.cannedResponses.Liftoff : null,
+                MaxQ: laravel.cannedResponses ? laravel.cannedResponses.MaxQ : null,
+                MECO: laravel.cannedResponses ? laravel.cannedResponses.MECO : null,
+                StageSep: laravel.cannedResponses ? laravel.cannedResponses.StageSep : null,
+                MVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.MVacIgnition : null,
+                SECO: laravel.cannedResponses ? laravel.cannedResponses.SECO : null,
+                MissionSuccess: laravel.cannedResponses ? laravel.cannedResponses.MissionSuccess : null,
+                MissionFailure: laravel.cannedResponses ? laravel.cannedResponses.MissionFailure : null
             },
             click: function(messageType) {
+                // If the button has been clicked in the last 5 seconds, we should send the message
+                if ($scope.buttons.isUnlocked[messageType]) {
 
-            },
-            isDisabled: function(messageType) {
-                return true;
-            },
-            isVisible: function(messageType) {
-                var timeDiff = moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second');
-                switch (messageType) {
-                    case 'holdAbort':
-                        return -(60 * 60) < timeDiff < 30;
-                    case 'terminalCount':
-                        return -(60 * 15) < timeDiff < -(60 * 8);
-                    case 'liftoff':
-                        return -30 < timeDiff < 30;
-                    case 'maxQ':
-                        return 15 < timeDiff < 90;
-                    case 'meco':
-                        return 120 < timeDiff < 210;
-                    case 'stageSep':
-                        return 120 < timeDiff < 210;
-                    case 'mVacIgnition':
-                        return 120 < timeDiff < 210;
-                    case 'seco':
-                        return (60 * 8) < timeDiff < (60 * 12);
-                    case 'missionSuccess':
-                        return (60 * 8) < timeDiff;
-                    case 'missionFailure':
-                        return -30 < timeDiff;
+                    liveService.sendMessage({
+                        message: $scope.send.new.message,
+                        messageType: messageType
+                    });
+
+                    // Reset the form
+                    $scope.send.new.message = "";
+                    form.$setUntouched();
+
+                // The button hasn't been clicked recently, make it active instead
+                } else {
+                    $scope.buttons.isUnlocked[messageType] = true;
+                    $timeout(function() {
+                        $scope.buttons.isUnlocked[messageType] = false;
+                    }, 5000);
                 }
             },
+            isVisible: {
+                HoldAbort:      -(60 * 60) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 30,
+                TerminalCount:  -(60 * 15) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < -(60 * 8),
+                Liftoff:        -(60 * 15) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < -(60 * 8),
+                MaxQ:           -30 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 30,
+                MECO:           120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
+                StageSep:       120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
+                MVacIgnition:   120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
+                SECO:           (60 * 8) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < (60 * 12),
+                MissionSuccess: (60 * 8) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second'),
+                MissionFailure: -30 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second')
+            },
             updateCannedResponses: function() {
+                liveService.updateCannedResponses($scope.buttons.cannedResponses).then(function() {
 
+                });
             }
         };
 

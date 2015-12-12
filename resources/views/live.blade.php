@@ -169,43 +169,43 @@
                             <ul>
                                 <li>
                                     <label for="holdAbort">Hold/Abort</label>
-                                    <textarea name="holdAbort" ng-model="buttons.cannedResponses.holdAbort" required></textarea>
+                                    <textarea name="holdAbort" ng-model="buttons.cannedResponses.HoldAbort" required></textarea>
                                 </li>
                                 <li>
                                     <label for="terminalCount">Terminal Count</label>
-                                    <textarea name="terminalCount" ng-model="buttons.cannedResponses.terminalCount" required></textarea>
+                                    <textarea name="terminalCount" ng-model="buttons.cannedResponses.TerminalCount" required></textarea>
                                 </li>
                                 <li>
                                     <label for="liftoff">Liftoff</label>
-                                    <textarea name="liftoff" ng-model="buttons.cannedResponses.liftoff" required></textarea>
+                                    <textarea name="liftoff" ng-model="buttons.cannedResponses.Liftoff" required></textarea>
                                 </li>
                                 <li>
                                     <label for="maxQ">Max-Q</label>
-                                    <textarea name="maxQ" ng-model="buttons.cannedResponses.maxQ" required></textarea>
+                                    <textarea name="maxQ" ng-model="buttons.cannedResponses.MaxQ" required></textarea>
                                 </li>
                                 <li>
                                     <label for="meco">MECO</label>
-                                    <textarea name="meco" ng-model="buttons.cannedResponses.meco" required></textarea>
+                                    <textarea name="meco" ng-model="buttons.cannedResponses.MECO" required></textarea>
                                 </li>
                                 <li>
                                     <label for="stageSep">Stage Sep</label>
-                                    <textarea name="stageSep" ng-model="buttons.cannedResponses.stageSep" required></textarea>
+                                    <textarea name="stageSep" ng-model="buttons.cannedResponses.StageSep" required></textarea>
                                 </li>
                                 <li>
                                     <label for="mVacIgnition">mVac Ignition</label>
-                                    <textarea name="mVacIgnition" ng-model="buttons.cannedResponses.mVacIgnition" required></textarea>
+                                    <textarea name="mVacIgnition" ng-model="buttons.cannedResponses.MVacIgnition" required></textarea>
                                 </li>
                                 <li>
                                     <label for="seco">SECO</label>
-                                    <textarea name="seco" ng-model="buttons.cannedResponses.seco" required></textarea>
+                                    <textarea name="seco" ng-model="buttons.cannedResponses.SECO" required></textarea>
                                 </li>
                                 <li>
                                     <label for="missionSuccess">Mission Success</label>
-                                    <textarea name="missionSuccess" ng-model="buttons.cannedResponses.missionSuccess" required></textarea>
+                                    <textarea name="missionSuccess" ng-model="buttons.cannedResponses.MissionSuccess" required></textarea>
                                 </li>
                                 <li>
                                     <label for="missionFailure">Mission Failure</label>
-                                    <textarea name="missionFailure" ng-model="buttons.cannedResponses.missionFailure" required></textarea>
+                                    <textarea name="missionFailure" ng-model="buttons.cannedResponses.MissionFailure" required></textarea>
                                 </li>
                             </ul>
                         </form>
@@ -232,34 +232,34 @@
                     <form name="cannedResponsePostForm" novalidate>
                         <ul class="container">
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.HoldAbort }" ng-click="buttons.click('HoldAbort')" ng-if="buttons.isVisible.HoldAbort">Hold/Abort</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Terminal Count')" ng-if="buttons.isVisible('Terminal Count')">Terminal Count</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.TerminalCount }" ng-click="buttons.click('TerminalCount')" ng-if="buttons.isVisible.TerminalCount">Terminal Count</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible('Liftoff')">Liftoff</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.Liftoff }" ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible.Liftoff">Liftoff</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Max-Q')" ng-if="buttons.isVisible('Max-Q')">Max-Q</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MaxQ }" ng-click="buttons.click('MaxQ')" ng-if="buttons.isVisible.MaxQ">Max-Q</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('MECO')" ng-if="buttons.isVisible('MECO')">MECO</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MECO }" ng-click="buttons.click('MECO')" ng-if="buttons.isVisible.MECO">MECO</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Stage Sep')" ng-if="buttons.isVisible('Stage Sep')">Stage Sep</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.StageSep }" ng-click="buttons.click('StageSep')" ng-if="buttons.isVisible.StageSep">Stage Sep</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('MVac Ignition')" ng-if="buttons.isVisible('MVac Ignition')">MVac Ignition</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MVacIgnition }" ng-click="buttons.click('MVacIgnition')" ng-if="buttons.isVisible.MVacIgnition">MVac Ignition</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('SECO')" ng-if="buttons.isVisible('SECO')">SECO</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.SECO }" ng-click="buttons.click('SECO')" ng-if="buttons.isVisible.SECO">SECO</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Mission Success')" ng-if="buttons.isVisible('Mission Success')">Mission Success</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionSuccess }" ng-click="buttons.click('MissionSuccess')" ng-if="buttons.isVisible.MissionSuccess">Mission Success</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Mission Failure')" ng-if="buttons.isVisible('Mission Failure')">Mission Failure</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionFailure }" ng-click="buttons.click('MissionFailure')" ng-if="buttons.isVisible.MissionFailure">Mission Failure</button>
                             </li>
                         </ul>
                         <textarea class="new-live-update half" name="message" ng-model="send.new.message"

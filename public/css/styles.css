@@ -7994,10 +7994,10 @@ input[value="Logout"], input[value="Logout"]:focus {
               transition: text-shadow ease-in-out 0.5s 0s; }
       .segmented-control ul li:not(:last-child) {
         border-right: 1px solid #3569A4; }
-      .segmented-control ul li:active, .segmented-control ul li .active {
+      .segmented-control ul li:active, .segmented-control ul li.active {
         background-color: #3569A4;
         color: white; }
-      .segmented-control ul li .active {
+      .segmented-control ul li:active {
         box-shadow: inset 0 1px 4px #4f708f, inset 0 0 5px #4f708f; }
       .segmented-control ul li:hover {
         text-shadow: -1px 1px 3px #ffc, 1px -1px 8px white; }
