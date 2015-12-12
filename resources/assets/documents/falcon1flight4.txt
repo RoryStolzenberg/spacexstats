@@ -1,11 +1,11 @@
-Carrying another mass simulator - this time weighing 165kg and nicknamed "RatSat", Falcon 1 for the first time achieved mission success and became the first privately developed liquid-fueled rocket to reach orbit on 28 September 2008. Test firing occurred on 20 September, and over the next 8 days some changes were made to a pipeline supplying the second stage Kestrel engine with liquid Oxygen.
+Carrying another mass simulator - this time weighing 165kg and nicknamed "RatSat", Falcon 1 for the first time achieved mission success and became the first privately developed liquid-fueled rocket to reach orbit on 28 September 2008. A test firing occurred on the 20th of September, and over the next 8 days changes were made to a pipeline supplying the second stage Kestrel engine with liquid oxygen.
 
-Liftoff occurred 15 minutes into a 5 hour launch window. At T+9:31, the second stage engine shut down after reaching orbit, something all 3 Falcon 1 flights prior had failed to accomplish. The initial orbit from this burn was 330x650km. After a short coast period, the second engine of Falcon 1 restarted, and performed a second successful burn placing the mass simulator in a 621x643km orbit with an inclination of 9.35 degrees.
+Liftoff occurred 15 minutes into the 5 hour launch window. At T+9:31, the second stage engine shut down after reaching orbit, something all 3 previous Falcon 1 flights had failed to accomplish. The vehicle’s initial orbit was 330x650km. After a short coast period, the second stage of Falcon 1 restarted, and performed a second successful burn that placed the mass simulator in a 621x643km orbit with an inclination of 9.35 degrees.
 
 Although original plans for the Falcon 1 were for the first stage to deploy a parachute and splashdown downrange from the launch site to be recovered and reused, no flight succeeded in doing so. Stage recovery was a secondary goal however and not required for mission success.
 
-Elon Musk, the company's founder and CEO, called the launch a "great day for SpaceX" as he addressed the then 500-employee company. The data shows we achieved a super precise orbit insertion--middle of the bull's eye--and then went on to coast and restart the second stage, which was icing on the cake." ... "This is one of the best days of my life."
+Elon Musk, the company's founder and CEO, called the launch a "great day for SpaceX" as he addressed the then-500-employee company. “The data shows we achieved a super precise orbit insertion--middle of the bull's eye--and then went on to coast and restart the second stage, which was icing on the cake." ... "This is one of the best days of my life."
 
-The next day after completing this historic spaceflight achievement, NASA phoned, with a nearly $2 billion International Space Station resupply contract. "I couldn't even be professional" with them on the phone, Musk said. "I told them, 'I love you.'"
+The day after completing this landmark mission, NASA phoned, with an International Space Station resupply contract worth nearly $2 billion. "I couldn't even be professional" with them on the phone, Musk said. "I told them, 'I love you.'"
 
-To this day, the Falcon 1 Flight 4 upper stage remains in a 620x640km orbit around the Earth.
+To this day, the Falcon 1 Flight 4 upper stage remains in a 620x640km orbit around the earth.
