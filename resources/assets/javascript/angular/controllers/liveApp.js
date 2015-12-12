@@ -221,6 +221,7 @@
             $scope.liveParameters.reddit = data.data.reddit;
             $scope.liveParameters.streams = data.data.streams;
             $scope.liveParameters.countdown = data.data.countdown;
+            $scope.liveParameters.status.text = data.data.status;
             $scope.$apply();
         });
 
