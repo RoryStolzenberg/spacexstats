@@ -100,10 +100,10 @@
                     </li>
                     <li class="gr-2 stream-options segmented-control">
                         <ul>
-                            <li>
+                            <li ng-class="{ active: liveParameters.userSelectedStream == null }">
                                 <span ng-click="liveParameters.userSelectedStream = null">No Video</span>
                             </li>
-                            <li>
+                            <li ng-class="{ active: liveParameters.userSelectedStream == 'spacex' }">
                                 <span ng-click="liveParameters.userSelectedStream = 'spacex'">SpaceX</span>
                             </li>
                         </ul>
@@ -111,14 +111,13 @@
 
                     <li class="gr-2 stream-size-options segmented-control">
                         <ul>
-                            <li>
+                            <li ng-class="{ active: liveParameters.userStreamSize == 'smaller' }">
                                 <span ng-click="liveParameters.userStreamSize = 'smaller'">Smaller</span>
                             </li>
-                            <li>
+                            <li ng-class="{ active: liveParameters.userStreamSize == 'larger' }">
                                 <span ng-click="liveParameters.userStreamSize = 'larger'">Larger</span>
                             </li>
                         </ul>
-
                     </li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
