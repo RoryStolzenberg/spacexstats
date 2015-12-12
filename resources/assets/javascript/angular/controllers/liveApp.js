@@ -75,12 +75,17 @@
             isPausingCountdown: false,
             pauseCountdown: function() {
                 $scope.settings.isPausingCountdown = true;
-                liveService.pauseCountdown();
+                liveService.pauseCountdown().then(function() {
+                    $scope.settings.isPausingCountdown = false;
+                });
             },
             isResumingCountdown: false,
             resumeCountdown: function() {
                 $scope.settings.isResumingCountdown = true;
-                liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime);
+                liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime).then(function() {
+                    $scope.settings.isResumingCountdown = false
+                    ;
+                });
             }
         };
 
@@ -217,6 +222,7 @@
         // Callback executed by countdown directive
         $scope.setTimeBetweenNowAndLaunch = function(relativeSecondsBetween) {
             $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
+            $scope.$apply();
         };
 
         // Websocket listeners

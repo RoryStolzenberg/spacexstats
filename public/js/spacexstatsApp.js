@@ -2026,12 +2026,17 @@
             isPausingCountdown: false,
             pauseCountdown: function() {
                 $scope.settings.isPausingCountdown = true;
-                liveService.pauseCountdown();
+                liveService.pauseCountdown().then(function() {
+                    $scope.settings.isPausingCountdown = false;
+                });
             },
             isResumingCountdown: false,
             resumeCountdown: function() {
                 $scope.settings.isResumingCountdown = true;
-                liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime);
+                liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime).then(function() {
+                    $scope.settings.isResumingCountdown = false
+                    ;
+                });
             }
         };
 
@@ -2168,6 +2173,7 @@
         // Callback executed by countdown directive
         $scope.setTimeBetweenNowAndLaunch = function(relativeSecondsBetween) {
             $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
+            $scope.$apply();
         };
 
         // Websocket listeners
@@ -2436,14 +2442,54 @@
 (function() {
     var app = angular.module('app');
 
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
 })();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
@@ -2530,58 +2576,6 @@
             templateUrl: '/js/templates/missionCard.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2715,47 +2709,6 @@
 })();
 
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('tweet', ["$http", function($http) {
-        return {
-            restrict: 'E',
-            scope: {
-                action: '@',
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_id = id;
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
 (function() {
     var app = angular.module('app');
 
@@ -2931,32 +2884,41 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive('tweet', ["$http", function($http) {
         return {
-            replace: true,
             restrict: 'E',
             scope: {
-                redditComment: '=ngModel'
+                action: '@',
+                tweet: '='
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                $scope.retrieveTweet = function() {
 
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_id = id;
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
                         });
+                    } else {
+                        $scope.tweet = {};
                     }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
                 }
-
             },
-            templateUrl: '/js/templates/redditComment.html'
+            templateUrl: '/js/templates/tweet.html'
         }
     }]);
 })();
@@ -3166,6 +3128,38 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
@@ -3318,6 +3312,26 @@
         }
     }]);
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    }]);
+})();
+
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
@@ -3750,51 +3764,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
-                    }
-                    return viewValue;
-                });
-            }
-        }
-    }]);
-})();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    }]);
-})();
-
-(function() {
-    var app = angular.module('app');
-
     app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
         return {
             restrict: 'A',
@@ -3934,6 +3903,43 @@
             templateUrl: '/js/templates/timeline.html'
         };
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();
 (function() {
     var app = angular.module('app');
