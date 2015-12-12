@@ -1,7 +1,7 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", function($scope, liveService, Section, Resource, Update, $timeout) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage) {
         var socket = io(document.location.origin + ':3000');
 
         $scope.auth = laravel.auth;
@@ -151,6 +151,8 @@
                 liveService.sendMessage({
                     message: $scope.send.new.message,
                     messageType: null
+                }).then(function() {
+                    flashMessage.addOK('Update submitted');
                 });
 
                 // Reset the form
@@ -180,7 +182,10 @@
                     liveService.sendMessage({
                         message: $scope.send.new.message,
                         messageType: messageType
+                    }).then(function() {
+                        flashMessage.addOK('Canned update submitted');
                     });
+
 
                     // Reset the form
                     $scope.send.new.message = "";
@@ -209,10 +214,7 @@
 
         // Callback executed by countdown directive
         $scope.setTimeBetweenNowAndLaunch = function(relativeSecondsBetween) {
-            console.log(relativeSecondsBetween);
-            $timeout(function() {
-                $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
-            });
+            $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
         };
 
         // Websocket listeners
