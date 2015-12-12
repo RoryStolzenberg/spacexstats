@@ -98,16 +98,27 @@
                             (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}">Mission Page</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}">Reddit Discussion</a></span>)
                         </span>
                     </li>
-                    <li class="gr-2 stream-options">
-                        <span ng-click="liveParameters.userSelectedStream = null">No Video</span>
-                        <span ng-click="liveParameters.userSelectedStream = 'spacex'">SpaceX</span>
-                        <span class="hidden">NASA Only</span>
-                        <span class="hidden">Split-screen</span>
+                    <li class="gr-2 stream-options segmented-control">
+                        <ul>
+                            <li>
+                                <span ng-click="liveParameters.userSelectedStream = null">No Video</span>
+                            </li>
+                            <li>
+                                <span ng-click="liveParameters.userSelectedStream = 'spacex'">SpaceX</span>
+                            </li>
+                        </ul>
                     </li>
 
-                    <li class="gr-2 stream-size-options">
-                        <span ng-click="liveParameters.userStreamSize = 'smaller'">Smaller</span>
-                        <span ng-click="liveParameters.userStreamSize = 'larger'">Larger</span>
+                    <li class="gr-2 stream-size-options segmented-control">
+                        <ul>
+                            <li>
+                                <span ng-click="liveParameters.userStreamSize = 'smaller'">Smaller</span>
+                            </li>
+                            <li>
+                                <span ng-click="liveParameters.userStreamSize = 'larger'">Larger</span>
+                            </li>
+                        </ul>
+
                     </li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())

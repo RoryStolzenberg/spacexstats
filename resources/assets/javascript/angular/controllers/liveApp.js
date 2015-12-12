@@ -42,6 +42,8 @@
                 if ($scope.liveParameters.isForLaunch) {
                     $scope.liveParameters.reddit.title = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
                     $scope.liveParameters.title = $scope.data.upcomingMission.name;
+                    $scope.liveParameters.countdown.to = $scope.data.upcomingMission.launch_date_time;
+                    $scope.liveParameters.countdown.isPaused = false;
                 } else {
                     $scope.liveParameters.title = $scope.liveParameters.reddit.title = null;
                 }
