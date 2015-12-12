@@ -103,8 +103,11 @@
                             <li ng-class="{ selected: liveParameters.userSelectedStream == null }" ng-click="liveParameters.userSelectedStream = null">
                                 <span>No Video</span>
                             </li>
-                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'spacex' }" ng-click="liveParameters.userSelectedStream = 'spacex'">
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'spacex' }" ng-click="liveParameters.userSelectedStream = 'spacex'" ng-if="liveParameters.streams.spacex.isAvailable">
                                 <span>SpaceX</span>
+                            </li>
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'nasa' }" ng-click="liveParameters.userSelectedStream = 'nasa'" ng-if="liveParameters.streams.nasa.isAvailable">
+                                <span>NASA</span>
                             </li>
                         </ul>
                     </li>

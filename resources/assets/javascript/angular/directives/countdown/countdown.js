@@ -23,6 +23,8 @@
 
                 var countdownProcessor = function() {
 
+                    console.log(moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second'));
+
                     if (!$scope.isPaused) {
                         var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
                         var secondsBetween = Math.abs(relativeSecondsBetween);

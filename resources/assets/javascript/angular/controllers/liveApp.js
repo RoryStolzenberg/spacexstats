@@ -189,7 +189,7 @@
                     $timeout(function() {
                         $scope.send.new.message = "";
                         $scope.buttons.isUnlocked[messageType] = false;
-                    }, 3000);
+                    }, 2000);
                 }
             },
             isVisible: {
