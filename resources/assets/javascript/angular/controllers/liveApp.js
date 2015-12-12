@@ -168,7 +168,7 @@
                 MissionFailure: laravel.cannedResponses ? laravel.cannedResponses.MissionFailure : null
             },
             isUnlocked: {},
-            click: function(messageType) {
+            click: function(messageType, form) {
                 // If the button has been clicked in the last 5 seconds, we should send the message
                 if ($scope.buttons.isUnlocked[messageType]) {
 

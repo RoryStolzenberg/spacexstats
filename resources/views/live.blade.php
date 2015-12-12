@@ -98,24 +98,13 @@
                             (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}">Mission Page</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}">Reddit Discussion</a></span>)
                         </span>
                     </li>
-                    <li class="gr-2 stream-options segmented-control">
+                    <li class="gr-3 stream-options segmented-control">
                         <ul>
-                            <li ng-class="{ selected: liveParameters.userSelectedStream == null }">
-                                <span ng-click="liveParameters.userSelectedStream = null">No Video</span>
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == null }" ng-click="liveParameters.userSelectedStream = null">
+                                <span>No Video</span>
                             </li>
-                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'spacex' }">
-                                <span ng-click="liveParameters.userSelectedStream = 'spacex'">SpaceX</span>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="gr-2 stream-size-options segmented-control">
-                        <ul>
-                            <li ng-class="{ selected: liveParameters.userStreamSize == 'smaller' }">
-                                <span ng-click="liveParameters.userStreamSize = 'smaller'">Smaller</span>
-                            </li>
-                            <li ng-class="{ selected: liveParameters.userStreamSize == 'larger' }">
-                                <span ng-click="liveParameters.userStreamSize = 'larger'">Larger</span>
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'spacex' }" ng-click="liveParameters.userSelectedStream = 'spacex'">
+                                <span>SpaceX</span>
                             </li>
                         </ul>
                     </li>
@@ -123,6 +112,18 @@
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                         <li class="gr-1 float-right"><i class="fa fa-cog" ng-click="settings.isEditingDetails = !settings.isEditingDetails"></i></li>
                     @endif
+
+                    <li class="gr-3 float-right stream-size-options segmented-control">
+                        <ul>
+                            <li ng-class="{ selected: liveParameters.userStreamSize == 'smaller' }" ng-click="liveParameters.userStreamSize = 'smaller'">
+                                <span>Smaller</span>
+                            </li>
+                            <li ng-class="{ selected: liveParameters.userStreamSize == 'larger' }" ng-click="liveParameters.userStreamSize = 'larger'">
+                                <span>Larger</span>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </nav>
 
@@ -229,7 +230,7 @@
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section class="live-message-form" ng-if="isActive && liveParameters.isForLaunch">
-                    <form name="cannedResponsePostForm" novalidate>
+                    <form name="messageForm" novalidate>
                         <ul class="container">
                             <li class="gr-1">
                                 <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.HoldAbort }" ng-click="buttons.click('HoldAbort')" ng-if="buttons.isVisible.HoldAbort">Hold/Abort</button>
@@ -265,7 +266,7 @@
                         <textarea class="new-live-update half" name="message" ng-model="send.new.message"
                                   placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown" required>
                         </textarea>
-                        <input type="submit" ng-click="send.message(cannedResponsePostForm)" ng-disabled="cannedResponsePostForm.$invalid" value="Post" />
+                        <input type="submit" ng-click="send.message(messageForm)" ng-disabled="messageForm.$invalid" value="Post" />
                     </form>
                 </section>
             @endif
