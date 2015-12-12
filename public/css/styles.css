@@ -7979,7 +7979,8 @@ input[value="Logout"], input[value="Logout"]:focus {
     border: 1px solid #3569A4;
     border-radius: 3px;
     height: 30px;
-    font-size: 0; }
+    font-size: 0;
+    vertical-align: top; }
     .segmented-control ul li {
       width: 100px;
       display: inline-block;

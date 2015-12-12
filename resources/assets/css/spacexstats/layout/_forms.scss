@@ -343,6 +343,7 @@ input[value="Logout"], input[value="Logout"]:focus {
         border-radius:$border-radius-small;
         height:30px;
         font-size:0;
+        vertical-align: top;
 
         li {
             width:100px;
