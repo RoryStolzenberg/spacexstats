@@ -11,7 +11,7 @@
             },
             link: function($scope, elem, attrs) {
 
-                $scope.$watch('data', function(newValue) {
+                var unbindWatcher = $scope.$watch('data', function(newValue) {
                     render(newValue);
                 }, true);
 
@@ -50,7 +50,7 @@
                         originDatapoint[settings.xAxis.key] = 0;
                         originDatapoint[settings.yAxis.key] = 0;
 
-                        //data.unshift(originDatapoint);
+                        data.unshift(originDatapoint);
                     }
 
                     // draw
