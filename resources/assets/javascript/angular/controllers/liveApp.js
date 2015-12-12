@@ -221,8 +221,10 @@
 
         // Callback executed by countdown directive
         $scope.setTimeBetweenNowAndLaunch = function(relativeSecondsBetween) {
-            $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
-            $scope.$apply();
+            console.log(relativeSecondsBetween);
+            $timeout(function() {
+                $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
+            });
         };
 
         // Websocket listeners
