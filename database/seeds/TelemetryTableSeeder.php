@@ -12,6 +12,7 @@ class TelemetryTableSeeder extends Seeder {
         $this->DSQU();
         $this->COTS1();
         $this->COTS2Plus();
+        $this->CRS1();
     }
 
     public function Falcon1Flight1() {
@@ -2282,140 +2283,140 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 703,
+            'timestamp'     => 11 * 60 + 43,
             'readout'       => "Solar array deployment!"
         ]);
-        /*Telemetry::create([
+        Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 11 * 60 + 49,
             'readout'       => "Solar arrays have deployed"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
-            'readout'       => "Well, you can see the solar arrays deploying, this is a great moment. Of course, this is just the first step of a very complex mission. Uhh... but from all accounts we have Dragon orbiting the Earth with the solar arrays deployed!"
+            'timestamp'     => 11 * 60 + 55,
+            'readout'       => "Well, we can see the solar arrays deploying, this is a great moment. Of course, this is just the first step of a very complex mission. Uhh... but from all accounts we have Dragon orbiting the Earth with the solar arrays deployed!"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 12 * 60 + 2,
             'readout'       => "Power global"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 12 * 60 + 11,
             'readout'       => "This is so good!"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 12 * 60 + 14,
             'readout'       => "We have a couple days of really difficult challenges before we get to the space station, but, but both solar arrays are deployed. Dragon is performing nominally and we are looking forward to a great mission here to the International Space Station. Hopefully become the first private company to service our international community at the space station"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 12 * 60 + 49,
             'readout'       => "Power global"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 12 * 60 + 50,
             'readout'       => "Go ahead and acknowledge MD"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 12 * 60 + 51,
             'readout'       => "Okay, power global ackn-"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 12 * 60 + 56,
             'readout'       => "LD, MDI on countdown"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 13 * 60 + 0,
             'readout'       => "LD's on a phone call right now MD"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 13 * 60 + 2,
             'readout'       => "Yeah, I copy that LC. Uhh, we're gonna' be switching off countdown net, thanks for the ride."
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 13 * 60 + 12,
             'readout'       => "K, all stations. This is MD on Mission A. We're on 1 dot 1 0."
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 13 * 60 + 24,
             'readout'       => "Dragon is in coelliptic plan, no comm"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 13 * 60 + 42,
             'readout'       => "Well as expected. Dragon is just about at the limit of the New Foundland groundstation, we're probably going to lose video shortly, but right now, Dragon is stil communicating with mission control here in Hawthorne, California, and everything looks great, it continues to circle the globe. We can hear the audience here. Everyone at SpaceX, we have 1800 plus people, we're all working really hard, and we're on our way to a great mission. We still have 3 and a half days, a lot of test manovuers before we get to the station, so stay in touch with us at spacex.com and Twitter, and continue to cheer us on."
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 14 * 60 + 22,
             'readout'       => "So, uhh, let's see if I can talk now. We had a great launch today. This is the third successful flight of Falcon 9; the second time we've put Dragon safely into orbit, this is so awesome. We definitely hope to continue to the success over the next two weeks, where we are making progress to the space station; and I feel pretty good that we are going to be the first private company to ever visit the International Space Station, this is so exciting. Please be sure to stay tuned to spacex.com, and Facebook, and Twitter, and all those things, because there's all kinds of great tweets right now. Yeah, please just stay up to date with what's going on."
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 14 * 60 + 58,
             'readout'       => "And we want to extend a special thanks to NASA for their teamwork and support, and todays mission, and getting here, to all of our customers and supporters over the years, to the worldwide network of trackign stations that are going to be helping us with Dragon going to the space station and back over the coming couple of weeks, and finally to the Air Force and the folks at Cape Canveral for the great support in getting todays launch off the pad!"
         ]);
         Telemetry::create([
             'mission_id'    => 8,
-            'timestamp'     => 183,
+            'timestamp'     => 15 * 60 + 22,
             'readout'       => "So, on behalf of the 1800 people here at SpaceX, we thank you so much for watching this amazing mission today. It's a great day, it's almost surreal, so cool. Yeah, and just please continue to watch as Dragon makes its progress to the space station. Thank you."
-        ]);*/
+        ]);
     }
 
     public function CRS1() {
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 4,
             'readout'       => "Liftoff of the Falcon 9"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 9,
             'readout'       => "Falcon 9 has cleared the tower"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 14,
             'readout'       => "Starting pitchkick"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 14,
             'readout'       => "All systems at full power"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 23,
             'readout'       => "Starting gravity turn"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 35,
             'readout'       => "JDMTA acquisition of signal"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 42,
             'readout'       => "We have a solid telemetry lock on stage one and stage two"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 0 * 60 + 57,
             'readout'       => "First stage propellant utilization is active"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 1 * 60 + 3,
             'readout'       => "Vehicle is on a nominal trajectory at 5km in altitude, velocity of 230m/s, and downrange distance of 700m.",
             'velocity'      => 230,
             'altitude'      => 5000,
@@ -2423,62 +2424,62 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 1 * 60 + 14,
             'readout'       => "Vehicle is supersonic"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 1 * 60 + 26,
             'readout'       => "Vehicle has reached maximum aerodynamic pressure"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 1 * 60 + 46,
             'readout'       => "Second stage has started engine chill"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 7,
             'readout'       => "Dragon power systems are nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 44,
             'readout'       => "Approaching MECO 1"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 13,
             'readout'       => "Passed the min-MECO point"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 18,
             'readout'       => "First stage shutdown"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 21,
             'readout'       => "Stage separation confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 29,
             'readout'       => "MVac ignition confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 6,
             'readout'       => "The Dragon nosecone has been jettisoned"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 18,
             'readout'       => "Vehicle remains on a nominal trajectory"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 26,
             'readout'       => "Vehicle altitude is 150km, velocity is 3.1km/s, and downrange distance of 350km",
             'velocity'      => 3100,
             'altitude'      => 150000,
@@ -2486,22 +2487,22 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 33,
             'readout'       => "Second stage propellant utilization active"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 38,
             'readout'       => "Avionics systems nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 5 * 60 + 3,
             'readout'       => "New Hampshire acquisition of singal"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 5 * 60 + 19,
             'readout'       => "Vehicle remains on a nominal trajectory. Altitude is 163km, velocity is 3.5km/s, downrange distance of 770km",
             'velocity'      => 3500,
             'altitude'      => 163000,
@@ -2509,251 +2510,251 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 5 * 60 + 47,
             'readout'       => "MVac and stage two propulsion systems healthy"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 5 * 60 + 54,
             'readout'       => "Avionics system and RF link are solid"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 3,
             'readout'       => "LC this is OSM"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 5,
             'readout'       => "Go Ahead"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 6,
             'readout'       => "Uhh, yes sir. I've looked around the pad, it looks like- the only place we have any- even a small fire, is on the T/E- on the deck. Uhh, [inaudible] fire department gets here they can go ahead and do there sweep, over"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 20,
             'readout'       => "Copy that, pad secured, they can go on"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 21,
             'readout'       => "The vehicle remains on a nominal trajectory, Altitude is 186km, velocity is 4km/s",
             'velocity'      => 4000,
             'altitude'      => 186000
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
-            'readout'       => "MVac and stage performance is good"
+            'timestamp'     => 7 * 60 + 15,
+            'readout'       => "MVac and stage two performance is good"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 7 * 60 + 30,
             'readout'       => "The vehicle remains on a nominal trajectory. Altitude of 200km, and velocity of 4.9km/s",
             'velocity'      => 4900,
             'altitude'      => 200000
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
-            'readout'       => "LC this is OSM, I recommend we go ahead and [fade out]"
+            'timestamp'     => 7 * 60 + 39,
+            'readout'       => "LC this is OSM, they're just about there, I recommend we go ahead and [fade out]"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 13,
             'readout'       => "Vehicle is passing through the head-on gate"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 42,
             'readout'       => "Propulsion systems nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 48,
             'readout'       => "FTS has been safed"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 50,
             'readout'       => "Vehicle is in terminal guidance mode"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 53,
             'readout'       => "Avionic systems are nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 33,
             'readout'       => "Nominal LOS from the Cape"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 34,
             'readout'       => "IIP left"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 40,
             'readout'       => "MVac shutdown confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 44,
             'readout'       => "Dragon's in separation"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 45,
             'readout'       => "Prop-rate is in prime"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 51,
             'readout'       => "Falcon 9 and Dragon are in orbit, perigee 197km, apogee 328km."
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 10 * 60 + 0,
             'readout'       => "All stations, MD, we're on step one dot two and step one dot four with nav-one and sys-two"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 10 * 60 + 43,
             'readout'       => "Manifolds venting"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 10 * 60 + 50,
             'readout'       => "[inaudible] open"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 10 * 60 + 55,
             'readout'       => "[inaudible] open"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 7,
             'readout'       => "Got a console arm on software"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 9,
             'readout'       => "Dragon's in post-prime"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 11,
             'readout'       => "Priming complete"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 13,
             'readout'       => "Nominal AOS New Foundland"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 13,
             'readout'       => "[inaudible] to deploy attitude"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 15,
             'readout'       => "Flight software, you got on this software global?"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 17,
             'readout'       => "Yeah, we're looking into it. I'm acknowledging."
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 22,
             'readout'       => "Thruster firings confirmed, props[inaudible] nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 24,
             'readout'       => "Dragon's in array deploy attitude"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 28,
             'readout'       => "Slew looked good"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 47,
             'readout'       => "Nominal LOS Wallops"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 12 * 60 + 12,
             'readout'       => "Dragon's in array deploy state"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 12 * 60 + 18,
             'readout'       => "It's expected MD"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 12 * 60 + 20,
             'readout'       => "Copy, [inaudible]"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 12 * 60 + 20,
             'readout'       => "Dragon's in array deploy"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 12 * 60 + 21,
             'readout'       => "Array deploy"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 12 * 60 + 57,
             'readout'       => "All stations MD, we're on one dot one zero"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 13 * 60 + 4,
             'readout'       => "Nice work"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 13 * 60 + 29,
             'readout'       => "As expected, Dragon has now passed beyond the viewable range of the New Foundland, Canada ground station. SpaceX mission control here in Hawthorne will continue to communicate with Dragon as it circles the globe"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 13 * 60 + 45,
             'readout'       => "yay, and as always we're super excited we had a great launch today. This is the fourth successful flight of the Falcon 9 rocket, and our third operational Dragon spacecraft put into orbit. This- let's see- Dragon is going to spend the next, about, three days catching up with the International Space Station so it plans to arrive there Wednesday October 10th, around 2AM Pacific Time, 5AM Eastern Time. So- oh yes! And happy birthday John! Always good! Yes. A launch- a successful launch is the best-"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 14 * 60 + 21,
             'readout'       => "A great candle!"
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 14 * 60 + 23,
             'readout'       => "Exactly. So be sure to stay tuned to our Facebook and Twitter pages and spacex.com and you can follow Dragon's entire mission from now until it actually attaches to the space station, and you can see a ton of live footage on our pages and nasa, of the astronauts inside the space station, unloading cargo. There's gonna' to be lots of cool stuff to watch over the next few weeks."
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 14 * 60 + 43,
             'readout'       => "And here at SpaceX we want to extend our special thanks to NASA for their partnership and support on the CRS program."
         ]);
         Telemetry::create([
             'mission_id'    => 9,
-            'timestamp'     => 0,
+            'timestamp'     => 14 * 60 + 52,
             'readout'       => "And we have uhh, over 1800 people here at SpaceX. We thank you so much for tuning in, and yes, we'll look forward to a great rest of the mission, so thank you all again and bub bye!"
         ]);
     }
