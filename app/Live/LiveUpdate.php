@@ -39,12 +39,12 @@ class LiveUpdate implements JsonSerializable, Arrayable {
      * @param AcronymService $acronymService
      * @param $updateInput
      */
-    public function setUpdate(AcronymService $acronymService, $updateInput) {
+    public function setUpdate($updateInput) {
         $this->updatedAt = Carbon::now();
         $this->update = $updateInput;
 
         $this->parseResources();
-        $this->update = $acronymService->parseAndExpand($this->update);
+        $this->update = (new AcronymService())->parseAndExpand($this->update);
 
         $this->updateMd = \Parsedown::instance()->text($this->update);
     }
