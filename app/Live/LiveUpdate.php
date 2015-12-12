@@ -142,21 +142,21 @@ class LiveUpdate implements JsonSerializable, Arrayable {
      * @internal
      */
     private function parseResources() {
-        preg_match_all('/https?:\/\/i\.imgur\.com\/[a-z1-9]*\.(?:jpg|gif)/i', $this->update, $imgurMatches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/https?:\/\/i\.imgur\.com\/[a-z1-9]*\.(?:jpg|gif)/i', $this->update, $imgurMatches);
 
-        foreach($imgurMatches as $imgurMatch) {
+        foreach($imgurMatches[0] as $imgurMatch) {
             $this->resources[] = [
                 'type'  => 'imgur',
-                'url'   => $imgurMatch[1]
+                'url'   => $imgurMatch
             ];
         }
 
-        preg_match_all('/https?:\/\/(?:www\.)?twitter\.com\/[a-z0-9]*\/status\/([0-9])*/i', $this->update, $twitterMatches, PREG_OFFSET_CAPTURE);
+        preg_match_all('/https?:\/\/(?:www\.)?twitter\.com\/[a-z0-9]*\/status\/([0-9])*/i', $this->update, $twitterMatches);
 
         if (count($twitterMatches) > 0) {
             $twitter = new TwitterOAuth(Config::get('services.twitter.consumerKey'), Config::get('services.twitter.consumerSecret'), Config::get('services.twitter.accessToken'), Config::get('services.twitter.accessSecret'));
             $twitter->setTimeouts(5, 5);
-            $tweets = $twitter->get('statuses/lookup', array('id' => $twitterMatches));
+            $tweets = $twitter->get('statuses/lookup', ['id' => $twitterMatches[0]]);
 
             if ($twitter->getLastHttpCode() == 200) {
                 foreach($tweets as $tweet) {
