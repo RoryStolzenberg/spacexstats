@@ -8943,20 +8943,20 @@ body.live {
   background-color: #3569A4;
   height: auto; }
   body.live h1, body.live .countdown.live {
-    height: 100px;
-    line-height: 100px;
+    height: 80px;
+    line-height: 80px;
     text-align: center; }
   body.live .content-wrapper {
     height: auto; }
     body.live .content-wrapper header {
       margin: 0 auto;
-      height: 100px;
+      height: 80px;
       overflow: hidden; }
     body.live .content-wrapper main {
-      min-height: calc(100vh - 150px + 50px); }
+      min-height: calc(100vh - 80px); }
   body.live .access-links {
     color: #FAFAFA;
-    line-height: 100px;
+    line-height: 80px;
     text-align: center; }
     body.live .access-links#logo {
       width: 16.66667%; }
@@ -8982,11 +8982,12 @@ body.live {
 .countdown.live {
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   font-weight: 100;
-  font-size: 80px;
+  font-size: 60px;
   color: #FAFAFA;
   margin: 0 auto; }
   .countdown.live td {
-    min-width: 125px; }
+    min-width: 125px;
+    padding: 0 5px; }
 
 section.editing-details {
   background-color: #CCC;

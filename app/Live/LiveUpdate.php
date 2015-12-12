@@ -147,7 +147,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
         foreach($imgurMatches as $imgurMatch) {
             $this->resources[] = [
                 'type'  => 'imgur',
-                'url'   => $imgurMatch
+                'url'   => $imgurMatch[1]
             ];
         }
 

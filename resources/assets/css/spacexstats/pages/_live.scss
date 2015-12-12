@@ -1,10 +1,12 @@
+$live-header-height: 80px;
+
 body.live {
     background-color:$blue;
     height:auto;
 
     h1, .countdown.live {
-        height:100px;
-        line-height:100px;
+        height:$live-header-height;
+        line-height:$live-header-height;
         text-align:center;
     }
 
@@ -13,18 +15,18 @@ body.live {
 
         header {
             margin:0 auto;
-            height: 100px;
+            height:$live-header-height;
             overflow: hidden;
         }
 
         main {
-            min-height:calc(100vh - #{$h1-height} + 50px);
+            min-height:calc(100vh - #{$live-header-height});
         }
     }
 
     .access-links {
         color:$white;
-        line-height:100px;
+        line-height:$live-header-height;
         text-align: center;
 
         &#logo {
@@ -67,12 +69,13 @@ body.live {
 .countdown.live {
     font-family:$brandonGrotesque;
     font-weight:100;
-    font-size:80px;
+    font-size:60px;
     color:$white;
     margin:0 auto;
 
     td {
         min-width:125px;
+        padding:0 5px;
     }
 }
 
