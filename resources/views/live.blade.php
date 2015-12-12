@@ -236,34 +236,34 @@
                     <form name="messageForm" novalidate>
                         <ul class="container" ng-if="liveParameters.isForLaunch">
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.HoldAbort }" ng-click="buttons.click('HoldAbort')" ng-if="buttons.isVisible.HoldAbort">Hold/Abort</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.HoldAbort }" ng-click="buttons.click('HoldAbort')" ng-if="timeBetweenNowAndLaunch > -(60 * 60) && timeBetweenNowAndLaunch < 30">Hold/Abort</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.TerminalCount }" ng-click="buttons.click('TerminalCount')" ng-if="buttons.isVisible.TerminalCount">Terminal Count</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.TerminalCount }" ng-click="buttons.click('TerminalCount')" ng-if="timeBetweenNowAndLaunch > -(60 * 15) && timeBetweenNowAndLaunch < -(60 * 8)">Terminal Count</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.Liftoff }" ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible.Liftoff">Liftoff</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.Liftoff }" ng-click="buttons.click('Liftoff')" ng-if="timeBetweenNowAndLaunch > -(60 * 15) && timeBetweenNowAndLaunch < -(60 * 8)">Liftoff</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MaxQ }" ng-click="buttons.click('MaxQ')" ng-if="buttons.isVisible.MaxQ">Max-Q</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MaxQ }" ng-click="buttons.click('MaxQ')" ng-if="timeBetweenNowAndLaunch > -30 && timeBetweenNowAndLaunch < 30">Max-Q</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MECO }" ng-click="buttons.click('MECO')" ng-if="buttons.isVisible.MECO">MECO</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MECO }" ng-click="buttons.click('MECO')" ng-if="timeBetweenNowAndLaunch > 120 && timeBetweenNowAndLaunch < 210">MECO</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.StageSep }" ng-click="buttons.click('StageSep')" ng-if="buttons.isVisible.StageSep">Stage Sep</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.StageSep }" ng-click="buttons.click('StageSep')" ng-if="timeBetweenNowAndLaunch > 120 && timeBetweenNowAndLaunch < 210">Stage Sep</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MVacIgnition }" ng-click="buttons.click('MVacIgnition')" ng-if="buttons.isVisible.MVacIgnition">MVac Ignition</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MVacIgnition }" ng-click="buttons.click('MVacIgnition')" ng-if="timeBetweenNowAndLaunch > 120 && timeBetweenNowAndLaunch < 210">MVac Ignition</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.SECO }" ng-click="buttons.click('SECO')" ng-if="buttons.isVisible.SECO">SECO</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.SECO }" ng-click="buttons.click('SECO')" ng-if="timeBetweenNowAndLaunch > (60 * 8) && timeBetweenNowAndLaunch < (60 * 12)">SECO</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionSuccess }" ng-click="buttons.click('MissionSuccess')" ng-if="buttons.isVisible.MissionSuccess">Mission Success</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionSuccess }" ng-click="buttons.click('MissionSuccess')" ng-if="timeBetweenNowAndLaunch > (60 * 8)">Mission Success</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionFailure }" ng-click="buttons.click('MissionFailure')" ng-if="buttons.isVisible.MissionFailure">Mission Failure</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionFailure }" ng-click="buttons.click('MissionFailure')" ng-if="timeBetweenNowAndLaunch > -30">Mission Failure</button>
                             </li>
                         </ul>
                         <textarea class="new-live-update half" name="message" ng-model="send.new.message"

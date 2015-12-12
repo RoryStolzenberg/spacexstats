@@ -197,18 +197,6 @@
                     }, 1500);
                 }
             },
-            isVisible: {
-                HoldAbort:      $scope.timeBetweenNowAndLaunch > -(60 * 60) && $scope.timeBetweenNowAndLaunch < 30,
-                TerminalCount:  $scope.timeBetweenNowAndLaunch > -(60 * 15) && $scope.timeBetweenNowAndLaunch < -(60 * 8),
-                Liftoff:        $scope.timeBetweenNowAndLaunch > -(60 * 15) && $scope.timeBetweenNowAndLaunch < -(60 * 8),
-                MaxQ:           $scope.timeBetweenNowAndLaunch > -30 && $scope.timeBetweenNowAndLaunch < 30,
-                MECO:           $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
-                StageSep:       $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
-                MVacIgnition:   $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
-                SECO:           $scope.timeBetweenNowAndLaunch > (60 * 8) && $scope.timeBetweenNowAndLaunch < (60 * 12),
-                MissionSuccess: $scope.timeBetweenNowAndLaunch > (60 * 8),
-                MissionFailure: $scope.timeBetweenNowAndLaunch > -30
-            },
             isUpdatingCannedResponses: false,
             updateCannedResponses: function() {
                 $scope.buttons.isUpdatingCannedResponses = true;

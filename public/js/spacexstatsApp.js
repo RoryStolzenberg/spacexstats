@@ -2082,18 +2082,6 @@
                     }, 1500);
                 }
             },
-            isVisible: {
-                HoldAbort:      $scope.timeBetweenNowAndLaunch > -(60 * 60) && $scope.timeBetweenNowAndLaunch < 30,
-                TerminalCount:  $scope.timeBetweenNowAndLaunch > -(60 * 15) && $scope.timeBetweenNowAndLaunch < -(60 * 8),
-                Liftoff:        $scope.timeBetweenNowAndLaunch > -(60 * 15) && $scope.timeBetweenNowAndLaunch < -(60 * 8),
-                MaxQ:           $scope.timeBetweenNowAndLaunch > -30 && $scope.timeBetweenNowAndLaunch < 30,
-                MECO:           $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
-                StageSep:       $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
-                MVacIgnition:   $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
-                SECO:           $scope.timeBetweenNowAndLaunch > (60 * 8) && $scope.timeBetweenNowAndLaunch < (60 * 12),
-                MissionSuccess: $scope.timeBetweenNowAndLaunch > (60 * 8),
-                MissionFailure: $scope.timeBetweenNowAndLaunch > -30
-            },
             isUpdatingCannedResponses: false,
             updateCannedResponses: function() {
                 $scope.buttons.isUpdatingCannedResponses = true;
@@ -2514,34 +2502,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('upload', ['$parse', function($parse) {
         return {
             restrict: 'A',
@@ -2726,6 +2686,22 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('datetime', function() {
         return {
             require: 'ngModel',
@@ -2894,6 +2870,38 @@
             templateUrl: '/js/templates/datetime.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -3138,38 +3146,6 @@
             templateUrl: '/js/templates/deltaV.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -3657,6 +3633,26 @@
         }
     }]);
 })();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    }]);
+})();
+
 (function() {
     var app = angular.module('app', []);
 
@@ -3755,26 +3751,6 @@
     });
 })();
 
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    }]);
-})();
-
 (function() {
     var app = angular.module('app');
 
@@ -3793,6 +3769,31 @@
     }]);
 })();
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app', []);
 
@@ -3921,31 +3922,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
-                    }
-                    return viewValue;
-                });
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('objectCard', function() {
         return {
             restrict: 'E',
@@ -3957,5 +3933,17 @@
             },
             templateUrl: '/js/templates/objectCard.html'
         }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
     });
 })();
