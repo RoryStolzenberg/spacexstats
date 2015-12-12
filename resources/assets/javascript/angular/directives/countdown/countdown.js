@@ -16,6 +16,10 @@
             },
             link: function($scope, elem, attrs) {
 
+                if (attrs.callback) {
+                    $scope.callback = $scope.callback();
+                }
+
                 $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
                 $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
 
@@ -48,7 +52,9 @@
                         $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
 
                         if (attrs.callback) {
-                            $scope.callback(relativeSecondsBetween);
+                            scope.$apply(function() {
+                                callback(relativeSecondsBetween);
+                            });
                         }
                     }
                 };
