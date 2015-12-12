@@ -249,11 +249,11 @@
                             </li>
                             <li class="gr-1">
                                 <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.Liftoff }"
-                                        ng-click="buttons.click('Liftoff', messageForm)" ng-if="timeBetweenNowAndLaunch > -(60 * 15) && timeBetweenNowAndLaunch < -(60 * 8)">Liftoff</button>
+                                        ng-click="buttons.click('Liftoff', messageForm)" ng-if="timeBetweenNowAndLaunch > -30 && timeBetweenNowAndLaunch < 30">Liftoff</button>
                             </li>
                             <li class="gr-1">
                                 <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MaxQ }"
-                                        ng-click="buttons.click('MaxQ', messageForm)" ng-if="timeBetweenNowAndLaunch > -30 && timeBetweenNowAndLaunch < 30">Max-Q</button>
+                                        ng-click="buttons.click('MaxQ', messageForm)" ng-if="timeBetweenNowAndLaunch > 30 && timeBetweenNowAndLaunch < 120">Max-Q</button>
                             </li>
                             <li class="gr-1">
                                 <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MECO }"
@@ -313,7 +313,7 @@
                         <div class="message-integration">
                             <div class="message-integration" ng-repeat="integration in update.integrations" ng-class="integration.type">
                                 <!-- Imgur Integration -->
-                                <img ng-if="integration.type == 'imgur'" ng-src="integration.url" />
+                                <a ng-href="@{{ integration.url }}"><img ng-if="integration.type == 'imgur'" ng-src="@{{ integration.url }}" /></a>
 
                                 <!-- Tweet Integration -->
                                 <p ng-if="integration.type == 'tweet'" ng-bind-html="integration.text"></p>
@@ -327,7 +327,7 @@
                 <aside class="gr-3">
                     <h3>Resources</h3>
                     <ul>
-                        <li ng-repeat="resource in liveParameters.resources">@{{ resource.title }}</li>
+                        <li ng-repeat="resource in liveParameters.resources"><a ng-href="@{{ resource.url }}">@{{ resource.title }}</a>, @{{ resource.courtesy }}></li>
                     </ul>
                 </aside>
             </section>

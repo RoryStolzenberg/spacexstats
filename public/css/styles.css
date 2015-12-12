@@ -8976,14 +8976,16 @@ body.live {
       background-color: #4f708f; }
     body.live .live-status.in-progress {
       background-color: #ccac55; }
-    body.live .live-status.success {
+    body.live .live-status.mission-success {
       background-color: #40C085; }
-    body.live .live-status.failure {
+    body.live .live-status.mission-failure {
       background-color: #FB6473; }
 
 .dark {
   background-color: #21272B;
   color: #F2F2F2; }
+  .dark .segmented-control ul li {
+    color: #F2F2F2; }
 
 .countdown.live {
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
@@ -9060,6 +9062,11 @@ button.canned-response {
     float: right; }
     .live-updates .update i.fa-edit:hover {
       color: #ccac55; }
+
+.message-integration img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 8px; }
 
 button.canned-response {
   background-color: #8B939B;

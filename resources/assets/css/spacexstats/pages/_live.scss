@@ -52,11 +52,11 @@ body.live {
             background-color:$gold;
         }
 
-        &.success {
+        &.mission-success {
             background-color:$green;
         }
 
-        &.failure {
+        &.mission-failure {
             background-color:$red;
         }
     }
@@ -65,6 +65,10 @@ body.live {
 .dark {
     background-color:$lightblack;
     color:$offwhite;
+
+    .segmented-control ul li {
+        color:$offwhite;
+    }
 }
 
 .countdown.live {
@@ -155,6 +159,14 @@ button.canned-response {
                 color:$gold;
             }
         }
+    }
+}
+
+.message-integration {
+    img {
+        max-width:100px;
+        max-height:100px;
+        border-radius: $border-radius-large;
     }
 }
 

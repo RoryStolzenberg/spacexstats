@@ -18,13 +18,20 @@ class WebcastEvent extends Event  implements ShouldBroadcast
      * @param $isActive
      * @param null $videoId
      */
-    public function __construct($isActive, $videoId = null)
+    public function __construct($stream, $isActive, $videoId = null)
     {
-        $this->isActive = $isActive;
-        if ($videoId != null) {
-            $this->videoId = $videoId;
-        }
+        if ($stream == "spacex") {
+            $this->isActive = $isActive;
+            if ($videoId != null) {
+                $this->videoId = $videoId;
+            }
 
+            // Update the Redis parameters
+            $spacexLivestream = json_decode(Redis::hget('live:streams', 'spacex'));
+            $spacexLivestream->isActive = $isActive;
+            $spacexLivestream->youtubeVideoId = $videoId;
+            Redis::hset('live:streams', 'spacex', json_encode($spacexLivestream));
+        }
     }
 
     /**

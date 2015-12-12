@@ -73,11 +73,11 @@ class WebcastCheckCommand extends Command
         // If the livestream is active now, and wasn't before, or vice versa, send an event
         if ($isLive && (Redis::hget('webcast', 'isLive') == 'false' || !Redis::hexists('webcast', 'isLive'))) {
             $this->info($searchResponse->items[0]->id->videoId);
-            event(new WebcastEvent(true, $searchResponse->items[0]->id->videoId));
+            event(new WebcastEvent("spacex", true, $searchResponse->items[0]->id->videoId));
 
         } elseif (!$isLive &&  Redis::hget('webcast', 'isLive') == 'true') {
             $this->info('webcast event: finished');
-            event(new WebcastEvent(false));
+            event(new WebcastEvent("spacex", false));
         }
 
         // Set the Redis properties

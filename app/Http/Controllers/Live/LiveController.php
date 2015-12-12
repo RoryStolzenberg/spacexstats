@@ -81,6 +81,13 @@ class LiveController extends Controller {
         // Add to Redis
         Redis::rpush('live:updates', json_encode($liveUpdate));
 
+        // Potentially update the live status if it is not null
+        if (!is_null(Input::get('messageType'))) {
+            if (in_array(Input::get('messageType'), ['TerminalCount', 'Liftoff', 'MissionSuccess', 'MissionFailure'])) {
+                Redis::set('live:status', Input::get('messageType'));
+            }
+        }
+
         // Push into Websockets
         event(new LiveUpdateCreatedEvent($liveUpdate));
 
