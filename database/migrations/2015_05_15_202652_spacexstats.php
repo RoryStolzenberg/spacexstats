@@ -82,6 +82,7 @@ class Spacexstats extends Migration {
 
         Schema::create('dataviews', function(Blueprint $table) {
             $table->increments('dataview_id');
+            $table->integer('user_id')->unsigned()->nullable();
             $table->string('name', Varchar::small);
             $table->string('column_titles', Varchar::medium);
             $table->string('query', Varchar::medium);
@@ -598,6 +599,7 @@ class Spacexstats extends Migration {
         });
 
         Schema::table('dataviews', function(Blueprint $table) {
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null');
             $table->foreign('banner_image')->references('object_id')->on('objects')->onDelete('set null'); // When an object is deleted, set the banner image to null
         });
 

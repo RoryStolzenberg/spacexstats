@@ -177,6 +177,13 @@ body.future-mission .highlights {
     }
 }
 
+article {
+    .md blockquote, .md blockquote > * {
+        font-style:italic;
+        font-size:24px;
+    }
+}
+
 #countdown > * {
     top:-10%;
 }

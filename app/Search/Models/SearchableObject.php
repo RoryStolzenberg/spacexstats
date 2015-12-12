@@ -38,11 +38,15 @@ class SearchableObject implements SearchableInterface
                 'width' => $this->entity->dimension_width,
                 'height' => $this->entity->dimension_height
             ],
+            'media' => $this->entity->media,
+            'media_thumb_small' => $this->entity->media_thumb_small,
+            'media_thumb_large' => $this->entity->media_thumb_large,
             'duration' => $this->entity->duration,
             'summary' => $this->entity->summary,
             'author' => $this->entity->author,
             'attribution' => $this->entity->attribution,
             'originated_at' => $this->entity->originated_at->toIso8601String(),
+            'originated_at_specificity' => $this->entity->originated_at_specificity,
             'tweet_user_name' => $this->entity->tweet_user_name,
             'tweet_text' => $this->entity->tweet_text,
             'status' => $this->entity->status,
@@ -53,7 +57,8 @@ class SearchableObject implements SearchableInterface
             'tags' => $this->entity->tags()->lists('name'),
             'favorites' => $this->entity->favorites()->lists('user_id'),
             'notes' => $this->entity->notes()->lists('user_id'),
-            'downloads' => $this->entity->downloads()->lists('user_id')->unique()
+            'downloads' => $this->entity->downloads()->lists('user_id')->unique(),
+            'comments' => $this->entity->comments()->lists('comment_id')
         ];
 
         if ($this->entity->mission()->count() == 1) {

@@ -16,7 +16,7 @@
                 </ul>
             </nav>
 
-            <p>If you have a query or tip, please contact us directly.</p>
+            <p>If you have a query or tip, <a href="/about/contact">please contact us directly</a>.</p>
 
             <h2>SpaceX Stats</h2>
             <section id="spacexstats" class="scrollto">

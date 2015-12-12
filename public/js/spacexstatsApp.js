@@ -1,4 +1,70 @@
 (function() {
+    var app = angular.module('app', []);
+
+    app.service('missionDataService', ["$http", function($http) {
+        this.telemetry = function(slug) {
+            return $http.get('/missions/'+ slug + '/telemetry');
+        };
+
+        this.orbitalElements = function(slug) {
+            return $http.get('/missions/' + slug + '/orbitalelements').then(function(response) {
+                // premap the dates of the timestamps because otherwise we'll do it too many times
+                if (response.data === Array) {
+                    return response.data.map(function(orbitalElement) {
+                        orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
+                        return orbitalElement;
+                    });
+                }
+            });
+        };
+
+        this.launchEvents = function(slug) {
+            return $http.get('/missions/' + slug + '/launchevents');
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            computeStayTime(message);
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, computeStayTime());
+        };
+
+        this.addError = function(message) {
+
+            computeStayTime(message);
+
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, computeStayTime());
+        };
+
+        var computeStayTime = function(message) {
+            // Avg characters per word: 5.1
+            // Avg reading speed of 200 wpm:
+            //var totalChara
+            return 3000;
+        };
+    });
+})();
+
+
+(function() {
     var missionsListApp = angular.module('app', []);
 
     missionsListApp.controller("missionsListController", ['$scope', function($scope) {
@@ -849,7 +915,7 @@
 
     }]);
 
-    objectApp.controller('commentsController', ["$scope", "commentService", "Comment", function($scope, commentService, Comment) {
+    objectApp.controller('commentsController', ["$scope", "commentService", "Comment", "flashMessage", function($scope, commentService, Comment, flashMessage) {
         $scope.object = laravel.object;
         $scope.commentsAreLoaded = false;
         $scope.isAddingTopLevelComment = false;
@@ -861,6 +927,11 @@
                 $scope.comments.push(new Comment(response.data));
                 $scope.newComment = null;
                 form.$setUntouched();
+                    flashMessage.addOK('Comment submitted');
+            },
+            function(response) {
+                $scope.isAddingTopLevelComment = false;
+                flashMessage.addError('Comment could not be submitted. Try again or contact us.');
             });
         };
 
@@ -2337,129 +2408,6 @@
     }]);
 
 })();
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        };
-
-        this.addError = function(message) {
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, 3000);
-        }
-    });
-})();
-
-
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('missionDataService', ["$http", function($http) {
-        this.telemetry = function(slug) {
-            return $http.get('/missions/'+ slug + '/telemetry');
-        };
-
-        this.orbitalElements = function(slug) {
-            return $http.get('/missions/' + slug + '/orbitalelements').then(function(response) {
-                // premap the dates of the timestamps because otherwise we'll do it too many times
-                if (response.data === Array) {
-                    return response.data.map(function(orbitalElement) {
-                        orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
-                        return orbitalElement;
-                    });
-                }
-            });
-        };
-
-        this.launchEvents = function(slug) {
-            return $http.get('/missions/' + slug + '/launchevents');
-        }
-    }]);
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                size: '@',
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('upload', ['$parse', function($parse) {
-        return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2523,6 +2471,58 @@
                 }
             },
             templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
         }
     }]);
 })();
@@ -2701,43 +2701,18 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('missionCard', function() {
         return {
             restrict: 'E',
+            replace: true,
             scope: {
-                action: '@',
-                tweet: '='
+                mission: '='
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.retrieveTweet = function() {
-
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
-
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_id = id;
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
-                    }
-                    // Toggle disabled state somewhere around here
-                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                }
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/missionCard.html'
         }
-    }]);
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2871,6 +2846,47 @@
 })();
 
 
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                action: '@',
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_id = id;
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_user_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+                    // Toggle disabled state somewhere around here
+                    $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
 (function() {
     var app = angular.module('app');
 
@@ -3073,38 +3089,6 @@
             templateUrl: '/js/templates/deltaV.html'
         }
     });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -3440,6 +3424,38 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
@@ -3613,6 +3629,24 @@
 })();
 
 (function() {
+    var app = angular.module('app');
+
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
+        }
+    }]);
+})();
+
+(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -3708,24 +3742,6 @@
             templateUrl: '/js/templates/dropdown.html'
         }
     });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
 })();
 
 (function() {
@@ -3888,5 +3904,21 @@
            }
            return null;
        }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('objectCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                object: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/objectCard.html'
+        }
     });
 })();

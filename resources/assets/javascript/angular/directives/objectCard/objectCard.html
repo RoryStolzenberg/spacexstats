@@ -1,0 +1,28 @@
+<div class="card object-card">
+    <div class="thumb-holder">
+        <img class="thumb" ng-attr-src="{{ object.media_thumb_small }}" ng-attr-title="{{ object.title }}"/>
+    </div>
+
+    <div class="object-overview">
+        <p class="title">
+            <a ng-href="/missioncontrol/objects/{{ object.object_id }}">{{ object.title }}</a>
+        </p>
+        <p class="type creator date">
+            {{ object.type }} submitted
+            by <a ng-if="!object.anonymous" ng-href="/users/{{ object.user.username }}">{{ object.user.username }}</a>
+            on {{ object.originated_at }}
+        </p>
+
+        <p class="comments">
+            <span>{{ object.comments.length }} <ng-pluralize count="{{ object.comments.length }}" when="{ 0:'comments', 1:'comment', 'other':'comments'}"></ng-pluralize></span>
+        </p>
+
+
+        <div class="tags">
+            <div class="tag" ng-repeat="tag in object.tags"><a ng-href="/missioncontrol/tags/{{ tag }}"> {{ tag }}</a></div>
+        </div>
+
+        <i class="publication-status published fa fa-check" title="Approved"></i>
+    </div>
+
+</div>

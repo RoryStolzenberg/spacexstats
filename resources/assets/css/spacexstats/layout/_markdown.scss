@@ -36,7 +36,6 @@
         font-size:16px;
     }
 
-
     em {
         font-style:italic;
     }
@@ -69,5 +68,13 @@
 
     ol {
         list-style-type:decimal;
+    }
+
+    blockquote, blockquote > * {
+        font-style:italic;
+        font-size:larger;
+        font-family:$brandonGrotesque;
+        font-weight:400;
+        color:$lightblack;
     }
 }

@@ -3,6 +3,7 @@ namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redis;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Models\Comment;
 use SpaceXStats\Models\Object;
@@ -30,6 +31,7 @@ class CommentsController extends Controller {
 
         $comment = Comment::where('comment_id', $newComment->comment_id)->with('user')->first();
 
+        Redis::sadd('objects:toReindex', $object_id);
         return response()->json($comment);
     }
 

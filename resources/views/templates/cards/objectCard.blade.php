@@ -8,7 +8,7 @@
             <a href="/missioncontrol/objects/{{ $object->object_id }}">{{ $object->title }}</a>
         </p>
         <p class="type creator date">
-            {{ $object->present()->type() }} submitted
+            {{ $object->type }} submitted
             @if (!$object->anonymous)
                 by <a href="/users/{{ $object->user->username }}">{{ $object->user->username }}</a>
             @endif

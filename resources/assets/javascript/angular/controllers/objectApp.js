@@ -95,7 +95,7 @@
 
     }]);
 
-    objectApp.controller('commentsController', ["$scope", "commentService", "Comment", function($scope, commentService, Comment) {
+    objectApp.controller('commentsController', ["$scope", "commentService", "Comment", "flashMessage", function($scope, commentService, Comment, flashMessage) {
         $scope.object = laravel.object;
         $scope.commentsAreLoaded = false;
         $scope.isAddingTopLevelComment = false;
@@ -107,6 +107,11 @@
                 $scope.comments.push(new Comment(response.data));
                 $scope.newComment = null;
                 form.$setUntouched();
+                    flashMessage.addOK('Comment submitted');
+            },
+            function(response) {
+                $scope.isAddingTopLevelComment = false;
+                flashMessage.addError('Comment could not be submitted. Try again or contact us.');
             });
         };
 

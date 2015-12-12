@@ -4,10 +4,11 @@ use Illuminate\Database\Eloquent\Model;
 use SpaceXStats\Presenters\CollectionPresenter;
 use SpaceXStats\Presenters\Traits\PresentableTrait;
 use SpaceXStats\Validators\ValidatableTrait;
+use SpaceXStats\Search\Traits\SearchableTrait as Searchable;
 
 class Collection extends Model {
 
-    use ValidatableTrait, PresentableTrait;
+    use ValidatableTrait, PresentableTrait, Searchable;
 
     protected $table = 'collections';
     protected $primaryKey = 'collection_id';

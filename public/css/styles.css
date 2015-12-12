@@ -7519,7 +7519,7 @@ table.data-table th {
   color: #F2F2F2; }
 
 blockquote, .backing {
-  background-color: #CCC;
+  background-color: #F2F2F2;
   padding: 10px;
   width: 100%; }
 
@@ -8418,6 +8418,13 @@ datepicker, .datepicker, [datepicker],
 .md ol {
   list-style-type: decimal; }
 
+.md blockquote, .md blockquote > * {
+  font-style: italic;
+  font-size: larger;
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  font-weight: 400;
+  color: #21272B; }
+
 .subscribe {
   text-align: center;
   font-size: 0; }
@@ -8755,6 +8762,10 @@ body.future-mission .highlights {
       background-color: #b79537; }
     .display-date-time .timezone-option.active {
       background-color: #c6a241; }
+
+article .md blockquote, article .md blockquote > * {
+  font-style: italic;
+  font-size: 24px; }
 
 #countdown > * {
   top: -10%; }

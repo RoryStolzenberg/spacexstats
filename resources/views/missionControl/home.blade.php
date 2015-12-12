@@ -25,7 +25,7 @@
                         No results :(
                     </p>
                     <div ng-repeat="result in searchResults.hits.hits">
-                        @{{ result._source.title }}
+                        <object-card object="result._source"></object-card>
                     </div>
                 </section>
             </div>

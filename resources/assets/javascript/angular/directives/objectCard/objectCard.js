@@ -1,16 +1,16 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('missionCard', function() {
+    app.directive('objectCard', function() {
         return {
             restrict: 'E',
             replace: true,
             scope: {
-                mission: '='
+                object: '='
             },
             link: function($scope) {
             },
-            templateUrl: '/js/templates/missionCard.html'
+            templateUrl: '/js/templates/objectCard.html'
         }
     });
 })();
