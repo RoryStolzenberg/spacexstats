@@ -93,7 +93,7 @@
                 thing: laravel.reddit.thing ? laravel.reddit.thing : null
             },
             countdown: {
-                to: laravel.countdown.to,
+                to: laravel.countdown.to ? laravel.countdown.to : $scope.data.upcomingMission.launch_date_time,
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
@@ -119,7 +119,9 @@
             status: {
                 text: laravel.status.text,
                 class: function() {
-                    return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
+                    if ($scope.liveParameters.status.text) {
+                        return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
+                    }
                 }
             }
         };
