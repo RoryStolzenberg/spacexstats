@@ -5,6 +5,10 @@
     <body class="live" ng-controller="liveController" ng-strict-di ng-cloak>
     <!-- Custom Header -->
     <div class="content-wrapper">
+
+        <div id="flash-message-container">
+        </div>
+
         <header class="container">
             <div class="access-links" id="logo"><a href="/">SpaceX Stats <span class="gold">Live</span></a></div>
             <h1 class="gr-8" ng-if="!isActive">SpaceX Stats Live</h1>
