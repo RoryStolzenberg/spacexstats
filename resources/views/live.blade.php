@@ -327,7 +327,7 @@
                 <aside class="gr-3">
                     <h3>Resources</h3>
                     <ul>
-                        <li ng-repeat="resource in liveParameters.resources"><a ng-href="@{{ resource.url }}">@{{ resource.title }}</a>, @{{ resource.courtesy }}</li>
+                        <li ng-repeat="resource in liveParameters.resources"><span><a ng-href="@{{ resource.url }}">@{{ resource.title }}</a>, @{{ resource.courtesy }}</span></li>
                     </ul>
                 </aside>
             </section>
