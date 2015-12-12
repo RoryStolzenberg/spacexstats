@@ -311,6 +311,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => 'AsiaSat 8 is a communications satellite that Falcon 9 propelled into a GTO orbit, and will be located at 105.5 degrees East.',
+            'article' => file_get_contents(base_path('resources/assets/documents/asiasat8.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=e0030f94-88c9-4bda-9973-cdc7d189a992&code=AST8'
@@ -329,6 +330,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => 'AsiaSat 6 is a communications satellite being launched for Asia Satellite Telecommunications Company Ltd. Once in orbit, it will be renamed AsiaSat 6 / Thaicom 7.',
+            'article' => file_get_contents(base_path('resources/assets/documents/asiasat6.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=aa44b8b5-25bf-453e-9ca4-2510848fb145&code=AST6'
@@ -347,6 +349,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'summary' => 'Fourth of twelve Dragon ISS resupply missions. It is carrying over 5000 pounds to the station, including 20 mousetronauts, and the SpinSat satellite.',
+            'article' => file_get_contents(base_path('resources/assets/documents/crs4.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=dc88c2c3-9919-44dd-9893-0738518a28d6&code=CRS4'
