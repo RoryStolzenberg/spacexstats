@@ -12,7 +12,7 @@ use JsonSerializable;
 use SpaceXStats\Services\AcronymService;
 
 class LiveUpdate implements JsonSerializable, Arrayable {
-    private $createdAt, $updatedAt, $timestamp, $update, $updateMd, $updateType, $id, $resources;
+    private $createdAt, $updatedAt, $timestamp, $update, $updateMd, $updateType, $id, $integrations;
 
     /**
      * Constructor for a LiveUpdate object.
@@ -36,14 +36,13 @@ class LiveUpdate implements JsonSerializable, Arrayable {
     /**
      * Updates the text of a LiveUpdate, and also sets the updatedAt field and the markdown representation of that update.
      *
-     * @param AcronymService $acronymService
      * @param $updateInput
      */
     public function setUpdate($updateInput) {
         $this->updatedAt = Carbon::now();
         $this->update = $updateInput;
 
-        $this->parseResources();
+        $this->parseIntegrations();
         $this->update = (new AcronymService())->parseAndExpand($this->update);
 
         $this->updateMd = \Parsedown::instance()->text($this->update);
@@ -63,7 +62,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
             'updateMd' => $this->updateMd,
             'updateType' => $this->updateType,
             'timestamp' => $this->timestamp,
-            'resources' => $this->resources
+            'integrations' => $this->integrations
         ];
     }
 
@@ -141,11 +140,11 @@ class LiveUpdate implements JsonSerializable, Arrayable {
      *
      * @internal
      */
-    private function parseResources() {
+    private function parseIntegrations() {
         preg_match_all('/https?:\/\/i\.imgur\.com\/[a-z1-9]*\.(?:jpg|gif)/i', $this->update, $imgurMatches);
 
         foreach($imgurMatches[0] as $imgurMatch) {
-            $this->resources[] = [
+            $this->integrations[] = [
                 'type'  => 'imgur',
                 'url'   => $imgurMatch
             ];
@@ -160,7 +159,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
 
             if ($twitter->getLastHttpCode() == 200) {
                 foreach($tweets as $tweet) {
-                    $this->resources[] = [
+                    $this->integrations[] = [
                         'type' => 'tweet',
                         'author' => $tweet->user->name,
                         'datetime' => $tweet->created_at,

@@ -148,8 +148,11 @@ class LiveController extends Controller {
      * @return mixed
      */
     public function editCannedResponses() {
+        foreach (Input::get('cannedResponses') as $key => $value) {
+            $cannedResponses[$key] = $value;
+        }
         // Reset Canned Responses
-
+        Redis::hmset('live:cannedResponses', $cannedResponses);
         return response()->json(null, 204);
     }
 

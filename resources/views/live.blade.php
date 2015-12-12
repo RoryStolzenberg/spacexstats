@@ -296,16 +296,25 @@
                                 <small class="update-datetime" ng-show="update.isShowingTimestamp">@{{ update.createdAt }} UTC</small>
                                 <i class="fa fa-edit" ng-if="auth == true" ng-click="update.isEditFormVisible = true"></i>
                             </p>
-
                         </div>
 
                         <div class="md" ng-bind-html="update.updateMd"></div>
 
                         <form name="editUpdateForm" ng-if="update.isEditFormVisible" novalidate>
-                            <textarea required ng-model="update.update" name="update"></textarea>
+                            <textarea class="half" required ng-model="update.update" name="update"></textarea>
                             <button ng-click="update.edit()" ng-disabled="update.isEditButtonDisabled || editUpdateForm.update.$pristine || editUpdateForm.$invalid">Save</button>
                             <button ng-click="update.isEditFormVisible = false">Close</button>
                         </form>
+
+                        <div class="message-integration">
+                            <div class="message-integration" ng-repeat="integration in update.integrations" ng-class="integration.type">
+                                <!-- Imgur Integration -->
+                                <img ng-if="integration.type == 'imgur'" ng-src="integration.url" />
+
+                                <!-- Tweet Integration -->
+                                <p ng-if="integration.type == 'tweet'" ng-bind-html="integration.text"></p>
+                            </div>
+                        </div>
                     </div>
 
                     <p class="exclaim" ng-show="updates.length == 0">No updates :(</p>

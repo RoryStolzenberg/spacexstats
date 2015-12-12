@@ -207,7 +207,6 @@
                 $scope.buttons.isUpdatingCannedResponses = true;
                 liveService.updateCannedResponses($scope.buttons.cannedResponses).then(function(response) {
                     $scope.buttons.isUpdatingCannedResponses = false;
-                    // Set canned responses here
                 });
             }
         };
@@ -302,7 +301,7 @@
         };
 
         this.updateCannedResponses = function(cannedResponses) {
-            return $http.patch('/live/send/cannedresponses', cannedResponses);
+            return $http.patch('/live/send/cannedresponses', { cannedResponses: cannedResponses });
         };
 
         this.create = function(createThreadParameters) {
