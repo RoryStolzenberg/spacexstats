@@ -52,9 +52,7 @@
                         $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
 
                         if (attrs.callback) {
-                            $scope.$apply(function() {
-                                callback(relativeSecondsBetween);
-                            });
+                            $scope.callback(relativeSecondsBetween);
                         }
                     }
                 };
