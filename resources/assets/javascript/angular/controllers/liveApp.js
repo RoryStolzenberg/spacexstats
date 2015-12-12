@@ -252,7 +252,7 @@
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
-
+            console.log(data);
             switch (data.liveUpdate.messageType) {
                 case "TerminalCount":
                     $scope.liveParameters.status.text = "Terminal Count";

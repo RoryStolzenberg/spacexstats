@@ -226,7 +226,7 @@
             @endif
 
             <section id="streams" ng-if="isLivestreamVisible()" class="dark @{{ liveParameters.userStreamSize }}">
-                <iframe src="https://www.youtube.com/embed/OvHJSIKP0Hg?VQ=HD720" frameborder="0" allowfullscreen></iframe>
+                <iframe ng-src="https://www.youtube.com/embed/@{{ liveParameters.streams.spacex.videoId }}?VQ=HD720" frameborder="0" allowfullscreen></iframe>
             </section>
 
             <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>

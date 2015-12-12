@@ -2762,57 +2762,57 @@ class TelemetryTableSeeder extends Seeder {
     public function CRS2() {
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3,
             'readout'       => "We have liftoff of the Falcon 9"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 4,
             'readout'       => "Dragon has sensed first stage acceleration"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 8,
             'readout'       => "Falcon 9 has cleared the tower"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 12,
             'readout'       => "Solid pitchkick"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 31,
             'readout'       => "Starting gravity turn"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 35,
             'readout'       => "Terminal count launch is complete"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 35,
             'readout'       => "First stage at full power"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 41,
             'readout'       => "Standing by"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 50,
             'readout'       => "Power systems nominal and we have a good telemetry lock on stage 1 and 2"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 55,
             'readout'       => "First stage propellant utilization active"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 60,
             'readout'       => "Vehicle is 6km in altitude, velocity of 241m/s and downrange distance of 1km",
             'velocity'      => 241,
             'altitude'      => 6000,
@@ -2820,22 +2820,22 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 1 * 60 + 13,
             'readout'       => "Vehicle is supersonic"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 1 * 60 + 25,
             'readout'       => "Vehicle has reached maximum aerodynamic pressure"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 1 * 60 + 37,
             'readout'       => "Second stage has started engine chill"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 1,
             'readout'       => "Vehicle remains on a nominal trajectory. Vehicle is 30km in altitude, velocity of 1km/s and downrange distance of 23km",
             'velocity'      => 1000,
             'altitude'      => 30000,
@@ -2843,12 +2843,12 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 14,
             'readout'       => "Dragon power systems nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 30,
             'readout'       => "Vehicle remains on a nominal trajectory. Vehicle is 51km in altitude, velocity of 1.8km/s and downrange distance of 59km",
             'velocity'      => 1800,
             'altitude'      => 51000,
@@ -2856,67 +2856,67 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 42,
             'readout'       => "Approaching MECO 1"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 50,
             'readout'       => "MECO 1"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 54,
             'readout'       => "Passed min-MECO"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 59,
             'readout'       => "Flight computers in second stage"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 0,
             'readout'       => "Dragon has sensed MECO"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 2,
             'readout'       => "MECO 2, stage 1 shutdown"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 4,
             'readout'       => "Stage separation confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 13,
             'readout'       => "MVac ignition confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 15,
             'readout'       => "AOS Wallops"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 54,
             'readout'       => "Nosecone separation"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 57,
             'readout'       => "All stations MD on mission A. Please proceed to procedure zero dot one zero one, Dragon On-Orbit Activation Deployment. Standing by for Dragon separation and prop-priming"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 8,
             'readout'       => "Second stage propulsion systems nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 21,
             'readout'       => "Vehicle remains on a nominal trajectory. Vehicle is 148km in altitude, velocity of 3.2km/s and downrange distance of 346km",
             'velocity'      => 3200,
             'altitude'      => 148000,
@@ -2924,7 +2924,7 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 10,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 39,
             'readout'       => "Second stage propellant utilization active"
         ]);
         Telemetry::create([
