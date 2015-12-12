@@ -1952,8 +1952,13 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", "$sceDelegateProvider", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage, $sceDelegateProvider) {
         var socket = io(document.location.origin + ':3000');
+
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self',
+            'https://www.youtube.com/**'
+        ]);
 
         $scope.auth = laravel.auth;
         $scope.isActive = laravel.isActive;
@@ -2059,6 +2064,9 @@
                 spacex: {
                     isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
                     youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
+                    videoLink: function() {
+                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?VQ=HD720';
+                    },
                     isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
                 },
                 nasa: {
@@ -2452,6 +2460,22 @@
     }]);
 
 })();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 // Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
 // Rewritten as an Angular directive for SpaceXStats 4
 (function() {
@@ -2521,22 +2545,6 @@
             templateUrl: '/js/templates/countdown.html'
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
 })();
 (function() {
     var app = angular.module('app');
@@ -2722,178 +2730,6 @@
 })();
 
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('datetime', function() {
-        return {
-            require: 'ngModel',
-            restrict: 'E',
-            scope: {
-                type: '@',
-                datetimevalue: '=ngModel',
-                startYear: '@',
-                isNull: '=',
-                disabled: '=?ngDisabled'
-            },
-            link: function($scope, element, attrs, ngModelController) {
-
-                $scope.days = [];
-                $scope.days.push({ value: 0, display: '-'});
-
-                for (i = 1; i <= 31; i++) {
-                    $scope.days.push({ value: i, display: i });
-                }
-
-                $scope.months = [
-                    { value: 0, display: '-'},
-                    { value: 1, display: 'January'},
-                    { value: 2, display: 'February'},
-                    { value: 3, display: 'March'},
-                    { value: 4, display: 'April'},
-                    { value: 5, display: 'May'},
-                    { value: 6, display: 'June'},
-                    { value: 7, display: 'July'},
-                    { value: 8, display: 'August'},
-                    { value: 9, display: 'September'},
-                    { value: 10, display: 'October'},
-                    { value: 11, display: 'November'},
-                    { value: 12, display: 'December'}
-                ];
-
-                $scope.years = function() {
-                    var years = [];
-
-                    var currentYear = moment().year();
-                    var startYear = angular.isDefined($scope.startYear) ? $scope.startYear : 1950;
-
-                    while (currentYear >= startYear) {
-                        years.push(currentYear);
-                        currentYear--;
-                    }
-                    return years;
-                };
-
-                //convert data from view format to model format
-                ngModelController.$parsers.push(function(viewvalue) {
-
-                    if ($scope.isNull == true) {
-                        return null;
-                    }
-
-                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
-
-                        if ($scope.type == 'datetime') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date,
-                                hour: viewvalue.hour,
-                                minute: viewvalue.minute,
-                                second: viewvalue.second
-                            }).format('YYYY-MM-DD HH:mm:ss');
-
-                        } else if ($scope.type == 'date') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date
-                            }).format('YYYY-MM-DD');
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2) + " "
-                                + ("0" + viewvalue.hour).slice(-2) + ":"
-                                + ("0" + viewvalue.minute).slice(-2) + ":"
-                                + ("0" + viewvalue.second).slice(-2);
-
-                        } else {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2);
-                        }
-                    }
-                    return value;
-                });
-
-                //convert data from model format to view format
-                ngModelController.$formatters.push(function(data) {
-
-                    // If the value is not undefined and the value is valid,
-                    if (typeof data !== 'undefined' && moment(data).isValid()) {
-
-                        var dt = moment(data);
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date(),
-                                hour: dt.hour(),
-                                minute: dt.minute(),
-                                second: dt.second()
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date()
-                            }
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0,
-                                hour: 0,
-                                minute: 0,
-                                second: 0
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0
-                            }
-                        }
-                    }
-                });
-
-                ngModelController.$render = function() {
-                    $scope.year = ngModelController.$viewValue.year;
-                    $scope.month = ngModelController.$viewValue.month;
-                    $scope.date = ngModelController.$viewValue.date;
-
-                    if ($scope.type == 'datetime') {
-                        $scope.hour = ngModelController.$viewValue.hour;
-                        $scope.minute = ngModelController.$viewValue.minute;
-                        $scope.second = ngModelController.$viewValue.second;
-                    }
-                };
-
-                $scope.dateIsComplete = function() {
-                    return $scope.month !== 0 && $scope.date !== 0;
-                };
-
-                $scope.$watch('datetimevalue', function(value) {
-                    if (typeof value === null) {
-                        $scope.isNull = true;
-                    }
-                });
-
-                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
-                    ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
-                });
-            },
-            templateUrl: '/js/templates/datetime.html'
-        }
-    });
-})();
 (function() {
     var app = angular.module('app');
 
@@ -3141,189 +2977,174 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive('datetime', function() {
         return {
-            replace: true,
+            require: 'ngModel',
             restrict: 'E',
             scope: {
-                redditComment: '=ngModel'
+                type: '@',
+                datetimevalue: '=ngModel',
+                startYear: '@',
+                isNull: '=',
+                disabled: '=?ngDisabled'
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, element, attrs, ngModelController) {
 
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                $scope.days = [];
+                $scope.days.push({ value: 0, display: '-'});
 
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
+                for (i = 1; i <= 31; i++) {
+                    $scope.days.push({ value: i, display: i });
                 }
 
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
+                $scope.months = [
+                    { value: 0, display: '-'},
+                    { value: 1, display: 'January'},
+                    { value: 2, display: 'February'},
+                    { value: 3, display: 'March'},
+                    { value: 4, display: 'April'},
+                    { value: 5, display: 'May'},
+                    { value: 6, display: 'June'},
+                    { value: 7, display: 'July'},
+                    { value: 8, display: 'August'},
+                    { value: 9, display: 'September'},
+                    { value: 10, display: 'October'},
+                    { value: 11, display: 'November'},
+                    { value: 12, display: 'December'}
+                ];
 
-    app.directive('chart', ["$window", function($window) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                data: '=data',
-                settings: "="
-            },
-            link: function($scope, elem, attrs) {
+                $scope.years = function() {
+                    var years = [];
 
-                var unbindWatcher = $scope.$watch('data', function(newValue) {
-                    render(newValue);
-                }, true);
+                    var currentYear = moment().year();
+                    var startYear = angular.isDefined($scope.startYear) ? $scope.startYear : 1950;
 
-                function render(chartData) {
-                    if (!angular.isDefined(chartData) || chartData.length == 0) {
-                        return;
+                    while (currentYear >= startYear) {
+                        years.push(currentYear);
+                        currentYear--;
+                    }
+                    return years;
+                };
+
+                //convert data from view format to model format
+                ngModelController.$parsers.push(function(viewvalue) {
+
+                    if ($scope.isNull == true) {
+                        return null;
                     }
 
-                    // Make a deep copy of the object as we may be doing manipulation
-                    // which would cause the watcher to fire
-                    var data = jQuery.extend(true, [], chartData);
+                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
 
-                    var d3 = $window.d3;
-                    var svg = d3.select(elem[0]);
-                    var width = elem.width();
-                    var height = elem.height();
+                        if ($scope.type == 'datetime') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date,
+                                hour: viewvalue.hour,
+                                minute: viewvalue.minute,
+                                second: viewvalue.second
+                            }).format('YYYY-MM-DD HH:mm:ss');
 
-                    var settings = $scope.settings;
-
-                    // create a reasonable set of defaults for some things
-                    if (typeof settings.xAxis.ticks === 'undefined') {
-                        settings.xAxis.ticks = 5;
-                    }
-                    if (typeof settings.yAxis.ticks === 'undefined') {
-                        settings.yAxis.ticks = 5;
-                    }
-
-                    // check padding and set default
-                    if (typeof settings.padding === 'undefined') {
-                        settings.padding = 50;
-                    }
-
-                    // extrapolate data
-                    if (settings.extrapolation === true) {
-                        var originDatapoint = {};
-                        originDatapoint[settings.xAxis.key] = 0;
-                        originDatapoint[settings.yAxis.key] = 0;
-
-                        data.unshift(originDatapoint);
-                    }
-
-                    // draw
-                    var drawLineChart = function() {
-                        // Setup scales
-                        if (settings.xAxis.type == 'linear') {
-                            var xScale = d3.scale.linear()
-                                .domain([0, data[data.length-1][settings.xAxis.key]])
-                                .range([settings.padding, width - settings.padding]);
-
-                        } else if (settings.xAxis.type == 'timescale') {
-                            var xScale = d3.time.scale.utc()
-                                .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
-                                .range([settings.padding, width - settings.padding]);
+                        } else if ($scope.type == 'date') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date
+                            }).format('YYYY-MM-DD');
                         }
+                    } else {
 
-                        if (settings.yAxis.type == 'linear') {
-                            var yScale = d3.scale.linear()
-                                .domain([d3.max(data, function(d) {
-                                    return d[settings.yAxis.key];
-                                }), d3.min(data, function(d) {
-                                    return d[settings.yAxis.key];
-                                })])
-                                .range([settings.padding, height - settings.padding]);
+                        if ($scope.type == 'datetime') {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2) + " "
+                                + ("0" + viewvalue.hour).slice(-2) + ":"
+                                + ("0" + viewvalue.minute).slice(-2) + ":"
+                                + ("0" + viewvalue.second).slice(-2);
 
-                        } else if (settings.yAxis.type == 'timescale') {
-                            var yScale = d3.time.scale.utc()
-                                .domain([d3.max(data, function(d) {
-                                    return d[settings.yAxis.key];
-                                }), 0])
-                                .range([settings.padding, height - settings.padding]);
+                        } else {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2);
                         }
+                    }
+                    return value;
+                });
 
-                        // Generators
-                        var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
-                            return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
-                        });
-                        var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
-                            return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
-                        });
+                //convert data from model format to view format
+                ngModelController.$formatters.push(function(data) {
 
-                        // Line function
-                        var lineFunction = d3.svg.line()
-                            .x(function(d) {
-                                return xScale(d[settings.xAxis.key]);
-                            })
-                            .y(function(d) {
-                                return yScale(d[settings.yAxis.key]);
-                            })
-                            .interpolate(settings.interpolation);
+                    // If the value is not undefined and the value is valid,
+                    if (typeof data !== 'undefined' && moment(data).isValid()) {
 
-                        // Element manipulation
-                        svg.append("svg:g")
-                            .attr("class", "x axis")
-                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                            .call(xAxisGenerator);
+                        var dt = moment(data);
 
-                        svg.append("svg:g")
-                            .attr("class", "y axis")
-                            .attr("transform", "translate(" + settings.padding + ",0)")
-                            .attr("stroke-width", 2)
-                            .call(yAxisGenerator);
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date(),
+                                hour: dt.hour(),
+                                minute: dt.minute(),
+                                second: dt.second()
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date()
+                            }
+                        }
+                    } else {
 
-                        svg.append("svg:path")
-                            .attr({
-                                d: lineFunction(data),
-                                "stroke-width": 2,
-                                "fill": "none",
-                                "class": "path"
-                            });
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0,
+                                hour: 0,
+                                minute: 0,
+                                second: 0
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0
+                            }
+                        }
+                    }
+                });
 
-                        svg.append("text")
-                            .attr("class", "chart-title")
-                            .attr("text-anchor", "middle")
-                            .attr("x", width / 2)
-                            .attr("y", settings.padding / 2)
-                            .text(settings.chartTitle);
+                ngModelController.$render = function() {
+                    $scope.year = ngModelController.$viewValue.year;
+                    $scope.month = ngModelController.$viewValue.month;
+                    $scope.date = ngModelController.$viewValue.date;
 
-                        svg.append("text")
-                            .attr("class", "axis x-axis")
-                            .attr("text-anchor", "middle")
-                            .attr("x", width / 2)
-                            .attr("y", height - (settings.padding / 2))
-                            .text(settings.xAxis.title);
+                    if ($scope.type == 'datetime') {
+                        $scope.hour = ngModelController.$viewValue.hour;
+                        $scope.minute = ngModelController.$viewValue.minute;
+                        $scope.second = ngModelController.$viewValue.second;
+                    }
+                };
 
-                        svg.append("text")
-                            .attr("class", "axis y-axis")
-                            .attr("text-anchor", "middle")
-                            .attr("transform", "rotate(-90)")
-                            .attr("x", - (height / 2))
-                            .attr("y", settings.padding / 2)
-                            .text(settings.yAxis.title);
-                    };
+                $scope.dateIsComplete = function() {
+                    return $scope.month !== 0 && $scope.date !== 0;
+                };
 
-                    drawLineChart();
-                }
+                $scope.$watch('datetimevalue', function(value) {
+                    if (typeof value === null) {
+                        $scope.isNull = true;
+                    }
+                });
 
+                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
+                    ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
+                });
             },
-            templateUrl: '/js/templates/chart.html'
+            templateUrl: '/js/templates/datetime.html'
         }
-    }]);
+    });
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -3656,6 +3477,161 @@
         return self;
     });
 })();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('chart', ["$window", function($window) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                data: '=data',
+                settings: "="
+            },
+            link: function($scope, elem, attrs) {
+
+                var unbindWatcher = $scope.$watch('data', function(newValue) {
+                    render(newValue);
+                }, true);
+
+                function render(chartData) {
+                    if (!angular.isDefined(chartData) || chartData.length == 0) {
+                        return;
+                    }
+
+                    // Make a deep copy of the object as we may be doing manipulation
+                    // which would cause the watcher to fire
+                    var data = jQuery.extend(true, [], chartData);
+
+                    var d3 = $window.d3;
+                    var svg = d3.select(elem[0]);
+                    var width = elem.width();
+                    var height = elem.height();
+
+                    var settings = $scope.settings;
+
+                    // create a reasonable set of defaults for some things
+                    if (typeof settings.xAxis.ticks === 'undefined') {
+                        settings.xAxis.ticks = 5;
+                    }
+                    if (typeof settings.yAxis.ticks === 'undefined') {
+                        settings.yAxis.ticks = 5;
+                    }
+
+                    // check padding and set default
+                    if (typeof settings.padding === 'undefined') {
+                        settings.padding = 50;
+                    }
+
+                    // extrapolate data
+                    if (settings.extrapolation === true) {
+                        var originDatapoint = {};
+                        originDatapoint[settings.xAxis.key] = 0;
+                        originDatapoint[settings.yAxis.key] = 0;
+
+                        data.unshift(originDatapoint);
+                    }
+
+                    // draw
+                    var drawLineChart = function() {
+                        // Setup scales
+                        if (settings.xAxis.type == 'linear') {
+                            var xScale = d3.scale.linear()
+                                .domain([0, data[data.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
+
+                        } else if (settings.xAxis.type == 'timescale') {
+                            var xScale = d3.time.scale.utc()
+                                .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
+                                .range([settings.padding, width - settings.padding]);
+                        }
+
+                        if (settings.yAxis.type == 'linear') {
+                            var yScale = d3.scale.linear()
+                                .domain([d3.max(data, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), d3.min(data, function(d) {
+                                    return d[settings.yAxis.key];
+                                })])
+                                .range([settings.padding, height - settings.padding]);
+
+                        } else if (settings.yAxis.type == 'timescale') {
+                            var yScale = d3.time.scale.utc()
+                                .domain([d3.max(data, function(d) {
+                                    return d[settings.yAxis.key];
+                                }), 0])
+                                .range([settings.padding, height - settings.padding]);
+                        }
+
+                        // Generators
+                        var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
+                            return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
+                        });
+                        var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
+                            return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
+                        });
+
+                        // Line function
+                        var lineFunction = d3.svg.line()
+                            .x(function(d) {
+                                return xScale(d[settings.xAxis.key]);
+                            })
+                            .y(function(d) {
+                                return yScale(d[settings.yAxis.key]);
+                            })
+                            .interpolate(settings.interpolation);
+
+                        // Element manipulation
+                        svg.append("svg:g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                            .call(xAxisGenerator);
+
+                        svg.append("svg:g")
+                            .attr("class", "y axis")
+                            .attr("transform", "translate(" + settings.padding + ",0)")
+                            .attr("stroke-width", 2)
+                            .call(yAxisGenerator);
+
+                        svg.append("svg:path")
+                            .attr({
+                                d: lineFunction(data),
+                                "stroke-width": 2,
+                                "fill": "none",
+                                "class": "path"
+                            });
+
+                        svg.append("text")
+                            .attr("class", "chart-title")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", settings.padding / 2)
+                            .text(settings.chartTitle);
+
+                        svg.append("text")
+                            .attr("class", "axis x-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", height - (settings.padding / 2))
+                            .text(settings.xAxis.title);
+
+                        svg.append("text")
+                            .attr("class", "axis y-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("transform", "rotate(-90)")
+                            .attr("x", - (height / 2))
+                            .attr("y", settings.padding / 2)
+                            .text(settings.yAxis.title);
+                    };
+
+                    drawLineChart();
+                }
+
+            },
+            templateUrl: '/js/templates/chart.html'
+        }
+    }]);
+})();
 //http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
@@ -3679,25 +3655,32 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('characterCounter', ["$compile", function($compile) {
+    app.directive('redditComment', ["$http", function($http) {
         return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
                     }
-                    return viewValue;
-                });
-            }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
         }
     }]);
 })();
@@ -3802,6 +3785,31 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
         return {
             restrict: 'A',
@@ -3817,22 +3825,6 @@
     }]);
 })();
 
-(function() {
-    var app = angular.module('app');
-
-    app.directive('objectCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                object: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/objectCard.html'
-        }
-    });
-})();
 (function() {
     var app = angular.module('app', []);
 
@@ -3957,6 +3949,22 @@
             templateUrl: '/js/templates/timeline.html'
         };
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('objectCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                object: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/objectCard.html'
+        }
+    });
 })();
 (function() {
     var app = angular.module('app');

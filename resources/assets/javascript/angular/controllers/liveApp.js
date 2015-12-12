@@ -1,8 +1,13 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage) {
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", "$sceDelegateProvider", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage, $sceDelegateProvider) {
         var socket = io(document.location.origin + ':3000');
+
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self',
+            'https://www.youtube.com/**'
+        ]);
 
         $scope.auth = laravel.auth;
         $scope.isActive = laravel.isActive;
@@ -108,6 +113,9 @@
                 spacex: {
                     isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
                     youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
+                    videoLink: function() {
+                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?VQ=HD720';
+                    },
                     isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
                 },
                 nasa: {
