@@ -332,6 +332,7 @@ input[value="Logout"], input[value="Logout"]:focus {
 .segmented-control {
     text-align:center;
     font-family: $montserrat;
+    padding:10px 0;
 
     ul {
         user-select:none;
@@ -341,7 +342,6 @@ input[value="Logout"], input[value="Logout"]:focus {
         border:1px solid $blue;
         border-radius:$border-radius-small;
         height:30px;
-        vertical-align:middle;
         font-size:0;
 
         li {
@@ -353,6 +353,7 @@ input[value="Logout"], input[value="Logout"]:focus {
             color:$slateblack;
             font-size:12px;
             line-height:20px;
+            vertical-align:top;
 
             text-decoration: none;
             text-shadow: none;

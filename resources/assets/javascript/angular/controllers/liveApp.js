@@ -252,6 +252,25 @@
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
+
+            switch (data.liveUpdate.messageType) {
+                case "TerminalCount":
+                    $scope.liveParameters.status.text = "Terminal Count";
+                    break;
+
+                case "Liftoff":
+                    $scope.liveParameters.status.text = "In Progress";
+                    break;
+
+                case "MissionSuccess":
+                    $scope.liveParameters.status.text = "Mission Success";
+                    break;
+
+                case "MissionFailure":
+                    $scope.liveParameters.status.text = "Mission Failure";
+                    break;
+            }
+
             $scope.$apply();
         });
 
@@ -275,6 +294,9 @@
 
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
             console.log(data);
+            $scope.liveParameters.streams.spacex.isActive = true;
+            $scope.liveParameters.streams.spacex.youtubeVideoId = data.isActive ? data.videoId : null;
+            $scope.$apply();
         });
     }]);
 

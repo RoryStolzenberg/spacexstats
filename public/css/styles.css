@@ -7966,7 +7966,8 @@ input[value="Logout"], input[value="Logout"]:focus {
 
 .segmented-control {
   text-align: center;
-  font-family: "Montserrat", sans-serif; }
+  font-family: "Montserrat", sans-serif;
+  padding: 10px 0; }
   .segmented-control ul {
     -webkit-user-select: none;
        -moz-user-select: none;
@@ -7978,7 +7979,6 @@ input[value="Logout"], input[value="Logout"]:focus {
     border: 1px solid #3569A4;
     border-radius: 3px;
     height: 30px;
-    vertical-align: middle;
     font-size: 0; }
     .segmented-control ul li {
       width: 100px;
@@ -7989,6 +7989,7 @@ input[value="Logout"], input[value="Logout"]:focus {
       color: #181c1f;
       font-size: 12px;
       line-height: 20px;
+      vertical-align: top;
       text-decoration: none;
       text-shadow: none;
       -webkit-transition: text-shadow ease-in-out 0.5s 0s;
