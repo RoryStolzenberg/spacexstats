@@ -182,7 +182,6 @@ class LiveController extends Controller {
      */
     public function resumeCountdown() {
         // Parse launch date
-        Log::info('resume server hit ' . round(microtime(true) * 1000));
         $newLaunchDate = Carbon::parse(Input::get('newLaunchDate'));
 
         // Update Redis
@@ -191,7 +190,6 @@ class LiveController extends Controller {
 
         // Event
         event(new LiveCountdownEvent(true, $newLaunchDate));
-        Log::info('resume event sent ' . round(microtime(true) * 1000));
 
         // If it relates to a mission (and not a miscellaneous webcast)
         if (Redis::get('live:isForLaunch')) {
@@ -210,7 +208,6 @@ class LiveController extends Controller {
             $nextMission->launch_date_time = $newLaunchDate;
             $nextMission->save();
         }
-        Log::info('resume mission saved ' . round(microtime(true) * 1000));
 
         return response()->json(null, 204);
     }
@@ -328,7 +325,7 @@ class LiveController extends Controller {
 
         // Clean up all spacexstats live redis keys
         Redis::del(['live:streams', 'live:title', 'live:description', 'live:resources', 'live:sections', 'live:updates',
-            'live:countdownTo', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit', 'live:status']);
+            'live:countdown', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit', 'live:status']);
 
         // Send out event
         event(new LiveEndedEvent());

@@ -208,6 +208,7 @@
             $scope.liveParameters.title = data.data.title;
             $scope.liveParameters.reddit = data.data.reddit;
             $scope.liveParameters.streams = data.data.streams;
+            $scope.liveParameters.countdown = data.data.countdown;
             $scope.$apply();
         });
 
