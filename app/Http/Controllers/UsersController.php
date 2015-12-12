@@ -24,7 +24,7 @@ class UsersController extends Controller {
 	}
 
 	public function get($username = null) {
-        $user = User::where('username', $username)->with(['awards', 'objects', 'notes', 'favorites', 'notifications.notificationType'])->first();
+        $user = User::where('username', $username)->with(['awards', 'objects', 'notes', 'favorites', 'notifications.notificationType'])->firstOrFail();
 
         $params = [
             'user' => $user,
