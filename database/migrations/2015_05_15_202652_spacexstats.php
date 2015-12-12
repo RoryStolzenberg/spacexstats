@@ -593,6 +593,10 @@ class Spacexstats extends Migration {
             $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade'); // When an object is deleted, also delete any referencing collection_object
         });
 
+        Schema::table('comments', function(Blueprint $table) {
+            $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade');
+        });
+
         Schema::table('dataviews', function(Blueprint $table) {
             $table->foreign('banner_image')->references('object_id')->on('objects')->onDelete('set null'); // When an object is deleted, set the banner image to null
         });
