@@ -189,26 +189,34 @@
                     $timeout(function() {
                         $scope.send.new.message = "";
                         $scope.buttons.isUnlocked[messageType] = false;
-                    }, 2000);
+                    }, 1500);
                 }
             },
             isVisible: {
-                HoldAbort:      -(60 * 60) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 30,
-                TerminalCount:  -(60 * 15) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < -(60 * 8),
-                Liftoff:        -(60 * 15) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < -(60 * 8),
-                MaxQ:           -30 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 30,
-                MECO:           120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
-                StageSep:       120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
-                MVacIgnition:   120 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < 210,
-                SECO:           (60 * 8) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second') < (60 * 12),
-                MissionSuccess: (60 * 8) < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second'),
-                MissionFailure: -30 < moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second')
+                HoldAbort:      $scope.timeBetweenNowAndLaunch > -(60 * 60) && $scope.timeBetweenNowAndLaunch < 30,
+                TerminalCount:  $scope.timeBetweenNowAndLaunch > -(60 * 15) && $scope.timeBetweenNowAndLaunch < -(60 * 8),
+                Liftoff:        $scope.timeBetweenNowAndLaunch > -(60 * 15) && $scope.timeBetweenNowAndLaunch < -(60 * 8),
+                MaxQ:           $scope.timeBetweenNowAndLaunch > -30 && $scope.timeBetweenNowAndLaunch < 30,
+                MECO:           $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
+                StageSep:       $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
+                MVacIgnition:   $scope.timeBetweenNowAndLaunch > 120 && $scope.timeBetweenNowAndLaunch < 210,
+                SECO:           $scope.timeBetweenNowAndLaunch > (60 * 8) && $scope.timeBetweenNowAndLaunch < (60 * 12),
+                MissionSuccess: $scope.timeBetweenNowAndLaunch > (60 * 8),
+                MissionFailure: $scope.timeBetweenNowAndLaunch > -30
             },
+            isUpdatingCannedResponses: false,
             updateCannedResponses: function() {
-                liveService.updateCannedResponses($scope.buttons.cannedResponses).then(function() {
-
+                $scope.buttons.isUpdatingCannedResponses = true;
+                liveService.updateCannedResponses($scope.buttons.cannedResponses).then(function(response) {
+                    $scope.buttons.isUpdatingCannedResponses = false;
+                    // Set canned responses here
                 });
             }
+        };
+
+        // Callback executed by countdown directive
+        $scope.setTimeBetweenNowAndLaunch = function(relativeSecondsBetween) {
+            $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
         };
 
         // Websocket listeners

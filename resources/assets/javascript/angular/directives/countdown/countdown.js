@@ -24,11 +24,10 @@
                 var countdownProcessor = function() {
 
                     if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss').diff(moment.utc(), 'second');
-                        console.log(relativeSecondsBetween);
+                        var relativeSecondsBetween = moment.utc().diff(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss'), 'second');
                         var secondsBetween = Math.abs(relativeSecondsBetween);
 
-                        $scope.sign = relativeSecondsBetween <= 0 ? '+' : '-';
+                        $scope.sign = relativeSecondsBetween <= 0 ? '-' : '+';
                         $scope.tMinusZero = secondsBetween == 0;
 
                         // Calculate the number of days, hours, minutes, seconds
@@ -47,10 +46,10 @@
                         $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
                         $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
                         $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-                    }
 
-                    if (attrs.callback) {
-                        $scope.callback();
+                        if (attrs.callback) {
+                            $scope.callback(relativeSecondsBetween);
+                        }
                     }
                 };
 

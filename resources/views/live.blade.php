@@ -8,7 +8,7 @@
         <header class="container">
             <div class="access-links" id="logo"><a href="/">SpaceX Stats <span class="gold">Live</span></a></div>
             <h1 class="gr-8" ng-if="!isActive">SpaceX Stats Live</h1>
-            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdown.to" is-paused="liveParameters.countdown.isPaused" type="live"></countdown></div>
+            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdown.to" is-paused="liveParameters.countdown.isPaused" type="live" callback="setTimeBetweenNowAndLaunch"></countdown></div>
             @if (Auth::check())
                 <div class="access-links"><a target="_blank" href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a></div>
             @else
