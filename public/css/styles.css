@@ -7994,7 +7994,7 @@ input[value="Logout"], input[value="Logout"]:focus {
               transition: text-shadow ease-in-out 0.5s 0s; }
       .segmented-control ul li:not(:last-child) {
         border-right: 1px solid #3569A4; }
-      .segmented-control ul li:active, .segmented-control ul li.active {
+      .segmented-control ul li:active, .segmented-control ul li.selected {
         background-color: #3569A4;
         color: white; }
       .segmented-control ul li:active {
@@ -8003,8 +8003,6 @@ input[value="Logout"], input[value="Logout"]:focus {
         text-shadow: -1px 1px 3px #ffc, 1px -1px 8px white; }
       .segmented-control ul li span {
         position: relative;
-        top: -1px; }
-      .segmented-control ul li span, .segmented-control ul li span.active {
         top: 0; }
 
 section.comments {

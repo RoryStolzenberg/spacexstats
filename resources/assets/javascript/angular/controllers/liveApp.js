@@ -167,6 +167,7 @@
                 MissionSuccess: laravel.cannedResponses ? laravel.cannedResponses.MissionSuccess : null,
                 MissionFailure: laravel.cannedResponses ? laravel.cannedResponses.MissionFailure : null
             },
+            isUnlocked: {},
             click: function(messageType) {
                 // If the button has been clicked in the last 5 seconds, we should send the message
                 if ($scope.buttons.isUnlocked[messageType]) {
@@ -183,9 +184,12 @@
                 // The button hasn't been clicked recently, make it active instead
                 } else {
                     $scope.buttons.isUnlocked[messageType] = true;
+                    $scope.send.new.message = $scope.buttons.cannedResponses[messageType];
+
                     $timeout(function() {
+                        $scope.send.new.message = "";
                         $scope.buttons.isUnlocked[messageType] = false;
-                    }, 5000);
+                    }, 3000);
                 }
             },
             isVisible: {

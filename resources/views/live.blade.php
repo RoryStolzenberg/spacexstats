@@ -100,10 +100,10 @@
                     </li>
                     <li class="gr-2 stream-options segmented-control">
                         <ul>
-                            <li ng-class="{ active: liveParameters.userSelectedStream == null }">
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == null }">
                                 <span ng-click="liveParameters.userSelectedStream = null">No Video</span>
                             </li>
-                            <li ng-class="{ active: liveParameters.userSelectedStream == 'spacex' }">
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'spacex' }">
                                 <span ng-click="liveParameters.userSelectedStream = 'spacex'">SpaceX</span>
                             </li>
                         </ul>
@@ -111,10 +111,10 @@
 
                     <li class="gr-2 stream-size-options segmented-control">
                         <ul>
-                            <li ng-class="{ active: liveParameters.userStreamSize == 'smaller' }">
+                            <li ng-class="{ selected: liveParameters.userStreamSize == 'smaller' }">
                                 <span ng-click="liveParameters.userStreamSize = 'smaller'">Smaller</span>
                             </li>
-                            <li ng-class="{ active: liveParameters.userStreamSize == 'larger' }">
+                            <li ng-class="{ selected: liveParameters.userStreamSize == 'larger' }">
                                 <span ng-click="liveParameters.userStreamSize = 'larger'">Larger</span>
                             </li>
                         </ul>

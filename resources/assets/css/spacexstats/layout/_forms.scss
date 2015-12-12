@@ -361,7 +361,7 @@ input[value="Logout"], input[value="Logout"]:focus {
                 border-right:1px solid $blue;
             }
 
-            &:active, &.active {
+            &:active, &.selected {
                 background-color:$blue;
                 color:white;
             }
@@ -377,10 +377,6 @@ input[value="Logout"], input[value="Logout"]:focus {
 
             span {
                 position:relative;
-                top:-1px;
-            }
-
-            span, span.active {
                 top:0;
             }
         }
