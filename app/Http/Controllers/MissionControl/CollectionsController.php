@@ -28,6 +28,13 @@ class CollectionsController extends Controller {
         ));
     }
 
+    // GET /missioncontrol/collections/mission/{slug}
+    public function mission($slug) {
+        return view('missionControl.collections.mission', [
+           'collection' => Mission::whereSlug($slug)->with('objects')->get()
+        ]);
+    }
+
     // PATCH /missioncontrol/collections/{collection_id}
     public function edit($collection_id) {
         return response()->json();

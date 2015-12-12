@@ -4,7 +4,7 @@ Route::group(['prefix' => 'missioncontrol/collections', 'namespace' => 'MissionC
     Route::group(['middleware' => ['mustBe:Subscriber']], function() {
         Route::get('/', 'CollectionsController@index');
 
-        Route::get('/mission/{slug}', 'CollectionsController@mission');
+        Route::get('/mission/{slug}', 'CollectionsController@mission')->middleware('doesExist:Mission');
         Route::get('/{collection_id}', 'CollectionsController@get');
 
         Route::post('/create', 'CollectionsController@create');

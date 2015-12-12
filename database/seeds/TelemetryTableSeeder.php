@@ -1519,7 +1519,7 @@ class TelemetryTableSeeder extends Seeder {
             'timestamp'     => 6 * 60 + 17,
             'readout'       => "Vehicle's currently travelling at almost 5000m/s and an alt of 239km",
             'velocity'      => 5000,
-            'altitude'      => 239
+            'altitude'      => 239000
         ]);
         Telemetry::create([
             'mission_id'    => 6,
