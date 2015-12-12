@@ -1,13 +1,14 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", "$sceDelegateProvider", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage, $sceDelegateProvider) {
-        var socket = io(document.location.origin + ':3000');
-
+    liveApp.config(["$sceDelegateProvider", function($sceDelegateProvider) {
         $sceDelegateProvider.resourceUrlWhitelist([
             'self',
-            'https://www.youtube.com/**'
-        ]);
+            'https://www.youtube.com/**']);
+    }]);
+
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage) {
+        var socket = io(document.location.origin + ':3000');
 
         $scope.auth = laravel.auth;
         $scope.isActive = laravel.isActive;
