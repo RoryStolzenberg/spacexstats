@@ -4,6 +4,7 @@ namespace SpaceXStats\Events;
 
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Support\Facades\Redis;
 
 class WebcastEvent extends Event  implements ShouldBroadcast
 {
