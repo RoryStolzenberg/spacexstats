@@ -303,7 +303,8 @@ class LiveController extends Controller {
             'isForLaunch' => Input::get('isForLaunch'),
             'resources' => Input::get('resources'),
             'sections' => Input::get('sections'),
-            'status' => 'Upcoming'
+            'status' => 'Upcoming',
+            'cannedResponses' => Redis::hgetall('live:cannedResponses')
         ]));
 
         // Respond

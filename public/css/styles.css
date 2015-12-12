@@ -9060,7 +9060,9 @@ button.canned-response {
       color: #ccac55; }
 
 button.canned-response {
-  background-color: #8B939B; }
+  background-color: #8B939B;
+  -webkit-transition: background-color ease-in-out 0.5s 0s;
+          transition: background-color ease-in-out 0.5s 0s; }
   button.canned-response.unlocked {
     background-color: #ccac55; }
 

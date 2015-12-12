@@ -160,6 +160,7 @@ button.canned-response {
 
 button.canned-response {
     background-color:$grey;
+    @include transitionMed(background-color);
 
     &.unlocked {
         background-color:$gold;

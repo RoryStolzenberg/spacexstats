@@ -222,6 +222,9 @@
             $scope.liveParameters.streams = data.data.streams;
             $scope.liveParameters.countdown = data.data.countdown;
             $scope.liveParameters.status.text = data.data.status;
+            if ($scope.auth) {
+                $scope.buttons.cannedResponses = data.data.cannedResponses;
+            }
             $scope.$apply();
         });
 

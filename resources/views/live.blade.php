@@ -229,9 +229,9 @@
             <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                <section class="live-message-form" ng-if="isActive && liveParameters.isForLaunch">
+                <section class="live-message-form" ng-if="isActive">
                     <form name="messageForm" novalidate>
-                        <ul class="container">
+                        <ul class="container" ng-if="liveParameters.isForLaunch">
                             <li class="gr-1">
                                 <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.HoldAbort }" ng-click="buttons.click('HoldAbort')" ng-if="buttons.isVisible.HoldAbort">Hold/Abort</button>
                             </li>
