@@ -81,7 +81,7 @@
 
         $scope.optionalCollection = null;
 
-        $scope.postSubmitButtonText = function(form) {
+        $scope.fileSubmitButtonText = function(form) {
             if (form.$invalid) {
                 return 'We need more info';
             } else if ($scope.isSubmitting) {
@@ -93,7 +93,7 @@
 
         $scope.fileSubmitButtonFunction = function() {
             $scope.isSubmitting = true;
-            uploadService.postToMissionControl($scope.files, $scope.optionalCollection, 'files');
+            uploadService.postToMissionControl($scope.files, 'files', $scope.optionalCollection);
         }
     }]);
 

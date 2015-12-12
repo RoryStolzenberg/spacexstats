@@ -1,7 +1,7 @@
 // Display
 .hero {
-    // Calculated height: the viewport, subtracting the header (50px), the title (150px), the page nav (30px), highlights (40px), the summary (100px)
-    height:calc(100vh - 50px - #{$h1-height} - 30px - 40px - 100px);
+    // Calculated height: the viewport, subtracting the header (50px), the title (150px), the page nav (50px), highlights (40px), the summary (100px)
+    height:calc(100vh - 50px - #{$h1-height} - 50px - 40px - 100px);
     text-align:center;
     font-family:$brandonGrotesque;
     text-transform:uppercase;

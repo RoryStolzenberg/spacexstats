@@ -8494,7 +8494,7 @@ form[name="subscribeForm"] .subscription-failed {
   color: #FB6473; }
 
 .hero {
-  height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
+  height: calc(100vh - 50px - 150px - 50px - 40px - 100px);
   text-align: center;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   text-transform: uppercase; }
