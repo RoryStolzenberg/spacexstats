@@ -7988,6 +7988,7 @@ input[value="Logout"], input[value="Logout"]:focus {
       height: 28px;
       color: #181c1f;
       font-size: 12px;
+      line-height: 20px;
       text-decoration: none;
       text-shadow: none;
       -webkit-transition: text-shadow ease-in-out 0.5s 0s;
@@ -9057,6 +9058,11 @@ button.canned-response {
     float: right; }
     .live-updates .update i.fa-edit:hover {
       color: #ccac55; }
+
+button.canned-response {
+  background-color: #8B939B; }
+  button.canned-response.unlocked {
+    background-color: #ccac55; }
 
 .profile .interactions img {
   width: 64px;

@@ -157,3 +157,11 @@ button.canned-response {
         }
     }
 }
+
+button.canned-response {
+    background-color:$grey;
+
+    &.unlocked {
+        background-color:$gold;
+    }
+}
