@@ -71,7 +71,7 @@ class WebcastCheckCommand extends Command
         $this->info('viewers:'. $viewers);
 
         // If the livestream is active now, and wasn't before, or vice versa, send an event
-        if ($isLive && Redis::hget('webcast', 'isLive') == 'false') {
+        if ($isLive && (Redis::hget('webcast', 'isLive') == 'false' || !Redis::hexists('webcast', 'isLive'))) {
             $this->info($searchResponse->items[0]->id->videoId);
             event(new WebcastEvent(true, $searchResponse->items[0]->id->videoId));
 
@@ -85,9 +85,9 @@ class WebcastCheckCommand extends Command
 
         // Add to Database if livestream is active
         if ($isLive) {
-            WebcastStatus::create(array(
+            WebcastStatus::create([
                 'viewers' => $viewers
-            ));
+            ]);
         }
     }
 }

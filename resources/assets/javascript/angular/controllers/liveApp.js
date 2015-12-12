@@ -115,7 +115,7 @@
                     isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
                     youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
                     videoLink: function() {
-                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?VQ=HD720';
+                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?VQ=HD720&rel=0&autoplay=1';
                     },
                     isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
                 },
@@ -249,7 +249,7 @@
                 $scope.liveParameters.countdown = {
                     isPaused: false,
                     to: data.newLaunchTime,
-                    newLaunchDate: null
+                    newLaunchDate: data.newLaunchTime
                 };
 
             // Countdown is being paused
@@ -262,7 +262,7 @@
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
             console.log(data);
-            switch (data.liveUpdate.messageType) {
+            switch (data.liveUpdate.updateType) {
                 case "TerminalCount":
                     $scope.liveParameters.status.text = "Terminal Count";
                     break;
