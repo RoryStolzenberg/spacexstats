@@ -1,6 +1,3 @@
-//var app = require('express')();
-//var cors = require('cors');
-//app.use(cors());
 // for future reference on digitalocean VPS: https://www.digitalocean.com/community/questions/socket-io-connection-timing-out
 var https = require('https');
 var fs = require('fs');

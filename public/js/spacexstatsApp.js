@@ -2068,7 +2068,9 @@
             status: {
                 text: laravel.status.text,
                 class: function() {
-                    return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
+                    if ($scope.liveParameters.status.text) {
+                        return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
+                    }
                 }
             }
         };

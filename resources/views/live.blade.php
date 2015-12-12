@@ -44,7 +44,7 @@
 
                         <div ng-hide="liveParameters.isForLaunch">
                             <label for="countdownTo">Enter an event time (UTC)</label>
-                            <datetime type="datetime" ng-model="liveParameters.countdownTo"></datetime>
+                            <datetime type="datetime" ng-model="liveParameters.countdown.to"></datetime>
                         </div>
 
                         <h3>What streams should be shown?</h3>
