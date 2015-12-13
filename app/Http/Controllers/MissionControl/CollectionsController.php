@@ -32,7 +32,7 @@ class CollectionsController extends Controller {
     // GET /missioncontrol/collections/mission/{slug}
     public function mission($slug) {
         return view('missionControl.collections.mission', [
-           'collection' => Mission::whereSlug($slug)->with('objects')->get()
+           'collection' => Mission::whereSlug($slug)->with('objects')->first()
         ]);
     }
 

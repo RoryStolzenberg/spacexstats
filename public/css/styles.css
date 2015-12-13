@@ -7757,17 +7757,12 @@ form input, form textarea {
     border: 1px solid #ccac55;
     box-shadow: 0 0 5px rgba(79, 112, 143, 0.2); }
   form input.prepended-input, form textarea.prepended-input {
-    padding-left: 32px; }
-    form input.prepended-input:before, form textarea.prepended-input:before {
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      line-height: 32px;
-      text-align: center; }
-    form input.prepended-input.twitter:before, form textarea.prepended-input.twitter:before {
-      content: "@"; }
-    form input.prepended-input.reddit:before, form textarea.prepended-input.reddit:before {
-      content: "/u/"; }
+    padding-left: 32px;
+    background-repeat: no-repeat; }
+    form input.prepended-input.twitter, form textarea.prepended-input.twitter {
+      background-image: url("/images/icons/prepended-twitter.png"); }
+    form input.prepended-input.reddit, form textarea.prepended-input.reddit {
+      background-image: url("/images/icons/prepended-reddit.png"); }
 
 form select {
   padding: 5px;

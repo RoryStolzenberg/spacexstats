@@ -32,7 +32,7 @@
 				<div><img class="launch-illumination" src="/images/icons/illuminations/{{ $mission->launch_illumination }}.png" /></div>
 			@endif
 			<div>
-                <a href="/missioncontrol/collections/missions/{{ $mission->slug }}">
+                <a href="/missioncontrol/collections/mission/{{ $mission->slug }}">
                     <img class="mission-collection" src="/images/icons/collection.png" alt="{{ $mission->name }} mission collection"/>
                 </a>
             </div>
@@ -54,7 +54,7 @@
 					<div>Successful Consecutive Launch</div>
 				@endif
 			@endif
-			<div><a href="/missioncontrol/collections/missions/{{ $mission->slug }}">Mission Collection</a></div>
+			<div><a href="/missioncontrol/collections/mission/{{ $mission->slug }}">Mission Collection</a></div>
 		</div>
 		<p><em>{{ $mission->summary }}</em></p>
 	</div>

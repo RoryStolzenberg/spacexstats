@@ -43,7 +43,8 @@
             </section>
 
             <section ng-if="is.mergingCollection">
-
+                <h3>Merge this collection</h3>
+                <p>Warning: this action is permanent and cannot be undone</p>
             </section>
 
             <p>{{ $collection->summary }}</p>

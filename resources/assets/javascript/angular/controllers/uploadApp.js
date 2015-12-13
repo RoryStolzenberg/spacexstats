@@ -170,16 +170,12 @@
                 _token: CSRF_TOKEN
             };
 
-            switch (resourceType) {
-                case 'files':
-                    submitFiles(submissionData).then(redirect, error);
-                    break;
-                case ('article' || 'comment' || 'tweet'):
-                    submitPost(submissionData).then(redirect, error);
-                    break;
-                case 'text':
-                    submitWriting(submissionData).then(redirect, error);
-                    break;
+            if (resourceType == 'files') {
+                submitFiles(submissionData).then(redirect, error);
+            } else if (["article", "pressrelease", "tweet", "redditcomment", "NSFcomment"].indexOf(resourceType) !== -1) {
+                submitPost(submissionData).then(redirect, error);
+            } else if (resourceType == "text") {
+                submitWriting(submissionData).then(redirect, error);
             }
         };
 

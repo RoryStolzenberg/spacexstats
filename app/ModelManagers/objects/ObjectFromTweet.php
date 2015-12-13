@@ -2,8 +2,13 @@
 namespace SpaceXStats\ModelManagers\Objects;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Library\Enums\ObjectPublicationStatus;
+use SpaceXStats\Models\Object;
+use SpaceXStats\Models\Tweeter;
 
 class ObjectFromTweet extends ObjectCreator {
 
@@ -12,39 +17,62 @@ class ObjectFromTweet extends ObjectCreator {
     }
 
     public function create() {
-        // Fetch the tweet information from Twitter, if a tweet id was passed through (it is possible the tweet was created manually without an id)
-        if (!is_null($this->input['tweet_id'])) {
+        DB::transaction(function() {
+            $twitterClient = new TwitterOAuth(Config::get('services.twitter.consumerKey'), Config::get('services.twitter.consumerSecret'), Config::get('services.twitter.accessToken'), Config::get('services.twitter.accessSecret'));
 
-            $twitter = new TwitterOAuth(Config::get('services.twitter.consumerKey'), Config::get('services.twitter.consumerSecret'), Config::get('services.twitter.accessToken'), Config::get('services.twitter.accessSecret'));
-            $tweet = $twitter->get('statuses/show', ['id' => $this->input['tweet_id']]);
+            // Fetch the tweet information from Twitter, if a tweet id was passed through (it is possible the tweet was created manually without an id)
+            if (!is_null($this->input['tweet_id'])) {
+                $tweet = $twitterClient->get('statuses/show', ['id' => $this->input['tweet_id']]);
+                $tweetOwner = $tweet->user;
 
-            DB::transaction(function() use($tweet) {
                 $this->object = Object::create([
                     'user_id'               => Auth::id(),
                     'type'                  => MissionControlType::Tweet,
+                    'tweet_text'            => $tweet->tweet_text,
+                    'tweet_id'              => $tweet->tweet_id,
+                    'tweet_parent_id'       => $tweet->in_reply_to_status_id,
+                    'size'                  => strlen($tweet->tweet_text),
+                    'title'                 => $this->input['title'],
+                    'summary'               => $this->input['summary'],
+                    'cryptographic_hash'    => hash('sha256', $tweet->tweet_text),
+                    'originated_at'         => $tweet->created_at,
+                    'status'                => ObjectPublicationStatus::QueuedStatus
+                ]);
+            } else {
+
+                $this->object = Object::create([
+                    'user_id'               => Auth::id(),
+                    'type'                  => MissionControlType::Tweet,
+                    'tweet_text'            => $this->input['tweet_text'],
                     'title'                 => $this->input['title'],
                     'size'                  => strlen($this->input['article']),
                     'article'               => $this->input['article'],
                     'cryptographic_hash'    => hash('sha256', $this->input['article']),
-                    'originated_at'         => Carbon::now(),
+                    'originated_at'         => $this->input['originated_at'],
                     'status'                => ObjectPublicationStatus::QueuedStatus
                 ]);
+            }
 
-                $this->createMissionRelation();
-                $this->createTagRelations();
-                $this->createTweeterRelation();
-            });
+            try {
+                if(!isset($tweetOwner)) {
+                    $tweetOwner = $twitterClient->get('users/show', ['screen_name']);
+                }
 
-        } else {
-            DB::transaction(function() {
-                $this->object = Object::create([
-
+                $tweeter = Tweeter::byScreenName($tweetOwner->screen_name)->firstOrFail();
+            } catch (ModelNotFoundException $e) {
+                $tweeter = Tweeter::create([
+                    'screen_name' => $tweetOwner->screen_name,
+                    'user_name' => $tweetOwner->user_name,
+                    'description' => $tweetOwner->description
                 ]);
 
-                $this->createMissionRelation();
-                $this->createTagRelations();
-                $this->createTweeterRelation();
-            });
-        }
+                $tweeter->saveProfilePicture();
+            }
+
+            $this->object->tweeter()->associate($tweeter);
+
+            $this->createMissionRelation();
+            $this->createTagRelations();
+        });
     }
 }

@@ -129,7 +129,6 @@ class UploadController extends Controller {
             // redirect to mission control
             Session::flash('flashMessage', 'Done!');
             return response()->json(null, 204);
-
         } else {
             return response()->json($objectCreator->getErrors(), 400);
         }
@@ -163,6 +162,5 @@ class UploadController extends Controller {
         $comment = $reddit->getComment(Input::get('url'));
         return response()->json($comment);
     }
-
 }
  

@@ -55,19 +55,8 @@ abstract class ObjectCreator {
         }
     }
 
-    protected function createTweeterRelation() {
-        $tweeter = Tweeter::firstOrCreate([
-            'user_screen_name'  => array_get($this->input, 'user_screen_name', null),
-            'user_name'         => array_get($this->input, 'user_name', null),
-            'description'       => array_get($this->input, 'description', null)
-        ]);
-
-        $this->object->tweeter()->associate($tweeter);
-        $tweeter->saveProfilePicture();
-    }
-
     public function getErrors() {
-        return $this->errors();
+        return $this->errors;
     }
 
     // https://laracasts.com/series/digging-in/episodes/7#

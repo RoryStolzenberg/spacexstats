@@ -20,7 +20,7 @@
                 };
 
                 $scope.createTag = function(createdTag) {
-                    if ($scope.currentTags.length == 5) {
+                    if ($scope.currentTags.length == 5 || angular.isUndefined(createdTag)) {
                         return;
                     }
 
@@ -35,13 +35,8 @@
                             return tag.name == createdTag;
                         });
 
-                        if (tagIsPresentInAvailableTags.length === 1) {
-                            // grab tag
-                            var newTag = tagIsPresentInAvailableTags[0];
-                        } else {
-                            // trim and convert the text to lowercase, then create!
-                            var newTag = new Tag({ id: null, name: createdTag, description: null });
-                        }
+                        // Either fetch the tag from the current list of tags or create
+                        var newTag = tagIsPresentInAvailableTags.length === 1 ? tagIsPresentInAvailableTags[0] : new Tag({ id: null, name: createdTag, description: null });
 
                         $scope.currentTags.push(newTag);
 

@@ -37,21 +37,14 @@ form {
 
         &.prepended-input {
             padding-left:32px;
+            background-repeat:no-repeat;
 
-            &:before {
-                display:inline-block;
-                width:32px;
-                height:32px;
-                line-height:32px;
-                text-align:center;
+            &.twitter {
+                background-image:url("/images/icons/prepended-twitter.png");
             }
 
-            &.twitter:before {
-                content:"@";
-            }
-
-            &.reddit:before {
-                content:"/u/";
+            &.reddit {
+                background-image:url("/images/icons/prepended-reddit.png");
             }
         }
 
