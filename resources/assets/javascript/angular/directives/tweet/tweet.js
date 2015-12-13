@@ -5,7 +5,6 @@
         return {
             restrict: 'E',
             scope: {
-                action: '@',
                 tweet: '='
             },
             link: function($scope, element, attributes, ngModelCtrl) {

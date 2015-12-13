@@ -129,11 +129,18 @@ h1 {
     font-size:50px;
     font-weight:lighter;
     text-transform: none;
+    text-overflow: "...";
+    overflow: hidden;
+    white-space: nowrap;
+
+    @include gridle_state('tablet') {
+        font-size:42px;
+    }
 
     @include gridle_state('small') {
         line-height:$h1-height-small;
         height:$h1-height-small;
-        font-size:36px;
+        font-size:32px;
     }
 }
 

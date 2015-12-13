@@ -65,9 +65,8 @@ class Object extends Model implements UploadableInterface {
 
         'originated_at'         => 'date',
 
-        'tweet_id'              => ['integer', 'unique:tweet_id'],
+        'tweet_id'              => ['integer', 'unique:objects'],
         'tweet_text'            => 'max:140',
-        'tweeter_id'            => ['integer', 'exists:tweeters,tweeter_id'],
 
         'ISO'                   => 'integer',
         'camera_manufacturer'   => 'varchar:small',

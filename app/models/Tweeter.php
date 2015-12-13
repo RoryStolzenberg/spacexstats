@@ -2,6 +2,7 @@
 namespace SpaceXStats\Models;
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Config;
 
 class Tweeter extends Model {
 
@@ -29,15 +30,16 @@ class Tweeter extends Model {
 
         // Save it locally
         $profilePicture = file_get_contents($profilePictureUrl);
-        file_put_contents(public_path('media/tweeters' . $this->screen_name . '.png'), $profilePicture);
+
+        create_if_does_not_exist(public_path('media/twitterprofiles'));
+        file_put_contents(public_path('media/twitterprofiles/' . $this->screen_name . '.png'), $profilePicture);
     }
 
     public function getProfilePictureAttribute() {
-        return '/media/tweeters/' . $this->screen_name . '.png';
+        return '/media/twitterprofiles/' . $this->screen_name . '.png';
     }
 
     // Scoped queries
-
     public function scopeByScreenName($query, $screenName) {
         return $query->where('screen_name', $screenName);
     }

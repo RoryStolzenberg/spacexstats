@@ -7397,16 +7397,22 @@ h1 {
   line-height: 150px;
   font-size: 50px;
   font-weight: lighter;
-  text-transform: none; }
+  text-transform: none;
+  text-overflow: "...";
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 42px; }
+  .state-default h1 {
+    font-size: 42px; }
   .state-small h1 {
     line-height: 50px;
     height: 50px;
-    font-size: 36px; }
+    font-size: 32px; }
   @media (max-width: 640px) {
     h1 {
       line-height: 50px;
       height: 50px;
-      font-size: 36px; } }
+      font-size: 32px; } }
 
 h2 {
   font-size: 28px;

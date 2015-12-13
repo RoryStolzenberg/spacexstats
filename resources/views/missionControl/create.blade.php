@@ -693,7 +693,7 @@
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet container">
                         <h3>Tweet</h3>
                         <div class="gr-9">
-                            <tweet action="write" tweet="tweet"></tweet>
+                            <tweet tweet="tweet"></tweet>
                         </div>
                         <div class="gr-3">
                             <delta-v ng-model="tweet" hint="Tweet"></delta-v>

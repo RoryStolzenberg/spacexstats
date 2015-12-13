@@ -279,16 +279,20 @@ class Spacexstats extends Migration {
             $table->string('camera_manufacturer', Varchar::small)->nullable();
             $table->string('camera_model', Varchar::small)->nullable();
 
-            // Post-related properties
+            // Article-related properties
             $table->integer('publisher_id')->unsigned()->nullable();
             $table->mediumText('article')->nullable();
 
             // Reddit-related properties
             $table->string('reddit_comment_id', Varchar::tiny)->nullable();
+            $table->string('reddit_comment_text', Varchar::large)->nullable();
             $table->string('reddit_parent_id', Varchar::tiny)->nullable();
             $table->string('reddit_subreddit', Varchar::tiny)->nullable();
 
-            // Third-party-related properties
+            // NSF-related properties
+            $table->string('nsf_comment_text', Varchar::large)->nullable();
+
+            // Video-related properties
             $table->string('external_url', Varchar::small)->nullable();
 
             $table->enum('status', ['New', 'Queued', 'Published']);

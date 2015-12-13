@@ -3,6 +3,7 @@ namespace SpaceXStats\ModelManagers\Objects;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use SpaceXStats\Library\Enums\MissionControlType;
@@ -13,7 +14,8 @@ use SpaceXStats\Models\Tweeter;
 class ObjectFromTweet extends ObjectCreator {
 
     public function isValid($input) {
-
+        $this->input = $input;
+        return $this->validate($this->object->rules);
     }
 
     public function create() {
@@ -28,13 +30,13 @@ class ObjectFromTweet extends ObjectCreator {
                 $this->object = Object::create([
                     'user_id'               => Auth::id(),
                     'type'                  => MissionControlType::Tweet,
-                    'tweet_text'            => $tweet->tweet_text,
-                    'tweet_id'              => $tweet->tweet_id,
+                    'tweet_text'            => $tweet->text,
+                    'tweet_id'              => $tweet->id,
                     'tweet_parent_id'       => $tweet->in_reply_to_status_id,
-                    'size'                  => strlen($tweet->tweet_text),
-                    'title'                 => $this->input['title'],
+                    'size'                  => strlen($tweet->text),
+                    'title'                 => $tweet->text,
                     'summary'               => $this->input['summary'],
-                    'cryptographic_hash'    => hash('sha256', $tweet->tweet_text),
+                    'cryptographic_hash'    => hash('sha256', $tweet->text),
                     'originated_at'         => $tweet->created_at,
                     'status'                => ObjectPublicationStatus::QueuedStatus
                 ]);
@@ -44,10 +46,10 @@ class ObjectFromTweet extends ObjectCreator {
                     'user_id'               => Auth::id(),
                     'type'                  => MissionControlType::Tweet,
                     'tweet_text'            => $this->input['tweet_text'],
-                    'title'                 => $this->input['title'],
-                    'size'                  => strlen($this->input['article']),
-                    'article'               => $this->input['article'],
-                    'cryptographic_hash'    => hash('sha256', $this->input['article']),
+                    'size'                  => strlen($this->input['tweet_text']),
+                    'title'                 => $this->input['tweet_text'],
+                    'summary'               => $this->input['summary'],
+                    'cryptographic_hash'    => hash('sha256', $this->input['tweet_text']),
                     'originated_at'         => $this->input['originated_at'],
                     'status'                => ObjectPublicationStatus::QueuedStatus
                 ]);
@@ -62,7 +64,7 @@ class ObjectFromTweet extends ObjectCreator {
             } catch (ModelNotFoundException $e) {
                 $tweeter = Tweeter::create([
                     'screen_name' => $tweetOwner->screen_name,
-                    'user_name' => $tweetOwner->user_name,
+                    'user_name' => $tweetOwner->name,
                     'description' => $tweetOwner->description
                 ]);
 
