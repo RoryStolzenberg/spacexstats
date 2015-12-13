@@ -24,7 +24,8 @@
 
             <h2>Mission Control</h2>
             <section id="missioncontrol" class="scrollto">
-                <h3>Submissions</h3>
+                <p class="exclaim">Mission Control is currently in private beta and will be launching in 2016.</p>
+                <!--<h3>Submissions</h3>
                 <h4>What text fields support markdown formatting?</h4>
                 <p>SpaceX Stats uses GitHub-flavored Markdown</p>
 
@@ -38,7 +39,7 @@
                 <h4>How does DeltaV affect my Mission Control subscription?</h4>
 
                 <h3>My Account & Subscriptions</h3>
-                <h4></h4>
+                <h4></h4>-->
             </section>
         </main>
     </div>

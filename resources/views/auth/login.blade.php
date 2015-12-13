@@ -9,7 +9,7 @@
     <div class="content-wrapper single-page">
         <h1>Log In</h1>
         <main>
-
+            <p class="exclaim">If you have private beta access, you may log in here.</p>
             <form action="/auth/login" method="post" class="container">
                 {!! csrf_field() !!}
 
