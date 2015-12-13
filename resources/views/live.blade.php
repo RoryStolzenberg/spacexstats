@@ -99,7 +99,7 @@
                     <li class="gr-5">
                         @{{ liveParameters.title }} Event
                         <span ng-if="liveParameters.isForLaunch || liveParameters.reddit.thing !== null">
-                            (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}">Mission Page</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}">Reddit Discussion</a></span>)
+                            (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}" target="_blank">Mission</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}" target="_blank">Reddit</a></span>)
                         </span>
                     </li>
                     <li class="gr-3 stream-options segmented-control">
@@ -229,11 +229,11 @@
                 </section>
             @endif
 
-            <section id="streams" ng-if="isLivestreamVisible()" class="dark @{{ liveParameters.userStreamSize }}">
+            <section id="streams" ng-if="isActive && isLivestreamVisible()" class="dark @{{ liveParameters.userStreamSize }}">
                 <iframe ng-src="@{{ liveParameters.streams.spacex.videoLink() }}" frameborder="0" allowfullscreen></iframe>
             </section>
 
-            <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>
+            <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="isActive && liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                 <section class="live-message-form" ng-if="isActive">
@@ -313,7 +313,7 @@
                         <div class="message-integration">
                             <div class="message-integration" ng-repeat="integration in update.integrations" ng-class="integration.type">
                                 <!-- Imgur Integration -->
-                                <a ng-href="@{{ integration.url }}"><img ng-if="integration.type == 'imgur'" ng-src="@{{ integration.url }}" /></a>
+                                <a ng-href="@{{ integration.url }}" target="_blank"><img ng-if="integration.type == 'imgur'" ng-src="@{{ integration.url }}" /></a>
 
                                 <!-- Tweet Integration -->
                                 <p ng-if="integration.type == 'tweet'" ng-bind-html="integration.text"></p>

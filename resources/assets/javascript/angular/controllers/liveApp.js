@@ -195,7 +195,6 @@
                         flashMessage.addOK('Canned update submitted');
                     });
 
-
                     // Reset the form
                     $scope.send.new.message = "";
                     form.$setUntouched();
@@ -261,7 +260,6 @@
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
-            console.log(data);
             switch (data.liveUpdate.updateType) {
                 case "TerminalCount":
                     $scope.liveParameters.status.text = "Terminal Count";
@@ -302,7 +300,6 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
-            console.log(data);
             $scope.liveParameters.streams.spacex.isActive = true;
             $scope.liveParameters.streams.spacex.youtubeVideoId = data.isActive ? data.videoId : null;
             $scope.$apply();

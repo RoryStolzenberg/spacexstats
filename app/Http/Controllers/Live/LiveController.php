@@ -282,7 +282,9 @@ class LiveController extends Controller {
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         // Create a post
-        $response = $reddit->subreddit('echocss')->submit([
+        $subreddit = App::environment('production') ? 'spacex' : 'echocss';
+
+        $response = $reddit->subreddit($subreddit)->submit([
             'kind' => 'self',
             'sendreplies' => true,
             'text' => $templatedOutput,

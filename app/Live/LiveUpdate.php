@@ -150,9 +150,9 @@ class LiveUpdate implements JsonSerializable, Arrayable {
             ];
         }
 
-        preg_match_all('/https?:\/\/(?:www\.)?twitter\.com\/[a-z0-9]*\/status\/([0-9])*/i', $this->update, $twitterMatches);
+        //preg_match_all('/https?:\/\/(?:www\.)?twitter\.com\/[a-z0-9]*\/status\/([0-9])*/i', $this->update, $twitterMatches);
 
-        if (count($twitterMatches) > 0) {
+        /*if (count($twitterMatches) > 0) {
             $twitter = new TwitterOAuth(Config::get('services.twitter.consumerKey'), Config::get('services.twitter.consumerSecret'), Config::get('services.twitter.accessToken'), Config::get('services.twitter.accessSecret'));
             $twitter->setTimeouts(5, 5);
             $tweets = $twitter->get('statuses/lookup', ['id' => $twitterMatches[0]]);
@@ -167,6 +167,6 @@ class LiveUpdate implements JsonSerializable, Arrayable {
                     ];
                 }
             }
-        }
+        }*/
     }
 }
