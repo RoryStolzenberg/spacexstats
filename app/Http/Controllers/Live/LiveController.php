@@ -2,6 +2,7 @@
 namespace SpaceXStats\Http\Controllers\Live;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;

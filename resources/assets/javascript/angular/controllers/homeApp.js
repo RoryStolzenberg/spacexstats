@@ -108,6 +108,7 @@
                 })[0];
                 history.replaceState('', document.title, '#' + $scope.activeStatistic.camelCaseType);
             }
+            $scope.$apply();
         });
 
         (function() {

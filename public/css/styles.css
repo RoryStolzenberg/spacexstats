@@ -7369,6 +7369,8 @@ main {
   padding-bottom: 40px; }
   main.invert {
     color: #FAFAFA; }
+    main.invert table {
+      color: #FAFAFA; }
   main:after {
     content: "";
     position: absolute;

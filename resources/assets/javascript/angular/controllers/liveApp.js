@@ -131,7 +131,7 @@
             sections: laravel.sections ? laravel.sections : [],
             resources: laravel.resources ? laravel.resources : [],
             status: {
-                text: laravel.status.text,
+                text: laravel.status.text.replace(/([A-Z])/g, ' $1'),
                 class: function() {
                     if ($scope.liveParameters.status.text) {
                         return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
@@ -260,24 +260,9 @@
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
-            switch (data.liveUpdate.updateType) {
-                case "TerminalCount":
-                    $scope.liveParameters.status.text = "Terminal Count";
-                    break;
-
-                case "Liftoff":
-                    $scope.liveParameters.status.text = "In Progress";
-                    break;
-
-                case "MissionSuccess":
-                    $scope.liveParameters.status.text = "Mission Success";
-                    break;
-
-                case "MissionFailure":
-                    $scope.liveParameters.status.text = "Mission Failure";
-                    break;
+            if (data.liveUpdate.updateType !== null) {
+                $scope.liveParameters.status.text = data.liveUpdate.updateType.replace(/([A-Z])/g, ' $1');
             }
-
             $scope.$apply();
         });
 
@@ -290,7 +275,7 @@
             $scope.$apply();
         });
 
-        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveEndedEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveEndedEvent', function() {
             $scope.isActive = false;
             $scope.$apply();
         });
