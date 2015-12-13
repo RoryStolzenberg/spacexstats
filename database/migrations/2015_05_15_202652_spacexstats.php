@@ -261,8 +261,8 @@ class Spacexstats extends Migration {
             $table->string('summary', Varchar::large);
             $table->string('author', Varchar::tiny)->nullable();
             $table->string('attribution', Varchar::compact)->nullable();
-            $table->datetime('originated_at')->nullable();
-            $table->string('originated_at_specificity')->nullable();
+            $table->datetime('originated_at');
+            $table->string('originated_at_specificity');
 
             // Twitter-related properties
             $table->string('tweet_id', Varchar::tiny)->nullable();
@@ -285,12 +285,12 @@ class Spacexstats extends Migration {
 
             // Reddit-related properties
             $table->string('reddit_comment_id', Varchar::tiny)->nullable();
-            $table->string('reddit_comment_text', Varchar::large)->nullable();
+            $table->mediumText('reddit_comment_text')->nullable();
             $table->string('reddit_parent_id', Varchar::tiny)->nullable();
             $table->string('reddit_subreddit', Varchar::tiny)->nullable();
 
             // NSF-related properties
-            $table->string('nsf_comment_text', Varchar::large)->nullable();
+            $table->mediumText('nsf_comment_text')->nullable();
 
             // Video-related properties
             $table->string('external_url', Varchar::small)->nullable();

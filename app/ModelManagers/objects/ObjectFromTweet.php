@@ -2,6 +2,7 @@
 namespace SpaceXStats\ModelManagers\Objects;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -23,7 +24,7 @@ class ObjectFromTweet extends ObjectCreator {
             $twitterClient = new TwitterOAuth(Config::get('services.twitter.consumerKey'), Config::get('services.twitter.consumerSecret'), Config::get('services.twitter.accessToken'), Config::get('services.twitter.accessSecret'));
 
             // Fetch the tweet information from Twitter, if a tweet id was passed through (it is possible the tweet was created manually without an id)
-            if (!is_null($this->input['tweet_id'])) {
+            if (array_key_exists('tweet_id', $this->input)) {
                 $tweet = $twitterClient->get('statuses/show', ['id' => $this->input['tweet_id']]);
                 $tweetOwner = $tweet->user;
 
@@ -37,7 +38,7 @@ class ObjectFromTweet extends ObjectCreator {
                     'title'                 => $tweet->text,
                     'summary'               => $this->input['summary'],
                     'cryptographic_hash'    => hash('sha256', $tweet->text),
-                    'originated_at'         => $tweet->created_at,
+                    'originated_at'         => Carbon::createFromFormat('D M d H:i:s P Y', $tweet->created_at)->toDateTimeString(),
                     'status'                => ObjectPublicationStatus::QueuedStatus
                 ]);
             } else {
@@ -57,7 +58,7 @@ class ObjectFromTweet extends ObjectCreator {
 
             try {
                 if(!isset($tweetOwner)) {
-                    $tweetOwner = $twitterClient->get('users/show', ['screen_name']);
+                    $tweetOwner = $twitterClient->get('users/show', ['screen_name' => $this->input['tweet_screen_name']]);
                 }
 
                 $tweeter = Tweeter::byScreenName($tweetOwner->screen_name)->firstOrFail();
@@ -75,6 +76,10 @@ class ObjectFromTweet extends ObjectCreator {
 
             $this->createMissionRelation();
             $this->createTagRelations();
+
+            $this->object->push();
         });
+
+        return $this->object;
     }
 }

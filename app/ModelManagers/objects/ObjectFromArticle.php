@@ -32,6 +32,8 @@ class ObjectFromArticle extends ObjectCreator {
             $this->createMissionRelation();
             $this->createTagRelations();
             $this->createPublisherRelation();
+
+            $this->object->push();
         });
 
         return $this->object;

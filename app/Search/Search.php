@@ -78,12 +78,14 @@ class Search {
         // Add before filters
         // Add after filters
 
-        return $this->elasticSearchClient->search([
+        $results = $this->elasticSearchClient->search([
             'index' => Search::INDEX,
             'type' => $limitTypesToThese,
             'body' => $requestBody,
             'size' => 100
         ]);
+
+        // For each result, we need to loop over and fetch a
     }
 
     public function reindex(SearchableInterface $model) {

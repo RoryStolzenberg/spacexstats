@@ -47,8 +47,10 @@ class SearchableObject implements SearchableInterface
             'attribution' => $this->entity->attribution,
             'originated_at' => $this->entity->originated_at->toIso8601String(),
             'originated_at_specificity' => $this->entity->originated_at_specificity,
-            'tweet_user_name' => $this->entity->tweet_user_name,
+            'tweet_id' => $this->entity->tweet_id,
             'tweet_text' => $this->entity->tweet_text,
+            'tweet_parent_id' => $this->entity->tweet_parent_id,
+            'tweeter_id' => $this->entity->tweeter_id,
             'status' => $this->entity->status,
             'visibility' => $this->entity->visibility,
             'anonymous' => $this->entity->anonymous,
@@ -70,6 +72,14 @@ class SearchableObject implements SearchableInterface
             $paramBody['mission'] = [
                 'mission_id' => null,
                 'name' => null
+            ];
+        }
+
+        if ($this->entity->tweeter()->count() == 1) {
+            $paramBody['tweeter'] = [
+                'tweeter_id' => $this->entity->tweeter->tweeter_id,
+                'user_name' => $this->entity->tweeter->user_name,
+                'screen_name' => $this->entity->tweeter->screen_name
             ];
         }
         return $paramBody;
