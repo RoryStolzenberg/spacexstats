@@ -83,7 +83,7 @@
         };
 
         (function() {
-            locationsService.getLocationData.then(function(response) {
+            locationsService.getLocationData().then(function(response) {
                 $scope.locations = response.data.lcations;
 
                 var svg = d3.select('svg');
