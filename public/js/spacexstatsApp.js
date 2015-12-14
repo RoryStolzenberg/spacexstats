@@ -1015,6 +1015,165 @@
     });
 })();
 (function() {
+    var locationsApp = angular.module('app', []);
+
+    locationsApp.controller("locationsController", ["$scope", "locationsService", function($scope, locationsService) {
+        // If a hash already exists, preset it:
+        if (window.location.hash) {
+            $scope.activeLocation = window.location.hash.substring(1);
+        }
+
+        self.circleRadius = 12;
+
+        self.makeLarger = function(data, event) {
+
+            // Create an array to hold the locations to be intersected
+            var intersectingLocations = [];
+
+            var obj1 = d3.select(event.target.parentNode).node().getBoundingClientRect();
+
+            d3.selectAll('g.location').each(function() {
+                var obj2 = this.getBoundingClientRect();
+
+                if (!(obj2.left > obj1.right || obj2.right < obj1.left || obj2.top > obj1.bottom || obj2.bottom < obj1.top)) {
+
+                    intersectingLocations.push({
+                        object: this,
+                        coords: d3.transform(d3.select(this).attr('transform')).translate
+                    });
+
+                }
+            });
+
+            if (intersectingLocations.length > 1) {
+                var xSum = 0;
+                var ySum = 0;
+
+                // Get centroid of location points
+                for (i = 0; i < intersectingLocations.length; i++) {
+                    xSum += intersectingLocations[i].coords[0];
+                    ySum += intersectingLocations[i].coords[1];
+                }
+
+                var xAvg = Math.round(xSum / intersectingLocations.length);
+                var yAvg = Math.round(ySum / intersectingLocations.length);
+
+                // Place pins around invisible circle, refer to
+                // http://stackoverflow.com/questions/839899/how-do-i-calculate-a-point-on-a-circle-s-circumference
+                for (i = 0; i < intersectingLocations.length; i++) {
+                    var xPosOfPin = xAvg + (self.circleRadius * Math.log(intersectingLocations.length) + self.circleRadius) * Math.cos((((2 * Math.PI) / intersectingLocations.length) * i) + Math.PI/2);
+                    var yPosOfPin = yAvg + (self.circleRadius * Math.log(intersectingLocations.length) + self.circleRadius) * Math.sin((((2 * Math.PI) / intersectingLocations.length) * i) + Math.PI/2);
+
+                    d3.select(intersectingLocations[i].object)
+                        .classed('offset', true)
+                        .attr('stroke-width', function() {
+                            return self.circleRadius * Math.log(intersectingLocations.length) + self.circleRadius * 5;
+                        })
+                        .attr('stroke', 'transparent')
+                        .transition()
+                        .delay(300)
+                        .attr('transform', function() {
+                            return 'translate(' + xPosOfPin + ',' + yPosOfPin + ')';
+                        });
+                }
+
+            } else {
+                d3.select(event.target).transition()
+                    .duration(300)
+                    .attr('transform', "scale(1.5,1.5)");
+            }
+            /*
+             if (intersectingLocations.length == 1) {
+
+             } else {
+
+
+             console.log(xAvg + ", " + yAvg);
+             }*/
+        };
+
+        self.makeSmaller = function(data, event) {
+            d3.select(event.target).transition()
+                .duration(300)
+                .attr('transform', "scale(1,1)");
+        };
+
+        (function() {
+            locationsService.getLocationData.then(function(response) {
+                $scope.locations = response.data.lcations;
+
+                var svg = d3.select('svg');
+
+                var xScale = d3.scale.linear().domain([0, 1400])
+                    .range([0,parseInt(svg.style('width'))]);
+
+                var yScale = d3.scale.linear().domain([0, 700])
+                    .range([0,parseInt(svg.style('height'))]);
+
+                var colorScale = d3.scale.ordinal().domain(['Launch Site', 'Landing Site', 'ASDS', 'Facility'])
+                    .range(['#CCAC55', '#40C085', '#4050C0', '#21272B']);
+
+                var iconScale;
+
+                var placeOnMap = function(idOfDataPoint) {
+                    switch (idOfDataPoint) {
+                        case 1:
+                            return {x: 201, y: 550 };
+                        case 2:
+                            return {x: 1009, y: 523 };
+                        case 3:
+                            return {x: 275, y: 356 };
+                        case 4:
+                            return {x: 1008, y: 522 };
+                        case 5:
+                            return {x: 684, y: 601 };
+                        case 6:
+                            return {x: 1100, y: 550 };
+                        case 7:
+                            return {x: 1009, y: 524 };
+                        case 8:
+                            return {x: 274, y: 356 };
+                        case 9:
+                            return {x: 1100, y: 500 };
+                        case 10:
+                            return {x: 1000, y: 550 };
+                    }
+                    return { x: 0, y: 0 };
+                };
+
+                // Grab the selection of elements and data
+                var enterSelection = svg.selectAll("circle").data(self.locations(), function(d) { return d.name(); }).enter();
+
+                // Apply a grouping with an overall translation
+                var grouping = enterSelection.append("g")
+                    .attr('class', function(d) { return 'location ' + d.name(); })
+                    .attr('transform', function(d) {
+                        return 'translate(' + placeOnMap(d.location_id()).x + ',' + placeOnMap(d.location_id()).y + ')';
+                    });
+
+                // Insert
+                ////grouping.insert('rect')
+                //        .attr('transform', 'translate(0,-8)')
+                //        .attr('height', 16)
+                //        .attr('width', 100)
+                //        .attr('fill', 'red');
+
+                grouping.insert('circle')
+                    .attr('fill', function(d) { return colorScale(d.type()); })
+                    .attr('r', self.circleRadius)
+                    .attr('data-bind', 'event: { mouseover: makeLarger.bind($data), mouseout: makeSmaller.bind($data) }');
+            });
+        })();
+    }]);
+
+    locationsApp.service("locationsService", ["$http", function($http) {
+        this.getLocationData = function() {
+            return $http.get('/locations/getLocationData');
+        }
+    }]);
+})();
+
+(function() {
     var app = angular.module('app', []);
 
     app.controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
@@ -2443,6 +2602,31 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
@@ -2592,101 +2776,6 @@
 
             },
             templateUrl: '/js/templates/chart.html'
-        }
-    }]);
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=?',
-                isVisibleWhenPaused: '=?',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                if (attrs.callback) {
-                    $scope.callback = $scope.callback();
-                }
-
-                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
-                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                var countdownProcessor = function() {
-
-                    if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc().diff(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss'), 'second');
-                        var secondsBetween = Math.abs(relativeSecondsBetween);
-
-                        $scope.sign = relativeSecondsBetween <= 0 ? '-' : '+';
-                        $scope.tMinusZero = secondsBetween == 0;
-
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                        if (attrs.callback) {
-                            $scope.callback(relativeSecondsBetween);
-                        }
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
-                    }
-                    return viewValue;
-                });
-            }
         }
     }]);
 })();
@@ -2861,6 +2950,76 @@
             templateUrl: '/js/templates/datetime.html'
         }
     });
+})();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('countdown', ['$interval', function($interval) {
+        return {
+            restrict: 'E',
+            scope: {
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=?',
+                isVisibleWhenPaused: '=?',
+                type: '@',
+                callback: '&?'
+            },
+            link: function($scope, elem, attrs) {
+
+                if (attrs.callback) {
+                    $scope.callback = $scope.callback();
+                }
+
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                var countdownProcessor = function() {
+
+                    if (!$scope.isPaused) {
+                        var relativeSecondsBetween = moment.utc().diff(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss'), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '-' : '+';
+                        $scope.tMinusZero = secondsBetween == 0;
+
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                        if (attrs.callback) {
+                            $scope.callback(relativeSecondsBetween);
+                        }
+                    }
+                };
+
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
+            },
+            templateUrl: '/js/templates/countdown.html'
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -3248,133 +3407,6 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.createTag = function(createdTag) {
-                    if ($scope.currentTags.length == 5 || angular.isUndefined(createdTag)) {
-                        return;
-                    }
-
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        // Either fetch the tag from the current list of tags or create
-                        var newTag = tagIsPresentInAvailableTags.length === 1 ? tagIsPresentInAvailableTags[0] : new Tag({ id: null, name: createdTag, description: null });
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        $scope.createTag($scope.tagInput);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = $scope.currentTags.length  < 5 ? !$scope.areSuggestionsVisible : false;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-
-            // Convert the tag to lowercase and replace all spaces present.
-            self.name = tag.name.toLowerCase().replace(/[^a-z0-9-]/g, "").substring(0, 50);
-
-            return self;
-        }
-    });
-})();
-
-
-(function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
 	app.directive('search', ['searchService', 'conversionService', "$rootScope", "$http", "$filter", function(searchService, conversionService, $rootScope, $http, $filter) {
@@ -3706,49 +3738,132 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
+    var app = angular.module('app', []);
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
+            require: 'ngModel',
+            replace: true,
             restrict: 'E',
             scope: {
-                tweet: '='
+                availableTags: '=',
+                currentTags: '=ngModel'
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
+            link: function($scope, element, attributes, ctrl) {
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
 
-                $scope.retrieveTweet = function() {
+                ctrl.$options = {
+                    allowInvalid: true
+                };
 
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+                $scope.createTag = function(createdTag) {
+                    if ($scope.currentTags.length == 5 || angular.isUndefined(createdTag)) {
+                        return;
+                    }
 
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
 
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_id = id;
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
 
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
                         });
-                    } else {
-                        $scope.tweet = {};
-                    }
 
-                    if (angular.isDefined($scope.tweet.external_url)) {
-                        $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                    } else {
-                        $scope.tweetRetrievedFromUrl = false;
+                        // Either fetch the tag from the current list of tags or create
+                        var newTag = tagIsPresentInAvailableTags.length === 1 ? tagIsPresentInAvailableTags[0] : new Tag({ id: null, name: createdTag, description: null });
+
+                        $scope.currentTags.push(newTag);
+
+                        // reset the input field
+                        $scope.tagInput = "";
+
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
                     }
-                }
+                };
+
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        $scope.createTag($scope.tagInput);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
+                    }
+                };
+
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
+                };
+
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = $scope.currentTags.length  < 5 ? !$scope.areSuggestionsVisible : false;
+                };
+
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
+                };
+
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
+                }, true);
+
             },
-            templateUrl: '/js/templates/tweet.html'
+            templateUrl: '/js/templates/tags.html'
         }
     }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+
+            // Convert the tag to lowercase and replace all spaces present.
+            self.name = tag.name.toLowerCase().replace(/[^a-z0-9-]/g, "").substring(0, 50);
+
+            return self;
+        }
+    });
 })();
+
+
 (function() {
     var app = angular.module('app', []);
 
@@ -3872,6 +3987,50 @@
             },
             templateUrl: '/js/templates/timeline.html'
         };
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_id = id;
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+
+                    if (angular.isDefined($scope.tweet.external_url)) {
+                        $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                    } else {
+                        $scope.tweetRetrievedFromUrl = false;
+                    }
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
     }]);
 })();
 (function() {
