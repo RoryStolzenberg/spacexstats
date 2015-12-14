@@ -3,8 +3,11 @@
 namespace SpaceXStats\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use SpaceXStats\Facades\Search;
+use SpaceXStats\Models\Collection;
+use SpaceXStats\Models\DataView;
 use SpaceXStats\Models\Object;
 
 class ReindexSearchCommand extends Command
@@ -40,11 +43,33 @@ class ReindexSearchCommand extends Command
      */
     public function handle()
     {
+        // Fetch objects and delete redis sets
         $objects = Object::whereIn('object_id', Redis::smembers('objects:toReindex'))->get();
-        Redis::del('objects:toReindex');
+        $collections = Collection::whereIn('collection_id', Redis::smembers('collections:toReindex'))->get();
+        $dataViews = DataView::whereIn('dataview_id', Redis::smembers('dataviews:toReindex'))->get();
 
-        $objects->each(function($object) {
-            Search::reindex($object->search());
-        });
+        Redis::del(['objects:toReindex', 'collections:toReindex', 'dataviews:toReindex']);
+
+        // Map to return searchable interfaces and reindex
+        if ($objects->count() > 0) {
+            foreach($objects as $object) {
+                $searchableObjects[] = $object->search();
+            }
+            Search::bulkReindex($searchableObjects);
+        }
+
+        if ($collections->count() > 0) {
+            foreach($collections as $collection) {
+                $searchableCollections[] = $collection->search();
+            }
+            Search::bulkReindex($searchableCollections);
+        }
+
+        if ($dataViews->count() > 0) {
+            foreach ($dataViews as $dataView) {
+                $searchableDataViews[] = $dataView->search();
+            }
+            Search::bulkReindex($searchableDataViews);
+        }
     }
 }

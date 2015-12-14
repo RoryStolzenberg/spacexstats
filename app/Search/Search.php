@@ -2,11 +2,10 @@
 namespace SpaceXStats\Search;
 
 use Elasticsearch\Client;
-use Credential;
 use Elasticsearch\ClientBuilder;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use ReflectionClass;
-use SpaceXStats\Models\User;
 use SpaceXStats\Search\Interfaces\SearchableInterface;
 
 class Search {
@@ -72,13 +71,21 @@ class Search {
             $requestBody['filter']['bool']['should']['term']['subtype'] = strtolower($search['filters']['type']);
         }
 
+        // Add favorite filters
+        // Add noted filters
+        // Add download filters
 
-        return $this->elasticSearchClient->search([
+        // Add before filters
+        // Add after filters
+
+        $results = $this->elasticSearchClient->search([
             'index' => Search::INDEX,
             'type' => $limitTypesToThese,
             'body' => $requestBody,
             'size' => 100
         ]);
+
+        // For each result, we need to loop over and fetch a
     }
 
     public function reindex(SearchableInterface $model) {
@@ -87,6 +94,33 @@ class Search {
             'type' => $model->getIndexType(),
             'id' => $model->getId(),
             'body' => $model->index()
+        ]);
+    }
+
+    public function bulkReindex(array $models) {
+        // because elasticsearch bulk is dumb
+        $bulkString = "";
+
+        foreach ($models as $model) {
+            if ((new ReflectionClass($model))->implementsInterface('SpaceXStats\Search\Interfaces\SearchableInterface')) {
+                $updateCommand = ['update' => [
+                    "_index" => Search::INDEX,
+                    "_type" => $model->getIndexType(),
+                    "_id" => $model->getId(),
+                    "_retry_on_conflict" => 3
+                ]];
+
+                $bulkString .= json_encode($updateCommand) . "\n";
+                $bulkString .= json_encode(['doc' => $model->index()]) . "\n";
+            } else {
+                throw new \Exception("Model does not implement SearchableInterface");
+            }
+        }
+
+        return $this->elasticSearchClient->bulk([
+            'index' => Search::INDEX,
+            'type' => $models[0]->getIndexType(),
+            'body' => $bulkString
         ]);
     }
 

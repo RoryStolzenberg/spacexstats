@@ -1,7 +1,13 @@
 (function() {
     var liveApp = angular.module('app', []);
 
-    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", function($scope, liveService, Section, Resource, Update) {
+    liveApp.config(["$sceDelegateProvider", function($sceDelegateProvider) {
+        $sceDelegateProvider.resourceUrlWhitelist([
+            'self',
+            'https://www.youtube.com/**']);
+    }]);
+
+    liveApp.controller('liveController', ["$scope", "liveService", "Section", "Resource", "Update", "$timeout", "flashMessage", function($scope, liveService, Section, Resource, Update, $timeout, flashMessage) {
         var socket = io(document.location.origin + ':3000');
 
         $scope.auth = laravel.auth;
@@ -42,6 +48,8 @@
                 if ($scope.liveParameters.isForLaunch) {
                     $scope.liveParameters.reddit.title = '/r/SpaceX ' + $scope.data.upcomingMission.name + ' Official Launch Discussion & Updates Thread';
                     $scope.liveParameters.title = $scope.data.upcomingMission.name;
+                    $scope.liveParameters.countdown.to = $scope.data.upcomingMission.launch_date_time;
+                    $scope.liveParameters.countdown.isPaused = false;
                 } else {
                     $scope.liveParameters.title = $scope.liveParameters.reddit.title = null;
                 }
@@ -73,12 +81,17 @@
             isPausingCountdown: false,
             pauseCountdown: function() {
                 $scope.settings.isPausingCountdown = true;
-                liveService.pauseCountdown();
+                liveService.pauseCountdown().then(function() {
+                    $scope.settings.isPausingCountdown = false;
+                });
             },
             isResumingCountdown: false,
             resumeCountdown: function() {
                 $scope.settings.isResumingCountdown = true;
-                liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime);
+                liveService.resumeCountdown($scope.liveParameters.countdown.newLaunchTime).then(function() {
+                    $scope.settings.isResumingCountdown = false
+                    ;
+                });
             }
         };
 
@@ -91,7 +104,7 @@
                 thing: laravel.reddit.thing ? laravel.reddit.thing : null
             },
             countdown: {
-                to: laravel.countdown.to,
+                to: laravel.countdown.to ? laravel.countdown.to : $scope.data.upcomingMission.launch_date_time,
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
@@ -101,6 +114,9 @@
                 spacex: {
                     isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
                     youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
+                    videoLink: function() {
+                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?VQ=HD720&rel=0&autoplay=1';
+                    },
                     isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
                 },
                 nasa: {
@@ -115,9 +131,11 @@
             sections: laravel.sections ? laravel.sections : [],
             resources: laravel.resources ? laravel.resources : [],
             status: {
-                text: laravel.status.text,
+                text: laravel.status.text.replace(/([A-Z])/g, ' $1'),
                 class: function() {
-                    return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
+                    if ($scope.liveParameters.status.text) {
+                        return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
+                    }
                 }
             }
         };
@@ -131,17 +149,19 @@
         $scope.send = {
             new: {
                 message: null,
-                messageType: 'update'
+                messageType: null
             },
+
             /*
              * Send a launch update (message) via POST off to the server to be broadcast to everyone else
              */
             message: function(form) {
-
                 // Send the message
                 liveService.sendMessage({
                     message: $scope.send.new.message,
-                    messageType: $scope.send.new.messageType
+                    messageType: null
+                }).then(function() {
+                    flashMessage.addOK('Update submitted');
                 });
 
                 // Reset the form
@@ -152,51 +172,56 @@
 
         $scope.buttons = {
             cannedResponses: {
-                holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
-                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
-                liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
-                maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
-                meco: laravel.cannedResponses ? laravel.cannedResponses.meco : null,
-                stageSep: laravel.cannedResponses ? laravel.cannedResponses.stageSep : null,
-                mVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.mVacIgnition : null,
-                seco: laravel.cannedResponses ? laravel.cannedResponses.seco : null,
-                missionSuccess: laravel.cannedResponses ? laravel.cannedResponses.missionSuccess : null,
-                missionFailure: laravel.cannedResponses ? laravel.cannedResponses.missionFailure : null
+                HoldAbort: laravel.cannedResponses ? laravel.cannedResponses.HoldAbort : null,
+                TerminalCount: laravel.cannedResponses ? laravel.cannedResponses.TerminalCount : null,
+                Liftoff: laravel.cannedResponses ? laravel.cannedResponses.Liftoff : null,
+                MaxQ: laravel.cannedResponses ? laravel.cannedResponses.MaxQ : null,
+                MECO: laravel.cannedResponses ? laravel.cannedResponses.MECO : null,
+                StageSep: laravel.cannedResponses ? laravel.cannedResponses.StageSep : null,
+                MVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.MVacIgnition : null,
+                SECO: laravel.cannedResponses ? laravel.cannedResponses.SECO : null,
+                MissionSuccess: laravel.cannedResponses ? laravel.cannedResponses.MissionSuccess : null,
+                MissionFailure: laravel.cannedResponses ? laravel.cannedResponses.MissionFailure : null
             },
-            click: function(messageType) {
+            isUnlocked: {},
+            click: function(messageType, form) {
+                // If the button has been clicked in the last 5 seconds, we should send the message
+                if ($scope.buttons.isUnlocked[messageType]) {
 
-            },
-            isDisabled: function(messageType) {
-                return true;
-            },
-            isVisible: function(messageType) {
-                var timeDiff = moment.utc().diff(moment.utc($scope.liveParameters.countdown.to), 'second');
-                switch (messageType) {
-                    case 'holdAbort':
-                        return -(60 * 60) < timeDiff < 30;
-                    case 'terminalCount':
-                        return -(60 * 15) < timeDiff < -(60 * 8);
-                    case 'liftoff':
-                        return -30 < timeDiff < 30;
-                    case 'maxQ':
-                        return 15 < timeDiff < 90;
-                    case 'meco':
-                        return 120 < timeDiff < 210;
-                    case 'stageSep':
-                        return 120 < timeDiff < 210;
-                    case 'mVacIgnition':
-                        return 120 < timeDiff < 210;
-                    case 'seco':
-                        return (60 * 8) < timeDiff < (60 * 12);
-                    case 'missionSuccess':
-                        return (60 * 8) < timeDiff;
-                    case 'missionFailure':
-                        return -30 < timeDiff;
+                    liveService.sendMessage({
+                        message: $scope.send.new.message,
+                        messageType: messageType
+                    }).then(function() {
+                        flashMessage.addOK('Canned update submitted');
+                    });
+
+                    // Reset the form
+                    $scope.send.new.message = "";
+                    form.$setUntouched();
+
+                // The button hasn't been clicked recently, make it active instead
+                } else {
+                    $scope.buttons.isUnlocked[messageType] = true;
+                    $scope.send.new.message = $scope.buttons.cannedResponses[messageType];
+
+                    $timeout(function() {
+                        $scope.send.new.message = "";
+                        $scope.buttons.isUnlocked[messageType] = false;
+                    }, 1500);
                 }
             },
+            isUpdatingCannedResponses: false,
             updateCannedResponses: function() {
-
+                $scope.buttons.isUpdatingCannedResponses = true;
+                liveService.updateCannedResponses($scope.buttons.cannedResponses).then(function(response) {
+                    $scope.buttons.isUpdatingCannedResponses = false;
+                });
             }
+        };
+
+        // Callback executed by countdown directive
+        $scope.setTimeBetweenNowAndLaunch = function(relativeSecondsBetween) {
+            $scope.timeBetweenNowAndLaunch = relativeSecondsBetween;
         };
 
         // Websocket listeners
@@ -208,6 +233,11 @@
             $scope.liveParameters.title = data.data.title;
             $scope.liveParameters.reddit = data.data.reddit;
             $scope.liveParameters.streams = data.data.streams;
+            $scope.liveParameters.countdown = data.data.countdown;
+            $scope.liveParameters.status.text = data.data.status;
+            if ($scope.auth) {
+                $scope.buttons.cannedResponses = data.data.cannedResponses;
+            }
             $scope.$apply();
         });
 
@@ -218,7 +248,7 @@
                 $scope.liveParameters.countdown = {
                     isPaused: false,
                     to: data.newLaunchTime,
-                    newLaunchDate: null
+                    newLaunchDate: data.newLaunchTime
                 };
 
             // Countdown is being paused
@@ -230,6 +260,9 @@
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
+            if (data.liveUpdate.updateType !== null) {
+                $scope.liveParameters.status.text = data.liveUpdate.updateType.replace(/([A-Z])/g, ' $1');
+            }
             $scope.$apply();
         });
 
@@ -242,7 +275,7 @@
             $scope.$apply();
         });
 
-        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveEndedEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveEndedEvent', function() {
             $scope.isActive = false;
             $scope.$apply();
         });
@@ -252,7 +285,9 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
-            console.log(data);
+            $scope.liveParameters.streams.spacex.isActive = true;
+            $scope.liveParameters.streams.spacex.youtubeVideoId = data.isActive ? data.videoId : null;
+            $scope.$apply();
         });
     }]);
 
@@ -279,7 +314,7 @@
         };
 
         this.updateCannedResponses = function(cannedResponses) {
-            return $http.patch('/live/send/cannedresponses', cannedResponses);
+            return $http.patch('/live/send/cannedresponses', { cannedResponses: cannedResponses });
         };
 
         this.create = function(createThreadParameters) {

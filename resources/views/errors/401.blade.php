@@ -8,10 +8,6 @@
 
     <div class="content-wrapper">
         <h1>You need Mission Control to see this!</h1>
-        <main>
-            <section>
-            </section>
-        </main>
     </div>
     </body>
 @stop

@@ -13,29 +13,37 @@
             <div><span class="launch-count">{{ mission.generic_vehicle_count }}</span></div>
             <div>{{ mission.launch_date_time }}</div>
             <div>{{ mission.launch_of_year }}</div>
-            <div ng-if="mission.status == 'Upcoming'">42%</div>
             <div>{{ mission.vehicle.vehicle }}</div>
             <div>{{ mission.destination.destination }}</div>
             <div>{{ mission.launch_site }}</div>
-            <div ng-if="mission.status == 'Upcoming'"></div>
-            <div ng-if="mission.status == 'Complete'"><img class="launch-illumination" ng-src="/images/icons/illuminations/{{ mission.launch_illumination }}.png" /></div>
             <div ng-if="mission.status == 'Complete' && mission.outcome == 'Success'">{{ mission.successful_consecutive_launch }}</div>
-            <div><a ng-href="/missioncontrol/collections/mission/{{ mission.slug }}">Mission Collection</a></div>
+            <div ng-if="mission.status == 'Upcoming'">42%</div>
+            <div ng-if="mission.status == 'Upcoming'">
+                <a href="/locations">
+                    <img class="where-to-watch" ng-src="/images/icons/wheretowatch.png" />
+                </a>
+            </div>
+            <div ng-if="mission.status == 'Complete'">
+                <img class="launch-illumination" ng-src="/images/icons/illuminations/{{ mission.launch_illumination }}.png" /></div>
+            <div>
+                <a ng-href="/missioncontrol/collections/mission/{{ mission.slug }}">
+                    <img class="mission-collection" src="/images/icons/collection.png" alt="{{ mission.name }} mission collection"/>
+                </a>
+            </div>
 
         </div>
         <div class="container keys">
             <div>{{ mission.generic_vehicle }}<br/>Launch</div>
             <div>Launch (UTC)</div>
             <div>Launch of the Year</div>
-            <div ng-if="mission.status == 'Upcoming'">Probability</div>
             <div>Vehicle</div>
             <div>Destination</div>
             <div>Launch Site</div>
+            <div ng-if="mission.status == 'Upcoming'">Probability of Launch</div>
             <div ng-if="mission.status == 'Upcoming'">Where to watch</div>
-            <div ng-if="mission.status == 'Complete'">{{ mission.launch_illumination }} Launch</div>
             <div ng-if="mission.status == 'Complete' && mission.outcome == 'Success'">Successful Consecutive Launch</div>
-            <div>Mission Collection</div>
-
+            <div ng-if="mission.status == 'Complete'">{{ mission.launch_illumination }} Launch</div>
+            <div><a ng-href="/missioncontrol/collections/mission/{{ mission.slug }}">Mission Collection</a></div>
         </div>
         <p><em>{{ mission.summary }}</em></p>
     </div>

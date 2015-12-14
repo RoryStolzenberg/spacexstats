@@ -50,7 +50,7 @@
 							<li><a href="/faq">Frequently Asked Questions</a></li>
 							<li><a href="/rss">RSS Updates</a></li>
                             <li><a href="/community">Community</a></li>
-							<li><a href="/about">About</a></li>
+							<li><a href="/about/docs#spacexstats">About</a></li>
 							<li><a href="/about/contact">Contact & Tips</a></li>
 						</ul>
 					</li>

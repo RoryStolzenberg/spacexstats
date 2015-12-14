@@ -6,7 +6,6 @@
             restrict: 'E',
             replace: true,
             scope: {
-                size: '@',
                 mission: '='
             },
             link: function($scope) {

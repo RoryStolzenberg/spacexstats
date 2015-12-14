@@ -24,9 +24,9 @@ Route::group(['prefix' => 'missioncontrol', 'namespace' => 'MissionControl'], fu
         Route::get('/create', 'UploadController@show');
         Route::post('/create/upload', 'UploadController@upload');
 
-        Route::post('/create/submit/files', 'UploadController@submitFiles');
-        Route::post('/create/submit/post', 'UploadController@submitPost');
-        Route::post('/create/submit/writing', 'UploadController@submitWriting');
+        Route::put('/create/submit/files', 'UploadController@submitFiles');
+        Route::put('/create/submit/post', 'UploadController@submitPost');
+        Route::put('/create/submit/writing', 'UploadController@submitWriting');
     });
 
     Route::get('/', 'MissionControlController@home');

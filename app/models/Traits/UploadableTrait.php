@@ -6,6 +6,7 @@ use Aws\Exception\MultipartUploadException;
 use Aws\S3\MultipartUploader;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 use SpaceXStats\Models\Interfaces\UploadableInterface;
 
@@ -178,6 +179,8 @@ trait UploadableTrait {
             $this->has_cloud_thumbs = true;
         }
 
+        $this->reindex();
+
         return $this;
     }
 
@@ -252,6 +255,8 @@ trait UploadableTrait {
             $this->has_local_thumbs = true;
         }
 
+        $this->reindex();
+
         return $this;
     }
 
@@ -301,5 +306,9 @@ trait UploadableTrait {
      */
     private function exceedsMultipartUploadThreshold() {
         return $this->size > $this->multipartUploadThreshold;
+    }
+
+    private function reindex() {
+        Redis::sadd('objects:toReindex', $this->object_id);
     }
 }

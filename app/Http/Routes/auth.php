@@ -3,7 +3,7 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function() {
 
     // Registration
     Route::get('/signup', 'AuthController@getSignUp');
-    Route::post('/signup', 'AuthController@postSignUp');
+    //Route::post('/signup', 'AuthController@postSignUp');
 
     // Login
     Route::get('/login', 'AuthController@getLogin');
@@ -13,7 +13,7 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function() {
     Route::post('/logout', 'AuthController@logout');
 
     // Email Verification
-    Route::get('/verify/{userId}/{key}', 'AuthController@verify');
+    //Route::get('/verify/{userId}/{key}', 'AuthController@verify');
 
     // Forgot & Reset Password Functionality
     Route::get('/forgotpassword', 'PasswordController@getForgotPassword');

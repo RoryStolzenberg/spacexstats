@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Models\Collection;
+use SpaceXStats\Models\Mission;
 
 class CollectionsController extends Controller {
 
@@ -26,6 +27,13 @@ class CollectionsController extends Controller {
         return view('missionControl.collections.get', array(
             'collection' => $collection
         ));
+    }
+
+    // GET /missioncontrol/collections/mission/{slug}
+    public function mission($slug) {
+        return view('missionControl.collections.mission', [
+           'collection' => Mission::whereSlug($slug)->with('objects')->first()
+        ]);
     }
 
     // PATCH /missioncontrol/collections/{collection_id}
@@ -50,7 +58,8 @@ class CollectionsController extends Controller {
 
     // DELETE /missioncontrol/collections/{collection_id}
     public function delete($collection_id) {
-        return response()->json();
+        Collection::find($collection_id)->delete();
+        return response()->json(null, 204);
     }
 
     // PATCH /missioncontrol/collections/merge/{first_collection_id}/into/{second_collection_id}

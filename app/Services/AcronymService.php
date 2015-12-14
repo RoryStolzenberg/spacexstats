@@ -44,7 +44,7 @@ class AcronymService
             }
         } else {
             foreach ($this->acronyms as $acronym => $expansion) {
-                $input = str_replace($acronym, $acronym . '(' . $expansion . ')', $input);
+                $input = str_replace($acronym, $acronym . ' (' . $expansion . ')', $input);
             }
         }
         return $input;

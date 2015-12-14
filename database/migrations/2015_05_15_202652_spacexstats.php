@@ -82,6 +82,7 @@ class Spacexstats extends Migration {
 
         Schema::create('dataviews', function(Blueprint $table) {
             $table->increments('dataview_id');
+            $table->integer('user_id')->unsigned()->nullable();
             $table->string('name', Varchar::small);
             $table->string('column_titles', Varchar::medium);
             $table->string('query', Varchar::medium);
@@ -125,7 +126,7 @@ class Spacexstats extends Migration {
             $table->increments('live_update_id');
             $table->integer('user_id')->unsigned()->nullable();
             $table->string('update', Varchar::large);
-            $table->string('update_type', Varchar::small);
+            $table->string('update_type', Varchar::tiny)->nullable();
             $table->string('live_event_name', Varchar::small);
             $table->string('timestamp', Varchar::tiny);
             $table->dateTime('created_at');
@@ -260,12 +261,11 @@ class Spacexstats extends Migration {
             $table->string('summary', Varchar::large);
             $table->string('author', Varchar::tiny)->nullable();
             $table->string('attribution', Varchar::compact)->nullable();
-            $table->datetime('originated_at')->nullable(); // Optional day & month
-            $table->string('originated_at_specificity')->nullable();
+            $table->datetime('originated_at');
+            $table->string('originated_at_specificity');
 
             // Twitter-related properties
             $table->string('tweet_id', Varchar::tiny)->nullable();
-            $table->datetime('tweet_created_at')->nullable(); // Optional second, minute, hour, day, month
             $table->string('tweet_text', 140)->nullable();
             $table->string('tweet_parent_id', Varchar::tiny)->nullable();
             $table->integer('tweeter_id')->unsigned()->nullable();
@@ -279,20 +279,24 @@ class Spacexstats extends Migration {
             $table->string('camera_manufacturer', Varchar::small)->nullable();
             $table->string('camera_model', Varchar::small)->nullable();
 
-            // Post-related properties
+            // Article-related properties
             $table->integer('publisher_id')->unsigned()->nullable();
             $table->mediumText('article')->nullable();
 
             // Reddit-related properties
             $table->string('reddit_comment_id', Varchar::tiny)->nullable();
+            $table->mediumText('reddit_comment_text')->nullable();
             $table->string('reddit_parent_id', Varchar::tiny)->nullable();
             $table->string('reddit_subreddit', Varchar::tiny)->nullable();
 
-            // Third-party-related properties
+            // NSF-related properties
+            $table->mediumText('nsf_comment_text')->nullable();
+
+            // Video-related properties
             $table->string('external_url', Varchar::small)->nullable();
 
-            $table->enum('status', array('New', 'Queued', 'Published'));
-            $table->enum('visibility', array('Default', 'Public', 'Hidden'));
+            $table->enum('status', ['New', 'Queued', 'Published']);
+            $table->enum('visibility', ['Default', 'Public', 'Hidden']);
             $table->boolean('anonymous')->default(false);
             $table->boolean('original_content')->default(false);
             $table->datetime('actioned_at')->nullable(); // Nonoptional values
@@ -343,7 +347,7 @@ class Spacexstats extends Migration {
         Schema::create('parts', function(Blueprint $table) {
             $table->increments('part_id');
             $table->string('name', Varchar::tiny);
-            $table->enum('type', array('Upper Stage', 'First Stage', 'Booster'));
+            $table->enum('type', ['Upper Stage', 'First Stage', 'Booster']);
             $table->timestamps();
         });
 
@@ -356,18 +360,18 @@ class Spacexstats extends Migration {
             // First stage & booster stuff
             $table->boolean('firststage_landing_legs')->nullable()->default(false);
             $table->boolean('firststage_grid_fins')->nullable()->default(false);
-            $table->enum('firststage_engine', array('Merlin 1A', 'Merlin 1C-F1', 'Merlin 1C-F9', 'Merlin 1D', 'Merlin 1D Fullthrust'))->nullable();
+            $table->enum('firststage_engine', ['Merlin 1A', 'Merlin 1C-F1', 'Merlin 1C-F9', 'Merlin 1D', 'Merlin 1D Fullthrust'])->nullable();
             $table->integer('landing_site_id')->nullable()->unsigned();
             $table->tinyInteger('firststage_engine_failures')->unsigned()->default(0);
             $table->tinyInteger('firststage_meco')->unsigned()->nullable();
             $table->decimal('firststage_landing_coords_lat', 6, 4)->nullable();
             $table->decimal('firststage_landing_coords_lng', 7, 4)->nullable();
-            $table->enum('baseplate_color', array('White', 'Black'))->nullable();
+            $table->enum('baseplate_color', ['White', 'Black'])->nullable();
 
             // Second stage stuff
-            $table->enum('upperstage_engine', array('Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'))->nullable();
+            $table->enum('upperstage_engine', ['Kestrel', 'Merlin 1C-Vac', 'Merlin 1D-Vac', 'Merlin 1D-Vac Fullthrust'])->nullable();
             $table->smallInteger('upperstage_seco')->unsigned()->nullable();
-            $table->enum('upperstage_status', array('Did not achieve orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'))->nullable();
+            $table->enum('upperstage_status', ['Did not achieve orbit', 'Decayed', 'Deorbited', 'Earth Orbit', 'Solar Orbit'])->nullable();
             $table->datetime('upperstage_decay_date')->nullable(); // Nonoptional Values
             $table->smallInteger('upperstage_norad_id')->unsigned()->nullable();
             $table->char('upperstage_intl_designator', 9)->nullable();
@@ -410,7 +414,7 @@ class Spacexstats extends Migration {
         Schema::create('prelaunch_events', function(Blueprint $table) {
             $table->increments('prelaunch_event_id');
             $table->integer('mission_id')->unsigned();
-            $table->enum('event', array('Announcement', 'Wet Dress Rehearsal', 'Launch Static Fire', 'Test Static Fire', 'Launch Change'));
+            $table->enum('event', ['Announcement', 'Wet Dress Rehearsal', 'Launch Static Fire', 'Test Static Fire', 'Launch Change']);
             $table->date('occurred_at');
             $table->datetime('scheduled_launch_exact')->nullable();
             $table->string('scheduled_launch_approximate', Varchar::tiny)->nullable();
@@ -526,8 +530,8 @@ class Spacexstats extends Migration {
 
         Schema::create('tweeters', function(Blueprint $table) {
             $table->increments('tweeter_id');
-            $table->string('user_screen_name', Varchar::tiny)->nullable();
             $table->string('user_name', Varchar::tiny)->nullable();
+            $table->string('screen_name', Varchar::tiny)->nullable();
             $table->string('description', Varchar::medium)->nullable();
         });
 
@@ -593,7 +597,12 @@ class Spacexstats extends Migration {
             $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade'); // When an object is deleted, also delete any referencing collection_object
         });
 
+        Schema::table('comments', function(Blueprint $table) {
+            $table->foreign('object_id')->references('object_id')->on('objects')->onDelete('cascade');
+        });
+
         Schema::table('dataviews', function(Blueprint $table) {
+            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('set null');
             $table->foreign('banner_image')->references('object_id')->on('objects')->onDelete('set null'); // When an object is deleted, set the banner image to null
         });
 

@@ -13,9 +13,7 @@ class ObjectFromNSFComment extends ObjectCreator {
 
     public function isValid($input) {
         $this->input = $input;
-
-        $rules = array_intersect_key($this->object->rules, []);
-        return $this->validate($rules);
+        return $this->validate($this->object->rules);
     }
 
     public function create() {

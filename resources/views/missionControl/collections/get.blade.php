@@ -28,9 +28,11 @@
             </nav>
 
             <section ng-if="is.editingCollection">
-                <h3>Add items to this collection</h3>
                 <form name="editingCollectionForm">
-                    <button ng-click="editCollection()">Add</button>
+                    <fieldset>
+
+                    </fieldset>
+                    <button ng-click="editCollection()">Edit</button>
                 </form>
             </section>
 
@@ -41,14 +43,19 @@
             </section>
 
             <section ng-if="is.mergingCollection">
-
+                <h3>Merge this collection</h3>
+                <p>Warning: this action is permanent and cannot be undone</p>
             </section>
 
             <p>{{ $collection->summary }}</p>
-            <h2>{{ $collection->objects->count() }} submissions in this Collection</h2>
+            <h2>{{ $collection->objects->count() }} submissions in this collection</h2>
             <section>
                 @if($collection->objects->count() == 0)
                     <p class="exclaim">No submissions in this collection. <a ng-click="is.editingCollection = true">Add some!</a></p>
+                @else
+                    @foreach($collection->objects as $object)
+                        @include('templates.cards.objectCard', ['object' => $object])
+                    @endforeach
                 @endif
             </section>
         </main>

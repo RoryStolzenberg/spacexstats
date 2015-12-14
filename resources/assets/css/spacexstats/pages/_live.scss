@@ -1,10 +1,12 @@
+$live-header-height: 80px;
+
 body.live {
     background-color:$blue;
     height:auto;
 
     h1, .countdown.live {
-        height:100px;
-        line-height:100px;
+        height:$live-header-height;
+        line-height:$live-header-height;
         text-align:center;
     }
 
@@ -13,18 +15,18 @@ body.live {
 
         header {
             margin:0 auto;
-            height: 100px;
+            height:$live-header-height;
             overflow: hidden;
         }
 
         main {
-            min-height:calc(100vh - #{$h1-height} + 50px);
+            min-height:calc(100vh - #{$live-header-height});
         }
     }
 
     .access-links {
         color:$white;
-        line-height:100px;
+        line-height:$live-header-height;
         text-align: center;
 
         &#logo {
@@ -35,6 +37,8 @@ body.live {
     .live-status {
         font-family: $brandonGrotesque;
         font-size:24px;
+        padding:5px 0;
+        color:white;
 
         &.upcoming {
             background-color:$grey;
@@ -48,11 +52,11 @@ body.live {
             background-color:$gold;
         }
 
-        &.success {
+        &.mission-success {
             background-color:$green;
         }
 
-        &.failure {
+        &.mission-failure {
             background-color:$red;
         }
     }
@@ -61,17 +65,22 @@ body.live {
 .dark {
     background-color:$lightblack;
     color:$offwhite;
+
+    .segmented-control ul li {
+        color:$offwhite;
+    }
 }
 
 .countdown.live {
     font-family:$brandonGrotesque;
     font-weight:100;
-    font-size:80px;
+    font-size:60px;
     color:$white;
     margin:0 auto;
 
     td {
         min-width:125px;
+        padding:0 5px;
     }
 }
 
@@ -150,5 +159,22 @@ button.canned-response {
                 color:$gold;
             }
         }
+    }
+}
+
+.message-integration {
+    img {
+        max-width:100px;
+        max-height:100px;
+        border-radius: $border-radius-large;
+    }
+}
+
+button.canned-response {
+    background-color:$grey;
+    @include transitionFast(background-color);
+
+    &.unlocked {
+        background-color:$gold;
     }
 }

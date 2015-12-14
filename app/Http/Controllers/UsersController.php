@@ -24,12 +24,12 @@ class UsersController extends Controller {
 	}
 
 	public function get($username = null) {
-        $user = User::where('username', $username)->with(['awards', 'objects', 'notes', 'favorites', 'notifications.notificationType'])->first();
+        $user = User::where('username', $username)->with(['awards', 'objects', 'notes', 'favorites', 'notifications.notificationType'])->firstOrFail();
 
         $params = [
             'user' => $user,
             'favoriteMission' => $user->profile->favoriteMission,
-            'objects' => $user->objects()->inMissionControl()->take(10),
+            'objects' => $user->objects()->authedVisibility()->take(10),
             'favorites' => $user->favorites->take(10),
             'comments' => $user->comments->take(10),
             'deltaV' => $user->totalDeltaV(),

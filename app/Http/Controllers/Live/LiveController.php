@@ -2,6 +2,7 @@
 namespace SpaceXStats\Http\Controllers\Live;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Input;
@@ -81,6 +82,13 @@ class LiveController extends Controller {
         // Add to Redis
         Redis::rpush('live:updates', json_encode($liveUpdate));
 
+        // Potentially update the live status if it is not null
+        if (!is_null(Input::get('messageType'))) {
+            if (in_array(Input::get('messageType'), ['TerminalCount', 'Liftoff', 'MissionSuccess', 'MissionFailure'])) {
+                Redis::set('live:status', Input::get('messageType'));
+            }
+        }
+
         // Push into Websockets
         event(new LiveUpdateCreatedEvent($liveUpdate));
 
@@ -148,8 +156,11 @@ class LiveController extends Controller {
      * @return mixed
      */
     public function editCannedResponses() {
+        foreach (Input::get('cannedResponses') as $key => $value) {
+            $cannedResponses[$key] = $value;
+        }
         // Reset Canned Responses
-
+        Redis::hmset('live:cannedResponses', $cannedResponses);
         return response()->json(null, 204);
     }
 
@@ -182,7 +193,6 @@ class LiveController extends Controller {
      */
     public function resumeCountdown() {
         // Parse launch date
-        Log::info('resume server hit ' . round(microtime(true) * 1000));
         $newLaunchDate = Carbon::parse(Input::get('newLaunchDate'));
 
         // Update Redis
@@ -191,7 +201,6 @@ class LiveController extends Controller {
 
         // Event
         event(new LiveCountdownEvent(true, $newLaunchDate));
-        Log::info('resume event sent ' . round(microtime(true) * 1000));
 
         // If it relates to a mission (and not a miscellaneous webcast)
         if (Redis::get('live:isForLaunch')) {
@@ -210,7 +219,6 @@ class LiveController extends Controller {
             $nextMission->launch_date_time = $newLaunchDate;
             $nextMission->save();
         }
-        Log::info('resume mission saved ' . round(microtime(true) * 1000));
 
         return response()->json(null, 204);
     }
@@ -255,16 +263,16 @@ class LiveController extends Controller {
 
         // Create the canned responses
         Redis::hmset('live:cannedResponses', [
-            'holdAbort' => 'HOLD HOLD HOLD',
-            'terminalCount' => 'Terminal count has now begun.',
-            'liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
-            'maxQ' => 'MaxQ, at this point in flight maximum aerodynamic pressure on the vehicle is occurring.',
-            'meco' => 'MECO! Main Engine Cutoff. The vehicles first stage engines have shutdown in preparation for stage separation.',
-            'stageSep' => 'Stage separation confirmed.',
-            'mVacIgnition' => "Falcon's upper stage engine has ignited.",
-            'seco' => 'SECO! Second Stage Engine Cutoff. Falcon is now in orbit.',
-            'missionSuccess' => 'Success! SpaceX has completed another successful mission.',
-            'missionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
+            'HoldAbort' => 'HOLD HOLD HOLD',
+            'TerminalCount' => 'Terminal count has now begun.',
+            'Liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
+            'MaxQ' => 'MaxQ, at this point in flight maximum aerodynamic pressure on the vehicle is occurring.',
+            'MECO' => 'MECO! Main Engine Cutoff. The vehicles first stage engines have shutdown in preparation for stage separation.',
+            'StageSep' => 'Stage separation confirmed.',
+            'MVacIgnition' => "Falcon's upper stage engine has ignited.",
+            'SECO' => 'SECO! Second Stage Engine Cutoff. Falcon is now in orbit.',
+            'MissionSuccess' => 'Success! SpaceX has completed another successful mission.',
+            'MissionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
         ]);
 
         // Render the Reddit thread template
@@ -275,7 +283,9 @@ class LiveController extends Controller {
         $reddit->setUserAgent('ElongatedMuskrat bot by u/EchoLogic. Creates and updates live threads in r/SpaceX');
 
         // Create a post
-        $response = $reddit->subreddit('echocss')->submit([
+        $subreddit = App::environment('production') ? 'spacex' : 'echocss';
+
+        $response = $reddit->subreddit($subreddit)->submit([
             'kind' => 'self',
             'sendreplies' => true,
             'text' => $templatedOutput,
@@ -306,7 +316,8 @@ class LiveController extends Controller {
             'isForLaunch' => Input::get('isForLaunch'),
             'resources' => Input::get('resources'),
             'sections' => Input::get('sections'),
-            'status' => 'Upcoming'
+            'status' => 'Upcoming',
+            'cannedResponses' => Redis::hgetall('live:cannedResponses')
         ]));
 
         // Respond
@@ -328,7 +339,7 @@ class LiveController extends Controller {
 
         // Clean up all spacexstats live redis keys
         Redis::del(['live:streams', 'live:title', 'live:description', 'live:resources', 'live:sections', 'live:updates',
-            'live:countdownTo', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit', 'live:status']);
+            'live:countdown', 'live:discussion', 'live:isForLaunch', 'live:cannedResponses', 'live:reddit', 'live:status']);
 
         // Send out event
         event(new LiveEndedEvent());

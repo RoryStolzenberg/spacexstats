@@ -5,10 +5,14 @@
     <body class="live" ng-controller="liveController" ng-strict-di ng-cloak>
     <!-- Custom Header -->
     <div class="content-wrapper">
+
+        <div id="flash-message-container">
+        </div>
+
         <header class="container">
             <div class="access-links" id="logo"><a href="/">SpaceX Stats <span class="gold">Live</span></a></div>
             <h1 class="gr-8" ng-if="!isActive">SpaceX Stats Live</h1>
-            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdown.to" is-paused="liveParameters.countdown.isPaused" type="live"></countdown></div>
+            <div class="gr-8" ng-if="isActive"><countdown specificity="7" countdown-to="liveParameters.countdown.to" is-paused="liveParameters.countdown.isPaused" type="live" callback="setTimeBetweenNowAndLaunch"></countdown></div>
             @if (Auth::check())
                 <div class="access-links"><a target="_blank" href="/users/{{ Auth::user()->username }}">{{ Auth::user()->username }}</a></div>
             @else
@@ -44,7 +48,7 @@
 
                         <div ng-hide="liveParameters.isForLaunch">
                             <label for="countdownTo">Enter an event time (UTC)</label>
-                            <datetime type="datetime" ng-model="liveParameters.countdownTo"></datetime>
+                            <datetime type="datetime" ng-model="liveParameters.countdown.to"></datetime>
                         </div>
 
                         <h3>What streams should be shown?</h3>
@@ -55,7 +59,7 @@
                         <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streams.nasa.isAvailable" />
                         <label for="nasastream"><span>NASA Stream</span></label>
 
-                        <textarea ng-model="liveParameters.description.raw" id="description" name="description" required
+                        <textarea ng-model="liveParameters.description.raw" id="description" name="description" required character-counter ng-minlength="100" ng-maxlength="500"
                                   placeholder="Write a small introduction about the launch here. 500 < chars, use markdown just like you would on Reddit. This is shown at the top of the Reddit thread.">
                         </textarea>
 
@@ -95,24 +99,38 @@
                     <li class="gr-5">
                         @{{ liveParameters.title }} Event
                         <span ng-if="liveParameters.isForLaunch || liveParameters.reddit.thing !== null">
-                            (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}">Mission Page</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}">Reddit Discussion</a></span>)
+                            (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}" target="_blank">Mission</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}" target="_blank">Reddit</a></span>)
                         </span>
                     </li>
-                    <li class="gr-2 stream-options">
-                        <span ng-click="liveParameters.userSelectedStream = null">No Video</span>
-                        <span ng-click="liveParameters.userSelectedStream = 'spacex'">SpaceX</span>
-                        <span class="hidden">NASA Only</span>
-                        <span class="hidden">Split-screen</span>
-                    </li>
-
-                    <li class="gr-2 stream-size-options">
-                        <span ng-click="liveParameters.userStreamSize = 'smaller'">Smaller</span>
-                        <span ng-click="liveParameters.userStreamSize = 'larger'">Larger</span>
+                    <li class="gr-3 stream-options segmented-control">
+                        <ul>
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == null }" ng-click="liveParameters.userSelectedStream = null">
+                                <span>No Video</span>
+                            </li>
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'spacex' }" ng-click="liveParameters.userSelectedStream = 'spacex'" ng-if="liveParameters.streams.spacex.isAvailable">
+                                <span>SpaceX</span>
+                            </li>
+                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'nasa' }" ng-click="liveParameters.userSelectedStream = 'nasa'" ng-if="liveParameters.streams.nasa.isAvailable">
+                                <span>NASA</span>
+                            </li>
+                        </ul>
                     </li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
                         <li class="gr-1 float-right"><i class="fa fa-cog" ng-click="settings.isEditingDetails = !settings.isEditingDetails"></i></li>
                     @endif
+
+                    <li class="gr-3 float-right stream-size-options segmented-control">
+                        <ul>
+                            <li ng-class="{ selected: liveParameters.userStreamSize == 'smaller' }" ng-click="liveParameters.userStreamSize = 'smaller'">
+                                <span>Smaller</span>
+                            </li>
+                            <li ng-class="{ selected: liveParameters.userStreamSize == 'larger' }" ng-click="liveParameters.userStreamSize = 'larger'">
+                                <span>Larger</span>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </nav>
 
@@ -159,43 +177,43 @@
                             <ul>
                                 <li>
                                     <label for="holdAbort">Hold/Abort</label>
-                                    <textarea name="holdAbort" ng-model="buttons.cannedResponses.holdAbort" required></textarea>
+                                    <textarea name="holdAbort" ng-model="buttons.cannedResponses.HoldAbort" required></textarea>
                                 </li>
                                 <li>
                                     <label for="terminalCount">Terminal Count</label>
-                                    <textarea name="terminalCount" ng-model="buttons.cannedResponses.terminalCount" required></textarea>
+                                    <textarea name="terminalCount" ng-model="buttons.cannedResponses.TerminalCount" required></textarea>
                                 </li>
                                 <li>
                                     <label for="liftoff">Liftoff</label>
-                                    <textarea name="liftoff" ng-model="buttons.cannedResponses.liftoff" required></textarea>
+                                    <textarea name="liftoff" ng-model="buttons.cannedResponses.Liftoff" required></textarea>
                                 </li>
                                 <li>
                                     <label for="maxQ">Max-Q</label>
-                                    <textarea name="maxQ" ng-model="buttons.cannedResponses.maxQ" required></textarea>
+                                    <textarea name="maxQ" ng-model="buttons.cannedResponses.MaxQ" required></textarea>
                                 </li>
                                 <li>
                                     <label for="meco">MECO</label>
-                                    <textarea name="meco" ng-model="buttons.cannedResponses.meco" required></textarea>
+                                    <textarea name="meco" ng-model="buttons.cannedResponses.MECO" required></textarea>
                                 </li>
                                 <li>
                                     <label for="stageSep">Stage Sep</label>
-                                    <textarea name="stageSep" ng-model="buttons.cannedResponses.stageSep" required></textarea>
+                                    <textarea name="stageSep" ng-model="buttons.cannedResponses.StageSep" required></textarea>
                                 </li>
                                 <li>
                                     <label for="mVacIgnition">mVac Ignition</label>
-                                    <textarea name="mVacIgnition" ng-model="buttons.cannedResponses.mVacIgnition" required></textarea>
+                                    <textarea name="mVacIgnition" ng-model="buttons.cannedResponses.MVacIgnition" required></textarea>
                                 </li>
                                 <li>
                                     <label for="seco">SECO</label>
-                                    <textarea name="seco" ng-model="buttons.cannedResponses.seco" required></textarea>
+                                    <textarea name="seco" ng-model="buttons.cannedResponses.SECO" required></textarea>
                                 </li>
                                 <li>
                                     <label for="missionSuccess">Mission Success</label>
-                                    <textarea name="missionSuccess" ng-model="buttons.cannedResponses.missionSuccess" required></textarea>
+                                    <textarea name="missionSuccess" ng-model="buttons.cannedResponses.MissionSuccess" required></textarea>
                                 </li>
                                 <li>
                                     <label for="missionFailure">Mission Failure</label>
-                                    <textarea name="missionFailure" ng-model="buttons.cannedResponses.missionFailure" required></textarea>
+                                    <textarea name="missionFailure" ng-model="buttons.cannedResponses.MissionFailure" required></textarea>
                                 </li>
                             </ul>
                         </form>
@@ -211,51 +229,61 @@
                 </section>
             @endif
 
-            <section id="streams" ng-if="isLivestreamVisible()" class="dark @{{ liveParameters.userStreamSize }}">
-                <iframe src="https://www.youtube.com/embed/OvHJSIKP0Hg?VQ=HD720" frameborder="0" allowfullscreen></iframe>
+            <section id="streams" ng-if="isActive && isLivestreamVisible()" class="dark @{{ liveParameters.userStreamSize }}">
+                <iframe ng-src="@{{ liveParameters.streams.spacex.videoLink() }}" frameborder="0" allowfullscreen></iframe>
             </section>
 
-            <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>
+            <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="isActive && liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>
 
             @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                <section class="live-message-form" ng-if="isActive && liveParameters.isForLaunch">
-                    <form name="cannedResponsePostForm" novalidate>
-                        <ul class="container">
+                <section class="live-message-form" ng-if="isActive">
+                    <form name="messageForm" novalidate>
+                        <ul class="container" ng-if="liveParameters.isForLaunch">
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Hold/Abort')" ng-if="buttons.isVisible('Hold/Abort')">Hold/Abort</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.HoldAbort }"
+                                        ng-click="buttons.click('HoldAbort', messageForm)" ng-if="timeBetweenNowAndLaunch > -(60 * 60) && timeBetweenNowAndLaunch < 30">Hold/Abort</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Terminal Count')" ng-if="buttons.isVisible('Terminal Count')">Terminal Count</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.TerminalCount }"
+                                        ng-click="buttons.click('TerminalCount', messageForm)" ng-if="timeBetweenNowAndLaunch > -(60 * 15) && timeBetweenNowAndLaunch < -(60 * 8)">Terminal Count</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Liftoff')" ng-if="buttons.isVisible('Liftoff')">Liftoff</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.Liftoff }"
+                                        ng-click="buttons.click('Liftoff', messageForm)" ng-if="timeBetweenNowAndLaunch > -30 && timeBetweenNowAndLaunch < 30">Liftoff</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Max-Q')" ng-if="buttons.isVisible('Max-Q')">Max-Q</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MaxQ }"
+                                        ng-click="buttons.click('MaxQ', messageForm)" ng-if="timeBetweenNowAndLaunch > 30 && timeBetweenNowAndLaunch < 120">Max-Q</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('MECO')" ng-if="buttons.isVisible('MECO')">MECO</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MECO }"
+                                        ng-click="buttons.click('MECO', messageForm)" ng-if="timeBetweenNowAndLaunch > 120 && timeBetweenNowAndLaunch < 210">MECO</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Stage Sep')" ng-if="buttons.isVisible('Stage Sep')">Stage Sep</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.StageSep }"
+                                        ng-click="buttons.click('StageSep', messageForm)" ng-if="timeBetweenNowAndLaunch > 120 && timeBetweenNowAndLaunch < 210">Stage Sep</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('MVac Ignition')" ng-if="buttons.isVisible('MVac Ignition')">MVac Ignition</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MVacIgnition }"
+                                        ng-click="buttons.click('MVacIgnition', messageForm)" ng-if="timeBetweenNowAndLaunch > 120 && timeBetweenNowAndLaunch < 210">MVac Ignition</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('SECO')" ng-if="buttons.isVisible('SECO')">SECO</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.SECO }"
+                                        ng-click="buttons.click('SECO', messageForm)" ng-if="timeBetweenNowAndLaunch > (60 * 8) && timeBetweenNowAndLaunch < (60 * 12)">SECO</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Mission Success')" ng-if="buttons.isVisible('Mission Success')">Mission Success</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionSuccess }"
+                                        ng-click="buttons.click('MissionSuccess', messageForm)" ng-if="timeBetweenNowAndLaunch > (60 * 8)">Mission Success</button>
                             </li>
                             <li class="gr-1">
-                                <button class="canned-response" ng-click="buttons.click('Mission Failure')" ng-if="buttons.isVisible('Mission Failure')">Mission Failure</button>
+                                <button class="canned-response" ng-class="{ unlocked: buttons.isUnlocked.MissionFailure }"
+                                        ng-click="buttons.click('MissionFailure', messageForm)" ng-if="timeBetweenNowAndLaunch > -30">Mission Failure</button>
                             </li>
                         </ul>
                         <textarea class="new-live-update half" name="message" ng-model="send.new.message"
                                   placeholder="Enter a message here. Updates will be automatically timestamped, acronyms will be expanded, and tweets and images will be shown" required>
                         </textarea>
-                        <input type="submit" ng-click="send.message(cannedResponsePostForm)" ng-disabled="cannedResponsePostForm.$invalid" value="Post" />
+                        <input type="submit" ng-click="send.message(messageForm)" ng-disabled="messageForm.$invalid" value="Post" />
                     </form>
                 </section>
             @endif
@@ -272,16 +300,25 @@
                                 <small class="update-datetime" ng-show="update.isShowingTimestamp">@{{ update.createdAt }} UTC</small>
                                 <i class="fa fa-edit" ng-if="auth == true" ng-click="update.isEditFormVisible = true"></i>
                             </p>
-
                         </div>
 
                         <div class="md" ng-bind-html="update.updateMd"></div>
 
                         <form name="editUpdateForm" ng-if="update.isEditFormVisible" novalidate>
-                            <textarea required ng-model="update.update" name="update"></textarea>
+                            <textarea class="half" required ng-model="update.update" name="update"></textarea>
                             <button ng-click="update.edit()" ng-disabled="update.isEditButtonDisabled || editUpdateForm.update.$pristine || editUpdateForm.$invalid">Save</button>
                             <button ng-click="update.isEditFormVisible = false">Close</button>
                         </form>
+
+                        <div class="message-integration">
+                            <div class="message-integration" ng-repeat="integration in update.integrations" ng-class="integration.type">
+                                <!-- Imgur Integration -->
+                                <a ng-href="@{{ integration.url }}" target="_blank"><img ng-if="integration.type == 'imgur'" ng-src="@{{ integration.url }}" /></a>
+
+                                <!-- Tweet Integration -->
+                                <p ng-if="integration.type == 'tweet'" ng-bind-html="integration.text"></p>
+                            </div>
+                        </div>
                     </div>
 
                     <p class="exclaim" ng-show="updates.length == 0">No updates :(</p>
@@ -290,7 +327,7 @@
                 <aside class="gr-3">
                     <h3>Resources</h3>
                     <ul>
-                        <li ng-repeat="resource in liveParameters.resources">@{{ resource.title }}</li>
+                        <li ng-repeat="resource in liveParameters.resources"><span><a ng-href="@{{ resource.url }}">@{{ resource.title }}</a>, @{{ resource.courtesy }}</span></li>
                     </ul>
                 </aside>
             </section>

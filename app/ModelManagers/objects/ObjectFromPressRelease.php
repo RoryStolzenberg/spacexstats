@@ -13,9 +13,7 @@ use SpaceXStats\Models\Publisher;
 class ObjectFromPressRelease extends ObjectCreator {
     public function isValid($input) {
         $this->input = $input;
-
-        $rules = array_intersect_key($this->object->rules, []);
-        return $this->validate($rules);
+        return $this->validate($this->object->rules);
     }
 
     public function create() {
@@ -36,7 +34,7 @@ class ObjectFromPressRelease extends ObjectCreator {
             $this->createMissionRelation();
             $this->createTagRelations();
 
-            $this->createPublisherRelation();
+            $this->object->push();
         });
 
         return $this->object;

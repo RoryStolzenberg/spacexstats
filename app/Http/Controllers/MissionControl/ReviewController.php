@@ -2,6 +2,7 @@
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use SpaceXStats\Facades\Search;
 use SpaceXStats\Http\Controllers\Controller;
@@ -38,34 +39,36 @@ class ReviewController extends Controller {
 
             if (Input::get('status') == ObjectPublicationStatus::PublishedStatus) {
 
-                // Put the necessary files to S3 (and maybe local)
-                if (Input::get('visibility') == VisibilityStatus::PublicStatus) {
-                    $object->putToLocal();
-                }
+                DB::transaction(function() use ($object, $subscriptionService, $deltaV) {
+                    // Put the necessary files to S3 (and maybe local)
+                    if (Input::get('visibility') == VisibilityStatus::PublicStatus) {
+                        $object->putToLocal();
+                    }
 
-                $job = (new PutObjectToCloudJob($object))->onQueue('uploads');
-                $this->dispatch($job);
+                    $job = (new PutObjectToCloudJob($object))->onQueue('uploads');
+                    $this->dispatch($job);
 
-                // Update the object properties
-                $object->fill(Input::only(['status', 'visibility']));
-                $object->actioned_at = Carbon::now();
+                    // Update the object properties
+                    $object->fill(Input::only(['status', 'visibility']));
+                    $object->actioned_at = Carbon::now();
 
-                // Add the object to our elasticsearch node
-                Search::index($object->search());
+                    // Save the object if there's no errors
+                    $object->save();
 
-                // Save the object if there's no errors
-                $object->save();
+                    // Add the object to our elasticsearch node
+                    Search::index($object->search());
 
-                // Create an award wih DeltaV
-                $award = Award::create([
-                    'user_id'   => $object->user_id,
-                    'object_id' => $object->object_id,
-                    'type'      => 'Created',
-                    'value'     => $deltaV->calculate($object)
-                ]);
+                    // Create an award wih DeltaV
+                    $award = Award::create([
+                        'user_id'   => $object->user_id,
+                        'object_id' => $object->object_id,
+                        'type'      => 'Created',
+                        'value'     => $deltaV->calculate($object)
+                    ]);
 
-                // Once done, extend subscription
-                $subscriptionService->incrementSubscription($object->user, $award);
+                    // Once done, extend subscription
+                    $subscriptionService->incrementSubscription($object->user, $award);
+                });
 
             } elseif (Input::get('status') == "Deleted") {
                 $object->delete();

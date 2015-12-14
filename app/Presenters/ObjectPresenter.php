@@ -13,10 +13,6 @@ class ObjectPresenter {
         $this->entity = $entity;
     }
 
-    public function type() {
-        return MissionControlType::getKey($this->entity->type);
-    }
-
     public function subtype() {
         return $this->entity->subtype ? MissionControlSubtype::getKey($this->entity->subtype) : null;
     }

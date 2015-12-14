@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Redis;
 use SpaceXStats\Facades\Search;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Http\Requests\EditObjectRequest;
+use SpaceXStats\Library\Enums\MissionControlSubtype;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
@@ -191,12 +192,31 @@ class ObjectsController extends Controller {
                 'object_id' => $object_id
             ));
 
+            // Reindex object
             Redis::sadd('objects:toReindex', $object_id);
         }
+
         if ($object->hasFile()) {
             return response()->json(null, 204);
         } else {
-            return response()->make($object->summary, 200, array(
+
+            if ($object->type == MissionControlType::Tweet) {
+                $data = $object->tweet_text;
+            } else if ($object->type == MissionControlType::Comment) {
+
+                if ($object->subtype == MissionControlSubtype::RedditComment) {
+                    $data = $object->reddit_comment_text;
+                } else if ($object->subtype == MissionControlSubtype::NSFComment) {
+                    $data = $object->nsf_comment_text;
+                }
+
+            } else if ($object->type == MissionControlType::Article) {
+                $data = $object->article_text;
+            } else if ($object->type == MissionControlType::Text) {
+                $data = $object->summary;
+            }
+
+            return response()->make($data, 200, array(
                 'Content-type' => 'text/plain',
                 'Content-Disposition' => 'attachment;filename="'.str_slug($object->title).'.txt"'
             ));

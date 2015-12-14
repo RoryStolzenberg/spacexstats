@@ -26,8 +26,8 @@ class WebcastCheckCommand extends Command
     protected $description = 'Checks the SpaceX Youtube Channel to see if it is running and fetch the viewer count.';
 
     protected $channelName = 'spacexchannel';
-    protected $channelID = 'UCtI0Hodo5o5dUb67FeUjDeA'; // https://developers.google.com/youtube/v3/docs/channels/list#try-it
-    //protected $channelID = 'UCoMdktPbSTixAyNGwb-UYkQ';
+    //protected $channelID = 'UCtI0Hodo5o5dUb67FeUjDeA'; // https://developers.google.com/youtube/v3/docs/channels/list#try-it
+    protected $channelID = 'UCoMdktPbSTixAyNGwb-UYkQ';
     /**
      * Create a new command instance.
      *
@@ -71,13 +71,13 @@ class WebcastCheckCommand extends Command
         $this->info('viewers:'. $viewers);
 
         // If the livestream is active now, and wasn't before, or vice versa, send an event
-        if ($isLive && Redis::hget('webcast', 'isLive') == 'false') {
+        if ($isLive && (Redis::hget('webcast', 'isLive') == 'false' || !Redis::hexists('webcast', 'isLive'))) {
             $this->info($searchResponse->items[0]->id->videoId);
-            event(new WebcastEvent(true, $searchResponse->items[0]->id->videoId));
+            event(new WebcastEvent("spacex", true, $searchResponse->items[0]->id->videoId));
 
         } elseif (!$isLive &&  Redis::hget('webcast', 'isLive') == 'true') {
             $this->info('webcast event: finished');
-            event(new WebcastEvent(false));
+            event(new WebcastEvent("spacex", false));
         }
 
         // Set the Redis properties
@@ -85,9 +85,9 @@ class WebcastCheckCommand extends Command
 
         // Add to Database if livestream is active
         if ($isLive) {
-            WebcastStatus::create(array(
+            WebcastStatus::create([
                 'viewers' => $viewers
-            ));
+            ]);
         }
     }
 }

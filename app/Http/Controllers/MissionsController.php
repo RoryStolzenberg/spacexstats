@@ -170,6 +170,26 @@ class MissionsController extends Controller {
         return view('missions.edit');
     }
 
+    public function editMission() {
+        return response()->json(null, 204);
+    }
+
+    public function editParts() {
+        return response()->json(null, 204);
+    }
+
+    public function editSpacecraft() {
+        return response()->json(null, 204);
+    }
+
+    public function editTelemetry() {
+        return response()->json(null, 204);
+    }
+
+    public function editPrelaunchEvents() {
+        return response()->json(null, 204);
+    }
+
     public function patchEdit(MissionManager $missionManager) {
         if ($missionManager->isValid()) {
             $mission = $missionManager->update();

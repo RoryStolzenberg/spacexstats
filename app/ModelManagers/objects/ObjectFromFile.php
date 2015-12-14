@@ -10,27 +10,7 @@ class ObjectFromFile extends ObjectCreator {
 
     public function isValid($input) {
         $this->input = $input;
-
-        switch ($input['type']) {
-            case MissionControlType::Image:
-                $rulesToGet = [];
-                break;
-            case MissionControlType::GIF:
-                $rulesToGet = [];
-                break;
-            case MissionControlType::Video:
-                $rulesToGet = [];
-                break;
-            case MissionControlType::Audio:
-                $rulesToGet = [];
-                break;
-            case MissionControlType::Document:
-                $rulesToGet = [];
-                break;
-        }
-
-        $rules = array_intersect_key($this->object->rules, $rulesToGet);
-        return $this->validate($rules);
+        return $this->validate($this->object->rules);
     }
 
     public function create() {

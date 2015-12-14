@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
 use Parsedown;
 use SpaceXStats\Library\Enums\DateSpecificity;
+use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\ObjectPublicationStatus;
 use SpaceXStats\Library\Enums\VisibilityStatus;
 
@@ -46,33 +47,33 @@ class Object extends Model implements UploadableInterface {
     protected $searchDecorator = SearchableObject::class;
 
 	public $rules = [
-        'user_id' => ['integer', 'exists:users,user_id'],
-        'mission_id' => ['integer','exists:missions,mission_id'],
+        'user_id'               => ['integer', 'exists:users,user_id'],
+        'mission_id'            => ['integer','exists:missions,mission_id'],
 
-        'type' => 'integer',
-        'subtype' => 'integer',
+        'type'                  => 'string',
+        'subtype'               => 'string',
 
-        'size' => 'integer',
+        'title'                 => 'varchar:small',
+        'summary'               => ['min:100', 'varchar:large'],
+        'author'                => 'varchar:tiny',
+        'attribution'           => 'varchar:compact',
 
-        'title' => 'varchar:small',
+        'size'                  => 'integer',
+        'dimension_width'       => 'integer',
+        'dimension_height'      => 'integer',
+        'duration'              => 'integer',
+        'page_count'            => 'integer',
 
-        'dimension_width' => 'integer',
-        'dimension_height' => 'integer',
-        'duration' => 'integer',
-        'page_count' => 'integer',
+        'originated_at'         => 'date',
 
-        'summary' => ['min:100', 'varchar:large'],
-        'author' => 'varchar:tiny',
-        'attribution' => 'varchar:compact',
+        'tweet_id'              => ['integer', 'unique:objects'],
+        'tweet_text'            => 'max:140',
 
-        'ISO' => 'integer',
-        'camera_manufacturer' => 'varchar:small',
-        'camera_model' => 'varchar:small',
+        'ISO'                   => 'integer',
+        'camera_manufacturer'   => 'varchar:small',
+        'camera_model'          => 'varchar:small',
 
-        'tweet_id' => ['integer', 'unique:tweet_id'],
-        'tweet_text' => 'max:140',
-
-        'publisher_id' => ['integer', 'exists:publishers,publisher_id']
+        'publisher_id'          => ['integer', 'exists:publishers,publisher_id']
     ];
 
     public $messages = [
@@ -228,8 +229,17 @@ class Object extends Model implements UploadableInterface {
             if ($this->hasTemporaryThumbs()) {
                 return '/media/temporary/small/' . $this->thumb_filename;
             }
+
+        } elseif ($this->type == MissionControlType::Tweet) {
+            return $this->tweeter->profilePicture;
+
+        } else {
+            if (is_null($this->subtype)) {
+                return '/media/generic/small/' . $this->type . '.png';
+            } else {
+                return '/media/generic/small/' . $this->subtype . '.png';
+            }
         }
-        return null;
     }
 
     /**
@@ -257,8 +267,17 @@ class Object extends Model implements UploadableInterface {
             if ($this->hasTemporaryThumbs()) {
                 return '/media/temporary/large/' . $this->thumb_filename;
             }
+
+        } elseif ($this->type == MissionControlType::Tweet) {
+            return $this->tweeter->profilePicture;
+
+        } else {
+            if (is_null($this->subtype)) {
+                return '/media/generic/large/' . $this->type . '.png';
+            } else {
+                return '/media/generic/large/' . $this->subtype . '.png';
+            }
         }
-        return null;
     }
 
     public function getQueueTimeAttribute() {
@@ -271,6 +290,10 @@ class Object extends Model implements UploadableInterface {
 
     public function getSummaryMdAttribute() {
         return Parsedown::instance()->text($this->attributes['summary']);
+    }
+
+    public function getArticleMdAttribute() {
+        return Parsedown::instance()->text($this->attributes['article']);
     }
 
     // Attribute mutators

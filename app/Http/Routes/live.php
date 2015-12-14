@@ -16,6 +16,6 @@ Route::group(array('namespace' => 'Live'), function() {
         Route::patch('/live/send/countdown/pause', 'LiveController@pauseCountdown');
         Route::patch('/live/send/countdown/resume', 'LiveController@resumeCountdown');
 
-        Route::patch('live/send/cannedResponses', 'LiveController@editCannedResponses');
+        Route::patch('live/send/cannedresponses', 'LiveController@editCannedResponses');
     });
 });

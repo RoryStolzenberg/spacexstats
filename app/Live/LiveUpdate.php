@@ -12,7 +12,7 @@ use JsonSerializable;
 use SpaceXStats\Services\AcronymService;
 
 class LiveUpdate implements JsonSerializable, Arrayable {
-    private $createdAt, $updatedAt, $timestamp, $update, $updateMd, $updateType, $id, $resources;
+    private $createdAt, $updatedAt, $timestamp, $update, $updateMd, $updateType, $id, $integrations;
 
     /**
      * Constructor for a LiveUpdate object.
@@ -22,12 +22,12 @@ class LiveUpdate implements JsonSerializable, Arrayable {
     public function __construct($data) {
 
         // Set the ID
-        $this->id           = $data['id'] ? $data['id'] : Redis::llen('live:updates');
+        $this->id           = isset($data['id']) ? $data['id'] : Redis::llen('live:updates');
 
         // Set the dates and times
-        $this->createdAt    = $data['createdAt'] ? Carbon::createFromFormat('Y-m-d H:i:s', $data->createdAt) : Carbon::now();
+        $this->createdAt    = isset($data['createdAt']) ? Carbon::createFromFormat('Y-m-d H:i:s', $data->createdAt) : Carbon::now();
         $this->updatedAt    = Carbon::now();
-        $this->timestamp    = $data['timestamp'] ?  $data['timestamp'] : $this->constructTimestamp();
+        $this->timestamp    = isset($data['timestamp']) ?  $data['timestamp'] : $this->constructTimestamp();
 
         $this->setUpdate($data['update']);
         $this->updateType   = $data['updateType'];
@@ -36,15 +36,14 @@ class LiveUpdate implements JsonSerializable, Arrayable {
     /**
      * Updates the text of a LiveUpdate, and also sets the updatedAt field and the markdown representation of that update.
      *
-     * @param AcronymService $acronymService
      * @param $updateInput
      */
-    public function setUpdate(AcronymService $acronymService, $updateInput) {
+    public function setUpdate($updateInput) {
         $this->updatedAt = Carbon::now();
         $this->update = $updateInput;
 
-        $this->parseResources();
-        $this->update = $acronymService->parseAndExpand($this->update);
+        $this->parseIntegrations();
+        $this->update = (new AcronymService())->parseAndExpand($this->update);
 
         $this->updateMd = \Parsedown::instance()->text($this->update);
     }
@@ -63,7 +62,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
             'updateMd' => $this->updateMd,
             'updateType' => $this->updateType,
             'timestamp' => $this->timestamp,
-            'resources' => $this->resources
+            'integrations' => $this->integrations
         ];
     }
 
@@ -141,26 +140,26 @@ class LiveUpdate implements JsonSerializable, Arrayable {
      *
      * @internal
      */
-    private function parseResources() {
-        preg_match_all('/https?:\/\/i\.imgur\.com\/[a-z1-9]*\.(?:jpg|gif)/i', $this->update, $imgurMatches, PREG_OFFSET_CAPTURE);
+    private function parseIntegrations() {
+        preg_match_all('/https?:\/\/i\.imgur\.com\/[a-z1-9]*\.(?:jpg|gif)/i', $this->update, $imgurMatches);
 
-        foreach($imgurMatches as $imgurMatch) {
-            $this->resources[] = [
+        foreach($imgurMatches[0] as $imgurMatch) {
+            $this->integrations[] = [
                 'type'  => 'imgur',
                 'url'   => $imgurMatch
             ];
         }
 
-        preg_match_all('/https?:\/\/(?:www\.)?twitter\.com\/[a-z0-9]*\/status\/([0-9])*/i', $this->update, $twitterMatches, PREG_OFFSET_CAPTURE);
+        //preg_match_all('/https?:\/\/(?:www\.)?twitter\.com\/[a-z0-9]*\/status\/([0-9])*/i', $this->update, $twitterMatches);
 
-        if (count($twitterMatches) > 0) {
+        /*if (count($twitterMatches) > 0) {
             $twitter = new TwitterOAuth(Config::get('services.twitter.consumerKey'), Config::get('services.twitter.consumerSecret'), Config::get('services.twitter.accessToken'), Config::get('services.twitter.accessSecret'));
             $twitter->setTimeouts(5, 5);
-            $tweets = $twitter->get('statuses/lookup', array('id' => $twitterMatches));
+            $tweets = $twitter->get('statuses/lookup', ['id' => $twitterMatches[0]]);
 
             if ($twitter->getLastHttpCode() == 200) {
                 foreach($tweets as $tweet) {
-                    $this->resources[] = [
+                    $this->integrations[] = [
                         'type' => 'tweet',
                         'author' => $tweet->user->name,
                         'datetime' => $tweet->created_at,
@@ -168,6 +167,6 @@ class LiveUpdate implements JsonSerializable, Arrayable {
                     ];
                 }
             }
-        }
+        }*/
     }
 }

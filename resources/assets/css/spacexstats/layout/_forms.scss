@@ -37,21 +37,14 @@ form {
 
         &.prepended-input {
             padding-left:32px;
+            background-repeat:no-repeat;
 
-            &:before {
-                display:inline-block;
-                width:32px;
-                height:32px;
-                line-height:32px;
-                text-align:center;
+            &.twitter {
+                background-image:url("/images/icons/prepended-twitter.png");
             }
 
-            &.twitter:before {
-                content:"@";
-            }
-
-            &.reddit:before {
-                content:"/u/";
+            &.reddit {
+                background-image:url("/images/icons/prepended-reddit.png");
             }
         }
 
@@ -326,4 +319,62 @@ input[value="Logout"], input[value="Logout"]:focus {
 
 .username-checker-visible.username-checker-visible-active {
     opacity:0;
+}
+
+// Segmented controls
+.segmented-control {
+    text-align:center;
+    font-family: $montserrat;
+    padding:10px 0;
+
+    ul {
+        user-select:none;
+        display: inline-block;
+        text-align: center;
+        border-collapse: collapse;
+        border:1px solid $blue;
+        border-radius:$border-radius-small;
+        height:30px;
+        font-size:0;
+        vertical-align: top;
+
+        li {
+            width:100px;
+            display:inline-block;
+            position:relative;
+            padding:5px;
+            height:28px;
+            color:$slateblack;
+            font-size:12px;
+            line-height:20px;
+            vertical-align:top;
+
+            text-decoration: none;
+            text-shadow: none;
+            @include transitionMed(text-shadow);
+
+            &:not(:last-child) {
+                border-right:1px solid $blue;
+            }
+
+            &:active, &.selected {
+                background-color:$blue;
+                color:white;
+            }
+
+            &:active {
+                box-shadow:inset 0 1px 4px $october,
+                inset 0 0 5px $october;
+            }
+
+            &:hover {
+                text-shadow: -1px 1px 3px #ffc, 1px -1px 8px white;
+            }
+
+            span {
+                position:relative;
+                top:0;
+            }
+        }
+    }
 }

@@ -6,7 +6,7 @@
 
     @include('templates.header')
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" ng-cloak>
         <h1>Upload to Mission Control</h1>
         <main>
             <!-- List of methods to upload -->
@@ -25,6 +25,7 @@
                     <p class="warning">Do not upload files that might violate SpaceX's Communications Policy or U.S. export control laws. If you are unsure about the status of a file, please <a href="/about/contact">contact us</a>.</p>
                     <form method="post" class="dropzone" upload enctype="multipart/form-data" action="/missioncontrol/create/upload" callback="uploadCallback(somescome)" multi-upload="true">
                         {{ csrf_field() }}
+                        <div class="dz-message" data-dz-message><p class="exclaim">Drag & drop or click to upload files. Always upload the highest quality files as this gives you more deltaV!</p></div>
                     </form>
                     <button class="wide-button" ng-click="uploadFiles()" ng-disabled="queuedFiles == 0 || isUploading">@{{ isUploading ? 'Uploading...' : 'Upload' }}</button>
                 </div>
@@ -692,7 +693,7 @@
                     <fieldset ng-if="postType == 'tweet'" class="post-type tweet container">
                         <h3>Tweet</h3>
                         <div class="gr-9">
-                            <tweet action="write" tweet="tweet"></tweet>
+                            <tweet tweet="tweet"></tweet>
                         </div>
                         <div class="gr-3">
                             <delta-v ng-model="tweet" hint="Tweet"></delta-v>
@@ -742,7 +743,7 @@
                                 </li>
                                 <li>
                                     <label>Summary</label>
-                                    <textarea ng-model="article.article" placeholder="A short summary describing the article" required character-counter></textarea>
+                                    <textarea ng-model="article.summary" placeholder="A short summary describing the article" required character-counter></textarea>
                                 </li>
                                 <li>
                                     <label>Select Mission</label>
@@ -791,6 +792,10 @@
                                     <textarea ng-model="pressrelease.article" required></textarea>
                                 </li>
                                 <li>
+                                    <label>Summary</label>
+                                    <textarea ng-model="pressrelease.summary" placeholder="A short summary describing the press release" required character-counter></textarea>
+                                </li>
+                                <li>
                                     <label>Select Mission</label>
                                     <dropdown
                                             name="mission"
@@ -827,6 +832,10 @@
                                 <li>
                                     <label>Title Describing The Comment</label>
                                     <input type="text" name="redditcomment-author" id="redditcomment-author" ng-model="redditcomment.title" placeholder="The title that appears on SpaceX Stats" required ng-minlength="10"  />
+                                </li>
+                                <li>
+                                    <label>A short summary describing the comment</label>
+                                    <textarea ng-model="redditcomment.summary" placeholder="A short summary describing the comment" required character-counter></textarea>
                                 </li>
                                 <li>
                                     <reddit-comment ng-model="redditcomment"></reddit-comment>
@@ -878,8 +887,12 @@
                                     <input type="author" name="NSFcomment-author" id="article-author" ng-model="NSFcomment.author" placeholder="The author of the comment" required />
                                 </li>
                                 <li>
-                                    <label>Comment</label>
+                                    <label>Comment Body</label>
                                     <textarea ng-model="NSFcomment.comment" placeholder="Enter in the comment body here" required></textarea>
+                                </li>
+                                <li>
+                                    <label>A short summary of the comment</label>
+                                    <textarea ng-model="NSFcomment.summary" placeholder="A short summary describing the comment" required character-counter></textarea>
                                 </li>
                                 <li>
                                     <label>Select Mission</label>

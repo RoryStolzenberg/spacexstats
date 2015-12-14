@@ -7,7 +7,7 @@
     @include('templates.header', ['class' => 'no-background'])
 
     <div class="content-wrapper single-page background transparent">
-        <h1 class="text-center">Mission Control</h1>
+        <h1 class="text-center">Launching in 2016: Mission Control</h1>
         <main>
             <section class="subscribe" ng-controller="subscriptionController">
                 <p>Stay on the leading edge of SpaceX updates, browse vast amounts of images, videos, documents, and articles. In depth statistics and mission analysis.</p>
@@ -18,7 +18,7 @@
                     <h2>Sign Up For Free</h2>
                     <div class="features">
                         <p>Just like before, email launch notifications remain free.</p>
-                        <a href="/auth/signup" class="wide-button button">Sign Up</a>
+                        <a href="/auth/signup" class="wide-button button">Launching In 2016</a>
                     </div>
                 </div>
                 @endif
@@ -34,9 +34,9 @@
                             <li>Community Access</li>
                         </ul>
                         @if (Auth::isMember())
-                            <button class="wide-button white" ng-click="subscription.showSubscribeForm()">Sign Up!</button>
+                            <button class="wide-button white" ng-click="subscription.showSubscribeForm()">Launching In 2016</button>
                         @else
-                            <a href="/auth/signup" class="button wide-button white">Sign Up</a>
+                            <a href="/auth/signup" class="button wide-button white">Launching In 2016</a>
                         @endif
                     </div>
                     @if (Auth::isMember())

@@ -1,9 +1,5 @@
 <div class="card twitter-card">
-    <div class="read" ng-if="action == 'read'">
-        <a href="https://twitter.com/">Link</a>
-    </div>
-
-    <form class="write" ng-if="action == 'write'" name="tweetForm">
+    <form class="write" name="tweetForm">
         <label>Tweet URL</label>
         <input type="url" name="tweet_url" id="tweet_url" ng-model="tweet.external_url" ng-change="retrieveTweet()" placeholder="Paste the URL of the tweet here"/>
 
@@ -19,7 +15,7 @@
                     </div>
                     <div class="gr-11">
                         <span class="tweeter-name">{{ tweet.tweet_user_name }}</span>
-                        <input type="text" class="tweeter-screen-name prepended-input twitter" ng-model="tweet.tweet_user_screen_name" ng-disabled="tweetRetrievedFromUrl" placeholder="@elonmusk" required/>
+                        <input type="text" class="tweeter-screen-name prepended-input twitter" ng-model="tweet.tweet_screen_name" ng-disabled="tweetRetrievedFromUrl" placeholder="elonmusk" required/>
                     </div>
                 </li>
                 <li>

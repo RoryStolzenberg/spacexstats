@@ -93,30 +93,30 @@
                     // specialTypeRegime
                     if (object.subtype !== null) {
                         if (object.subtype in specialTypeMultiplier) {
-                            internalValue += specialTypeMultiplier[object.subtype];
+                            internalValue *= specialTypeMultiplier[object.subtype];
                         }
                     }
 
                     // resourceQualityRegime
                     switch ($scope.hint) {
                         case 'Image':
-                            internalValue += megapixelSubscore(object);
+                            internalValue += subscores.megapixels(object);
                             break;
 
                         case 'GIF':
-                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            internalValue += subscores.megapixels(object) * subscores.minutes(object);
                             break;
 
                         case 'Video':
-                            internalValue += megapixelSubscore(object) * minuteSubscore(object);
+                            internalValue += subscores.megapixels(object) * subscores.minutes(object);
                             break;
 
                         case 'Audio':
-                            internalValue += minuteSubscore(object);
+                            internalValue += subscores.minutes(object);
                             break;
 
                         case 'Document':
-                            internalValue += pageSubscore(object);
+                            internalValue += subscores.pages(object);
                             break;
                     }
 
@@ -174,6 +174,28 @@
                     deltaV: 0,
                     time: 0
                 };
+
+                var subscores = {
+                    megapixels: function(object) {
+                        if (object.dimension_width && object.dimension_height) {
+                            var megapixels = (object.dimension_width * object.dimension_height) / 1000000;
+                            return resourceQuality.multipliers.perMegapixel * megapixels;
+                        }
+                        return 0;
+                    },
+                    minutes: function(object) {
+                        if (object.duration) {
+                            return resourceQuality.multipliers.perMinute * (object.duration / 60);
+                        }
+                        return 0;
+                    },
+                    pages: function(object) {
+                        if (object.page_count) {
+                            return resourceQuality.scores.perPage * object.page_count;
+                        }
+                        return 0;
+                    }
+                }
             },
             templateUrl: '/js/templates/deltaV.html'
         }

@@ -51,7 +51,6 @@
         padding-left:130px;
         height:80px;
         color:$grey;
-        text-transform:uppercase;
         font-family:$segoeWP;
 
         .thumb {
@@ -75,12 +74,12 @@
         }
 
         .for {
-            padding:0 10px;
-            font-size:18px;
+            padding:0 5px;
+            font-size:14px;
         }
 
         .mission-contractor {
-            font-size:24px;
+            font-size:18px;
         }
     }
 
@@ -120,7 +119,7 @@
             margin:0 auto;
         }
 
-        .launch-illumination {
+        .launch-illumination, .mission-collection, .where-to-watch {
             width:48px;
             height:48px;
         }

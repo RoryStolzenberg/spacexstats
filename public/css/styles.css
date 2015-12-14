@@ -7369,6 +7369,8 @@ main {
   padding-bottom: 40px; }
   main.invert {
     color: #FAFAFA; }
+    main.invert table {
+      color: #FAFAFA; }
   main:after {
     content: "";
     position: absolute;
@@ -7395,16 +7397,22 @@ h1 {
   line-height: 150px;
   font-size: 50px;
   font-weight: lighter;
-  text-transform: none; }
+  text-transform: none;
+  text-overflow: "...";
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 42px; }
+  .state-default h1 {
+    font-size: 42px; }
   .state-small h1 {
     line-height: 50px;
     height: 50px;
-    font-size: 36px; }
+    font-size: 32px; }
   @media (max-width: 640px) {
     h1 {
       line-height: 50px;
       height: 50px;
-      font-size: 36px; } }
+      font-size: 32px; } }
 
 h2 {
   font-size: 28px;
@@ -7519,7 +7527,7 @@ table.data-table th {
   color: #F2F2F2; }
 
 blockquote, .backing {
-  background-color: #CCC;
+  background-color: #F2F2F2;
   padding: 10px;
   width: 100%; }
 
@@ -7754,6 +7762,13 @@ form input, form textarea {
   form input:focus, form textarea:focus {
     border: 1px solid #ccac55;
     box-shadow: 0 0 5px rgba(79, 112, 143, 0.2); }
+  form input.prepended-input, form textarea.prepended-input {
+    padding-left: 32px;
+    background-repeat: no-repeat; }
+    form input.prepended-input.twitter, form textarea.prepended-input.twitter {
+      background-image: url("/images/icons/prepended-twitter.png"); }
+    form input.prepended-input.reddit, form textarea.prepended-input.reddit {
+      background-image: url("/images/icons/prepended-reddit.png"); }
 
 form select {
   padding: 5px;
@@ -7860,17 +7875,6 @@ form legend {
   font-size: 18px;
   line-height: 2; }
 
-form .prepended-input span, form .prepended-input input {
-  display: inline-block; }
-
-form .prepended-input span {
-  width: 30px;
-  text-align: center; }
-
-form .prepended-input input {
-  margin: 0;
-  width: calc(100% - 30px); }
-
 form .password-toggle {
   position: relative; }
   form .password-toggle i {
@@ -7962,6 +7966,50 @@ input[value="Logout"], input[value="Logout"]:focus {
 
 .username-checker-visible.username-checker-visible-active {
   opacity: 0; }
+
+.segmented-control {
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  padding: 10px 0; }
+  .segmented-control ul {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+    display: inline-block;
+    text-align: center;
+    border-collapse: collapse;
+    border: 1px solid #3569A4;
+    border-radius: 3px;
+    height: 30px;
+    font-size: 0;
+    vertical-align: top; }
+    .segmented-control ul li {
+      width: 100px;
+      display: inline-block;
+      position: relative;
+      padding: 5px;
+      height: 28px;
+      color: #181c1f;
+      font-size: 12px;
+      line-height: 20px;
+      vertical-align: top;
+      text-decoration: none;
+      text-shadow: none;
+      -webkit-transition: text-shadow ease-in-out 0.5s 0s;
+              transition: text-shadow ease-in-out 0.5s 0s; }
+      .segmented-control ul li:not(:last-child) {
+        border-right: 1px solid #3569A4; }
+      .segmented-control ul li:active, .segmented-control ul li.selected {
+        background-color: #3569A4;
+        color: white; }
+      .segmented-control ul li:active {
+        box-shadow: inset 0 1px 4px #4f708f, inset 0 0 5px #4f708f; }
+      .segmented-control ul li:hover {
+        text-shadow: -1px 1px 3px #ffc, 1px -1px 8px white; }
+      .segmented-control ul li span {
+        position: relative;
+        top: 0; }
 
 section.comments {
   margin: 0 auto;
@@ -8372,7 +8420,8 @@ datepicker, .datepicker, [datepicker],
   margin: 10px 0;
   padding: 0;
   line-height: 1.2;
-  height: initial; }
+  height: initial;
+  border: none; }
 
 .md h1 {
   font-size: 32px; }
@@ -8415,6 +8464,13 @@ datepicker, .datepicker, [datepicker],
 
 .md ol {
   list-style-type: decimal; }
+
+.md blockquote, .md blockquote > * {
+  font-style: italic;
+  font-size: larger;
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  font-weight: 400;
+  color: #21272B; }
 
 .subscribe {
   text-align: center;
@@ -8492,7 +8548,7 @@ form[name="subscribeForm"] .subscription-failed {
   color: #FB6473; }
 
 .hero {
-  height: calc(100vh - 50px - 150px - 30px - 40px - 100px);
+  height: calc(100vh - 50px - 150px - 50px - 40px - 100px);
   text-align: center;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   text-transform: uppercase; }
@@ -8754,6 +8810,10 @@ body.future-mission .highlights {
     .display-date-time .timezone-option.active {
       background-color: #c6a241; }
 
+article .md blockquote, article .md blockquote > * {
+  font-style: italic;
+  font-size: 24px; }
+
 #countdown > * {
   top: -10%; }
 
@@ -8891,49 +8951,54 @@ body.live {
   background-color: #3569A4;
   height: auto; }
   body.live h1, body.live .countdown.live {
-    height: 100px;
-    line-height: 100px;
+    height: 80px;
+    line-height: 80px;
     text-align: center; }
   body.live .content-wrapper {
     height: auto; }
     body.live .content-wrapper header {
       margin: 0 auto;
-      height: 100px;
+      height: 80px;
       overflow: hidden; }
     body.live .content-wrapper main {
-      min-height: calc(100vh - 150px + 50px); }
+      min-height: calc(100vh - 80px); }
   body.live .access-links {
     color: #FAFAFA;
-    line-height: 100px;
+    line-height: 80px;
     text-align: center; }
     body.live .access-links#logo {
       width: 16.66667%; }
   body.live .live-status {
     font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
-    font-size: 24px; }
+    font-size: 24px;
+    padding: 5px 0;
+    color: white; }
     body.live .live-status.upcoming {
       background-color: #8B939B; }
     body.live .live-status.terminal-count {
       background-color: #4f708f; }
     body.live .live-status.in-progress {
       background-color: #ccac55; }
-    body.live .live-status.success {
+    body.live .live-status.mission-success {
       background-color: #40C085; }
-    body.live .live-status.failure {
+    body.live .live-status.mission-failure {
       background-color: #FB6473; }
 
 .dark {
   background-color: #21272B;
   color: #F2F2F2; }
+  .dark .segmented-control ul li {
+    color: #F2F2F2; }
 
 .countdown.live {
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   font-weight: 100;
-  font-size: 80px;
+  font-size: 60px;
   color: #FAFAFA;
   margin: 0 auto; }
   .countdown.live td {
-    min-width: 125px; }
+    min-width: 125px;
+    padding: 0 5px; }
 
 section.editing-details {
   background-color: #CCC;
@@ -9000,6 +9065,18 @@ button.canned-response {
     float: right; }
     .live-updates .update i.fa-edit:hover {
       color: #ccac55; }
+
+.message-integration img {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 8px; }
+
+button.canned-response {
+  background-color: #8B939B;
+  -webkit-transition: background-color ease-in-out 0.3s 0s;
+          transition: background-color ease-in-out 0.3s 0s; }
+  button.canned-response.unlocked {
+    background-color: #ccac55; }
 
 .profile .interactions img {
   width: 64px;
@@ -9224,7 +9301,6 @@ button.canned-response {
     padding-left: 130px;
     height: 80px;
     color: #8B939B;
-    text-transform: uppercase;
     font-family: "Segoe WP", sans-serif; }
     .mission-card .top .thumb {
       background-size: cover;
@@ -9243,10 +9319,10 @@ button.canned-response {
       color: #21272B !important;
       text-decoration: none !important; }
     .mission-card .top .for {
-      padding: 0 10px;
-      font-size: 18px; }
+      padding: 0 5px;
+      font-size: 14px; }
     .mission-card .top .mission-contractor {
-      font-size: 24px; }
+      font-size: 18px; }
   .mission-card .bottom {
     padding: 10px;
     text-align: center;
@@ -9279,7 +9355,7 @@ button.canned-response {
       line-height: 50px;
       text-align: center;
       margin: 0 auto; }
-    .mission-card .bottom .launch-illumination {
+    .mission-card .bottom .launch-illumination, .mission-card .bottom .mission-collection, .mission-card .bottom .where-to-watch {
       width: 48px;
       height: 48px; }
 

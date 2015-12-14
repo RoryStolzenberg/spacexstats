@@ -258,18 +258,18 @@
                 @if(Auth::isSubscriber())
                     <h3>Dataplots</h3>
                     @if ($mission->positionalTelemetry->count() > 0)
-                        <p>These dataplots are based on kinematic data extracted from the countdown net during launch, and are only approximate. For more detailed simulations, refer to the FlightClub entry for this launch.</p>
+                        <p>These dataplots are based on kinematic data extracted from the countdown net during launch, and are only approximate. For more detailed simulations, refer to the <a href="{{ $mission->flight_club }}">FlightClub entry</a> for this launch.</p>
                         <ul class="container">
-                            <li class="gr-4 gr-12@small">
+                            <li class="gr-4 gr-12@small" ng-if="telemetryPlots.altitudeVsTime.data.length !== 0">
                                 <chart class="dataplot" data="telemetryPlots.altitudeVsTime.data" settings="telemetryPlots.altitudeVsTime.settings" width="100%" height="400px"></chart>
                             </li>
-                            <li class="gr-4 gr-12@small">
+                            <li class="gr-4 gr-12@small" ng-if="telemetryPlots.velocityVsTime.data.length !== 0">
                                 <chart class="dataplot" data="telemetryPlots.velocityVsTime.data" settings="telemetryPlots.velocityVsTime.settings" width="100%" height="400px"></chart>
                             </li>
-                            <li class="gr-4 gr-12@small">
+                            <li class="gr-4 gr-12@small" ng-if="telemetryPlots.downrangeVsTime.data.length !== 0">
                                 <chart class="dataplot" data="telemetryPlots.downrangeVsTime.data" settings="telemetryPlots.downrangeVsTime.settings" width="100%" height="400px"></chart>
                             </li>
-                            <li class="gr-4 gr-12@small">
+                            <li class="gr-4 gr-12@small" ng-if="telemetryPlots.altitudeVsDownrange.data.length !== 0">
                                 <chart class="dataplot" data="telemetryPlots.altitudeVsDownrange.data" settings="telemetryPlots.altitudeVsDownrange.settings" width="100%" height="400px"></chart>
                             </li>
                         </ul>
