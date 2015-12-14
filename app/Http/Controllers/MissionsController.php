@@ -94,6 +94,7 @@ class MissionsController extends Controller {
                 $transformedMission['launch_of_year'] = ordinal($mission->launch_of_year);
                 $transformedMission['launch_site'] = $mission->launchSite->full_location;
                 $transformedMission['featured_image_url'] = $mission->present()->featuredImageUrl();
+                $transformedMission['launch_probability'] = $mission->present()->launchProbability();
 
                 return $transformedMission;
             })
@@ -247,7 +248,7 @@ class MissionsController extends Controller {
     }
 
     /**
-     * GET (AJAX), /missions/{slug}/requestlaunchdatetime. Get the launch datetime of the current mission.
+     * GET (AJAX), /missions/{slug}/launchdatetime. Get the launch datetime of the current mission.
      *
      * @param $slug
      * @return \Illuminate\Http\JsonResponse

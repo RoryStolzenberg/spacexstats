@@ -18,7 +18,7 @@
 			<div>{{ $mission->destination->destination }}</div>
 			<div>{{ $mission->launchSite->full_location }}</div>
 			@if ($mission->status == 'Upcoming')
-                <div>{{ $mission->launchProbability }}</div>
+                <div>{{ $mission->present()->launchProbability() }}%</div>
 				<div>
                     <a href="/locations#{{ str_slug($mission->launchSite->name) }}">
                         <img class="where-to-watch" ng-src="/images/icons/wheretowatch.png" />

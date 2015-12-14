@@ -45,4 +45,8 @@ class MissionPresenter {
             return '/images/missionbanners/' . $this->entity->missionType->name . '.jpg';
         }
     }
+
+	public function launchProbability() {
+		return round($this->entity->launchProbability * 100);
+	}
 }

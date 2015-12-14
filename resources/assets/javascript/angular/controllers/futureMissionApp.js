@@ -45,7 +45,7 @@
         };
 
         $scope.requestLaunchDateTime = function() {
-            $http.get('/missions/' + $scope.missionSlug + '/requestlaunchdatetime')
+            $http.get('/missions/' + $scope.missionSlug + '/launchdatetime')
                 .then(function(response) {
                     // If there has been a change in the launch datetime, update
                     if ($scope.launchDateTime !== response.data.launchDateTime) {

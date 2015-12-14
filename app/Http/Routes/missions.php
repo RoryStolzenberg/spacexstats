@@ -15,7 +15,7 @@ Route::group(['prefix' => 'missions'], function() {
 
     Route::group(['middleware' => ['doesExist:Mission']], function() {
         Route::get('/{slug}', 'MissionsController@get');
-        Route::get('/{slug}/launchdatetime', 'MissionsController@launchDateTime');
+        Route::get('/{slug}/launchdatetime', 'MissionsController@launchdatetime');
         Route::get('/{slug}/telemetry', 'MissionsController@telemetry');
         Route::get('/{slug}/launchevents', 'MissionsController@launchEvents');
 
