@@ -20,7 +20,7 @@
 			@if ($mission->status == 'Upcoming')
                 <div>42%</div>
 				<div>
-                    <a href="/locations">
+                    <a href="/locations#{{ str_slug($mission->launchSite->name) }}">
                         <img class="where-to-watch" ng-src="/images/icons/wheretowatch.png" />
                     </a>
                 </div>

@@ -54,4 +54,21 @@ section.question-list {
 /* --------------- LOCATIONS ----------------- */
 #location-nav {
     background-color:$october;
+    @include transitionMed('height');
+
+    &.expanded {
+        height:700px;
+    }
+
+    &.retracted {
+        height:50px;
+
+        svg {
+            display:none;
+        }
+    }
+}
+
+g.location {
+    cursor:pointer;
 }

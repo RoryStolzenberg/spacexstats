@@ -13,7 +13,7 @@ class NewsSummariesController extends Controller {
         $newsSummaries = Object::where('subtype', MissionControlSubtype::NewsSummary)->get();
 
         return view('newsSummaries', [
-            'newsSummary' => $newsSummaries
+            'newsSummaries' => $newsSummaries
         ]);
     }
 

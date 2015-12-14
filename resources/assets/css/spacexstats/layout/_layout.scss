@@ -133,7 +133,7 @@ h1 {
     overflow: hidden;
     white-space: nowrap;
 
-    @include gridle_state('tablet') {
+    @include gridle_state('medium') {
         font-size:42px;
     }
 
