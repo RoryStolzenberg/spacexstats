@@ -6,4 +6,6 @@ Despite the lack of landing legs caused by the earlier core switch with AsiaSat 
 
 After spending a record time at the station, over 34 days, Dragon was unberthed from the Harmony module on 25 October, the start of its return journey which ended with Dragon splashing down in the Pacific off the coast of California, carrying another 1486kg of return mass back into the bounds of Earth's gravity. Less than 24 hours time-critical cargo was offloaded and Dragon was making its way to McGregor, Texas, for post-mission processing.
 
+This was the 6th and final flight for Falcon 9 for 2014, a new SpaceX cadence record.
+
 In late November 2015, a 10 metre by 54 metre half of the carbon-fibre composite interstage from a Falcon 9 rocket washed up in Scilly, United Kingdom. Using a combination of ocean drift and photo analysis, members of the /r/SpaceX community were able to determine that it belonged to F9-012 from the CRS-4 mission, having floated northeast across the Atlantic for over one year.

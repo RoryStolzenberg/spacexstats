@@ -1,1 +1,11 @@
-"Close, but no cigar this time". These were the words uttered by Elon Musk over Twitter following an amazingly near-100% successful
+"Close, but no cigar this time". These were the words uttered by Elon Musk over Twitter following an amazingly near-100% successful first stage landing attempt on SpaceX's "Autonomous Spaceport Droneship" (which was later given the name "Just Read The Instructions"), the first step up from ocean landings on the long path towards launch site landings, and eventually full rocket reusability.
+
+The fifth CRS mission with Dragon kicked off SpaceX's 2015 - pushed from 2014 due to issues with the vehicle's static fire earlier in the campaign, and with Z-axis actuator drift of the second stage TVC system at T-1:21 on the second attempt.
+
+Making their premiere appearance on the rocket for the first time with CRS-5 was the grid fins, located near the interstage, which help precisely steer the rocket via drag towards its intended destination, enabling helicopter-accuracy landings - a key requirement for reliable reusability. This was also SpaceX's first "unified" F9v1.1 core; replacing the two production lines which could produce legged and legless cores respectively.
+
+Not to be outdone, CRS-5 also featured Dragon carrying the heaviest cargo manifest yet, 2395kg of materials, science, and equipment destined for the astronauts aboard the ISS. Stowed in the trunk was CATS, the latest unpressurized science element to be brought up by Dragon. CATS is designed to use LIDAR to measure the concentration and distribution of particulates, smoke, and aerosols in the atmosphere from the vantage point of Japan's Exposed Facility aboard the ISS.
+
+Falcon 9 lit up the sky for its fourth consecutive night launch by lifting off in the early hours of the morning at 4:47AM EST, it would not touch ground for another 9 minutes.
+
+Dragon reentered
