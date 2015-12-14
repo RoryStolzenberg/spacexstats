@@ -48,7 +48,7 @@ class QuestionUpdaterCommand extends Command
         $questions = new Collection();
 
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
-        $reddit->setUserAgent("/u/ElongatedMuskrat by /u/EchoLogic, fetching Wiki pages daily");
+        $reddit->setUserAgent("/u/ElongatedMuskrat by /u/EchoLogic. Runs various /r/SpaceX-related tasks.");
 
         foreach($this->faqPages as $faqPage) {
             $wikipage = $reddit->subreddit('spacex')->wikiPage($faqPage);

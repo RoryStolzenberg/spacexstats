@@ -157,7 +157,7 @@ class UploadController extends Controller {
     // AJAX GET
     public function retrieveRedditComment() {
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'),Config::get('services.reddit.secret'));
-        $reddit->setUserAgent('/u/ElongatedMuskrat by /u/EchoLogic, retrieving an important comment...');
+        $reddit->setUserAgent('/u/ElongatedMuskrat by /u/EchoLogic. Runs various /r/SpaceX-related tasks.');
 
         $comment = $reddit->getComment(Input::get('url'));
         return response()->json($comment);
