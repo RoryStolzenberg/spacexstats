@@ -17,7 +17,9 @@
             <div>{{ mission.destination.destination }}</div>
             <div>{{ mission.launch_site }}</div>
             <div ng-if="mission.status == 'Complete' && mission.outcome == 'Success'">{{ mission.successful_consecutive_launch }}</div>
-            <div ng-if="mission.status == 'Upcoming'">42%</div>
+            <div ng-if="mission.status == 'Upcoming'">
+                {{ mission.launch_probability }}%
+            </div>
             <div ng-if="mission.status == 'Upcoming'">
                 <a href="/locations">
                     <img class="where-to-watch" ng-src="/images/icons/wheretowatch.png" />
