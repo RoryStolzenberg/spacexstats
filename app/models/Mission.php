@@ -189,7 +189,7 @@ class Mission extends Model {
 
             $delayedLaunches = count(DB::table('prelaunch_events')->select(['prelaunch_events.mission_id'])
                 ->where('event', 'Launch Change')
-                ->whereRaw("prelaunch_events.occurred_at > DATE_SUB('" . $preciseEstimatedTimeOfLaunch->toDateTimeString() . "', INTERVAL " . $timeUntilLaunch . " SECOND)")
+                ->whereRaw('prelaunch_events.occurred_at > DATE_SUB(missions.launch_exact, INTERVAL ' . $timeUntilLaunch . ' SECOND)')
                 ->where('missions.status','Complete')
                 ->join('missions', 'missions.mission_id','=','prelaunch_events.mission_id')
                 ->groupBy('missions.mission_id')
@@ -197,7 +197,7 @@ class Mission extends Model {
 
             $totalLaunches = Mission::whereComplete()->count();
 
-            return $delayedLaunches / $totalLaunches;
+            return (1 / $totalLaunches) * ($totalLaunches - $delayedLaunches);
         }
         return null;
 	}

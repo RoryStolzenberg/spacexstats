@@ -316,7 +316,7 @@ class PrelaunchEventsTableSeeder extends Seeder {
         PrelaunchEvent::create([
             'mission_id' => 16,
             'event' => 'Launch Change',
-            'occurred_at' => Carbon::createFromDate(2014, 8, 6),
+            'occurred_at' => Carbon::createFromDate(2014, 8, 5),
             'summary' => "Abort, 1st stage hydraulic parameters T-0:45",
             'supporting_document' => null
         ]);
