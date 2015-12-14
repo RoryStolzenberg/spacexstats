@@ -195,7 +195,7 @@ class Mission extends Model {
                 ->groupBy('missions.mission_id')
                 ->get();
 
-            dd($delayedLaunches);
+            return dd($delayedLaunches);
 
             $totalLaunches = Mission::whereComplete()->count();
 
