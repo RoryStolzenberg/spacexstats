@@ -2,6 +2,7 @@
 namespace SpaceXStats\Models;
 
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +10,7 @@ use SpaceXStats\Library\Enums\LaunchSpecificity;
 use SpaceXStats\Library\Enums\MissionControlType;
 use SpaceXStats\Library\Enums\MissionOutcome;
 use SpaceXStats\Library\Enums\MissionStatus;
+use SpaceXStats\Library\Launch\LaunchDateTimeResolver;
 use SpaceXStats\Library\Launch\LaunchReorderer;
 use SpaceXStats\Mail\MailQueues\MissionMailQueue;
 use SpaceXStats\Presenters\MissionPresenter;
@@ -181,7 +183,19 @@ class Mission extends Model {
 	}
 
 	public function getLaunchProbabilityAttribute() {
+        if ($this->status == MissionStatus::Upcoming) {
+            $timeUntilLaunch = Carbon::now()->diffInSeconds(LaunchDateTimeResolver::parseString($this->launch_date_time)->getDateTime());
 
+            //SELECT prelaunch_events.mission_id FROM `prelaunch_events`
+            join missions on missions.mission_id = prelaunch_events.mission_id
+where prelaunch_events.event='Launch Change'
+            and prelaunch_events.occurred_at > DATE_SUB(missions.launch_exact, INTERVAL 445333 SECOND)
+GROUP BY missions.mission_id
+
+            PrelaunchEvent::select(['mission_id'])->where('event', 'Launch Change')->where()
+
+        }
+        return null;
 	}
 
     public function getSpecificVehicleCountAttribute() {

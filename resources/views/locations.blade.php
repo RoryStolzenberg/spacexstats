@@ -16,19 +16,19 @@
                             <i class="fa fa-3x white cursor-pointer" ng-class="{ 'fa-angle-up':isShowingMap, 'fa-angle-down':!isShowingMap }"></i>
                         </li>
                         <li class="gr-2" ng-show="isShowingMap">
-                            <input type="checkbox" ng-model="showNoLongerUsedLocations" value="true" id="showNoLongerUsedLocations"/>
+                            <input type="checkbox" ng-model="filters.noLongerUsed" value="true" id="showNoLongerUsedLocations"/>
                             <label for="showNoLongerUsedLocations"><span>No Longer Used Locations</span></label>
                         </li>
                         <li class="gr-2" ng-show="isShowingMap">
-                            <input type="checkbox" ng-model="showLaunchSites" value="true" id="showLaunchSites"/>
+                            <input type="checkbox" ng-model="filters.launchSites" value="true" id="showLaunchSites"/>
                             <label for="showLaunchSites"><span>Launch Sites</span></label>
                         </li>
                         <li class="gr-2" ng-show="isShowingMap">
-                            <input type="checkbox" ng-model="showLandingSites" value="true" id="showLandingSites"/>
+                            <input type="checkbox" ng-model="filters.landingSites" value="true" id="showLandingSites"/>
                             <label for="showLandingSites"><span>Landing Sites</span></label>
                         </li>
                         <li class="gr-2" ng-show="isShowingMap">
-                            <input type="checkbox" ng-model="showASDSes" value="true" id="showASDSes"/>
+                            <input type="checkbox" ng-model="filters.ASDSs" value="true" id="showASDSes"/>
                             <label id="showASDSes"><span>ASDS's</span></label>
                         </li>
                         <li class="gr-2" ng-hide="true">

@@ -3,6 +3,13 @@
 
     locationsApp.controller("locationsController", ["$scope", "locationsService", "$compile", function($scope, locationsService, $compile) {
 
+        $scope.filters = {
+            noLongerUsed: true,
+            launchSites: true,
+            landingSites: true,
+            ASDSs: true
+        };
+
         $scope.locationPageTitle = function() {
             if (angular.isUndefined($scope.selectedLocation)) {
                 return 'Locations';
