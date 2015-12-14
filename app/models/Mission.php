@@ -186,14 +186,17 @@ class Mission extends Model {
         if ($this->status == MissionStatus::Upcoming) {
             $timeUntilLaunch = Carbon::now()->diffInSeconds(LaunchDateTimeResolver::parseString($this->launch_date_time)->getDateTime());
 
-            //SELECT prelaunch_events.mission_id FROM `prelaunch_events`
-            join missions on missions.mission_id = prelaunch_events.mission_id
-where prelaunch_events.event='Launch Change'
-            and prelaunch_events.occurred_at > DATE_SUB(missions.launch_exact, INTERVAL 445333 SECOND)
-GROUP BY missions.mission_id
+            $delayedLaunches = DB::table('prelaunch_event')->select(['mission_id'])
+                ->where('event', 'Launch Change')
+                ->where('prelaunch_events.occurred_at', '>', 'DATE_SUB(missions.launch_exact, INTERVAL ' . $timeUntilLaunch . ' SECOND)')
+                ->where('missions.status','Complete')
+                ->join('missions', 'missions.mission_id','=','prelaunch_events.mission_id')
+                ->groupBy('missions.mission_id')
+                ->get();
 
-            PrelaunchEvent::select(['mission_id'])->where('event', 'Launch Change')->where()
+            $totalLaunches = Mission::count();
 
+            return $delayedLaunches / $totalLaunches;
         }
         return null;
 	}
