@@ -6,4 +6,4 @@ Following the successful launch, problems with Dragon’s propulsion system imme
 
 Dragon carried 677kg of pressurized cargo up to the ISS and returned 1370kg to earth, the largest total transfer so far. Also included in the upmass was 375kg of unpressurized cargo, consisting of mating adapters and two Heat Rejection Subsystem Grapple Fixtures (HRSGFs), which are essentially bars that were attached to the ISS’s radiators to allow for easier movement while working. This was the first time Dragon's trunk had been needed.
 
-Dragon stayed berthed to the ISS for over 22 days and 18 hours, setting a new Dragon duration record in space. After CRS-1, the Falcon 9 v1.0 vehicle was retired to make way for the new, more powerful Falcon 9v1.1.
+Dragon stayed berthed to the ISS for over 22 days and 18 hours, setting a new Dragon duration record in space. After CRS-2, the Falcon 9 v1.0 vehicle was retired to make way for the new, more powerful Falcon 9v1.1.
