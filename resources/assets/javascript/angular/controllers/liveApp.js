@@ -131,7 +131,7 @@
             sections: laravel.sections ? laravel.sections : [],
             resources: laravel.resources ? laravel.resources : [],
             status: {
-                text: laravel.status.text.replace(/([A-Z])/g, ' $1'),
+                text: laravel.status.text ? laravel.status.text.replace(/([A-Z])/g, ' $1') : 'Upcoming',
                 class: function() {
                     if ($scope.liveParameters.status.text) {
                         return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
