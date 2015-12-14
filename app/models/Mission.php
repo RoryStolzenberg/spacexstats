@@ -184,7 +184,8 @@ class Mission extends Model {
 
 	public function getLaunchProbabilityAttribute() {
         if ($this->status == MissionStatus::Upcoming) {
-            $timeUntilLaunch = Carbon::now()->diffInSeconds(Carbon::parse(LaunchDateTimeResolver::parseString($this->launch_date_time))->getDateTime());
+            $preciseEstimatedTimeOfLaunch = Carbon::instance(LaunchDateTimeResolver::parseString($this->launch_date_time)->getDateTime());
+            $timeUntilLaunch = Carbon::now()->diffInSeconds($preciseEstimatedTimeOfLaunch);
 
             $delayedLaunches = DB::table('prelaunch_event')->select(['mission_id'])
                 ->where('event', 'Launch Change')
