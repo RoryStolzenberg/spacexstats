@@ -187,7 +187,7 @@ class Mission extends Model {
             $preciseEstimatedTimeOfLaunch = Carbon::instance(LaunchDateTimeResolver::parseString($this->launch_date_time)->getDateTime());
             $timeUntilLaunch = Carbon::now()->diffInSeconds($preciseEstimatedTimeOfLaunch);
 
-            $delayedLaunches = DB::table('prelaunch_event')->select(['mission_id'])
+            $delayedLaunches = DB::table('prelaunch_events')->select(['mission_id'])
                 ->where('event', 'Launch Change')
                 ->where('prelaunch_events.occurred_at', '>', 'DATE_SUB(missions.launch_exact, INTERVAL ' . $timeUntilLaunch . ' SECOND)')
                 ->where('missions.status','Complete')
