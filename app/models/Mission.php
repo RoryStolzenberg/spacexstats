@@ -193,7 +193,7 @@ class Mission extends Model {
                 ->where('missions.status','Complete')
                 ->join('missions', 'missions.mission_id','=','prelaunch_events.mission_id')
                 ->groupBy('missions.mission_id')
-                ->get();
+                ->get()-toSql();
 
             return dd($delayedLaunches);
 
