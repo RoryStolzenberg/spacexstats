@@ -310,7 +310,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => 'AsiaSat 8 is a communications satellite that Falcon 9 propelled into a GTO orbit, and will be located at 105.5 degrees East.',
+            'summary' => 'AsiaSat 8 is a communications satellite that Falcon 9 propelled into a GTO orbit, which also happened to be the largest satellite SpaceX had launched up to that point',
             'article' => file_get_contents(base_path('resources/assets/documents/asiasat8.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -384,7 +384,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::EarthSunL1)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => 'Falcon 9 will loft the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it will function as an Earth & Solar Observation satellite.',
+            'summary' => 'Falcon 9 lofted the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it functions as an Earth & Solar Observation satellite. The first stage was not able to attempt a barge landing, and instead splashed down in the Atlantic.',
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=0248fc77-b30a-4e45-a55c-c8c6c2e2efba&code=DSCR'
@@ -402,7 +402,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => "This marks SpaceX's first dual comm. satellite launch, of Eutelsat 115W B & ABS-3A. The satellites, built by Boeing, use Solar Electric Propulsion, making it feasible to fit both on a single Falcon 9 and removing the need for weighty Hydrazine.",
+            'summary' => "This marked SpaceX's first dual comm. satellite launch, of Eutelsat 115W B & ABS-3A. The Boeing-built satellites use Solar Electric Propulsion, making it feasible to fit both on a single Falcon 9 and removing the need for weighty hydrazine fuel.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=2466b6b0-d440-495c-890f-23577087924d&code=EUAB'
