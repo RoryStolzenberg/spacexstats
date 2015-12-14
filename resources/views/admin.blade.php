@@ -14,8 +14,6 @@
                     <li class="gr-1">Stuff</li>
                 </ul>
             </nav>
-            <section class="highlights">
-            </section>
             <section>
                 <ul>
                     <li><a href="/missions/create">Create A Mission</a></li>

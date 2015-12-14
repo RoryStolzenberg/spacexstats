@@ -63,10 +63,6 @@
                 </nav>
 
                 <section class="highlights">
-                    <div class="webcast-status" ng-class="webcast.status" ng-if="isLaunchExact == true" ng-show="webcast.status != 'webcast-inactive'">
-                        <span>@{{ webcast.publicStatus }}</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">@{{ webcast.publicViewers }}</span>
-                    </div>
-
                     @if(isset($pastMission))
                         <a href="/missions/{{ $pastMission->slug }}">
                             <div class="mission-link past-mission-link">
@@ -83,6 +79,10 @@
                             </div>
                         </a>
                     @endif
+
+                    <div class="webcast-status" ng-class="webcast.status" ng-if="isLaunchExact" ng-show="webcast.status != 'webcast-inactive'">
+                        <span>@{{ webcast.publicStatus }}</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">@{{ webcast.publicViewers }}</span>
+                    </div>
 
                     <div class="display-date-time">
                         <div class="launch" ng-mouseover="showingTimezoneOptions = true" ng-mouseleave="showingTimezoneOptions = false">
