@@ -49,10 +49,10 @@
 				<div>Where to watch</div>
 			@endif
 			@if ($mission->status == 'Complete')
+                @if ($mission->outcome == 'Success')
+                    <div>Successful Consecutive Launch</div>
+                @endif
 				<div>{{ $mission->launch_illumination }} Launch</div>
-				@if ($mission->outcome == 'Success')
-					<div>Successful Consecutive Launch</div>
-				@endif
 			@endif
 			<div><a href="/missioncontrol/collections/mission/{{ $mission->slug }}">Mission Collection</a></div>
 		</div>

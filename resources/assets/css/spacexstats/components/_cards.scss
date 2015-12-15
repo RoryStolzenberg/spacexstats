@@ -25,13 +25,13 @@
 @mixin card-statistic() {
     font-weight:100;
     font-size:80px;
-    color:$white;
+    color:white;
 }
 
 @mixin card-description() {
     font-size:50px;
     text-transform: uppercase;
-    color:$bordergrey;
+    color:$offwhite;
 }
 
 // Mission Card
@@ -257,6 +257,7 @@
     .content {
         text-align:center;
         font-family:$brandonGrotesque;
+        background-color:rgba($lightblack, 0.3);
 
         &:before {
             // Place the background image here instead so we can blur it
@@ -270,6 +271,7 @@
             position:absolute;
             top: -1%;
             left: -1%;
+            z-index:-1;
         }
     }
 
@@ -300,6 +302,8 @@
     .content {
         font-family:$brandonGrotesque;
         color:$white;
+        background-color:rgba($lightblack, 0.3);
+        padding:20px;
 
         &:before {
             // Place the background image here instead so we can blur it
@@ -313,15 +317,50 @@
             position:absolute;
             top: -1%;
             left: -1%;
+            z-index:-1;
         }
     }
 
-    p:first-child {
-        @include card-statistic();
+    table {
+        table-layout: fixed;
+        width:100%;
+        text-align: center;
+
+        tr.values td p {
+            @include card-statistic();
+        }
+
+        tr.units td p {
+            @include card-description();
+            font-size:20px !important;
+        }
     }
 
-    p:last-child {
-        @include card-description();
+    .weights {
+        overflow:hidden;
+        font-size:0;
+
+        img {
+            width:100px;
+            padding:0 10px;
+
+            @for $i from 0 through 10 {
+                &.clipped-#{$i} {
+                    position:relative;
+                    top:(10 - $i) * 10px;
+                }
+            }
+        }
+    }
+
+    .satellites {
+        font-size: 20px;
+        background-color: rgba($lightblack, 0.5);
+        position: absolute;
+        padding: 20px;
+        bottom: 0;
+        left: 0;
+        width: 100%;
     }
 }
 

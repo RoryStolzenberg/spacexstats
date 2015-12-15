@@ -8467,6 +8467,12 @@ datepicker, .datepicker, [datepicker],
 .md ol {
   list-style-type: decimal; }
 
+.md table, .md th, .md td {
+  border: 1px solid #CCC; }
+
+.md th {
+  font-weight: bold; }
+
 .md blockquote, .md blockquote > * {
   font-style: italic;
   font-size: larger;
@@ -8793,6 +8799,7 @@ body.future-mission .highlights {
     -webkit-transform: translateY(0);
         -ms-transform: translateY(0);
             transform: translateY(0);
+    z-index: 1000;
     -webkit-transition: -webkit-transform ease-in-out 0.5s 0s;
             transition: transform ease-in-out 0.5s 0s; }
     .display-date-time .timezone-list.ng-hide {
@@ -8844,6 +8851,79 @@ div.square {
         -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
     margin: 0; }
+
+.progress-radial {
+  float: left;
+  margin-right: 30px;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid #21272B;
+  background-color: #40C085; }
+  .progress-radial [data-progress="0"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(0deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(90deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="5"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(342deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(108deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="10"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(324deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(126deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="15"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(306deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(144deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="20"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(288deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(162deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="25"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(270deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(180deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="30"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(252deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(198deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="35"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(234deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(216deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="40"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(216deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(234deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="45"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(198deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(252deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="50"] {
+    background-image: -webkit-linear-gradient(180deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(-90deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="55"] {
+    background-image: -webkit-linear-gradient(162deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(-72deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="60"] {
+    background-image: -webkit-linear-gradient(144deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(-54deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="65"] {
+    background-image: -webkit-linear-gradient(126deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(-36deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="70"] {
+    background-image: -webkit-linear-gradient(108deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(-18deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="75"] {
+    background-image: -webkit-linear-gradient(90deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(0deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="80"] {
+    background-image: -webkit-linear-gradient(72deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(18deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="85"] {
+    background-image: -webkit-linear-gradient(54deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(36deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="90"] {
+    background-image: -webkit-linear-gradient(36deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(54deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="95"] {
+    background-image: -webkit-linear-gradient(18deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(72deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
+  .progress-radial [data-progress="100"] {
+    background-image: -webkit-linear-gradient(0deg, green 50%, transparent 50%, transparent), -webkit-linear-gradient(180deg, blue 50%, blue 50%, blue);
+    background-image: linear-gradient(90deg, green 50%, transparent 50%, transparent), linear-gradient(270deg, blue 50%, blue 50%, blue); }
 
 body.object .content {
   margin-left: -10px; }
@@ -9448,7 +9528,8 @@ button.canned-response {
 
 .spacecraft-card .content {
   text-align: center;
-  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
+  font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
+  background-color: rgba(33, 39, 43, 0.3); }
   .spacecraft-card .content:before {
     background-image: url("/images/cards/dragon.jpg");
     background-size: cover;
@@ -9460,7 +9541,8 @@ button.canned-response {
     display: block;
     position: absolute;
     top: -1%;
-    left: -1%; }
+    left: -1%;
+    z-index: -1; }
 
 .spacecraft-card p {
   padding: 0; }
@@ -9470,18 +9552,20 @@ button.canned-response {
   .spacecraft-card .time-in-space p:first-child {
     font-weight: 100;
     font-size: 80px;
-    color: #FAFAFA; }
+    color: white; }
   .spacecraft-card .time-in-space p:last-child {
     font-size: 50px;
     text-transform: uppercase;
-    color: #CCC; }
+    color: #F2F2F2; }
 
 .payloads-card > div {
   padding-top: 56.25%; }
 
 .payloads-card .content {
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
-  color: #FAFAFA; }
+  color: #FAFAFA;
+  background-color: rgba(33, 39, 43, 0.3);
+  padding: 20px; }
   .payloads-card .content:before {
     background-image: url("/images/cards/glorysatellite.jpg");
     background-size: cover;
@@ -9493,17 +9577,71 @@ button.canned-response {
     display: block;
     position: absolute;
     top: -1%;
-    left: -1%; }
+    left: -1%;
+    z-index: -1; }
 
-.payloads-card p:first-child {
-  font-weight: 100;
-  font-size: 80px;
-  color: #FAFAFA; }
+.payloads-card table {
+  table-layout: fixed;
+  width: 100%;
+  text-align: center; }
+  .payloads-card table tr.values td p {
+    font-weight: 100;
+    font-size: 80px;
+    color: white; }
+  .payloads-card table tr.units td p {
+    font-size: 50px;
+    text-transform: uppercase;
+    color: #F2F2F2;
+    font-size: 20px !important; }
 
-.payloads-card p:last-child {
-  font-size: 50px;
-  text-transform: uppercase;
-  color: #CCC; }
+.payloads-card .weights {
+  overflow: hidden;
+  font-size: 0; }
+  .payloads-card .weights img {
+    width: 100px;
+    padding: 0 10px; }
+    .payloads-card .weights img.clipped-0 {
+      position: relative;
+      top: 100px; }
+    .payloads-card .weights img.clipped-1 {
+      position: relative;
+      top: 90px; }
+    .payloads-card .weights img.clipped-2 {
+      position: relative;
+      top: 80px; }
+    .payloads-card .weights img.clipped-3 {
+      position: relative;
+      top: 70px; }
+    .payloads-card .weights img.clipped-4 {
+      position: relative;
+      top: 60px; }
+    .payloads-card .weights img.clipped-5 {
+      position: relative;
+      top: 50px; }
+    .payloads-card .weights img.clipped-6 {
+      position: relative;
+      top: 40px; }
+    .payloads-card .weights img.clipped-7 {
+      position: relative;
+      top: 30px; }
+    .payloads-card .weights img.clipped-8 {
+      position: relative;
+      top: 20px; }
+    .payloads-card .weights img.clipped-9 {
+      position: relative;
+      top: 10px; }
+    .payloads-card .weights img.clipped-10 {
+      position: relative;
+      top: 0px; }
+
+.payloads-card .satellites {
+  font-size: 20px;
+  background-color: rgba(33, 39, 43, 0.5);
+  position: absolute;
+  padding: 20px;
+  bottom: 0;
+  left: 0;
+  width: 100%; }
 
 .upper-stage-card > div {
   padding-top: 56.25%; }
@@ -9527,12 +9665,12 @@ button.canned-response {
 .upper-stage-card p:first-child {
   font-weight: 100;
   font-size: 80px;
-  color: #FAFAFA; }
+  color: white; }
 
 .upper-stage-card p:last-child {
   font-size: 50px;
   text-transform: uppercase;
-  color: #CCC; }
+  color: #F2F2F2; }
 
 .twitter-card {
   border-radius: 3px;

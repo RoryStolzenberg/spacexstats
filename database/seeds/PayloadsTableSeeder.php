@@ -512,7 +512,7 @@ class PayloadsTableSeeder extends Seeder {
         ]);
         Payload::create([
             'mission_id' => 23,
-            'name' => "TürkmenÄlem 52E",
+            'name' => utf8_encode("TürkmenÄlem 52E"),
             'operator' => "Turkmen Ministry of Communications",
             'primary' => true,
             'mass' => 4707,
