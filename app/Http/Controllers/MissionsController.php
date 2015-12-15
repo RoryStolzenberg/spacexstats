@@ -257,7 +257,7 @@ class MissionsController extends Controller {
         $mission = Mission::whereSlug($slug)->with('vehicle')->first();
 
         return response()->json([
-            'launchDateTime' => $mission->present()->launchDateTime(),
+            'launchDateTime' => $mission->launch_date_time,
             'launchSpecificity' => $mission->launch_specificity,
             'launchPaused' => $mission->launch_paused
         ]);
