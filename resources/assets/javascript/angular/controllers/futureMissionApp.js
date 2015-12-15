@@ -54,7 +54,7 @@
                             $scope.launchSpecificity = response.data.launchSpecificity;
                             $scope.isLaunchPaused = response.data.launchPaused;
                             flashMessage.addOK('Launch time updated!');
-                            
+
                         }
                 });
         };

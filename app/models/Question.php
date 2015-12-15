@@ -9,9 +9,19 @@ class Question extends Model {
     public $timestamps = true;
 
     protected $hidden = [];
-    protected $appends = [];
+    protected $appends = ['slug'];
     protected $fillable = [];
     protected $guarded = [];
 
-	// Relations
+    public function getSlugAttribute() {
+        return str_slug($this->question);
+    }
+
+	public function getAnswerMdAttribute() {
+        return Parsedown::instance()->text($this->answer);
+    }
+
+    public function getIconAttribute() {
+        return '/images/icons/faq/' + $this->type + '.png';
+    }
 }

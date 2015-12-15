@@ -449,6 +449,7 @@ class Spacexstats extends Migration {
             $table->increments('question_id');
             $table->string('question', Varchar::medium);
             $table->string('answer', Varchar::xlarge);
+            $table->string('type', Varchar::tiny);
 
             $table->timestamps();
         });
