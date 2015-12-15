@@ -18,7 +18,7 @@
 
             <section ng-repeat="question in questions | filter:x as search">
 
-                <h2><img ng-src="@{{ question.icon }}" alt="@{{ question.type }}" />@{{ question.question }}</h2>
+                <h2><img ng-src="question.icon" alt="@{{ question.type }}" />@{{ question.question }}</h2>
 
                 <a ng-click="pinQuestion(question)">Pin this question</a>
 
