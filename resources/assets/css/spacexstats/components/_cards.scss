@@ -256,8 +256,10 @@
 
     .content {
         text-align:center;
+        color:$white;
         font-family:$brandonGrotesque;
         background-color:rgba($lightblack, 0.3);
+        padding:20px;
 
         &:before {
             // Place the background image here instead so we can blur it
@@ -275,12 +277,10 @@
         }
     }
 
-    p {
-        padding:0;
-    }
-
     .time-in-space {
-        top:10%;
+        p {
+            padding:0;
+        }
 
         p:first-child {
             @include card-statistic();
@@ -288,6 +288,29 @@
 
         p:last-child {
             @include card-description();
+            font-size:30px;
+        }
+    }
+
+    .cargo {
+        display:inline-block;
+        width:50%;
+        font-size:36px;
+        padding:20px 0;
+
+        &.upmass {
+            text-align: right;
+            float:left
+        }
+
+        &.downmass {
+            text-align: left;
+            float:right;
+        }
+
+        .unit {
+            text-transform: uppercase;
+            font-size:20px;
         }
     }
 }
@@ -341,7 +364,7 @@
         font-size:0;
 
         img {
-            width:100px;
+            height:100px;
             padding:0 10px;
 
             @for $i from 0 through 10 {
@@ -354,13 +377,17 @@
     }
 
     .satellites {
-        font-size: 20px;
+        font-size: 16px;
         background-color: rgba($lightblack, 0.5);
         position: absolute;
         padding: 20px;
         bottom: 0;
         left: 0;
         width: 100%;
+
+        a:link, a:visited {
+            color:$blue;
+        }
     }
 }
 

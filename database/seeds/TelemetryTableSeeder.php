@@ -14,6 +14,8 @@ class TelemetryTableSeeder extends Seeder {
         $this->COTS2Plus();
         $this->CRS1();
         $this->CRS2();
+        //$this->CASSIOPE();
+        $this->SES8();
     }
 
     public function Falcon1Flight1() {
@@ -3165,7 +3167,7 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 2 * 60 + 0,
+            'timestamp'     => 0,
             'readout'       => "Stage 1 shutdown"
         ]);
         Telemetry::create([
@@ -3180,12 +3182,12 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 2 * 60 + 56,
             'readout'       => "MVac ignition confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 29,
             'readout'       => "Stage two propellant utilization active"
         ]);
         Telemetry::create([
@@ -3195,7 +3197,7 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 36,
             'readout'       => "Fairing separation confirmed"
         ]);
         Telemetry::create([
@@ -3223,7 +3225,7 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 17,
             'readout'       => "Vehicle remains on a nominal trajectory. Altitude of 274km, velocity of 3.7km/s, with a downrange distance of 565km",
             'velocity'      => 3700,
             'altitude'      => 274000,
@@ -3244,57 +3246,57 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 7 * 60 + 57,
             'readout'       => "First stage is burning, err- relighting at this time"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
-            'readout'       => "Stage 2's transitioned to terminal guidance"
+            'timestamp'     => 8 * 60 + 25,
+            'readout'       => "Stage 2 has transitioned to terminal guidance"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 33,
             'readout'       => "FTS is safed"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
-            'readout'       => "Upproaching SECO 1"
+            'timestamp'     => 8 * 60 + 59,
+            'readout'       => "Approaching SECO 1"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 8,
             'readout'       => "MVac shutdown confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 11 * 60 + 10,
             'readout'       => "Vandenberg Air Force base loss of signal, on second stage. Expected loss of signal. That was a little bit better than we predicted."
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 13 * 60 + 9,
             'readout'       => "Ugh, what a ride! And you can hear the cheering behind us, as everybody was following along the Falcon 9 team, as we rode to space, is an amazing flight. So far I see tons of data coming back, it looks like it was a picture perfect flight everything was looking good, right down the middle of the track, looks like orbit's good, so we'll be waiting to hear, as we go onto the morning, uhh but I think right now, that brings us to the end of the scripted events for the morning! So I think right now lets throws it to Keiko, who's downstairs with the crowd, and then come back to us, and we'll be signing off"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 13 * 60 + 56,
             'readout'       => "Well, that was a pretty awesome launch. Everybody down here is super excited, as you can hear them. I think uhh, we'll definitely want to get right back to work and get ready for the next one, that's what we do here."
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 14 * 60 + 12,
             'readout'       => "Thank you Keiko. Well, from the SpaceX team, Jessica, anything you want to say to wrap it up?"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 14 * 60 + 18,
             'readout'       => "I just want to thank all of you for supporting us, this was a new demonstration launch and it went perfect, we were so excited and we're glad you all tuned in, so, stay up to date for us, we'll be doing more Grasshopper stuff, and we have a lot more Falcon 9 launches coming, so, stay up to date, and thank you!"
         ]);
         Telemetry::create([
             'mission_id'    => 11,
-            'timestamp'     => 0,
+            'timestamp'     => 14 * 60 + 36,
             'readout'       => "I think right now the plan is there'll probably be some type of media conference later this afternoon. Tie in to our website, see what's happening, as well as we'll give updates as we go along in the mission, but for that, I also want to send thanks for not only the people that support us, but MDA Corporation who rode with us on the Falcon 9 as well as our other smallsat partners. It's been a great day here in Hawthorne, a great day in Vandenberg, and all over the SpaceX crews, in McGregor, DC, the Cape, everybody participating working along here. So with that, what we'd like to do is close the webcast with a thank you for tuning in, come back, we've got another launch coming out of the Cape coming up in just several weeks, where we get to live this all over again! So with that, a goodbye from Hawthorne, California at the SpaceX factory!"
         ]);
     }
@@ -3302,53 +3304,60 @@ class TelemetryTableSeeder extends Seeder {
     public function SES8() {
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 1,
             'readout'       => "We have liftoff of the Falcon 9"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 11,
             'readout'       => "Falcon 9 has cleared the towers"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 19,
             'readout'       => "[inaudible]"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 51 - 15,
             'readout'       => "First propellant utilization active"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 54 - 15,
             'readout'       => "Power systems nominal and we have good telemetry lock"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
-            'readout'       => "Vehicle remains on a nominal trajectory with an altitude of 6km [inaudible]",
-            'altitude'      => 6000
+            'timestamp'     => 68 - 15,
+            'readout'       => "Vehicle remains on a nominal trajectory with an altitude of 6km, a downrange distance of one fifth of a kilometre, and a velocity of 230m/s",
+            'altitude'      => 6000,
+            'downrange'     => 200,
+            'velocity'      => 230
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
-            'readout'       => "[inaudible]"
+            'timestamp'     => 78 - 15,
+            'readout'       => "OSM [inaudible] please"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 78 - 15,
+            'readout'       => "[inaudible] supersonic"
+        ]);
+        Telemetry::create([
+            'mission_id'    => 12,
+            'timestamp'     => 90 - 15,
             'readout'       => "Vehicle is passing through maximum aerodynamic pressure"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 101 - 15,
             'readout'       => "Avionics, power systems nominal, and we still have a good telemetry lock"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 127 - 15,
             'readout'       => "The vehicle remains on a nominal trajectory with an altitude of 30km, a downrange distance of 26km, and a velocity of 1.2km/s",
             'velocity'      => 1200,
             'altitude'      => 30000,
@@ -3356,12 +3365,12 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 136 - 15,
             'readout'       => "First stage propulsion performing nominally"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 156 - 15,
             'readout'       => "The vehicle remains on a nominal trajectory with an altitude of 48km, a downrange distance of 64km, and a velocity of 1.9km/s",
             'velocity'      => 1900,
             'altitude'      => 48000,
@@ -3369,37 +3378,37 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 168 - 15,
             'readout'       => "Second stage engine is chilling in"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 186 - 15,
             'readout'       => "MECO 1"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 188 - 15,
             'readout'       => "Stage Sep commanded"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 199 - 15,
             'readout'       => "MVac ignition confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 3 * 60 + 52 - 15,
             'readout'       => "Second stage propellant utilization active"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 11 - 15,
             'readout'       => "Fairing sep commanded"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 26 - 15,
             'readout'       => "The vehicle's on a nominal trajectory with an altitude of 129km, a downrange distance 355km, and a velocity of 3.2km/s",
             'velocity'      => 3200,
             'altitude'      => 129000,
@@ -3407,17 +3416,17 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 37 - 15,
             'readout'       => "Avionics, power systems are nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 4 * 60 + 44 - 15,
             'readout'       => "Stage 2 propulsion systems look good"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 5 * 60 + 25 - 15,
             'readout'       => "The vehicle remains on a nominal trajectory with an altitude of 153km, a downrange distance of 550km, and a velocity of 3.7km/s",
             'velocity'      => 3700,
             'altitude'      => 153000,
@@ -3425,17 +3434,17 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 11 - 15,
             'readout'       => "Avionics, power systems nominal and we continue to have a good telemetry lock"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 26 - 15,
             'readout'       => "Stage 2 propulsion also nominal"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 6 * 60 + 35 - 15,
             'readout'       => "Vehicle's at an altitude of 168km, a downrange distance of 790km, and a velocity of 4.5km/s",
             'velocity'      => 4500,
             'altitude'      => 168000,
@@ -3443,7 +3452,7 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 7 * 60 + 45 - 15,
             'readout'       => "The vehicle's at an altitude 177km, a downrange distance of 1150km, and a velocity of 5.7km/s",
             'velocity'      => 5700,
             'altitude'      => 177000,
@@ -3451,22 +3460,22 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 2 - 15,
             'readout'       => "Stage 2 and MVac propulsion still looking good"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 12 - 15,
             'readout'       => "Terminal guidance has begun"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 24 - 15,
             'readout'       => "FTS is safed"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 8 * 60 + 45 - 15,
             'readout'       => "The vehicle remains on a nominal trajectory with an altitude of 178km, a downrange distance of 1500km, and a velocity of 7.6km/s",
             'velocity'      => 7600,
             'altitude'      => 178000,
@@ -3474,22 +3483,22 @@ class TelemetryTableSeeder extends Seeder {
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 54,
             'readout'       => "All stations AOS Bermuda, TX1"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 9 * 60 + 54,
             'readout'       => "MVac shutdown confirmed"
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 658,
             'readout'       => "Well, although we lost video, right as we flew out of range, the second stage of Falcon 9 and SEs spacecraft are now in orbit, as expect when we passed out of sight from the ground stations, we lost the signal and we weren't able to bring you any additional video. This is going to bring an end to the coverage from orbit. We've had a great launch today, and the seventh flight of our Falcon 9 rocket. We will continue to post updates on our web at spacex.com/webcast as well as our social media pages. Now for updates on the mission, please check those sites as we prepared for spacecraft deployment later in this flight. On behalf of the over 3000 people here at SpaceX, we want to thank our SES customer for their confidence, and selectnig SpaceX and the Falcon 9 for their launch service. Please continue to follow along for the rest of the mission, and thanks to all of you for joining today."
         ]);
         Telemetry::create([
             'mission_id'    => 12,
-            'timestamp'     => 0,
+            'timestamp'     => 33 * 60,
             'readout'       => "Payload deploy commanded"
         ]);
     }

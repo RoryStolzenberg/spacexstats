@@ -7448,11 +7448,19 @@ p {
 
 a:link, a:visited, a:hover, a:active {
   color: inherit;
-  text-decoration: inherit; }
+  text-decoration: inherit;
+  -webkit-transition: color ease-in-out 0.3s 0s;
+          transition: color ease-in-out 0.3s 0s; }
 
 span a:link, span a:visited, p a:link, p a:visited {
   color: #4f708f;
   text-decoration: underline; }
+
+span a:hover, p a:hover {
+  color: #ccac55; }
+
+span a:active, p a:active {
+  color: orange; }
 
 p {
   padding-top: 10px;
@@ -9528,8 +9536,10 @@ button.canned-response {
 
 .spacecraft-card .content {
   text-align: center;
+  color: #FAFAFA;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
-  background-color: rgba(33, 39, 43, 0.3); }
+  background-color: rgba(33, 39, 43, 0.3);
+  padding: 20px; }
   .spacecraft-card .content:before {
     background-image: url("/images/cards/dragon.jpg");
     background-size: cover;
@@ -9544,19 +9554,34 @@ button.canned-response {
     left: -1%;
     z-index: -1; }
 
-.spacecraft-card p {
+.spacecraft-card .time-in-space p {
   padding: 0; }
 
-.spacecraft-card .time-in-space {
-  top: 10%; }
-  .spacecraft-card .time-in-space p:first-child {
-    font-weight: 100;
-    font-size: 80px;
-    color: white; }
-  .spacecraft-card .time-in-space p:last-child {
-    font-size: 50px;
+.spacecraft-card .time-in-space p:first-child {
+  font-weight: 100;
+  font-size: 80px;
+  color: white; }
+
+.spacecraft-card .time-in-space p:last-child {
+  font-size: 50px;
+  text-transform: uppercase;
+  color: #F2F2F2;
+  font-size: 30px; }
+
+.spacecraft-card .cargo {
+  display: inline-block;
+  width: 50%;
+  font-size: 36px;
+  padding: 20px 0; }
+  .spacecraft-card .cargo.upmass {
+    text-align: right;
+    float: left; }
+  .spacecraft-card .cargo.downmass {
+    text-align: left;
+    float: right; }
+  .spacecraft-card .cargo .unit {
     text-transform: uppercase;
-    color: #F2F2F2; }
+    font-size: 20px; }
 
 .payloads-card > div {
   padding-top: 56.25%; }
@@ -9598,7 +9623,7 @@ button.canned-response {
   overflow: hidden;
   font-size: 0; }
   .payloads-card .weights img {
-    width: 100px;
+    height: 100px;
     padding: 0 10px; }
     .payloads-card .weights img.clipped-0 {
       position: relative;
@@ -9635,13 +9660,15 @@ button.canned-response {
       top: 0px; }
 
 .payloads-card .satellites {
-  font-size: 20px;
+  font-size: 16px;
   background-color: rgba(33, 39, 43, 0.5);
   position: absolute;
   padding: 20px;
   bottom: 0;
   left: 0;
   width: 100%; }
+  .payloads-card .satellites a:link, .payloads-card .satellites a:visited {
+    color: #3569A4; }
 
 .upper-stage-card > div {
   padding-top: 56.25%; }

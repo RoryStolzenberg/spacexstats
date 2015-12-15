@@ -183,12 +183,21 @@ p {
 a:link, a:visited, a:hover, a:active {
     color:inherit;
     text-decoration:inherit;
+    @include transitionFast(color);
 }
 
 span, p {
     a:link, a:visited {
         color:$october;
         text-decoration: underline;
+    }
+
+    a:hover {
+        color:$gold;
+    }
+
+    a:active {
+        color:orange;
     }
 }
 
