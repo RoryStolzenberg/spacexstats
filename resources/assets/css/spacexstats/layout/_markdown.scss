@@ -70,6 +70,14 @@
         list-style-type:decimal;
     }
 
+    table, th, td {
+        border:1px solid $bordergrey;
+    }
+
+    th {
+        font-weight:bold;
+    }
+
     blockquote, blockquote > * {
         font-style:italic;
         font-size:larger;
