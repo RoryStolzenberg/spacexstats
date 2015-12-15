@@ -20,7 +20,7 @@ class Question extends Model {
     }
 
 	public function getAnswerAttribute() {
-        return Parsedown::instance()->text($this->answer);
+        return Parsedown::instance()->text($this->attributes['answer']);
     }
 
     public function getIconAttribute() {
