@@ -85,7 +85,7 @@
 
                 <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="classic" is-paused="{{ true }}" is-visible-when-paused="{{ true }}"></countdown>
 
-                <div ng-if="substatistic.display == 'Next Launch'">
+                <div ng-if="substatistic.display == 'mission'">
                     <div class="launch-link">
                         <a href="/missions/@{{ substatistic.result.slug }}">Go to Launch</a>
                     </div>
