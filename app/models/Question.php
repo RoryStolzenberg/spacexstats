@@ -11,7 +11,7 @@ class Question extends Model {
     public $timestamps = true;
 
     protected $hidden = [];
-    protected $appends = ['slug'];
+    protected $appends = ['slug', 'icon'];
     protected $fillable = [];
     protected $guarded = [];
 
