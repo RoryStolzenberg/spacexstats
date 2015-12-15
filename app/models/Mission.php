@@ -271,7 +271,9 @@ class Mission extends Model {
         $missionsOrderedByPayloadMass = DB::table('missions')
             ->select('missions.mission_id')
             ->join('payloads', 'missions.mission_id', '=', 'payloads.mission_id')
-            ->groupBy('missions.mission_id')->orderBy('payloads.mass', 'DESC')->get();
+            ->groupBy('missions.mission_id')->orderBy('payloads.mass', 'DESC')->toSql();
+
+        return $missionsOrderedByPayloadMass;
 
         foreach ($missionsOrderedByPayloadMass as $ranking => $mission) {
             if ($this->mission_id == $mission->mission_id) {
