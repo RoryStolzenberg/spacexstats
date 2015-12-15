@@ -22,8 +22,7 @@
 
                 <a ng-click="pinQuestion(question)">Pin this question</a>
 
-                <div class="md">
-                    @{{ question.answer }}
+                <div class="md" ng-bind-html="question.answer">
                 </div>
 
             </section>
