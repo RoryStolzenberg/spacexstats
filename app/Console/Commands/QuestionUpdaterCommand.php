@@ -25,7 +25,7 @@ class QuestionUpdaterCommand extends Command
     protected $description = 'Update the questions table from the Reddit FAQ.';
 
     protected $faqPages = [
-        'faq/spacexstats'
+        'watching', 'launchprep'
     ];
 
     /**
@@ -50,8 +50,11 @@ class QuestionUpdaterCommand extends Command
         $reddit = new Reddit(Config::get('services.reddit.username'), Config::get('services.reddit.password'), Config::get('services.reddit.id'), Config::get('services.reddit.secret'));
         $reddit->setUserAgent("/u/ElongatedMuskrat by /u/EchoLogic. Runs various /r/SpaceX-related tasks.");
 
+        // Delete all current FAQs
+        Question::truncate();
+
         foreach($this->faqPages as $faqPage) {
-            $wikipage = $reddit->subreddit('spacex')->wikiPage($faqPage);
+            $wikipage = $reddit->subreddit('spacex')->wikiPage('/faq/' . $faqPage);
             $contents = str_replace("\r\n", "", $wikipage->data->content_md);
 
             $rawQuestions = explode('###', $contents);
@@ -61,15 +64,11 @@ class QuestionUpdaterCommand extends Command
                 if ($i != 0) {
                     $questionParts = explode('?', $rawQuestion);
 
-                    // If the question does not exist already...
-                    if ($questions->where('question', $questionParts[0])->count() == 0) {
-                        $question = Question::create(array(
-                            'question' => $questionParts[0],
-                            'answer' => $questionParts[1]
-                        ));
-
-                        $questions->push($question);
-                    }
+                    Question::create(array(
+                        'question'  => $questionParts[0],
+                        'answer'    => $questionParts[1],
+                        'type'      => $faqPage
+                    ));
                 }
                 $i++;
             }
