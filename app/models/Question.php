@@ -1,6 +1,8 @@
 <?php
 namespace SpaceXStats\Models;
+
 use Illuminate\Database\Eloquent\Model;
+use Parsedown;
 
 class Question extends Model {
 
@@ -17,7 +19,7 @@ class Question extends Model {
         return str_slug($this->question);
     }
 
-	public function getAnswerMdAttribute() {
+	public function getAnswerAttribute() {
         return Parsedown::instance()->text($this->answer);
     }
 

@@ -14,9 +14,6 @@ class QuestionsController extends Controller {
 
 	// AJAX GET
 	public function get() {
-		return response()->json(Question::all()->transform(function($question) {
-			$question->answer = $question->answerMd;
-			return $question;
-		}));
+		return response()->json(Question::all());
 	}
 }
