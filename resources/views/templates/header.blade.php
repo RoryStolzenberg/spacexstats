@@ -45,10 +45,10 @@
 					<li class="gr-1on8 gr-12@small">
 						More...
 						<ul class="nav-second-tier wide">
-                            <li><a href="/locations">Locations</a></li>
-							<li><a href="/newssummaries">News Summaries</a></li>
-							<li><a href="/faq">Frequently Asked Questions</a></li>
-							<li><a href="/rss">RSS Updates</a></li>
+                            <!--<li><a href="/locations">Locations</a></li>-->
+							<!--<li><a href="/newssummaries">News Summaries</a></li>-->
+							<!--<li><a href="/faq">Frequently Asked Questions</a></li>-->
+							<!--<li><a href="/rss">RSS Updates</a></li>-->
                             <!--<li><a href="/community">Community</a></li>-->
 							<li><a href="/about/docs#spacexstats">About</a></li>
 							<li><a href="/about/contact">Contact & Tips</a></li>

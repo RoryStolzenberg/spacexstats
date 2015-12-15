@@ -11,9 +11,28 @@
     <div class="content-wrapper single-page background" id="home" du-scrollspy="home">
         <h1>Welcome</h1>
         <main>
-            <p>SpaceX Stats is the first website dedicated entirely to following SpaceX and their missions. Countdown to upcoming launches, read about past missions, watch and follow missions live as they happen, and much more!</p>
+            <div class="gr-4">
+                <p class="exclaim"><a href="/">SpaceX Stats</a></p>
+                <p>SpaceX Stats is the first website dedicated entirely to following SpaceX and their missions. Countdown to upcoming launches, read about past missions, watch and follow missions live as they happen, and much more!</p>
 
-            <p>Subscribe to Mission Control to get exclusive content, mission notifications via SMS and email, participate in the spaceflight fan community, </p>
+                <p>SpaceX Stats is currently in public beta, and as such, some features may not be entirely operational or may appear broken. You can contact me to report problems here.</p>
+            </div>
+            <div class="gr-4">
+                <p class="exclaim"><a href="/missioncontrol">Mission Control</a></p>
+
+                <p>Coming soon: Subscribe to Mission Control to get exclusive content, mission notifications via SMS and email, participate in the spaceflight fan community, and the ability to precisely locate and find a wealth of media using targeted search.</p>
+
+                <p>Mission Control is currently in private beta and will be releasing in early 2016.</p>
+            </div>
+            <div class="gr-4">
+                <p class="exclaim"><a href="/live">Live</a></p>
+
+                <p>Using SpaceX Stats Live, you can both watch SpaceX launches in real time and receive live updates pre- and post-mission to keep you informed via the ve. With Imgur and Twitter integration, this is the single best way to be totally connected during a SpaceX launch. No more hassles with refreshing antiquated forum pages or having multiple windows. Everything is in one place.</p>
+            </div>
+
+
+
+
             <button class="next-stat" ng-click="goToFirstStatistic()"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>
     </div>

@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder {
         $this->call('NotificationTypesTableSeeder');
         $this->call('NotificationsTableSeeder');
         $this->call('AstronautsTableSeeder');
-        $this->call('PublishersTableSeeder');
         $this->call('SpacecraftTableSeeder');
         $this->call('SpacecraftFlightsTableSeeder');
         $this->call('PayloadsTableSeeder');
