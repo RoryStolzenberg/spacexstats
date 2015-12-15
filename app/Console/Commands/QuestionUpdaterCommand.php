@@ -62,7 +62,7 @@ class QuestionUpdaterCommand extends Command
             $i = 0;
             foreach($rawQuestions as $rawQuestion) {
                 if ($i != 0) {
-                    $questionParts = explode('?', $rawQuestion);
+                    $questionParts = explode('?', $rawQuestion, 2);
 
                     Question::create(array(
                         'question'  => $questionParts[0] . '?',
