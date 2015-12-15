@@ -43,12 +43,12 @@
                 font-size:50px;
             }
             @include gridle_state("medium") {
-                font-size:80px;
-            }
-            @include gridle_state("large") {
                 font-size:100px;
             }
-            font-size:150px;
+            @include gridle_state("large") {
+                font-size:200px;
+            }
+            font-size:300px;
             font-weight:300;
             line-height: 1;
         }
@@ -139,3 +139,19 @@
 }
 
 .background {	@include filteredBackground("../images/backgrounds/dscovr2.jpg"); }
+
+#home {
+
+    .app-description {
+        padding:0 10px;
+    }
+
+    p {
+        font-size:16px;
+        line-height:1.6;
+
+        @include gridle(small) {
+            font-size:14px;
+        }
+    }
+}

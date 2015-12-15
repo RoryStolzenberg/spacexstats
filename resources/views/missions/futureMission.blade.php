@@ -84,28 +84,7 @@
                         <span>@{{ webcast.publicStatus }}</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">@{{ webcast.publicViewers }}</span>
                     </div>
 
-                    <div class="display-date-time">
-                        <div class="launch" ng-mouseover="showingTimezoneOptions = true" ng-mouseleave="showingTimezoneOptions = false">
-                            <p>@{{ displayDateTime() }}</p>
-                            <div class="timezone-clip">
-                                <ul class="timezone-list" ng-if="isLaunchExact == true" ng-show="showingTimezoneOptions">
-                                    <li class="timezone-option" ng-click="setTimezone('local')" ng-class="{ 'active': currentTimezone == null }">
-                                        Local (@{{ localTimezone }})
-                                    </li>
-                                    <li class="timezone-option" ng-click="setTimezone('ET')" ng-class="{ 'active': currentTimezone == 'EST' || currentTimezone == 'EDT' }">
-                                        Eastern
-                                    </li>
-                                    <li class="timezone-option" ng-click="setTimezone('PT')" ng-class="{ 'active': currentTimezone == 'PST' || currentTimezone == 'PDT' }">
-                                        Pacific
-                                    </li>
-                                    <li class="timezone-option" ng-click="setTimezone('UTC')" ng-class="{ 'active': currentTimezone == 'UTC' }">
-                                        UTC
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
+                    <launch-date is-launch-exact="isLaunchExact" launch-date-time="launchDateTime"></launch-date>
                 </section>
 
                 <section class="hero scrollto" id="countdown">
