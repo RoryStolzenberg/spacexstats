@@ -55,7 +55,7 @@ class QuestionUpdaterCommand extends Command
 
         foreach($this->faqPages as $faqPage) {
             $wikipage = $reddit->subreddit('spacex')->wikiPage('/faq/' . $faqPage);
-            $contents = str_replace("\r\n", "", $wikipage->data->content_md);
+            $contents = $wikipage->data->content_md;
 
             $rawQuestions = explode('###', $contents);
 
@@ -65,7 +65,7 @@ class QuestionUpdaterCommand extends Command
                     $questionParts = explode('?', $rawQuestion);
 
                     Question::create(array(
-                        'question'  => $questionParts[0],
+                        'question'  => $questionParts[0] . '?',
                         'answer'    => $questionParts[1],
                         'type'      => $faqPage
                     ));
