@@ -48,13 +48,14 @@
             $http.get('/missions/' + $scope.missionSlug + '/launchdatetime')
                 .then(function(response) {
                     // If there has been a change in the launch datetime, update
-                    if ($scope.launchDateTime !== response.data.launchDateTime) {
-                        $scope.launchDateTime = moment.utc(response.data.launchDateTime);
-                        $scope.launchSpecificity = response.data.launchSpecificity;
-                        $scope.isLaunchPaused = response.data.launchPaused;
+                        if (!$scope.launchDateTime.isSame(moment.utc(response.data.launchDateTime))) {
 
-                        flashMessage.addOK('Launch time updated!');
-                    }
+                            $scope.launchDateTime = moment.utc(response.data.launchDateTime);
+                            $scope.launchSpecificity = response.data.launchSpecificity;
+                            $scope.isLaunchPaused = response.data.launchPaused;
+                            flashMessage.addOK('Launch time updated!');
+                            
+                        }
                 });
         };
 

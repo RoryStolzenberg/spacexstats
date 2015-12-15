@@ -152,6 +152,7 @@ body.future-mission .highlights {
         line-height:30px;
         color:$white;
         transform:translateY(0);
+        z-index:1000;
         @include transitionMed(transform);
 
         &.ng-hide {
