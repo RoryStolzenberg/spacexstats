@@ -48,8 +48,7 @@ php artisan db:seed
 
 echo "[6/7] Setting up Node.js server"
 # --no-bin-links is not required if you are not using Vagrant for Windows
-npm install socket.io ioredis express cors --save --no-bin-links
-npm install -g forever
+npm install -g --save --no-bin-links
 forever start socket.js
 
 echo "[7/7] Creating queue listeners"
