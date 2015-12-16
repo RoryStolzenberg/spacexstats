@@ -162,7 +162,7 @@ class StatisticResultBuilder {
 			// FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
 			return PartFlight::select(DB::raw('ROUND(100 - (SUM(part_flights_pivot.firststage_engine_failures) / (COUNT(part_flights_pivot.mission_id) * 9) * 100)) AS success_rate'))
 				->whereHas('mission', function($query) {
-					$query->where('status', 'Complete')->where
+					$query->whereComplete()->whereSpecificVehicle(['Falcon 9 v1.1', 'Falcon 9 v1.2']);
 				})
 				->first()->success_rate;
 		}
