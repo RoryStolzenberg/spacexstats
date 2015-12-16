@@ -321,7 +321,7 @@
                         </div>
                     </div>
 
-                    <p class="exclaim" ng-show="updates.length == 0">No updates :(</p>
+                    <p class="exclaim" ng-if="updates.length == 0">No updates :(</p>
                 </div>
 
                 <aside class="gr-3">

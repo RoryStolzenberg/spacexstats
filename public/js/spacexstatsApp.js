@@ -3277,7 +3277,7 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('launch-date', ['$interval', function($interval) {
+    app.directive('launchDate', ['$interval', function($interval) {
         return {
             restrict: 'E',
             scope: {
