@@ -2,6 +2,7 @@
 namespace SpaceXStats\Composers;
 
 use SpaceXStats\Models\Mission;
+use Illuminate\Support\Facades\Cache;
 
 class HeaderComposer {
 	public function compose($view) {

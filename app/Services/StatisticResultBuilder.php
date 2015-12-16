@@ -4,6 +4,7 @@ namespace SpaceXStats\Services;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use SpaceXStats\Library\Enums\Destination;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Models\Mission;
