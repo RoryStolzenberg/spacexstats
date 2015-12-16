@@ -84,7 +84,7 @@ class LiveController extends Controller {
 
         // Potentially update the live status if it is not null
         if (!is_null(Input::get('messageType'))) {
-            if (in_array(Input::get('messageType'), ['holdAbort', 'terminalCount', 'liftoff', 'missionSuccess', 'missionFailure'])) {
+            if (in_array(Input::get('messageType'), ['holdAbort', 'terminalCount', 'inProgress', 'missionSuccess', 'missionFailure'])) {
                 Redis::set('live:status', Input::get('messageType'));
             }
         }

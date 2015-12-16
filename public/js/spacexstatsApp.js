@@ -797,7 +797,7 @@
             cannedResponses: {
                 holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
                 terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
-                liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
+                inProgress: laravel.cannedResponses ? laravel.cannedResponses.inProgress : null,
                 maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
                 MECO: laravel.cannedResponses ? laravel.cannedResponses.MECO : null,
                 stageSep: laravel.cannedResponses ? laravel.cannedResponses.stageSep : null,
