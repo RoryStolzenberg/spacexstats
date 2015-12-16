@@ -19,7 +19,9 @@ To watch the launch live, pick your preferred streaming provider from the table 
 |--- | --- |
 @if (isset($updates))
 @for($i = 0; $i <= 50; $i++)
+@if (array_key_exists($i, $updates))
 | {{ $updates[$i]->timestamp }} | {{ $updates[$i]->update }} |
+@endif
 @endfor
 @endif
 
