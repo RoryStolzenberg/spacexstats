@@ -8,9 +8,9 @@ To watch the launch live, pick your preferred streaming provider from the table 
 
 | [SpaceX Stats Live (Webcast + Live Updates)](https://spacexstats.com/live) |
 | --- |
-| [SpaceX Livestream](https://livestream.com/spacex) |
-@if (json_decode(\Redis::hget('live:streams', 'spacex'))->videoId != null)
-| [SpaceX YouTube](https://youtube.com/watch?v={{ json_decode(\Redis::hget('live:streams', 'spacex'))->videoId }}
+| [SpaceX Livestream (Webcast)](https://livestream.com/spacex) |
+@if (isset(json_decode(\Redis::hget('live:streams', 'spacex'))->youtubeVideoId))
+| [SpaceX YouTube](https://youtube.com/watch?v={{ json_decode(\Redis::hget('live:streams', 'spacex'))->youtubeVideoId }}
 @endif
 
 ### Official Live Updates
