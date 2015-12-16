@@ -884,7 +884,7 @@
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
-            if (data.liveUpdate.updateType !== null) {
+            if (["upcoming", "holdAbort", "terminalCount", "inProgress", "missionSuccess", "missionFailure"].indexOf(data.liveUpdate.updateType) !== -1) {
                 // Take the camelCased update type and transform it to Human Readable Case
                 $scope.liveParameters.status.text = data.liveUpdate.updateType.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
             }

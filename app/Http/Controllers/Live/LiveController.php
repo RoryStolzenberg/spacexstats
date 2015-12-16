@@ -265,7 +265,7 @@ class LiveController extends Controller {
         Redis::hmset('live:cannedResponses', [
             'holdAbort' => 'HOLD HOLD HOLD. The countdown has been aborted.',
             'terminalCount' => 'Terminal count has now begun. From this point forward, any scrubs will result in a recycle to T-10 minutes.',
-            'liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
+            'inProgress' => 'Liftoff of ' . Mission::future()->first()->name . '!',
             'maxQ' => 'MaxQ, at this point in flight, the vehicle is flying through maximum aerodynamic pressure.',
             'MECO' => "MECO! The vehicle's first stage engines have shutdown in preparation for stage separation.",
             'stageSep' => 'Stage separation confirmed.',
