@@ -96,10 +96,10 @@
                         }
 
                         // Generators
-                        core.xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
+                        core.xAxisGenerator = d3.svg.axis().scale(core.xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
                             return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
                         });
-                        core.yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
+                        core.yAxisGenerator = d3.svg.axis().scale(core.yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
                             return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
                         });
 

@@ -1,4 +1,70 @@
 (function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            computeStayTime(message);
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, computeStayTime());
+        };
+
+        this.addError = function(message) {
+
+            computeStayTime(message);
+
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, computeStayTime());
+        };
+
+        var computeStayTime = function(message) {
+            // Avg characters per word: 5.1
+            // Avg reading speed of 200 wpm:
+            //var totalChara
+            return 3000;
+        };
+    });
+})();
+
+
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('missionDataService', ["$http", function($http) {
+        this.telemetry = function(slug) {
+            return $http.get('/missions/'+ slug + '/telemetry');
+        };
+
+        this.orbitalElements = function(slug) {
+            return $http.get('/missions/' + slug + '/orbitalelements').then(function(response) {
+                // premap the dates of the timestamps because otherwise we'll do it too many times
+                if (response.data === Array) {
+                    return response.data.map(function(orbitalElement) {
+                        orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
+                        return orbitalElement;
+                    });
+                }
+            });
+        };
+
+        this.launchEvents = function(slug) {
+            return $http.get('/missions/' + slug + '/launchevents');
+        }
+    }]);
+})();
+
+(function() {
     var aboutMissionControlApp = angular.module('app', ['credit-cards']);
 
     aboutMissionControlApp.controller("subscriptionController", ["$scope", "subscriptionService", function($scope, subscriptionService) {
@@ -2502,84 +2568,6 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            computeStayTime(message);
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, computeStayTime());
-        };
-
-        this.addError = function(message) {
-
-            computeStayTime(message);
-
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, computeStayTime());
-        };
-
-        var computeStayTime = function(message) {
-            // Avg characters per word: 5.1
-            // Avg reading speed of 200 wpm:
-            //var totalChara
-            return 3000;
-        };
-    });
-})();
-
-
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('missionDataService', ["$http", function($http) {
-        this.telemetry = function(slug) {
-            return $http.get('/missions/'+ slug + '/telemetry');
-        };
-
-        this.orbitalElements = function(slug) {
-            return $http.get('/missions/' + slug + '/orbitalelements').then(function(response) {
-                // premap the dates of the timestamps because otherwise we'll do it too many times
-                if (response.data === Array) {
-                    return response.data.map(function(orbitalElement) {
-                        orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
-                        return orbitalElement;
-                    });
-                }
-            });
-        };
-
-        this.launchEvents = function(slug) {
-            return $http.get('/missions/' + slug + '/launchevents');
-        }
-    }]);
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
-})();
-(function() {
     var app = angular.module('app');
 
     app.directive('chart', ["$window", function($window) {
@@ -2677,10 +2665,10 @@
                         }
 
                         // Generators
-                        core.xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
+                        core.xAxisGenerator = d3.svg.axis().scale(core.xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
                             return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
                         });
-                        core.yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
+                        core.yAxisGenerator = d3.svg.axis().scale(core.yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
                             return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
                         });
 
@@ -3033,6 +3021,170 @@
         }
     });
 })();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
+        return {
+            restrict: 'E',
+            scope: {
+                isLaunchExact: '=',
+                launchDateTime: '='
+            },
+            link: function($scope, elem, attrs) {
+                /*
+                 *   Timezone stuff.
+                 */
+                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
+                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
+                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
+                $scope.currentTimezone;
+                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+
+                $scope.setTimezone = function(timezoneToSet) {
+                    if (timezoneToSet === 'local') {
+                        $scope.currentTimezone = null;
+                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+                    } else if (timezoneToSet === 'ET') {
+                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
+                        $scope.currentTimezoneFormatted = 'Eastern';
+                    } else if (timezoneToSet === 'PT') {
+                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
+                        $scope.currentTimezoneFormatted = 'Pacific';
+                    } else {
+                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
+                    }
+                };
+
+                $scope.displayDateTime = function() {
+                    if ($scope.isLaunchExact) {
+                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
+                    } else {
+                        return $scope.launchDateTime;
+                    }
+
+                };
+            },
+            templateUrl: '/js/templates/launchDate.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.search = {
+                    name: ''
+                };
+
+                $scope.thumbnails = angular.isDefined($scope.imageKey);
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option[$scope.imageKey]
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = '';
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
+        }
+    });
+})();
 (function() {
     var app = angular.module('app');
 
@@ -3233,170 +3385,6 @@
                 }
             },
             templateUrl: '/js/templates/deltaV.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.search = {
-                    name: ''
-                };
-
-                $scope.thumbnails = angular.isDefined($scope.imageKey);
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option[$scope.imageKey]
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = '';
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
-        return {
-            restrict: 'E',
-            scope: {
-                isLaunchExact: '=',
-                launchDateTime: '='
-            },
-            link: function($scope, elem, attrs) {
-                /*
-                 *   Timezone stuff.
-                 */
-                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
-                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
-                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
-                $scope.currentTimezone;
-                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
-
-                $scope.setTimezone = function(timezoneToSet) {
-                    if (timezoneToSet === 'local') {
-                        $scope.currentTimezone = null;
-                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
-                    } else if (timezoneToSet === 'ET') {
-                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
-                        $scope.currentTimezoneFormatted = 'Eastern';
-                    } else if (timezoneToSet === 'PT') {
-                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
-                        $scope.currentTimezoneFormatted = 'Pacific';
-                    } else {
-                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
-                    }
-                };
-
-                $scope.displayDateTime = function() {
-                    if ($scope.isLaunchExact) {
-                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
-                    } else {
-                        return $scope.launchDateTime;
-                    }
-
-                };
-            },
-            templateUrl: '/js/templates/launchDate.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
         }
     });
 })();
@@ -3802,6 +3790,131 @@
 (function() {
     var app = angular.module('app', []);
 
+    app.directive('timeline', ["missionDataService", function(missionDataService) {
+        return {
+            restrict: 'E',
+            scope: {
+                mission: '='
+            },
+            link: function(scope, element, attributes) {
+                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
+
+                    var timespans = {
+                        ONE_YEAR: 365 * 86400,
+                        SIX_MONTHS: 6 * 30 * 86400,
+                        ONE_MONTH: 30 * 86400
+                    };
+
+                    scope.launchEvents = response.data.map(function(launchEvent) {
+                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
+                        return launchEvent;
+                    });
+
+                    if (scope.mission.status == 'Complete') {
+                        scope.launchEvents.push({
+                            'event': 'Launch',
+                            'occurred_at': moment.utc(scope.mission.launch_date_time)
+                        });
+                    }
+
+                    // Add 10% to the minimum and maximum dates
+                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
+                    var dates = {
+                        min: moment(scope.launchEvents[0].occurred_at).subtract(timespan / 10, 'seconds').toDate(),
+                        max: moment(scope.launchEvents[scope.launchEvents.length-1].occurred_at).add(timespan / 10, 'seconds').toDate()
+                    };
+
+                    var elem = $(element).find('svg');
+
+                    var svg = d3.select(elem[0]).data(scope.launchEvents);
+
+                    var xScale = d3.time.scale.utc()
+                        .domain([dates.min, dates.max])
+                        .range([0, $(elem[0]).width()]);
+
+                    // Determine ticks to use
+                    if (timespan > timespans.ONE_YEAR) {
+                        var preferredTick = {
+                            frequency: d3.time.month,
+                            format: d3.time.format("%b %Y")
+                        };
+                    } else if (timespan > timespans.SIX_MONTHS) {
+                        var preferredTick = {
+                            frequency: d3.time.month,
+                            format: d3.time.format("%b %Y")
+                        };
+                    } else if (timespan > timespans.ONE_MONTH) {
+                        var preferredTick = {
+                            frequency: d3.time.week,
+                            format: d3.time.format("%e %b")
+                        };
+                    } else {
+                        var preferredTick = {
+                            frequency: d3.time.day,
+                            format: d3.time.format("%e %b")
+                        };
+                    }
+
+                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom')
+                        .ticks(preferredTick.frequency, 1)
+                        .tickFormat(preferredTick.format)
+                        .tickPadding(25);
+
+                    var axis = svg.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + 3 * $(elem[0]).height() / 4 + ")")
+                        .call(xAxisGenerator);
+
+                    var tip = d3.tip().attr('class', 'tip').html(function(d) {
+                        return d.event;
+                    }).offset([0, -20]);
+
+                    var g = svg.append("g")
+                        .attr("transform", "translate(0," + 3 * $(elem[0]).height() / 4 + ")")
+                        .selectAll("circle")
+                        .data(scope.launchEvents.map(function(launchEvent) {
+                            launchEvent.occurred_at.toDate();
+                            return launchEvent;
+                        }))
+                        .enter().append("circle")
+                        .attr("r", 20)
+                        .attr('class', function(d) {
+                            return d.event.toLowerCase().replace(/\s/g, "-");
+                        })
+                        .classed('event', true)
+                        .attr("cx", function(d) { return xScale(d.occurred_at); })
+                        .call(tip)
+                        .on("mouseover", function(d) {
+
+                            d3.selectAll('.event').transition()
+                                .attr('opacity', 0);
+
+                            d3.select(this).transition()
+                                .attr('opacity', 1)
+                                .attr("transform", "translate(-"+ d3.select(this).attr('cx') * (1.5-1) + ",-0) scale(1.5, 1.5)");
+                            tip.show(d);
+                        })
+                        .on("mouseout", function(d) {
+
+                            d3.selectAll('.event').transition()
+                                .attr("transform", "translate(0,0) scale(1,1)")
+                                .attr('opacity', 1);
+                            tip.hide(d);
+                        });
+
+                    // replace tick lines with circles
+                    var ticks = axis.selectAll(".tick");
+                    ticks.each(function() { d3.select(this).append("circle").attr("r", 3); });
+                    ticks.selectAll("line").remove();
+                });
+            },
+            templateUrl: '/js/templates/timeline.html'
+        };
+    }]);
+})();
+(function() {
+    var app = angular.module('app', []);
+
     app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
             require: 'ngModel',
@@ -3927,131 +4040,6 @@
 
 
 (function() {
-    var app = angular.module('app', []);
-
-    app.directive('timeline', ["missionDataService", function(missionDataService) {
-        return {
-            restrict: 'E',
-            scope: {
-                mission: '='
-            },
-            link: function(scope, element, attributes) {
-                missionDataService.launchEvents(scope.mission.slug).then(function(response) {
-
-                    var timespans = {
-                        ONE_YEAR: 365 * 86400,
-                        SIX_MONTHS: 6 * 30 * 86400,
-                        ONE_MONTH: 30 * 86400
-                    };
-
-                    scope.launchEvents = response.data.map(function(launchEvent) {
-                        launchEvent.occurred_at = moment.utc(launchEvent.occurred_at);
-                        return launchEvent;
-                    });
-
-                    if (scope.mission.status == 'Complete') {
-                        scope.launchEvents.push({
-                            'event': 'Launch',
-                            'occurred_at': moment.utc(scope.mission.launch_date_time)
-                        });
-                    }
-
-                    // Add 10% to the minimum and maximum dates
-                    var timespan = Math.abs(scope.launchEvents[0].occurred_at.diff(scope.launchEvents[scope.launchEvents.length-1].occurred_at, 'seconds'));
-                    var dates = {
-                        min: moment(scope.launchEvents[0].occurred_at).subtract(timespan / 10, 'seconds').toDate(),
-                        max: moment(scope.launchEvents[scope.launchEvents.length-1].occurred_at).add(timespan / 10, 'seconds').toDate()
-                    };
-
-                    var elem = $(element).find('svg');
-
-                    var svg = d3.select(elem[0]).data(scope.launchEvents);
-
-                    var xScale = d3.time.scale.utc()
-                        .domain([dates.min, dates.max])
-                        .range([0, $(elem[0]).width()]);
-
-                    // Determine ticks to use
-                    if (timespan > timespans.ONE_YEAR) {
-                        var preferredTick = {
-                            frequency: d3.time.month,
-                            format: d3.time.format("%b %Y")
-                        };
-                    } else if (timespan > timespans.SIX_MONTHS) {
-                        var preferredTick = {
-                            frequency: d3.time.month,
-                            format: d3.time.format("%b %Y")
-                        };
-                    } else if (timespan > timespans.ONE_MONTH) {
-                        var preferredTick = {
-                            frequency: d3.time.week,
-                            format: d3.time.format("%e %b")
-                        };
-                    } else {
-                        var preferredTick = {
-                            frequency: d3.time.day,
-                            format: d3.time.format("%e %b")
-                        };
-                    }
-
-                    var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom')
-                        .ticks(preferredTick.frequency, 1)
-                        .tickFormat(preferredTick.format)
-                        .tickPadding(25);
-
-                    var axis = svg.append("svg:g")
-                        .attr("class", "x axis")
-                        .attr("transform", "translate(0," + 3 * $(elem[0]).height() / 4 + ")")
-                        .call(xAxisGenerator);
-
-                    var tip = d3.tip().attr('class', 'tip').html(function(d) {
-                        return d.event;
-                    }).offset([0, -20]);
-
-                    var g = svg.append("g")
-                        .attr("transform", "translate(0," + 3 * $(elem[0]).height() / 4 + ")")
-                        .selectAll("circle")
-                        .data(scope.launchEvents.map(function(launchEvent) {
-                            launchEvent.occurred_at.toDate();
-                            return launchEvent;
-                        }))
-                        .enter().append("circle")
-                        .attr("r", 20)
-                        .attr('class', function(d) {
-                            return d.event.toLowerCase().replace(/\s/g, "-");
-                        })
-                        .classed('event', true)
-                        .attr("cx", function(d) { return xScale(d.occurred_at); })
-                        .call(tip)
-                        .on("mouseover", function(d) {
-
-                            d3.selectAll('.event').transition()
-                                .attr('opacity', 0);
-
-                            d3.select(this).transition()
-                                .attr('opacity', 1)
-                                .attr("transform", "translate(-"+ d3.select(this).attr('cx') * (1.5-1) + ",-0) scale(1.5, 1.5)");
-                            tip.show(d);
-                        })
-                        .on("mouseout", function(d) {
-
-                            d3.selectAll('.event').transition()
-                                .attr("transform", "translate(0,0) scale(1,1)")
-                                .attr('opacity', 1);
-                            tip.hide(d);
-                        });
-
-                    // replace tick lines with circles
-                    var ticks = axis.selectAll(".tick");
-                    ticks.each(function() { d3.select(this).append("circle").attr("r", 3); });
-                    ticks.selectAll("line").remove();
-                });
-            },
-            templateUrl: '/js/templates/timeline.html'
-        };
-    }]);
-})();
-(function() {
     var app = angular.module('app');
 
     app.directive('tweet', ["$http", function($http) {
@@ -4164,4 +4152,16 @@
             }
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
 })();

@@ -139,7 +139,7 @@ class StatisticResultBuilder {
 			})->count() * 9;
         }
 
-		if ($substatistic === 'Flight Time') {
+		if ($substatistic === 'M1D Flight Time') {
 			// SELECT SUM(vehicles.firststage_meco) AS flight_time FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
 			$seconds = Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first()->flight_time;
 
