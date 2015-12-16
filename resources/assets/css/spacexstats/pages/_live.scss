@@ -44,19 +44,23 @@ body.live {
             background-color:$grey;
         }
 
-        &.terminalcount {
+        &.hold-abort {
+            color:#8F6481;
+        }
+
+        &.terminal-count {
             background-color:$october;
         }
 
-        &.inprogress {
+        &.in-progress {
             background-color:$gold;
         }
 
-        &.missionsuccess {
+        &.mission-success {
             background-color:$green;
         }
 
-        &.missionfailure {
+        &.mission-failure {
             background-color:$red;
         }
     }
