@@ -168,7 +168,7 @@
                         chartTitle: ''
                     }
                 }
-
+                
                 self.substatistics.push(substatistic);
             });
 
