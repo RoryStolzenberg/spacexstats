@@ -96,7 +96,7 @@
                     </countdown>
                 </div>
 
-                <chart ng-if="substatistic.display == 'chart'" data="substatistic.result" settings="substatistic.settings" type="bar"></chart>
+                <chart ng-if="substatistic.display == 'barchart'" data="substatistic.result" settings="substatistic.settings" type="bar"></chart>
             </div>
 
             <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>
