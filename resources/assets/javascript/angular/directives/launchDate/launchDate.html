@@ -1,10 +1,10 @@
 <div class="display-date-time">
     <div class="launch" ng-mouseover="showingTimezoneOptions = true" ng-mouseleave="showingTimezoneOptions = false">
-        <p>@{{ displayDateTime() }}</p>
+        <p>{{ displayDateTime() }}</p>
         <div class="timezone-clip">
             <ul class="timezone-list" ng-if="isLaunchExact == true" ng-show="showingTimezoneOptions">
                 <li class="timezone-option" ng-click="setTimezone('local')" ng-class="{ 'active': currentTimezone == null }">
-                    Local (@{{ localTimezone }})
+                    Local ({{ localTimezone }})
                 </li>
                 <li class="timezone-option" ng-click="setTimezone('ET')" ng-class="{ 'active': currentTimezone == 'EST' || currentTimezone == 'EDT' }">
                     Eastern
