@@ -738,7 +738,7 @@
                     isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
                     youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
                     videoLink: function() {
-                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?VQ=HD720&rel=0&autoplay=1';
+                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?rel=0&autoplay=1';
                     },
                     isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
                 },
@@ -754,10 +754,10 @@
             sections: laravel.sections ? laravel.sections : [],
             resources: laravel.resources ? laravel.resources : [],
             status: {
-                text: laravel.status.text ? laravel.status.text.replace(/([A-Z])/g, ' $1') : 'Upcoming',
+                text: laravel.status.text ? laravel.status.text.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); }) : 'Upcoming',
                 class: function() {
                     if ($scope.liveParameters.status.text) {
-                        return $scope.liveParameters.status.text.toLowerCase().replace(/\s/g, "-");
+                        return $scope.liveParameters.status.text.toLowerCase().replace(/\s+/g, "-");
                     }
                 }
             }
@@ -795,16 +795,16 @@
 
         $scope.buttons = {
             cannedResponses: {
-                HoldAbort: laravel.cannedResponses ? laravel.cannedResponses.HoldAbort : null,
-                TerminalCount: laravel.cannedResponses ? laravel.cannedResponses.TerminalCount : null,
-                Liftoff: laravel.cannedResponses ? laravel.cannedResponses.Liftoff : null,
-                MaxQ: laravel.cannedResponses ? laravel.cannedResponses.MaxQ : null,
+                holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
+                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
+                liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
+                maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
                 MECO: laravel.cannedResponses ? laravel.cannedResponses.MECO : null,
-                StageSep: laravel.cannedResponses ? laravel.cannedResponses.StageSep : null,
-                MVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.MVacIgnition : null,
+                stageSep: laravel.cannedResponses ? laravel.cannedResponses.stageSep : null,
+                mVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.mVacIgnition : null,
                 SECO: laravel.cannedResponses ? laravel.cannedResponses.SECO : null,
-                MissionSuccess: laravel.cannedResponses ? laravel.cannedResponses.MissionSuccess : null,
-                MissionFailure: laravel.cannedResponses ? laravel.cannedResponses.MissionFailure : null
+                missionSuccess: laravel.cannedResponses ? laravel.cannedResponses.missionSuccess : null,
+                missionFailure: laravel.cannedResponses ? laravel.cannedResponses.missionFailure : null
             },
             isUnlocked: {},
             click: function(messageType, form) {
@@ -884,7 +884,8 @@
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveUpdateCreatedEvent', function(data) {
             $scope.updates.push(new Update(data.liveUpdate));
             if (data.liveUpdate.updateType !== null) {
-                $scope.liveParameters.status.text = data.liveUpdate.updateType.replace(/([A-Z])/g, ' $1');
+                // Take the camelCased update type and transform it to Human Readable Case
+                $scope.liveParameters.status.text = data.liveUpdate.updateType.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
             }
             $scope.$apply();
         });
