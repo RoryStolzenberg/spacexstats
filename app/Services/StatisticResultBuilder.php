@@ -135,13 +135,13 @@ class StatisticResultBuilder {
 	public static function engines($substatistic) {
         if ($substatistic === 'Flown') {
             return PartFlight::whereHas('mission', function($q) {
-				$q->whereSpecificVehicle('Falcon 9 v1.1');
+				$q->whereSpecificVehicle(['Falcon 9 v1.1', 'Falcon 9 v1.2'])->where('status', 'Complete');
 			})->count() * 9;
         }
 
 		if ($substatistic === 'Flight Time') {
 			// SELECT SUM(vehicles.firststage_meco) AS flight_time FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
-			$seconds = Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first();
+			$seconds = Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first()->flight_time;
 
 			$stat[0] = floor($seconds / (60 * 60 * 24));
 			$seconds -= $stat[0] * 60 * 60 * 24;
@@ -161,7 +161,10 @@ class StatisticResultBuilder {
 			// SELECT SUM(vehicles.firststage_engine_failures) AS engine_failures, ROUND(100 - (SUM(vehicles.firststage_engine_failures) / (COUNT(vehicles.vehicle_id) * 9) * 100)) AS success_rate 
 			// FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
 			return PartFlight::select(DB::raw('ROUND(100 - (SUM(part_flights_pivot.firststage_engine_failures) / (COUNT(part_flights_pivot.mission_id) * 9) * 100)) AS success_rate'))
-				->where('missions.status','Complete')->join('missions','missions.mission_id','=','part_flights_pivot.mission_id')->first()->success_rate;
+				->whereHas('mission', function($query) {
+					$query->where('status', 'Complete')->where
+				})
+				->first()->success_rate;
 		}
 	}
 
