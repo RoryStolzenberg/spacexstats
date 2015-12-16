@@ -172,16 +172,16 @@
 
         $scope.buttons = {
             cannedResponses: {
-                holdAbort: laravel.cannedResponses ? laravel.cannedResponses.HoldAbort : null,
-                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.TerminalCount : null,
-                liftoff: laravel.cannedResponses ? laravel.cannedResponses.Liftoff : null,
-                maxQ: laravel.cannedResponses ? laravel.cannedResponses.MaxQ : null,
+                holdAbort: laravel.cannedResponses ? laravel.cannedResponses.holdAbort : null,
+                terminalCount: laravel.cannedResponses ? laravel.cannedResponses.terminalCount : null,
+                liftoff: laravel.cannedResponses ? laravel.cannedResponses.liftoff : null,
+                maxQ: laravel.cannedResponses ? laravel.cannedResponses.maxQ : null,
                 MECO: laravel.cannedResponses ? laravel.cannedResponses.MECO : null,
-                stageSep: laravel.cannedResponses ? laravel.cannedResponses.StageSep : null,
-                mVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.MVacIgnition : null,
+                stageSep: laravel.cannedResponses ? laravel.cannedResponses.stageSep : null,
+                mVacIgnition: laravel.cannedResponses ? laravel.cannedResponses.mVacIgnition : null,
                 SECO: laravel.cannedResponses ? laravel.cannedResponses.SECO : null,
-                missionSuccess: laravel.cannedResponses ? laravel.cannedResponses.MissionSuccess : null,
-                missionFailure: laravel.cannedResponses ? laravel.cannedResponses.MissionFailure : null
+                missionSuccess: laravel.cannedResponses ? laravel.cannedResponses.missionSuccess : null,
+                missionFailure: laravel.cannedResponses ? laravel.cannedResponses.missionFailure : null
             },
             isUnlocked: {},
             click: function(messageType, form) {
