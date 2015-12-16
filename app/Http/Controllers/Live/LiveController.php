@@ -263,16 +263,16 @@ class LiveController extends Controller {
 
         // Create the canned responses
         Redis::hmset('live:cannedResponses', [
-            'HoldAbort' => 'HOLD HOLD HOLD',
-            'TerminalCount' => 'Terminal count has now begun.',
-            'Liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
-            'MaxQ' => 'MaxQ, at this point in flight maximum aerodynamic pressure on the vehicle is occurring.',
-            'MECO' => 'MECO! Main Engine Cutoff. The vehicles first stage engines have shutdown in preparation for stage separation.',
-            'StageSep' => 'Stage separation confirmed.',
-            'MVacIgnition' => "Falcon's upper stage engine has ignited.",
-            'SECO' => 'SECO! Second Stage Engine Cutoff. Falcon is now in orbit.',
-            'MissionSuccess' => 'Success! SpaceX has completed another successful mission.',
-            'MissionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
+            'holdAbort' => 'HOLD HOLD HOLD. The countdown has been aborted.',
+            'terminalCount' => 'Terminal count has now begun. From this point forward, any scrubs will result in a recycle to T-10 minutes.',
+            'liftoff' => 'Liftoff of ' . Mission::future()->first()->name . '!',
+            'maxQ' => 'MaxQ, at this point in flight, the vehicle is flying through maximum aerodynamic pressure.',
+            'MECO' => "MECO! The vehicle's first stage engines have shutdown in preparation for stage separation.",
+            'stageSep' => 'Stage separation confirmed.',
+            'mVacIgnition' => "Falcon's upper stage Merlin Vacuum engine has ignited for the ride to orbit.",
+            'SECO' => 'SECO! Falcon is now in orbit!',
+            'missionSuccess' => 'Success! SpaceX has completed another successful mission!',
+            'missionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
         ]);
 
         // Render the Reddit thread template

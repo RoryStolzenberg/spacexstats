@@ -44,19 +44,19 @@ body.live {
             background-color:$grey;
         }
 
-        &.terminal-count {
+        &.terminalcount {
             background-color:$october;
         }
 
-        &.in-progress {
+        &.inprogress {
             background-color:$gold;
         }
 
-        &.mission-success {
+        &.missionsuccess {
             background-color:$green;
         }
 
-        &.mission-failure {
+        &.missionfailure {
             background-color:$red;
         }
     }

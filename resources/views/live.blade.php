@@ -177,19 +177,19 @@
                             <ul>
                                 <li>
                                     <label for="holdAbort">Hold/Abort</label>
-                                    <textarea name="holdAbort" ng-model="buttons.cannedResponses.HoldAbort" required></textarea>
+                                    <textarea name="holdAbort" ng-model="buttons.cannedResponses.holdAbort" required></textarea>
                                 </li>
                                 <li>
                                     <label for="terminalCount">Terminal Count</label>
-                                    <textarea name="terminalCount" ng-model="buttons.cannedResponses.TerminalCount" required></textarea>
+                                    <textarea name="terminalCount" ng-model="buttons.cannedResponses.terminalCount" required></textarea>
                                 </li>
                                 <li>
                                     <label for="liftoff">Liftoff</label>
-                                    <textarea name="liftoff" ng-model="buttons.cannedResponses.Liftoff" required></textarea>
+                                    <textarea name="liftoff" ng-model="buttons.cannedResponses.liftoff" required></textarea>
                                 </li>
                                 <li>
                                     <label for="maxQ">Max-Q</label>
-                                    <textarea name="maxQ" ng-model="buttons.cannedResponses.MaxQ" required></textarea>
+                                    <textarea name="maxQ" ng-model="buttons.cannedResponses.maxQ" required></textarea>
                                 </li>
                                 <li>
                                     <label for="meco">MECO</label>
@@ -197,11 +197,11 @@
                                 </li>
                                 <li>
                                     <label for="stageSep">Stage Sep</label>
-                                    <textarea name="stageSep" ng-model="buttons.cannedResponses.StageSep" required></textarea>
+                                    <textarea name="stageSep" ng-model="buttons.cannedResponses.stageSep" required></textarea>
                                 </li>
                                 <li>
                                     <label for="mVacIgnition">mVac Ignition</label>
-                                    <textarea name="mVacIgnition" ng-model="buttons.cannedResponses.MVacIgnition" required></textarea>
+                                    <textarea name="mVacIgnition" ng-model="buttons.cannedResponses.mVacIgnition" required></textarea>
                                 </li>
                                 <li>
                                     <label for="seco">SECO</label>
@@ -209,11 +209,11 @@
                                 </li>
                                 <li>
                                     <label for="missionSuccess">Mission Success</label>
-                                    <textarea name="missionSuccess" ng-model="buttons.cannedResponses.MissionSuccess" required></textarea>
+                                    <textarea name="missionSuccess" ng-model="buttons.cannedResponses.missionSuccess" required></textarea>
                                 </li>
                                 <li>
                                     <label for="missionFailure">Mission Failure</label>
-                                    <textarea name="missionFailure" ng-model="buttons.cannedResponses.MissionFailure" required></textarea>
+                                    <textarea name="missionFailure" ng-model="buttons.cannedResponses.missionFailure" required></textarea>
                                 </li>
                             </ul>
                         </form>
