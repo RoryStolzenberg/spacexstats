@@ -17,13 +17,11 @@ To watch the launch live, pick your preferred streaming provider from the table 
 
 | Time | Update |
 |--- | --- |
-@if (isset($updates))
 @for($i = 0; $i <= 50; $i++)
-@if (array_key_exists($i, $updates))
+@if (isset($updates[$i]))
 | {{ $updates[$i]->timestamp }} | {{ $updates[$i]->update }} |
 @endif
 @endfor
-@endif
 
 @foreach(json_decode(\Redis::get('live:sections'), true) as $section)
 ### {{ $section['title'] }}
