@@ -466,7 +466,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 25,
-            'launch_exact' => Carbon::create(2015, 12, 19, 0, 0, 0),
+            'launch_exact' => Carbon::create(2015, 12, 20, 1, 25, 0),
             'launch_approximate' => null,
             'launch_specificity' => 6,
             'name' => 'Orbcomm OG2 Launch 2',
@@ -479,25 +479,9 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 26,
-            'launch_exact' => null,
-            'launch_approximate' => 'late December 2015',
-            'launch_specificity' => LaunchSpecificity::SubMonth,
-            'name' => 'SES-9',
-            'contractor' => 'SES',
-            'vehicle_id' => 4,
-            'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES's second launch",
-            'status' => MissionStatus::Upcoming
-        ]);
-
-
-        Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 27,
-            'launch_exact' => Carbon::create(2016, 1, 4, 0, 0, 0),
+            'launch_order_id' => 26,
+            'launch_exact' => Carbon::create(2016, 1, 17, 0, 0, 0),
             'launch_approximate' => null,
             'launch_specificity' => LaunchSpecificity::Day,
             'name' => 'Jason 3',
@@ -508,12 +492,28 @@ class MissionsTableSeeder extends Seeder {
             'summary' => "Launching Jason-3 to polar",
             'status' => MissionStatus::Upcoming
         ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 27,
+            'launch_exact' => null,
+            'launch_approximate' => 'Mid January 2015',
+            'launch_specificity' => LaunchSpecificity::SubMonth,
+            'name' => 'SES-9',
+            'contractor' => 'SES',
+            'vehicle_id' => 4,
+            'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'summary' => "SES's second launch",
+            'status' => MissionStatus::Upcoming
+        ]);
+
         // Ordered above
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 28,
             'launch_exact' => null,
-            'launch_approximate' => 'January 2016',
+            'launch_approximate' => 'February 2016',
             'launch_specificity' => LaunchSpecificity::Month,
             'name' => 'SpaceX CRS-8',
             'contractor' => 'NASA',

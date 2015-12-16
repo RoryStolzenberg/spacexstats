@@ -7,7 +7,8 @@
             restrict: 'E',
             scope: {
                 data: '=data',
-                settings: "="
+                settings: "=",
+                type: '@'
             },
             link: function($scope, elem, attrs) {
 
@@ -29,7 +30,11 @@
                     var width = elem.width();
                     var height = elem.height();
 
+                    // Settings for rendering the chart
                     var settings = $scope.settings;
+
+                    // Core information used to render the chart
+                    var core = {};
 
                     // create a reasonable set of defaults for some things
                     if (typeof settings.xAxis.ticks === 'undefined') {
@@ -44,7 +49,7 @@
                         settings.padding = 50;
                     }
 
-                    // extrapolate data
+                    // extrapolate data back to 0 point
                     if (settings.extrapolation === true) {
                         var originDatapoint = {};
                         originDatapoint[settings.xAxis.key] = 0;
@@ -54,21 +59,27 @@
                     }
 
                     // draw
-                    var drawLineChart = function() {
+                    if ($scope.type == 'bar') {
+                        drawBarChart();
+                    } else {
+                        drawLineChart();
+                    }
+
+                    function drawChart() {
                         // Setup scales
                         if (settings.xAxis.type == 'linear') {
-                            var xScale = d3.scale.linear()
+                            core.xScale = d3.scale.linear()
                                 .domain([0, data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
 
                         } else if (settings.xAxis.type == 'timescale') {
-                            var xScale = d3.time.scale.utc()
+                            core.xScale = d3.time.scale.utc()
                                 .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
                         }
 
                         if (settings.yAxis.type == 'linear') {
-                            var yScale = d3.scale.linear()
+                            core.yScale = d3.scale.linear()
                                 .domain([d3.max(data, function(d) {
                                     return d[settings.yAxis.key];
                                 }), d3.min(data, function(d) {
@@ -77,7 +88,7 @@
                                 .range([settings.padding, height - settings.padding]);
 
                         } else if (settings.yAxis.type == 'timescale') {
-                            var yScale = d3.time.scale.utc()
+                            core.yScale = d3.time.scale.utc()
                                 .domain([d3.max(data, function(d) {
                                     return d[settings.yAxis.key];
                                 }), 0])
@@ -85,42 +96,24 @@
                         }
 
                         // Generators
-                        var xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
+                        core.xAxisGenerator = d3.svg.axis().scale(xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
                             return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
                         });
-                        var yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
+                        core.yAxisGenerator = d3.svg.axis().scale(yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
                             return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
                         });
-
-                        // Line function
-                        var lineFunction = d3.svg.line()
-                            .x(function(d) {
-                                return xScale(d[settings.xAxis.key]);
-                            })
-                            .y(function(d) {
-                                return yScale(d[settings.yAxis.key]);
-                            })
-                            .interpolate(settings.interpolation);
 
                         // Element manipulation
                         svg.append("svg:g")
                             .attr("class", "x axis")
                             .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                            .call(xAxisGenerator);
+                            .call(core.xAxisGenerator);
 
                         svg.append("svg:g")
                             .attr("class", "y axis")
                             .attr("transform", "translate(" + settings.padding + ",0)")
                             .attr("stroke-width", 2)
-                            .call(yAxisGenerator);
-
-                        svg.append("svg:path")
-                            .attr({
-                                d: lineFunction(data),
-                                "stroke-width": 2,
-                                "fill": "none",
-                                "class": "path"
-                            });
+                            .call(core.yAxisGenerator);
 
                         svg.append("text")
                             .attr("class", "chart-title")
@@ -145,7 +138,46 @@
                             .text(settings.yAxis.title);
                     };
 
-                    drawLineChart();
+                    function drawBarChart() {
+                        drawChart();
+
+                        svg.selectAll("bar")
+                            .data(data)
+                            .enter().append("rect")
+                            .style("fill", "steelblue")
+                            .attr("x", function(d) {
+                                return core.xScale(d[settings.xAxis.key]);
+                            })
+                            .attr("width", core.xScale.rangeBand())
+                            .attr("y", function(d) {
+                                return core.yScale(d[settings.yAxis.key]);
+                            })
+                            .attr("height", function(d) {
+                                return height - core.yScale(d[settings.yAxis.key])
+                            });
+                    };
+
+                    function drawLineChart() {
+                        drawChart();
+
+                        // Line function
+                        var lineFunction = d3.svg.line()
+                            .x(function(d) {
+                                return core.xScale(d[settings.xAxis.key]);
+                            })
+                            .y(function(d) {
+                                return core.yScale(d[settings.yAxis.key]);
+                            })
+                            .interpolate(settings.interpolation);
+
+                        svg.append("svg:path")
+                            .attr({
+                                d: lineFunction(data),
+                                "stroke-width": 2,
+                                "fill": "none",
+                                "class": "path"
+                            });
+                    };
                 }
 
             },

@@ -151,6 +151,24 @@
                     self.camelCaseType = self.type.replace(/\W/g, "");
                 }
 
+                if (substatistic.display == 'chart') {
+                    substatistic.chartType = 'bar';
+                    substatistic.settings = {
+                        extrapolation: false,
+                        xAxis: {
+                            type: 'linear',
+                            key: 'year',
+                            title: 'Year'
+                        },
+                        yAxis: {
+                            type: 'linear',
+                            key: 'launches',
+                            title: 'Launches'
+                        },
+                        chartTitle: ''
+                    }
+                }
+
                 self.substatistics.push(substatistic);
             });
 

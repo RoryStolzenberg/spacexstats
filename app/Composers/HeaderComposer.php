@@ -6,13 +6,16 @@ use SpaceXStats\Models\Mission;
 class HeaderComposer {
 	public function compose($view) {
 
-        /* \Event::listen('illuminate.query', function($q) {
-			print_r($q);
-		});*/
+		$nearby = Cache::remember('nearbyMissions', 60, function() {
+			$nearby['past'] = Mission::past()->take(3)->get();
+			$nearby['future'] = Mission::future()->take(3)->get();
+
+			return $nearby;
+		});
 
 		$view->with('nearbyMissions', [
-			'past' => Mission::past()->take(3)->get(),
-			'future' => Mission::future()->take(3)->get()
+			'past' => $nearby['past'],
+			'future' => $nearby['future']
 		]);
 	}
 }

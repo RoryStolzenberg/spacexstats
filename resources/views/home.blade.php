@@ -95,6 +95,8 @@
                     <countdown countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic">
                     </countdown>
                 </div>
+
+                <chart data="substatistic.result" settings="substatistic.settings" type="bar"></chart>
             </div>
 
             <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>
