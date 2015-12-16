@@ -849,6 +849,7 @@
 
         // Websocket listeners
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveStartedEvent', function(data) {
+            console.log(data);
             $scope.isActive = true;
             $scope.liveParameters.description = data.data.description;
             $scope.liveParameters.sections = data.data.sections;
@@ -909,6 +910,7 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
+            console.log(data);
             $scope.liveParameters.streams.spacex.isActive = true;
             $scope.liveParameters.streams.spacex.youtubeVideoId = data.isActive ? data.videoId : null;
             $scope.$apply();
