@@ -66,7 +66,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Launches Per Year',
             'name' => 'Launches Per Year',
             'description' => "",
-            'display' => 'chart'
+            'display' => 'barchart'
         ));
 
         // Dragon
@@ -101,7 +101,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Dragon',
             'name' => 'Flight Time',
             'description' => "Shown above is a graph plotting individual mission flight time per each Dragon mission. Each vehicle stays berthed to the ISS for approximately 30 days, with crewed vehicles staying for up to 6 months.",
-            'display' => 'chart'
+            'display' => 'barchart'
         ));
 
         Statistic::create(array(
@@ -340,7 +340,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Turnarounds',
             'name' => 'Cumulative',
             'description' => "",
-            'display' => 'chart'
+            'display' => 'linechart'
         ));
 
         // Internet Constellaiton

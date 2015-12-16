@@ -151,7 +151,7 @@
                     self.camelCaseType = self.type.replace(/\W/g, "");
                 }
 
-                if (substatistic.display == 'chart') {
+                if (substatistic.display == 'barchart') {
                     substatistic.chartType = 'bar';
                     substatistic.settings = {
                         extrapolation: false,
@@ -168,7 +168,7 @@
                         chartTitle: ''
                     }
                 }
-                
+
                 self.substatistics.push(substatistic);
             });
 

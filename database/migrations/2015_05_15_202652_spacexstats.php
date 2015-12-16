@@ -500,7 +500,7 @@ class Spacexstats extends Migration {
             $table->string('name', Varchar::tiny);
             $table->string('unit', Varchar::tiny)->nullable();
             $table->string('description', Varchar::compact);
-            $table->enum('display', array('mission', 'single', 'double', 'count', 'interval', 'piechart', 'barchart'));
+            $table->enum('display', array('mission', 'single', 'double', 'count', 'interval', 'piechart', 'barchart', 'linechart'));
         });
 
         Schema::create('taggables_pivot', function(Blueprint $table) {
