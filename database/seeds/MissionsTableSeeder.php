@@ -272,7 +272,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => 'Third Dragon CRS mission to the ISS. First resupply utilizing a Falcon 9v1.1, allowing Dragon to carry a larger capacity of cargo.',
+            'summary' => "The third Dragon CRS mission to the ISS was the first to fly on a Falcon 9v1.1, giving Dragon a larger cargo capacity.",
             'article' => file_get_contents(base_path('resources/assets/documents/crs3.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -291,7 +291,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => 'A Falcon 9 flew the first 6 Orbcomm G2 satellites into a Low Earth Orbit as part of a multi-mission contract for the communications corporation.',
+            'summary' => "A Falcon 9 flew the first 6 Orbcomm G2 satellites of a constellation into  Low Earth Orbit as part of a multi-mission contract for the communications corporation.",
             'article' => file_get_contents(base_path('resources/assets/documents/orbcommog2launch1.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -310,7 +310,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => 'AsiaSat 8 is a communications satellite that Falcon 9 propelled into a GTO orbit, which also happened to be the largest satellite SpaceX had launched up to that point',
+            'summary' => "AsiaSat 8 was a communications satellite that Falcon 9 propelled into a GTO orbit, the largest satellite SpaceX had launched up to that point.",
             'article' => file_get_contents(base_path('resources/assets/documents/asiasat8.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -348,7 +348,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => 'Fourth of twelve Dragon ISS resupply missions. It is carrying over 5000 pounds to the station, including 20 mousetronauts, and the SpinSat satellite.',
+            'summary' => "The fourth of twelve Dragon ISS resupply missions, CRS-4 carried over 5000 pounds in cargo to the station- including 20 mousetronauts, and the SpinSat satellite.",
             'article' => file_get_contents(base_path('resources/assets/documents/crs4.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -367,7 +367,8 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => 'The fifth CRS mission to the ISS will carry pressurized and unpressurized cargo to the station. Secondary payloads include 2 small satellites to be deployed from the ISS airlock.', 'status' => MissionStatus::Complete,
+            'summary' => "The fifth CRS mission to the ISS will carried both pressurized and unpressurized cargo, including 2 small satellites that were deployed from the ISS airlock. This was also the first mission to attempt landing the first stage on a solid surace- the ASDS.",
+            'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=d8fad388-cdcd-442e-a1b0-a404ade89070&code=CRS5'
         ]);
@@ -384,7 +385,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::EarthSunL1)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => 'Falcon 9 lofted the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it functions as an Earth & Solar Observation satellite. The first stage was not able to attempt a barge landing, and instead splashed down in the Atlantic.',
+            'summary' => "Falcon 9 lofted the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it functions as an Earth & Solar Observation satellite. The first stage was not able to attempt a barge landing, and instead softly splashed down in the Atlantic.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=0248fc77-b30a-4e45-a55c-c8c6c2e2efba&code=DSCR'
@@ -402,7 +403,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => "This marked SpaceX's first dual comm. satellite launch, of Eutelsat 115W B & ABS-3A. The Boeing-built satellites use Solar Electric Propulsion, making it feasible to fit both on a single Falcon 9 and removing the need for weighty hydrazine fuel.",
+            'summary' => "This marked SpaceX's first dual communications satellite launch, of Eutelsat 115W B & ABS-3A. The Boeing-built satellites use solar electric propulsion, which made it feasible to fit both on a single Falcon 9 because it removed the need for weighty hydrazine fuel.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=2466b6b0-d440-495c-890f-23577087924d&code=EUAB'
@@ -420,7 +421,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => "The sixth of fourteen Dragon ISS resupply missions to the ISS. Will attempt a barge landing on ASDS.",
+            'summary' => "The sixth of twelve Dragon ISS resupply missions to the ISS was the second mission to attempt landing the first stage on the ASDS, just barely failing to stick the landing.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=4713410a-e452-484e-86be-3bb95ea3c5e8&code=CRS6'
@@ -438,7 +439,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
+            'summary' => "A Falcon 9 launched Turkmenistan's first communications satellite into GTO orbit in April 2015, following SpaceX's shortest turnaround time yet.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=eb98b985-210f-416c-a118-14eb1afbb1c8&code=TRK1'
@@ -456,7 +457,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => "A Falcon 9 will launch Turkmenistan's first communications satellite into GTO orbit in April 2015.",
+            'summary' => "Falcon 9 lifted off carrying Dragon and an International Docking Adapter for the ISS, but an overpressure event caused the rocket to distenegrate moments before stage separation, marking Falcon 9's first launch failure ever and SpaceX's first since Falcon 1 Flight 3.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure,
             'flight_club' => 'http://www.flightclub.io/results.php?id=ad8d5e76-ad6b-4670-9aee-60c1319dff50&code=CRS7'
@@ -474,7 +475,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX's Return To Flight Mission",
+            'summary' => "SpaceX's Return To Flight Mission will carry 11 satellites into Low Earth Orbit for communications company Orbcomm, while the first stage may attempt to return to Cape Canaveral for landing instead of using the ASDS.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -489,7 +490,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES's second launch",
+            'summary' => "SpaceX's second launch for SES, lofting a 5300kg communications satellite that will provide SES with more coverage over Southeast Asia.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -505,7 +506,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Launching Jason-3 to polar",
+            'summary' => "SpaceX will launch Jason-3 into a polar orbit from Vandenberg, where it will study sea levels for NOAA.",
             'status' => MissionStatus::Upcoming
         ]);
         // Ordered above
@@ -520,7 +521,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "8th mission to the ISS",
+            'summary' => "CRS-8 will be the first CRS mission to the ISS since the ill-fated CRS-7, and stowed in Dragon's trunk will be BEAM, a small Bigelow inflatable module to be attached to the station.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -535,7 +536,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-9",
+            'summary' => "CRS-9 will be the ninth of a likely twelve missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -550,7 +551,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SHERPA Flight 1",
+            'summary' => "For SHERPA Flight 1, SpaceX will lift a plethora of smallsats into a polar orbit from Vandenberg.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -565,7 +566,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 5,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "Falcon Heavy test flight",
+            'summary' => "The highly-anticipated debut of Falcon Heavy will carry an unknown payload within a standard payload fairing.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -580,7 +581,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-10",
+            'summary' => "CRS-10 will be the tenth of a likely twelve missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -595,7 +596,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-11",
+            'summary' => "CRS-11 will likely be SpaceX's penultimate mission to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -655,7 +656,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-12",
+            'summary' => "CRS-12 is likely to be the last of SpaceX's missions to the ISS under the Commercial Resupply Services contract with NASA, although ISS visits will continue as SpaceX does crew rotations under the Commercial Crew contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
