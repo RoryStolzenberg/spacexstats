@@ -68,24 +68,11 @@ class StatisticResultBuilder {
 
         if ($substatistic === 'Total Flight Time') {
 			//SELECT SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) as duration FROM spacecraft INNER JOIN missions ON spacecraft.mission_id=missions.mission_id
-			$seconds = DB::table('spacecraft_flights_pivot')
+			return DB::table('spacecraft_flights_pivot')
 				->selectRaw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration')
                 ->where('missions.status','Complete')
                 ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')
                 ->first()->duration;
-
-			$stat[0] = floor($seconds / (60 * 60 * 24));
-			$seconds -= $stat[0] * 60 * 60 * 24;
-
-			$stat[1] = floor($seconds / (60 * 60));
-			$seconds -= $stat[1] * 60 * 60;
-
-			$stat[2] = floor($seconds / 60);
-			$seconds -= $stat[2] * 60;
-
-			$stat[3] = $seconds;
-
-			return $stat;
 		}
 
         if ($substatistic === 'Flight Time') {

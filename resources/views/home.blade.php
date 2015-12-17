@@ -83,7 +83,7 @@
 
                 <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result" type="classic"></countdown>
 
-                <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="classic" is-paused="{{ true }}" is-visible-when-paused="{{ true }}"></countdown>
+                <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="interval"></countdown>
 
                 <div ng-if="substatistic.display == 'mission'">
                     <div class="launch-link">

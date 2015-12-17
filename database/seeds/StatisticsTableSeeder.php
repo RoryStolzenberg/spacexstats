@@ -65,7 +65,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 7,
             'type' => 'Launches Per Year',
             'name' => 'Launches Per Year',
-            'description' => "",
+            'description' => "With an ever-increasing launch cadence, SpaceX is on track to equal or surpass other launch providers by annual vehicles launched in 2016, and continues, nearly year-on-year to set vehicle flight records.",
             'display' => 'barchart'
         ));
 
