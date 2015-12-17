@@ -141,7 +141,11 @@ class StatisticResultBuilder {
 
 		if ($substatistic === 'M1D Flight Time') {
 			// SELECT SUM(vehicles.firststage_meco) AS flight_time FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
-			$seconds = Vehicle::select(DB::raw('SUM(vehicles.firststage_meco) AS flight_time'))->where('missions.status','Complete')->join('missions','missions.mission_id','=','vehicles.mission_id')->first()->flight_time;
+			$seconds = PartFlight::select(DB::raw('SUM(part_flights_pivot.firststage_meco) AS flight_time'))
+				->whereHas('mission', function($q) {
+					$q->whereComplete();
+				})
+				->first()->flight_time;
 
 			$stat[0] = floor($seconds / (60 * 60 * 24));
 			$seconds -= $stat[0] * 60 * 60 * 24;
