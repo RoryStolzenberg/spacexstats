@@ -220,7 +220,7 @@ small {
     font-weight:100;
     color:$grey;
 
-    @include gridle(small) {
+    @include gridle_state(small) {
         font-size:24px;
     }
 }

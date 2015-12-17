@@ -447,6 +447,9 @@ $_gridle_generateOnlyOnce : true; // keep track of generate once classes
 		// get the actual state
 		$state : gridle_get_state($stateName);
 
+		// debug
+		@debug("Generate classes for state #{$stateName}");
+
 		// scope all the classes in a media query
 		@include gridle_state($state, false) {
 

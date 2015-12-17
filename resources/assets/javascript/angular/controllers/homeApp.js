@@ -163,7 +163,8 @@
                         yAxis: {
                             type: 'linear',
                             key: 'launches',
-                            title: 'Launches'
+                            title: 'Launches',
+                            zeroing: true
                         },
                         chartTitle: ''
                     }

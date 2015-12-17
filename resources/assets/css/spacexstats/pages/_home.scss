@@ -149,7 +149,7 @@
         font-size:16px;
         line-height:1.6;
 
-        @include gridle(small) {
+        @include gridle_state(small) {
             font-size:14px;
         }
     }

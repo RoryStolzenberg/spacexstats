@@ -49,15 +49,6 @@
                         settings.padding = 50;
                     }
 
-                    // extrapolate data back to 0 point
-                    if (settings.extrapolation === true) {
-                        var originDatapoint = {};
-                        originDatapoint[settings.xAxis.key] = 0;
-                        originDatapoint[settings.yAxis.key] = 0;
-
-                        data.unshift(originDatapoint);
-                    }
-
                     // draw
                     if ($scope.type == 'bar') {
                         drawBarChart();
@@ -66,36 +57,53 @@
                     }
 
                     function drawChart() {
-                        // Setup scales
+                        // Setup xZeroing
+                        if (settings.xAxis.zeroing === true) {
+                            var startPoint = 0;
+                        } else {
+                            var startPoint = data[0][settings.xAxis.key];
+                        }
+
+                        // Setup xScales
                         if (settings.xAxis.type == 'linear') {
                             core.xScale = d3.scale.linear()
-                                .domain([0, data[data.length-1][settings.xAxis.key]])
+                                .domain([startPoint, data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
 
                         } else if (settings.xAxis.type == 'timescale') {
                             core.xScale = d3.time.scale.utc()
-                                .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
+                                .domain([startPoint, data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
 
                         } else if (settings.xAxis.type == 'ordinal') {
+
                             core.xScale = d3.scale.ordinal()
-                                .rangeRoundBands([0, width], .05);
+                                .domain(data.map(function(dataBit) { return dataBit[settings.xAxis.key]; }))
+                                .rangeRoundBands([settings.padding, width - settings.padding], 0.5);
                         }
 
+                        // setup yZeroing
+                        if (settings.yAxis.zeroing === true) {
+                            var startPoint = 0;
+                        } else {
+                            var startPoint = d3.min(data, function(d) {
+                                return d[settings.yAxis.key];
+                            });
+                        }
+
+                        // setup yScales
                         if (settings.yAxis.type == 'linear') {
                             core.yScale = d3.scale.linear()
                                 .domain([d3.max(data, function(d) {
                                     return d[settings.yAxis.key];
-                                }), d3.min(data, function(d) {
-                                    return d[settings.yAxis.key];
-                                })])
+                                }), startPoint])
                                 .range([settings.padding, height - settings.padding]);
 
                         } else if (settings.yAxis.type == 'timescale') {
                             core.yScale = d3.time.scale.utc()
                                 .domain([d3.max(data, function(d) {
                                     return d[settings.yAxis.key];
-                                }), 0])
+                                }), startPoint])
                                 .range([settings.padding, height - settings.padding]);
                         }
 
@@ -103,6 +111,7 @@
                         core.xAxisGenerator = d3.svg.axis().scale(core.xScale).orient('bottom').ticks(settings.xAxis.ticks).tickFormat(function(d) {
                             return typeof settings.xAxis.formatter !== 'undefined' ? settings.xAxis.formatter(d) : d;
                         });
+
                         core.yAxisGenerator = d3.svg.axis().scale(core.yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
                             return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
                         });

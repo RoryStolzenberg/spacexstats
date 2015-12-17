@@ -472,7 +472,7 @@ table {
     width: device-width; } }
 
 #gridle-settings {
-  content: '{ \\"version\\" : \\"2.0.1\\", \\"states\\" : { \\"default\\":{ \\"name\\" : \\"default\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : null, \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0px\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0px\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0px\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"small\\":{ \\"name\\" : \\"small\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(max-width: 640px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"medium\\":{ \\"name\\" : \\"medium\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 641px) and (max-width: 1024px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"large\\":{ \\"name\\" : \\"large\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1025px) and (max-width: 1440px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xlarge\\":{ \\"name\\" : \\"xlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1441px) and (max-width: 1920px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xxlarge\\":{ \\"name\\" : \\"xxlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1921px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }} }'; }
+  content: '{ \\"version\\" : \\"2.0.2\\", \\"states\\" : { \\"default\\":{ \\"name\\" : \\"default\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : null, \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0px\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0px\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0px\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"small\\":{ \\"name\\" : \\"small\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(max-width: 640px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"medium\\":{ \\"name\\" : \\"medium\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 641px) and (max-width: 1024px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"large\\":{ \\"name\\" : \\"large\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1025px) and (max-width: 1440px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xlarge\\":{ \\"name\\" : \\"xlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1441px) and (max-width: 1920px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xxlarge\\":{ \\"name\\" : \\"xxlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1921px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }} }'; }
 
 .state-default .gr-1on5 {
   width: 20%; }
@@ -4925,6 +4925,7 @@ body {
     margin-right: -0; } }
 
 .container {
+  margin: 0 auto;
   max-width: 1400px; }
 
 /*
@@ -7400,7 +7401,8 @@ h1 {
   text-transform: none;
   text-overflow: "...";
   overflow: hidden;
-  white-space: nowrap; }
+  white-space: nowrap;
+  text-shadow: 0 0 5px #21272B; }
   .state-medium h1 {
     font-size: 42px; }
   @media (min-width: 641px) and (max-width: 1024px) {
@@ -7477,6 +7479,11 @@ small {
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   font-weight: 100;
   color: #8B939B; }
+  .state-small .exclaim {
+    font-size: 24px; }
+  @media (max-width: 640px) {
+    .exclaim {
+      font-size: 24px; } }
 
 .lowvisibility.color {
   color: #CCC; }
@@ -8576,8 +8583,7 @@ form[name="subscribeForm"] .subscription-failed {
     margin-right: -0.25em; }
   .hero > * {
     display: inline-block;
-    vertical-align: middle;
-    position: relative; }
+    vertical-align: middle; }
   .hero table {
     border-collapse: collapse;
     position: relative;
@@ -8600,7 +8606,7 @@ form[name="subscribeForm"] .subscription-failed {
         .hero table td {
           min-width: 200px; } }
     .hero table .value {
-      font-size: 150px;
+      font-size: 300px;
       font-weight: 300;
       line-height: 1; }
       .state-small .hero table .value {
@@ -8609,15 +8615,15 @@ form[name="subscribeForm"] .subscription-failed {
         .hero table .value {
           font-size: 50px; } }
       .state-medium .hero table .value {
-        font-size: 80px; }
+        font-size: 100px; }
       @media (min-width: 641px) and (max-width: 1024px) {
         .hero table .value {
-          font-size: 80px; } }
+          font-size: 100px; } }
       .state-large .hero table .value {
-        font-size: 100px; }
+        font-size: 200px; }
       @media (min-width: 1025px) and (max-width: 1440px) {
         .hero table .value {
-          font-size: 100px; } }
+          font-size: 200px; } }
     .hero table .unit {
       font-size: 30px;
       font-weight: 300; }
@@ -8686,6 +8692,30 @@ form[name="subscribeForm"] .subscription-failed {
 
 .background {
   background-image: url("../images/backgrounds/dscovr2.jpg"); }
+
+#home .app-description {
+  padding: 0 10px; }
+
+#home p {
+  font-size: 16px;
+  line-height: 1.6; }
+  .state-small #home p {
+    font-size: 14px; }
+  @media (max-width: 640px) {
+    #home p {
+      font-size: 14px; } }
+
+#home .expando-button {
+  width: 150px;
+  -webkit-transition: width ease-in-out 0.5s 0s;
+          transition: width ease-in-out 0.5s 0s; }
+  #home .expando-button:hover {
+    width: 200px; }
+
+launch-date {
+  position: absolute;
+  top: 50px;
+  right: 5px; }
 
 body.future-mission .highlights {
   padding-right: 300px; }
@@ -9065,6 +9095,8 @@ body.live {
     color: white; }
     body.live .live-status.upcoming {
       background-color: #8B939B; }
+    body.live .live-status.hold-abort {
+      color: #8F6481; }
     body.live .live-status.terminal-count {
       background-color: #4f708f; }
     body.live .live-status.in-progress {
@@ -9146,7 +9178,7 @@ button.canned-response {
 
 .live-updates .update {
   border-bottom: 1px solid #CCC;
-  padding: 10px 0; }
+  padding: 5px 0; }
   .live-updates .update .update-timestamp {
     font-size: 18px;
     font-family: "Montserrat", sans-serif; }
