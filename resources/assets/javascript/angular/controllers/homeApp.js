@@ -156,7 +156,7 @@
                     substatistic.settings = {
                         extrapolation: false,
                         xAxis: {
-                            type: 'linear',
+                            type: 'ordinal',
                             key: 'year',
                             title: 'Year'
                         },

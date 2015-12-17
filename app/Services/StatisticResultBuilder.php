@@ -135,7 +135,7 @@ class StatisticResultBuilder {
 	public static function engines($substatistic) {
         if ($substatistic === 'Flown') {
             return PartFlight::whereHas('mission', function($q) {
-				$q->whereSpecificVehicle(['Falcon 9 v1.1', 'Falcon 9 v1.2'])->where('status', 'Complete');
+				$q->whereComplete()->whereSpecificVehicle(['Falcon 9 v1.1', 'Falcon 9 v1.2']);
 			})->count() * 9;
         }
 

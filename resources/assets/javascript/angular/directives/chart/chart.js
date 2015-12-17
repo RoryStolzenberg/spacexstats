@@ -76,6 +76,10 @@
                             core.xScale = d3.time.scale.utc()
                                 .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
+
+                        } else if (settings.xAxis.type == 'ordinal') {
+                            core.xScale = d3.scale.ordinal()
+                                .rangeRoundBands([0, width], .05);
                         }
 
                         if (settings.yAxis.type == 'linear') {

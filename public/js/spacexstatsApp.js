@@ -1,70 +1,4 @@
 (function() {
-    var app = angular.module('app', []);
-
-    app.service('flashMessage', function() {
-        this.addOK = function(message) {
-
-            computeStayTime(message);
-
-            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, computeStayTime());
-        };
-
-        this.addError = function(message) {
-
-            computeStayTime(message);
-
-            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
-
-            setTimeout(function() {
-                $('.flash-message').slideUp(300, function() {
-                    $(this).remove();
-                });
-            }, computeStayTime());
-        };
-
-        var computeStayTime = function(message) {
-            // Avg characters per word: 5.1
-            // Avg reading speed of 200 wpm:
-            //var totalChara
-            return 3000;
-        };
-    });
-})();
-
-
-(function() {
-    var app = angular.module('app', []);
-
-    app.service('missionDataService', ["$http", function($http) {
-        this.telemetry = function(slug) {
-            return $http.get('/missions/'+ slug + '/telemetry');
-        };
-
-        this.orbitalElements = function(slug) {
-            return $http.get('/missions/' + slug + '/orbitalelements').then(function(response) {
-                // premap the dates of the timestamps because otherwise we'll do it too many times
-                if (response.data === Array) {
-                    return response.data.map(function(orbitalElement) {
-                        orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
-                        return orbitalElement;
-                    });
-                }
-            });
-        };
-
-        this.launchEvents = function(slug) {
-            return $http.get('/missions/' + slug + '/launchevents');
-        }
-    }]);
-})();
-
-(function() {
     var aboutMissionControlApp = angular.module('app', ['credit-cards']);
 
     aboutMissionControlApp.controller("subscriptionController", ["$scope", "subscriptionService", function($scope, subscriptionService) {
@@ -685,7 +619,7 @@
                     substatistic.settings = {
                         extrapolation: false,
                         xAxis: {
-                            type: 'linear',
+                            type: 'ordinal',
                             key: 'year',
                             title: 'Year'
                         },
@@ -2568,6 +2502,109 @@
     }]);
 })();
 (function() {
+    var app = angular.module('app', []);
+
+    app.service('flashMessage', function() {
+        this.addOK = function(message) {
+
+            computeStayTime(message);
+
+            $('<p style="display:none;" class="flash-message success">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, computeStayTime());
+        };
+
+        this.addError = function(message) {
+
+            computeStayTime(message);
+
+            $('<p style="display:none;" class="flash-message failure">' + message + '</p>').appendTo('#flash-message-container').slideDown(300);
+
+            setTimeout(function() {
+                $('.flash-message').slideUp(300, function() {
+                    $(this).remove();
+                });
+            }, computeStayTime());
+        };
+
+        var computeStayTime = function(message) {
+            // Avg characters per word: 5.1
+            // Avg reading speed of 200 wpm:
+            //var totalChara
+            return 3000;
+        };
+    });
+})();
+
+
+(function() {
+    var app = angular.module('app', []);
+
+    app.service('missionDataService', ["$http", function($http) {
+        this.telemetry = function(slug) {
+            return $http.get('/missions/'+ slug + '/telemetry');
+        };
+
+        this.orbitalElements = function(slug) {
+            return $http.get('/missions/' + slug + '/orbitalelements').then(function(response) {
+                // premap the dates of the timestamps because otherwise we'll do it too many times
+                if (response.data === Array) {
+                    return response.data.map(function(orbitalElement) {
+                        orbitalElement.epoch = moment(orbitalElement.epoch).toDate();
+                        return orbitalElement;
+                    });
+                }
+            });
+        };
+
+        this.launchEvents = function(slug) {
+            return $http.get('/missions/' + slug + '/launchevents');
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
+})();
+(function() {
     var app = angular.module('app');
 
     app.directive('chart', ["$window", function($window) {
@@ -2645,6 +2682,10 @@
                             core.xScale = d3.time.scale.utc()
                                 .domain([data[0][settings.xAxis.key], data[data.length-1][settings.xAxis.key]])
                                 .range([settings.padding, width - settings.padding]);
+
+                        } else if (settings.xAxis.type == 'ordinal') {
+                            core.xScale = d3.scale.ordinal()
+                                .rangeRoundBands([0, width], .05);
                         }
 
                         if (settings.yAxis.type == 'linear') {
@@ -2751,101 +2792,6 @@
 
             },
             templateUrl: '/js/templates/chart.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
-                    }
-                    return viewValue;
-                });
-            }
-        }
-    }]);
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('countdown', ['$interval', function($interval) {
-        return {
-            restrict: 'E',
-            scope: {
-                specificity: '=',
-                countdownTo: '=',
-                isPaused: '=?',
-                isVisibleWhenPaused: '=?',
-                type: '@',
-                callback: '&?'
-            },
-            link: function($scope, elem, attrs) {
-
-                if (attrs.callback) {
-                    $scope.callback = $scope.callback();
-                }
-
-                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
-                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
-
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
-
-                var countdownProcessor = function() {
-
-                    if (!$scope.isPaused) {
-                        var relativeSecondsBetween = moment.utc().diff(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss'), 'second');
-                        var secondsBetween = Math.abs(relativeSecondsBetween);
-
-                        $scope.sign = relativeSecondsBetween <= 0 ? '-' : '+';
-                        $scope.tMinusZero = secondsBetween == 0;
-
-                        // Calculate the number of days, hours, minutes, seconds
-                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
-                        secondsBetween -= $scope.days * 60 * 60 * 24;
-
-                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
-                        secondsBetween -= $scope.hours * 60 * 60;
-
-                        $scope.minutes = Math.floor(secondsBetween / 60);
-                        secondsBetween -= $scope.minutes * 60;
-
-                        $scope.seconds = secondsBetween;
-
-                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
-                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
-                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
-                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
-
-                        if (attrs.callback) {
-                            $scope.callback(relativeSecondsBetween);
-                        }
-                    }
-                };
-
-                // Countdown here
-                if ($scope.isLaunchExact) {
-                    $interval(countdownProcessor, 1000);
-                } else {
-                    $scope.countdownText = $scope.countdownTo;
-                }
-            },
-            templateUrl: '/js/templates/countdown.html'
         }
     }]);
 })();
@@ -3026,164 +2972,70 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
+    app.directive('countdown', ['$interval', function($interval) {
         return {
             restrict: 'E',
             scope: {
-                isLaunchExact: '=',
-                launchDateTime: '='
+                specificity: '=',
+                countdownTo: '=',
+                isPaused: '=?',
+                isVisibleWhenPaused: '=?',
+                type: '@',
+                callback: '&?'
             },
             link: function($scope, elem, attrs) {
-                /*
-                 *   Timezone stuff.
-                 */
-                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
-                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
-                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
-                $scope.currentTimezone;
-                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
 
-                $scope.setTimezone = function(timezoneToSet) {
-                    if (timezoneToSet === 'local') {
-                        $scope.currentTimezone = null;
-                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
-                    } else if (timezoneToSet === 'ET') {
-                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
-                        $scope.currentTimezoneFormatted = 'Eastern';
-                    } else if (timezoneToSet === 'PT') {
-                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
-                        $scope.currentTimezoneFormatted = 'Pacific';
-                    } else {
-                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
+                if (attrs.callback) {
+                    $scope.callback = $scope.callback();
+                }
+
+                $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
+                $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
+
+                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+
+                var countdownProcessor = function() {
+
+                    if (!$scope.isPaused) {
+                        var relativeSecondsBetween = moment.utc().diff(moment.utc($scope.countdownTo, 'YYYY-MM-DD HH:mm:ss'), 'second');
+                        var secondsBetween = Math.abs(relativeSecondsBetween);
+
+                        $scope.sign = relativeSecondsBetween <= 0 ? '-' : '+';
+                        $scope.tMinusZero = secondsBetween == 0;
+
+                        // Calculate the number of days, hours, minutes, seconds
+                        $scope.days = Math.floor(secondsBetween / (60 * 60 * 24));
+                        secondsBetween -= $scope.days * 60 * 60 * 24;
+
+                        $scope.hours = Math.floor(secondsBetween / (60 * 60));
+                        secondsBetween -= $scope.hours * 60 * 60;
+
+                        $scope.minutes = Math.floor(secondsBetween / 60);
+                        secondsBetween -= $scope.minutes * 60;
+
+                        $scope.seconds = secondsBetween;
+
+                        $scope.daysText = $scope.days == 1 ? 'Day' : 'Days';
+                        $scope.hoursText = $scope.hours == 1 ? 'Hour' : 'Hours';
+                        $scope.minutesText = $scope.minutes == 1 ? 'Minute' : 'Minutes';
+                        $scope.secondsText = $scope.seconds == 1 ? 'Second' : 'Seconds';
+
+                        if (attrs.callback) {
+                            $scope.callback(relativeSecondsBetween);
+                        }
                     }
                 };
 
-                $scope.displayDateTime = function() {
-                    if ($scope.isLaunchExact) {
-                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
-                    } else {
-                        return $scope.launchDateTime;
-                    }
-
-                };
+                // Countdown here
+                if ($scope.isLaunchExact) {
+                    $interval(countdownProcessor, 1000);
+                } else {
+                    $scope.countdownText = $scope.countdownTo;
+                }
             },
-            templateUrl: '/js/templates/launchDate.html'
+            templateUrl: '/js/templates/countdown.html'
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.search = {
-                    name: ''
-                };
-
-                $scope.thumbnails = angular.isDefined($scope.imageKey);
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option[$scope.imageKey]
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = '';
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
 })();
 (function() {
     var app = angular.module('app');
@@ -3385,6 +3237,170 @@
                 }
             },
             templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
+        return {
+            restrict: 'E',
+            scope: {
+                isLaunchExact: '=',
+                launchDateTime: '='
+            },
+            link: function($scope, elem, attrs) {
+                /*
+                 *   Timezone stuff.
+                 */
+                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
+                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
+                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
+                $scope.currentTimezone;
+                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+
+                $scope.setTimezone = function(timezoneToSet) {
+                    if (timezoneToSet === 'local') {
+                        $scope.currentTimezone = null;
+                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+                    } else if (timezoneToSet === 'ET') {
+                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
+                        $scope.currentTimezoneFormatted = 'Eastern';
+                    } else if (timezoneToSet === 'PT') {
+                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
+                        $scope.currentTimezoneFormatted = 'Pacific';
+                    } else {
+                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
+                    }
+                };
+
+                $scope.displayDateTime = function() {
+                    if ($scope.isLaunchExact) {
+                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
+                    } else {
+                        return $scope.launchDateTime;
+                    }
+
+                };
+            },
+            templateUrl: '/js/templates/launchDate.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.search = {
+                    name: ''
+                };
+
+                $scope.thumbnails = angular.isDefined($scope.imageKey);
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option[$scope.imageKey]
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = '';
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('missionCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                mission: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/missionCard.html'
         }
     });
 })();
@@ -4152,16 +4168,4 @@
             }
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
 })();
