@@ -521,7 +521,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-8 will be the first CRS mission to the ISS since the ill-fated CRS-7, and stowed in Dragon's trunk will be BEAM, a small Bigelow inflatable module to be attached to the station.",
+            'summary' => "CRS-8 will be the first CRS mission to the ISS since the ill-fated CRS-7, and stowed in Dragon's trunk will be BEAM- a small Bigelow inflatable module to be attached to the station.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -536,7 +536,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-9 will be the ninth of a likely twelve missions to the ISS under the Commercial Resupply Services contract with NASA.",
+            'summary' => "CRS-9 will be the ninth of  fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -581,7 +581,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-10 will be the tenth of a likely twelve missions to the ISS under the Commercial Resupply Services contract with NASA.",
+            'summary' => "CRS-10 will be the tenth of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -596,7 +596,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-11 will likely be SpaceX's penultimate mission to the ISS under the Commercial Resupply Services contract with NASA.",
+            'summary' => "CRS-11 will be the eleventh of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -656,7 +656,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-12 is likely to be the last of SpaceX's missions to the ISS under the Commercial Resupply Services contract with NASA, although ISS visits will continue as SpaceX does crew rotations under the Commercial Crew contract.",
+            'summary' => "CRS-12 will be the twelfth of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1016,7 +1016,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-14",
+            'summary' => "CRS-14 will be SpaceX's penultimate mission to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1031,7 +1031,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-15",
+            'summary' => "CRS-15 will be the last of SpaceX's missions to the ISS under the Commercial Resupply Services contract with NASA, although ISS visits will continue as SpaceX does crew rotations under the Commercial Crew contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
