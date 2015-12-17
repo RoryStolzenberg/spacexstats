@@ -62,10 +62,10 @@
                 };
 
                 // Countdown here
-                if ($scope.isLaunchExact && !$scope.type != 'interval') {
+                if ($scope.isLaunchExact && $scope.type != 'interval') {
                     $interval(countdownProcessor, 1000);
                 } else if ($scope.type == 'interval') {
-                    splitSeconds(secondsBetween);
+                    splitSeconds($scope.countdownTo);
                 } else {
                     $scope.countdownText = $scope.countdownTo;
                 }
