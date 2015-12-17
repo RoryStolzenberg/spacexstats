@@ -7,11 +7,11 @@
         return {
             restrict: 'E',
             scope: {
-                specificity: '=',
                 countdownTo: '=',
+                specificity: '=?',
+                type: '@',
                 isPaused: '=?',
                 isVisibleWhenPaused: '=?',
-                type: '@',
                 callback: '&?'
             },
             link: function($scope, elem, attrs) {
@@ -23,7 +23,7 @@
                 $scope.isPaused = typeof $scope.isPaused !== 'undefined' ? $scope.isPaused : false;
                 $scope.isVisibleWhenPaused = typeof $scope.isVisibleWhenPaused !== 'undefined' ? $scope.isVisibleWhenPaused : false;
 
-                $scope.isLaunchExact = ($scope.specificity == 6 || $scope.specificity == 7);
+                $scope.isLaunchExact = angular.isUndefined($scope.specificity) || $scope.specificity == 6 || $scope.specificity == 7;
 
                 var countdownProcessor = function() {
 

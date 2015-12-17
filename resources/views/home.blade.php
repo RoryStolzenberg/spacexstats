@@ -71,17 +71,17 @@
                 </table>
 
                 <table class="double" ng-if="substatistic.display == 'double'">
-                    <tr>
+                    <tr class="value">
                         <td>@{{ substatistic.result[0] }}</td>
                         <td>@{{ substatistic.result[1] }}</td>
                     </tr>
-                    <tr>
+                    <tr class="unit">
                         <td>@{{ substatistic.unit[0] }}</td>
                         <td>@{{ substatistic.unit[1] }}</td>
                     </tr>
                 </table>
 
-                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
+                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result" type="classic"></countdown>
 
                 <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="classic" is-paused="{{ true }}" is-visible-when-paused="{{ true }}"></countdown>
 

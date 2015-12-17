@@ -8584,46 +8584,29 @@ form[name="subscribeForm"] .subscription-failed {
   .hero > * {
     display: inline-block;
     vertical-align: middle; }
+    .hero > *:not(.statistic) {
+      position: relative; }
   .hero table {
     border-collapse: collapse;
     position: relative;
     text-align: center; }
     .hero table td {
-      min-width: 250px; }
+      min-width: 300px; }
       .state-small .hero table td {
-        min-width: 80px; }
+        min-width: 100px; }
       @media (max-width: 640px) {
         .hero table td {
-          min-width: 80px; } }
+          min-width: 100px; } }
       .state-medium .hero table td {
-        min-width: 120px; }
+        min-width: 150px; }
       @media (min-width: 641px) and (max-width: 1024px) {
         .hero table td {
-          min-width: 120px; } }
+          min-width: 150px; } }
       .state-large .hero table td {
-        min-width: 200px; }
+        min-width: 250px; }
       @media (min-width: 1025px) and (max-width: 1440px) {
         .hero table td {
-          min-width: 200px; } }
-    .hero table .value {
-      font-size: 300px;
-      font-weight: 300;
-      line-height: 1; }
-      .state-small .hero table .value {
-        font-size: 50px; }
-      @media (max-width: 640px) {
-        .hero table .value {
-          font-size: 50px; } }
-      .state-medium .hero table .value {
-        font-size: 100px; }
-      @media (min-width: 641px) and (max-width: 1024px) {
-        .hero table .value {
-          font-size: 100px; } }
-      .state-large .hero table .value {
-        font-size: 200px; }
-      @media (min-width: 1025px) and (max-width: 1440px) {
-        .hero table .value {
-          font-size: 200px; } }
+          min-width: 250px; } }
     .hero table .unit {
       font-size: 30px;
       font-weight: 300; }
@@ -8632,10 +8615,74 @@ form[name="subscribeForm"] .subscription-failed {
       @media (max-width: 640px) {
         .hero table .unit {
           font-size: 18px; } }
+    .hero table .value {
+      font-weight: 300;
+      line-height: 1; }
+    .hero table.countdown .value {
+      font-size: 150px; }
+      .state-small .hero table.countdown .value {
+        font-size: 80px; }
+      @media (max-width: 640px) {
+        .hero table.countdown .value {
+          font-size: 80px; } }
+      .state-medium .hero table.countdown .value {
+        font-size: 100px; }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table.countdown .value {
+          font-size: 100px; } }
+      .state-large .hero table.countdown .value {
+        font-size: 120px; }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table.countdown .value {
+          font-size: 120px; } }
+    .hero table.single .value {
+      font-size: 300px; }
+      .state-small .hero table.single .value {
+        font-size: 100px; }
+      @media (max-width: 640px) {
+        .hero table.single .value {
+          font-size: 100px; } }
+      .state-medium .hero table.single .value {
+        font-size: 150px; }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table.single .value {
+          font-size: 150px; } }
+      .state-large .hero table.single .value {
+        font-size: 200px; }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table.single .value {
+          font-size: 200px; } }
+    .hero table.double .value {
+      font-size: 100px; }
+      .state-small .hero table.double .value {
+        font-size: 40px; }
+      @media (max-width: 640px) {
+        .hero table.double .value {
+          font-size: 40px; } }
+      .state-medium .hero table.double .value {
+        font-size: 60px; }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table.double .value {
+          font-size: 60px; } }
+      .state-large .hero table.double .value {
+        font-size: 80px; }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table.double .value {
+          font-size: 80px; } }
   .hero.statistic {
     height: calc(100% - 30px - 100px); }
     .hero.statistic .description {
       height: 100px; }
+    .hero.statistic svg text {
+      fill: white;
+      font-size: 14px;
+      font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
+    .hero.statistic svg path, .hero.statistic svg line {
+      stroke: white; }
+    .hero.statistic launch-date {
+      position: absolute;
+      top: 50px;
+      right: 5px; }
 
 #side-navigation {
   position: fixed;
@@ -8711,11 +8758,6 @@ form[name="subscribeForm"] .subscription-failed {
           transition: width ease-in-out 0.5s 0s; }
   #home .expando-button:hover {
     width: 200px; }
-
-launch-date {
-  position: absolute;
-  top: 50px;
-  right: 5px; }
 
 body.future-mission .highlights {
   padding-right: 300px; }

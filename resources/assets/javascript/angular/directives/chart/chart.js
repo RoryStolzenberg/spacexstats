@@ -57,6 +57,42 @@
                     }
 
                     function drawChart() {
+                        // Element manipulation
+                        var xAxisLine = svg.append("svg:g")
+                            .attr("class", "x axis")
+                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
+                            .call(core.xAxisGenerator);
+
+                        var yAxisLine = svg.append("svg:g")
+                            .attr("class", "y axis")
+                            .attr("transform", "translate(" + settings.padding + ",0)")
+                            .attr("stroke-width", 2)
+                            .call(core.yAxisGenerator);
+
+                        svg.append("text")
+                            .attr("class", "chart-title")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", settings.padding / 2)
+                            .text(settings.chartTitle);
+
+                        svg.append("text")
+                            .attr("class", "axis x-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("x", width / 2)
+                            .attr("y", height)
+                            .text(settings.xAxis.title);
+
+                        svg.append("text")
+                            .attr("class", "axis y-axis")
+                            .attr("text-anchor", "middle")
+                            .attr("transform", "rotate(-90)")
+                            .attr("x", - (height / 2))
+                            .attr("y", settings.padding / 2)
+                            .text(settings.yAxis.title);
+                    }
+
+                    function computeChart() {
                         // Setup xZeroing
                         if (settings.xAxis.zeroing === true) {
                             var startPoint = 0;
@@ -115,44 +151,11 @@
                         core.yAxisGenerator = d3.svg.axis().scale(core.yScale).orient("left").ticks(settings.yAxis.ticks).tickFormat(function(d) {
                             return typeof settings.yAxis.formatter !== 'undefined' ? settings.yAxis.formatter(d) : d;
                         });
-
-                        // Element manipulation
-                        svg.append("svg:g")
-                            .attr("class", "x axis")
-                            .attr("transform", "translate(0," + (height - settings.padding) + ")")
-                            .call(core.xAxisGenerator);
-
-                        svg.append("svg:g")
-                            .attr("class", "y axis")
-                            .attr("transform", "translate(" + settings.padding + ",0)")
-                            .attr("stroke-width", 2)
-                            .call(core.yAxisGenerator);
-
-                        svg.append("text")
-                            .attr("class", "chart-title")
-                            .attr("text-anchor", "middle")
-                            .attr("x", width / 2)
-                            .attr("y", settings.padding / 2)
-                            .text(settings.chartTitle);
-
-                        svg.append("text")
-                            .attr("class", "axis x-axis")
-                            .attr("text-anchor", "middle")
-                            .attr("x", width / 2)
-                            .attr("y", height - (settings.padding / 2))
-                            .text(settings.xAxis.title);
-
-                        svg.append("text")
-                            .attr("class", "axis y-axis")
-                            .attr("text-anchor", "middle")
-                            .attr("transform", "rotate(-90)")
-                            .attr("x", - (height / 2))
-                            .attr("y", settings.padding / 2)
-                            .text(settings.yAxis.title);
                     };
 
                     function drawBarChart() {
-                        drawChart();
+
+                        computeChart();
 
                         svg.selectAll("bar")
                             .data(data)
@@ -166,12 +169,15 @@
                                 return core.yScale(d[settings.yAxis.key]);
                             })
                             .attr("height", function(d) {
-                                return height - core.yScale(d[settings.yAxis.key])
+                                return height - core.yScale(d[settings.yAxis.key]) - settings.padding;
                             });
+
+                        drawChart();
                     };
 
                     function drawLineChart() {
-                        drawChart();
+
+                        computeChart();
 
                         // Line function
                         var lineFunction = d3.svg.line()
@@ -190,6 +196,8 @@
                                 "fill": "none",
                                 "class": "path"
                             });
+
+                        drawChart();
                     };
                 }
 

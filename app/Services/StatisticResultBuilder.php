@@ -99,8 +99,8 @@ class StatisticResultBuilder {
 				$q->whereComplete();
 			})->first();
 
-			$stat[0] = $query->upmass;
-			$stat[1] = $query->downmass;
+			$stat[0] = number_format($query->upmass);
+			$stat[1] = number_format($query->downmass);
 
 			return $stat;
 		}
@@ -134,9 +134,9 @@ class StatisticResultBuilder {
      */
 	public static function engines($substatistic) {
         if ($substatistic === 'Flown') {
-            return PartFlight::whereHas('mission', function($q) {
-				$q->whereComplete()->whereSpecificVehicle(['Falcon 9 v1.1', 'Falcon 9 v1.2']);
-			})->count() * 9;
+            return PartFlight::whereIn('firststage_engine', ['Merlin 1D', 'Merlin 1D Fullthrust'])->whereHas('mission', function($q) {
+                return $q->whereComplete();
+            })->count() * 9;
         }
 
 		if ($substatistic === 'M1D Flight Time') {
@@ -151,10 +151,10 @@ class StatisticResultBuilder {
 			$seconds -= $stat[0] * 60 * 60 * 24;
 
 			$stat[1] = floor($seconds / (60 * 60));
-			$seconds -= $stat[0] * 60 * 60;
+			$seconds -= $stat[1] * 60 * 60;
 
 			$stat[2] = floor($seconds / 60);
-			$seconds -= $stat[0] * 60;
+			$seconds -= $stat[2] * 60;
 
 			$stat[3] = $seconds;
 
@@ -301,7 +301,6 @@ class StatisticResultBuilder {
 				return false;
 			}
 			return $lastLaunch;
-
 		}
 	}
 
@@ -335,7 +334,7 @@ WHERE missions.status='IN PROGRESS' */
 	 * @return int
      */
 	public static function elonMusksBetExpires() {
-        return Carbon::create(2026, 1, 1, 0, 0, 0);
+        return Carbon::create(2026, 1, 1, 0, 0, 0)->toDateTimeString();
     }
 
 	/**

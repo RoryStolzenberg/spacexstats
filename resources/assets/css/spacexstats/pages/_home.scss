@@ -17,6 +17,10 @@
     >* {
         display: inline-block;
         vertical-align: middle;
+
+        &:not(.statistic) {
+            position:relative;
+        }
     }
 
     table {
@@ -26,30 +30,15 @@
 
         td {
             @include gridle_state("small") {
-                min-width:80px;
+                min-width:100px;
             }
             @include gridle_state("medium") {
-                min-width:120px;
+                min-width:150px;
             }
             @include gridle_state("large") {
-                min-width:200px;
+                min-width:250px;
             }
-            min-width:250px;
-        }
-
-        .value {
-            @include gridle_state("small") {
-                font-size:50px;
-            }
-            @include gridle_state("medium") {
-                font-size:100px;
-            }
-            @include gridle_state("large") {
-                font-size:200px;
-            }
-            font-size:300px;
-            font-weight:300;
-            line-height: 1;
+            min-width:300px;
         }
 
         .unit {
@@ -59,6 +48,56 @@
             font-size:30px;
             font-weight:300;
         }
+
+        .value {
+            font-weight:300;
+            line-height: 1;
+        }
+
+        &.countdown {
+            .value {
+                @include gridle_state("small") {
+                    font-size:80px;
+                }
+                @include gridle_state("medium") {
+                    font-size:100px;
+                }
+                @include gridle_state("large") {
+                    font-size:120px;
+                }
+                font-size:150px;
+            }
+        }
+
+        &.single {
+            .value {
+                @include gridle_state("small") {
+                    font-size:100px;
+                }
+                @include gridle_state("medium") {
+                    font-size:150px;
+                }
+                @include gridle_state("large") {
+                    font-size:200px;
+                }
+                font-size:300px;
+            }
+        }
+
+        &.double {
+            .value {
+                @include gridle_state("small") {
+                    font-size:40px;
+                }
+                @include gridle_state("medium") {
+                    font-size:60px;
+                }
+                @include gridle_state("large") {
+                    font-size:80px;
+                }
+                font-size:100px;
+            }
+        }
     }
 
     // Display statistics
@@ -67,6 +106,25 @@
 
         .description {
             height:100px;
+        }
+
+        svg {
+            text {
+                fill:white;
+                font-size:14px;
+                font-family:$brandonGrotesque;
+            }
+
+            path, line {
+                stroke:white;
+            }
+        }
+
+        // Statistic types
+        launch-date {
+            position:absolute;
+            top:50px;
+            right:5px;
         }
     }
 }
@@ -162,11 +220,4 @@
             width:200px;
         }
     }
-}
-
-// Statistic types
-launch-date {
-    position:absolute;
-    top:50px;
-    right:5px;
 }
