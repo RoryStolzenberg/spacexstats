@@ -1,0 +1,19 @@
+As Falcon 9 lifted off into blue skies from SLC-40 on June 28, 2014; all appeared well. The static fire, where Falcon went through a full launch simulation right up to T-0, had been successfully been completed 2 days ago on the 26th with no reported issues.
+
+This was the 7th of SpaceX's 12, then extended to 15, flight contract with NASA to deliver critical cargo and supplies to the ISS; and also marked the 5th launch of the year, which by only June, was already setting new cadence records. Stowed away in Dragon's trunk was the IDA, or International Docking Adapter; the first piece of hardware to be delivered to the station as part of the Commercial Crew program - as well as the heaviest item ever to be carried as unpressurized equipment by Dragon.
+
+Also planned was the most daring and realistic recovery plan SpaceX had attempted - landing Falcon's first stage on the newly christened ASDS, Of Course I Still Love You, which replaced Just Read The Instructions, as it had been returned to its owners.
+
+Falcon would never get that far.
+
+At T+139s, Falcon 9 autoterminated travelling 4,500km/h, high in the upper atmosphere before second stage separation. This represented Falcon 9's first mission failure, after a series of 19 wildly successful launches.
+
+Within minutes, Musk had taken to Twitter to provide initial insight:
+
+> There was an overpressure event in the upper stage liquid oxygen tank. Data suggests counterintuitive cause
+
+The exact nature of this problem would not be resolved until months later: a strut, manufactured by a third party, designed to secure a Helium bottle in place in the second tank - had failed at one fifth of its rated load due to voids in its structure. This resulted in the Helium bottle releasing its contents into the second stage LOX tank which popped the tank dome off, knocking Dragon off the second stage
+
+Production of the struts in question was subsequently brought in house, and they would now be manufactured out of one of SpaceX's favorite materials: Inconel.
+
+It would take nearly 6 months before Falcon 9 rose at Cape Canaveral again, with the F9-021 vehicle prepped for a static fire on 16 December. Yet, with Falcon being checked under more scrutiny than ever before, the vehicle has never been safer - as SpaceX prepares to ramp up its cadence in preparation for 2016 and human spaceflight.
