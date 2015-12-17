@@ -611,7 +611,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "AMOS-6",
+            'summary' => "SpaceX will launch AMOS-6, a 5 ton Israeli communications satellite that will replace its aging predecessor.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -626,7 +626,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 5,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "STP-2",
+            'summary' => "STP-2 will be the USAF's first misson using Falcon Heavy, and Falcon Heavy's second launch overall. It will carry a variety of experimental payloads to several different orbits.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -641,7 +641,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES-10",
+            'summary' => "SpaceX will loft the 5300kg SES-10 satellite into GTO for SES, which will use it to expand coverage for Latin America.",
             'status' => MissionStatus::Upcoming
         ]);
 
