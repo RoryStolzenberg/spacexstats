@@ -153,6 +153,15 @@
             font-size:14px;
         }
     }
+
+    .expando-button {
+        width:150px;
+        @include transitionMed(width);
+
+        &:hover {
+            width:200px;
+        }
+    }
 }
 
 // Statistic types

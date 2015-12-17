@@ -381,6 +381,7 @@ WHERE missions.status='IN PROGRESS' */
 	public static function upperStages($substatistic) {
 		if ($substatistic == 'In Orbit') {
             return PartFlight::where('upperstage_status', 'In Orbit')->count();
+
 		} else if ($substatistic == 'TLEs') {
 			return DB::table('orbital_elements')->count();
 		}
