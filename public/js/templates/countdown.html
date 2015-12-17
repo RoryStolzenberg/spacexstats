@@ -1,4 +1,4 @@
-<table class="countdown" ng-class="{ 't-minus-zero': tMinusZero }" ng-if="isLaunchExact && type == 'classic' && (!isPaused || isVisibleWhenPaused)">
+<table class="countdown" ng-class="{ 't-minus-zero': tMinusZero }" ng-if="(isLaunchExact && type == 'classic' && (!isPaused || isVisibleWhenPaused)) || type == 'interval'">
     <tr>
         <td class="value days">{{ days }}</td>
         <td class="value hours">{{ hours }}</td>
