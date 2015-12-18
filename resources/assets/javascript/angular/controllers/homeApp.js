@@ -125,7 +125,7 @@
         })();
     }]);
 
-    app.factory('Statistic', ["$timeout", function($timeout) {
+    app.factory('Statistic', ["$timeout", "$rootScope", function($timeout, $rootScope) {
         return function(statistic) {
 
             var self = {};
@@ -135,10 +135,18 @@
             self.changeSubstatistic = function(newSubstatistic) {
                 self.show = false;
 
-                $timeout(function () {
+                var done = $timeout(function () {
                     self.activeSubstatistic = newSubstatistic;
                     self.show = true;
+                    $rootScope.$apply();
+
                 }, 300);
+
+                if (newSubstatistic.display == 'barchart') {
+                    done.then(function() {
+                        $rootScope.$broadcast('chart:rerender');
+                    });
+                }
             };
 
             statistic.forEach(function(substatistic) {
@@ -153,21 +161,6 @@
 
                 if (substatistic.display == 'barchart') {
                     substatistic.chartType = 'bar';
-                    substatistic.settings = {
-                        extrapolation: false,
-                        xAxis: {
-                            type: 'ordinal',
-                            key: 'year',
-                            title: 'Year'
-                        },
-                        yAxis: {
-                            type: 'linear',
-                            key: 'launches',
-                            title: 'Launches',
-                            zeroing: true
-                        },
-                        chartTitle: ''
-                    }
                 }
 
                 self.substatistics.push(substatistic);

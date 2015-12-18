@@ -54,7 +54,7 @@
             line-height: 1;
         }
 
-        &.countdown {
+        &.countdown, &.single.expected {
             .value {
                 @include gridle_state("small") {
                     font-size:80px;

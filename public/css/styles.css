@@ -8618,22 +8618,22 @@ form[name="subscribeForm"] .subscription-failed {
     .hero table .value {
       font-weight: 300;
       line-height: 1; }
-    .hero table.countdown .value {
+    .hero table.countdown .value, .hero table.single.expected .value {
       font-size: 150px; }
-      .state-small .hero table.countdown .value {
+      .state-small .hero table.countdown .value, .state-small .hero table.single.expected .value {
         font-size: 80px; }
       @media (max-width: 640px) {
-        .hero table.countdown .value {
+        .hero table.countdown .value, .hero table.single.expected .value {
           font-size: 80px; } }
-      .state-medium .hero table.countdown .value {
+      .state-medium .hero table.countdown .value, .state-medium .hero table.single.expected .value {
         font-size: 100px; }
       @media (min-width: 641px) and (max-width: 1024px) {
-        .hero table.countdown .value {
+        .hero table.countdown .value, .hero table.single.expected .value {
           font-size: 100px; } }
-      .state-large .hero table.countdown .value {
+      .state-large .hero table.countdown .value, .state-large .hero table.single.expected .value {
         font-size: 120px; }
       @media (min-width: 1025px) and (max-width: 1440px) {
-        .hero table.countdown .value {
+        .hero table.countdown .value, .hero table.single.expected .value {
           font-size: 120px; } }
     .hero table.single .value {
       font-size: 300px; }
@@ -8842,10 +8842,10 @@ body.future-mission .highlights {
     background-color: #ccac55;
     color: #FAFAFA;
     height: 40px;
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     padding: 0 20px 0 10px;
     position: relative;
-    right: -20px; }
+    right: -30px; }
     .display-date-time .launch p {
       line-height: 20px; }
     .display-date-time .launch:before {

@@ -45,7 +45,21 @@ class StatisticResultBuilder {
      */
 	public static function launchesPerYear() {
 		return Cache::remember('stats:launchesPerYear', 60, function() {
-			return Mission::select(DB::raw('COUNT(mission_id) AS launches, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get()->toArray();
+            return [
+                'values' => Mission::select(DB::raw('COUNT(mission_id) AS launches, YEAR(launch_exact) AS year'))->where('status','Complete')->groupBy('year')->get()->toArray(),
+                'extrapolation' => false,
+                'xAxis' => [
+                    'type' => 'ordinal',
+                    'key' => 'year',
+                    'title' => 'Year'
+                ],
+                'yAxis' => [
+                    'type' => 'linear',
+                    'key' => 'launches',
+                    'title' => 'Launches',
+                    'zeroing' => true
+                ]
+            ];
 		});
     }
 
@@ -55,19 +69,22 @@ class StatisticResultBuilder {
      */
 	public static function dragon($substatistic) {
 		if ($substatistic === 'Missions') {
-			return SpacecraftFlight::whereHas('mission', function($q) {
-				$q->whereComplete();
-			})->count();
+            return Cache::remember('stats:dragonMissions', 60, function() {
+                return SpacecraftFlight::whereHas('mission', function($q) {
+                    $q->whereComplete();
+                })->count();
+            });
 		}
 
         if ($substatistic === 'ISS Resupplies') {
-			return SpacecraftFlight::whereNotNull('iss_berth')->whereHas('mission', function($q) {
-				$q->whereComplete();
-            })->count();
+            return Cache::remember('stats:ISSResupplies', 60, function() {
+                return SpacecraftFlight::whereNotNull('iss_berth')->whereHas('mission', function($q) {
+                    $q->whereComplete();
+                })->count();
+            });
 		}
 
         if ($substatistic === 'Total Flight Time') {
-			//SELECT SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft.return)) as duration FROM spacecraft INNER JOIN missions ON spacecraft.mission_id=missions.mission_id
 			return DB::table('spacecraft_flights_pivot')
 				->selectRaw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration')
                 ->where('missions.status','Complete')
@@ -76,9 +93,23 @@ class StatisticResultBuilder {
 		}
 
         if ($substatistic === 'Flight Time') {
-			return SpacecraftFlight::selectRaw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration')
-                ->where('missions.status','Complete')
-                ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')->first();
+			return [
+                'values' => SpacecraftFlight::selectRaw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration, missions.name AS mission')
+                    ->where('missions.status','Complete')
+                    ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')->get(),
+                'extrapolation' => false,
+                'xAxis' => [
+                    'type' => 'ordinal',
+                    'key' => 'mission',
+                    'title' => 'Mission'
+                ],
+                'yAxis' => [
+                    'type' => 'linear',
+                    'key' => 'duration',
+                    'title' => 'Duration',
+                    'zeroing' => true
+                ]
+            ];
 		}
 
         if ($substatistic === 'Cargo') {
@@ -93,8 +124,9 @@ class StatisticResultBuilder {
 		}
 
         if ($substatistic === 'Reflights') {
-			$query = DB::select(DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM spacecraft JOIN spacecraft_flights_pivot ON spacecraft.spacecraft_id = spacecraft_flights_pivot.spacecraft_id WHERE spacecraft.spacecraft_id=spacecraft_flights_pivot.spacecraft_id GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights"))[0];
-            return $query->total_flights;
+            return Cache::remember('stats:dragonReflights', 60, function() {
+                return DB::select(DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM spacecraft JOIN spacecraft_flights_pivot ON spacecraft.spacecraft_id = spacecraft_flights_pivot.spacecraft_id WHERE spacecraft.spacecraft_id=spacecraft_flights_pivot.spacecraft_id GROUP BY spacecraft_flights_pivot.spacecraft_id HAVING reflights > 0) reflights"))[0]->total_flights;
+            });
         }
 	}
 
@@ -108,8 +140,7 @@ class StatisticResultBuilder {
         }
 
         if ($substatistic == 'Reflown') {
-            $query =  DB::select(DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id WHERE parts.part_id=part_flights_pivot.part_id GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights"))[0];
-            return $query->total_flights;
+            return DB::select(DB::raw("SELECT COALESCE(SUM(reflights), 0) as total_flights FROM (SELECT COUNT(*)-1 as reflights FROM parts JOIN part_flights_pivot ON parts.part_id = part_flights_pivot.part_id WHERE parts.part_id=part_flights_pivot.part_id GROUP BY part_flights_pivot.part_id HAVING reflights > 0) reflights"))[0]->total_flights;
         }
     }
 
@@ -128,24 +159,11 @@ class StatisticResultBuilder {
 
 		if ($substatistic === 'M1D Flight Time') {
 			// SELECT SUM(vehicles.firststage_meco) AS flight_time FROM vehicles INNER JOIN missions ON vehicles.mission_id=missions.mission_id WHERE missions.status='Complete' AND vehicles.vehicle='Falcon 9 v1.1'
-			$seconds = PartFlight::select(DB::raw('SUM(part_flights_pivot.firststage_meco) AS flight_time'))
+			return PartFlight::select(DB::raw('SUM(part_flights_pivot.firststage_meco) AS flight_time'))
 				->whereHas('mission', function($q) {
 					$q->whereComplete();
 				})
 				->first()->flight_time;
-
-			$stat[0] = floor($seconds / (60 * 60 * 24));
-			$seconds -= $stat[0] * 60 * 60 * 24;
-
-			$stat[1] = floor($seconds / (60 * 60));
-			$seconds -= $stat[1] * 60 * 60;
-
-			$stat[2] = floor($seconds / 60);
-			$seconds -= $stat[2] * 60;
-
-			$stat[3] = $seconds;
-
-			return $stat;
 		}
 
         if ($substatistic === 'M1D Success Rate') {

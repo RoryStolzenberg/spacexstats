@@ -12,9 +12,14 @@
             },
             link: function($scope, elem, attrs) {
 
-                var unbindWatcher = $scope.$watch('data', function(newValue) {
+                $scope.$watch('data', function(newValue) {
                     render(newValue);
                 }, true);
+
+                $scope.$on('chart:rerender', function() {
+                    d3.select(elem[0]).remove();
+                    render($scope.data);
+                });
 
                 function render(chartData) {
                     if (!angular.isDefined(chartData) || chartData.length == 0) {
@@ -94,11 +99,7 @@
 
                     function computeChart() {
                         // Setup xZeroing
-                        if (settings.xAxis.zeroing === true) {
-                            var startPoint = 0;
-                        } else {
-                            var startPoint = data[0][settings.xAxis.key];
-                        }
+                        var startPoint = settings.xAxis.zeroing ? 0 : data[0][settings.xAxis.key];
 
                         // Setup xScales
                         if (settings.xAxis.type == 'linear') {
@@ -119,13 +120,7 @@
                         }
 
                         // setup yZeroing
-                        if (settings.yAxis.zeroing === true) {
-                            var startPoint = 0;
-                        } else {
-                            var startPoint = d3.min(data, function(d) {
-                                return d[settings.yAxis.key];
-                            });
-                        }
+                        var startPoint = settings.yAxis.zeroing ? 0 : data[0][settings.yAxis.key];
 
                         // setup yScales
                         if (settings.yAxis.type == 'linear') {
