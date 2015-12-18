@@ -502,7 +502,7 @@ class MissionsTableSeeder extends Seeder {
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 27,
             'launch_exact' => null,
-            'launch_approximate' => 'Mid January 2015',
+            'launch_approximate' => 'Mid January 2016',
             'launch_specificity' => LaunchSpecificity::SubMonth,
             'name' => 'SES-9',
             'contractor' => 'SES',
@@ -1200,7 +1200,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SpaceX will launch two passive reflective 1800kg satellites to complete the SARah formation for the German armed forces."",
+            'summary' => "SpaceX will launch two passive reflective 1800kg satellites to complete the SARah formation for the German armed forces.",
             'status' => MissionStatus::Upcoming
         ]);
     }
