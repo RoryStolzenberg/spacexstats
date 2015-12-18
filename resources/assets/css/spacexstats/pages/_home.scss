@@ -14,13 +14,13 @@
         margin-right:-0.25em;
     }
 
-    >* {
+    &:not(.statistic) > * {
+        position:relative;
+    }
+
+    > * {
         display: inline-block;
         vertical-align: middle;
-
-        &:not(.statistic) {
-            position:relative;
-        }
     }
 
     table {

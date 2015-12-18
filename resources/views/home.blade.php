@@ -86,14 +86,14 @@
                 <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="interval"></countdown>
 
                 <div ng-if="substatistic.display == 'mission'">
-                    <div class="launch-link">
-                        <a href="/missions/@{{ substatistic.result.slug }}">Go to Launch</a>
-                    </div>
-
                     <launch-date is-launch-exact="substatistic.result.launch_specificity >= 6" launch-date-time="substatistic.result.launch_date_time"></launch-date>
 
                     <countdown countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic">
                     </countdown>
+
+                    <div class="launch-link">
+                        <a href="/missions/@{{ substatistic.result.slug }}">Go to Launch</a>
+                    </div>
                 </div>
 
                 <chart ng-if="substatistic.display == 'barchart'" data="substatistic.result" settings="substatistic.settings" type="bar" width="100%" height="100%"></chart>

@@ -8581,11 +8581,11 @@ form[name="subscribeForm"] .subscription-failed {
     height: 100%;
     vertical-align: middle;
     margin-right: -0.25em; }
+  .hero:not(.statistic) > * {
+    position: relative; }
   .hero > * {
     display: inline-block;
     vertical-align: middle; }
-    .hero > *:not(.statistic) {
-      position: relative; }
   .hero table {
     border-collapse: collapse;
     position: relative;

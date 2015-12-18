@@ -329,7 +329,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'summary' => 'AsiaSat 6 is a communications satellite being launched for Asia Satellite Telecommunications Company Ltd. Once in orbit, it will be renamed AsiaSat 6 / Thaicom 7.',
+            'summary' => "AsiaSat 6 is a communications satellite being launched for Asia Satellite Telecommunications Company Ltd. Once in orbit, it will be renamed AsiaSat 6 / Thaicom 7.",
             'article' => file_get_contents(base_path('resources/assets/documents/asiasat6.txt')),
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -405,7 +405,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
-            'article' => file_get_contents(base_path('resources/assets/documents/eutelsat.txt')),
+            'article' => file_get_contents(base_path('resources/assets/documents/eutelsatabs.txt')),
             'summary' => "This marked SpaceX's first dual communications satellite launch, of Eutelsat 115W B & ABS-3A. The Boeing-built satellites use solar electric propulsion, which made it feasible to fit both on a single Falcon 9 because it removed the need for weighty hydrazine fuel.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -525,7 +525,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-8 will be the first CRS mission to the ISS since the ill-fated CRS-7, and stowed in Dragon's trunk will be BEAM, a small Bigelow inflatable module to be attached to the station.",
+            'summary' => "CRS-8 will be the first CRS mission to the ISS since the ill-fated CRS-7, and stowed in Dragon's trunk will be BEAM- a small Bigelow inflatable module to be attached to the station.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -540,7 +540,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-9 will be the ninth of a likely twelve missions to the ISS under the Commercial Resupply Services contract with NASA.",
+            'summary' => "CRS-9 will be the ninth of  fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -585,7 +585,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-10 will be the tenth of a likely twelve missions to the ISS under the Commercial Resupply Services contract with NASA.",
+            'summary' => "CRS-10 will be the tenth of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -600,7 +600,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-11 will likely be SpaceX's penultimate mission to the ISS under the Commercial Resupply Services contract with NASA.",
+            'summary' => "CRS-11 will be the eleventh of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -615,7 +615,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "AMOS-6",
+            'summary' => "SpaceX will launch AMOS-6, a 5 ton Israeli communications satellite that will replace its aging predecessor.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -630,7 +630,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 5,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "STP-2",
+            'summary' => "STP-2 will be the USAF's first misson using Falcon Heavy, and Falcon Heavy's second launch overall. It will carry a variety of experimental payloads to several different orbits.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -645,7 +645,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::SubsynchronousGTO)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES-10",
+            'summary' => "SpaceX will loft the 5300kg SES-10 satellite into GTO for SES, which will use it to expand coverage for Latin America.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -660,7 +660,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-12 is likely to be the last of SpaceX's missions to the ISS under the Commercial Resupply Services contract with NASA, although ISS visits will continue as SpaceX does crew rotations under the Commercial Crew contract.",
+            'summary' => "CRS-12 will be the twelfth of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -675,7 +675,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "EchoStar 105/SES-11",
+            'summary' => "SpaceX will launch the 5400kg communications satellite Echostar 105/SES-11 for Echostar and SES, providing coverage for North America.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -690,7 +690,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CCtCap Demo Mission 1",
+            'summary' => "CCtCap Demo Mission 1 will be SpaceX's first orbital mission with Crew Dragon, sending the unmanned vehicle to dock with the ISS for 30 days, reenter and then splashdown under parachutes in the ocean.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -701,11 +701,11 @@ class MissionsTableSeeder extends Seeder {
             'launch_approximate' => 'Late 2016',
             'launch_specificity' => LaunchSpecificity::SubYear,
             'name' => "Es'hail 2",
-            'contractor' => "Es�hailSat",
+            'contractor' => "Es'hailSat",
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Es'hail 2",
+            'summary' => "SpaceX will launch a 3000kg communications satellite for Qatar-based company Es'hailSat.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -720,7 +720,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "EuropaSat / HellasSat 3",
+            'summary' => "SpaceX will launch a 5900kg telecommunications satellite for companies Inmarsat and Hellas-Sat, providing services for Europe.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -735,7 +735,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 5,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "Inmarsat-5 F4",
+            'summary' => "SpaceX will launch the last of four 6070kg broadband satellites for Inmarsat.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -750,7 +750,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 5,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "Intelsat",
+            'summary' => "SpaceX will launch an unspecified satellite for Intelsat.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -765,7 +765,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 1",
+            'summary' => "SpaceX will carry up several of Iridium's next-generation communications satellites on the first flight of seven in a $492 million contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -780,7 +780,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 2",
+            'summary' => "SpaceX will carry up several of Iridium's next-generation communications satellites on the second flight of seven in a $492 million contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -795,7 +795,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 3",
+            'summary' => "SpaceX will carry up several of Iridium's next-generation communications satellites on the third flight of seven in a $492 million contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -810,7 +810,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Eutelsat 117W B & ABS-2A",
+            'summary' => "This will be SpaceX's second dual communications satellite launch, of Eutelsat 115W B & ABS-2A. The Boeing-built satellites will use solar electric propulsion for weight savings just like the previous Eutelsat/ABS dual launch.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -825,7 +825,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "JCSAT-14",
+            'summary' => "SpaceX will launch a telecommunications satellite of unknown mass for Japanese satellite operator SKY Perfect JSAT, providing services for East Asia.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -840,7 +840,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SAOCOM 1A",
+            'summary' => "SpaceX will launch a radar-mapping satellite of unknown mass for the civilian arm of Argentina's space agency, the first of two.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -855,7 +855,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "BulgariaSat-1",
+            'summary' => "SpaceX will launch a  telecommunications satellite of unknown mass for Bulgaria, providing increased services for the Balkan region of Europe.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -870,7 +870,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "JCSAT-16",
+            'summary' => "SpaceX will launch a telecommunications satellite of unknown mass for Japanese satellite operator SKY Perfect JSAT. It will act as a backup transmitter for the rest of the company's satellite fleet.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -885,7 +885,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "KoreaSat-5A",
+            'summary' => "SpaceX will launch a telecommunications satellite of unknown mass for South Korean communications company KT Corp. Built by Thales Alenia, KoreaSat-5A will be constructed using the largest 3-D printed spacecraft parts made in Europe.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -900,7 +900,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Thaicom",
+            'summary' => "SpaceX will launch a 3100kg communications satellite for Thai satellite operator Thaicom, providing increased services for Southeast Asia.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -915,7 +915,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 5,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "ViaSat 2",
+            'summary' => "SpaceX will launch a broadband satellite  for American service provider ViaSat Inc.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -930,7 +930,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::Lunar)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Transiting Exoplanet Survey Satellite (TESS)",
+            'summary' => "SpaceX will launch the Transiting Exoplanet Survey Satellite (TESS) for NASA into an elliptical High Earth Orbit, where TESS will survey nearby stars for exoplanets.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -945,7 +945,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SES-14/GOLD",
+            'summary' => "SpaceX will launch a 4200kg telecommunications satellite using electric propulsion for satellite operator SES. Hitching a ride on the satellite will be GOLD, a NASA experiment that will observe the impact of solar weather on the atmosphere from geosynchronous orbit.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -960,7 +960,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "HISPASAT-1F",
+            'summary' => "SpaceX will launch a broadband communications satellite of unknown mass for Spanish satellite operator HISPASAT, increasing coverage between Latin America and Europe.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -975,7 +975,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::Lunar)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceIL Lunar Lander (GLXP)",
+            'summary' => "SpaceX will launch the SpaceIL Lunar Lander to the vicinity of the moon for Israeli nonprofit SpaceIL, which seeks to win Google's Lunar X-Prize. The X-Prize will award $20 million to the first team to land a rover on the moon, drive 500 meters, and transmit back high-quality video.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -990,7 +990,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::Suborbital)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Dragon Inflight Abort",
+            'summary' => "SpaceX will demonstrate Crew Dragon's ability to abort while in flight, as opposed to on the launchpad. The test will use the same Dragon that will have flown on DM-1.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1005,7 +1005,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-13",
+            'summary' => "CRS-13 will be the thirteenth of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1020,7 +1020,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-14",
+            'summary' => "CRS-14 will be SpaceX's penultimate mission to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1035,7 +1035,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX CRS-15",
+            'summary' => "CRS-15 will be the last of SpaceX's missions to the ISS under the Commercial Resupply Services contract with NASA, although ISS visits will continue as SpaceX does crew rotations under the Commercial Crew contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1050,7 +1050,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "Demonstration Mission 2",
+            'summary' => "The two-week Demonstration Mission 2 will be SpaceX's second orbital flight using Dragon 2, and the first one with crew onboard.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1065,7 +1065,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 4",
+            'summary' => "SpaceX will carry up several of Iridium's next-generation communications satellites on the fourth flight of seven in a $492 million contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1080,7 +1080,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 5",
+            'summary' => "SpaceX will carry up several of Iridium's next-generation communications satellites on the fifth flight of seven in a $492 million contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1095,7 +1095,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 6",
+            'summary' => "SpaceX will carry up several of Iridium's next-generation communications satellites on the sixth flight of seven in a $492 million contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1110,7 +1110,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Iridium NEXT Flight 7",
+            'summary' => "SpaceX will carry up several of Iridium's next-generation communications satellites on the last flight of seven in a $492 million contract.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1125,7 +1125,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "PSN 6",
+            'summary' => "SpaceX will loft a 5000kg  communications satellite into orbit for Indonesian satellite operator PSN, increasing coverage in Indonesia.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1140,7 +1140,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SAOCOM 1A",
+            'summary' => "SpaceX will launch a radar-mapping satellite of unknown mass for the civilian arm of Argentina's space agency, the second of two.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1155,7 +1155,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Radarsat Constellation",
+            'summary' => "SpaceX will launch three satellites of unknown mass for the Canadian government to form the Radarsat Constellation Mission, or RCM.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1170,7 +1170,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 5,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'LC-39A')->firstOrFail()->location_id,
-            'summary' => "Arabsat 6A",
+            'summary' => "SpaceX will launch a communications satellite of unknown mass for Saudi satellite operator Arabsat.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1185,7 +1185,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SARah 1",
+            'summary' => "SpaceX will launch a 2200kg radar-reconaissance satellite for the German armed forces.",
             'status' => MissionStatus::Upcoming
         ]);
 
@@ -1200,7 +1200,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SARah 2 & SARah 3",
+            'summary' => "SpaceX will launch two passive reflective 1800kg satellites to complete the SARah formation for the German armed forces."",
             'status' => MissionStatus::Upcoming
         ]);
     }
