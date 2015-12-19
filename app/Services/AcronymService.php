@@ -3,7 +3,6 @@ namespace SpaceXStats\Services;
 
 class AcronymService
 {
-    // todo: add relevant acronyms from http://www.decronym.xyz/acronyms/SpaceX.json
     protected $acronyms = [
         'ACS'   => 'Attitude Control System',
         'AGL'   => 'Above Ground Level',

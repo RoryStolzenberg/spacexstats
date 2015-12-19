@@ -143,7 +143,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
      * @internal
      */
     private function parseIntegrations() {
-        preg_match_all('/https?:\/\/i\.imgur\.com\/[a-z1-9]*\.(?:jpg|gif)/i', $this->update, $imgurMatches);
+        preg_match_all('/https?:\/\/i\.imgur\.com\/[a-z1-9]*\.(?:jpg|gif|png)/i', $this->update, $imgurMatches);
 
         foreach($imgurMatches[0] as $imgurMatch) {
             $this->integrations[] = [
