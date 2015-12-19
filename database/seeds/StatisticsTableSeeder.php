@@ -180,7 +180,7 @@ class StatisticsTableSeeder extends Seeder {
 
         Statistic::create(array(
             'order' => 20,
-            'type' => 'Cape Kennedy',
+            'type' => 'KSC',
             'name' => 'Launches',
             'description' => "In April 2014, SpaceX signed an agreement with NASA for a 20 year lease on the historic Pad 39A at Kennedy Space Center. Since then, SpaceX has constructed a horizontal integration hangar capable of holding up to 5 Falcon cores. It will see its first launch, of Falcon Heavy, in 2016.",
             'unit' => json_encode('Launches'),
