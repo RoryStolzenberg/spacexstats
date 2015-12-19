@@ -390,14 +390,14 @@ class PartFlightsTableSeeder extends Seeder {
 
         // CRS-7
         PartFlight::create(array(
-            'mission_id' => 23,
+            'mission_id' => 24,
             'part_id' => Part::where('name', 'F9-020')->first()->part_id,
             'firststage_engine' => Engine::Merlin1D,
             'landed' => false
         ));
 
         PartFlight::create(array(
-            'mission_id' => 23,
+            'mission_id' => 24,
             'part_id' => Part::where('name', 'F9-020-US')->first()->part_id,
             'upperstage_engine' => Engine::Merlin1DVac,
             'landed' => false
