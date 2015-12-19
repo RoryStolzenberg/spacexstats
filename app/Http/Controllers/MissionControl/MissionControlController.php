@@ -113,7 +113,7 @@ class MissionControlController extends Controller {
                 'downloads' => $downloads
             ]);
 		} else {
-            return redirect()->action('MissionControlController@about');
+            return redirect()->action('MissionControl\MissionControlController@about');
 		}
 	}
 
