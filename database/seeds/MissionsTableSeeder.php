@@ -437,7 +437,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_exact' => Carbon::create(2015, 4, 27, 23, 3, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
-            'name' => utf8_encode('Turkmen�lem 52E'),
+            'name' => utf8_encode('TurkmenÄlem 52E'),
             'contractor' => 'Thales Alenia Space (Turkmenistan)',
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
