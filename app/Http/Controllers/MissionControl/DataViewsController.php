@@ -1,8 +1,10 @@
 <?php 
 namespace SpaceXStats\Http\Controllers\MissionControl;
 
+use Illuminate\Support\Facades\DB;
 use SpaceXStats\Http\Controllers\Controller;
 use SpaceXStats\Library\Enums\MissionControlType;
+use SpaceXStats\Models\DataView;
 
 class DataViewsController extends Controller {
 
