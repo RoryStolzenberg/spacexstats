@@ -368,7 +368,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
             'article' => file_get_contents(base_path('resources/assets/documents/crs5.txt')),
-            'summary' => 'The fifth CRS mission to the ISS will carry pressurized and unpressurized cargo to the station. Secondary payloads include 2 small satellites to be deployed from the ISS airlock.', 'status' => MissionStatus::Complete,
+            'summary' => "The fifth CRS mission to the ISS carried both pressurized and unpressurized cargo, including 2 small satellites that were deployed from the ISS airlock. This was also the first mission to attempt landing the first stage on a solid surace- the ASDS.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=d8fad388-cdcd-442e-a1b0-a404ade89070&code=CRS5'
@@ -425,7 +425,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'article' => file_get_contents(base_path('resources/assets/documents/crs6.txt')),
-            'summary' => "The sixth of twelve Dragon ISS resupply missions to the ISS was the second mission to attempt landing the first stage on the ASDS, just barely failing to stick the landing.",
+            'summary' => "The sixth of fifteen Dragon ISS resupply missions to the ISS was the second mission to attempt landing the first stage on the ASDS, just barely failing to stick the landing.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
             'flight_club' => 'http://www.flightclub.io/results.php?id=4713410a-e452-484e-86be-3bb95ea3c5e8&code=CRS6'
@@ -542,7 +542,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "CRS-9 will be the ninth of  fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
+            'summary' => "CRS-9 will be the ninth of fifteen missions to the ISS under the Commercial Resupply Services contract with NASA.",
             'status' => MissionStatus::Upcoming
         ]);
 

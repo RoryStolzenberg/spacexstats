@@ -1,4 +1,6 @@
-"Close, but no cigar this time". These were the words uttered by Elon Musk over Twitter following an near-successful first stage landing attempt on SpaceX's "Autonomous Spaceport Droneship,” which was later given the name "Just Read The Instructions.” This was the first step up from ocean landings on the long path towards launch site landings, and eventually full rocket reusability.
+>”Close, but no cigar this time". 
+
+These were the words uttered by Elon Musk over Twitter following an near-successful first stage landing attempt on SpaceX's "Autonomous Spaceport Droneship,” which was later given the name "Just Read The Instructions.” This was the first step up from ocean landings on the long path towards launch site landings, and eventually full rocket reusability.
 
 The fifth of 12 ISS commercial resupply mission with Dragon kicked off SpaceX's 2015 - pushed from 2014 and the first week of 2015 due to issues with the vehicle's static fire earlier in the campaign, and with Z-axis actuator drift of the second stage TVC system at T-1:21 on the second attempt.
 
