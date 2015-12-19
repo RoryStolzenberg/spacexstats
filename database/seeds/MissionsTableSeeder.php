@@ -463,7 +463,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
             'article' => file_get_contents(base_path('resources/assets/documents/crs7.txt')),
-            'summary' => "Falcon 9 lifted off carrying Dragon and an International Docking Adapter for the ISS, but an overpressure event caused the rocket to distenegrate moments before stage separation, marking Falcon 9's first launch failure ever and SpaceX's first since Falcon 1 Flight 3.",
+            'summary' => "Falcon 9 lifted off carrying Dragon and an International Docking Adapter for the ISS, but an overpressure event caused the rocket to disintegrate moments before stage separation, marking Falcon 9's first launch failure ever and SpaceX's first since Falcon 1 Flight 3.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure,
             'flight_club' => 'http://www.flightclub.io/results.php?id=ad8d5e76-ad6b-4670-9aee-60c1319dff50&code=CRS7'
@@ -496,7 +496,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Launching Jason-3 to polar",
+            'summary' => "Launching Jason-3 to polar orbit is the second Falcon 9 flying out of Vandenberg Air Force base in California. This represents the last remaining F9v1.1 flight.",
             'status' => MissionStatus::Upcoming
         ]);
 

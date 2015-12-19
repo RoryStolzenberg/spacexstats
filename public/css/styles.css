@@ -8905,7 +8905,8 @@ body.future-mission .highlights {
   right: 0;
   top: 0;
   width: 300px;
-  font-family: "Montserrat", sans-serif; }
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer; }
   .display-date-time .launch {
     display: inline-block;
     text-align: right;

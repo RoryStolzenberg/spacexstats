@@ -117,7 +117,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 13,
             'type' => 'Dragon',
             'name' => 'Reflights',
-            'description' => "Starting with CRS-11, SpaceX will move to reflying previously flown Dragons as a measure to reduce costs even further. This will see Dragon 1 pressure vessel reduction wind down.",
+            'description' => "Starting with CRS-11, SpaceX will move to reflying previously flown Dragons as a measure to reduce costs even further. This will see Dragon 1 pressure vessel production wind down.",
             'unit' => json_encode('Reflights'),
             'display' => 'single'
         ));
