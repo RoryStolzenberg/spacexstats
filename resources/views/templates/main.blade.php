@@ -96,7 +96,6 @@
 
             ga('create', 'UA-46804069-1', 'auto');
             ga('send', 'pageview');
-
         </script>
     @endif
 </head>

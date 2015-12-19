@@ -9350,6 +9350,9 @@ button.canned-response {
   color: #FAFAFA;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
 
+.missioncontrol-about .background {
+  background-image: url("/images/backgrounds/fh-launch.jpg"); }
+
 .missioncontrol-about h1 {
   line-height: 100px;
   height: 100px; }
