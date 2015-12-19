@@ -37,12 +37,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('reddit:questions')->daily();
+        //$schedule->command('reddit:questions')->daily();
         $schedule->command('webcast:check')->everyMinute();
-        $schedule->command('spacetrack:fetch')->dailyAt('19:37'); // Random time after 1700 to satisfy API request rules
-        $schedule->command('mission:notify')->everyMinute();
-        $schedule->command('objects:deleteOrphanedFiles')->weekly();
+        //$schedule->command('spacetrack:fetch')->dailyAt('19:37'); // Random time after 1700 to satisfy API request rules
+        //$schedule->command('mission:notify')->everyMinute();
+        //$schedule->command('objects:deleteOrphanedFiles')->weekly();
         $schedule->command('db:backup')->daily();
-        $schedule->command('search:reindex')->everyTenMinutes();
+        //$schedule->command('search:reindex')->everyTenMinutes();
     }
 }
