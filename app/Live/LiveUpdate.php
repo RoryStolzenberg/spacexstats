@@ -21,11 +21,13 @@ class LiveUpdate implements JsonSerializable, Arrayable {
      */
     public function __construct($data) {
 
+        $data = (array) $data;
+
         // Set the ID
         $this->id           = isset($data['id']) ? $data['id'] : Redis::llen('live:updates');
 
         // Set the dates and times
-        $this->createdAt    = isset($data['createdAt']) ? Carbon::createFromFormat('Y-m-d H:i:s', $data->createdAt) : Carbon::now();
+        $this->createdAt    = isset($data['createdAt']) ? Carbon::createFromFormat('Y-m-d H:i:s', $data['createdAt']) : Carbon::now();
         $this->updatedAt    = Carbon::now();
         $this->timestamp    = isset($data['timestamp']) ?  $data['timestamp'] : $this->constructTimestamp();
 

@@ -14,10 +14,13 @@
         margin-right:-0.25em;
     }
 
-    >* {
+    &:not(.statistic) > * {
+        position:relative;
+    }
+
+    > * {
         display: inline-block;
         vertical-align: middle;
-        position:relative;
     }
 
     table {
@@ -27,30 +30,15 @@
 
         td {
             @include gridle_state("small") {
-                min-width:80px;
+                min-width:100px;
             }
             @include gridle_state("medium") {
-                min-width:120px;
+                min-width:150px;
             }
             @include gridle_state("large") {
-                min-width:200px;
+                min-width:250px;
             }
-            min-width:250px;
-        }
-
-        .value {
-            @include gridle_state("small") {
-                font-size:50px;
-            }
-            @include gridle_state("medium") {
-                font-size:100px;
-            }
-            @include gridle_state("large") {
-                font-size:200px;
-            }
-            font-size:300px;
-            font-weight:300;
-            line-height: 1;
+            min-width:300px;
         }
 
         .unit {
@@ -60,6 +48,56 @@
             font-size:30px;
             font-weight:300;
         }
+
+        .value {
+            font-weight:300;
+            line-height: 1;
+        }
+
+        &.countdown, &.single.expected {
+            .value {
+                @include gridle_state("small") {
+                    font-size:80px;
+                }
+                @include gridle_state("medium") {
+                    font-size:100px;
+                }
+                @include gridle_state("large") {
+                    font-size:120px;
+                }
+                font-size:150px;
+            }
+        }
+
+        &.single {
+            .value {
+                @include gridle_state("small") {
+                    font-size:100px;
+                }
+                @include gridle_state("medium") {
+                    font-size:150px;
+                }
+                @include gridle_state("large") {
+                    font-size:200px;
+                }
+                font-size:300px;
+            }
+        }
+
+        &.double, &.gesture {
+            .value {
+                @include gridle_state("small") {
+                    font-size:40px;
+                }
+                @include gridle_state("medium") {
+                    font-size:60px;
+                }
+                @include gridle_state("large") {
+                    font-size:80px;
+                }
+                font-size:100px;
+            }
+        }
     }
 
     // Display statistics
@@ -68,6 +106,25 @@
 
         .description {
             height:100px;
+        }
+
+        svg {
+            text {
+                fill:white;
+                font-size:14px;
+                font-family:$brandonGrotesque;
+            }
+
+            path, line {
+                stroke:white;
+            }
+        }
+
+        // Statistic types
+        launch-date {
+            position:absolute;
+            top:50px;
+            right:5px;
         }
     }
 }
@@ -138,8 +195,6 @@
     opacity: 0;
 }
 
-.background {	@include filteredBackground("../images/backgrounds/dscovr2.jpg"); }
-
 #home {
 
     .app-description {
@@ -147,11 +202,61 @@
     }
 
     p {
+
+        &.exclaim {
+            font-size:48px;
+
+
+            a {
+                text-decoration: none;
+                color:$gold;
+                font-weight:400;
+            }
+        }
+
         font-size:16px;
         line-height:1.6;
 
-        @include gridle(small) {
+        @include gridle_state(small) {
             font-size:14px;
         }
     }
+
+    .description {
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        width: 100%;
+        font-size: 12px;
+    }
+
+    .expando-button {
+        width:150px;
+        @include transitionMed(width);
+
+        &:hover {
+            width:200px;
+        }
+    }
 }
+
+#home { background-image:url("../images/backgrounds/orbcommdark.jpg"); }
+#nextLaunch { background-image:url("../images/backgrounds/dscovrlaunch.jpg"); }
+#launchCount { background-image:url("../images/backgrounds/seslaunch.jpg"); }
+#launchesPerYear { background-image:url("../images/backgrounds/orbcommliftoff.jpg"); }
+#dragon { background-image:url("../images/backgrounds/dragoncrs5.jpg"); }
+#vehicles { background-image:url("../images/backgrounds/crs6barge.jpg"); }
+#engines { background-image:url("../images/backgrounds/merlinteststand.jpg"); }
+#capeCanaveral { background-image:url("../images/backgrounds/capeflorida.jpg"); }
+#ksc { background-image:url("../images/backgrounds/fh.jpg"); }
+#vandenberg { background-image:url("../images/backgrounds/cassiopelaunch.jpg"); }
+#bocaChica { background-image:url("../images/backgrounds/bocachica.jpg"); }
+#kwajalein { background-image:url("../images/backgrounds/kwaj.jpg"); }
+#dragonRiders { background-image:url("../images/backgrounds/dragonriders.jpg"); }
+#elonMusksBetExpires { background-image:url("../images/backgrounds/elonmusk.jpg"); }
+#timeSinceFounding { background-image:url("../images/backgrounds/spacexhq.jpg"); }
+#payloads { background-image:url("../images/backgrounds/payloadfairing.jpg"); }
+#turnarounds { background-image:url("../images/backgrounds/thaicomlaunch.jpg"); }
+#internetConstellation { background-image:url("../images/backgrounds/tankland.jpg"); }
+#marsPopulationCount { background-image:url("../images/backgrounds/mars.jpg"); }
+#hoursWorked { background-image:url("../images/backgrounds/rollout.jpg"); }

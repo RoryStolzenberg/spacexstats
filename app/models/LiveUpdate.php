@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class LiveUpdate extends Model {
 
     protected $table = 'live_updates';
-    protected $primaryKey = 'message_id';
+    protected $primaryKey = 'live_update_id';
     public $timestamps = false;
 
     protected $hidden = [];

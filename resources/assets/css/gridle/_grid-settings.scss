@@ -1,15 +1,11 @@
 // Import gridle
 @import 'gridle/gridle';
 
-
 // setup the grid (required)
 @include gridle_setup((
-	context : 12,
-	gutter-width : 0px,
-	// gutter-left : 20px,
-	// direction : rtl,
-	states-classes : true,
-	// classes-prefix : 'gr-'
+        context : 12,
+        gutter-width : 0px,
+        states-classes : true
 ));
 
 
@@ -23,7 +19,6 @@
 @include gridle_register_clear_each(2, left);
 @include gridle_register_clear_each(3, left);
 @include gridle_register_clear_each(12, both);
-
 
 // register states
 //@include gridle_register_default_states();
@@ -47,7 +42,6 @@
         query : "(min-width: 1921px)",
         gutter-width : 0
 ));
-
 
 // you can set css to be applied on the desired element type (grid here)
 // for each of the specified states (default mobile and tablet)

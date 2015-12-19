@@ -71,11 +71,11 @@
                     @endif
                 </div>
 
-                <p>Scroll down to see why Mission Control is so awesome.</p>
+                <!--<p>Scroll down to see why Mission Control is so awesome.</p>-->
             </section>
         </main>
     </div>
-    <div class="content-wrapper single-page background transparent" style="position:relative;overflow:hidden;">
+    <!--<div class="content-wrapper single-page background transparent" style="position:relative;overflow:hidden;">
         <video autoplay loop id="herovideo">
             <source src="/videos/herovideo.mp4" type="video/mp4">
         </video>
@@ -110,7 +110,7 @@
         <h1>Convinced? Sign Me Up!</h1>
         <p>You will never pay more for Mission Control, you will always be charged at the rate that was available when you signed up (excluding inflation).</p>
         <p>At the end of the year or when your subscription expires (whichever is later), you will be automatically rebilled.</p>
-    </div>
+    </div>-->
 
     @if (Auth::check())
     <script type="text/javascript" src="https://js.stripe.com/v2/"></script>

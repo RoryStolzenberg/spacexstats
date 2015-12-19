@@ -26,8 +26,7 @@ class WebcastCheckCommand extends Command
     protected $description = 'Checks the SpaceX Youtube Channel to see if it is running and fetch the viewer count.';
 
     protected $channelName = 'spacexchannel';
-    //protected $channelID = 'UCtI0Hodo5o5dUb67FeUjDeA'; // https://developers.google.com/youtube/v3/docs/channels/list#try-it
-    protected $channelID = 'UCoMdktPbSTixAyNGwb-UYkQ';
+    protected $channelID = 'UCtI0Hodo5o5dUb67FeUjDeA'; // https://developers.google.com/youtube/v3/docs/channels/list#try-it
     /**
      * Create a new command instance.
      *

@@ -44,6 +44,10 @@ body.live {
             background-color:$grey;
         }
 
+        &.hold-abort {
+            color:#8F6481;
+        }
+
         &.terminal-count {
             background-color:$october;
         }
@@ -144,7 +148,7 @@ button.canned-response {
 .live-updates {
     .update {
         border-bottom:1px solid $bordergrey;
-        padding:10px 0;
+        padding:5px 0;
 
         .update-timestamp {
             font-size:18px;

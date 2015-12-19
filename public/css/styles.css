@@ -472,7 +472,7 @@ table {
     width: device-width; } }
 
 #gridle-settings {
-  content: '{ \\"version\\" : \\"2.0.1\\", \\"states\\" : { \\"default\\":{ \\"name\\" : \\"default\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : null, \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0px\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0px\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0px\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"small\\":{ \\"name\\" : \\"small\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(max-width: 640px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"medium\\":{ \\"name\\" : \\"medium\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 641px) and (max-width: 1024px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"large\\":{ \\"name\\" : \\"large\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1025px) and (max-width: 1440px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xlarge\\":{ \\"name\\" : \\"xlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1441px) and (max-width: 1920px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xxlarge\\":{ \\"name\\" : \\"xxlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1921px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }} }'; }
+  content: '{ \\"version\\" : \\"2.0.2\\", \\"states\\" : { \\"default\\":{ \\"name\\" : \\"default\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : null, \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0px\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0px\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0px\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"small\\":{ \\"name\\" : \\"small\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(max-width: 640px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"medium\\":{ \\"name\\" : \\"medium\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 641px) and (max-width: 1024px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"large\\":{ \\"name\\" : \\"large\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1025px) and (max-width: 1440px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xlarge\\":{ \\"name\\" : \\"xlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1441px) and (max-width: 1920px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }, \\"xxlarge\\":{ \\"name\\" : \\"xxlarge\\", \\"min-width\\" : null, \\"max-width\\" : null, \\"query\\" : \\"(min-width: 1921px)\\", \\"classes\\" : true, \\"context\\" : \\"12\\", \\"gutter-width\\" : \\"0\\", \\"gutter-height\\" : \\"0\\", \\"gutter-top\\" : \\"0\\", \\"gutter-right\\" : \\"0\\", \\"gutter-bottom\\" : \\"0\\", \\"gutter-left\\" : \\"0\\", \\"direction\\" : \\"ltr\\", \\"name-multiplicator\\" : \\"1\\", \\"states-classes\\" : true, \\"classes-prefix\\" : null, \\"_\\" : true }} }'; }
 
 .state-default .gr-1on5 {
   width: 20%; }
@@ -4925,6 +4925,7 @@ body {
     margin-right: -0; } }
 
 .container {
+  margin: 0 auto;
   max-width: 1400px; }
 
 /*
@@ -7345,7 +7346,7 @@ body {
     .content-wrapper.background main {
       background-color: rgba(250, 250, 250, 0.75); }
       .content-wrapper.background main.invert {
-        background-color: rgba(24, 28, 31, 0.75); }
+        background-color: rgba(24, 28, 31, 0.8); }
   .content-wrapper.transparent main {
     background: none; }
     .content-wrapper.transparent main:after {
@@ -7400,7 +7401,8 @@ h1 {
   text-transform: none;
   text-overflow: "...";
   overflow: hidden;
-  white-space: nowrap; }
+  white-space: nowrap;
+  text-shadow: 0 0 5px #21272B; }
   .state-medium h1 {
     font-size: 42px; }
   @media (min-width: 641px) and (max-width: 1024px) {
@@ -7477,6 +7479,11 @@ small {
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont";
   font-weight: 100;
   color: #8B939B; }
+  .state-small .exclaim {
+    font-size: 24px; }
+  @media (max-width: 640px) {
+    .exclaim {
+      font-size: 24px; } }
 
 .lowvisibility.color {
   color: #CCC; }
@@ -8574,50 +8581,32 @@ form[name="subscribeForm"] .subscription-failed {
     height: 100%;
     vertical-align: middle;
     margin-right: -0.25em; }
+  .hero:not(.statistic) > * {
+    position: relative; }
   .hero > * {
     display: inline-block;
-    vertical-align: middle;
-    position: relative; }
+    vertical-align: middle; }
   .hero table {
     border-collapse: collapse;
     position: relative;
     text-align: center; }
     .hero table td {
-      min-width: 250px; }
+      min-width: 300px; }
       .state-small .hero table td {
-        min-width: 80px; }
+        min-width: 100px; }
       @media (max-width: 640px) {
         .hero table td {
-          min-width: 80px; } }
+          min-width: 100px; } }
       .state-medium .hero table td {
-        min-width: 120px; }
+        min-width: 150px; }
       @media (min-width: 641px) and (max-width: 1024px) {
         .hero table td {
-          min-width: 120px; } }
+          min-width: 150px; } }
       .state-large .hero table td {
-        min-width: 200px; }
+        min-width: 250px; }
       @media (min-width: 1025px) and (max-width: 1440px) {
         .hero table td {
-          min-width: 200px; } }
-    .hero table .value {
-      font-size: 150px;
-      font-weight: 300;
-      line-height: 1; }
-      .state-small .hero table .value {
-        font-size: 50px; }
-      @media (max-width: 640px) {
-        .hero table .value {
-          font-size: 50px; } }
-      .state-medium .hero table .value {
-        font-size: 80px; }
-      @media (min-width: 641px) and (max-width: 1024px) {
-        .hero table .value {
-          font-size: 80px; } }
-      .state-large .hero table .value {
-        font-size: 100px; }
-      @media (min-width: 1025px) and (max-width: 1440px) {
-        .hero table .value {
-          font-size: 100px; } }
+          min-width: 250px; } }
     .hero table .unit {
       font-size: 30px;
       font-weight: 300; }
@@ -8626,10 +8615,74 @@ form[name="subscribeForm"] .subscription-failed {
       @media (max-width: 640px) {
         .hero table .unit {
           font-size: 18px; } }
+    .hero table .value {
+      font-weight: 300;
+      line-height: 1; }
+    .hero table.countdown .value, .hero table.single.expected .value {
+      font-size: 150px; }
+      .state-small .hero table.countdown .value, .state-small .hero table.single.expected .value {
+        font-size: 80px; }
+      @media (max-width: 640px) {
+        .hero table.countdown .value, .hero table.single.expected .value {
+          font-size: 80px; } }
+      .state-medium .hero table.countdown .value, .state-medium .hero table.single.expected .value {
+        font-size: 100px; }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table.countdown .value, .hero table.single.expected .value {
+          font-size: 100px; } }
+      .state-large .hero table.countdown .value, .state-large .hero table.single.expected .value {
+        font-size: 120px; }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table.countdown .value, .hero table.single.expected .value {
+          font-size: 120px; } }
+    .hero table.single .value {
+      font-size: 300px; }
+      .state-small .hero table.single .value {
+        font-size: 100px; }
+      @media (max-width: 640px) {
+        .hero table.single .value {
+          font-size: 100px; } }
+      .state-medium .hero table.single .value {
+        font-size: 150px; }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table.single .value {
+          font-size: 150px; } }
+      .state-large .hero table.single .value {
+        font-size: 200px; }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table.single .value {
+          font-size: 200px; } }
+    .hero table.double .value, .hero table.gesture .value {
+      font-size: 100px; }
+      .state-small .hero table.double .value, .state-small .hero table.gesture .value {
+        font-size: 40px; }
+      @media (max-width: 640px) {
+        .hero table.double .value, .hero table.gesture .value {
+          font-size: 40px; } }
+      .state-medium .hero table.double .value, .state-medium .hero table.gesture .value {
+        font-size: 60px; }
+      @media (min-width: 641px) and (max-width: 1024px) {
+        .hero table.double .value, .hero table.gesture .value {
+          font-size: 60px; } }
+      .state-large .hero table.double .value, .state-large .hero table.gesture .value {
+        font-size: 80px; }
+      @media (min-width: 1025px) and (max-width: 1440px) {
+        .hero table.double .value, .hero table.gesture .value {
+          font-size: 80px; } }
   .hero.statistic {
     height: calc(100% - 30px - 100px); }
     .hero.statistic .description {
       height: 100px; }
+    .hero.statistic svg text {
+      fill: white;
+      font-size: 14px;
+      font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
+    .hero.statistic svg path, .hero.statistic svg line {
+      stroke: white; }
+    .hero.statistic launch-date {
+      position: absolute;
+      top: 50px;
+      right: 5px; }
 
 #side-navigation {
   position: fixed;
@@ -8684,8 +8737,97 @@ form[name="subscribeForm"] .subscription-failed {
 .fade-in-out.ng-hide {
   opacity: 0; }
 
-.background {
-  background-image: url("../images/backgrounds/dscovr2.jpg"); }
+#home .app-description {
+  padding: 0 10px; }
+
+#home p {
+  font-size: 16px;
+  line-height: 1.6; }
+  #home p.exclaim {
+    font-size: 48px; }
+    #home p.exclaim a {
+      text-decoration: none;
+      color: #ccac55;
+      font-weight: 400; }
+  .state-small #home p {
+    font-size: 14px; }
+  @media (max-width: 640px) {
+    #home p {
+      font-size: 14px; } }
+
+#home .description {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  font-size: 12px; }
+
+#home .expando-button {
+  width: 150px;
+  -webkit-transition: width ease-in-out 0.5s 0s;
+          transition: width ease-in-out 0.5s 0s; }
+  #home .expando-button:hover {
+    width: 200px; }
+
+#home {
+  background-image: url("../images/backgrounds/orbcommdark.jpg"); }
+
+#nextLaunch {
+  background-image: url("../images/backgrounds/dscovrlaunch.jpg"); }
+
+#launchCount {
+  background-image: url("../images/backgrounds/seslaunch.jpg"); }
+
+#launchesPerYear {
+  background-image: url("../images/backgrounds/orbcommliftoff.jpg"); }
+
+#dragon {
+  background-image: url("../images/backgrounds/dragoncrs5.jpg"); }
+
+#vehicles {
+  background-image: url("../images/backgrounds/crs6barge.jpg"); }
+
+#engines {
+  background-image: url("../images/backgrounds/merlinteststand.jpg"); }
+
+#capeCanaveral {
+  background-image: url("../images/backgrounds/capeflorida.jpg"); }
+
+#ksc {
+  background-image: url("../images/backgrounds/fh.jpg"); }
+
+#vandenberg {
+  background-image: url("../images/backgrounds/cassiopelaunch.jpg"); }
+
+#bocaChica {
+  background-image: url("../images/backgrounds/bocachica.jpg"); }
+
+#kwajalein {
+  background-image: url("../images/backgrounds/kwaj.jpg"); }
+
+#dragonRiders {
+  background-image: url("../images/backgrounds/dragonriders.jpg"); }
+
+#elonMusksBetExpires {
+  background-image: url("../images/backgrounds/elonmusk.jpg"); }
+
+#timeSinceFounding {
+  background-image: url("../images/backgrounds/spacexhq.jpg"); }
+
+#payloads {
+  background-image: url("../images/backgrounds/payloadfairing.jpg"); }
+
+#turnarounds {
+  background-image: url("../images/backgrounds/thaicomlaunch.jpg"); }
+
+#internetConstellation {
+  background-image: url("../images/backgrounds/tankland.jpg"); }
+
+#marsPopulationCount {
+  background-image: url("../images/backgrounds/mars.jpg"); }
+
+#hoursWorked {
+  background-image: url("../images/backgrounds/rollout.jpg"); }
 
 body.future-mission .highlights {
   padding-right: 300px; }
@@ -8763,17 +8905,18 @@ body.future-mission .highlights {
   right: 0;
   top: 0;
   width: 300px;
-  font-family: "Montserrat", sans-serif; }
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer; }
   .display-date-time .launch {
     display: inline-block;
     text-align: right;
     background-color: #ccac55;
     color: #FAFAFA;
     height: 40px;
-    width: calc(100% - 10px);
+    width: calc(100% - 20px);
     padding: 0 20px 0 10px;
     position: relative;
-    right: -20px; }
+    right: -30px; }
     .display-date-time .launch p {
       line-height: 20px; }
     .display-date-time .launch:before {
@@ -9065,6 +9208,8 @@ body.live {
     color: white; }
     body.live .live-status.upcoming {
       background-color: #8B939B; }
+    body.live .live-status.hold-abort {
+      color: #8F6481; }
     body.live .live-status.terminal-count {
       background-color: #4f708f; }
     body.live .live-status.in-progress {
@@ -9146,7 +9291,7 @@ button.canned-response {
 
 .live-updates .update {
   border-bottom: 1px solid #CCC;
-  padding: 10px 0; }
+  padding: 5px 0; }
   .live-updates .update .update-timestamp {
     font-size: 18px;
     font-family: "Montserrat", sans-serif; }
@@ -9205,6 +9350,9 @@ button.canned-response {
   color: #FAFAFA;
   font-family: "Brandon Grotesque", "Brandon Grotesque-webfont"; }
 
+.missioncontrol-about .background {
+  background-image: url("/images/backgrounds/fh-launch.jpg"); }
+
 .missioncontrol-about h1 {
   line-height: 100px;
   height: 100px; }
@@ -9227,9 +9375,9 @@ button.canned-response {
     height: 100%; } }
 
 .missioncontrol-about .notifications {
-  background-image: url("/images/backgrounds/f9dragonlaunch.jpg"); }
+  background-image: url("/images/backgrounds/fh-launch.jpg"); }
   .missioncontrol-about .notifications p {
-    background-color: rgba(24, 28, 31, 0.75); }
+    background-color: rgba(24, 28, 31, 0.8); }
   .missioncontrol-about .notifications img {
     float: right;
     max-width: 500px; }

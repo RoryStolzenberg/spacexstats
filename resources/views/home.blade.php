@@ -13,6 +13,7 @@
         <main>
             <div class="app-description gr-4 gr-12@small">
                 <p class="exclaim"><a href="/">SpaceX Stats</a></p>
+
                 <p class="">SpaceX Stats is the first website dedicated entirely to following SpaceX and their missions. Countdown to upcoming launches, read about past missions, watch and follow missions live as they happen, and much more!</p>
 
                 <p class="hide@small">SpaceX Stats is currently in public beta, and as such, some features may not be entirely operational or may appear broken. You can contact me to report problems here.</p>
@@ -31,6 +32,10 @@
 
                 <p class="hide@small">No more hassles with refreshing antiquated forum pages or having multiple windows. Everything is in one place.</p>
             </div>
+
+            <p class="description">Photos on this page courtesy <a href="https://www.flickr.com/photos/alloyjared/sets">Jared Haworth</a>, <a href="http://www.tmahlmann.com/">Trevor Mahlman</a>, SpaceX, & NASA. All rights maintained by the respective owners. <br/>
+            This site is fan-run and not associated with SpaceX in any way. For official information and news, please see <a href="http://spacex.com">spacex.com</a></p>
+
             <button class="next-stat" ng-click="goToFirstStatistic()"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>
     </div>
@@ -71,30 +76,41 @@
                 </table>
 
                 <table class="double" ng-if="substatistic.display == 'double'">
-                    <tr>
+                    <tr class="value">
                         <td>@{{ substatistic.result[0] }}</td>
                         <td>@{{ substatistic.result[1] }}</td>
                     </tr>
-                    <tr>
+                    <tr class="unit">
                         <td>@{{ substatistic.unit[0] }}</td>
                         <td>@{{ substatistic.unit[1] }}</td>
                     </tr>
                 </table>
 
-                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic"></countdown>
+                <countdown ng-if="substatistic.display == 'count'" countdown-to="substatistic.result" type="classic"></countdown>
 
-                <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="classic" is-paused="{{ true }}" is-visible-when-paused="{{ true }}"></countdown>
+                <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="interval"></countdown>
 
                 <div ng-if="substatistic.display == 'mission'">
-                    <div class="launch-link">
-                        <a href="/missions/@{{ substatistic.result.slug }}">Go to Launch</a>
-                    </div>
-
                     <launch-date is-launch-exact="substatistic.result.launch_specificity >= 6" launch-date-time="substatistic.result.launch_date_time"></launch-date>
 
                     <countdown countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic">
                     </countdown>
+
+                    <div class="launch-link">
+                        <a href="/missions/@{{ substatistic.result.slug }}">Go to Launch</a>
+                    </div>
                 </div>
+
+                <chart ng-if="substatistic.display == 'barchart'" data="substatistic.result.values" settings="substatistic.result" type="bar" width="100%" height="100%"></chart>
+
+                <table class="gesture" ng-if="substatistic.display == 'gesture'">
+                    <tr class="value">
+                        <td>@{{ substatistic.result }}</td>
+                    </tr>
+                    <tr class="unit">
+                        <td>@{{ substatistic.unit }}</td>
+                    </tr>
+                </table>
             </div>
 
             <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>

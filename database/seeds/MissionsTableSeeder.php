@@ -367,6 +367,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
+            'article' => file_get_contents(base_path('resources/assets/documents/crs5.txt')),
             'summary' => "The fifth CRS mission to the ISS carried both pressurized and unpressurized cargo, including 2 small satellites that were deployed from the ISS airlock. This was also the first mission to attempt landing the first stage on a solid surace- the ASDS.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -385,6 +386,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::EarthSunL1)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
+            'article' => file_get_contents(base_path('resources/assets/documents/dscovr.txt')),
             'summary' => "Falcon 9 lofted the much-delayed Deep Space Climate Observatory to Sun-Earth L1 for NOAA, where it functions as an Earth & Solar Observation satellite. The first stage was not able to attempt a barge landing, and instead softly splashed down in the Atlantic.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -403,6 +405,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Night',
+            'article' => file_get_contents(base_path('resources/assets/documents/eutelsatabs.txt')),
             'summary' => "This marked SpaceX's first dual communications satellite launch, of Eutelsat 115W B & ABS-3A. The Boeing-built satellites use solar electric propulsion, which made it feasible to fit both on a single Falcon 9 because it removed the need for weighty hydrazine fuel.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -421,6 +424,7 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
+            'article' => file_get_contents(base_path('resources/assets/documents/crs6.txt')),
             'summary' => "The sixth of fifteen Dragon ISS resupply missions to the ISS was the second mission to attempt landing the first stage on the ASDS, just barely failing to stick the landing.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -433,12 +437,13 @@ class MissionsTableSeeder extends Seeder {
             'launch_exact' => Carbon::create(2015, 4, 27, 23, 3, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
-            'name' => utf8_encode('TurkmenÄlem 52E'),
+            'name' => utf8_encode('TurkmenÃ„lem 52E'),
             'contractor' => 'Thales Alenia Space (Turkmenistan)',
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
+            'article' => file_get_contents(base_path('resources/assets/documents/turkmensat.txt')),
             'summary' => "A Falcon 9 launched Turkmenistan's first communications satellite into GTO orbit in April 2015, following SpaceX's shortest turnaround time yet.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Success,
@@ -457,7 +462,8 @@ class MissionsTableSeeder extends Seeder {
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbitISS)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
             'launch_illumination' => 'Day',
-            'summary' => "Falcon 9 lifted off carrying Dragon and an International Docking Adapter for the ISS, but an overpressure event caused the rocket to distenegrate moments before stage separation, marking Falcon 9's first launch failure ever and SpaceX's first since Falcon 1 Flight 3.",
+            'article' => file_get_contents(base_path('resources/assets/documents/crs7.txt')),
+            'summary' => "Falcon 9 lifted off carrying Dragon and an International Docking Adapter for the ISS, but an overpressure event caused the rocket to disintegrate moments before stage separation, marking Falcon 9's first launch failure ever and SpaceX's first since Falcon 1 Flight 3.",
             'status' => MissionStatus::Complete,
             'outcome' => MissionOutcome::Failure,
             'flight_club' => 'http://www.flightclub.io/results.php?id=ad8d5e76-ad6b-4670-9aee-60c1319dff50&code=CRS7'
@@ -467,7 +473,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 25,
-            'launch_exact' => Carbon::create(2015, 12, 19, 0, 0, 0),
+            'launch_exact' => Carbon::create(2015, 12, 21, 1, 29, 0),
             'launch_approximate' => null,
             'launch_specificity' => 6,
             'name' => 'Orbcomm OG2 Launch 2',
@@ -480,10 +486,25 @@ class MissionsTableSeeder extends Seeder {
         ]);
 
         Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
             'launch_order_id' => 26,
+            'launch_exact' => Carbon::create(2016, 1, 17, 18, 42, 18),
+            'launch_approximate' => null,
+            'launch_specificity' => LaunchSpecificity::Day,
+            'name' => 'Jason 3',
+            'contractor' => 'NASA',
+            'vehicle_id' => 3,
+            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
+            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
+            'summary' => "Launching Jason-3 to polar orbit is the second Falcon 9 flying out of Vandenberg Air Force base in California. This represents the last remaining F9v1.1 flight.",
+            'status' => MissionStatus::Upcoming
+        ]);
+
+        Mission::create([
+            'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
+            'launch_order_id' => 27,
             'launch_exact' => null,
-            'launch_approximate' => 'late December 2015',
+            'launch_approximate' => 'Mid January 2016',
             'launch_specificity' => LaunchSpecificity::SubMonth,
             'name' => 'SES-9',
             'contractor' => 'SES',
@@ -494,27 +515,12 @@ class MissionsTableSeeder extends Seeder {
             'status' => MissionStatus::Upcoming
         ]);
 
-
-        Mission::create([
-            'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
-            'launch_order_id' => 27,
-            'launch_exact' => Carbon::create(2016, 1, 4, 0, 0, 0),
-            'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
-            'name' => 'Jason 3',
-            'contractor' => 'NASA',
-            'vehicle_id' => 3,
-            'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
-            'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SpaceX will launch Jason-3 into a polar orbit from Vandenberg, where it will measure sea levels for NOAA.",
-            'status' => MissionStatus::Upcoming
-        ]);
         // Ordered above
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 28,
             'launch_exact' => null,
-            'launch_approximate' => 'January 2016',
+            'launch_approximate' => 'February 2016',
             'launch_specificity' => LaunchSpecificity::Month,
             'name' => 'SpaceX CRS-8',
             'contractor' => 'NASA',
@@ -1196,7 +1202,7 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "SpaceX will launch two passive reflective 1800kg satellites to complete the SARah formation for the German armed forces."",
+            'summary' => "SpaceX will launch two passive reflective 1800kg satellites to complete the SARah formation for the German armed forces.",
             'status' => MissionStatus::Upcoming
         ]);
     }

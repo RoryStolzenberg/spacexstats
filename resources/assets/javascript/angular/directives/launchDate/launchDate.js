@@ -3,7 +3,7 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('launch-date', ['$interval', function($interval) {
+    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
         return {
             restrict: 'E',
             scope: {
@@ -37,7 +37,7 @@
 
                 $scope.displayDateTime = function() {
                     if ($scope.isLaunchExact) {
-                        return $filter('date')($scope.launchDateTime.toDate(), $scope.currentFormat, $scope.currentTimezone);
+                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
                     } else {
                         return $scope.launchDateTime;
                     }

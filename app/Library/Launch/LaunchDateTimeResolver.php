@@ -68,7 +68,7 @@ abstract class LaunchDateTimeResolver {
                             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $monthYear->format('m'), $monthYear->format('Y'));
                             $creationString = $monthYear->format('Y').'-'.$monthYear->format('m').'-'.$daysInMonth.$dateMappings['SubMonth'][$subClause];
                         } else {
-                            $creationString = $monthYear->format('Y').'-'.$monthYear->format('m').'-'.$dateMappings['SubMonth'][$subClause];
+                            $creationString = $monthYear->format('Y').'-'.$monthYear->format('m') . $dateMappings['SubMonth'][$subClause];
                         }
 
                         return new LaunchDateTime($creationString, LaunchSpecificity::SubMonth);

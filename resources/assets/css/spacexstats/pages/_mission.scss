@@ -100,6 +100,7 @@ body.future-mission .highlights {
     top:0;
     width:$launch-date-time-width;
     font-family:$montserrat;
+    cursor:pointer;
 
     .launch {
         display:inline-block;
@@ -107,10 +108,10 @@ body.future-mission .highlights {
         background-color:$gold;
         color:$white;
         height:40px;
-        width:calc(100% - 10px);
+        width:calc(100% - 20px);
         padding:0 20px 0 10px;
         position:relative;
-        right:-20px;
+        right:-30px;
 
         p {
             line-height:20px;

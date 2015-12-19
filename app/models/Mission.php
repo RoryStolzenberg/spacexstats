@@ -421,9 +421,13 @@ class Mission extends Model {
      * @param $vehicle
      * @return mixed
      */
-    public function scopeWhereSpecificVehicle($query, $vehicle) {
-        return $query->whereHas('vehicle', function($q) use($vehicle) {
-             $q->where('vehicle', $vehicle);
+    public function scopeWhereSpecificVehicle($query, $vehicles) {
+        return $query->whereHas('vehicle', function($q) use($vehicles) {
+            if (is_array($vehicles)) {
+                $q->whereIn('vehicle', $vehicles);
+            } else {
+                $q->where('vehicle', $vehicles);
+            }
         });
     }
 

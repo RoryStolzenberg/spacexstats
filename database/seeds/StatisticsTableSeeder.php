@@ -19,7 +19,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 2,
             'type' => 'Launch Count',
             'name' => 'Total',
-            'description' => 'As of {{ current }}, SpaceX has launched {{ n }} rockets, carrying a variety of payloads to multiple destinations; including LEO, GTO, L1, and the ISS. SpaceX currently has a manifest of over 70 flights that will fly over the coming years.',
+            'description' => 'As of {{ currentMonth }}, SpaceX has launched {{ totalRockets }} rockets, carrying a variety of payloads to multiple destinations; including LEO, GTO, L1, and the ISS. SpaceX currently has a manifest of over 70 flights that will fly over the coming years.',
             'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
@@ -65,8 +65,8 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 7,
             'type' => 'Launches Per Year',
             'name' => 'Launches Per Year',
-            'description' => "",
-            'display' => 'graph'
+            'description' => "With an ever-increasing launch cadence, SpaceX is on track to equal or surpass other launch providers by annual vehicles launched in 2016, and continues, nearly year-on-year to set vehicle flight records.",
+            'display' => 'barchart'
         ));
 
         // Dragon
@@ -101,7 +101,7 @@ class StatisticsTableSeeder extends Seeder {
             'type' => 'Dragon',
             'name' => 'Flight Time',
             'description' => "Shown above is a graph plotting individual mission flight time per each Dragon mission. Each vehicle stays berthed to the ISS for approximately 30 days, with crewed vehicles staying for up to 6 months.",
-            'display' => 'graph'
+            'display' => 'barchart'
         ));
 
         Statistic::create(array(
@@ -117,7 +117,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 13,
             'type' => 'Dragon',
             'name' => 'Reflights',
-            'description' => "Starting with CRS-11, SpaceX will move to reflying previously flown Dragons as a measure to reduce costs even further. This will see Dragon 1 pressure vessel reduction wind down.",
+            'description' => "Starting with CRS-11, SpaceX will move to reflying previously flown Dragons as a measure to reduce costs even further. This will see Dragon 1 pressure vessel production wind down.",
             'unit' => json_encode('Reflights'),
             'display' => 'single'
         ));
@@ -146,18 +146,18 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 16,
             'type' => 'Engines',
             'name' => 'Flown',
-            'description' => "SpaceX have in total launched {{ n }} first stage Merlin 1D engines aboard {{ x }} flights. One of the best-performing rocket engines in the world, it uses a mixture of RP-1 (Kerosene) and cryogenic Liquid Oxygen (LOX), it achieves a thrust to weight ratio exceeding 150, the highest of any kerolox engine, while delivering over x kN of thrust",
+            'description' => "SpaceX have in total launched {{ engineCount }} first stage Merlin 1D engines aboard {{ flightCount }} flights. One of the best-performing rocket engines in the world, it uses a mixture of RP-1 (Kerosene) and cryogenic Liquid Oxygen (LOX), it achieves a thrust to weight ratio exceeding 150, the highest of any kerolox engine, while delivering over 825 kN of thrust.",
             'unit' => json_encode('Flown'),
             'display' => 'single'
         ));
 
-        Statistic::create(array(
+        /*Statistic::create(array(
             'order' => 17,
             'type' => 'Engines',
             'name' => 'M1D Flight Time',
             'description' => "Because each Falcon 9 flight has 9 engines, every first stage flight represents a nominal 24 minutes of powered engine time. This rapidly builds up engine flight heritage - and makes the Merlin 1D possibly the longest-fired rocket engine in the world.",
             'display' => 'interval'
-        ));
+        ));*/
 
         Statistic::create(array(
             'order' => 18,
@@ -180,7 +180,7 @@ class StatisticsTableSeeder extends Seeder {
 
         Statistic::create(array(
             'order' => 20,
-            'type' => 'Cape Kennedy',
+            'type' => 'KSC',
             'name' => 'Launches',
             'description' => "In April 2014, SpaceX signed an agreement with NASA for a 20 year lease on the historic Pad 39A at Kennedy Space Center. Since then, SpaceX has constructed a horizontal integration hangar capable of holding up to 5 Falcon cores. It will see its first launch, of Falcon Heavy, in 2016.",
             'unit' => json_encode('Launches'),
@@ -220,7 +220,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 24,
             'type' => 'DragonRiders',
             'name' => 'In Space',
-            'description' => "No SpaceX astronauts are in orbit at this time. Dragon 2, being developed as part of NASA's Crew Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
+            'description' => "No SpaceX astronauts are in orbit at this time. Dragon 2, being developed as part of NASA's Commercial Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
             'unit' => json_encode('DragonRiders'),
             'display' => 'single'
         ));
@@ -229,7 +229,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 25,
             'type' => 'DragonRiders',
             'name' => 'Cumulative',
-            'description' => "No SpaceX astronauts have flown yet. Dragon 2, being developed as part of NASA's Crew Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
+            'description' => "No SpaceX astronauts have flown yet. Dragon 2, being developed as part of NASA's Commercial Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
             'unit' => json_encode('DragonRiders'),
             'display' => 'single'
         ));
@@ -243,18 +243,27 @@ class StatisticsTableSeeder extends Seeder {
             'display' => 'count'
         ));
 
+        // Days since SpaceX founding
+        Statistic::create([
+            'order' => 27,
+            'type' => 'Time Since Founding',
+            'name' => 'Time Since Founding',
+            'description' => 'SpaceX was incorporated on March 14, 2002, with their headquarters at a hotel, in downtown Los Angeles. By the end of the year, they were 14 employees strong. Their second facility was an enormous warehouse in El Segundo, where they built the Falcon 1. When they outgrew that, they moved to their current facility in Hawthorne.',
+            'display' => 'count'
+        ]);
+
         // Payloads
         Statistic::create(array(
-            'order' => 27,
+            'order' => 28,
             'type' => "Payloads",
             'name' => 'Satellites Launched',
-            'description' => 'SpaceX has launched {{ n }} satellites in total for many different customers. The last satellite to launch was {{ lastSat }} on {{ lastMission }}.',
+            'description' => 'SpaceX has launched {{ satelliteCount }} satellites in total for many different customers.',
             'unit' => json_encode(['Primary', 'Total']),
             'display' => 'double'
         ));
 
         Statistic::create(array(
-            'order' => 28,
+            'order' => 29,
             'type' => "Payloads",
             'name' => 'Total Mass',
             'description' => 'These satellites can have a variety of masses, from the smallest cubesats which can weigh less than 1 kilogram, to huge comsats over 5 tonnes.',
@@ -263,7 +272,7 @@ class StatisticsTableSeeder extends Seeder {
         ));
 
         Statistic::create(array(
-            'order' => 29,
+            'order' => 30,
             'type' => "Payloads",
             'name' => 'Mass to GTO',
             'description' => 'Geostationary Orbit serves as the nest for heavy communications satellites, where they can orbit the Earth at the same speed as the Earth rotates. As the demand for more bandwidth grows and connectiveness increases globally, launches to GTO will become more frequent.',
@@ -272,17 +281,17 @@ class StatisticsTableSeeder extends Seeder {
         ));
 
         Statistic::create(array(
-            'order' => 30,
+            'order' => 31,
             'type' => "Payloads",
             'name' => 'Heaviest Satellite',
-            'description' => '{{ heaviestName }}, launched on {{ heaviestDate }} for {{ heaviestOperator }} represents the heaviest satellite SpaceX has lofted into orbit.',
+            'description' => '{{ heaviestSatellite }}, launched for {{ heaviestOperator }} represents the heaviest satellite SpaceX has lofted into orbit.',
             'unit' => json_encode('Kilograms'),
             'display' => 'single'
         ));
 
         // Upper Stages
-        Statistic::create(array(
-            'order' => 31,
+        /*Statistic::create(array(
+            'order' => 32,
             'type' => "Upper Stages",
             'name' => 'In Orbit',
             'description' => 'After satellite separation and mission completion, depending on the location and orbit of the upper stage, it can either be deorbited or left in orbit to decay naturally.',
@@ -291,7 +300,7 @@ class StatisticsTableSeeder extends Seeder {
         ));
 
         Statistic::create(array(
-            'order' => 32,
+            'order' => 33,
             'type' => "Upper Stages",
             'name' => "TLEs",
             'description' => 'A Two Line Element is a set of ephemeris data generated by USSTRATCOM that can be used to track objects in orbit. Published every few days, many objects in orbit will eventually accumulate thousands of entries.',
@@ -301,7 +310,7 @@ class StatisticsTableSeeder extends Seeder {
 
         // Distance
         Statistic::create(array(
-            'order' => 33,
+            'order' => 34,
             'type' => "Distance",
             'name' => 'Earth Orbit',
             'description' => 'On {{ distanceRecordDate }}, SpaceX hardware achieved its farthest distance from Earth ever when the Falcon 9 Upper Stage for the {{ distanceRecordMission }} mission was boosted into an orbit with an apogee of {{ distanceRecord }} kilometres.',
@@ -310,42 +319,42 @@ class StatisticsTableSeeder extends Seeder {
         ));
 
         Statistic::create(array(
-            'order' => 34,
+            'order' => 35,
             'type' => "Distance",
             'name' => 'Solar System',
             'description' => 'SpaceX hardware has not yet flown beyond Earth orbit!',
             'unit' => json_encode('Kilometres'),
             'display' => 'single'
-        ));
+        ));*/
 
         // Turnaround time
         Statistic::create(array(
-            'order' => 35,
+            'order' => 36,
             'type' => 'Turnarounds',
             'name' => 'Quickest',
-            'description' => "SpaceX's quickest turnaround between two launches has been between {{ firstLaunch }} on {{ firstLaunchDate }}, and {{ secondLaunch }} on {{ secondLaunchDate }}.",
+            'description' => "",
             'display' => 'interval'
         ));
 
         Statistic::create(array(
-            'order' => 36,
+            'order' => 37,
             'type' => 'Turnarounds',
             'name' => 'Since Last Launch',
             'description' => "",
             'display' => 'count'
         ));
 
-        Statistic::create(array(
-            'order' => 37,
+        /*Statistic::create(array(
+            'order' => 38,
             'type' => 'Turnarounds',
             'name' => 'Cumulative',
             'description' => "",
-            'display' => 'graph'
-        ));
+            'display' => 'linechart'
+        ));*/
 
         // Internet Constellaiton
         Statistic::create(array(
-            'order' => 38,
+            'order' => 39,
             'type' => 'Internet Constellation',
             'name' => 'Internet Constellation',
             'description' => "SpaceX's constellation of satellites will provide high speed internet anywhere on the globe. Built in Seattle, they will be launched from a variety of locations, potentially allowing Falcon to become the most launched rocket in history.",
@@ -355,7 +364,7 @@ class StatisticsTableSeeder extends Seeder {
 
         // Mars Population Count
         Statistic::create(array(
-            'order' => 39,
+            'order' => 40,
             'type' => 'Mars Population Count',
             'name' => 'Mars Population Count',
             'description' => "No one's there yet ;)",
@@ -365,7 +374,7 @@ class StatisticsTableSeeder extends Seeder {
 
         // Hours worked
         Statistic::create(array(
-            'order' => 40,
+            'order' => 41,
             'type' => 'Hours Worked',
             'name' => 'Hours Worked',
             'description' => "Since 14 March 2002, thousands of SpaceX employees and Elon Musk have worked tirelessly to push the boundaries of engineering and technology, ultimately providing humanity with cheaper, faster, more reliable access to space. Thank you.",
