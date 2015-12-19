@@ -209,7 +209,7 @@ class StatisticResultBuilder {
 	 * @param $substatistic
 	 * @return string
      */
-	public static function capeKennedy($substatistic) {
+	public static function kSC($substatistic) {
         if ($substatistic === 'Launches') {
             return Mission::whereComplete()->whereHas('launchSite', function($q) {
                 $q->where('name','LC-39A');
