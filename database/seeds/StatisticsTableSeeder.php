@@ -284,7 +284,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 31,
             'type' => "Payloads",
             'name' => 'Heaviest Satellite',
-            'description' => '{{ heaviestName }}, launched for {{ heaviestOperator }} represents the heaviest satellite SpaceX has lofted into orbit.',
+            'description' => '{{ heaviestSatellite }}, launched for {{ heaviestOperator }} represents the heaviest satellite SpaceX has lofted into orbit.',
             'unit' => json_encode('Kilograms'),
             'display' => 'single'
         ));

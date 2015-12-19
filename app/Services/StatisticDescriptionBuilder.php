@@ -92,7 +92,7 @@ class StatisticDescriptionBuilder {
             if ($dynamicString === 'heaviestOperator') {
                 return Payload::orderBy('mass', 'desc')->whereHas('mission', function($q) {
                     $q->whereComplete();
-                })->first()->contractor;
+                })->first()->operator;
             }
         }
     }
