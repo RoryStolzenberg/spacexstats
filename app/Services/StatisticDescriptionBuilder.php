@@ -15,7 +15,11 @@ class StatisticDescriptionBuilder {
 
     public static function launchCount($substatistic, $dynamicString) {
         if ($substatistic === 'Total') {
-            if ($dynamicString === 'n') {
+            if ($dynamicString === 'currentMonth') {
+                return Carbon::now()->format('F Y');
+            }
+
+            if ($dynamicString === 'totalRockets') {
                 return Mission::whereComplete()->count();
             }
         }
@@ -74,6 +78,20 @@ class StatisticDescriptionBuilder {
                 return Payload::whereHas('mission', function($q) {
                     $q->whereComplete();
                 })->count();
+            }
+        }
+
+        if ($substatistic === 'Heaviest Satellite') {
+            if ($dynamicString === 'heaviestSatellite') {
+                return Payload::orderBy('mass', 'desc')->whereHas('mission', function($q) {
+                    $q->whereComplete();
+                })->first()->name;
+            }
+
+            if ($dynamicString === 'heaviestOperator') {
+                return Payload::orderBy('mass', 'desc')->whereHas('mission', function($q) {
+                    $q->whereComplete();
+                })->first()->contractor;
             }
         }
     }

@@ -19,7 +19,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 2,
             'type' => 'Launch Count',
             'name' => 'Total',
-            'description' => 'As of {{ current }}, SpaceX has launched {{ n }} rockets, carrying a variety of payloads to multiple destinations; including LEO, GTO, L1, and the ISS. SpaceX currently has a manifest of over 70 flights that will fly over the coming years.',
+            'description' => 'As of {{ currentMonth }}, SpaceX has launched {{ totalRockets }} rockets, carrying a variety of payloads to multiple destinations; including LEO, GTO, L1, and the ISS. SpaceX currently has a manifest of over 70 flights that will fly over the coming years.',
             'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
@@ -220,7 +220,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 24,
             'type' => 'DragonRiders',
             'name' => 'In Space',
-            'description' => "No SpaceX astronauts are in orbit at this time. Dragon 2, being developed as part of NASA's Crew Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
+            'description' => "No SpaceX astronauts are in orbit at this time. Dragon 2, being developed as part of NASA's Commercial Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
             'unit' => json_encode('DragonRiders'),
             'display' => 'single'
         ));
@@ -229,7 +229,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 25,
             'type' => 'DragonRiders',
             'name' => 'Cumulative',
-            'description' => "No SpaceX astronauts have flown yet. Dragon 2, being developed as part of NASA's Crew Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
+            'description' => "No SpaceX astronauts have flown yet. Dragon 2, being developed as part of NASA's Commercial Crew Transportation Capability (CCtCap) program, has already performed a pad abort test and will first fly to orbit in 2016.",
             'unit' => json_encode('DragonRiders'),
             'display' => 'single'
         ));
@@ -284,7 +284,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 31,
             'type' => "Payloads",
             'name' => 'Heaviest Satellite',
-            'description' => '{{ heaviestName }}, launched on {{ heaviestDate }} for {{ heaviestOperator }} represents the heaviest satellite SpaceX has lofted into orbit.',
+            'description' => '{{ heaviestName }}, launched for {{ heaviestOperator }} represents the heaviest satellite SpaceX has lofted into orbit.',
             'unit' => json_encode('Kilograms'),
             'display' => 'single'
         ));

@@ -27,7 +27,7 @@
             <div class="app-description gr-4 gr-12@small">
                 <p class="exclaim"><a href="/live">Live</a></p>
 
-                <p>Using SpaceX Stats Live, you can both watch SpaceX launches in real time and receive live updates pre- and post-mission to keep you informed via the ve. With Imgur and Twitter integration, this is the single best way to be totally connected during a SpaceX launch.</p>
+                <p>Using SpaceX Stats Live, you can both watch SpaceX launches in real time and receive live updates pre- and post-mission to keep you informed. With Imgur and Twitter integration, this is the single best way to be totally connected during a SpaceX launch.</p>
 
                 <p>No more hassles with refreshing antiquated forum pages or having multiple windows. Everything is in one place.</p>
             </div>
