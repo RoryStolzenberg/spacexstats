@@ -2,6 +2,9 @@
 namespace SpaceXStats\Services;
 
 use SpaceXStats\Models\Mission;
+use SpaceXStats\Models\PartFlight;
+use SpaceXStats\Models\Payload;
+use SpaceXStats\Models\SpacecraftFlight;
 
 class StatisticDescriptionBuilder {
     public static function nextLaunch($substatistic, $dynamicString) {
@@ -30,56 +33,49 @@ class StatisticDescriptionBuilder {
         }
     }
 
-    public static function launchesPerYear() {
-        return 0;
+    public static function dragon($substatistic, $dynamicString) {
+        if ($substatistic === 'Missions') {
+            if ($dynamicString === 'n') {
+                return SpacecraftFlight::whereHas('mission', function($q) {
+                    $q->whereComplete();
+                })->count();
+            }
+        }
+
+        if ($substatistic === 'ISS Resupplies') {
+            if ($dynamicString === 'n') {
+                return SpacecraftFlight::whereNotNull('iss_berth')->whereHas('mission', function($q) {
+                    $q->whereComplete();
+                })->count();
+            }
+        }
     }
 
-    public static function dragon($parameter) {
-        return 0;
+    public static function engines($substatistic, $dynamicString) {
+        if ($substatistic == 'Flown') {
+
+            $partFlights = PartFlight::whereIn('firststage_engine', ['Merlin 1D', 'Merlin 1D Fullthrust'])->whereHas('mission', function($q) {
+                return $q->whereComplete();
+            })->count();
+
+            if ($dynamicString === 'engineCount') {
+                return $partFlights * 9;
+            }
+
+            if ($dynamicString === 'flightCount') {
+                return $partFlights;
+            }
+        }
     }
 
-    public static function vehicles($parameter) {
-        return 0;
-    }
-
-    public static function engines($parameter) {
-        return 0;
-    }
-
-    public static function capeCanaveral($parameter) {
-        return 0;
-    }
-
-    public static function capeKennedy($parameter) {
-        return 0;
-    }
-
-    public static function vandenberg($parameter) {
-        return 0;
-    }
-
-    public static function bocaChica($parameter) {
-        return 0;
-    }
-
-    public static function kwajalein($parameter) {
-        return 0;
-    }
-
-    public static function astronauts($substatistic) {
-        return 0;
-    }
-
-    public static function elonMusksBetExpires($substatistic) {
-        return 0;
-    }
-
-    public static function payloads($substatistic) {
-        return 0;
-    }
-
-    public static function upperStagesInOrbit($substatistic) {
-        return 0;
+    public static function payloads($substatistic, $dynamicString) {
+        if ($substatistic === 'Satellites Launched') {
+            if ($dynamicString === 'satelliteCount') {
+                return Payload::whereHas('mission', function($q) {
+                    $q->whereComplete();
+                })->count();
+            }
+        }
     }
 
     public static function distance($substatistic) {
@@ -87,18 +83,6 @@ class StatisticDescriptionBuilder {
     }
 
     public static function turnarounds($substatistic) {
-        return 0;
-    }
-
-    public static function internetConstellation($substatistic) {
-        return 0;
-    }
-
-    public static function marsPopulationCount($substatistic) {
-        return 0;
-    }
-
-    public static function hoursWorked($substatistic) {
         return 0;
     }
 }

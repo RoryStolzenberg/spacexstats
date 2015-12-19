@@ -94,7 +94,7 @@ class StatisticResultBuilder {
 
         if ($substatistic === 'Flight Time') {
 			return [
-                'values' => SpacecraftFlight::selectRaw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) AS duration, missions.name AS mission')
+                'values' => SpacecraftFlight::selectRaw('TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission) / 86400 AS duration, missions.name AS mission')
                     ->where('missions.status','Complete')
                     ->join('missions','missions.mission_id','=','spacecraft_flights_pivot.mission_id')->get(),
                 'extrapolation' => false,
@@ -106,7 +106,7 @@ class StatisticResultBuilder {
                 'yAxis' => [
                     'type' => 'linear',
                     'key' => 'duration',
-                    'title' => 'Duration',
+                    'title' => 'Duration (Days)',
                     'zeroing' => true
                 ]
             ];
@@ -340,6 +340,10 @@ WHERE missions.status='IN PROGRESS' */
      */
 	public static function elonMusksBetExpires() {
         return Carbon::create(2026, 1, 1, 0, 0, 0)->toDateTimeString();
+    }
+
+    public static function timeSinceFounding() {
+        return Carbon::create(2002, 3, 14, 0, 0, 0)->toDateTimeString();
     }
 
 	/**

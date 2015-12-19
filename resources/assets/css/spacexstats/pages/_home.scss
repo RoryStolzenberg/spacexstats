@@ -84,7 +84,7 @@
             }
         }
 
-        &.double {
+        &.double, &.gesture {
             .value {
                 @include gridle_state("small") {
                     font-size:40px;
@@ -195,8 +195,6 @@
     opacity: 0;
 }
 
-.background {	@include filteredBackground("../images/backgrounds/dscovr2.jpg"); }
-
 #home {
 
     .app-description {
@@ -204,12 +202,32 @@
     }
 
     p {
+
+        &.exclaim {
+            font-size:48px;
+
+
+            a {
+                text-decoration: none;
+                color:$gold;
+                font-weight:400;
+            }
+        }
+
         font-size:16px;
         line-height:1.6;
 
         @include gridle_state(small) {
             font-size:14px;
         }
+    }
+
+    .description {
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        width: 100%;
+        font-size: 12px;
     }
 
     .expando-button {
@@ -221,3 +239,24 @@
         }
     }
 }
+
+#home { background-image:url("../images/backgrounds/orbcommdark.jpg"); }
+#nextLaunch { background-image:url("../images/backgrounds/dscovrlaunch.jpg"); }
+#launchCount { background-image:url("../images/backgrounds/seslaunch.jpg"); }
+#launchesPerYear { background-image:url("../images/backgrounds/orbcommliftoff.jpg"); }
+#dragon { background-image:url("../images/backgrounds/dragoncrs5.jpg"); }
+#vehicles { background-image:url("../images/backgrounds/crs6barge.jpg"); }
+#engines { background-image:url("../images/backgrounds/merlinteststand.jpg"); }
+#capeCanaveral { background-image:url("../images/backgrounds/capeflorida.jpg"); }
+#capeKennedy { background-image:url("../images/backgrounds/fh.jpg"); }
+#vandenberg { background-image:url("../images/backgrounds/cassiopelaunch.jpg"); }
+#bocaChica { background-image:url("../images/backgrounds/bocachica.jpg"); }
+#kwajalein { background-image:url("../images/backgrounds/kwaj.jpg"); }
+#dragonRiders { background-image:url("../images/backgrounds/dragonriders.jpg"); }
+#elonMusksBetExpires { background-image:url("../images/backgrounds/elonmusk.jpg"); }
+#timeSinceFounding { background-image:url("../images/backgrounds/spacexhq.jpg"); }
+#payloads { background-image:url("../images/backgrounds/payloadfairing.jpg"); }
+#turnarounds { background-image:url("../images/backgrounds/thaicomlaunch.jpg"); }
+#internetConstellation { background-image:url("../images/backgrounds/tankland.jpg"); }
+#marsPopulationCount { background-image:url("../images/backgrounds/mars.jpg"); }
+#hoursWorked { background-image:url("../images/backgrounds/rollout.jpg"); }

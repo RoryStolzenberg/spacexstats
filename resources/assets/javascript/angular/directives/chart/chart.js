@@ -17,7 +17,7 @@
                 }, true);
 
                 $scope.$on('chart:rerender', function() {
-                    d3.select(elem[0]).remove();
+                    elem.empty();
                     render($scope.data);
                 });
 
@@ -126,6 +126,9 @@
                         if (settings.yAxis.type == 'linear') {
                             core.yScale = d3.scale.linear()
                                 .domain([d3.max(data, function(d) {
+                                    if (typeof d[settings.yAxis.key] === 'string') {
+                                        return parseFloat(d[settings.yAxis.key]);
+                                    }
                                     return d[settings.yAxis.key];
                                 }), startPoint])
                                 .range([settings.padding, height - settings.padding]);

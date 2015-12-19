@@ -31,6 +31,8 @@
 
                 <p>No more hassles with refreshing antiquated forum pages or having multiple windows. Everything is in one place.</p>
             </div>
+
+            <p class="description">Photos on this page courtesy <a href="https://www.flickr.com/photos/alloyjared/sets">Jared Haworth</a>, <a href="http://www.tmahlmann.com/">Trevor Mahlman</a>, <a href="https://twitter.com/umcansat">Logan Sisca</a>, SpaceX, & NASA. All rights maintained by the respective owners.</p>
             <button class="next-stat" ng-click="goToFirstStatistic()"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>
     </div>
@@ -97,6 +99,15 @@
                 </div>
 
                 <chart ng-if="substatistic.display == 'barchart'" data="substatistic.result.values" settings="substatistic.result" type="bar" width="100%" height="100%"></chart>
+
+                <table class="gesture" ng-if="substatistic.display == 'gesture'">
+                    <tr class="value">
+                        <td>@{{ substatistic.result }}</td>
+                    </tr>
+                    <tr class="unit">
+                        <td>@{{ substatistic.unit }}</td>
+                    </tr>
+                </table>
             </div>
 
             <p class="description fade-in-out" ng-show="statistic.show" ng-class="{ fadeIn : statistic.fadeInModel, fadeOut : statistic.fadeOutModel }">@{{ statistic.activeSubstatistic.description }}</p>

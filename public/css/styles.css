@@ -7346,7 +7346,7 @@ body {
     .content-wrapper.background main {
       background-color: rgba(250, 250, 250, 0.75); }
       .content-wrapper.background main.invert {
-        background-color: rgba(24, 28, 31, 0.75); }
+        background-color: rgba(24, 28, 31, 0.8); }
   .content-wrapper.transparent main {
     background: none; }
     .content-wrapper.transparent main:after {
@@ -8652,22 +8652,22 @@ form[name="subscribeForm"] .subscription-failed {
       @media (min-width: 1025px) and (max-width: 1440px) {
         .hero table.single .value {
           font-size: 200px; } }
-    .hero table.double .value {
+    .hero table.double .value, .hero table.gesture .value {
       font-size: 100px; }
-      .state-small .hero table.double .value {
+      .state-small .hero table.double .value, .state-small .hero table.gesture .value {
         font-size: 40px; }
       @media (max-width: 640px) {
-        .hero table.double .value {
+        .hero table.double .value, .hero table.gesture .value {
           font-size: 40px; } }
-      .state-medium .hero table.double .value {
+      .state-medium .hero table.double .value, .state-medium .hero table.gesture .value {
         font-size: 60px; }
       @media (min-width: 641px) and (max-width: 1024px) {
-        .hero table.double .value {
+        .hero table.double .value, .hero table.gesture .value {
           font-size: 60px; } }
-      .state-large .hero table.double .value {
+      .state-large .hero table.double .value, .state-large .hero table.gesture .value {
         font-size: 80px; }
       @media (min-width: 1025px) and (max-width: 1440px) {
-        .hero table.double .value {
+        .hero table.double .value, .hero table.gesture .value {
           font-size: 80px; } }
   .hero.statistic {
     height: calc(100% - 30px - 100px); }
@@ -8737,20 +8737,30 @@ form[name="subscribeForm"] .subscription-failed {
 .fade-in-out.ng-hide {
   opacity: 0; }
 
-.background {
-  background-image: url("../images/backgrounds/dscovr2.jpg"); }
-
 #home .app-description {
   padding: 0 10px; }
 
 #home p {
   font-size: 16px;
   line-height: 1.6; }
+  #home p.exclaim {
+    font-size: 48px; }
+    #home p.exclaim a {
+      text-decoration: none;
+      color: #ccac55;
+      font-weight: 400; }
   .state-small #home p {
     font-size: 14px; }
   @media (max-width: 640px) {
     #home p {
       font-size: 14px; } }
+
+#home .description {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+  width: 100%;
+  font-size: 12px; }
 
 #home .expando-button {
   width: 150px;
@@ -8758,6 +8768,66 @@ form[name="subscribeForm"] .subscription-failed {
           transition: width ease-in-out 0.5s 0s; }
   #home .expando-button:hover {
     width: 200px; }
+
+#home {
+  background-image: url("../images/backgrounds/orbcommdark.jpg"); }
+
+#nextLaunch {
+  background-image: url("../images/backgrounds/dscovrlaunch.jpg"); }
+
+#launchCount {
+  background-image: url("../images/backgrounds/seslaunch.jpg"); }
+
+#launchesPerYear {
+  background-image: url("../images/backgrounds/orbcommliftoff.jpg"); }
+
+#dragon {
+  background-image: url("../images/backgrounds/dragoncrs5.jpg"); }
+
+#vehicles {
+  background-image: url("../images/backgrounds/crs6barge.jpg"); }
+
+#engines {
+  background-image: url("../images/backgrounds/merlinteststand.jpg"); }
+
+#capeCanaveral {
+  background-image: url("../images/backgrounds/capeflorida.jpg"); }
+
+#capeKennedy {
+  background-image: url("../images/backgrounds/fh.jpg"); }
+
+#vandenberg {
+  background-image: url("../images/backgrounds/cassiopelaunch.jpg"); }
+
+#bocaChica {
+  background-image: url("../images/backgrounds/bocachica.jpg"); }
+
+#kwajalein {
+  background-image: url("../images/backgrounds/kwaj.jpg"); }
+
+#dragonRiders {
+  background-image: url("../images/backgrounds/dragonriders.jpg"); }
+
+#elonMusksBetExpires {
+  background-image: url("../images/backgrounds/elonmusk.jpg"); }
+
+#timeSinceFounding {
+  background-image: url("../images/backgrounds/spacexhq.jpg"); }
+
+#payloads {
+  background-image: url("../images/backgrounds/payloadfairing.jpg"); }
+
+#turnarounds {
+  background-image: url("../images/backgrounds/thaicomlaunch.jpg"); }
+
+#internetConstellation {
+  background-image: url("../images/backgrounds/tankland.jpg"); }
+
+#marsPopulationCount {
+  background-image: url("../images/backgrounds/mars.jpg"); }
+
+#hoursWorked {
+  background-image: url("../images/backgrounds/rollout.jpg"); }
 
 body.future-mission .highlights {
   padding-right: 300px; }
@@ -9303,7 +9373,7 @@ button.canned-response {
 .missioncontrol-about .notifications {
   background-image: url("/images/backgrounds/f9dragonlaunch.jpg"); }
   .missioncontrol-about .notifications p {
-    background-color: rgba(24, 28, 31, 0.75); }
+    background-color: rgba(24, 28, 31, 0.8); }
   .missioncontrol-about .notifications img {
     float: right;
     max-width: 500px; }

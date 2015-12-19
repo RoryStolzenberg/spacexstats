@@ -79,9 +79,9 @@
                 @include('templates.cards.missionCard', ['size' => 'large', 'mission' => $mission])
                 <div class="gr-8 gr-12@small gr-12@medium">
                     <h3>Flight Details</h3>
-
+                    <h3>{{ $mission->spacecraftFlight->spacecraft->name }}</h3>
                     @if ($mission->spacecraftFlight)
-                        <h3>{{ $mission->spacecraftFlight->spacecraft->name }}</h3>
+
                         @include('templates.cards.spacecraftCard', ['spacecraftFlight' => $mission->spacecraftFlight])
                     @endif
 

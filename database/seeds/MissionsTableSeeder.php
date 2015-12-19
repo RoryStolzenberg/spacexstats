@@ -471,7 +471,7 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 25,
-            'launch_exact' => Carbon::create(2015, 12, 20, 1, 25, 0),
+            'launch_exact' => Carbon::create(2015, 12, 21, 1, 29, 0),
             'launch_approximate' => null,
             'launch_specificity' => 6,
             'name' => 'Orbcomm OG2 Launch 2',
