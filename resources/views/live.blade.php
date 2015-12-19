@@ -324,7 +324,7 @@
                     <p class="exclaim" ng-if="updates.length == 0">No updates :(</p>
                 </div>
 
-                <aside class="gr-3">
+                <aside id="resources" class="gr-3">
                     <h3>Resources</h3>
                     <ul>
                         <li ng-repeat="resource in liveParameters.resources"><span><a ng-href="@{{ resource.url }}">@{{ resource.title }}</a>, @{{ resource.courtesy }}</span></li>
