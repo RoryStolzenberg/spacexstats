@@ -59,8 +59,8 @@
                         <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streams.nasa.isAvailable" />
                         <label for="nasastream"><span>NASA Stream</span></label>
 
-                        <textarea ng-model="liveParameters.description.raw" id="description" name="description" required character-counter ng-minlength="100" ng-maxlength="500"
-                                  placeholder="Write a small introduction about the launch here. 500 < chars, use markdown just like you would on Reddit. This is shown at the top of the Reddit thread.">
+                        <textarea ng-model="liveParameters.description.raw" id="description" name="description" required character-counter ng-minlength="100" ng-maxlength="1000"
+                                  placeholder="Write a small introduction about the launch here. 1000 < chars, use markdown just like you would on Reddit. This is shown at the top of the Reddit thread.">
                         </textarea>
 
                         <h2>Sections</h2>
