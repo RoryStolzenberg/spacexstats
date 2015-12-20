@@ -34,7 +34,7 @@
             </div>
 
             <p class="description">Photos on this page courtesy <a href="https://www.flickr.com/photos/alloyjared/sets">Jared Haworth</a>, <a href="http://www.tmahlmann.com/">Trevor Mahlman</a>, SpaceX, & NASA. All rights maintained by the respective owners. <br/>
-            This site is fan-run and not associated with SpaceX in any way. For official information and news, please see <a href="http://spacex.com">spacex.com</a></p>
+            This site is fan-run and not affiliated with SpaceX in any way. For official information and news, please see <a href="http://spacex.com">spacex.com</a></p>
 
             <button class="next-stat" ng-click="goToFirstStatistic()"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>

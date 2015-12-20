@@ -3,7 +3,6 @@ namespace SpaceXStats\Services;
 
 class AcronymService
 {
-    // todo: add relevant acronyms from http://www.decronym.xyz/acronyms/SpaceX.json
     protected $acronyms = [
         'ACS'   => 'Attitude Control System',
         'AGL'   => 'Above Ground Level',
@@ -44,7 +43,11 @@ class AcronymService
             }
         } else {
             foreach ($this->acronyms as $acronym => $expansion) {
-                $input = str_replace($acronym, $acronym . ' (' . $expansion . ')', $input);
+
+                $escapedAcronym = str_replace('/','\/', $acronym);
+                $escapedExpansion = str_replace('/', '\/', $expansion);
+
+                $input = preg_replace('/('. $escapedAcronym . ')(?! \(' . $escapedExpansion . '\))/', $acronym . ' (' . $expansion . ')', $input);
             }
         }
         return $input;

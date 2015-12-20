@@ -9313,6 +9313,11 @@ button.canned-response {
   button.canned-response.unlocked {
     background-color: #ccac55; }
 
+#resources {
+  padding-left: 10px; }
+  #resources li {
+    padding: 10px 0; }
+
 .profile .interactions img {
   width: 64px;
   height: 64px;

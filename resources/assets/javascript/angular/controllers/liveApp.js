@@ -131,7 +131,7 @@
             sections: laravel.sections ? laravel.sections : [],
             resources: laravel.resources ? laravel.resources : [],
             status: {
-                text: laravel.status.text ? laravel.status.text.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); }) : 'Upcoming',
+                text: laravel.status.text ? laravel.status.text.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); }).trim() : 'Upcoming',
                 class: function() {
                     if ($scope.liveParameters.status.text) {
                         return $scope.liveParameters.status.text.toLowerCase().replace(/\s+/g, "-");
