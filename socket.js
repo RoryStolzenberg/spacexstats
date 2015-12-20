@@ -1,10 +1,11 @@
+require('dotenv').load();
 // for future reference on digitalocean VPS: https://www.digitalocean.com/community/questions/socket-io-connection-timing-out
 var https = require('https');
 var fs = require('fs');
 
 var options = {
-    key: fs.readFileSync('/etc/nginx/ssl/spacexstatsbeta.com/17710/server.key'),
-    cert: fs.readFileSync('/etc/nginx/ssl/spacexstatsbeta.com/17710/server.crt')
+    key: fs.readFileSync(process.env.SSL_KEY),
+    cert: fs.readFileSync(process.env.SSL_CERT)
 };
 
 var app = https.createServer(options);
