@@ -7749,9 +7749,11 @@ nav.sticky-bar {
     .actions a:hover {
       color: #ccac55; }
 
+main > form {
+  padding: 5px; }
+
 form ul li {
-  padding: 10px 0;
-  margin: 0 10px; }
+  padding: 10px !important; }
 
 form label, form .label {
   font-size: 14px;

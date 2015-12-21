@@ -120,7 +120,7 @@
                         <li class="gr-1 float-right"><i class="fa fa-cog" ng-click="settings.isEditingDetails = !settings.isEditingDetails"></i></li>
                     @endif
 
-                    <li class="gr-3 float-right stream-size-options segmented-control">
+                    <li class="gr-3 float-right stream-size-options segmented-control" ng-show="isAnyStreamAvailable()">
                         <ul>
                             <li ng-class="{ selected: liveParameters.userStreamSize == 'smaller' }" ng-click="liveParameters.userStreamSize = 'smaller'">
                                 <span>Smaller</span>
@@ -144,10 +144,17 @@
                                     <label>Description</label>
                                     <textarea name="description" ng-model="liveParameters.description.raw" required></textarea>
                                 </li>
+                                <li ng-repeat="section in liveParameters.sections">
+
+                                </li>
+                                <li ng-repeat="resource in liveParameters.resources">
+
+                                </li>
+                                <li>
+                                    <button ng-click="settings.updateDetails()">Save Details</button>
+                                </li>
                             </ul>
                         </form>
-                        <button ng-click="settings.updateDetails()">Save Details</button>
-
                         <div ng-if="!liveParameters.countdown.isPaused">
                             <h3>Pause Countdown</h3>
                             <p>In the event of a hold, you can pause the countdown below. Come back here once the launch has resumed to enter a new launch time.</p>
@@ -289,7 +296,7 @@
             @endif
 
             <section ng-if="isActive" id="content" class="live-updates container">
-                <div class="gr-9">
+                <div class="gr-9 gr-12@small">
                     <!--<h3>Information & Maps</h3>
                     <div class="description" ng-bind="liveParameters.description"></div>-->
 
@@ -324,7 +331,7 @@
                     <p class="exclaim" ng-if="updates.length == 0">No updates :(</p>
                 </div>
 
-                <aside id="resources" class="gr-3">
+                <aside id="resources" class="gr-3 hide@small">
                     <h3>Resources</h3>
                     <ul>
                         <li ng-repeat="resource in liveParameters.resources"><span><a ng-href="@{{ resource.url }}">@{{ resource.title }}</a>, @{{ resource.courtesy }}</span></li>

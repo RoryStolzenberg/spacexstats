@@ -1,5 +1,6 @@
 require('dotenv').load();
 // for future reference on digitalocean VPS: https://www.digitalocean.com/community/questions/socket-io-connection-timing-out
+// https://help.ubuntu.com/lts/serverguide/firewall.html
 var https = require('https');
 var fs = require('fs');
 
@@ -19,8 +20,6 @@ Redis.subscribe('live-updates');
 
 Redis.on('message', function(channel, message) {
     message = JSON.parse(message);
-    var d = new Date();
-    console.log(d.getTime());
     io.emit(channel + ':' + message.event, message.data);
 });
 

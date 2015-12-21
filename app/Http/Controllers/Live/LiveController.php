@@ -79,6 +79,11 @@ class LiveController extends Controller {
             'updateType' => Input::get('messageType')
         ]);
 
+        DB::transaction(function() use($liveUpdate) {
+            // Add to DB
+            \SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
+        });
+
         // Add to Redis
         Redis::rpush('live:updates', json_encode($liveUpdate));
 
@@ -95,9 +100,6 @@ class LiveController extends Controller {
         // Push to queue for Reddit
         $job = (new UpdateRedditLiveThreadJob());
         $this->dispatch($job);
-
-        // Add to DB
-        \SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
 
         // Respond
         return response()->json(null, 204);
@@ -126,7 +128,7 @@ class LiveController extends Controller {
         $this->dispatch($job);
 
         // Repush to DB
-        $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::find($id);
+        $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::where('created_at', $liveUpdate->created_at);
         $liveUpdateModel->update = Input::get('update');
         $liveUpdateModel->save();
 
@@ -138,12 +140,16 @@ class LiveController extends Controller {
      * @return mixed
      */
     public function editDetails() {
-        // Fetch details
-
         // patch
+        Redis::hmset('live:description', [
+            'raw' => Input::get('description.raw'),
+            'markdown' => Parsedown::instance()->parse(Input::get('description.raw'))
+        ]);
+        Redis::set('live:resources', json_encode(Input::get('resources')));
+        Redis::set('live:sections', json_encode(Input::get('sections')));
 
         // Websockets
-        event(new LiveDetailsUpdatedEvent());
+        event(new LiveDetailsUpdatedEvent(Input::all()));
 
         // Push to queue for Reddit
         $job = (new UpdateRedditLiveThreadJob());
@@ -169,7 +175,6 @@ class LiveController extends Controller {
      */
     public function pauseCountdown() {
         // Update Redis
-        Log::info('pause server hit ' . round(microtime(true) * 1000));
         Redis::hset('live:countdown', 'isPaused', true);
 
         // If it relates to a mission (and not a miscellaneous webcast)
@@ -181,10 +186,7 @@ class LiveController extends Controller {
             $nextMission->save();
         }
 
-        Log::info('pause mission saved ' . round(microtime(true) * 1000));
-
         event(new LiveCountdownEvent(false));
-        Log::info('pause event sent ' . round(microtime(true) * 1000));
         return response()->json(null, 204);
     }
 
