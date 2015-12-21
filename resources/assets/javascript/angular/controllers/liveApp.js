@@ -317,7 +317,7 @@
         };
 
         this.updateDetails = function(details) {
-            return $http.post('/live/send/details', details);
+            return $http.patch('/live/send/details', details);
         };
 
         this.updateCannedResponses = function(cannedResponses) {

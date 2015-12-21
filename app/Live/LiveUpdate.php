@@ -50,6 +50,15 @@ class LiveUpdate implements JsonSerializable, Arrayable {
     }
 
     /**
+     * Get the time of Live Update creation.
+     *
+     * @return Carbon
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
+    }
+
+    /**
      * Serialized the LiveUpdate object for storage in a key-value store or when it is json_encoded.
      *
      * @return array

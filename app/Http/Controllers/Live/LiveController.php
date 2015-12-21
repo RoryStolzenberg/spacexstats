@@ -126,7 +126,7 @@ class LiveController extends Controller {
         $this->dispatch($job);
 
         // Repush to DB
-        $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::where('created_at', $liveUpdate->created_at)->first();
+        $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::where('created_at', $liveUpdate->getCreatedAt())->first();
         $liveUpdateModel->update = Input::get('update');
         $liveUpdateModel->save();
 
