@@ -110,7 +110,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
 
             if ($absDiffInSeconds > 86400) {
                 $days = floor($absDiffInSeconds / 86400);
-                $hours = round(($absDiffInSeconds % 86400) / 3600);
+                $hours = intval(round(($absDiffInSeconds % 86400) / 3600));
 
                 $timestamp = "T{$sign}{$days}d";
 
@@ -125,7 +125,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
 
             } elseif ($absDiffInSeconds > 3600) {
                 $hours = floor($absDiffInSeconds / 3600);
-                $minutes = round(($absDiffInSeconds % 3600) / 60);
+                $minutes = intval(round(($absDiffInSeconds % 3600) / 60));
 
                 $timestamp = "T{$sign}{$hours}h";
 
@@ -140,7 +140,7 @@ class LiveUpdate implements JsonSerializable, Arrayable {
 
             } elseif ($absDiffInSeconds > 60) {
                 $minutes = floor($absDiffInSeconds / 60);
-                $seconds = round($absDiffInSeconds % 60);
+                $seconds = intval(round($absDiffInSeconds % 60));
 
                 $timestamp = "T{$sign}{$minutes}m";
 
