@@ -7792,7 +7792,8 @@ form input, form textarea {
 form select {
   padding: 5px;
   border: 1px solid #CCC;
-  text-transform: initial; }
+  text-transform: initial;
+  display: block; }
 
 form textarea {
   resize: vertical;
@@ -9303,11 +9304,14 @@ button.canned-response {
     .live-updates .update i.fa-edit:hover {
       color: #ccac55; }
 
-.message-integration img {
-  max-width: 150px;
-  max-height: 150px;
-  padding: 5px;
-  border-radius: 8px; }
+.message-integration {
+  display: inline-block;
+  vertical-align: top; }
+  .message-integration img {
+    max-width: 150px;
+    max-height: 150px;
+    padding: 5px;
+    border-radius: 8px; }
 
 button.canned-response {
   background-color: #8B939B;
