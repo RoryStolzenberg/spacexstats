@@ -79,11 +79,6 @@ class LiveController extends Controller {
             'updateType' => Input::get('messageType')
         ]);
 
-        DB::transaction(function() use($liveUpdate) {
-            // Add to DB
-            \SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
-        });
-
         // Add to Redis
         Redis::rpush('live:updates', json_encode($liveUpdate));
 
@@ -100,6 +95,9 @@ class LiveController extends Controller {
         // Push to queue for Reddit
         $job = (new UpdateRedditLiveThreadJob());
         $this->dispatch($job);
+
+        // Add to DB
+        \SpaceXStats\Models\LiveUpdate::create($liveUpdate->toArray());
 
         // Respond
         return response()->json(null, 204);
@@ -128,7 +126,7 @@ class LiveController extends Controller {
         $this->dispatch($job);
 
         // Repush to DB
-        $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::where('created_at', $liveUpdate->created_at);
+        $liveUpdateModel = \SpaceXStats\Models\LiveUpdate::where('created_at', $liveUpdate->created_at)->first();
         $liveUpdateModel->update = Input::get('update');
         $liveUpdateModel->save();
 
