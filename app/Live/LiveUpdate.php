@@ -25,7 +25,6 @@ class LiveUpdate implements JsonSerializable, Arrayable {
 
         // Set the ID
         $this->id           = isset($data['id']) ? $data['id'] : Redis::llen('live:updates');
-
         // Set the dates and times
         $this->createdAt    = isset($data['createdAt']) ? Carbon::createFromFormat('Y-m-d H:i:s', $data['createdAt']) : Carbon::now();
         $this->updatedAt    = Carbon::now();
@@ -48,6 +47,15 @@ class LiveUpdate implements JsonSerializable, Arrayable {
         $this->update = (new AcronymService())->parseAndExpand($this->update);
 
         $this->updateMd = \Parsedown::instance()->text($this->update);
+    }
+
+    /**
+     * Get the time of Live Update creation.
+     *
+     * @return Carbon
+     */
+    public function getCreatedAt() {
+        return $this->createdAt;
     }
 
     /**

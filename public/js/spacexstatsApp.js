@@ -991,9 +991,6 @@
     var app = angular.module('app', []);
 
     app.controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
-        // Set the current mission being edited/created
-        $scope.mission = new Mission(typeof laravel.mission !== "undefined" ? laravel.mission : null);
-
         // Scope the possible form data info
         $scope.data = {
             parts: laravel.parts,
@@ -1029,200 +1026,29 @@
             }
         };
 
-        $scope.selected = {
-            astronaut: null
+        $scope.mission = {
+            data: laravel.mission,
+            make: function() {
+                missionService.make($scope.mission.data);
+            }
         };
-
-        $scope.createMission = function() {
-            missionService.create($scope.mission);
-        };
-
-        $scope.updateMission = function() {
-            console.log(missionService);
-            missionService.update($scope.mission);
-        };
-
     }]);
-
-    app.factory("Mission", ["PartFlight", "Payload", "SpacecraftFlight", "PrelaunchEvent", "Telemetry", function(PartFlight, Payload, SpacecraftFlight, PrelaunchEvent, Telemetry) {
-        return function (mission) {
-            if (mission == null) {
-                var self = this;
-
-                self.payloads = [];
-                self.part_flights = [];
-                self.spacecraft_flight = null;
-                self.prelaunch_events = [];
-                self.telemetry = [];
-
-            } else {
-                var self = mission;
-            }
-
-            self.addPartFlight = function(part) {
-                self.part_flights.push(new PartFlight(part));
-            };
-
-            self.removePartFlight = function(part) {
-                self.part_flights.splice(self.part_flights.indexOf(part), 1);
-            };
-
-            self.addPayload = function() {
-                self.payloads.push(new Payload());
-            };
-
-            self.removePayload = function(payload) {
-                self.payloads.splice(self.payloads.indexOf(payload), 1);
-            };
-
-            self.addSpacecraftFlight = function(spacecraft) {
-                self.spacecraft_flight = new SpacecraftFlight(spacecraft);
-            };
-
-            self.removeSpacecraftFlight = function() {
-                self.spacecraft_flight = null;
-            };
-
-            self.addPrelaunchEvent = function() {
-                self.prelaunch_events.push(new PrelaunchEvent());
-            };
-
-            self.removePrelaunchEvent = function(prelaunchEvent) {
-                self.prelaunch_events.splice(self.prelaunch_events.indexOf(prelaunchEvent), 1);
-            };
-
-            self.addTelemetry = function() {
-                self.telemetry.push(new Telemetry());
-            };
-
-            self.removeTelemetry = function(telemetry) {
-                self.telemetry.splice(self.telemetry.indexOf(telemetry), 1);
-            };
-
-            return self;
-        }
-    }]);
-
-    app.factory("Payload", function() {
-        return function() {
-            var self = {
-
-            };
-            return self;
-        }
-    });
-
-    app.factory("PartFlight", ["Part", function(Part) {
-        return function(type, part) {
-            var self = this;
-
-            self.part = new Part(type, part);
-
-            return self;
-        }
-    }]);
-
-    app.factory("Part", function() {
-        return function(type, part) {
-
-            if (typeof part === 'undefined') {
-                var self = this;
-                self.type = type;
-            } else {
-                var self = part;
-            }
-
-            return self;
-        }
-    });
-
-    app.factory("SpacecraftFlight", ["Spacecraft", "AstronautFlight", function(Spacecraft, AstronautFlight) {
-        return function(spacecraft) {
-            var self = this;
-
-            self.spacecraft = new Spacecraft(spacecraft);
-
-            self.astronaut_flights = [];
-
-            self.addAstronautFlight = function(astronaut) {
-                self.astronaut_flights.push(new AstronautFlight(astronaut));
-            };
-
-            self.removeAstronautFlight = function(astronautFlight) {
-                self.astronaut_flights.splice(self.astronaut_flights.indexOf(astronautFlight), 1);
-            };
-
-            return self;
-        }
-    }]);
-
-    app.factory("Spacecraft", function() {
-        return function(spacecraft) {
-            if (spacecraft == null) {
-                var self = this;
-            } else {
-                var self = spacecraft;
-            }
-            return self;
-        }
-    });
-
-    app.factory("AstronautFlight", ["Astronaut", function(Astronaut) {
-        return function(astronaut) {
-            var self = this;
-
-            self.astronaut = new Astronaut(astronaut);
-
-            return self;
-        }
-    }]);
-
-    app.factory("Astronaut", function() {
-        return function (astronaut) {
-            if (astronaut == null) {
-                var self = this;
-            } else {
-                var self = astronaut;
-            }
-            return self;
-        }
-    });
-
-    app.factory("PrelaunchEvent", function() {
-        return function (prelaunchEvent) {
-
-            var self = prelaunchEvent;
-
-            return self;
-        }
-    });
-
-    app.factory("Telemetry", function() {
-        return function (telemetry) {
-
-            var self = telemetry;
-
-            return self;
-        }
-    });
 
     app.service("missionService", ["$http", "CSRF_TOKEN", function($http, CSRF_TOKEN) {
-        this.create = function (mission) {
-            return $http.post('/missions/create', {
-                mission: mission,
-                _token: CSRF_TOKEN
-            }).then(function (response) {
-                window.location = '/missions/' + response.data;
-            });
-        };
-
-        this.update = function (mission) {
-            return $http.patch('/missions/' + mission.slug + '/edit', {
-                mission: mission,
-                _token: CSRF_TOKEN
-            }).then(function (response) {
-                window.location = '/missions/' + response.data;
-            });
+        this.make = function(mission) {
+            if (mission.mission_id == null) {
+                return $http.post('/missions/create', {
+                    mission: mission,
+                    _token: CSRF_TOKEN
+                }).then(function (response) {
+                    window.location = '/missions/' + response.data;
+                });
+            } else {
+                return $http.patch('/missions/' + mission.slug + '/edit', {
+                    mission: mission,
+                    _token: CSRF_TOKEN
+                });
+            }
         };
     }]);
 })();
@@ -2018,6 +1844,10 @@
                 && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isActive;
         };
 
+        $scope.isAnyStreamAvailable = function() {
+            return $scope.liveParameters.streams.spacex.isActive === true || $scope.liveParameters.streams.nasa.isActive === true;
+        };
+
         $scope.send = {
             new: {
                 message: null,
@@ -2155,7 +1985,7 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveDetailsUpdatedEvent', function(data) {
-
+            console.log(data);
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
@@ -2185,7 +2015,7 @@
         };
 
         this.updateDetails = function(details) {
-            return $http.post('/live/send/details', details);
+            return $http.patch('/live/send/details', details);
         };
 
         this.updateCannedResponses = function(cannedResponses) {
@@ -2561,55 +2391,53 @@
 })();
 
 
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
+    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
         return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
+            restrict: 'E',
+            scope: {
+                isLaunchExact: '=',
+                launchDateTime: '='
+            },
+            link: function($scope, elem, attrs) {
+                /*
+                 *   Timezone stuff.
+                 */
+                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
+                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
+                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
+                $scope.currentTimezone;
+                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
 
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
+                $scope.setTimezone = function(timezoneToSet) {
+                    if (timezoneToSet === 'local') {
+                        $scope.currentTimezone = null;
+                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+                    } else if (timezoneToSet === 'ET') {
+                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
+                        $scope.currentTimezoneFormatted = 'Eastern';
+                    } else if (timezoneToSet === 'PT') {
+                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
+                        $scope.currentTimezoneFormatted = 'Pacific';
+                    } else {
+                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
                     }
-                });
+                };
 
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
+                $scope.displayDateTime = function() {
+                    if ($scope.isLaunchExact) {
+                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
+                    } else {
+                        return $scope.launchDateTime;
+                    }
 
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
+                };
+            },
+            templateUrl: '/js/templates/launchDate.html'
         }
     }]);
 })();
@@ -2704,6 +2532,58 @@
             templateUrl: '/js/templates/missionCard.html'
         }
     });
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('upload', ['$parse', function($parse) {
+        return {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
+
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
+
+                        $scope.files = files.objects;
+
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
+                    }
+                });
+
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
+                }
+            }
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -3252,6 +3132,58 @@
     });
 })();
 (function() {
+    var app = angular.module('app');
+
+    app.directive('redditComment', ["$http", function($http) {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
+                    }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
+        }
+    }]);
+})();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    }]);
+})();
+
+(function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
 	app.directive('search', ['searchService', 'conversionService', "$rootScope", "$http", "$filter", function(searchService, conversionService, $rootScope, $http, $filter) {
@@ -3585,38 +3517,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
-        return {
-            replace: true,
-            restrict: 'E',
-            scope: {
-                redditComment: '=ngModel'
-            },
-            link: function($scope, element, attributes) {
-
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
-
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
-                        });
-                    }
-                }
-
-            },
-            templateUrl: '/js/templates/redditComment.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
     app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
@@ -3821,24 +3721,6 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app');
-
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
-})();
-
-(function() {
     var app = angular.module('app', []);
 
     app.directive("dropdown", function() {
@@ -3936,21 +3818,19 @@
     });
 })();
 
-//http://codepen.io/jakob-e/pen/eNBQaP
 (function() {
     var app = angular.module('app');
 
-    app.directive('passwordToggle', ["$compile", function($compile) {
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
         return {
             restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
                 };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
             }
         }
     }]);
@@ -4109,6 +3989,37 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('launchDateValidity', [function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                var subs = ['Early', 'Mid', 'Late'].join('|');
+                var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
+                'November', 'December'].join('|');
+                var quarters = ['Q1', 'Q2', 'Q3', 'Q4'].join('|');
+                var halfs = ['H1', 'H2'].join('|');
+
+
+                ngModelCtrl.$validators.launchDateValidity = function(value) {
+                    if (angular.isDefined(value) && value !== null) {
+                        // Check day and date specificities
+                        if (moment(value, 'YYYY-MM-DD h:i:s').isValid()) {
+                            return true;
+                        }
+
+                        // Submonth specificities
+                    }
+                    return false;
+                };
+            }
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('objectCard', function() {
         return {
             restrict: 'E',
@@ -4133,54 +4044,4 @@
            return null;
        }
     });
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
-    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
-        return {
-            restrict: 'E',
-            scope: {
-                isLaunchExact: '=',
-                launchDateTime: '='
-            },
-            link: function($scope, elem, attrs) {
-                /*
-                 *   Timezone stuff.
-                 */
-                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
-                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
-                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
-                $scope.currentTimezone;
-                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
-
-                $scope.setTimezone = function(timezoneToSet) {
-                    if (timezoneToSet === 'local') {
-                        $scope.currentTimezone = null;
-                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
-                    } else if (timezoneToSet === 'ET') {
-                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
-                        $scope.currentTimezoneFormatted = 'Eastern';
-                    } else if (timezoneToSet === 'PT') {
-                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
-                        $scope.currentTimezoneFormatted = 'Pacific';
-                    } else {
-                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
-                    }
-                };
-
-                $scope.displayDateTime = function() {
-                    if ($scope.isLaunchExact) {
-                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
-                    } else {
-                        return $scope.launchDateTime;
-                    }
-
-                };
-            },
-            templateUrl: '/js/templates/launchDate.html'
-        }
-    }]);
 })();

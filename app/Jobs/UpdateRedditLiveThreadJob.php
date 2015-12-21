@@ -27,7 +27,6 @@ class UpdateRedditLiveThreadJob extends Job implements SelfHandling, ShouldQueue
      */
     public function handle()
     {
-        Log::info('called');
         // Rerender content
         $templatedOutput = view('templates.livethreadcontents')->with([
             'updates' => collect(Redis::lrange('live:updates', 0, -1))->reverse()->map(function($update) {

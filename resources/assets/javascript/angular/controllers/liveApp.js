@@ -146,6 +146,10 @@
                 && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isActive;
         };
 
+        $scope.isAnyStreamAvailable = function() {
+            return $scope.liveParameters.streams.spacex.isActive === true || $scope.liveParameters.streams.nasa.isActive === true;
+        };
+
         $scope.send = {
             new: {
                 message: null,
@@ -283,7 +287,7 @@
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\Live\\LiveDetailsUpdatedEvent', function(data) {
-
+            console.log(data);
         });
 
         socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
@@ -313,7 +317,7 @@
         };
 
         this.updateDetails = function(details) {
-            return $http.post('/live/send/details', details);
+            return $http.patch('/live/send/details', details);
         };
 
         this.updateCannedResponses = function(cannedResponses) {

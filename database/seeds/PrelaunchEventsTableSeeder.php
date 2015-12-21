@@ -459,5 +459,16 @@ class PrelaunchEventsTableSeeder extends Seeder {
             'summary' => null,
             'supporting_document' => null
         ]);
+
+        //F9F20
+        PrelaunchEvent::create([
+            'mission_id' => 25,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::create(2015, 12, 20, 20, 52, 17),
+            'scheduled_launch_exact' => Carbon::create(2015, 12, 22, 1, 33, 00),
+            'scheduled_launch_specificity' => LaunchSpecificity::Precise,
+            'summary' => "10% better landing probability tomorrow, more time needed to densify LOX",
+            'supporting_document' => "https://twitter.com/elonmusk/status/678679083782377472"
+        ]);
     }
 }
