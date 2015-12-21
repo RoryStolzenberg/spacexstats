@@ -115,8 +115,14 @@ class LiveUpdate implements JsonSerializable, Arrayable {
                 $timestamp = "T{$sign}{$days}d";
 
                 if ($hours !== 0) {
-                    $timestamp .= " {$hours}h";
+                    if ($hours === 60) {
+                        $days++;
+                        $timestamp = "T{$sign}{$days}d";
+                    } else {
+                        $timestamp .= " {$hours}h";
+                    }
                 }
+
             } elseif ($absDiffInSeconds > 3600) {
                 $hours = floor($absDiffInSeconds / 3600);
                 $minutes = round(($absDiffInSeconds % 3600) / 60);
@@ -124,8 +130,14 @@ class LiveUpdate implements JsonSerializable, Arrayable {
                 $timestamp = "T{$sign}{$hours}h";
 
                 if ($minutes !== 0) {
-                    $timestamp .= " {$minutes}m";
+                    if ($minutes === 60) {
+                        $hours++;
+                        $timestamp = "T{$sign}{$hours}d";
+                    } else {
+                        $timestamp .= " {$minutes}m";
+                    }
                 }
+
             } elseif ($absDiffInSeconds > 60) {
                 $minutes = floor($absDiffInSeconds / 60);
                 $seconds = round($absDiffInSeconds % 60);
@@ -133,8 +145,14 @@ class LiveUpdate implements JsonSerializable, Arrayable {
                 $timestamp = "T{$sign}{$minutes}m";
 
                 if ($seconds !== 0) {
-                    $timestamp .= " {$seconds}s";
+                    if ($seconds === 60) {
+                        $minutes++;
+                        $timestamp = "T{$sign}{$minutes}m";
+                    } else {
+                        $timestamp .= " {$seconds}s";
+                    }
                 }
+
             } else {
                 $timestamp = "T{$sign}{$absDiffInSeconds}s";
             }
