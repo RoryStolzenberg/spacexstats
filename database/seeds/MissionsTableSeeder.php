@@ -481,8 +481,8 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
-            'summary' => "SpaceX's Return To Flight Mission will carry 11 satellites into Low Earth Orbit for communications company Orbcomm, while the first stage may attempt to return to Cape Canaveral for landing instead of using the ASDS.",
-            'status' => MissionStatus::Upcoming
+            'summary' => "SpaceX's Return To Flight Mission carried 11 satellites into Low Earth Orbit for communications company Orbcomm, while the first stage successfully returned to Landing Zone 1 at Cape Canaveral, making history as the first orbital-class rocket stage to land propulsively on land",
+            'status' => MissionStatus::Complete
         ]);
 
         Mission::create([
