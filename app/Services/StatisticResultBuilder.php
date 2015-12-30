@@ -32,14 +32,32 @@ class StatisticResultBuilder {
      */
 	public static function launchCount($substatistic) {
 		if ($substatistic === 'Total') {
-			return Mission::whereComplete()->count();
+            return Cache::remember('stats:launchCount:total', 60, function() {
+                return Mission::whereComplete()->count();
+            });
 		}
+
+        if ($substatistic === 'Falcon 1') {
+            return Cache::remember('stats:launchCount:falcon1', 60, function() {
+                return Mission::whereComplete()->whereGenericVehicle('Falcon 1')->count();
+            });
+        }
+
+        if ($substatistic === 'Falcon 9') {
+            return Cache::remember('stats:launchCount:falcon9', 60, function() {
+                return Mission::whereComplete()->whereGenericVehicle('Falcon 9')->count();
+            });
+        }
+
+        if ($substatistic === 'Falcon Heavy') {
+            return Cache::remember('stats:launchCount:falconheavy', 60, function() {
+                return Mission::whereComplete()->whereGenericVehicle('Falcon Heavy')->count();
+            });
+        }
 
         if ($substatistic === 'MCT') {
             return 0;
         }
-
-		return Mission::whereComplete()->whereGenericVehicle($substatistic)->count();
 	}
 
 	/**
