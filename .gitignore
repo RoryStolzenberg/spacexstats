@@ -24,3 +24,4 @@ _ide_helper.php
 
 /.vagrant
 worker.log
+npm-debug.log

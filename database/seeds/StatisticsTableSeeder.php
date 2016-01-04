@@ -28,7 +28,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 3,
             'type' => 'Launch Count',
             'name' => 'Falcon 9',
-            'description' => "Nearly 3/4's the height of the Saturn V, yet thinner than a Space Shuttle SRB, Falcon 9 is the workhorse of SpaceX's rocket fleet. Able to carry 13,150kg to LEO and 4,850kg to GTO with first stage reusability. It has launched {{ n }} times and is on its third iteration (Falcon 9 v1.2)",
+            'description' => "Nearly 3/4's the height of the Saturn V, yet thinner than a Space Shuttle SRB, Falcon 9 is the workhorse of SpaceX's rocket fleet. Able to carry 13,150kg to LEO and 4,850kg to GTO with first stage reusability. It has launched {{ launchCount }} times and is on its third iteration (Falcon 9 v1.2)",
             'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
@@ -74,7 +74,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 8,
             'type' => 'Dragon',
             'name' => 'Missions',
-            'description' => "Dragon is SpaceX's orbital spacecraft, and has flown {{ n }} times atop of a Falcon 9 rocket. In December 2010, Dragon became the first privately developed spacecraft to be successfully recovered from orbit. Dragon 2 extends Dragon's ability to carry not only cargo, but crew too.",
+            'description' => "Dragon is SpaceX's orbital spacecraft, and has flown {{ missionCount }} times atop of a Falcon 9 rocket. In December 2010, Dragon became the first privately developed spacecraft to be successfully recovered from orbit. Dragon 2 extends Dragon's ability to carry not only cargo, but crew too.",
             'unit' => json_encode('Flights'),
             'display' => 'single'
         ));
@@ -83,7 +83,7 @@ class StatisticsTableSeeder extends Seeder {
             'order' => 9,
             'type' => 'Dragon',
             'name' => 'ISS Resupplies',
-            'description' => "Dragon has flown {{ n }} times to the ISS under NASA's Commercial Resupply Services Program, as part of a now 15-long mission contract to ferry cargo and supplies to and from the ISS.",
+            'description' => "Dragon has flown {{ issResupplyCount }} times to the ISS under NASA's Commercial Resupply Services Program, as part of a now 15-long mission contract to ferry cargo and supplies to and from the ISS.",
             'unit' => json_encode('Flights'),
             'display' => 'single'
         ));

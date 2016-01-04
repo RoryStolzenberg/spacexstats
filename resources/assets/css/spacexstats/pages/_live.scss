@@ -167,6 +167,9 @@ button.canned-response {
 }
 
 .message-integration {
+    display: inline-block;
+    vertical-align: top;
+
     img {
         max-width:150px;
         max-height:150px;
