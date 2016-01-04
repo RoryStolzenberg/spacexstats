@@ -105,7 +105,7 @@ class StatisticResultBuilder {
 		}
 
         if ($substatistic === 'Total Flight Time') {
-            return Cache::remeber('stats:dragon:totalflighttime', 60, function() {
+            return Cache::remember('stats:dragon:totalflighttime', 60, function() {
                 return DB::table('spacecraft_flights_pivot')
                     ->selectRaw('SUM(TIMESTAMPDIFF(SECOND,missions.launch_exact,spacecraft_flights_pivot.end_of_mission)) AS duration')
                     ->where('missions.status','Complete')
