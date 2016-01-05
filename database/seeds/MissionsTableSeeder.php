@@ -469,7 +469,6 @@ class MissionsTableSeeder extends Seeder {
             'flight_club' => 'http://www.flightclub.io/results.php?id=ad8d5e76-ad6b-4670-9aee-60c1319dff50&code=CRS7'
         ]);
 
-        // Upcoming below
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 25,
@@ -481,10 +480,13 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'launch_illumination' => 'Night',
             'summary' => "SpaceX's Return To Flight Mission carried 11 satellites into Low Earth Orbit for communications company Orbcomm, while the first stage successfully returned to Landing Zone 1 at Cape Canaveral, making history as the first orbital-class rocket stage to land propulsively on land",
-            'status' => MissionStatus::Complete
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success,
         ]);
 
+        // Upcoming below
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
             'launch_order_id' => 26,
