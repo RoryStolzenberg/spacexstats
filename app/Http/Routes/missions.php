@@ -2,6 +2,7 @@
 Route::group(['prefix' => 'missions'], function() {
     Route::get('/future', 'MissionsController@allFutureMissions');
     Route::get('/past', 'MissionsController@allPastMissions');
+    Route::get('/next', 'MissionsController@getNextMission');
 
     Route::get('/all', 'MissionsController@all');
 
@@ -14,6 +15,7 @@ Route::group(['prefix' => 'missions'], function() {
     });
 
     Route::group(['middleware' => ['doesExist:Mission']], function() {
+
         Route::get('/{slug}', 'MissionsController@get');
         Route::get('/{slug}/launchdatetime', 'MissionsController@launchdatetime');
         Route::get('/{slug}/telemetry', 'MissionsController@telemetry');
