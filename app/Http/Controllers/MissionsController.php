@@ -131,7 +131,8 @@ class MissionsController extends Controller {
 	}
 
     public function getNextMission() {
-        return redirect("/missions/{Mission::next()->slug}");
+        $nextMissionSlug = Mission::next()->slug;
+        return redirect("/missions/$nextMissionSlug");
     }
 
     /**
