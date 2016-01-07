@@ -130,7 +130,7 @@ class MissionsController extends Controller {
 		return view('missions.past');
 	}
 
-    public function getNext() {
+    public function getNextMission() {
         return redirect("/missions/{Mission::next()->slug}");
     }
 
