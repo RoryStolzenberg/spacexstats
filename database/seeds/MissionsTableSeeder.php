@@ -437,7 +437,7 @@ class MissionsTableSeeder extends Seeder {
             'launch_exact' => Carbon::create(2015, 4, 27, 23, 3, 0),
             'launch_approximate' => null,
             'launch_specificity' => 7,
-            'name' => utf8_encode('TurkmenÄlem 52E'),
+            'name' => 'TürkmenÄlem 52E',
             'contractor' => 'Thales Alenia Space (Turkmenistan)',
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::GeostationaryTransferOrbit)->firstOrFail()->destination_id,
@@ -469,7 +469,6 @@ class MissionsTableSeeder extends Seeder {
             'flight_club' => 'http://www.flightclub.io/results.php?id=ad8d5e76-ad6b-4670-9aee-60c1319dff50&code=CRS7'
         ]);
 
-        // Upcoming below
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::ConstellationMission)->firstOrFail()->mission_type_id,
             'launch_order_id' => 25,
@@ -481,16 +480,19 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 4,
             'destination_id' => Destination::where('destination', DestinationEnum::LowEarthOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-40')->firstOrFail()->location_id,
+            'launch_illumination' => 'Night',
             'summary' => "SpaceX's Return To Flight Mission carried 11 satellites into Low Earth Orbit for communications company Orbcomm, while the first stage successfully returned to Landing Zone 1 at Cape Canaveral, making history as the first orbital-class rocket stage to land propulsively on land",
-            'status' => MissionStatus::Complete
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success,
         ]);
 
+        // Upcoming below
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::Scientific)->firstOrFail()->mission_type_id,
             'launch_order_id' => 26,
             'launch_exact' => Carbon::create(2016, 1, 17, 18, 42, 18),
             'launch_approximate' => null,
-            'launch_specificity' => LaunchSpecificity::Day,
+            'launch_specificity' => LaunchSpecificity::Precise,
             'name' => 'Jason 3',
             'contractor' => 'NASA',
             'vehicle_id' => 3,
@@ -503,9 +505,9 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::CommunicationsSatellite)->firstOrFail()->mission_type_id,
             'launch_order_id' => 27,
-            'launch_exact' => null,
-            'launch_approximate' => 'Mid January 2016',
-            'launch_specificity' => LaunchSpecificity::SubMonth,
+            'launch_exact' => Carbon::create(2016, 1, 23, 0, 0, 0),
+            'launch_approximate' => null,
+            'launch_specificity' => LaunchSpecificity::Day,
             'name' => 'SES-9',
             'contractor' => 'SES',
             'vehicle_id' => 4,

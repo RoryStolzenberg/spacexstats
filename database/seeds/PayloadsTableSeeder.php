@@ -590,5 +590,93 @@ class PayloadsTableSeeder extends Seeder {
             'link' => 'http://space.skyrocket.de/doc_sdat/flock-1.htm',
             'as_cargo' => true
         ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 2',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 5',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 8',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 10',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 12',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 13',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 14',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 15',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 16',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 17',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
+        Payload::create([
+            'mission_id' => 25,
+            'name' => 'Orbcomm OG2 18',
+            'operator' => "Orbcomm",
+            'primary' => true,
+            'mass' => 172,
+            'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
+        ]);
     }
 }
