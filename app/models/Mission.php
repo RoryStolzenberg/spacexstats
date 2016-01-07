@@ -372,6 +372,14 @@ class Mission extends Model {
 		return $query->whereComplete()->orderBy('launch_order_id', 'desc');
 	}
 
+    public function scopeNext($query) {
+        return $query->future()->first();
+    }
+
+    public function scopePrevious($query) {
+        return $query->past()->first();
+    }
+
 	// Get 1 or more next launches relative to a current launch_order_id
     /**
      * @param $query
