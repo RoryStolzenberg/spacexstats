@@ -57,6 +57,6 @@ END:VEVENT\r\n";
 	}
 
 	private function eventLocation($mission) {
-		return $mission->launch_site->fullLocation;
+		return $mission->launchSite->fullLocation;
 	}
 }

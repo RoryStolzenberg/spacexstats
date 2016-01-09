@@ -1,8 +1,14 @@
 <div class="display-date-time">
     <div class="launch" ng-mouseover="showingTimezoneOptions = true" ng-mouseleave="showingTimezoneOptions = false">
-        <p>{{ displayDateTime() }}</p>
+        <p>
+            <span>{{ displayDateTime() }}</span>
+            <i class="fa fa-exclamation-circle alert-not-exact"
+               ng-if="launchSpecificity == 6"
+               ng-mouseover="hoveringOverAlert()"
+               ng-mouseout="hoveringOverAlert()"></i>
+        </p>
         <div class="timezone-clip">
-            <ul class="timezone-list" ng-if="isLaunchExact == true" ng-show="showingTimezoneOptions">
+            <ul class="timezone-list" ng-if="launchSpecificity >= 6" ng-show="showingTimezoneOptions">
                 <li class="timezone-option" ng-click="setTimezone('local')" ng-class="{ 'active': currentTimezone == null }">
                     Local ({{ localTimezone }})
                 </li>

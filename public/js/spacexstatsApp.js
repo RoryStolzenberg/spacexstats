@@ -990,7 +990,7 @@
 (function() {
     var app = angular.module('app', []);
 
-    app.controller("missionController", ['$scope', 'Mission', 'missionService', function($scope, Mission, missionService) {
+    app.controller("missionController", ['$scope', 'missionService', function($scope, missionService) {
         // Scope the possible form data info
         $scope.data = {
             parts: laravel.parts,
@@ -2396,56 +2396,6 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
-        return {
-            restrict: 'E',
-            scope: {
-                isLaunchExact: '=',
-                launchDateTime: '='
-            },
-            link: function($scope, elem, attrs) {
-                /*
-                 *   Timezone stuff.
-                 */
-                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
-                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
-                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
-                $scope.currentTimezone;
-                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
-
-                $scope.setTimezone = function(timezoneToSet) {
-                    if (timezoneToSet === 'local') {
-                        $scope.currentTimezone = null;
-                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
-                    } else if (timezoneToSet === 'ET') {
-                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
-                        $scope.currentTimezoneFormatted = 'Eastern';
-                    } else if (timezoneToSet === 'PT') {
-                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
-                        $scope.currentTimezoneFormatted = 'Pacific';
-                    } else {
-                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
-                    }
-                };
-
-                $scope.displayDateTime = function() {
-                    if ($scope.isLaunchExact) {
-                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
-                    } else {
-                        return $scope.launchDateTime;
-                    }
-
-                };
-            },
-            templateUrl: '/js/templates/launchDate.html'
-        }
-    }]);
-})();
-// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
-// Rewritten as an Angular directive for SpaceXStats 4
-(function() {
-    var app = angular.module('app');
-
     app.directive('countdown', ['$interval', function($interval) {
         return {
             restrict: 'E',
@@ -2520,6 +2470,18 @@
 (function() {
     var app = angular.module('app');
 
+    app.filter('jsonPrettify', function() {
+       return function(input) {
+           if (typeof input !== 'undefined') {
+               return JSON.stringify(input, null, 2);
+           }
+           return null;
+       }
+    });
+})();
+(function() {
+    var app = angular.module('app');
+
     app.directive('missionCard', function() {
         return {
             restrict: 'E',
@@ -2532,6 +2494,77 @@
             templateUrl: '/js/templates/missionCard.html'
         }
     });
+})();
+// Original jQuery countdown timer written by /u/EchoLogic, improved and optimized by /u/booOfBorg.
+// Rewritten as an Angular directive for SpaceXStats 4
+(function() {
+    var app = angular.module('app');
+
+    app.directive('launchDate', ['$interval', '$filter', function($interval, $filter) {
+        return {
+            restrict: 'E',
+            scope: {
+                launchSpecificity: '=',
+                launchDateTime: '='
+            },
+            link: function($scope, elem, attrs) {
+                /*
+                 *   Timezone stuff.
+                 */
+                // Get the IANA Timezone identifier and format it into a 3 letter timezone.
+                $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
+
+                // Set the format to be displayed based on the launch specificity
+                switch ($scope.launchSpecificity) {
+                    case 6:
+                        $scope.currentFormat = 'MMMM d, yyyy';
+                        break;
+                    case 7:
+                        $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
+                        break;
+                    default:
+                        $scope.currentFormat = null;
+                }
+
+                $scope.currentTimezone = null;
+                $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+
+                $scope.setTimezone = function(timezoneToSet) {
+                    if (timezoneToSet === 'local') {
+                        $scope.currentTimezone = null;
+                        $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
+                    } else if (timezoneToSet === 'ET') {
+                        $scope.currentTimezone = moment().tz("America/New_York").format('z');
+                        $scope.currentTimezoneFormatted = 'Eastern';
+                    } else if (timezoneToSet === 'PT') {
+                        $scope.currentTimezone = moment().tz("America/Los_Angeles").format('z');
+                        $scope.currentTimezoneFormatted = 'Pacific';
+                    } else {
+                        $scope.currentTimezoneFormatted = $scope.currentTimezone = 'UTC';
+                    }
+                };
+
+                $scope.isHoveringOverAlert = false;
+
+                $scope.hoveringOverAlert = function() {
+                    $scope.isHoveringOverAlert = !$scope.isHoveringOverAlert;
+                };
+
+                $scope.displayDateTime = function() {
+                    if ($scope.isHoveringOverAlert) {
+                        return 'This launch has no time yet';
+                    }
+                    if ($scope.launchSpecificity >= 6) {
+                        return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
+                    } else {
+                        return $scope.launchDateTime;
+                    }
+
+                };
+            },
+            templateUrl: '/js/templates/launchDate.html'
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app');
@@ -2585,133 +2618,6 @@
         }
     }]);
 })();
-(function() {
-    var app = angular.module('app', []);
-
-    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
-        return {
-            require: 'ngModel',
-            replace: true,
-            restrict: 'E',
-            scope: {
-                availableTags: '=',
-                currentTags: '=ngModel'
-            },
-            link: function($scope, element, attributes, ctrl) {
-                $scope.suggestions = [];
-                $scope.inputWidth = {};
-                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
-
-                ctrl.$options = {
-                    allowInvalid: true
-                };
-
-                $scope.createTag = function(createdTag) {
-                    if ($scope.currentTags.length == 5 || angular.isUndefined(createdTag)) {
-                        return;
-                    }
-
-                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
-                        return tag.name == createdTag;
-                    });
-
-                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
-
-                        // check if tag is present in the available tags array
-                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
-                            return tag.name == createdTag;
-                        });
-
-                        // Either fetch the tag from the current list of tags or create
-                        var newTag = tagIsPresentInAvailableTags.length === 1 ? tagIsPresentInAvailableTags[0] : new Tag({ id: null, name: createdTag, description: null });
-
-                        $scope.currentTags.push(newTag);
-
-                        // reset the input field
-                        $scope.tagInput = "";
-
-                        $scope.updateSuggestionList();
-                        $scope.updateInputLength();
-                    }
-                };
-
-                $scope.removeTag = function(removedTag) {
-                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
-                    $scope.updateSuggestionList();
-                    $scope.updateInputLength();
-                };
-
-                $scope.tagInputKeydown = function(event) {
-                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
-                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
-
-                    // event.key == ' ' || event.key == 'Enter'
-                    if (event.which == 32 || event.which == 13) {
-                        event.preventDefault();
-
-                        $scope.createTag($scope.tagInput);
-
-                        // event.key == 'Backspace'
-                    } else if (event.which == 8 && $scope.tagInput == "") {
-                        event.preventDefault();
-
-                        // grab the last tag to be inserted (if any) and put it back in the input
-                        if ($scope.currentTags.length > 0) {
-                            $scope.tagInput = $scope.currentTags.pop().name;
-                        }
-                    }
-                };
-
-                $scope.updateInputLength = function() {
-                    $timeout(function() {
-                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
-                    });
-                };
-
-                $scope.areSuggestionsVisible = false;
-                $scope.toggleSuggestionVisibility = function() {
-                    $scope.areSuggestionsVisible = $scope.currentTags.length  < 5 ? !$scope.areSuggestionsVisible : false;
-                };
-
-                $scope.updateSuggestionList = function() {
-                    var search = new RegExp($scope.tagInput, "i");
-
-                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
-                        if ($scope.currentTags.filter(function(currentTag) {
-                                return availableTag.name == currentTag.name;
-                            }).length == 0) {
-                            return search.test(availableTag.name);
-                        }
-                        return false;
-                    }).slice(0,6);
-                };
-
-                ctrl.$validators.taglength = function(modelValue, viewValue) {
-                    return viewValue.length > 0 && viewValue.length < 6;
-                };
-
-                $scope.$watch('currentTags', function() {
-                    ctrl.$validate();
-                }, true);
-
-            },
-            templateUrl: '/js/templates/tags.html'
-        }
-    }]);
-
-    app.factory("Tag", function() {
-        return function(tag) {
-            var self = tag;
-
-            // Convert the tag to lowercase and replace all spaces present.
-            self.name = tag.name.toLowerCase().replace(/[^a-z0-9-]/g, "").substring(0, 50);
-
-            return self;
-        }
-    });
-})();
-
-
 (function() {
     var app = angular.module('app');
 
@@ -2885,252 +2791,132 @@
     });
 })();
 (function() {
-    var app = angular.module('app');
+    var app = angular.module('app', []);
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive("tags", ["Tag", "$timeout", function(Tag, $timeout) {
         return {
+            require: 'ngModel',
+            replace: true,
             restrict: 'E',
             scope: {
-                tweet: '='
+                availableTags: '=',
+                currentTags: '=ngModel'
             },
-            link: function($scope, element, attributes, ngModelCtrl) {
+            link: function($scope, element, attributes, ctrl) {
+                $scope.suggestions = [];
+                $scope.inputWidth = {};
+                $scope.currentTags = typeof $scope.currentTags !== 'undefined' ? $scope.currentTags : [];
 
-                $scope.retrieveTweet = function() {
+                ctrl.$options = {
+                    allowInvalid: true
+                };
 
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+                $scope.createTag = function(createdTag) {
+                    if ($scope.currentTags.length == 5 || angular.isUndefined(createdTag)) {
+                        return;
+                    }
 
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
+                    var tagIsPresentInCurrentTags = $scope.currentTags.filter(function(tag) {
+                        return tag.name == createdTag;
+                    });
 
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_id = id;
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+                    if (createdTag.length > 0 && tagIsPresentInCurrentTags.length === 0) {
 
+                        // check if tag is present in the available tags array
+                        var tagIsPresentInAvailableTags = $scope.availableTags.filter(function(tag) {
+                            return tag.name == createdTag;
                         });
-                    } else {
-                        $scope.tweet = {};
-                    }
 
-                    if (angular.isDefined($scope.tweet.external_url)) {
-                        $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                    } else {
-                        $scope.tweetRetrievedFromUrl = false;
-                    }
-                }
-            },
-            templateUrl: '/js/templates/tweet.html'
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
+                        // Either fetch the tag from the current list of tags or create
+                        var newTag = tagIsPresentInAvailableTags.length === 1 ? tagIsPresentInAvailableTags[0] : new Tag({ id: null, name: createdTag, description: null });
 
-    app.directive('deltaV', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                object: '=ngModel',
-                hint: '@'
-            },
-            link: function($scope, element, attributes) {
+                        $scope.currentTags.push(newTag);
 
-                $scope.constants = {
-                    SECONDS_PER_DAY: 86400,
-                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
-                };
+                        // reset the input field
+                        $scope.tagInput = "";
 
-                var baseTypeScores = {
-                    Image: 10,
-                    GIF: 10,
-                    Audio: 20,
-                    Video: 20,
-                    Document: 20,
-                    Tweet: 5,
-                    Article: 10,
-                    Comment: 5,
-                    Webpage: 10,
-                    Text: 10
-                };
-
-                var specialTypeMultiplier = {
-                    "Mission Patch": 2,
-                    "Photo": 1.1,
-                    "Launch Video": 2,
-                    "Press Kit": 2,
-                    "Weather Forecast": 2,
-                    "Press Conference": 1.5
-                };
-
-                var resourceQuality = {
-                    multipliers: {
-                        perMegapixel: 5,
-                        perMinute: 2
-                    },
-                    scores: {
-                        perPage: 2
+                        $scope.updateSuggestionList();
+                        $scope.updateInputLength();
                     }
                 };
 
-                var metadataScore = {
-                    summary: {
-                        perCharacter: 0.02
-                    },
-                    author: {
-                        perCharacter: 0.2
-                    },
-                    attribution: {
-                        perCharacter: 0.1
-                    },
-                    tags: {
-                        perTag: 1
+                $scope.removeTag = function(removedTag) {
+                    $scope.currentTags.splice($scope.currentTags.indexOf(removedTag), 1);
+                    $scope.updateSuggestionList();
+                    $scope.updateInputLength();
+                };
+
+                $scope.tagInputKeydown = function(event) {
+                    // Currently using jQuery.event.which to detect keypresses, keyCode is deprecated, use KeyboardEvent.key eventually:
+                    // https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+
+                    // event.key == ' ' || event.key == 'Enter'
+                    if (event.which == 32 || event.which == 13) {
+                        event.preventDefault();
+
+                        $scope.createTag($scope.tagInput);
+
+                        // event.key == 'Backspace'
+                    } else if (event.which == 8 && $scope.tagInput == "") {
+                        event.preventDefault();
+
+                        // grab the last tag to be inserted (if any) and put it back in the input
+                        if ($scope.currentTags.length > 0) {
+                            $scope.tagInput = $scope.currentTags.pop().name;
+                        }
                     }
                 };
 
-                var dateAccuracyMultiplier = {
-                    year: 1,
-                    month: 1.05,
-                    date: 1.1,
-                    datetime: 1.2
+                $scope.updateInputLength = function() {
+                    $timeout(function() {
+                        $scope.inputLength = $(element).find('.wrapper').innerWidth() - $(element).find('.tag-wrapper').outerWidth() - 1;
+                    });
                 };
 
-                var dataSaverMultiplier = {
-                    hasExternalUrl: 2
+                $scope.areSuggestionsVisible = false;
+                $scope.toggleSuggestionVisibility = function() {
+                    $scope.areSuggestionsVisible = $scope.currentTags.length  < 5 ? !$scope.areSuggestionsVisible : false;
                 };
 
-                var originalContentMultiplier = {
-                    isOriginalContent: 1.5
+                $scope.updateSuggestionList = function() {
+                    var search = new RegExp($scope.tagInput, "i");
+
+                    $scope.suggestions = $scope.availableTags.filter(function(availableTag) {
+                        if ($scope.currentTags.filter(function(currentTag) {
+                                return availableTag.name == currentTag.name;
+                            }).length == 0) {
+                            return search.test(availableTag.name);
+                        }
+                        return false;
+                    }).slice(0,6);
                 };
 
-                $scope.$watch("object", function(object) {
-                    if (typeof object !== 'undefined') {
-                        var calculatedValue = $scope.calculate(object);
-                        $scope.setCalculatedValue(calculatedValue);
-                    }
+                ctrl.$validators.taglength = function(modelValue, viewValue) {
+                    return viewValue.length > 0 && viewValue.length < 6;
+                };
+
+                $scope.$watch('currentTags', function() {
+                    ctrl.$validate();
                 }, true);
 
-                $scope.calculate = function(object) {
-                    var internalValue = 0;
-
-                    // typeRegime
-                    internalValue += baseTypeScores[$scope.hint];
-
-                    // specialTypeRegime
-                    if (object.subtype !== null) {
-                        if (object.subtype in specialTypeMultiplier) {
-                            internalValue *= specialTypeMultiplier[object.subtype];
-                        }
-                    }
-
-                    // resourceQualityRegime
-                    switch ($scope.hint) {
-                        case 'Image':
-                            internalValue += subscores.megapixels(object);
-                            break;
-
-                        case 'GIF':
-                            internalValue += subscores.megapixels(object) * subscores.minutes(object);
-                            break;
-
-                        case 'Video':
-                            internalValue += subscores.megapixels(object) * subscores.minutes(object);
-                            break;
-
-                        case 'Audio':
-                            internalValue += subscores.minutes(object);
-                            break;
-
-                        case 'Document':
-                            internalValue += subscores.pages(object);
-                            break;
-                    }
-
-                    // metadataRegime
-                    if (object.summary) {
-                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
-                    }
-                    if (object.author) {
-                        internalValue += object.author.length * metadataScore.author.perCharacter;
-                    }
-                    if (object.attribution) {
-                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
-                    }
-                    if (object.tags) {
-                        internalValue += object.tags.length * metadataScore.tags.perTag;
-                    }
-
-                    // dateAccuracyRegime
-                    if (object.originated_at) {
-                        var month = object.originated_at.substr(5, 2);
-                        var date = object.originated_at.substr(8, 2);
-                        var datetime = object.originated_at.substr(11, 8);
-
-                        if (datetime !== '00:00:00' && datetime !== '') {
-                            internalValue *= dateAccuracyMultiplier.datetime;
-                        } else if (date !== '00') {
-                            internalValue *= dateAccuracyMultiplier.date;
-                        } else if (month !== '00') {
-                            internalValue *= dateAccuracyMultiplier.month;
-                        } else {
-                            internalValue *= dateAccuracyMultiplier.year;
-                        }
-                    }
-
-                    // dataSaverRegime
-                    if (object.external_url) {
-                        internalValue *= dataSaverMultiplier.hasExternalUrl;
-                    }
-
-                    // originalContentRegime
-                    if (object.original_content === true) {
-                        internalValue *= originalContentMultiplier.isOriginalContent;
-                    }
-
-                    return Math.round(internalValue);
-                };
-
-                $scope.setCalculatedValue = function(calculatedValue) {
-                    $scope.calculatedValue.deltaV = calculatedValue;
-                    var seconds = Math.round($scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE));
-                    $scope.calculatedValue.time = seconds + ' seconds';
-                };
-
-                $scope.calculatedValue = {
-                    deltaV: 0,
-                    time: 0
-                };
-
-                var subscores = {
-                    megapixels: function(object) {
-                        if (object.dimension_width && object.dimension_height) {
-                            var megapixels = (object.dimension_width * object.dimension_height) / 1000000;
-                            return resourceQuality.multipliers.perMegapixel * megapixels;
-                        }
-                        return 0;
-                    },
-                    minutes: function(object) {
-                        if (object.duration) {
-                            return resourceQuality.multipliers.perMinute * (object.duration / 60);
-                        }
-                        return 0;
-                    },
-                    pages: function(object) {
-                        if (object.page_count) {
-                            return resourceQuality.scores.perPage * object.page_count;
-                        }
-                        return 0;
-                    }
-                }
             },
-            templateUrl: '/js/templates/deltaV.html'
+            templateUrl: '/js/templates/tags.html'
+        }
+    }]);
+
+    app.factory("Tag", function() {
+        return function(tag) {
+            var self = tag;
+
+            // Convert the tag to lowercase and replace all spaces present.
+            self.name = tag.name.toLowerCase().replace(/[^a-z0-9-]/g, "").substring(0, 50);
+
+            return self;
         }
     });
 })();
+
+
 (function() {
     var app = angular.module('app');
 
@@ -3163,26 +2949,6 @@
         }
     }]);
 })();
-//http://codepen.io/jakob-e/pen/eNBQaP
-(function() {
-    var app = angular.module('app');
-
-    app.directive('passwordToggle', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            scope:{},
-            link: function(scope, elem, attrs){
-                scope.tgl = function() {
-                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
-                };
-                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
-                $compile(lnk)(scope);
-                elem.wrap('<div class="password-toggle"/>').after(lnk);
-            }
-        }
-    }]);
-})();
-
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
 
@@ -3517,6 +3283,371 @@
 (function() {
     var app = angular.module('app');
 
+    app.directive('tweet', ["$http", function($http) {
+        return {
+            restrict: 'E',
+            scope: {
+                tweet: '='
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.retrieveTweet = function() {
+
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_id = id;
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
+                        });
+                    } else {
+                        $scope.tweet = {};
+                    }
+
+                    if (angular.isDefined($scope.tweet.external_url)) {
+                        $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                    } else {
+                        $scope.tweetRetrievedFromUrl = false;
+                    }
+                }
+            },
+            templateUrl: '/js/templates/tweet.html'
+        }
+    }]);
+})();
+(function() {
+    var app = angular.module('app', []);
+
+    app.directive("dropdown", function() {
+        return {
+            restrict: 'E',
+            require: '^ngModel',
+            scope: {
+                data: '=options',
+                uniqueKey: '@',
+                titleKey: '@',
+                imageKey: '@?',
+                descriptionKey: '@?',
+                searchable: '@',
+                placeholder: '@',
+                idOnly: '@?'
+            },
+            link: function($scope, element, attributes, ngModelCtrl) {
+
+                $scope.search = {
+                    name: ''
+                };
+
+                $scope.thumbnails = angular.isDefined($scope.imageKey);
+
+                ngModelCtrl.$viewChangeListeners.push(function() {
+                    $scope.$eval(attributes.ngChange);
+                });
+
+                $scope.mapData = function() {
+                    if (!angular.isDefined($scope.data)) {
+                        return;
+                    }
+
+                    return $scope.data.map(function(option) {
+                        var props = {
+                            id: option[$scope.uniqueKey],
+                            name: option[$scope.titleKey],
+                            image: option[$scope.imageKey]
+                        };
+
+                        if (typeof $scope.descriptionKey !== 'undefined') {
+                            props.description = option[$scope.descriptionKey];
+                        }
+
+                        return props;
+                    });
+                };
+
+                $scope.options = $scope.mapData();
+
+                $scope.$watch("data", function() {
+                    $scope.options = $scope.mapData();
+                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
+                });
+
+                ngModelCtrl.$render = function() {
+                    $scope.selectedOption = ngModelCtrl.$viewValue;
+                };
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    if ($scope.idOnly === 'true') {
+                        return viewValue.id;
+                    } else {
+                        return viewValue;
+                    }
+                });
+
+                ngModelCtrl.$formatters.push(function(modelValue) {
+                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
+                            return $scope.options.filter(function(option) {
+                                return option.id = modelValue;
+                            }).shift();
+                        } else {
+                            return modelValue;
+                        }
+                });
+
+                $scope.selectOption = function(option) {
+                    $scope.selectedOption = option;
+                    ngModelCtrl.$setViewValue(option);
+                    $scope.dropdownIsVisible = false;
+                };
+
+                $scope.toggleDropdown = function() {
+                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
+                    if (!$scope.dropdownIsVisible) {
+                        $scope.search.name = '';
+                    }
+                };
+
+                $scope.dropdownIsVisible = false;
+            },
+            templateUrl: '/js/templates/dropdown.html'
+        }
+    });
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('deltaV', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                object: '=ngModel',
+                hint: '@'
+            },
+            link: function($scope, element, attributes) {
+
+                $scope.constants = {
+                    SECONDS_PER_DAY: 86400,
+                    DELTAV_TO_DAY_CONVERSION_RATE: 1000
+                };
+
+                var baseTypeScores = {
+                    Image: 10,
+                    GIF: 10,
+                    Audio: 20,
+                    Video: 20,
+                    Document: 20,
+                    Tweet: 5,
+                    Article: 10,
+                    Comment: 5,
+                    Webpage: 10,
+                    Text: 10
+                };
+
+                var specialTypeMultiplier = {
+                    "Mission Patch": 2,
+                    "Photo": 1.1,
+                    "Launch Video": 2,
+                    "Press Kit": 2,
+                    "Weather Forecast": 2,
+                    "Press Conference": 1.5
+                };
+
+                var resourceQuality = {
+                    multipliers: {
+                        perMegapixel: 5,
+                        perMinute: 2
+                    },
+                    scores: {
+                        perPage: 2
+                    }
+                };
+
+                var metadataScore = {
+                    summary: {
+                        perCharacter: 0.02
+                    },
+                    author: {
+                        perCharacter: 0.2
+                    },
+                    attribution: {
+                        perCharacter: 0.1
+                    },
+                    tags: {
+                        perTag: 1
+                    }
+                };
+
+                var dateAccuracyMultiplier = {
+                    year: 1,
+                    month: 1.05,
+                    date: 1.1,
+                    datetime: 1.2
+                };
+
+                var dataSaverMultiplier = {
+                    hasExternalUrl: 2
+                };
+
+                var originalContentMultiplier = {
+                    isOriginalContent: 1.5
+                };
+
+                $scope.$watch("object", function(object) {
+                    if (typeof object !== 'undefined') {
+                        var calculatedValue = $scope.calculate(object);
+                        $scope.setCalculatedValue(calculatedValue);
+                    }
+                }, true);
+
+                $scope.calculate = function(object) {
+                    var internalValue = 0;
+
+                    // typeRegime
+                    internalValue += baseTypeScores[$scope.hint];
+
+                    // specialTypeRegime
+                    if (object.subtype !== null) {
+                        if (object.subtype in specialTypeMultiplier) {
+                            internalValue *= specialTypeMultiplier[object.subtype];
+                        }
+                    }
+
+                    // resourceQualityRegime
+                    switch ($scope.hint) {
+                        case 'Image':
+                            internalValue += subscores.megapixels(object);
+                            break;
+
+                        case 'GIF':
+                            internalValue += subscores.megapixels(object) * subscores.minutes(object);
+                            break;
+
+                        case 'Video':
+                            internalValue += subscores.megapixels(object) * subscores.minutes(object);
+                            break;
+
+                        case 'Audio':
+                            internalValue += subscores.minutes(object);
+                            break;
+
+                        case 'Document':
+                            internalValue += subscores.pages(object);
+                            break;
+                    }
+
+                    // metadataRegime
+                    if (object.summary) {
+                        internalValue += object.summary.length * metadataScore.summary.perCharacter;
+                    }
+                    if (object.author) {
+                        internalValue += object.author.length * metadataScore.author.perCharacter;
+                    }
+                    if (object.attribution) {
+                        internalValue += object.attribution.length * metadataScore.attribution.perCharacter;
+                    }
+                    if (object.tags) {
+                        internalValue += object.tags.length * metadataScore.tags.perTag;
+                    }
+
+                    // dateAccuracyRegime
+                    if (object.originated_at) {
+                        var month = object.originated_at.substr(5, 2);
+                        var date = object.originated_at.substr(8, 2);
+                        var datetime = object.originated_at.substr(11, 8);
+
+                        if (datetime !== '00:00:00' && datetime !== '') {
+                            internalValue *= dateAccuracyMultiplier.datetime;
+                        } else if (date !== '00') {
+                            internalValue *= dateAccuracyMultiplier.date;
+                        } else if (month !== '00') {
+                            internalValue *= dateAccuracyMultiplier.month;
+                        } else {
+                            internalValue *= dateAccuracyMultiplier.year;
+                        }
+                    }
+
+                    // dataSaverRegime
+                    if (object.external_url) {
+                        internalValue *= dataSaverMultiplier.hasExternalUrl;
+                    }
+
+                    // originalContentRegime
+                    if (object.original_content === true) {
+                        internalValue *= originalContentMultiplier.isOriginalContent;
+                    }
+
+                    return Math.round(internalValue);
+                };
+
+                $scope.setCalculatedValue = function(calculatedValue) {
+                    $scope.calculatedValue.deltaV = calculatedValue;
+                    var seconds = Math.round($scope.calculatedValue.deltaV * ($scope.constants.SECONDS_PER_DAY / $scope.constants.DELTAV_TO_DAY_CONVERSION_RATE));
+                    $scope.calculatedValue.time = seconds + ' seconds';
+                };
+
+                $scope.calculatedValue = {
+                    deltaV: 0,
+                    time: 0
+                };
+
+                var subscores = {
+                    megapixels: function(object) {
+                        if (object.dimension_width && object.dimension_height) {
+                            var megapixels = (object.dimension_width * object.dimension_height) / 1000000;
+                            return resourceQuality.multipliers.perMegapixel * megapixels;
+                        }
+                        return 0;
+                    },
+                    minutes: function(object) {
+                        if (object.duration) {
+                            return resourceQuality.multipliers.perMinute * (object.duration / 60);
+                        }
+                        return 0;
+                    },
+                    pages: function(object) {
+                        if (object.page_count) {
+                            return resourceQuality.scores.perPage * object.page_count;
+                        }
+                        return 0;
+                    }
+                }
+            },
+            templateUrl: '/js/templates/deltaV.html'
+        }
+    });
+})();
+//http://codepen.io/jakob-e/pen/eNBQaP
+(function() {
+    var app = angular.module('app');
+
+    app.directive('passwordToggle', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            scope:{},
+            link: function(scope, elem, attrs){
+                scope.tgl = function() {
+                    elem.attr('type',(elem.attr('type')==='text'?'password':'text'));
+                };
+                var lnk = angular.element('<i class="fa fa-eye" data-ng-click="tgl()"></i>');
+                $compile(lnk)(scope);
+                elem.wrap('<div class="password-toggle"/>').after(lnk);
+            }
+        }
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
     app.directive('chart', ["$window", function($window) {
         return {
             replace: true,
@@ -3721,104 +3852,6 @@
     }]);
 })();
 (function() {
-    var app = angular.module('app', []);
-
-    app.directive("dropdown", function() {
-        return {
-            restrict: 'E',
-            require: '^ngModel',
-            scope: {
-                data: '=options',
-                uniqueKey: '@',
-                titleKey: '@',
-                imageKey: '@?',
-                descriptionKey: '@?',
-                searchable: '@',
-                placeholder: '@',
-                idOnly: '@?'
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
-
-                $scope.search = {
-                    name: ''
-                };
-
-                $scope.thumbnails = angular.isDefined($scope.imageKey);
-
-                ngModelCtrl.$viewChangeListeners.push(function() {
-                    $scope.$eval(attributes.ngChange);
-                });
-
-                $scope.mapData = function() {
-                    if (!angular.isDefined($scope.data)) {
-                        return;
-                    }
-
-                    return $scope.data.map(function(option) {
-                        var props = {
-                            id: option[$scope.uniqueKey],
-                            name: option[$scope.titleKey],
-                            image: option[$scope.imageKey]
-                        };
-
-                        if (typeof $scope.descriptionKey !== 'undefined') {
-                            props.description = option[$scope.descriptionKey];
-                        }
-
-                        return props;
-                    });
-                };
-
-                $scope.options = $scope.mapData();
-
-                $scope.$watch("data", function() {
-                    $scope.options = $scope.mapData();
-                    ngModelCtrl.$setViewValue(ngModelCtrl.$viewValue);
-                });
-
-                ngModelCtrl.$render = function() {
-                    $scope.selectedOption = ngModelCtrl.$viewValue;
-                };
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    if ($scope.idOnly === 'true') {
-                        return viewValue.id;
-                    } else {
-                        return viewValue;
-                    }
-                });
-
-                ngModelCtrl.$formatters.push(function(modelValue) {
-                        if ($scope.idOnly === 'true' && angular.isDefined($scope.options)) {
-                            return $scope.options.filter(function(option) {
-                                return option.id = modelValue;
-                            }).shift();
-                        } else {
-                            return modelValue;
-                        }
-                });
-
-                $scope.selectOption = function(option) {
-                    $scope.selectedOption = option;
-                    ngModelCtrl.$setViewValue(option);
-                    $scope.dropdownIsVisible = false;
-                };
-
-                $scope.toggleDropdown = function() {
-                    $scope.dropdownIsVisible = !$scope.dropdownIsVisible;
-                    if (!$scope.dropdownIsVisible) {
-                        $scope.search.name = '';
-                    }
-                };
-
-                $scope.dropdownIsVisible = false;
-            },
-            templateUrl: '/js/templates/dropdown.html'
-        }
-    });
-})();
-
-(function() {
     var app = angular.module('app');
 
     app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
@@ -3860,6 +3893,22 @@
             }
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('objectCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                object: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/objectCard.html'
+        }
+    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -4005,43 +4054,34 @@
                 ngModelCtrl.$validators.launchDateValidity = function(value) {
                     if (angular.isDefined(value) && value !== null) {
                         // Check day and date specificities
-                        if (moment(value, 'YYYY-MM-DD h:i:s').isValid()) {
+                        if (moment(value, 'YYYY-MM-DD H:mm:ss', true).isValid()) {
                             return true;
                         }
 
                         // Submonth specificities
+                        var submonthRegex = new RegExp('^(' + subs + ') (' + months + ') \\d{4}$');
+                        // Month specificities
+                        var monthRegex = new RegExp('^(' + months + ') \\d{4}$');
+                        // Quarter specifities
+                        var quarterRegex = new RegExp('^(' + quarters + ') \\d{4}$');
+                        // Subyear specificities
+                        var subyearRegex = new RegExp('^(' + subs + ') \\d{4}$');
+                        // Half specificities
+                        var halfRegex = new RegExp('^(' + halfs + ') \\d{4}$');
+                        // Year specificities
+                        var yearRegex = new RegExp('^\\d{4}$');
+
+                        var regexes = [submonthRegex, monthRegex, quarterRegex, subyearRegex, halfRegex, yearRegex];
+
+                        regexes.every(function(regex) {
+                            if (regex.test(value)) {
+                                return true;
+                            }
+                        });
                     }
                     return false;
                 };
             }
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('objectCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                object: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/objectCard.html'
-        }
-    });
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.filter('jsonPrettify', function() {
-       return function(input) {
-           if (typeof input !== 'undefined') {
-               return JSON.stringify(input, null, 2);
-           }
-           return null;
-       }
-    });
 })();
