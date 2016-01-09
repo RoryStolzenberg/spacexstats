@@ -91,7 +91,7 @@
                 <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="interval"></countdown>
 
                 <div ng-if="substatistic.display == 'mission'">
-                    <launch-date is-launch-exact="substatistic.result.launch_specificity >= 6" launch-date-time="substatistic.result.launch_date_time"></launch-date>
+                    <launch-date launch-specificity="substatistic.result.launch_specificity" launch-date-time="substatistic.result.launch_date_time"></launch-date>
 
                     <countdown countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic">
                     </countdown>
