@@ -7793,7 +7793,8 @@ form select {
   padding: 5px;
   border: 1px solid #CCC;
   text-transform: initial;
-  display: block; }
+  display: block;
+  height: 32px; }
 
 form textarea {
   resize: vertical;
@@ -8832,9 +8833,6 @@ form[name="subscribeForm"] .subscription-failed {
 #hoursWorked {
   background-image: url("../images/backgrounds/rollout.jpg"); }
 
-body.future-mission .highlights {
-  padding-right: 300px; }
-
 .mission-link {
   display: inline-block;
   overflow: hidden;
@@ -8906,7 +8904,7 @@ body.future-mission .highlights {
 .display-date-time {
   position: absolute;
   right: 0;
-  top: 0;
+  top: 40px;
   width: 300px;
   font-family: "Montserrat", sans-serif;
   cursor: pointer; }
@@ -8943,6 +8941,9 @@ body.future-mission .highlights {
       right: 0;
       position: absolute;
       content: ""; }
+    .display-date-time .launch .alert-not-exact {
+      color: #FB6473;
+      padding: 0 5px; }
   .display-date-time .timezone-clip {
     overflow: hidden; }
   .display-date-time .timezone-list {

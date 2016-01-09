@@ -7,7 +7,7 @@
         return {
             restrict: 'E',
             scope: {
-                isLaunchExact: '=',
+                launchSpecificity: '=',
                 launchDateTime: '='
             },
             link: function($scope, elem, attrs) {
@@ -16,8 +16,20 @@
                  */
                 // Get the IANA Timezone identifier and format it into a 3 letter timezone.
                 $scope.localTimezone = moment().tz(jstz.determine().name()).format('z');
-                $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
-                $scope.currentTimezone;
+
+                // Set the format to be displayed based on the launch specificity
+                switch ($scope.launchSpecificity) {
+                    case 6:
+                        $scope.currentFormat = 'MMMM d, yyyy';
+                        break;
+                    case 7:
+                        $scope.currentFormat = 'h:mm:ssa MMMM d, yyyy';
+                        break;
+                    default:
+                        $scope.currentFormat = null;
+                }
+
+                $scope.currentTimezone = null;
                 $scope.currentTimezoneFormatted = "Local ("+ $scope.localTimezone +")";
 
                 $scope.setTimezone = function(timezoneToSet) {
@@ -35,8 +47,17 @@
                     }
                 };
 
+                $scope.isHoveringOverAlert = false;
+
+                $scope.hoveringOverAlert = function() {
+                    $scope.isHoveringOverAlert = !$scope.isHoveringOverAlert;
+                };
+
                 $scope.displayDateTime = function() {
-                    if ($scope.isLaunchExact) {
+                    if ($scope.isHoveringOverAlert) {
+                        return 'This launch has no time yet';
+                    }
+                    if ($scope.launchSpecificity >= 6) {
                         return $filter('date')(moment.utc($scope.launchDateTime, 'YYYY-MM-DD HH:mm:ss').toDate(), $scope.currentFormat, $scope.currentTimezone);
                     } else {
                         return $scope.launchDateTime;

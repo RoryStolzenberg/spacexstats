@@ -1,10 +1,6 @@
 $launch-date-time-width: 300px;
 $mission-link-width: 150px;
 
-body.future-mission .highlights {
-    padding-right:$launch-date-time-width;
-}
-
 .mission-link {
     display:inline-block;
     overflow:hidden;
@@ -97,7 +93,7 @@ body.future-mission .highlights {
 .display-date-time {
     position:absolute;
     right:0;
-    top:0;
+    top:40px;
     width:$launch-date-time-width;
     font-family:$montserrat;
     cursor:pointer;
@@ -140,6 +136,11 @@ body.future-mission .highlights {
             right:0;
             position: absolute;
             content: "";
+        }
+
+        .alert-not-exact {
+            color:$red;
+            padding:0 5px;
         }
     }
 

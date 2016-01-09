@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 use SpaceXStats\Library\Enums\Destination;
+use SpaceXStats\Library\Enums\Engine;
 use SpaceXStats\Library\Enums\MissionStatus;
 use SpaceXStats\Models\Mission;
 use SpaceXStats\Models\PartFlight;
@@ -184,7 +185,7 @@ class StatisticResultBuilder {
 	public static function engines($substatistic) {
         if ($substatistic === 'Flown') {
             return Cache::remember('stats:engines:flown', 60, function() {
-                return PartFlight::whereIn('firststage_engine', ['Merlin 1D', 'Merlin 1D Fullthrust'])->whereHas('mission', function($q) {
+                return PartFlight::whereIn('firststage_engine', [Engine::Merlin1D, Engine::Merlin1DFullThrust])->whereHas('mission', function($q) {
                     return $q->whereComplete();
                 })->count() * 9;
             });

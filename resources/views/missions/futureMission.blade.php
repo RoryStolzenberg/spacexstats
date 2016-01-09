@@ -84,7 +84,7 @@
                         <span>@{{ webcast.publicStatus }}</span><span class="live-viewers" ng-show="webcast.status === 'webcast-live'">@{{ webcast.publicViewers }}</span>
                     </div>
 
-                    <launch-date is-launch-exact="isLaunchExact" launch-date-time="launchDateTime"></launch-date>
+                    <launch-date launch-specificity="launchSpecificity" launch-date-time="launchDateTime"></launch-date>
                 </section>
 
                 <section class="hero scrollto" id="countdown">
