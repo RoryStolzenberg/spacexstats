@@ -37,27 +37,45 @@
 
                         <li class="gr-2 float-right actions">
                             @if (Auth::isAdmin())
-                                <a class="link" href="/missions/{{ $mission->slug }}/edit">
-                                    <i class="fa fa-pencil"></i>
+                                <div>
+                                    <a class="link tooltip" href="/missions/{{ $mission->slug }}/edit" data-tooltip="Edit Mission">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </div>
+                            @endif
+                            <div>
+                                <a href="https://twitter.com/spacexstats" class="tooltip" data-tooltip="@spacexstats on Twitter">
+                                    <i class="fa fa-twitter"></i>
                                 </a>
-                            @endif
-                            <a href="https://twitter.com/spacexstats"><i class="fa fa-twitter"></i></a>
-                            @if (Auth::isMember())
-                                <a class="link" href="/users/{{Auth::user()->username}}/edit#email-notifications"><i class="fa fa-envelope-o"></i></a>
-                            @else
-                                <a class="link" href="/docs#email-notifications"><i class="fa fa-envelope-o"></i></a>
-                            @endif
+                            </div>
+                            <div>
+                                @if (Auth::isMember())
+                                    <a class="link tooltip" href="/users/{{Auth::user()->username}}/edit#email-notifications" data-tooltip="Email Notifications">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </a>
+                                @else
+                                    <a class="link tooltip" href="/docs#email-notifications" data-tooltip="Email Notifications">
+                                        <i class="fa fa-envelope-o"></i>
+                                    </a>
+                                @endif
+                            </div>
                             @if ($mission->isLaunchPrecise())
-                                <a class="link" href="/calendars/{{ $mission->slug }}">
-                                    <i class="fa fa-calendar"></i>
-                                </a>
-                                <a href="http://www.google.com/calendar/render?cid={{ Request::url() }}">
-                                    <i class="fa fa-google"></i>
-                                </a>
+                                <div>
+                                    <a class="link tooltip" href="/calendars/{{ $mission->slug }}" data-tooltip="Download Calendar">
+                                        <i class="fa fa-calendar"></i>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a class="tooltip" href="http://www.google.com/calendar/render?cid={{ url() }}/calendars/{{ $mission->slug }}" data-tooltip="Add to Google Calendar">
+                                        <i class="fa fa-google"></i>
+                                    </a>
+                                </div>
                             @endif
-                            <a href="">
-                                <i class="fa fa-rss"></i>
-                            </a>
+                            <div>
+                                <a class="tooltip" href="" data-tooltip="RSS Feed">
+                                    <i class="fa fa-rss"></i>
+                                </a>
+                            </div>
                         </li>
                     </ul>
                 </nav>

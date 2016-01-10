@@ -135,11 +135,16 @@ nav.sticky-bar {
 .actions {
     font-size:16px;
 
-    a {
-        padding:0 5px;
+    & > div {
+        display:inline-block;
+        position:relative;
 
-        &:hover {
-            color:$gold;
+        a {
+            padding:0 5px;
+
+            &:hover {
+                color:$gold;
+            }
         }
     }
 }
