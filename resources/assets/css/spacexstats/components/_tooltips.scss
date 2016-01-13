@@ -1,0 +1,49 @@
+[data-tooltip] {
+    position: relative;
+    z-index: 1000;
+    cursor: pointer;
+}
+
+[data-tooltip]:before,
+[data-tooltip]:after {
+    opacity:0;
+}
+
+[data-tooltip]:before {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    margin-bottom: 5px;
+    margin-left: -80px;
+    padding: 7px;
+    width: 160px;
+    border-radius: 3px;
+    background-color: #000;
+    background-color: hsla(0, 0%, 20%, 0.9);
+    color: #fff;
+    content: attr(data-tooltip);
+    text-align: center;
+    font-size: 12px;
+    font-family:$notoSans;
+    line-height: 1.2;
+}
+
+[data-tooltip]:after {
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -5px;
+    width: 0;
+    border-top: 5px solid #000;
+    border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    content: " ";
+    font-size: 0;
+    line-height: 0;
+}
+
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
+    opacity: 1;
+}

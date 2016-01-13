@@ -31,10 +31,10 @@
              20min-1hr           =   5 min / request
              <20min              =   30sec / request
              */
-            var aRequestNeedsToBeMade = ($scope.secondsToLaunch >= 86400 && $scope.secondsSinceLastRequest >= 3600) ||
-                ($scope.secondsToLaunch >= 3600 && $scope.secondsToLaunch < 86400 && $scope.secondsSinceLastRequest >= 900) ||
-                ($scope.secondsToLaunch >= 1200 && $scope.secondsToLaunch < 3600 && $scope.secondsSinceLastRequest >= 300) ||
-                ($scope.secondsToLaunch < 1200 && $scope.secondsSinceLastRequest >= 30);
+            var aRequestNeedsToBeMade = ($scope.secondsToLaunch <= -86400 && $scope.secondsSinceLastRequest >= 3600) ||
+                ($scope.secondsToLaunch <= -3600 && $scope.secondsToLaunch > -86400 && $scope.secondsSinceLastRequest >= 900) ||
+                ($scope.secondsToLaunch <= -1200 && $scope.secondsToLaunch > -3600 && $scope.secondsSinceLastRequest >= 300) ||
+                ($scope.secondsToLaunch > -1200 && $scope.secondsSinceLastRequest >= 30);
 
             if (aRequestNeedsToBeMade === true) {
                 // Make both requests then update the time since last request
