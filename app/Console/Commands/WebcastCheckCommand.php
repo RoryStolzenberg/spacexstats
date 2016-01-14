@@ -67,11 +67,11 @@ class WebcastCheckCommand extends Command
             $viewers = 0;
         }
 
-        $this->info('viewers:'. $viewers);
-
         // If the livestream is active now, and wasn't before, or vice versa, send an event
         if ($isLive && (Redis::hget('webcast', 'isLive') == 'false' || !Redis::hexists('webcast', 'isLive'))) {
-            $this->info($searchResponse->items[0]->id->videoId);
+
+            $this->extractMultipleYoutubeLivestreams($searchResponse->items[0]->id->videoId);
+
             event(new WebcastEvent("spacex", true, $searchResponse->items[0]->id->videoId));
 
         } elseif (!$isLive &&  Redis::hget('webcast', 'isLive') == 'true') {
@@ -88,5 +88,21 @@ class WebcastCheckCommand extends Command
                 'viewers' => $viewers
             ]);
         }
+    }
+
+    private function extractMultipleYoutubeLivestreams($preliminaryVideoId) {
+        // Create a new DOM Document for the fetched page based on the video ID
+        $youtubePageForPreliminaryVideoId = new \DOMDocument();
+        $youtubePageForPreliminaryVideoId->loadHTML(file_get_contents('https://youtube.com/watch?v=' . $preliminaryVideoId));
+
+        // Extract the text content of the node where the information we need is contained
+        $scriptContainingYoutubeVariables = $youtubePageForPreliminaryVideoId->getElementById('player-api')->nextSibling->nextSibling->textContent;
+
+        // Extract via regex the specific metadata list that we need
+        preg_match("/\"multifeed_metadata_list\":\"(\S+?)\"/", $scriptContainingYoutubeVariables, $output);
+
+        // urldecode and split on comma
+        $sanitizedListOfLivestreams = urldecode($output[1])
+
     }
 }
