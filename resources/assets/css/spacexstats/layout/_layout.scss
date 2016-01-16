@@ -89,8 +89,7 @@ main {
     padding-bottom:40px; // undo the effects of a position:sticky bar causing the sibling element to have a top of 40px
 
     &.invert {
-
-        table {
+        table, p {
             color:$white;
         }
         color:$white;

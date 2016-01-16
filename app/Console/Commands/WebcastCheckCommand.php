@@ -45,7 +45,7 @@ class WebcastCheckCommand extends Command
      */
     public function handle()
     {
-        /*$youtube = new Client();
+        $youtube = new Client();
 
         $searchResponse = json_decode($youtube->get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' .
             $this->channelID .
@@ -65,11 +65,7 @@ class WebcastCheckCommand extends Command
 
         } else {
             $viewers = 0;
-        }(*/
-
-        $isLive = true;
-        $videoId = 'xnWKz7Cthkk';
-        $viewers = 1;
+        }
 
         // If the livestream is active now, and wasn't before, or vice versa, send an event
         if ($isLive && (Redis::hget('webcast', 'isLive') == 'false' || !Redis::hexists('webcast', 'isLive'))) {

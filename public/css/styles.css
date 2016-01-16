@@ -7370,7 +7370,7 @@ main {
   padding-bottom: 40px; }
   main.invert {
     color: #FAFAFA; }
-    main.invert table {
+    main.invert table, main.invert p {
       color: #FAFAFA; }
   main:after {
     content: "";
