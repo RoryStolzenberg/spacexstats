@@ -16,7 +16,7 @@ folders:
       to: "/home/vagrant/spacexstats"
 
 sites:
-    - map: homestead.app
+    - map: spacexstats.app
       to: "/home/vagrant/spacexstats/public"
 
 databases:

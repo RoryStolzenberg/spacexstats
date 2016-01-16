@@ -11,6 +11,7 @@ use SpaceXStats\Console\Commands\SpaceTrackDataFetchCommand;
 use SpaceXStats\Console\Commands\DeleteOrphanedFilesCommand;
 use SpaceXStats\Console\Commands\DatabaseBackupCommand;
 use SpaceXStats\Console\Commands\ReindexSearchCommand;
+use SpaceXStats\Console\Commands\CreateUserCommand;
 
 class Kernel extends ConsoleKernel
 {
@@ -26,7 +27,8 @@ class Kernel extends ConsoleKernel
         MissionCountdownNotificationCommand::class,
         DeleteOrphanedFilesCommand::class,
         DatabaseBackupCommand::class,
-        ReindexSearchCommand::class
+        ReindexSearchCommand::class,
+        CreateUserCommand::class
     ];
 
     /**

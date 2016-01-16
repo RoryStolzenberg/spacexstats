@@ -59,6 +59,7 @@
                         <input type="checkbox" id="nasastream" name="nasastream" value="true" ng-model="liveParameters.streams.nasa.isAvailable" />
                         <label for="nasastream"><span>NASA Stream</span></label>
 
+                        <h2>Description</h2>
                         <textarea ng-model="liveParameters.description.raw" id="description" name="description" required character-counter ng-minlength="100" ng-maxlength="1000"
                                   placeholder="Write a small introduction about the launch here. 1000 < chars, use markdown just like you would on Reddit. This is shown at the top of the Reddit thread.">
                         </textarea>
@@ -102,34 +103,70 @@
                             (<span ng-show="liveParameters.isForLaunch"><a ng-href="/missions/@{{data.upcomingMission.slug}}" target="_blank">Mission</a></span><span ng-show="liveParameters.reddit.thing !== null">, <a ng-href="http://reddit.com/@{{ liveParameters.reddit.thing.substring(3) }}" target="_blank">Reddit</a></span>)
                         </span>
                     </li>
-                    <li class="gr-3 stream-options segmented-control">
+                    <li class="gr-3 hide-small stream-options">
+                        @{{ user.sanitizedStreamOption() }} stream <span ng-click="user.isConfiguringStreams = true">(Configure)</span>
+                        <div class="modal" ng-show="user.isConfiguringStreams">
+                            <div class="modal-content">
+                                <form name="streamOptionsForm">
+                                    <ul>
+                                        <li>
+                                            <input id="video-none" type="radio" name="streamoption" value="@{{ streamOption.noVideo }}" ng-model="user.streamOption" ng-click="user.isConfiguringStreams = false">
+                                            <label for="video-none"><span class="stream-option">No Video</span></label>
+                                            <p>Do not show any video or webcasts. This option suits viewers who want a low bandwidth stream of information.</p>
+                                        </li>
+                                        <li ng-if="liveParameters.streams.spacex.isAvailable">
+                                            <input id="video-spacex" type="radio" name="streamoption" value="@{{ streamOption.spacex }}" ng-model="user.streamOption" ng-click="user.isConfiguringStreams = false">
+                                            <label for="video-spacex"><span class="stream-option">SpaceX</span></label>
+                                            <p>Show the official main SpaceX webcast. This includes commentary from hosts and is suitable for fans who are less familiar with rocketry.</p>
+                                        </li>
+                                        <li ng-if="liveParameters.streams.spacexClean.isAvailable">
+                                            <input id="video-spacexclean" type="radio" name="streamoption" value="@{{ streamOption.spacexClean }}" ng-model="user.streamOption" ng-click="user.isConfiguringStreams = false">
+                                            <label for="video-spacexclean"><span class="stream-option">SpaceX (Clean)</span></label>
+                                            <p>Show the secondary SpaceX "cleancast". This webcast only includes the countdown net and camera views, with no commentary. Suitable for enthusiasts.</p>
+                                        </li>
+                                        <li ng-if="liveParameters.streams.nasa.isAvailable">
+                                            <input id="video-nasa" type="radio" name="streamoption" value="@{{ streamOption.nasa }}" ng-model="user.streamOption" ng-click="user.isConfiguringStreams = false">
+                                            <label for="video-nasa"><span class="stream-option">NASA</span></label>
+                                            <p>Show the NASA TV webcast. This coverage is provided by NASA and includes commentary courtesy NASA. Benefits include a longer prelaunch experience.</p>
+                                        </li>
+                                        <li ng-if="liveParameters.streams.spacex.isAvailable && liveParameters.streams.nasa.isAvailable">
+                                            <input id="video-spacex-nasa" type="radio" name="streamoption" value="@{{ streamOption.spacexAndNasa }}" ng-model="user.streamOption" ng-click="user.isConfiguringStreams = false">
+                                            <label for="video-spacex-nasa"><span class="stream-option">SpaceX & NASA</span></label>
+                                            <p>Show both the official main SpaceX webcast and NASA TV side-by-side in smaller windows.</p>
+                                        </li>
+                                        <li ng-if="liveParameters.streams.spacexClean.isAvailable && liveParameters.streams.nasa.isAvailable">
+                                            <input id="video-spacexclean-nasa" type="radio" name="streamoption" value="@{{ streamOption.spacexCleanAndNasa }}" ng-model="user.streamOption" ng-click="user.isConfiguringStreams = false">
+                                            <label for="video-spacexclean-nasa"><span class="stream-option">SpaceX (Clean) & NASA</span></label>
+                                            <p>Show both the secondary SpaceX "cleancast" and NASA TV side-by-side in smaller windows.</p>
+                                        </li>
+                                        <li ng-if="liveParameters.streams.spacex.isAvailable && liveParameters.streams.spacexClean.isAvailable">
+                                            <input id="video-spacex-spacexclean" type="radio" name="streamoption" value="@{{ streamOption.spacexAndSpacexClean }}" ng-model="user.streamOption" ng-click="user.isConfiguringStreams = false">
+                                            <label for="video-spacex-spacexclean"><span class="stream-option">SpaceX & SpaceX (Clean)</span></label>
+                                            <p>Show both the official main SpaceX webcast and secondary SpaceX "cleancast" side-by-side in smaller windows.</p>
+                                        </li>
+                                    </ul>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="gr-3 gr-6@small stream-size-options segmented-control" ng-show="isAnyStreamAvailable()">
                         <ul>
-                            <li ng-class="{ selected: liveParameters.userSelectedStream == null }" ng-click="liveParameters.userSelectedStream = null">
-                                <span>No Video</span>
+                            <li ng-class="{ selected: user.streamSize == streamSize.smaller }" ng-click="user.streamSize = streamSize.smaller">
+                                <span>Smaller</span>
                             </li>
-                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'spacex' }" ng-click="liveParameters.userSelectedStream = 'spacex'" ng-if="liveParameters.streams.spacex.isAvailable">
-                                <span>SpaceX</span>
+                            <li ng-class="{ selected: user.streamSize == streamSize.normal }" ng-click="user.streamSize = streamSize.normal">
+                                <span>Default</span>
                             </li>
-                            <li ng-class="{ selected: liveParameters.userSelectedStream == 'nasa' }" ng-click="liveParameters.userSelectedStream = 'nasa'" ng-if="liveParameters.streams.nasa.isAvailable">
-                                <span>NASA</span>
+                            <li ng-class="{ selected: user.streamSize == streamSize.larger }" ng-click="user.streamSize = streamSize.larger">
+                                <span>Larger</span>
                             </li>
                         </ul>
                     </li>
 
                     @if ((Auth::check() && Auth::user()->isLaunchController()) || Auth::isAdmin())
-                        <li class="gr-1 float-right"><i class="fa fa-cog" ng-click="settings.isEditingDetails = !settings.isEditingDetails"></i></li>
+                        <li class="gr-1"><i class="fa fa-cog" ng-click="settings.isEditingDetails = !settings.isEditingDetails"></i></li>
                     @endif
-
-                    <li class="gr-3 float-right stream-size-options segmented-control" ng-show="isAnyStreamAvailable()">
-                        <ul>
-                            <li ng-class="{ selected: liveParameters.userStreamSize == 'smaller' }" ng-click="liveParameters.userStreamSize = 'smaller'">
-                                <span>Smaller</span>
-                            </li>
-                            <li ng-class="{ selected: liveParameters.userStreamSize == 'larger' }" ng-click="liveParameters.userStreamSize = 'larger'">
-                                <span>Larger</span>
-                            </li>
-                        </ul>
-                    </li>
 
                 </ul>
             </nav>
@@ -139,21 +176,28 @@
                     <div class="gr-7">
                         <h3>Details</h3>
                         <form name="detailsForm">
+                            <h2>Description</h2>
+                            <textarea name="description" ng-model="liveParameters.description.raw" required></textarea>
+
+                            <h2>Sections</h2>
+                            <div ng-repeat="section in liveParameters.sections">
+                                <input type="text" ng-model="section.title" required /><button ng-click="settings.removeSection(section)">Remove</button>
+                                <textarea ng-model="section.content" placeholder="The section content. You can again use markdown here." required></textarea>
+                            </div>
+                            <button ng-click="settings.addSection()">Add Section</button>
+
+                            <h2>Resources</h2>
                             <ul>
-                                <li>
-                                    <label>Description</label>
-                                    <textarea name="description" ng-model="liveParameters.description.raw" required></textarea>
-                                </li>
-                                <li ng-repeat="section in liveParameters.sections">
-
-                                </li>
                                 <li ng-repeat="resource in liveParameters.resources">
-
-                                </li>
-                                <li>
-                                    <button ng-click="settings.updateDetails()">Save Details</button>
+                                    <input type="text" ng-model="resource.title" required placeholder="title of resource" />
+                                    <input type="text" ng-model="resource.url" required placeholder="URL to resource" />
+                                    <input type="text" ng-model="resource.courtesy" required placeholder="courtesy /r/spacex" />
+                                    <button ng-click="settings.removeResource(resource)">Remove</button>
                                 </li>
                             </ul>
+                            <button ng-click="settings.addResource()">Add Resource</button>
+                            <input type="submit" ng-click="settings.updateDetails()" ng-disabled="detailsForm.$invalid || settings.isUpdating" value="@{{ !settings.isUpdating ? 'Update' : 'Updating...' }}" />
+
                         </form>
                         <div ng-if="!liveParameters.countdown.isPaused">
                             <h3>Pause Countdown</h3>
@@ -236,8 +280,34 @@
                 </section>
             @endif
 
-            <section id="streams" ng-if="isActive && isLivestreamVisible()" class="dark @{{ liveParameters.userStreamSize }}">
-                <iframe ng-src="@{{ liveParameters.streams.spacex.videoLink() }}" frameborder="0" allowfullscreen></iframe>
+            <section id="streams" ng-if="isActive && isLivestreamVisible()" class="dark" ng-class="{
+            'single-stream': user.isWatching.singleStream(),
+            'double-stream': user.isWatching.doubleStream(),
+            'stream-size-smaller': user.streamSize == streamSize.smaller,
+            'stream-size-normal': user.streamSize == streamSize.normal,
+            'stream-size-larger': user.streamSize == streamSize.larger }">
+                <div ng-if="user.streamOption == streamOption.spacex">
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.spacex.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div ng-if="user.streamOption == streamOption.spacexClean">
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.spacexClean.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div ng-if="user.streamOption == streamOption.nasa">
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.nasa.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div ng-if="user.streamOption == streamOption.spacexAndNasa">
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.spacex.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.nasa.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div ng-if="user.streamOption == streamOption.spacexCleanAndNasa">
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.spacexClean.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.nasa.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div ng-if="user.streamOption == streamOption.spacexAndSpacexClean">
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.spacex.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                    <iframe ng-src="@{{ 'https://www.youtube.com/embed/' + liveParameters.streams.spacexClean.youtubeVideoId + '?rel=0&autoplay=1' }}" frameborder="0" allowfullscreen></iframe>
+                </div>
+
             </section>
 
             <p class="live-status text-center" ng-class="liveParameters.status.class()" ng-if="isActive && liveParameters.isForLaunch">@{{ liveParameters.status.text }}</p>

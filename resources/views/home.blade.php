@@ -16,7 +16,7 @@
 
                 <p class="">SpaceX Stats is the first website dedicated entirely to following SpaceX and their missions. Countdown to upcoming launches, read about past missions, watch and follow missions live as they happen, and much more!</p>
 
-                <p class="hide@small">SpaceX Stats is currently in public beta, and as such, some features may not be entirely operational or may appear broken. You can contact me to report problems here.</p>
+                <p class="hide@small">SpaceX Stats is currently in public beta, and as such, some features may not be entirely operational or may appear broken. You can contact me to report problems <a href="/about/contact">here</a>.</p>
             </div>
             <div class="app-description gr-4 gr-12@small">
                 <p class="exclaim"><a href="/missioncontrol">Mission Control</a></p>
@@ -33,8 +33,8 @@
                 <p class="hide@small">No more hassles with refreshing antiquated forum pages or having multiple windows. Everything is in one place.</p>
             </div>
 
-            <p class="description">Photos on this page courtesy <a href="https://www.flickr.com/photos/alloyjared/sets">Jared Haworth</a>, <a href="http://www.tmahlmann.com/">Trevor Mahlman</a>, SpaceX, & NASA. All rights maintained by the respective owners. <br/>
-            This site is fan-run and not affiliated with SpaceX in any way. For official information and news, please see <a href="http://spacex.com">spacex.com</a></p>
+            <p class="description">Photos on this page courtesy SpaceX, & NASA. All rights maintained by the respective owners. <br/>
+            This site is fan-run and not affiliated with SpaceX in any way. For official information and news, please visit <a href="http://spacex.com">spacex.com</a></p>
 
             <button class="next-stat" ng-click="goToFirstStatistic()"><i class="fa fa-angle-down fa-3x"></i></button>
         </main>

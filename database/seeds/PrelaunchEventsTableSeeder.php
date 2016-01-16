@@ -470,5 +470,25 @@ class PrelaunchEventsTableSeeder extends Seeder {
             'summary' => "10% better landing probability tomorrow, more time needed to densify LOX",
             'supporting_document' => "https://twitter.com/elonmusk/status/678679083782377472"
         ]);
+
+        // SES-9 F9F22
+        PrelaunchEvent::create([
+            'mission_id' => 27,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2016, 1, 13),
+            'scheduled_launch_exact' => Carbon::create(2016, 2, 6, 0, 0, 0),
+            'scheduled_launch_specificity' => LaunchSpecificity::Day,
+            'supporting_document' => "https://www.reddit.com/r/spacex/comments/40ulbn/ses9_f9022_is_now_notionally_scheduled_for_an/"
+        ]);
+
+        // CRS-8 F9F23
+        PrelaunchEvent::create([
+            'mission_id' => 28,
+            'event' => 'Launch Change',
+            'occurred_at' => Carbon::createFromDate(2016, 1, 13),
+            'scheduled_launch_approximate' => 'March 2016',
+            'scheduled_launch_specificity' => LaunchSpecificity::Month,
+            'supporting_document' => "https://www.reddit.com/r/spacex/comments/40ulbn/ses9_f9022_is_now_notionally_scheduled_for_an/"
+        ]);
     }
 }

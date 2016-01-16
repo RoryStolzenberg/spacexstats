@@ -6,7 +6,8 @@ use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
-use SpaceXStats\Events\WebcastEvent;
+use SpaceXStats\Events\WebcastStartedEvent;
+use SpaceXStats\Events\WebcastEndedEvent;
 use SpaceXStats\Models\WebcastStatus;
 
 class WebcastCheckCommand extends Command
@@ -52,7 +53,6 @@ class WebcastCheckCommand extends Command
             Config::get('services.youtube.key'))->getBody());
 
         $isLive = $searchResponse->pageInfo->totalResults != 0;
-        $this->info($isLive ? 'true' : 'false');
 
         // Determine the total number of viewers
         if ($isLive) {
@@ -67,16 +67,17 @@ class WebcastCheckCommand extends Command
             $viewers = 0;
         }
 
-        $this->info('viewers:'. $viewers);
-
         // If the livestream is active now, and wasn't before, or vice versa, send an event
         if ($isLive && (Redis::hget('webcast', 'isLive') == 'false' || !Redis::hexists('webcast', 'isLive'))) {
-            $this->info($searchResponse->items[0]->id->videoId);
-            event(new WebcastEvent("spacex", true, $searchResponse->items[0]->id->videoId));
+
+            // Grab all the relevant SpaceX youtube Livestreams, and create an event
+            $videos = $this->getMultipleYoutubeLivestreams($videoId); // $searchResponse->items[0]->id->videoId
+            event(new WebcastStartedEvent($videos));
 
         } elseif (!$isLive &&  Redis::hget('webcast', 'isLive') == 'true') {
-            $this->info('webcast event: finished');
-            event(new WebcastEvent("spacex", false));
+
+            // turn off the spacex webcast
+            event(new WebcastEndedEvent("spacex", false));
         }
 
         // Set the Redis properties
@@ -88,5 +89,34 @@ class WebcastCheckCommand extends Command
                 'viewers' => $viewers
             ]);
         }
+    }
+
+    private function getMultipleYoutubeLivestreams($preliminaryVideoId) {
+        // Extract via regex the specific metadata list that we need
+        if (preg_match('/"multifeed_metadata_list":"(\S+?)"/', file_get_contents('https://youtube.com/watch?v=' . $preliminaryVideoId), $output) !== 0) {
+            // replace unicode representations of ampersand?
+            $multifeedMetaDataList = str_replace('\u0026', '&', $output[1]);
+
+            // urldecode and split on comma
+            $multifeedMetaDataList = explode(",", urldecode($multifeedMetaDataList));
+
+            $videos = [];
+            foreach ($multifeedMetaDataList as $feed) {
+
+                preg_match('/id=([^&]*)/', $feed, $output);
+
+                if ($output[1] === $preliminaryVideoId) {
+                    $videos['spacex'] = $preliminaryVideoId;
+                } else {
+                    $videos['spacexClean'] = $output[1];
+                }
+            }
+
+        // No other videos could be found, just return the spacex main stream
+        } else {
+             $videos['spacex'] = $preliminaryVideoId;
+        }
+
+        return $videos;
     }
 }
