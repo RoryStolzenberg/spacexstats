@@ -173,6 +173,11 @@ section {
 
 p {
     line-height:1.5;
+    font-family:$notoSans;
+    padding-top:10px;
+    padding-bottom:10px;
+    font-size:14px;
+    color:$lightblack;
 }
 
 // Borders
@@ -200,12 +205,6 @@ span, p {
     a:active {
         color:orange;
     }
-}
-
-p {
-    padding-top:10px;
-    padding-bottom:10px;
-    font-size:14px;
 }
 
 small {

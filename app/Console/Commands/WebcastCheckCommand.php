@@ -6,7 +6,8 @@ use GuzzleHttp\Client;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redis;
-use SpaceXStats\Events\WebcastEvent;
+use SpaceXStats\Events\WebcastStartedEvent;
+use SpaceXStats\Events\WebcastEndedEvent;
 use SpaceXStats\Models\WebcastStatus;
 
 class WebcastCheckCommand extends Command
@@ -44,7 +45,7 @@ class WebcastCheckCommand extends Command
      */
     public function handle()
     {
-        $youtube = new Client();
+        /*$youtube = new Client();
 
         $searchResponse = json_decode($youtube->get('https://www.googleapis.com/youtube/v3/search?part=snippet&channelId=' .
             $this->channelID .
@@ -52,7 +53,6 @@ class WebcastCheckCommand extends Command
             Config::get('services.youtube.key'))->getBody());
 
         $isLive = $searchResponse->pageInfo->totalResults != 0;
-        $this->info($isLive ? 'true' : 'false');
 
         // Determine the total number of viewers
         if ($isLive) {
@@ -65,18 +65,23 @@ class WebcastCheckCommand extends Command
 
         } else {
             $viewers = 0;
-        }
+        }(*/
+
+        $isLive = true;
+        $videoId = 'xnWKz7Cthkk';
+        $viewers = 1;
 
         // If the livestream is active now, and wasn't before, or vice versa, send an event
         if ($isLive && (Redis::hget('webcast', 'isLive') == 'false' || !Redis::hexists('webcast', 'isLive'))) {
 
-            $this->extractMultipleYoutubeLivestreams($searchResponse->items[0]->id->videoId);
-
-            event(new WebcastEvent("spacex", true, $searchResponse->items[0]->id->videoId));
+            // Grab all the relevant SpaceX youtube Livestreams, and create an event
+            $videos = $this->getMultipleYoutubeLivestreams($videoId); // $searchResponse->items[0]->id->videoId
+            event(new WebcastStartedEvent($videos));
 
         } elseif (!$isLive &&  Redis::hget('webcast', 'isLive') == 'true') {
-            $this->info('webcast event: finished');
-            event(new WebcastEvent("spacex", false));
+
+            // turn off the spacex webcast
+            event(new WebcastEndedEvent("spacex", false));
         }
 
         // Set the Redis properties
@@ -90,19 +95,32 @@ class WebcastCheckCommand extends Command
         }
     }
 
-    private function extractMultipleYoutubeLivestreams($preliminaryVideoId) {
-        // Create a new DOM Document for the fetched page based on the video ID
-        $youtubePageForPreliminaryVideoId = new \DOMDocument();
-        $youtubePageForPreliminaryVideoId->loadHTML(file_get_contents('https://youtube.com/watch?v=' . $preliminaryVideoId));
-
-        // Extract the text content of the node where the information we need is contained
-        $scriptContainingYoutubeVariables = $youtubePageForPreliminaryVideoId->getElementById('player-api')->nextSibling->nextSibling->textContent;
-
+    private function getMultipleYoutubeLivestreams($preliminaryVideoId) {
         // Extract via regex the specific metadata list that we need
-        preg_match("/\"multifeed_metadata_list\":\"(\S+?)\"/", $scriptContainingYoutubeVariables, $output);
+        if (preg_match('/"multifeed_metadata_list":"(\S+?)"/', file_get_contents('https://youtube.com/watch?v=' . $preliminaryVideoId), $output) !== 0) {
+            // replace unicode representations of ampersand?
+            $multifeedMetaDataList = str_replace('\u0026', '&', $output[1]);
 
-        // urldecode and split on comma
-        $sanitizedListOfLivestreams = urldecode($output[1])
+            // urldecode and split on comma
+            $multifeedMetaDataList = explode(",", urldecode($multifeedMetaDataList));
 
+            $videos = [];
+            foreach ($multifeedMetaDataList as $feed) {
+
+                preg_match('/id=([^&]*)/', $feed, $output);
+
+                if ($output[1] === $preliminaryVideoId) {
+                    $videos['spacex'] = $preliminaryVideoId;
+                } else {
+                    $videos['spacexClean'] = $output[1];
+                }
+            }
+
+        // No other videos could be found, just return the spacex main stream
+        } else {
+             $videos['spacex'] = $preliminaryVideoId;
+        }
+
+        return $videos;
     }
 }

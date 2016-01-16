@@ -1781,6 +1781,22 @@
             upcomingMission: laravel.mission
         };
 
+        $scope.streamSize = {
+            smaller: 1,
+            normal: 2,
+            larger: 3
+        };
+
+        $scope.streamOption = {
+            noVideo: 1,
+            spacex: 2,
+            spacexClean: 3,
+            nasa: 4,
+            spacexAndSpacexClean: 5,
+            spacexAndNasa: 6,
+            spacexCleanAndNasa: 7
+        };
+
         $scope.updates = laravel.updates.map(function(update) {
             return new Update(update);
         });
@@ -1837,9 +1853,11 @@
             removeResource: function(resource) {
                 $scope.liveParameters.resources.splice($scope.liveParameters.resources.indexOf(resource), 1);
             },
+            isUpdating: false,
             updateDetails: function() {
+                $scope.settings.isUpdating = true;
                 liveService.updateDetails($scope.liveParameters).then(function(response) {
-                    $scope.settings.isEditingDetails = false;
+                    $scope.settings.isEditingDetails = $scope.settings.isUpdating = false;
                 });
             },
             isPausingCountdown: false,
@@ -1872,20 +1890,21 @@
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
-            userSelectedStream: 'spacex',
-            userStreamSize: 'smaller',
             streams: {
                 spacex: {
-                    isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
+                    isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : false,
                     youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
-                    videoLink: function() {
-                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?rel=0&autoplay=1';
-                    },
-                    isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
+                    isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : false
+                },
+                spacexClean: {
+                    isAvailable: laravel.streams.spacexClean ? laravel.streams.spacexClean.isAvailable : false,
+                    youtubeVideoId: laravel.streams.spacexClean ? laravel.streams.spacexClean.youtubeVideoId : null,
+                    isActive: laravel.streams.spacexClean ? laravel.streams.spacexClean.isActive : false
                 },
                 nasa: {
-                    isAvailable: false,
-                    isActive: false
+                    isAvailable: laravel.streams.nasa ? laravel.streams.nasa.isAvailable : false,
+                    youtubeVideoId: 'HDh4uK9PvJU',
+                    isActive: true
                 }
             },
             description: {
@@ -1904,14 +1923,70 @@
             }
         };
 
-        $scope.isLivestreamVisible = function() {
-            return $scope.liveParameters.userSelectedStream != null
-                && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isAvailable
-                && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isActive;
+        $scope.user = {
+            streamOption: $scope.streamOption.spacex,
+            streamSize: $scope.streamSize.normal,
+            sanitizedStreamOption: function() {
+
+                $scope.user.streamOption = parseInt($scope.user.streamOption);
+
+                switch ($scope.user.streamOption) {
+                    case $scope.streamOption.noVideo:               return 'No Video';
+                    case $scope.streamOption.spacex:                return 'SpaceX';
+                    case $scope.streamOption.spacexClean:           return 'SpaceX (Clean)';
+                    case $scope.streamOption.nasa:                  return 'NASA';
+                    case $scope.streamOption.spacexAndNasa:         return 'SpaceX & NASA';
+                    case $scope.streamOption.spacexCleanAndNasa:    return 'SpaceX (Clean) & NASA';
+                    case $scope.streamOption.spacexAndSpacexClean:  return 'SpaceX & SpaceX (Clean)';
+                }
+            },
+            isConfiguringStreams: false,
+            isWatching: {
+                singleStream: function() {
+                    return [$scope.streamOption.spacex, $scope.streamOption.spacexClean, $scope.streamOption.nasa]
+                            .indexOf($scope.user.streamOption) !== -1;
+                },
+                doubleStream: function() {
+                    return [$scope.streamOption.spacexAndNasa, $scope.streamOption.spacexCleanAndNasa, $scope.streamOption.spacexAndSpacexClean]
+                            .indexOf($scope.user.streamOption) !== -1;
+                }
+            }
         };
 
+        /*
+         *
+         */
+        $scope.isLivestreamVisible = function() {
+            if ($scope.user.streamOption == $scope.streamOption.spacex) {
+                return $scope.liveParameters.streams.spacex.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexClean) {
+                return $scope.liveParameters.streams.spacexClean.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.nasa) {
+                return $scope.liveParameters.streams.nasa.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexAndNasa) {
+                return $scope.liveParameters.streams.nasa.isActive || $scope.liveParameters.streams.spacex.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexCleanAndNasa) {
+                return $scope.liveParameters.streams.nasa.isActive || $scope.liveParameters.streams.spacexClean.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexAndSpacexClean) {
+                return $scope.liveParameters.streams.spacex.isActive || $scope.liveParameters.streams.spacexClean.isActive;
+            }
+        };
+
+        /*
+         * Checks if any livestream is visible. We don't need to check for the existence of the spacexClean stream.
+         */
         $scope.isAnyStreamAvailable = function() {
-            return $scope.liveParameters.streams.spacex.isActive === true || $scope.liveParameters.streams.nasa.isActive === true;
+            return $scope.liveParameters.streams.spacex.isActive === true ||$scope.liveParameters.streams.nasa.isActive === true;
         };
 
         $scope.send = {
@@ -2054,11 +2129,21 @@
             console.log(data);
         });
 
-        socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\WebcastStartedEvent', function(data) {
             console.log(data);
-            $scope.liveParameters.streams.spacex.isActive = true;
-            $scope.liveParameters.streams.spacex.youtubeVideoId = data.isActive ? data.videoId : null;
+            for (var stream in data.videos) {
+                if (data.videos.hasOwnProperty(stream)) {
+                    $scope.liveParameters.streams[stream].isActive = true;
+                    $scope.liveParameters.streams[stream].isAvailable = true;
+                    $scope.liveParameters.streams[stream].youtubeVideoId = data.videos[stream];
+                }
+            }
+
             $scope.$apply();
+        });
+
+        socket.on('live-updates:SpaceXStats\\Events\\WebcastEndedEvent', function(data) {
+             console.log(data);
         });
     }]);
 
@@ -2541,62 +2626,54 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('tweet', ["$http", function($http) {
+    app.directive('upload', ['$parse', function($parse) {
         return {
-            restrict: 'E',
-            scope: {
-                tweet: '='
-            },
-            link: function($scope, element, attributes, ngModelCtrl) {
+            restrict: 'A',
+            link: function($scope, element, attrs) {
 
-                $scope.retrieveTweet = function() {
+                // Initialize the dropzone
+                var dropzone = new Dropzone(element[0], {
+                    url: attrs.action,
+                    autoProcessQueue: false,
+                    dictDefaultMessage: "Upload files here!",
+                    maxFilesize: 1024, // MB
+                    addRemoveLinks: true,
+                    uploadMultiple: attrs.multiUpload,
+                    parallelUploads: 5,
+                    maxFiles: 5,
+                    successmultiple: function(dropzoneStatus, files) {
 
-                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
-                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+                        $scope.files = files.objects;
 
-                        var explodedVals = $scope.tweet.external_url.split('/');
-                        var id = explodedVals[explodedVals.length - 1];
-
-                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
-                            // Set parameters
-                            $scope.tweet.tweet_id = id;
-                            $scope.tweet.tweet_text = response.data.text;
-                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
-                            $scope.tweet.tweet_screen_name = response.data.user.screen_name;
-                            $scope.tweet.tweet_user_name = response.data.user.name;
-                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
-
-                        });
-                    } else {
-                        $scope.tweet = {};
+                        // Run a callback function with the files passed through as a parameter
+                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
+                            var func = $parse(attrs.callback);
+                            func($scope, { files: files });
+                        }
+                    },
+                    error: function() {
+                        $scope.isUploading = false;
                     }
+                });
 
-                    if (angular.isDefined($scope.tweet.external_url)) {
-                        $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
-                    } else {
-                        $scope.tweetRetrievedFromUrl = false;
-                    }
+                dropzone.on("addedfile", function(file) {
+                    ++$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                dropzone.on("removedfile", function(file) {
+                    --$scope.queuedFiles;
+                    $scope.$apply();
+                });
+
+                // upload the files
+                $scope.uploadFiles = function() {
+                    $scope.isUploading = true;
+                    dropzone.processQueue();
                 }
-            },
-            templateUrl: '/js/templates/tweet.html'
+            }
         }
     }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('missionCard', function() {
-        return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                mission: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/missionCard.html'
-        }
-    });
 })();
 (function() {
     var app = angular.module('app', []);
@@ -2728,224 +2805,16 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('upload', ['$parse', function($parse) {
+    app.directive('missionCard', function() {
         return {
-            restrict: 'A',
-            link: function($scope, element, attrs) {
-
-                // Initialize the dropzone
-                var dropzone = new Dropzone(element[0], {
-                    url: attrs.action,
-                    autoProcessQueue: false,
-                    dictDefaultMessage: "Upload files here!",
-                    maxFilesize: 1024, // MB
-                    addRemoveLinks: true,
-                    uploadMultiple: attrs.multiUpload,
-                    parallelUploads: 5,
-                    maxFiles: 5,
-                    successmultiple: function(dropzoneStatus, files) {
-
-                        $scope.files = files.objects;
-
-                        // Run a callback function with the files passed through as a parameter
-                        if (typeof attrs.callback !== 'undefined' && attrs.callback !== "") {
-                            var func = $parse(attrs.callback);
-                            func($scope, { files: files });
-                        }
-                    },
-                    error: function() {
-                        $scope.isUploading = false;
-                    }
-                });
-
-                dropzone.on("addedfile", function(file) {
-                    ++$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                dropzone.on("removedfile", function(file) {
-                    --$scope.queuedFiles;
-                    $scope.$apply();
-                });
-
-                // upload the files
-                $scope.uploadFiles = function() {
-                    $scope.isUploading = true;
-                    dropzone.processQueue();
-                }
-            }
-        }
-    }]);
-})();
-(function() {
-    var app = angular.module('app');
-
-    app.directive('datetime', function() {
-        return {
-            require: 'ngModel',
             restrict: 'E',
+            replace: true,
             scope: {
-                type: '@',
-                datetimevalue: '=ngModel',
-                startYear: '@',
-                isNull: '=',
-                disabled: '=?ngDisabled'
+                mission: '='
             },
-            link: function($scope, element, attrs, ngModelController) {
-
-                $scope.days = [];
-                $scope.days.push({ value: 0, display: '-'});
-
-                for (i = 1; i <= 31; i++) {
-                    $scope.days.push({ value: i, display: i });
-                }
-
-                $scope.months = [
-                    { value: 0, display: '-'},
-                    { value: 1, display: 'January'},
-                    { value: 2, display: 'February'},
-                    { value: 3, display: 'March'},
-                    { value: 4, display: 'April'},
-                    { value: 5, display: 'May'},
-                    { value: 6, display: 'June'},
-                    { value: 7, display: 'July'},
-                    { value: 8, display: 'August'},
-                    { value: 9, display: 'September'},
-                    { value: 10, display: 'October'},
-                    { value: 11, display: 'November'},
-                    { value: 12, display: 'December'}
-                ];
-
-                $scope.years = function() {
-                    var years = [];
-
-                    var currentYear = moment().year();
-                    var startYear = angular.isDefined($scope.startYear) ? $scope.startYear : 1950;
-
-                    while (currentYear >= startYear) {
-                        years.push(currentYear);
-                        currentYear--;
-                    }
-                    return years;
-                };
-
-                //convert data from view format to model format
-                ngModelController.$parsers.push(function(viewvalue) {
-
-                    if ($scope.isNull == true) {
-                        return null;
-                    }
-
-                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
-
-                        if ($scope.type == 'datetime') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date,
-                                hour: viewvalue.hour,
-                                minute: viewvalue.minute,
-                                second: viewvalue.second
-                            }).format('YYYY-MM-DD HH:mm:ss');
-
-                        } else if ($scope.type == 'date') {
-                            var value = moment({
-                                year: viewvalue.year,
-                                month: viewvalue.month - 1,
-                                date: viewvalue.date
-                            }).format('YYYY-MM-DD');
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2) + " "
-                                + ("0" + viewvalue.hour).slice(-2) + ":"
-                                + ("0" + viewvalue.minute).slice(-2) + ":"
-                                + ("0" + viewvalue.second).slice(-2);
-
-                        } else {
-                            var value = viewvalue.year + "-"
-                                + ("0" + viewvalue.month).slice(-2) + "-"
-                                + ("0" + viewvalue.date).slice(-2);
-                        }
-                    }
-                    return value;
-                });
-
-                //convert data from model format to view format
-                ngModelController.$formatters.push(function(data) {
-
-                    // If the value is not undefined and the value is valid,
-                    if (typeof data !== 'undefined' && moment(data).isValid()) {
-
-                        var dt = moment(data);
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date(),
-                                hour: dt.hour(),
-                                minute: dt.minute(),
-                                second: dt.second()
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: dt.year(),
-                                month: dt.month() + 1,
-                                date: dt.date()
-                            }
-                        }
-                    } else {
-
-                        if ($scope.type == 'datetime') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0,
-                                hour: 0,
-                                minute: 0,
-                                second: 0
-                            }
-                        } else if ($scope.type == 'date') {
-                            return {
-                                year: moment().year(),
-                                month: 0,
-                                date: 0
-                            }
-                        }
-                    }
-                });
-
-                ngModelController.$render = function() {
-                    $scope.year = ngModelController.$viewValue.year;
-                    $scope.month = ngModelController.$viewValue.month;
-                    $scope.date = ngModelController.$viewValue.date;
-
-                    if ($scope.type == 'datetime') {
-                        $scope.hour = ngModelController.$viewValue.hour;
-                        $scope.minute = ngModelController.$viewValue.minute;
-                        $scope.second = ngModelController.$viewValue.second;
-                    }
-                };
-
-                $scope.dateIsComplete = function() {
-                    return $scope.month !== 0 && $scope.date !== 0;
-                };
-
-                $scope.$watch('datetimevalue', function(value) {
-                    if (typeof value === null) {
-                        $scope.isNull = true;
-                    }
-                });
-
-                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
-                    ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
-                });
+            link: function($scope) {
             },
-            templateUrl: '/js/templates/datetime.html'
+            templateUrl: '/js/templates/missionCard.html'
         }
     });
 })();
@@ -3155,34 +3024,218 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('redditComment', ["$http", function($http) {
+    app.directive('tweet', ["$http", function($http) {
         return {
-            replace: true,
             restrict: 'E',
             scope: {
-                redditComment: '=ngModel'
+                tweet: '='
             },
-            link: function($scope, element, attributes) {
+            link: function($scope, element, attributes, ngModelCtrl) {
 
-                $scope.retrieveRedditComment = function() {
-                    if (typeof $scope.redditComment.external_url !== "undefined") {
-                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
+                $scope.retrieveTweet = function() {
 
-                            // Set properties on object
-                            $scope.redditComment.summary = response.data.data.body;
-                            $scope.redditComment.author = response.data.data.author;
-                            $scope.redditComment.reddit_comment_id = response.data.data.name;
-                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
-                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
-                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                    // Check that the entered URL contains 'twitter' before sending a request (perform more thorough validation serverside)
+                    if (typeof $scope.tweet.external_url !== 'undefined' && $scope.tweet.external_url.indexOf('twitter.com') !== -1) {
+
+                        var explodedVals = $scope.tweet.external_url.split('/');
+                        var id = explodedVals[explodedVals.length - 1];
+
+                        $http.get('/missioncontrol/create/retrievetweet?id=' + id).then(function(response) {
+                            // Set parameters
+                            $scope.tweet.tweet_id = id;
+                            $scope.tweet.tweet_text = response.data.text;
+                            $scope.tweet.tweet_user_profile_image_url = response.data.user.profile_image_url.replace("_normal", "");
+                            $scope.tweet.tweet_screen_name = response.data.user.screen_name;
+                            $scope.tweet.tweet_user_name = response.data.user.name;
+                            $scope.tweet.originated_at = moment(response.data.created_at, 'dddd MMM DD HH:mm:ss Z YYYY').utc().format('YYYY-MM-DD HH:mm:ss');
+
                         });
+                    } else {
+                        $scope.tweet = {};
+                    }
+
+                    if (angular.isDefined($scope.tweet.external_url)) {
+                        $scope.tweetRetrievedFromUrl = $scope.tweet.external_url.indexOf('twitter.com') !== -1;
+                    } else {
+                        $scope.tweetRetrievedFromUrl = false;
                     }
                 }
-
             },
-            templateUrl: '/js/templates/redditComment.html'
+            templateUrl: '/js/templates/tweet.html'
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('datetime', function() {
+        return {
+            require: 'ngModel',
+            restrict: 'E',
+            scope: {
+                type: '@',
+                datetimevalue: '=ngModel',
+                startYear: '@',
+                isNull: '=',
+                disabled: '=?ngDisabled'
+            },
+            link: function($scope, element, attrs, ngModelController) {
+
+                $scope.days = [];
+                $scope.days.push({ value: 0, display: '-'});
+
+                for (i = 1; i <= 31; i++) {
+                    $scope.days.push({ value: i, display: i });
+                }
+
+                $scope.months = [
+                    { value: 0, display: '-'},
+                    { value: 1, display: 'January'},
+                    { value: 2, display: 'February'},
+                    { value: 3, display: 'March'},
+                    { value: 4, display: 'April'},
+                    { value: 5, display: 'May'},
+                    { value: 6, display: 'June'},
+                    { value: 7, display: 'July'},
+                    { value: 8, display: 'August'},
+                    { value: 9, display: 'September'},
+                    { value: 10, display: 'October'},
+                    { value: 11, display: 'November'},
+                    { value: 12, display: 'December'}
+                ];
+
+                $scope.years = function() {
+                    var years = [];
+
+                    var currentYear = moment().year();
+                    var startYear = angular.isDefined($scope.startYear) ? $scope.startYear : 1950;
+
+                    while (currentYear >= startYear) {
+                        years.push(currentYear);
+                        currentYear--;
+                    }
+                    return years;
+                };
+
+                //convert data from view format to model format
+                ngModelController.$parsers.push(function(viewvalue) {
+
+                    if ($scope.isNull == true) {
+                        return null;
+                    }
+
+                    if (typeof data !== 'undefined' && moment(viewvalue).isValid()) {
+
+                        if ($scope.type == 'datetime') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date,
+                                hour: viewvalue.hour,
+                                minute: viewvalue.minute,
+                                second: viewvalue.second
+                            }).format('YYYY-MM-DD HH:mm:ss');
+
+                        } else if ($scope.type == 'date') {
+                            var value = moment({
+                                year: viewvalue.year,
+                                month: viewvalue.month - 1,
+                                date: viewvalue.date
+                            }).format('YYYY-MM-DD');
+                        }
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2) + " "
+                                + ("0" + viewvalue.hour).slice(-2) + ":"
+                                + ("0" + viewvalue.minute).slice(-2) + ":"
+                                + ("0" + viewvalue.second).slice(-2);
+
+                        } else {
+                            var value = viewvalue.year + "-"
+                                + ("0" + viewvalue.month).slice(-2) + "-"
+                                + ("0" + viewvalue.date).slice(-2);
+                        }
+                    }
+                    return value;
+                });
+
+                //convert data from model format to view format
+                ngModelController.$formatters.push(function(data) {
+
+                    // If the value is not undefined and the value is valid,
+                    if (typeof data !== 'undefined' && moment(data).isValid()) {
+
+                        var dt = moment(data);
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date(),
+                                hour: dt.hour(),
+                                minute: dt.minute(),
+                                second: dt.second()
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: dt.year(),
+                                month: dt.month() + 1,
+                                date: dt.date()
+                            }
+                        }
+                    } else {
+
+                        if ($scope.type == 'datetime') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0,
+                                hour: 0,
+                                minute: 0,
+                                second: 0
+                            }
+                        } else if ($scope.type == 'date') {
+                            return {
+                                year: moment().year(),
+                                month: 0,
+                                date: 0
+                            }
+                        }
+                    }
+                });
+
+                ngModelController.$render = function() {
+                    $scope.year = ngModelController.$viewValue.year;
+                    $scope.month = ngModelController.$viewValue.month;
+                    $scope.date = ngModelController.$viewValue.date;
+
+                    if ($scope.type == 'datetime') {
+                        $scope.hour = ngModelController.$viewValue.hour;
+                        $scope.minute = ngModelController.$viewValue.minute;
+                        $scope.second = ngModelController.$viewValue.second;
+                    }
+                };
+
+                $scope.dateIsComplete = function() {
+                    return $scope.month !== 0 && $scope.date !== 0;
+                };
+
+                $scope.$watch('datetimevalue', function(value) {
+                    if (typeof value === null) {
+                        $scope.isNull = true;
+                    }
+                });
+
+                $scope.$watch('year + month + date + hour + minute + second + isNull', function() {
+                    ngModelController.$setViewValue({ year: $scope.year, month: $scope.month,date: $scope.date,hour: $scope.hour,minute: $scope.minute,second: $scope.second });
+                });
+            },
+            templateUrl: '/js/templates/datetime.html'
+        }
+    });
 })();
 (function() {
 	var app = angular.module('app', ['720kb.datepicker']);
@@ -3744,43 +3797,32 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
+    app.directive('redditComment', ["$http", function($http) {
         return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, elem, attrs, ngModelCtrl) {
-                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
-                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
-                        return response.data.taken ? $q.reject() : true;
-                    });
-                };
-            }
-        }
-    }]);
-})();
+            replace: true,
+            restrict: 'E',
+            scope: {
+                redditComment: '=ngModel'
+            },
+            link: function($scope, element, attributes) {
 
-(function() {
-    var app = angular.module('app');
+                $scope.retrieveRedditComment = function() {
+                    if (typeof $scope.redditComment.external_url !== "undefined") {
+                        $http.get('/missioncontrol/create/retrieveredditcomment?url=' + encodeURIComponent($scope.redditComment.external_url)).then(function(response) {
 
-    app.directive('characterCounter', ["$compile", function($compile) {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function($scope, element, attributes, ngModelCtrl) {
-                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
-                $compile(counter)($scope);
-                element.after(counter);
-
-                ngModelCtrl.$parsers.push(function(viewValue) {
-                    $scope.isInvalid = ngModelCtrl.$invalid;
-                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
-                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
-                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                            // Set properties on object
+                            $scope.redditComment.summary = response.data.data.body;
+                            $scope.redditComment.author = response.data.data.author;
+                            $scope.redditComment.reddit_comment_id = response.data.data.name;
+                            $scope.redditComment.reddit_parent_id = response.data.data.parent_id; // make sure to check if the parent is a comment or not
+                            $scope.redditComment.reddit_subreddit = response.data.data.subreddit;
+                            $scope.redditComment.originated_at = moment.unix(response.data.data.created_utc).format();
+                        });
                     }
-                    return viewValue;
-                });
-            }
+                }
+
+            },
+            templateUrl: '/js/templates/redditComment.html'
         }
     }]);
 })();
@@ -3885,18 +3927,45 @@
 (function() {
     var app = angular.module('app');
 
-    app.directive('objectCard', function() {
+    app.directive('uniqueUsername', ["$q", "$http", function($q, $http) {
         return {
-            restrict: 'E',
-            replace: true,
-            scope: {
-                object: '='
-            },
-            link: function($scope) {
-            },
-            templateUrl: '/js/templates/objectCard.html'
+            restrict: 'A',
+            require: 'ngModel',
+            link: function(scope, elem, attrs, ngModelCtrl) {
+                ngModelCtrl.$asyncValidators.username = function(modelValue, viewValue) {
+                    return $http.get('/auth/isusernametaken/' + modelValue).then(function(response) {
+                        return response.data.taken ? $q.reject() : true;
+                    });
+                };
+            }
         }
-    });
+    }]);
+})();
+
+(function() {
+    var app = angular.module('app');
+
+    app.directive('characterCounter', ["$compile", function($compile) {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, element, attributes, ngModelCtrl) {
+                var counter = angular.element('<p class="character-counter" ng-class="{ red: isInvalid }">{{ characterCounterStatement }}</p>');
+                $compile(counter)($scope);
+                element.after(counter);
+
+                ngModelCtrl.$parsers.push(function(viewValue) {
+                    $scope.isInvalid = ngModelCtrl.$invalid;
+                    if (attributes.ngMinlength > ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = attributes.ngMinlength - ngModelCtrl.$viewValue.length + ' to go';
+                    } else if (attributes.ngMinlength <= ngModelCtrl.$viewValue.length) {
+                        $scope.characterCounterStatement = ngModelCtrl.$viewValue.length + ' characters';
+                    }
+                    return viewValue;
+                });
+            }
+        }
+    }]);
 })();
 (function() {
     var app = angular.module('app', []);
@@ -4072,6 +4141,22 @@
             }
         }
     }]);
+})();
+(function() {
+    var app = angular.module('app');
+
+    app.directive('objectCard', function() {
+        return {
+            restrict: 'E',
+            replace: true,
+            scope: {
+                object: '='
+            },
+            link: function($scope) {
+            },
+            templateUrl: '/js/templates/objectCard.html'
+        }
+    });
 })();
 (function() {
     var app = angular.module('app');

@@ -17,6 +17,22 @@
             upcomingMission: laravel.mission
         };
 
+        $scope.streamSize = {
+            smaller: 1,
+            normal: 2,
+            larger: 3
+        };
+
+        $scope.streamOption = {
+            noVideo: 1,
+            spacex: 2,
+            spacexClean: 3,
+            nasa: 4,
+            spacexAndSpacexClean: 5,
+            spacexAndNasa: 6,
+            spacexCleanAndNasa: 7
+        };
+
         $scope.updates = laravel.updates.map(function(update) {
             return new Update(update);
         });
@@ -73,9 +89,11 @@
             removeResource: function(resource) {
                 $scope.liveParameters.resources.splice($scope.liveParameters.resources.indexOf(resource), 1);
             },
+            isUpdating: false,
             updateDetails: function() {
+                $scope.settings.isUpdating = true;
                 liveService.updateDetails($scope.liveParameters).then(function(response) {
-                    $scope.settings.isEditingDetails = false;
+                    $scope.settings.isEditingDetails = $scope.settings.isUpdating = false;
                 });
             },
             isPausingCountdown: false,
@@ -108,20 +126,21 @@
                 isPaused: laravel.countdown.isPaused,
                 newLaunchTime: null
             },
-            userSelectedStream: 'spacex',
-            userStreamSize: 'smaller',
             streams: {
                 spacex: {
-                    isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : null,
+                    isAvailable: laravel.streams.spacex ? laravel.streams.spacex.isAvailable : false,
                     youtubeVideoId: laravel.streams.spacex ? laravel.streams.spacex.youtubeVideoId : null,
-                    videoLink: function() {
-                        return 'https://www.youtube.com/embed/' + $scope.liveParameters.streams.spacex.youtubeVideoId + '?rel=0&autoplay=1';
-                    },
-                    isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : null
+                    isActive: laravel.streams.spacex ? laravel.streams.spacex.isActive : false
+                },
+                spacexClean: {
+                    isAvailable: laravel.streams.spacexClean ? laravel.streams.spacexClean.isAvailable : false,
+                    youtubeVideoId: laravel.streams.spacexClean ? laravel.streams.spacexClean.youtubeVideoId : null,
+                    isActive: laravel.streams.spacexClean ? laravel.streams.spacexClean.isActive : false
                 },
                 nasa: {
-                    isAvailable: false,
-                    isActive: false
+                    isAvailable: laravel.streams.nasa ? laravel.streams.nasa.isAvailable : false,
+                    youtubeVideoId: 'HDh4uK9PvJU',
+                    isActive: true
                 }
             },
             description: {
@@ -140,14 +159,70 @@
             }
         };
 
-        $scope.isLivestreamVisible = function() {
-            return $scope.liveParameters.userSelectedStream != null
-                && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isAvailable
-                && $scope.liveParameters.streams[$scope.liveParameters.userSelectedStream].isActive;
+        $scope.user = {
+            streamOption: $scope.streamOption.spacex,
+            streamSize: $scope.streamSize.normal,
+            sanitizedStreamOption: function() {
+
+                $scope.user.streamOption = parseInt($scope.user.streamOption);
+
+                switch ($scope.user.streamOption) {
+                    case $scope.streamOption.noVideo:               return 'No Video';
+                    case $scope.streamOption.spacex:                return 'SpaceX';
+                    case $scope.streamOption.spacexClean:           return 'SpaceX (Clean)';
+                    case $scope.streamOption.nasa:                  return 'NASA';
+                    case $scope.streamOption.spacexAndNasa:         return 'SpaceX & NASA';
+                    case $scope.streamOption.spacexCleanAndNasa:    return 'SpaceX (Clean) & NASA';
+                    case $scope.streamOption.spacexAndSpacexClean:  return 'SpaceX & SpaceX (Clean)';
+                }
+            },
+            isConfiguringStreams: false,
+            isWatching: {
+                singleStream: function() {
+                    return [$scope.streamOption.spacex, $scope.streamOption.spacexClean, $scope.streamOption.nasa]
+                            .indexOf($scope.user.streamOption) !== -1;
+                },
+                doubleStream: function() {
+                    return [$scope.streamOption.spacexAndNasa, $scope.streamOption.spacexCleanAndNasa, $scope.streamOption.spacexAndSpacexClean]
+                            .indexOf($scope.user.streamOption) !== -1;
+                }
+            }
         };
 
+        /*
+         *
+         */
+        $scope.isLivestreamVisible = function() {
+            if ($scope.user.streamOption == $scope.streamOption.spacex) {
+                return $scope.liveParameters.streams.spacex.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexClean) {
+                return $scope.liveParameters.streams.spacexClean.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.nasa) {
+                return $scope.liveParameters.streams.nasa.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexAndNasa) {
+                return $scope.liveParameters.streams.nasa.isActive || $scope.liveParameters.streams.spacex.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexCleanAndNasa) {
+                return $scope.liveParameters.streams.nasa.isActive || $scope.liveParameters.streams.spacexClean.isActive;
+            }
+
+            if ($scope.user.streamOption == $scope.streamOption.spacexAndSpacexClean) {
+                return $scope.liveParameters.streams.spacex.isActive || $scope.liveParameters.streams.spacexClean.isActive;
+            }
+        };
+
+        /*
+         * Checks if any livestream is visible. We don't need to check for the existence of the spacexClean stream.
+         */
         $scope.isAnyStreamAvailable = function() {
-            return $scope.liveParameters.streams.spacex.isActive === true || $scope.liveParameters.streams.nasa.isActive === true;
+            return $scope.liveParameters.streams.spacex.isActive === true ||$scope.liveParameters.streams.nasa.isActive === true;
         };
 
         $scope.send = {
@@ -290,11 +365,21 @@
             console.log(data);
         });
 
-        socket.on('live-updates:SpaceXStats\\Events\\WebcastEvent', function(data) {
+        socket.on('live-updates:SpaceXStats\\Events\\WebcastStartedEvent', function(data) {
             console.log(data);
-            $scope.liveParameters.streams.spacex.isActive = true;
-            $scope.liveParameters.streams.spacex.youtubeVideoId = data.isActive ? data.videoId : null;
+            for (var stream in data.videos) {
+                if (data.videos.hasOwnProperty(stream)) {
+                    $scope.liveParameters.streams[stream].isActive = true;
+                    $scope.liveParameters.streams[stream].isAvailable = true;
+                    $scope.liveParameters.streams[stream].youtubeVideoId = data.videos[stream];
+                }
+            }
+
             $scope.$apply();
+        });
+
+        socket.on('live-updates:SpaceXStats\\Events\\WebcastEndedEvent', function(data) {
+             console.log(data);
         });
     }]);
 

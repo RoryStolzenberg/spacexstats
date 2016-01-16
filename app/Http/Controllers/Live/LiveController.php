@@ -49,6 +49,7 @@ class LiveController extends Controller {
             'description' => Redis::hgetall('live:description'),
             'streams' => [
                 'spacex' => json_decode(Redis::hget('live:streams', 'spacex')),
+                'spacexClean' => json_decode(Redis::hget('live:streams', 'spacexClean')),
                 'nasa' => json_decode(Redis::hget('live:streams', 'nasa')),
             ],
             'status' => [
@@ -236,6 +237,7 @@ class LiveController extends Controller {
         // Set the streams available
         Redis::hmset('live:streams', [
             'spacex' => json_encode(Input::get('streams.spacex')),
+            'spacexClean' => json_encode(Input::get('streams.spacexClean')),
             'nasa' => json_encode(Input::get('streams.nasa'))
         ]);
 
@@ -263,16 +265,16 @@ class LiveController extends Controller {
 
         // Create the canned responses
         Redis::hmset('live:cannedResponses', [
-            'holdAbort' => 'HOLD HOLD HOLD. The countdown has been aborted.',
-            'terminalCount' => 'Terminal count has now begun. From this point forward, any scrubs will result in a recycle to T-10 minutes.',
-            'inProgress' => 'Liftoff of ' . Mission::future()->first()->name . '!',
-            'maxQ' => 'MaxQ, at this point in flight, the vehicle is flying through maximum aerodynamic pressure.',
-            'MECO' => "MECO! The vehicle's first stage engines have shutdown in preparation for stage separation.",
-            'stageSep' => 'Stage separation confirmed.',
-            'mVacIgnition' => "Falcon's upper stage Merlin Vacuum engine has ignited for the ride to orbit.",
-            'SECO' => 'SECO! Falcon is now in orbit!',
-            'missionSuccess' => 'Success! SpaceX has completed another successful mission!',
-            'missionFailure' => 'We appear to have had a failure. We will bring more information to you as it is made available.'
+            'holdAbort'         => 'HOLD HOLD HOLD. The countdown has been aborted.',
+            'terminalCount'     => 'Terminal count has now begun. From this point forward, any scrubs will result in a recycle to T-10 minutes.',
+            'inProgress'        => 'Liftoff of ' . Mission::future()->first()->name . '!',
+            'maxQ'              => 'MaxQ, at this point in flight, the vehicle is flying through maximum aerodynamic pressure.',
+            'MECO'              => "MECO! The vehicle's first stage engines have shutdown in preparation for stage separation.",
+            'stageSep'          => 'Stage separation confirmed.',
+            'mVacIgnition'      => "Falcon's upper stage Merlin Vacuum engine has ignited for the ride to orbit.",
+            'SECO'              => 'SECO! Falcon is now in orbit!',
+            'missionSuccess'    => 'Success! SpaceX has completed another successful mission!',
+            'missionFailure'    => 'We appear to have had a failure. We will bring more information to you as it is made available.'
         ]);
 
         // Render the Reddit thread template
@@ -299,18 +301,19 @@ class LiveController extends Controller {
         // Broadcast event to turn on spacexstats live
         event(new LiveStartedEvent([
             'active' => true,
-            'streams' => [
-                'spacex' => Input::get('streams.spacex'),
-                'nasa' => Input::get('streams.nasa')
+            'streams'   => [
+                'spacex'        => Input::get('streams.spacex'),
+                'spacexClean'   => Input::get('streams.spacexClean'),
+                'nasa'          => Input::get('streams.nasa')
             ],
-            'countdown' => [
-                'to' => Input::get('countdown.to'),
-                'isPaused' => false,
+            'countdown'     => [
+                'to'        => Input::get('countdown.to'),
+                'isPaused'  => false,
             ],
             'title' => Input::get('title'),
             'reddit' => [
                 'title' => Input::get('reddit.title'),
-                'thing' => Input::get('reddit.thing'),
+                'thing' => $response->data->name,
             ],
             'description' => Redis::hgetall('live:description'),
             'isForLaunch' => Input::get('isForLaunch'),

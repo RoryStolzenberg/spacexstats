@@ -80,7 +80,7 @@ body, nav {
     line-height:$nav-height;
     font-family: $montserrat;
 
-    li {
+    > ul > li {
         height:$nav-height;
         cursor:pointer;
         padding-bottom: 3px;
