@@ -8,6 +8,7 @@ class DestinationsTableSeeder extends Seeder {
         Destination::create(array('destination' => DestinationEnum::LowEarthOrbit));
         Destination::create(array('destination' => DestinationEnum::LowEarthOrbitISS));
         Destination::create(array('destination' => DestinationEnum::PolarOrbit));
+        Destination::create(array('destination' => DestinationEnum::SunSynchronousOrbit));
         Destination::create(array('destination' => DestinationEnum::MediumEarthOrbit));
         Destination::create(array('destination' => DestinationEnum::GeostationaryTransferOrbit));
         Destination::create(array('destination' => DestinationEnum::SubsynchronousGTO));

@@ -678,5 +678,13 @@ class PayloadsTableSeeder extends Seeder {
             'mass' => 172,
             'link' => 'http://space.skyrocket.de/doc_sdat/orbcomm-2.htm'
         ]);
+        Payload::create([
+            'mission_id' => 26,
+            'name' => 'Jason-3',
+            'operator' => "NOAA, CNES, NASA, & Eumetsat",
+            'primary' => true,
+            'mass' => 525,
+            'link' => 'http://space.skyrocket.de/doc_sdat/jason-2.htm'
+        ]);
     }
 }

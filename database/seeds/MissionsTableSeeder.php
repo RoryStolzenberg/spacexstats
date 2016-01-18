@@ -498,8 +498,10 @@ class MissionsTableSeeder extends Seeder {
             'vehicle_id' => 3,
             'destination_id' => Destination::where('destination', DestinationEnum::PolarOrbit)->firstOrFail()->destination_id,
             'launch_site_id' => Location::where('name', 'SLC-4E')->firstOrFail()->location_id,
-            'summary' => "Launching Jason-3 to polar orbit is the second Falcon 9 flying out of Vandenberg Air Force base in California. This represents the last remaining F9v1.1 flight.",
-            'status' => MissionStatus::Upcoming
+            'launch_illumination' => 'Day',
+            'summary' => "The final Falcon 9 v1.1 lifted off from Vandenberg carrying the Jason-3 sea surface science satellite to a polar orbit in a mission involving two burns of the upper stage. The first stage came down accurately, but landing leg 3 failed to lock and the stage was lost.",
+            'status' => MissionStatus::Complete,
+            'outcome' => MissionOutcome::Success,
         ]);
 
         Mission::create([
@@ -521,9 +523,8 @@ class MissionsTableSeeder extends Seeder {
         Mission::create([
             'mission_type_id' => MissionType::where('name', MissionTypeEnum::DragonISS)->firstOrFail()->mission_type_id,
             'launch_order_id' => 28,
-            'launch_exact' => null,
-            'launch_approximate' => 'March 2016',
-            'launch_specificity' => LaunchSpecificity::Month,
+            'launch_exact' => Carbon::createFromDate(2016, 3, 21),
+            'launch_specificity' => LaunchSpecificity::Day,
             'name' => 'SpaceX CRS-8',
             'contractor' => 'NASA',
             'vehicle_id' => 4,
