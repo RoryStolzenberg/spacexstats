@@ -91,10 +91,10 @@
                 <countdown ng-if="substatistic.display == 'interval'" countdown-to="substatistic.result" specificity="7" type="interval"></countdown>
 
                 <div ng-if="substatistic.display == 'mission'">
-                    <launch-date launch-specificity="substatistic.result.launch_specificity" launch-date-time="substatistic.result.launch_date_time"></launch-date>
-
                     <countdown countdown-to="substatistic.result.launch_date_time" specificity="substatistic.result.launch_specificity" type="classic">
                     </countdown>
+					
+                    <launch-date launch-specificity="substatistic.result.launch_specificity" launch-date-time="substatistic.result.launch_date_time"></launch-date>
 
                     <div class="launch-link">
                         <a href="/missions/@{{ substatistic.result.slug }}">Go to Launch</a>
